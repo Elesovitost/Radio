@@ -1,0 +1,92 @@
+<head>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="FDGPET" class="standardwidth mydiv0" >
+MR cervixu dělohy  
+</div>
+
+<div id="GeneralDIV" class="standardwidth DIV">
+
+<div id="rozsah" class="DIVLesions"><button class="titleCervix">ROZSAH</button>
+Tumor: <button id="CervixTuTypeButton" class="Button100" onmousedown="cycleCervixTuTypeText(event)">není</button>&nbsp;&nbsp;&nbsp;
+Velikost: <input id="CervixTuSize" class="select140 num" placeholder="rozměr (AP x LL x CC) ..." oninput="updateTexts()">&nbsp;&nbsp;&nbsp;
+</div>
+
+<div id="Tstage" class="DIVLesions"><button class="titleCervix">T STAGE</button>
+Invaze: <button id="CervixTuInvasionButton" class="Button140" onmousedown="cycleCervixTuInvasionText(event)">invaze <3mm</button>&nbsp;&nbsp;&nbsp;
+parametrií:<label class="CHB" ><input type="checkbox" id="ChbCervixParamRInvasion" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbCervixParamLInvasion" onChange="updateTexts()"><span>L</span></label>&nbsp;&nbsp;&nbsp;
+pochvy:<label class="CHB" ><input type="checkbox" id="ChbCervixVagUpperInvasion" onChange="updateTexts()"><span style="width: 55px;">horní 2/3</span></label><label class="CHB"><input type="checkbox" id="ChbCervixVagLowerInvasion" onChange="updateTexts()"><span style="width: 55px;">dolní 1/3</span></label>&nbsp;&nbsp;&nbsp;
+pánev. stěny:<label class="CHB" ><input type="checkbox" id="ChbCervixWallInvasion" onChange="updateTexts()"><span>+</span></label>&nbsp;&nbsp;&nbsp;
+moč. měchýře:<label class="CHB" ><input type="checkbox" id="ChbCervixBladderInvasion" onChange="updateTexts()"><span>+</span></label>&nbsp;&nbsp;&nbsp;
+rekta:<label class="CHB" ><input type="checkbox" id="ChbCervixRectumInvasion" onChange="updateTexts()"><span>+</span></label>&nbsp;&nbsp;&nbsp;
+Hydronefróza:<label class="CHB" ><input type="checkbox" id="ChbCervixHydronephR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbCervixHydronephL" onChange="updateTexts()"><span>L</span></label>
+</div>
+
+<div id="Nstage" class="DIVLesions"><button class="titleCervix">N STAGE</button>
+Regionální uzliny: 
+<div style="white-space: nowrap; width: 0px; display: inline-block;"></div>
+<button id="CervixLNRegButton" class="Button100" onmousedown="cycleCervixLNRegText(event)">nesuspektní</button>
+<input id="CervixLNRegLocation" type="text" placeholder="vybrat lokalizace a počty..." autocomplete="off" class="cervixinput hidden"> 
+<div id="CervixLNRegSelectLocation" class="CervixLNRegclass hidden">
+	<table class="CervixLNReg">
+		<tr>
+			<td colspan="3">Paraaortální pod aa. renales</td>
+		</tr>
+		<tr>
+			<td colspan="3"><input type="number" class="numbers" id="CervixLNAo" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="CervixLNComR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>parailické spol.</td>
+			<td>L <input type="number" class="numbers" id="CervixLNComL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="CervixLNExtR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>parailické ext.</td>
+			<td>L <input type="number" class="numbers" id="CervixLNExtL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="CervixLNIntR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>parailické int.</td>
+			<td>L <input type="number" class="numbers" id="CervixLNIntL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="CervixLNPelvR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>další pánevní</td>
+			<td>L <input type="number" class="numbers" id="CervixLNPelvL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+</table>		
+</div>
+
+</div>
+
+<div id="Mstage" class="DIVLesions"><button class="titleCervix">M STAGE</button>
+Non-regionální uzliny: <label class="CHB" ><input type="checkbox" id="ChbCervixLNNonReg" onChange="updateTexts()"><span>+</span></label>
+&nbsp;&nbsp;&nbsp;
+Vzdálená meta:<label class="CHB" ><input type="checkbox" id="ChbCervixMeta" onChange="updateTexts()"><span>+</span></label>
+</div>
+
+
+</div>
+</div id="end">
+
+
+<div id="texty1" class=" standardwidth mydiv0 hidden">
+&nbsp; POPIS <button id="copyFINAL" class="button60">copy</button>
+<textarea id="CervixTuFinalText" class="superlarge" readonly></textarea>
+</div>
+
+<div id="texty1" class=" standardwidth mydiv0 hideonline">
+&nbsp; POPIS <button id="copyPOP" class="button60">copy</button>
+<textarea id="CervixTuPOPText" class="medium" readonly></textarea>
+&nbsp; ZÁVĚR <button id="copyRES" class="button60">copy</button> 
+<textarea id="CervixTuRESText" class="small" readonly></textarea>
+</div>
+
+<script src="MRcervixscript.js"></script>  
+<script src="MRcervixpopis.js"></script>
+
+</body>

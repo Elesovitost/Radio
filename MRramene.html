@@ -1,0 +1,201 @@
+<head>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body>
+
+<div id="MRramene" class="standardwidth mydiv0">MR <button id="StranaButton" class="buttonStrana" onmousedown="cycleStranaText(event)">jakého?</button> RAMENE  </div>
+<div id="INDIKACE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off" class="standardwidth"></div>
+
+<div id="shouldergeneral" class="standardwidth"><button class="titleFlex">KLOUBNÍ DUTINA</button></div>
+
+<div id="obecnecontent"  class="standardwidth">
+<table>
+<tr>
+	<td>náplň</td>
+	<td><button id="NaplnButton" class="button40" onmousedown="cycleNaplnText(event)">0</button></td>
+	<td></td>
+    <td>volná tělíska</td>
+    <td><label class="CHB"><input type="checkbox" id="checkboxVolnaTeliska" onChange="updateTexts()"><span>+</span></label></td>
+    <td></td>
+	<td>SASD burza</td>
+	<td><button id="SASDButton" class="button40" onmousedown="cycleSASDText(event)">0</button></td>
+	<td></td>
+	<td>SC burza</td>
+	<td><button id="SCButton" class="button40" onmousedown="cycleSCText(event)">0</button></td>
+</tr>
+</table>
+</div>
+
+
+<div id="AC" class="standardwidth"><button class="titleFlex">AC SKLOUBENÍ</button></div>
+
+<div id="ACcontent"  class="standardwidth">
+<table>
+  <tr>
+	<td>degenerace</td>
+	<td><button id="ACdegeneraceButton" class="button60" onmousedown="cycleACdegeneraceText(event)">0</button></td>
+	<td></td>
+    <td>subluxace</td>
+    <td><button id="ACsubluxaceButton" class="button60" onmousedown="cycleACsubluxaceText(event)">není</button></td>
+	<td></td>
+    <td>akromion</td>
+	<td><button id="AcromionButton" class="button80" onmousedown="cycleAcromionText(event)">0</button></td>
+	<td></td>
+	<td>zúžení SA prostoru</td>
+	<td><label class="CHB"><input type="checkbox" id="checkboxSAprostor" onChange="updateTexts()"><span>+</span></label></td>
+	<td></td>
+  </tr>
+</table>
+</div>
+
+
+
+<div id="GH" class="standardwidth"><button class="titleFlex">GH KLOUB</button></div>
+
+<div id="GHcontent"  class="standardwidth">
+<table>
+<tr>
+	<td>degenerace</td>
+	<td><button id="GHdegeneraceButton" class="button60" onmousedown="cycleGHdegeneraceText(event)">0</button></td>
+	<td></td>
+    <td>subluxace</td>
+    <td><button id="GHsubluxaceButton" class="button60" onmousedown="cycleGHsubluxaceText(event)">0</button></td>
+	<td></td>
+	<td>Hill-Sachs</td>
+	<td><label class="CHB"><input type="checkbox" id="checkboxHS" onChange="updateTexts()"><span>+</span></label></td>
+	<td></td>
+	<td>IGHL</td>
+	<td><button id="IGHLButton" class="button100" onmousedown="cycleIGHLText(event)">OK</button></td>
+</tr>
+</table>
+</div>
+
+
+<div id="RM"  class="standardwidth"><button class="titleFlex">ROTÁTOROVÁ MANŽETA</button></div>
+
+<div id="RMcontent"  class="standardwidth">
+<table>
+  <tr>
+	<td>M. supraspinatus</td>
+    <td><button id="RMsupraButton" class="button100" onmousedown="cycleRMsupraText(event)">OK</button></td>
+	<td id="supralok" class="hidden">lokalizace</td>
+	<td id="supralokh" class="hidden"><button id="RMsupraLokHorizButton" class="button100" onmousedown="cycleRMsupraLokHorizText(event)">část...</button></td>
+	<td id="supralokv" class="hidden"><button id="RMsupraLokVertButton" class="button100" onmousedown="cycleRMsupraLokVertText(event)">povrch...</button></td>
+	<td id="supraa" class="hidden">atrofie</td>
+	<td id="supraatrofie" class="hidden"><label class="CHB"><input type="checkbox" id="checkboxsupraAtrofie" onChange="updateTexts()"><span>+</span></label></td>
+  </tr>
+  <tr>
+	<td>M. infraspinatus</td>
+    <td><button id="RMinfraButton" class="button100" onmousedown="cycleRMinfraText(event)">OK</button></td>
+	<td id="infralok" class="hidden">lokalizace</td>
+	<td id="infralokh" class="hidden"><button id="RMinfraLokHorizButton" class="button100" onmousedown="cycleRMinfraLokHorizText(event)">část...</button></td>
+	<td id="infralokv" class="hidden"><button id="RMinfraLokVertButton" class="button100" onmousedown="cycleRMinfraLokVertText(event)">povrch...</button></td>
+	<td id="infraa" class="hidden">atrofie</td>
+	<td id="infraatrofie" class="hidden"><label class="CHB"><input type="checkbox" id="checkboxinfraAtrofie" onChange="updateTexts()"><span>+</span></label></td>
+  </tr>
+  <tr>
+	<td>M. subscapularis</td>
+	<td><button id="RMssButton" class="button100" onmousedown="cycleRMssText(event)">OK</button></td>
+	<td id="sslok" class="hidden">lokalizace</td>
+	<td id="sslokh" class="hidden"><button id="RMssLokHorizButton" class="button100" onmousedown="cycleRMssLokHorizText(event)">část...</button></td>
+	<td id="sslokv" class="hidden"><button id="RMssLokVertButton" class="button100" onmousedown="cycleRMssLokVertText(event)">povrch...</button></td>
+	<td id="ssa" class="hidden">atrofie</td>
+	<td id="ssatrofie" class="hidden"><label class="CHB"><input type="checkbox" id="checkboxssAtrofie" onChange="updateTexts()"><span>+</span></label></td>
+  </tr>
+</table>
+</div>
+
+<div id="labrum" class="standardwidth"><button class="titleFlex">LABRUM</button></div>
+
+<div id="labrumcontent"  class="standardwidth">
+<table>
+  <tr>
+    <td>léze labra</td>
+    <td><select id="LezeLabra" class="select100" onchange="updateTexts()">  
+  <option value=""selected>OK</option>
+  <option value="difuzní">difuzní</option>
+  <option value="horního">horního</option>
+  <option value="předního">předního</option>
+  <option value="zadního">zadního</option>
+  <option value="dolního">dolního</option>
+  	</select></td>
+	<td></td>
+	<td>SLAP</td>
+    <td><label class="CHB"><input type="checkbox" id="checkboxSLAP" onChange="updateTexts()"><span>+</span></label></td>
+	<td></td>
+	<td>Bankart</td>
+	<td><button id="BankartButton" class="button60" onmousedown="cycleBankartText(event)">0</button></td>
+	<td></td>
+  </tr>
+</table>
+</div>
+
+<div id="biceps"  class="standardwidth"><button class="titleFlex">LHBT</button></div>
+
+<div id="bicepscontent"  class="standardwidth">
+<table>
+  <tr>
+	<td>LHBT</td>
+    <td><button id="LHBTButton" class="button100" onmousedown="cycleLHBTText(event)">OK</button></td>
+	<td></td>
+	<td>sulkus</td>
+	<td><label class="CHB"><input type="checkbox" id="checkboxLHBTsulkus" onChange="updateTexts()"><span>+</span></label></td>
+	<td></td>
+	<td>dislokace</td>
+	<td><label class="CHB"><input type="checkbox" id="checkboxLHBTdisl" onChange="updateTexts()"><span>+</span></label></td>
+  </tr>
+</table>
+</div>
+
+<div id="shoulderothers" class="standardwidth"><button class="titleFlex">OSTATNÍ</button></div>
+<div id="ostatnicontent"  class="standardwidth">
+<table>
+<tr>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+</table>
+</div>
+
+<div id="texty" class="standardwidth mydiv0">
+<button id="copyfinal" class="button60">copy</button>
+<textarea id="FINALText" class="superlarge"></textarea>  
+ </div>
+
+<div id="texty1" class="hidden standardwidth">
+<textarea id="POPText" class="superlarge"></textarea>POPIS
+<textarea id="RESText" class="superlarge"></textarea>ZÁVĚR
+</div>
+
+<div id="colors"> <table style="border-collapse: collapse;">
+  <tr style="height: 20px;">
+    <td style="width: 20px;">#A26360</td>
+    <td style="width: 20px;">#D4A29C</td>
+    <td style="width: 20px;">#E8B298</td>
+    <td style="width: 20px;">#EDCC8B</td>
+    <td style="width: 20px;">#BDD1C5</td>
+    <td style="width: 20px;">#9DAAA2</td>
+
+  </tr>
+  <tr style="height: 20px;">
+    <td style="width: 20px; background-color: #A26360;"></td>
+    <td style="width: 20px; background-color: #D4A29C;"></td>
+    <td style="width: 20px; background-color: #E8B298;"></td>
+    <td style="width: 20px; background-color: #EDCC8B;"></td>
+    <td style="width: 20px; background-color: #BDD1C5;"></td>
+    <td style="width: 20px; background-color: #9DAAA2;"></td>
+
+  </tr>
+</table> 
+</div>	
+
+
+<script src="MRramenescript.js"></script>  
+<script src="MRramenepopis.js"></script>          
+
+	</body>
+</html>
+  

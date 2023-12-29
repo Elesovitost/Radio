@@ -1,0 +1,471 @@
+<head>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body>
+
+<div id="MRkolene" class="standardwidth mydiv0">MR <button id="StranaButton" class="ButtonStrana" onmousedown="cycleStranaText(event)">jakého?</button> KOLENE  </div>
+<div id="INDIKACE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off" class="standardwidth"></div>
+<div id="kneeobecne" class="standardwidth"><button class="titleFlex">KLOUBNÍ DUTINA</button></div>
+<div id="obecnecontent"  class="standardwidth">
+<table>
+<tr>
+	<td>náplň</td>
+	<td><button id="PkNaplnButton" class="Button40" onmousedown="cyclePkNaplnText(event)">0</button></td>
+	<td></td>
+	<td>Bakerovka</td>
+	<td><button id="OstBakerButton" class="Button40" onmousedown="cycleOstBakerText(event)">0</button></td>
+    <td></td>
+	<td>synovitis</td>
+    <td><label class="CHB"><input type="checkbox" id="checkboxSynovitis" onChange="updateTexts()"><span>+</span></label></td>
+    <td></td>
+    <td>volná tělíska</td>
+    <td><label class="CHB"><input type="checkbox" id="checkboxVolnaTeliska" onChange="updateTexts()"><span>+</span></label></td>
+    <td></td>
+</tr>
+</table>
+</div>
+<div id="komppredni" class="standardwidth"><button class="titleFlex">PŘEDNÍ KOMPARTMENT</button></div>
+
+<div id="Pkcontent"  class="standardwidth">
+
+<table>
+	<tr>
+		<td><button id="PkCartilages" class="others100">FP chrupavky</button></td>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>Wiberg</td>
+		<td><button id="PkWibergButton" class="Button40" onmousedown="cyclePkWibergText(event)">I</button></td>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>st.p.luxaci patelly </td>
+		<td><label class="CHB"><input type="checkbox" id="checkboxLuxacePatella" onChange="updateTexts()"><span>+</span></label></td>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>bipartita</td>
+		<td><label class="CHB"><input type="checkbox" id="checkboxBipartita" onChange="updateTexts()"><span>+</span></label></td>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>plica</td>
+		<td><label class="CHB"><input type="checkbox" id="checkboxplica" onChange="updateTexts()"><span>+</span></label></td>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>Jumper´s knee</td>
+		<td><label class="CHB"><input type="checkbox" id="checkboxjumper" onChange="updateTexts()"><span>+</span></label></td>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>Osgood-Schlatter</td>
+		<td><label class="CHB"><input type="checkbox" id="checkboxOsgood" onChange="updateTexts()"><span>+</span></label></td>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+	</tr>
+	<tr id="PkCartilagestable" class="hidden">
+		<td>
+		<table>
+			<tr>
+				<td>Patella</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="PkPatelCartM" onChange="updateTexts()"><span>M</span></label><label class="CHB"><input type="checkbox" id="PkPatelCartL" onChange="updateTexts()"><span>L</span></label></td>
+			</tr>
+			<tr>
+				<td>Trochlea</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="PkTrochCartM" onChange="updateTexts()"><span>M</span></label><label class="CHB"><input type="checkbox" id="PkTrochCartL" onChange="updateTexts()"><span>L</span></label></td>
+			</tr>
+			<tr>
+				<td>Chondropatie</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="PkCartCHPII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="PkCartCHPIII" onChange="updateTexts()"><span>III</span></label><label class="CHB"><input type="checkbox" id="PkCartCHPIV" onChange="updateTexts()"><span>IV</span></label></td>
+			</tr>
+			<tr>
+				<td>Fisura</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="PkCartFissureOne" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="PkCartFissureMore" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Defekt</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="PkCartDefectOne" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="PkCartDefectMore" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Edém</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="PkEdemaSub" onChange="updateTexts()"><span>S</span></label><label class="CHB"><input type="checkbox" id="PkEdemaCont" onChange="updateTexts()"><span>K</span></label><label class="CHB"><input type="checkbox" id="PkEdemaDif" onChange="updateTexts()"><span>D</span></label></td>
+			</tr>
+			<tr>
+				<td>Artróza</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="checkboxFParthrosis" onChange="updateTexts()"><span>+</span></label>
+			</tr>
+			<tr>
+				<td colspan="2" ><input id="HeadMaxSinusOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+
+</div>
+
+<div class="flex-container">
+  <div  id="kommedlat" class="standardwidthHALF"><button class="titleFlex">MEDIÁLNÍ KOMPARTMENT</button></div>
+  <div  id="kommedlat" class="standardwidthHALF"><button class="titleFlex">LATERÁLNÍ KOMPARTMENT</button></div>
+</div>
+<div class="flex-container">
+  <div  id="Mkcontent" class="standardwidthHALF">
+	
+	<table>
+	<tr>
+		<td><button id="MkFemCond" class="others100">Femor. kondyl</button></td>
+	</tr>
+	<tr id="MkFemCondtable" class="hidden">
+		<td>
+		<table>
+			<tr>
+				<td>Chondropatie</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkFemCondCHPII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="MkFemCondCHPIII" onChange="updateTexts()"><span>III</span></label><label class="CHB"><input type="checkbox" id="MkFemCondCHPIV" onChange="updateTexts()"><span>IV</span></label></td>
+			</tr>
+			<tr>
+				<td>Fisura</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkFemCondFisOne" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="MkFemCondFisMore" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Defekt</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkFemCondDefOne" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="MkFemCondDefMore" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Edém</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkFemCondEdemaSub" onChange="updateTexts()"><span>S</span></label><label class="CHB"><input type="checkbox" id="MkFemCondEdemaCont" onChange="updateTexts()"><span>K</span></label><label class="CHB"><input type="checkbox" id="MkFemCondEdemaDif" onChange="updateTexts()"><span>D</span></label></td>
+			</tr>
+			<tr>
+				<td>OCD</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkFemCondOCDI" onChange="updateTexts()"><span>I</span></label><label class="CHB"><input type="checkbox" id="MkFemOCDII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="MkFemOCDIII" onChange="updateTexts()"><span>III</span></label><label class="CHB"><input type="checkbox" id="MkFemCondOCDIV" onChange="updateTexts()"><span>IV</span></label></td>
+			</tr>
+			<tr>
+				<td>Fraktura</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkFemCondFrS" onChange="updateTexts()"><span>S</span></label><label class="CHB"><input type="checkbox" id="MkFemCondFrL" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Artróza</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkFemCondArt" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td colspan="2" ><input id="MkFemCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	</table>
+	
+	<table>
+	<tr>
+	<td><button id="MkMenButton" class="Button100" onmousedown="cycleMkMenText(event)">Meniskus OK</button> 
+	<select id="MkMenLeze" class="select100 hidden rounded" onchange="updateTexts()">
+	  <option value=""selected>vyber typ...</option>
+	  <option value="hor">horizontální</option>
+	  <option value="rad">radiální</option>
+	  <option value="long">longitudinální</option>
+	  <option value="koml">komplexní</option>
+	  <option value="BH">bucket handle</option>
+	  <option value="PB">parrot beak</option>
+	  <option value="destr">destrukce</option>
+	</select>
+	<select id="MkMenLokace" class="select100 hidden rounded" onchange="updateTexts()">
+	  <option value=""selected>vyber kde...</option>
+	  <option value="ZU">zadní úpon</option>
+	  <option value="ZR">zadní roh</option>
+	  <option value="ZP">zadní polovina</option>
+	  <option value="TE">tělo</option>
+	  <option value="PP">přední polovina</option>
+	  <option value="PR">přední roh</option>
+	  <option value="PU">přední úpon</option>
+  	</select>
+	</td>
+	<td id="MkMenCystCHB" class="hidden">&nbsp;&nbsp;Cysta<label class="CHB"><input type="checkbox" id="checkboxMkMenCyst" onChange="updateTexts()"><span>+</span></label></td>
+	<td><button id="MkMenMEButton" class="Button100" onmousedown="cycleMkMenMEText(event)">bez operace</button></td>
+	</tr>
+	</table>
+
+	
+	<table>
+	<tr>
+		<td><button id="MkTibCond" class="others100">Tibiální plato</button></td>
+	</tr>
+	<tr id="MkTibCondtable" class="hidden">
+		<td>
+		<table>
+			<tr>
+				<td>Chondropatie</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkTibCondCHPII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="MkTibCondCHPIII" onChange="updateTexts()"><span>III</span></label><label class="CHB"><input type="checkbox" id="MkTibCondCHPIV" onChange="updateTexts()"><span>IV</span></label></td>
+			</tr>
+			<tr>
+				<td>Fisura</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkTibCondFisOne" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="MkTibCondFisMore" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Defekt</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkTibCondDefOne" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="MkTibCondDefMore" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Edém</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkTibCondEdemaSub" onChange="updateTexts()"><span>S</span></label><label class="CHB"><input type="checkbox" id="MkTibCondEdemaCont" onChange="updateTexts()"><span>K</span></label><label class="CHB"><input type="checkbox" id="MkTibCondEdemaDif" onChange="updateTexts()"><span>D</span></label></td>
+			</tr>
+			<tr>
+				<td>OCD</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkTibCondOCDI" onChange="updateTexts()"><span>I</span></label><label class="CHB"><input type="checkbox" id="MkTibOCDII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="MkTibOCDIII" onChange="updateTexts()"><span>III</span></label><label class="CHB"><input type="checkbox" id="MkTibCondOCDIV" onChange="updateTexts()"><span>IV</span></label></td>
+			</tr>
+			<tr>
+				<td>Fraktura</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkTibCondFrS" onChange="updateTexts()"><span>S</span></label><label class="CHB"><input type="checkbox" id="MkTibCondFrL" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Artróza</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="MkTibCondArt" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td colspan="2" ><input id="MkTibCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	</table>
+  
+  </div>
+  
+  <div  id="Lkcontent" class="standardwidthHALF">
+	
+	<table>
+	<tr>
+		<td><button id="LkFemCond" class="others100">Femor. kondyl</button></td>
+	</tr>
+	<tr id="LkFemCondtable" class="hidden">
+		<td>
+		<table>
+			<tr>
+				<td>Chondropatie</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkFemCondCHPII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="LkFemCondCHPIII" onChange="updateTexts()"><span>III</span></label><label class="CHB"><input type="checkbox" id="LkFemCondCHPIV" onChange="updateTexts()"><span>IV</span></label></td>
+			</tr>
+			<tr>
+				<td>Fisura</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkFemCondFisOne" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="LkFemCondFisMore" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Defekt</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkFemCondDefOne" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="LkFemCondDefMore" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Edém</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkFemCondEdemaSub" onChange="updateTexts()"><span>S</span></label><label class="CHB"><input type="checkbox" id="LkFemCondEdemaCont" onChange="updateTexts()"><span>K</span></label><label class="CHB"><input type="checkbox" id="LkFemCondEdemaDif" onChange="updateTexts()"><span>D</span></label></td>
+			</tr>
+			<tr>
+				<td>OCD</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkFemCondOCDI" onChange="updateTexts()"><span>I</span></label><label class="CHB"><input type="checkbox" id="LkFemOCDII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="LkFemOCDIII" onChange="updateTexts()"><span>III</span></label><label class="CHB"><input type="checkbox" id="LkFemCondOCDIV" onChange="updateTexts()"><span>IV</span></label></td>
+			</tr>
+			<tr>
+				<td>Fraktura</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkFemCondFrS" onChange="updateTexts()"><span>S</span></label><label class="CHB"><input type="checkbox" id="LkFemCondFrL" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Artróza</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkFemCondArt" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td colspan="2" ><input id="LkFemCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	</table>
+	
+	<table>
+	<tr>
+	<td><button id="LkMenButton" class="Button100" onmousedown="cycleLkMenText(event)">Meniskus OK</button> 
+	<select id="LkMenLeze" class="select100 hidden rounded" onchange="updateTexts()">
+	  <option value=""selected>vyber typ...</option>
+	  <option value="hor">horizontální</option>
+	  <option value="rad">radiální</option>
+	  <option value="long">longitudinální</option>
+	  <option value="koml">komplexní</option>
+	  <option value="BH">bucket handle</option>
+	  <option value="PB">parrot beak</option>
+	  <option value="destr">destrukce</option>
+	</select>
+	<select id="LkMenLokace" class="select100 hidden rounded" onchange="updateTexts()">
+	  <option value=""selected>vyber kde...</option>
+	  <option value="ZU">zadní úpon</option>
+	  <option value="ZR">zadní roh</option>
+	  <option value="ZP">zadní polovina</option>
+	  <option value="TE">tělo</option>
+	  <option value="PP">přední polovina</option>
+	  <option value="PR">přední roh</option>
+	  <option value="PU">přední úpon</option>
+  	</select>
+	</td>
+	<td id="LkMenCystCHB" class="hidden">&nbsp;&nbsp;Cysta<label class="CHB"><input type="checkbox" id="checkboxLkMenCyst" onChange="updateTexts()"><span>+</span></label></td>
+	<td><button id="LkMenMEButton" class="Button100" onmousedown="cycleLkMenMEText(event)">bez operace</button></td>
+	</tr>
+	</table>
+
+	
+	<table>
+	<tr>
+		<td><button id="LkTibCond" class="others100">Tibiální plato</button></td>
+	</tr>
+	<tr id="LkTibCondtable" class="hidden">
+		<td>
+		<table>
+			<tr>
+				<td>Chondropatie</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkTibCondCHPII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="LkTibCondCHPIII" onChange="updateTexts()"><span>III</span></label><label class="CHB"><input type="checkbox" id="LkTibCondCHPIV" onChange="updateTexts()"><span>IV</span></label></td>
+			</tr>
+			<tr>
+				<td>Fisura</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkTibCondFisOne" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="LkTibCondFisMore" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Defekt</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkTibCondDefOne" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="LkTibCondDefMore" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Edém</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkTibCondEdemaSub" onChange="updateTexts()"><span>S</span></label><label class="CHB"><input type="checkbox" id="LkTibCondEdemaCont" onChange="updateTexts()"><span>K</span></label><label class="CHB"><input type="checkbox" id="LkTibCondEdemaDif" onChange="updateTexts()"><span>D</span></label></td>
+			</tr>
+			<tr>
+				<td>OCD</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkTibCondOCDI" onChange="updateTexts()"><span>I</span></label><label class="CHB"><input type="checkbox" id="LkTibOCDII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="LkTibOCDIII" onChange="updateTexts()"><span>III</span></label><label class="CHB"><input type="checkbox" id="LkTibCondOCDIV" onChange="updateTexts()"><span>IV</span></label></td>
+			</tr>
+			<tr>
+				<td>Fraktura</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkTibCondFrS" onChange="updateTexts()"><span>S</span></label><label class="CHB"><input type="checkbox" id="LkTibCondFrL" onChange="updateTexts()"><span>++</span></label></td>
+			</tr>
+			<tr>
+				<td>Artróza</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LkTibCondArt" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td colspan="2" ><input id="LkTibCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	</table>
+  
+  </div>
+ 
+ 
+</div>
+
+<div id="vazy"  class="standardwidth"><button class="titleFlex">LIGAMENTA</button></div>
+<div id="vazycontent"  class="standardwidth table-container">
+
+<button id="LCMButton" class="Button80" onmousedown="cycleLCMText(event)">LCM</button>
+&nbsp;
+<table>
+	<tr>
+		<td><button id="LigLCA" class="others100">LCA</button></td>
+	</tr>
+	<tr id="LigLCAtable" class="hidden">
+		<td>
+		<table>
+			<tr>
+				<td>Ruptura</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCAI" onChange="updateTexts()"><span>I</span></label><label class="CHB"><input type="checkbox" id="LigLCAII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="LigLCAIII" onChange="updateTexts()"><span>III</span></label></td>
+			</tr>
+			<tr>
+				<td>Edém</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCAEdema" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td>Plastika</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCAPlasticOk" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="LigLCAPlasticPr" onChange="updateTexts()"><span>+-</span></label><label class="CHB"><input type="checkbox" id="LigLCAPlasticR" onChange="updateTexts()"><span>-</span></label></td>
+			</tr>
+			<tr>
+				<td>Degenerace</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCADegen" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td>Cysta</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCACyst" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td colspan="2" ><input id="LigLCAOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<td><button id="LigLCP" class="others100">LCP</button></td>
+	</tr>
+	<tr id="LigLCPtable" class="hidden">
+		<td>
+		<table>
+			<tr>
+				<td>Ruptura</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCPI" onChange="updateTexts()"><span>I</span></label><label class="CHB"><input type="checkbox" id="LigLCPII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="LigLCPIII" onChange="updateTexts()"><span>III</span></label></td>
+			</tr>
+			<tr>
+				<td>Edém</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCPEdema" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td>Degenerace</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCPDegen" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td>Cysta</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCPCyst" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td colspan="2" ><input id="LigLCPOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+&nbsp;
+<button id="LCLButton" class="Button80" onmousedown="cycleLCLText(event)">LCL</button>
+
+</div>
+
+<div id="others"  class="standardwidth"><button class="titleFlex">OSTATNÍ</button></div>
+<div id="otherscontent"  class="standardwidth table-container">
+
+</div>
+
+
+
+<div id="texty" class="standardwidth mydiv0">
+<button id="copyfinal" class="Button60">copy</button>
+<textarea id="FINALText" class="XXL"></textarea>  
+ </div>
+
+<div id="texty1" class="hidden standardwidth">
+<textarea id="POPText" class="superlarge"></textarea>POPIS
+<textarea id="RESText" class="superlarge"></textarea>ZÁVĚR
+</div>
+
+<div id="colors"> <table style="border-collapse: collapse;">
+  <tr style="height: 20px;">
+    <td style="width: 20px;">#F1EFEB</td>
+    <td style="width: 20px;">#F6F6F6</td>
+    <td style="width: 20px;">#E8E1D5</td>
+    <td style="width: 20px;">#DDD5D5</td>
+    <td style="width: 20px;">#EDEDED</td>
+    <td style="width: 20px;">#D3DCE9</td>
+	<td style="width: 20px;">#FFADAD</td>
+	<td style="width: 20px;">#FFD6A5</td>
+	<td style="width: 20px;">#EDCC8B</td>
+
+  </tr>
+  <tr style="height: 20px;">
+    <td style="width: 20px; background-color: #F1EFEB;"></td>
+    <td style="width: 20px; background-color: #F6F6F6;"></td>
+    <td style="width: 20px; background-color: #E8E1D5;"></td>
+    <td style="width: 20px; background-color: #DDD5D5;"></td>
+    <td style="width: 20px; background-color: #EDEDED;"></td>
+    <td style="width: 20px; background-color: #D3DCE9;"></td>
+	<td style="width: 20px; background-color: #FFADAD;"></td>
+	<td style="width: 20px; background-color: #FFD6A5;"></td>
+	<td style="width: 20px; background-color: #EDCC8B;"></td>
+
+  </tr>
+</table> 
+</div>	
+
+
+<script src="MRkolenoscript.js"></script>  
+<script src="MRkolenopopis.js"></script>          
+
+	</body>
+</html>
+  

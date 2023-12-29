@@ -1,0 +1,293 @@
+<head>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body>
+
+<div id="MRprostate" class="standardwidth mydiv0" >
+MR prostaty <label class="CHB"><input type="checkbox" id="ChbProstatePSMA" onChange="updateTexts()"><span>+</span></label> PSMA PET
+</div>
+
+<div id="GeneralDIV" class="standardwidth DIV">
+
+<div id="rozsah" class="DIVLesions"><button class="title">OBECNÉ</button>
+Velikost: <input id="ProstateSize" class="select140 num" placeholder="rozměr (AP x LL x CC) ..." oninput="updateTexts()">&nbsp;&nbsp;&nbsp;
+Hyperplázie <button id="ProstateHyperplasiaButton" class="Button80" onmousedown="cycleProstateHyperplasiaText(event)">není</button>&nbsp;&nbsp;&nbsp;
+Semenné váčky <button id="ProstateSemVesButton" class="Button80" onmousedown="cycleProstateSemVesText(event)">normální</button>
+</div>
+
+
+<div id="Tstage" class="DIVLesions"><button class="title">T STAGE</button> LOŽISKA <button id="ProstateNewLesion1" class="myButtonLesion">L1</button> <button id="ProstateNewLesion2" class="myButtonLesion">L2</button>  <button id="ProstateNewLesion3" class="myButtonLesion">L3</button> 
+&nbsp;&nbsp;&nbsp; nebo recidiva v lůžku <td class="right"><label class="CHB"><input type="checkbox" id="ChbProstateRecidR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbProstateRecidL" onChange="updateTexts()"><span>L</span></label>
+</div >
+<div class="DIVLesions">
+<table style="border:0px" id="ProstateLesion1" class="LesionX hidden">
+  <tr>
+    <td><button id="ProstateLesion1No" class="myButtonLesionS">L1</button></td> 
+	<td>
+		<input id="ProstateLesion1Location" type="text" placeholder="segment / segmenty ..." autocomplete="off" class="prostateinput">
+    
+		<div id="ProstateLesion1selectLocation" class="prostatesegments hidden">
+			<img src="MRprostatySegments1.jpg" alt="MR Prostaty Segments" style="border: 1px solid black">
+			
+			<span class="CTLesion1" id="AFS-R-B" style="position: absolute; top: 8px; left: 75px;">AFS</span>
+			<span class="CTLesion1" id="AFS-L-B" style="position: absolute; top: 8px; left: 120px;">AFS</span>
+			<span class="CTLesion1" id="TZa-R-B" style="position: absolute; top: 44px; left: 60px;">TZa</span>
+			<span class="CTLesion1" id="TZa-L-B" style="position: absolute; top: 44px; left: 134px;">TZa</span>
+			<span class="CTLesion1" id="TZp-R-B" style="position: absolute; top: 78px; left: 60px;">TZp</span>
+			<span class="CTLesion1" id="TZp-L-B" style="position: absolute; top: 78px; left: 140px;">TZp</span>
+			<span class="CTLesion1" id="CZ-R-B" style="position: absolute; top: 105px; left: 62px;">CZ</span>
+			<span class="CTLesion1" id="CZ-L-B" style="position: absolute; top: 105px; left: 140;">CZ</span>
+			<span class="CTLesion1" id="PZa-R-B" style="position: absolute; top: 60px; left: 12px;">PZa</span>
+			<span class="CTLesion1" id="PZa-L-B" style="position: absolute; top: 60px; left: 190px;">PZa</span>
+			<span class="CTLesion1" id="PZpl-R-B" style="position: absolute; top: 102px; left: 12px;">PZpl</span>
+			<span class="CTLesion1" id="PZpl-L-B" style="position: absolute; top: 102px; left: 184px;">PZpl</span>
+			
+			<span class="CTLesion1" id="AFS-R-M" style="position: absolute; top: 177px; left: 80px;">AFS</span>
+			<span class="CTLesion1" id="AFS-L-M" style="position: absolute; top: 177px; left: 118px;">AFS</span>
+			<span class="CTLesion1" id="TZa-R-M" style="position: absolute; top: 210px; left: 70px;">TZa</span>
+			<span class="CTLesion1" id="TZa-L-M" style="position: absolute; top: 210px; left: 130px;">TZa</span>
+			<span class="CTLesion1" id="TZp-R-M" style="position: absolute; top: 244px; left: 62px;">TZp</span>
+			<span class="CTLesion1" id="TZp-L-M" style="position: absolute; top: 244px; left: 138px;">TZp</span>
+			<span class="CTLesion1" id="PZa-R-M" style="position: absolute; top: 220px; left: 30px;">PZa</span>
+			<span class="CTLesion1" id="PZa-L-M" style="position: absolute; top: 220px; left: 174px;">PZa</span>
+			<span class="CTLesion1" id="PZpl-R-M" style="position: absolute; top: 267px; left: 30px;">PZpl</span>
+			<span class="CTLesion1" id="PZpl-L-M" style="position: absolute; top: 267px; left: 170px;">PZpl</span>
+			<span class="CTLesion1" id="PZpm-R-M" style="position: absolute; top: 284px; left: 68px;">PZpm</span>
+			<span class="CTLesion1" id="PZpm-L-M" style="position: absolute; top: 284px; left: 120px;">PZpm</span>
+			
+			<span class="CTLesion1" id="AFS-R-A" style="position: absolute; top: 350px; left: 80px;">AFS</span>
+			<span class="CTLesion1" id="AFS-L-A" style="position: absolute; top: 350px; left: 112px;">AFS</span>
+			<span class="CTLesion1" id="TZa-R-A" style="position: absolute; top: 377px; left: 77px;">TZa</span>
+			<span class="CTLesion1" id="TZa-L-A" style="position: absolute; top: 377px; left: 113px;">TZa</span>
+			<span class="CTLesion1" id="TZp-R-A" style="position: absolute; top: 395px; left: 76px;">TZp</span>
+			<span class="CTLesion1" id="TZp-L-A" style="position: absolute; top: 395px; left: 114px;">TZp</span>
+			<span class="CTLesion1" id="PZa-R-A" style="position: absolute; top: 380px; left: 42px;">PZa</span>
+			<span class="CTLesion1" id="PZa-L-A" style="position: absolute; top: 380px; left: 150px;">PZa</span>
+			<span class="CTLesion1" id="PZpl-R-A" style="position: absolute; top: 420px; left: 42px;">PZpl</span>
+			<span class="CTLesion1" id="PZpl-L-A" style="position: absolute; top: 420px; left: 146px;">PZpl</span>
+			<span class="CTLesion1" id="PZpm-R-A" style="position: absolute; top: 426px; left: 74px;">PZpm</span>
+			<span class="CTLesion1" id="PZpm-L-A" style="position: absolute; top: 426px; left: 110px;">PZpm</span>
+
+		</div>
+	</td>
+	<td><button id="ProstateLesion1T2Button" class="Button100" onmousedown="cycleProstateLesion1T2Text(event)">T2 score 1</td>
+    <td><button id="ProstateLesion1DWIButton" class="Button100" onmousedown="cycleProstateLesion1DWIText(event)">DWI score 1</td>
+	<td><button id="ProstateLesion1CButton" class="Button100" onmousedown="cycleProstateLesion1CText(event)">kontrast -</td>
+    <td><button id="ProstateLesion1InvasionButton" class="Button120" onmousedown="cycleProstateLesion1InvasionText(event)">bez invaze</td>
+    <td><input type="number" class="numbers" placeholder="0 mm" id="ProstateLesion1Size" min="0" max="100" step="1" style="width: 60px;" onchange="updateTexts()"></td>
+    <td><button id="ProstateLesion1PSMAButton" class="Button100 hidden" onmousedown="cycleProstateLesion1PSMAText(event)">PSMA 0</td>
+	<td><button id="ProstateLesion1PIRADSButton" class="Button100" onmousedown="cycleProstateLesion1PIRADSText(event)">PI-RADS 1</td>
+    <td></td>
+  </tr>
+</table>
+
+<table style="border:0px" id="ProstateLesion2" class="LesionX hidden">
+  <tr>
+    <td><button id="ProstateLesion2No" class="myButtonLesionS">L2</button></td> 
+	<td>
+		<input id="ProstateLesion2Location" type="text" placeholder="segment / segmenty ..." autocomplete="off" class="prostateinput">
+    
+		<div id="ProstateLesion2selectLocation" class="prostatesegments hidden">
+			<img src="MRprostatySegments1.jpg" alt="MR Prostaty Segments" style="border: 1px solid black">
+			
+			<span class="CTLesion2" id="AFS-R-B" style="position: absolute; top: 8px; left: 75px;">AFS</span>
+			<span class="CTLesion2" id="AFS-L-B" style="position: absolute; top: 8px; left: 120px;">AFS</span>
+			<span class="CTLesion2" id="TZa-R-B" style="position: absolute; top: 44px; left: 60px;">TZa</span>
+			<span class="CTLesion2" id="TZa-L-B" style="position: absolute; top: 44px; left: 134px;">TZa</span>
+			<span class="CTLesion2" id="TZp-R-B" style="position: absolute; top: 78px; left: 60px;">TZp</span>
+			<span class="CTLesion2" id="TZp-L-B" style="position: absolute; top: 78px; left: 140px;">TZp</span>
+			<span class="CTLesion2" id="CZ-R-B" style="position: absolute; top: 105px; left: 62px;">CZ</span>
+			<span class="CTLesion2" id="CZ-L-B" style="position: absolute; top: 105px; left: 140;">CZ</span>
+			<span class="CTLesion2" id="PZa-R-B" style="position: absolute; top: 60px; left: 12px;">PZa</span>
+			<span class="CTLesion2" id="PZa-L-B" style="position: absolute; top: 60px; left: 190px;">PZa</span>
+			<span class="CTLesion2" id="PZpl-R-B" style="position: absolute; top: 102px; left: 12px;">PZpl</span>
+			<span class="CTLesion2" id="PZpl-L-B" style="position: absolute; top: 102px; left: 184px;">PZpl</span>
+			
+			<span class="CTLesion2" id="AFS-R-M" style="position: absolute; top: 177px; left: 80px;">AFS</span>
+			<span class="CTLesion2" id="AFS-L-M" style="position: absolute; top: 177px; left: 118px;">AFS</span>
+			<span class="CTLesion2" id="TZa-R-M" style="position: absolute; top: 210px; left: 70px;">TZa</span>
+			<span class="CTLesion2" id="TZa-L-M" style="position: absolute; top: 210px; left: 130px;">TZa</span>
+			<span class="CTLesion2" id="TZp-R-M" style="position: absolute; top: 244px; left: 62px;">TZp</span>
+			<span class="CTLesion2" id="TZp-L-M" style="position: absolute; top: 244px; left: 138px;">TZp</span>
+			<span class="CTLesion2" id="PZa-R-M" style="position: absolute; top: 220px; left: 30px;">PZa</span>
+			<span class="CTLesion2" id="PZa-L-M" style="position: absolute; top: 220px; left: 174px;">PZa</span>
+			<span class="CTLesion2" id="PZpl-R-M" style="position: absolute; top: 267px; left: 30px;">PZpl</span>
+			<span class="CTLesion2" id="PZpl-L-M" style="position: absolute; top: 267px; left: 170px;">PZpl</span>
+			<span class="CTLesion2" id="PZpm-R-M" style="position: absolute; top: 284px; left: 68px;">PZpm</span>
+			<span class="CTLesion2" id="PZpm-L-M" style="position: absolute; top: 284px; left: 120px;">PZpm</span>
+			
+			<span class="CTLesion2" id="AFS-R-A" style="position: absolute; top: 350px; left: 80px;">AFS</span>
+			<span class="CTLesion2" id="AFS-L-A" style="position: absolute; top: 350px; left: 112px;">AFS</span>
+			<span class="CTLesion2" id="TZa-R-A" style="position: absolute; top: 377px; left: 77px;">TZa</span>
+			<span class="CTLesion2" id="TZa-L-A" style="position: absolute; top: 377px; left: 113px;">TZa</span>
+			<span class="CTLesion2" id="TZp-R-A" style="position: absolute; top: 395px; left: 76px;">TZp</span>
+			<span class="CTLesion2" id="TZp-L-A" style="position: absolute; top: 395px; left: 114px;">TZp</span>
+			<span class="CTLesion2" id="PZa-R-A" style="position: absolute; top: 380px; left: 42px;">PZa</span>
+			<span class="CTLesion2" id="PZa-L-A" style="position: absolute; top: 380px; left: 150px;">PZa</span>
+			<span class="CTLesion2" id="PZpl-R-A" style="position: absolute; top: 420px; left: 42px;">PZpl</span>
+			<span class="CTLesion2" id="PZpl-L-A" style="position: absolute; top: 420px; left: 146px;">PZpl</span>
+			<span class="CTLesion2" id="PZpm-R-A" style="position: absolute; top: 426px; left: 74px;">PZpm</span>
+			<span class="CTLesion2" id="PZpm-L-A" style="position: absolute; top: 426px; left: 110px;">PZpm</span>
+
+		</div>
+	</td>
+	<td><button id="ProstateLesion2T2Button" class="Button100" onmousedown="cycleProstateLesion2T2Text(event)">T2 score 1</td>
+    <td><button id="ProstateLesion2DWIButton" class="Button100" onmousedown="cycleProstateLesion2DWIText(event)">DWI score 1</td>
+	<td><button id="ProstateLesion2CButton" class="Button100" onmousedown="cycleProstateLesion2CText(event)">kontrast -</td>
+    <td><button id="ProstateLesion2InvasionButton" class="Button120" onmousedown="cycleProstateLesion2InvasionText(event)">bez invaze</td>
+    <td><input type="number" class="numbers" placeholder="0 mm" id="ProstateLesion2Size" min="0" max="100" step="1" style="width: 60px;" onchange="updateTexts()"></td>
+    <td><button id="ProstateLesion2PSMAButton" class="Button100 hidden" onmousedown="cycleProstateLesion2PSMAText(event)">PSMA 0</td>
+	<td><button id="ProstateLesion2PIRADSButton" class="Button100" onmousedown="cycleProstateLesion2PIRADSText(event)">PI-RADS 1</td>
+    <td></td>
+  </tr>
+</table>
+
+<table style="border:0px" id="ProstateLesion3" class="LesionX hidden">
+  <tr>
+    <td><button id="ProstateLesion3No" class="myButtonLesionS">L3</button></td> 
+	<td>
+		<input id="ProstateLesion3Location" type="text" placeholder="segment / segmenty ..." autocomplete="off" class="prostateinput">
+    
+		<div id="ProstateLesion3selectLocation" class="prostatesegments hidden">
+			<img src="MRprostatySegments1.jpg" alt="MR Prostaty Segments" style="border: 1px solid black">
+			
+			<span class="CTLesion3" id="AFS-R-B" style="position: absolute; top: 8px; left: 75px;">AFS</span>
+			<span class="CTLesion3" id="AFS-L-B" style="position: absolute; top: 8px; left: 120px;">AFS</span>
+			<span class="CTLesion3" id="TZa-R-B" style="position: absolute; top: 44px; left: 60px;">TZa</span>
+			<span class="CTLesion3" id="TZa-L-B" style="position: absolute; top: 44px; left: 134px;">TZa</span>
+			<span class="CTLesion3" id="TZp-R-B" style="position: absolute; top: 78px; left: 60px;">TZp</span>
+			<span class="CTLesion3" id="TZp-L-B" style="position: absolute; top: 78px; left: 140px;">TZp</span>
+			<span class="CTLesion3" id="CZ-R-B" style="position: absolute; top: 105px; left: 62px;">CZ</span>
+			<span class="CTLesion3" id="CZ-L-B" style="position: absolute; top: 105px; left: 140;">CZ</span>
+			<span class="CTLesion3" id="PZa-R-B" style="position: absolute; top: 60px; left: 12px;">PZa</span>
+			<span class="CTLesion3" id="PZa-L-B" style="position: absolute; top: 60px; left: 190px;">PZa</span>
+			<span class="CTLesion3" id="PZpl-R-B" style="position: absolute; top: 102px; left: 12px;">PZpl</span>
+			<span class="CTLesion3" id="PZpl-L-B" style="position: absolute; top: 102px; left: 184px;">PZpl</span>
+			
+			<span class="CTLesion3" id="AFS-R-M" style="position: absolute; top: 177px; left: 80px;">AFS</span>
+			<span class="CTLesion3" id="AFS-L-M" style="position: absolute; top: 177px; left: 118px;">AFS</span>
+			<span class="CTLesion3" id="TZa-R-M" style="position: absolute; top: 210px; left: 70px;">TZa</span>
+			<span class="CTLesion3" id="TZa-L-M" style="position: absolute; top: 210px; left: 130px;">TZa</span>
+			<span class="CTLesion3" id="TZp-R-M" style="position: absolute; top: 244px; left: 62px;">TZp</span>
+			<span class="CTLesion3" id="TZp-L-M" style="position: absolute; top: 244px; left: 138px;">TZp</span>
+			<span class="CTLesion3" id="PZa-R-M" style="position: absolute; top: 220px; left: 30px;">PZa</span>
+			<span class="CTLesion3" id="PZa-L-M" style="position: absolute; top: 220px; left: 174px;">PZa</span>
+			<span class="CTLesion3" id="PZpl-R-M" style="position: absolute; top: 267px; left: 30px;">PZpl</span>
+			<span class="CTLesion3" id="PZpl-L-M" style="position: absolute; top: 267px; left: 170px;">PZpl</span>
+			<span class="CTLesion3" id="PZpm-R-M" style="position: absolute; top: 284px; left: 68px;">PZpm</span>
+			<span class="CTLesion3" id="PZpm-L-M" style="position: absolute; top: 284px; left: 120px;">PZpm</span>
+			
+			<span class="CTLesion3" id="AFS-R-A" style="position: absolute; top: 350px; left: 80px;">AFS</span>
+			<span class="CTLesion3" id="AFS-L-A" style="position: absolute; top: 350px; left: 112px;">AFS</span>
+			<span class="CTLesion3" id="TZa-R-A" style="position: absolute; top: 377px; left: 77px;">TZa</span>
+			<span class="CTLesion3" id="TZa-L-A" style="position: absolute; top: 377px; left: 113px;">TZa</span>
+			<span class="CTLesion3" id="TZp-R-A" style="position: absolute; top: 395px; left: 76px;">TZp</span>
+			<span class="CTLesion3" id="TZp-L-A" style="position: absolute; top: 395px; left: 114px;">TZp</span>
+			<span class="CTLesion3" id="PZa-R-A" style="position: absolute; top: 380px; left: 42px;">PZa</span>
+			<span class="CTLesion3" id="PZa-L-A" style="position: absolute; top: 380px; left: 150px;">PZa</span>
+			<span class="CTLesion3" id="PZpl-R-A" style="position: absolute; top: 420px; left: 42px;">PZpl</span>
+			<span class="CTLesion3" id="PZpl-L-A" style="position: absolute; top: 420px; left: 146px;">PZpl</span>
+			<span class="CTLesion3" id="PZpm-R-A" style="position: absolute; top: 426px; left: 74px;">PZpm</span>
+			<span class="CTLesion3" id="PZpm-L-A" style="position: absolute; top: 426px; left: 110px;">PZpm</span>
+
+		</div>
+	</td>
+	<td><button id="ProstateLesion3T2Button" class="Button100" onmousedown="cycleProstateLesion3T2Text(event)">T2 score 1</td>
+    <td><button id="ProstateLesion3DWIButton" class="Button100" onmousedown="cycleProstateLesion3DWIText(event)">DWI score 1</td>
+	<td><button id="ProstateLesion3CButton" class="Button100" onmousedown="cycleProstateLesion3CText(event)">kontrast -</td>
+    <td><button id="ProstateLesion3InvasionButton" class="Button120" onmousedown="cycleProstateLesion3InvasionText(event)">bez invaze</td>
+    <td><input type="number" class="numbers" placeholder="0 mm" id="ProstateLesion3Size" min="0" max="100" step="1" style="width: 60px;" onchange="updateTexts()"></td>
+    <td><button id="ProstateLesion3PSMAButton" class="Button100 hidden" onmousedown="cycleProstateLesion3PSMAText(event)">PSMA 0</td>
+	<td><button id="ProstateLesion3PIRADSButton" class="Button100" onmousedown="cycleProstateLesion3PIRADSText(event)">PI-RADS 1</td>
+    <td></td>
+  </tr>
+</table>
+
+</div>
+
+<div id="Nstage" class="DIVLesions"><button class="title">N STAGE</button>
+Regionální uzliny: 
+<div style="white-space: nowrap; width: 18px; display: inline-block;"></div>
+<button id="ProstateLNRegButton" class="Button100" onmousedown="cycleProstateLNRegText(event)">nesuspektní</button>
+<input id="ProstateLNRegLocation" type="text" placeholder="vybrat lokalizace a počty..." autocomplete="off" class="prostateinput hidden"> 
+<div id="ProstateLNRegSelectLocation" class="prostateLNRegclass hidden">
+	<table class="ProstateLNReg">
+		<tr>
+			<td><input type="number" class="numbers" id="ProstateLNExtR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>parailické ext.</td>
+			<td>L <input type="number" class="numbers" id="ProstateLNExtL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="ProstateLNIntR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>parailické int.</td>
+			<td>L <input type="number" class="numbers" id="ProstateLNIntL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="ProstateLNSacralR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>presakrální</td>
+			<td>L <input type="number" class="numbers" id="ProstateLNSacralL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="ProstateLNPelvR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>další pánevní</td>
+			<td>L <input type="number" class="numbers" id="ProstateLNPelvL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+</table>		
+</div>
+</div>
+
+<div id="Mstage" class="DIVLesions"><button class="title">M STAGE</button>
+Non-regionální uzliny: <button id="ProstateLNNonRegButton" class="Button100" onmousedown="cycleProstateLNNonRegText(event)">nesuspektní</button>
+<input id="ProstateLNNonRegLocation" type="text" placeholder="vybrat lokalizace a počty..." autocomplete="off" class="prostateinput hidden"> 
+
+<div id="ProstateLNNonRegSelectLocation" class="prostateLNNonRegclass hidden">
+	<table class="ProstateLNNonReg">
+		<tr>
+			<td colspan="3">Paraaortální</td>
+		</tr>
+		<tr>
+			<td colspan="3"><input type="number" class="numbers" id="ProstateLNAo" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="ProstateLNComR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>parailické spol.</td>
+			<td>L <input type="number" class="numbers" id="ProstateLNComL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="ProstateLNIngR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>inguinální</td>
+			<td>L <input type="number" class="numbers" id="ProstateLNIngL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td colspan="3"><input type="number" class="numbers" id="ProstateLNFar" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td colspan="3">Jiné vzdálené</td>
+		</tr>
+	</table>		
+</div>
+&nbsp;&nbsp;&nbsp;
+Vzdálená meta <label class="CHB"><input type="checkbox" id="ChbProstateMeta" onChange="updateTexts()"><span>+</span></label>
+
+</div>
+
+</div id="end">
+
+<div id="texty1" class=" standardwidth mydiv0 hidden">
+&nbsp; POPIS <button id="copyFINAL" class="button60">copy</button>
+<textarea id="ProstateFinalText" class="superlarge" readonly></textarea>
+</div>
+
+<div id="texty1" class=" standardwidth mydiv0 hideonline">
+&nbsp; POPIS <button id="copyPOP" class="button60">copy</button>
+<textarea id="ProstateTuPOPText" class="medium" readonly></textarea>
+&nbsp; ZÁVĚR <button id="copyRES" class="button60">copy</button> 
+<textarea id="ProstateTuRESText" class="medium" readonly></textarea>
+</div>
+
+<script src="MRprostatyscript.js"></script>  
+<script src="MRprostatypopis.js"></script>
+
+</body>

@@ -1,0 +1,396 @@
+<head>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body>
+
+<div id="MRLPshape">
+
+<div id="MRLP" class="mydiv0 standardwidth">MR BEDERNÍ PÁTEŘE</div>
+<div id="INDLINE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off" class="standardwidth"></div>
+<div id="OSYLINE" class="standardwidth">
+	<div class="DIVLesions">
+		Osa  <button id="myOSAButton" class="button40" onmousedown="cycleOSAText(event)">|</button>
+		Lordóza <button id="myLORDButton" class="button40" onmousedown="cycleLORDText(event)">(</button>
+		Operace <label class="CHB"><input type="checkbox" class="mycheckbox" id="operace" onchange="toggleLastCells()"/><span>+</span></label>
+	</div>
+</div>
+<div id="TABULKAdiv" class="standardwidth"">
+<div class="DIVLesions">
+	<table id="TABULKA" style="font-size: 12px;">
+	<tr id="NADPISY0">
+        <th></th>
+		<th colspan="4">Patologie</th>
+		<th colspan="5">Stenózy</th>
+		<th colspan="3">Obratlová těla</th>
+		<th></th>
+		<td></td>
+		<th colspan="3">Operace</th>
+    </tr>
+	<tr id="NADPISY" class="padding">
+		<td></td>
+		<td>Degener.<br/>disku</td>
+		<td>Modic</td>
+		<td>Hernie</td>
+		<td>Facetová<br/>artróza</td>
+		<td>PF</td>
+		<td>PR</td>
+		<td>K</td>
+		<td>LR</td>
+		<td>LF</td>
+		<td>Listéza</td>
+		<td>Fraktura</td>
+		<td>Ložisko</td>
+		<td></td>
+		<td>Reset</td>
+		<td>Stab</td>
+		<td>Disk</td>
+		<td>Lam</td>
+	</tr>
+	<tr id="L1">
+	<td>L1</td>
+	
+      <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+	  <td><div id="myL1ButtonsContainer" style="display: flex;">
+	  <button id="myL1LLButton" class="button60" onmousedown="cycleL1LLText(event)">není</button>
+	  <button id="myL1LISDButton" class="button60" onmousedown="cycleL1LISDText(event)">1 mm</button>
+	  <button id="myL1SLButton" class="button60" onmousedown="cycleL1SLText(event)">nelýza</button></div></td>
+	  <td><button id="myL1KOMButton" class="button60" onmousedown="cycleL1KOMText(event)">není</td>
+      <td><button id="myL1LESButton" class="button100" onmousedown="cycleL1LESText(event)">není</button></td>
+	  <td>L1</td>
+      <td><button id="myL1ResetButton" class="buttonX" onclick="resetL1Row()">-</button></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL1stab" value="L1" onchange="updateTexts()"/><span></span></label></td>
+	  <td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL1lam" value="L1" onchange="updateTexts()"/><span></span></label></td>
+	</tr>
+	
+	<tr id="L12">
+	  <td>L1/2</td>
+        
+	  <td><button id="myL12DDButton" class="button60" onmousedown="cycleL12DDText(event)">není</button></td>
+	  <td><button id="myL12MODButton" class="button60" onmousedown="cycleL12MODText(event)">není</button></td>
+	  <td>
+	  <div style="position: relative; display: flex; align-items: center;">
+	  <button id="myL12BHButton" class="button80" onmousedown="cycleL12BHText(event)">není</button>
+
+   	  <button id="myL12HDButton" class="button60" onmousedown="cycleL12HDText(event)">1 mm</button>
+   
+  	  <button id="myL12HERPFButton" class="myherButton" onmousedown="cycleL12HERPFText(event)">F</button>
+	  <button id="myL12HERPPButton" class="myherButton" onmousedown="cycleL12HERPPText(event)">P</button>
+	  <button id="myL12HERCButton" class="myherButton" onmousedown="cycleL12HERCText(event)">C</button>
+	  <button id="myL12HERLPButton" class="myherButton" onmousedown="cycleL12HERLPText(event)">P</button>
+	  <button id="myL12HERLFButton" class="myherButton" onmousedown="cycleL12HERLFText(event)">F</button>
+	  <button id="myL12MIGButton" class="button40" onmousedown="cycleL12MIGText(event)">M0</button>
+	  </div>
+
+	   </td>
+ 	  <td><button id="myL12FAButton" class="button60" onmousedown="cycleL12FAText(event)">není</button></td>
+
+	  <td><button id="myL12PFButton" class="button20" onmousedown="cycleL12PFText(event)">0</button></td>
+	  <td><button id="myL12PRButton" class="button20" onmousedown="cycleL12PRText(event)">0</button></td>
+	  <td><button id="myL12PKButton" class="button20" onmousedown="cycleL12PKText(event)">0</button></td>
+	  <td><button id="myL12LRButton" class="button20" onmousedown="cycleL12LRText(event)">0</button></td>
+	  <td><button id="myL12LFButton" class="button20" onmousedown="cycleL12LFText(event)">0</button></td>
+	  <td></td>
+      <th></th>
+	  <th></th>
+	  <td>L1/2</td>
+	  <td><button id="myL12ResetButton" class="buttonX" onclick="resetL12Row()">-</button></td>
+	  <td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL12nahr" value="L1/2" onchange="updateTexts()"/><span></span></label></td>
+	  <td></td>
+	</tr>
+	
+	<tr id="L2">
+	<td>L2</td>
+	
+      <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+	  <td><div id="myL2ButtonsContainer" style="display: flex;">
+	  <button id="myL2LLButton" class="button60" onmousedown="cycleL2LLText(event)">není</button>
+	  <button id="myL2LISDButton" class="button60" onmousedown="cycleL2LISDText(event)">1 mm</button>
+	  <button id="myL2SLButton" class="button60" onmousedown="cycleL2SLText(event)">nelýza</button></div></td>
+	  <td><button id="myL2KOMButton" class="button60" onmousedown="cycleL2KOMText(event)">není</button></td>
+      <td><button id="myL2LESButton" class="button100" onmousedown="cycleL2LESText(event)">není</button></td>
+	  <td>L2</td>
+      <td><button id="myL2ResetButton" class="buttonX" onclick="resetL2Row()">-</button></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL2stab" value="L2" onchange="updateTexts()"/><span></span></label></td>
+	  <td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL2lam" value="L2" onchange="updateTexts()"/><span></span></label></td>
+	</tr>
+	
+	<tr id="L23">
+	  <td>L2/3</td>
+        
+	  <td><button id="myL23DDButton" class="button60" onmousedown="cycleL23DDText(event)">není</button></td>
+	  <td><button id="myL23MODButton" class="button60" onmousedown="cycleL23MODText(event)">není</button></td>
+	  <td>
+	  <div style="position: relative; display: flex; align-items: center;">
+	  <button id="myL23BHButton" class="button80" onmousedown="cycleL23BHText(event)">není</button>
+
+   	  <button id="myL23HDButton" class="button60" onmousedown="cycleL23HDText(event)">1 mm</button>
+
+  	  <button id="myL23HERPFButton" class="myherButton" onmousedown="cycleL23HERPFText(event)">F</button>
+	  <button id="myL23HERPPButton" class="myherButton" onmousedown="cycleL23HERPPText(event)">P</button>
+	  <button id="myL23HERCButton" class="myherButton" onmousedown="cycleL23HERCText(event)">C</button>
+	  <button id="myL23HERLPButton" class="myherButton" onmousedown="cycleL23HERLPText(event)">P</button>
+	  <button id="myL23HERLFButton" class="myherButton" onmousedown="cycleL23HERLFText(event)">F</button>
+	  <button id="myL23MIGButton" class="button40" onmousedown="cycleL23MIGText(event)">M0</button>
+	  </div>
+
+	   </td>
+ 	  <td><button id="myL23FAButton" class="button60" onmousedown="cycleL23FAText(event)">není</button></td>
+	  
+	  <td><button id="myL23PFButton" class="button20" onmousedown="cycleL23PFText(event)">0</button></td>
+	  <td><button id="myL23PRButton" class="button20" onmousedown="cycleL23PRText(event)">0</button></td>
+	  <td><button id="myL23PKButton" class="button20" onmousedown="cycleL23PKText(event)">0</button></td>
+	  <td><button id="myL23LRButton" class="button20" onmousedown="cycleL23LRText(event)">0</button></td>
+	  <td><button id="myL23LFButton" class="button20" onmousedown="cycleL23LFText(event)">0</button></td>
+	  <td></td>
+      <th></th>
+	  <th></th>
+	  <td>L2/3</td>
+	  <td><button id="myL23ResetButton" class="buttonX" onclick="resetL23Row()">-</button></td>
+	  <td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL23nahr" value="L2/3" onchange="updateTexts()"/><span></span></label></td>
+	  <td></td>
+	</tr>
+
+	<tr id="L3">
+	<td>L3</td>
+	
+	  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+	  <td><div id="myL3ButtonsContainer" style="display: flex;">
+	  <button id="myL3LLButton" class="button60" onmousedown="cycleL3LLText(event)">není</button>
+	  <button id="myL3LISDButton" class="button60" onmousedown="cycleL3LISDText(event)">1 mm</button>
+	  <button id="myL3SLButton" class="button60" onmousedown="cycleL3SLText(event)">nelýza</button></div></td>
+	  <td><button id="myL3KOMButton" class="button60" onmousedown="cycleL3KOMText(event)">není</button></td>
+      <td><button id="myL3LESButton" class="button100" onmousedown="cycleL3LESText(event)">není</button></td>
+	  <td>L3</td>
+      <td><button id="myL3ResetButton" class="buttonX" onclick="resetL3Row()">-</button></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL3stab" value="L3" onchange="updateTexts()"/><span></span></label></td>
+	  <td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL3lam" value="L3" onchange="updateTexts()"/><span></span></label></td>
+	</tr>
+	
+	<tr id="L34">
+	  <td>L3/4</td>
+        
+	  <td><button id="myL34DDButton" class="button60" onmousedown="cycleL34DDText(event)">není</button></td>
+	  <td><button id="myL34MODButton" class="button60" onmousedown="cycleL34MODText(event)">není</button></td>
+	  <td>
+	  <div style="position: relative; display: flex; align-items: center;">
+	  <button id="myL34BHButton" class="button80" onmousedown="cycleL34BHText(event)">není</button>
+
+   	  <button id="myL34HDButton" class="button60" onmousedown="cycleL34HDText(event)">1 mm</button>
+   
+  	  <button id="myL34HERPFButton" class="myherButton" onmousedown="cycleL34HERPFText(event)">F</button>
+	  <button id="myL34HERPPButton" class="myherButton" onmousedown="cycleL34HERPPText(event)">P</button>
+	  <button id="myL34HERCButton" class="myherButton" onmousedown="cycleL34HERCText(event)">C</button>
+	  <button id="myL34HERLPButton" class="myherButton" onmousedown="cycleL34HERLPText(event)">P</button>
+	  <button id="myL34HERLFButton" class="myherButton" onmousedown="cycleL34HERLFText(event)">F</button>
+	  <button id="myL34MIGButton" class="button40" onmousedown="cycleL34MIGText(event)">M0</button>
+	  </div>
+
+	   </td>
+ 	  <td><button id="myL34FAButton" class="button60" onmousedown="cycleL34FAText(event)">není</button></td>
+
+	  <td><button id="myL34PFButton" class="button20" onmousedown="cycleL34PFText(event)">0</button></td>
+	  <td><button id="myL34PRButton" class="button20" onmousedown="cycleL34PRText(event)">0</button></td>
+	  <td><button id="myL34PKButton" class="button20" onmousedown="cycleL34PKText(event)">0</button></td>
+	  <td><button id="myL34LRButton" class="button20" onmousedown="cycleL34LRText(event)">0</button></td>
+	  <td><button id="myL34LFButton" class="button20" onmousedown="cycleL34LFText(event)">0</button></td>
+	  <td></td>
+      <th></th>
+	  <th></th>
+	  <td>L3/4</td>
+	  <td><button id="myL34ResetButton" class="buttonX" onclick="resetL34Row()">-</button></td>
+	  <td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL34nahr" value="L3/4" onchange="updateTexts()"/><span></span></label></td>
+	  <td></td>
+	</tr>
+	
+	<tr id="L4">
+	<td>L4</td>
+	<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+	  <td><div id="myL4ButtonsContainer" style="display: flex;">
+	  <button id="myL4LLButton" class="button60" onmousedown="cycleL4LLText(event)">není</button>
+	  <button id="myL4LISDButton" class="button60" onmousedown="cycleL4LISDText(event)">1 mm</button>
+	  <button id="myL4SLButton" class="button60" onmousedown="cycleL4SLText(event)">nelýza</button></div></td>
+	  <td><button id="myL4KOMButton" class="button60" onmousedown="cycleL4KOMText(event)">není</td>
+      <td><button id="myL4LESButton" class="button100" onmousedown="cycleL4LESText(event)">není</button></td>
+	  <td>L4</td>
+      <td><button id="myL4ResetButton" class="buttonX" onclick="resetL4Row()">-</button></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL4stab" value="L4" onchange="updateTexts()"/><span></span></label></td>
+	  <td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL4lam" value="L4" onchange="updateTexts()"/><span></span></label></td>
+	</tr>
+	
+	<tr id="L45">
+	  <td>L4/5</td>
+	  
+	  <td><button id="myL45DDButton" class="button60" onmousedown="cycleL45DDText(event)">není</button></td>
+	  <td><button id="myL45MODButton" class="button60" onmousedown="cycleL45MODText(event)">není</button></td>
+	  <td>
+	  <div style="position: relative; display: flex; align-items: center;">
+	  <button id="myL45BHButton" class="button80" onmousedown="cycleL45BHText(event)">není</button>
+
+   	  <button id="myL45HDButton" class="button60" onmousedown="cycleL45HDText(event)">1 mm</button>
+   
+  	  <button id="myL45HERPFButton" class="myherButton" onmousedown="cycleL45HERPFText(event)">F</button>
+	  <button id="myL45HERPPButton" class="myherButton" onmousedown="cycleL45HERPPText(event)">P</button>
+	  <button id="myL45HERCButton" class="myherButton" onmousedown="cycleL45HERCText(event)">C</button>
+	  <button id="myL45HERLPButton" class="myherButton" onmousedown="cycleL45HERLPText(event)">P</button>
+	  <button id="myL45HERLFButton" class="myherButton" onmousedown="cycleL45HERLFText(event)">F</button>
+	  <button id="myL45MIGButton" class="button40" onmousedown="cycleL45MIGText(event)">M0</button>
+	  </div>
+
+	   </td>
+ 	  <td><button id="myL45FAButton" class="button60" onmousedown="cycleL45FAText(event)">není</button></td>
+
+	  <td><button id="myL45PFButton" class="button20" onmousedown="cycleL45PFText(event)">0</button></td>
+	  <td><button id="myL45PRButton" class="button20" onmousedown="cycleL45PRText(event)">0</button></td>
+	  <td><button id="myL45PKButton" class="button20" onmousedown="cycleL45PKText(event)">0</button></td>
+	  <td><button id="myL45LRButton" class="button20" onmousedown="cycleL45LRText(event)">0</button></td>
+	  <td><button id="myL45LFButton" class="button20" onmousedown="cycleL45LFText(event)">0</button></td>
+	  <td></td>
+      <th></th>
+	  <th></th>
+	  <td>L4/5</td>
+	  <td><button id="myL45ResetButton" class="buttonX" onclick="resetL45Row()">-</button></td>
+	  <td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL45nahr" value="L4/5" onchange="updateTexts()"/><span></span></label></td>
+	  <td></td>
+	</tr>
+	
+	<tr id="L5">
+	<td>L5</td>
+	
+	<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+	  <td><div id="myL5ButtonsContainer" style="display: flex;">
+	  <button id="myL5LLButton" class="button60" onmousedown="cycleL5LLText(event)">není</button>
+	  <button id="myL5LISDButton" class="button60" onmousedown="cycleL5LISDText(event)">1 mm</button>
+	  <button id="myL5SLButton" class="button60" onmousedown="cycleL5SLText(event)">nelýza</button></div></td>
+	  <td><button id="myL5KOMButton" class="button60" onmousedown="cycleL5KOMText(event)">není</button></td>
+      <td><button id="myL5LESButton" class="button100" onmousedown="cycleL5LESText(event)">není</button></td>
+	  <td>L5</td>
+      <td><button id="myL5ResetButton" class="buttonX" onclick="resetL5Row()">-</button></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL5stab" value="L5" onchange="updateTexts()"/><span></span></label></td>
+	  <td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL5lam" value="L5" onchange="updateTexts()"/><span></span></label></td>
+	</tr>
+	
+	<tr id="L5S1">
+	  <td>L5/S1</td>
+        
+	  <td><button id="myL5S1DDButton" class="button60" onmousedown="cycleL5S1DDText(event)">není</button></td>
+	  <td><button id="myL5S1MODButton" class="button60" onmousedown="cycleL5S1MODText(event)">není</button></td>
+	  <td>
+	  <div style="position: relative; display: flex; align-items: center;">
+	  <button id="myL5S1BHButton" class="button80" onmousedown="cycleL5S1BHText(event)">není</button>
+
+   	  <button id="myL5S1HDButton" class="button60" onmousedown="cycleL5S1HDText(event)">1 mm</button>
+   
+  	  <button id="myL5S1HERPFButton" class="myherButton" onmousedown="cycleL5S1HERPFText(event)">F</button>
+	  <button id="myL5S1HERPPButton" class="myherButton" onmousedown="cycleL5S1HERPPText(event)">P</button>
+	  <button id="myL5S1HERCButton" class="myherButton" onmousedown="cycleL5S1HERCText(event)">C</button>
+	  <button id="myL5S1HERLPButton" class="myherButton" onmousedown="cycleL5S1HERLPText(event)">P</button>
+	  <button id="myL5S1HERLFButton" class="myherButton" onmousedown="cycleL5S1HERLFText(event)">F</button>
+	  <button id="myL5S1MIGButton" class="button40" onmousedown="cycleL5S1MIGText(event)">M0</button>
+	  </div>
+
+	   </td>
+ 	  <td><button id="myL5S1FAButton" class="button60" onmousedown="cycleL5S1FAText(event)">není</button></td>
+
+	  <td><button id="myL5S1PFButton" class="button20" onmousedown="cycleL5S1PFText(event)">0</button></td>
+	  <td><button id="myL5S1PRButton" class="button20" onmousedown="cycleL5S1PRText(event)">0</button></td>
+	  <td><button id="myL5S1PKButton" class="button20" onmousedown="cycleL5S1PKText(event)">0</button></td>
+	  <td><button id="myL5S1LRButton" class="button20" onmousedown="cycleL5S1LRText(event)">0</button></td>
+	  <td><button id="myL5S1LFButton" class="button20" onmousedown="cycleL5S1LFText(event)">0</button></td>
+	  <td></td>
+      <th></th>
+	  <th></th>
+	  <td>L5/S1</td>
+	  <td><button id="myL5S1ResetButton" class="buttonX" onclick="resetL5S1Row()">-</button></td>
+	  <td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL5S1nahr" value="L5/S1" onchange="updateTexts()"/><span></span></label></td>
+	  <td></td>
+	</tr>
+	
+	<tr id="S1">
+	<td>S1</td>
+	
+	<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+	  <td></td>
+	  <td></td>
+      <td><button id="myS1LESButton" class="button100" onmousedown="cycleS1LESText(event)">není</button></td>
+	  <td>S1</td>
+      <td><button id="myS1ResetButton" class="buttonX" onclick="resetS1Row()">-</button></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL5stab" value="S1" onchange="updateTexts()"/><span></span></label></td>
+	  <td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opL5lam" value="S1" onchange="updateTexts()"/><span></span></label></td>
+	</tr>
+</table>
+</div>
+</div>
+
+<div id="OSTATNILINE" class="mydiv1 standardwidth">
+</div>
+
+<div id="TEXTS" class="mydiv0 standardwidth">
+<button id="copyfinal" class="button60">copy</button>
+<div id="S21">
+<textarea id="FINALText" class="XXL"></textarea>
+</div>
+</div>
+
+
+<button id="tmp" style="width: 50px;">unhide</button>
+<div id="texts" class="hidden">
+  <div id="S"><h5>Popis</h5></div>
+  
+  <div id="S10">
+    <textarea id="POPText" class="superlarge"></textarea>POP
+  </div>
+  
+  <div id="S20">
+    <textarea id="RESText" class="superlarge"></textarea>RES
+  </div>
+</div>
+
+
+<div id="colors"> <table style="border-collapse: collapse;">
+  <tr style="height: 20px;">
+    <td style="width: 20px;">#F1EFEB</td>
+    <td style="width: 20px;">#F6F6F6</td>
+    <td style="width: 20px;">#E8E1D5</td>
+    <td style="width: 20px;">#DDD5D5</td>
+    <td style="width: 20px;">#EDEDED</td>
+    <td style="width: 20px;">#D3DCE9</td>
+	<td style="width: 20px;">#FFADAD</td>
+	<td style="width: 20px;">#FFD6A5</td>
+	<td style="width: 20px;">#EDCC8B</td>
+
+  </tr>
+  <tr style="height: 20px;">
+    <td style="width: 20px; background-color: #F1EFEB;"></td>
+    <td style="width: 20px; background-color: #F6F6F6;"></td>
+    <td style="width: 20px; background-color: #E8E1D5;"></td>
+    <td style="width: 20px; background-color: #DDD5D5;"></td>
+    <td style="width: 20px; background-color: #EDEDED;"></td>
+    <td style="width: 20px; background-color: #D3DCE9;"></td>
+	<td style="width: 20px; background-color: #FFADAD;"></td>
+	<td style="width: 20px; background-color: #FFD6A5;"></td>
+	<td style="width: 20px; background-color: #EDCC8B;"></td>
+
+  </tr>
+</table> 
+</div>	
+
+
+<script src="MRLPscript.js"></script>  
+<script src="MRLPpopis.js"></script>          
+
+	</body>
+</html>
+  

@@ -1,0 +1,92 @@
+<head>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body>
+
+<div id="FDGPET" class="standardwidth mydiv0" >
+MR rekta  
+</div>
+
+<div id="GeneralDIV" class="standardwidth DIV">
+
+<div id="rozsah" class="DIVLesions"><button class="titleRect">ROZSAH</button>
+Tumor: <button id="RectTuTypeButton" class="Button80" onmousedown="cycleRectTuTypeText(event)">není</button>&nbsp;&nbsp;&nbsp;
+Od AR úhlu: <input type="number" class="numbers" id="RectTuStartDistance" min="0" max="15" step="1" style="width: 40px;" onchange="updateTexts()"> cm &nbsp;&nbsp;&nbsp;
+Délka tumoru: <input type="number" class="numbers" id="RectTuTotDistance" min="0" max="15" step="1" style="width: 40px;" onchange="updateTexts()"> cm &nbsp;&nbsp;&nbsp;
+Rozsah (ciferník): <input type="number" class="numbers" id="RectTuSpreadFrom" min="1" max="12" step="1" style="width: 40px;" onchange="updateTexts()"> až
+<input type="number" class="numbers" id="RectTuSpreadTo" min="1" max="12" step="1" style="width: 40px;" onchange="updateTexts()">
+</div>
+
+<div id="Tstage" class="DIVLesions"><button class="titleRect">T STAGE</button>
+Invaze: <button id="RectTuInvasionButton" class="Button160" onmousedown="cycleRectTuInvasionText(event)">T1/T2 - pouze stěna</button> &nbsp;&nbsp;&nbsp;
+Rozsah (ciferník): <input type="number" class="numbers" id="RectTuInvasionFrom" min="1" max="12" step="1" style="width: 40px;" onchange="updateTexts()"> až
+<input type="number" class="numbers" id="RectTuInvasionTo" min="1" max="12" step="1" style="width: 40px;" onchange="updateTexts()"> &nbsp;&nbsp;&nbsp;
+Invaze MRF <label class="CHB"><input type="checkbox" id="ChbRectTuMRFInvasion" onChange="updateTexts()"><span>+</span></label>
+Invaze cév<label class="CHB"><input type="checkbox" id="ChbRectTuAngioInvasion" onChange="updateTexts()"><span>+</span></label>
+</div>
+
+
+<div id="Nstage" class="DIVLesions"><button class="titleRect">N STAGE</button>
+Regionální uzliny: 
+<div style="white-space: nowrap; width: 18px; display: inline-block;"></div>
+<button id="RectTuLNRegButton" class="Button100" onmousedown="cycleRectTuLNRegText(event)">nesuspektní</button>
+<input id="RectTuLNRegLocation" type="text" placeholder="vybrat lokalizace a počty..." autocomplete="off" class="prostateinput hidden"> 
+<div id="RectTuLNRegSelectLocation" class="prostateLNRegclass hidden">
+	<table class="RectTuLNReg">
+		<tr>
+			<td><input type="number" class="numbers" id="RectTuLNExtR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>parailické ext.</td>
+			<td>L <input type="number" class="numbers" id="RectTuLNExtL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="RectTuLNIntR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>parailické int.</td>
+			<td>L <input type="number" class="numbers" id="RectTuLNIntL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="RectTuLNObturR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>obturátorové</td>
+			<td>L <input type="number" class="numbers" id="RectTuLNObturL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="RectTuLNHiMesoRectalR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>vysoké mezorekt.</td>
+			<td>L <input type="number" class="numbers" id="RectTuLNHiMesoRectalL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+		<tr>
+			<td><input type="number" class="numbers" id="RectTuLNMesoRectalR" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"> R</td>
+			<td>mezorektální</td>
+			<td>L <input type="number" class="numbers" id="RectTuLNMesoRectalL" placeholder="0" min="0" max="10" step="1" style="width: 40px;" oninput="updateTexts()"></td>
+		</tr>
+</table>		
+</div>
+</div>
+
+
+<div id="NstageMRI" class="DIVLesions"><button class="titleRect">M STAGE</button>
+Non-regionální uzliny: <button id="RectTuLNNonRegButton" class="Button100" onmousedown="cycleRectTuLNNonRegText(event)">nesuspektní</button> &nbsp;
+<input type="number" id="RectTuLNNonRegNum" placeholder="počet" class="numbers hidden" min="0" max="10" step="1" style="width: 60px;" oninput="updateTexts()"> &nbsp;&nbsp;&nbsp;
+Orgánové meta <label class="CHB"><input type="checkbox" id="ChbRectTuMeta" onChange="updateTexts()"><span>+</span></label> &nbsp;&nbsp;&nbsp;
+Vzdálené peritoneum <label class="CHB"><input type="checkbox" id="ChbRectTuPerit" onChange="updateTexts()"><span>+</span></label> &nbsp;&nbsp;&nbsp;
+</div>
+</div id="end">
+
+
+<div id="texty1" class=" standardwidth mydiv0 hidden">
+&nbsp; POPIS <button id="copyFINAL" class="button60">copy</button>
+<textarea id="RectTuFinalText" class="large" readonly></textarea>
+</div>
+
+<div id="texty1" class=" standardwidth mydiv0 hideonline">
+&nbsp; POPIS <button id="copyPOP" class="button60">copy</button>
+<textarea id="RectTuPOPText" class="medium" readonly></textarea>
+&nbsp; ZÁVĚR <button id="copyRES" class="button60">copy</button> 
+<textarea id="RectTuRESText" class="small" readonly></textarea>
+</div>
+
+<script src="MRrektascript.js"></script>  
+<script src="MRrektapopis.js"></script>
+
+</body>
