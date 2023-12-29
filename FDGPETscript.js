@@ -950,7 +950,7 @@ window.addEventListener('load', function() {
             if (this.value === "") {
                 this.value = 0;
             }
-            e.preventDefault(); // Prevents the browser from scrolling while changing the number
+            e.preventDefault();			// Prevents the browser from scrolling while changing the number
             if (e.deltaY < 0) {
                 this.stepUp(); 
             } else {

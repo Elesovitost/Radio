@@ -144,16 +144,24 @@ function bindEventsToIframe(iframe) {
 
 function setupRefreshOnAction(doc) {
     function delayedUpdate() {
-        setTimeout(function() {
-            updateFinalTextAreas();
-            checkAndUpdateDivVisibility(); // Call this function after updating text areas
-        }, 1);
-    }
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+    setTimeout(function() {
+        updateFinalTextAreas();
+        checkAndUpdateDivVisibility();
+
+        // Restore the scroll position
+        window.scrollTo(scrollLeft, scrollTop);
+    }, 1);
+}
 
     doc.addEventListener('keydown', delayedUpdate);
     doc.addEventListener('mouseup', delayedUpdate);
-    doc.addEventListener('wheel', delayedUpdate);
+    doc.addEventListener('input', delayedUpdate);
+	doc.addEventListener('wheel', delayedUpdate);
 }
+
 
 
 function updateFinalTextAreas() {
@@ -308,12 +316,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 <button id="copyCOMP" class="button60">KOMPLETNÍ</button>
 </div>
 
-<div id="texty2" class="standardwidth mydiv0" style="display: none;"> 
+<div id="texty2" class="standardwidth mydiv0" style="display: xnone;"> 
 <textarea id="FINALCOMPLETEText" class="FINALXXL" readonly></textarea>
 </div>
 
 
-
 </body>
+
 </html>
 
