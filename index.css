@@ -1,6 +1,5 @@
 html {
-    height: 99,9%;
-
+    height: 100%;
 }
 body {
     overflow: auto;
@@ -9,7 +8,7 @@ body {
 body {font-family: "Arial";  font-Size: 14px; font-weight: bold; scroll-behavior: smooth; }
 	
 #SEG1 {
-	width: 986px; background-color: #9DAAA2; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid black;
+	max-width: 986px; background-color: #9DAAA2; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid black;
 }
 
 .dropdown {float: right; position: relative; display: inline-block;}
@@ -28,9 +27,10 @@ body {font-family: "Arial";  font-Size: 14px; font-weight: bold; scroll-behavior
 
 
 /* divs  */
-.standardwidth {width: 1000px; border: 1px solid black; padding: 3px; }
+.standardwidth {max-width: 1000px; border: 1px solid black; padding: 3px; }
 .mydiv0 {background-color: #DDD5D5; font-Size: 12px; font-weight: bold;}
-.page-container {display: flex; align-items: flex-start; }
+
+.page-container {display: flex; align-items: flex-start; max-width: 1020px;}
 
 button60 {font-Size: 12px; border-radius: 1px; border: 1px solid black; height: 18px; background-color: #EDEDED; width: 120px;text-align: center;}
 
@@ -38,10 +38,11 @@ textarea {width: 99%;  reSize: yes;  }
 
 
 iframe {
-    border: none; /* Removes the border around the iframe */
+    border: none; 
+	max-width: 1100px; 
 }
 
-.iframe-container, iframe {margin: 0; padding: 0;}
+.iframe-container, iframe {margin: 0; padding: 0; }
 
 
 @keyframes blink {0%, 100% { opacity: 1; } 50% { opacity: 0; }}

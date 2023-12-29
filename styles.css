@@ -26,9 +26,9 @@ body {
 
 
 /* divs  */
-.standardwidth {width: 1000px; border: 1px solid black; padding: 3px; }
-.standardwidthHALF {width: 496px; border: 1px solid black; padding: 3px; }
-.standardwidthV {width: 1000px; border-left: 1px solid black; border-right: 1px solid black; padding-left: 2px; padding-right: 2px; }
+.standardwidth {max-width: 1000px; border: 1px solid black; padding: 3px; }
+.standardwidthHALF {max-width: 496px; border: 1px solid black; padding: 3px; }
+.standardwidthV {max-width: 1000px; border-left: 1px solid black; border-right: 1px solid black; padding-left: 2px; padding-right: 2px; }
 .table-container {display: flex; align-items: flex-start; }
 
 /* vzhled  */
