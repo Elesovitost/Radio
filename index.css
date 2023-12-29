@@ -24,7 +24,7 @@ body {font-family: "Arial";  font-Size: 14px; font-weight: bold;}
 .mydiv0 {background-color: #DDD5D5; font-Size: 12px; font-weight: bold;}
 .table-container {display: flex; align-items: flex-start; }
 
-button60 {font-Size: 12px; border-radius: 1px; border: 1px solid black; height: 18px; background-color: #EDEDED; width: 80px;text-align: center;}
+button60 {font-Size: 12px; border-radius: 1px; border: 1px solid black; height: 18px; background-color: #EDEDED; width: 120px;text-align: center;}
 
 textarea {width: 99%;  reSize: yes;  }
 
