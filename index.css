@@ -1,0 +1,41 @@
+
+	
+    #SEG1 {
+		width: 986px; background-color: #9DAAA2; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid black;
+    }
+    
+	.dropdown {float: right; position: relative; display: inline-block;}
+        .dropbtn {background-color: #FFD6A5; width: 140px; height: 26px; color: black; padding: 3px; font-size: 14px; border: 1 px; cursor: pointer; margin-bottom: 2px;}
+		.dropbtn::before {content: ''; position: absolute; top: -2px; right: -2px; bottom: -2px; left: -2px; z-index: 2;}
+        .dropdown-content {display: none; position: absolute; background-color: #f9f9f9; min-width: 140px; border: 1px solid black; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 3;}
+        .dropdown-content a {color: black; padding: 3px 3px; text-decoration: none; display: block;}
+        .dropdown:hover .dropdown-content {display: block;}
+        .dropdown-content a:hover {background-color: #FFADAD;}
+        .dropdown:hover .dropbtn {background-color: #EDCC8B;}
+				
+		
+	.iframe-container {margin-bottom: 10px;}
+
+	.remove-button {display: block; margin: 5px 0; background-color: #FFADAD; color: black; border: 1px solid black; padding: 2px 2px; cursor: pointer;	}
+
+
+/* divs  */
+.standardwidth {width: 1000px; border: 1px solid black; padding: 3px; }
+.mydiv0 {background-color: #DDD5D5; font-Size: 10; font-weight: bold;}
+.table-container {display: flex; align-items: flex-start; }
+
+button {border-radius: 1px; border: 1px solid black; height: 20px; background-color: #EDEDED; width: 20px;text-align: center; border-radius: 0px;}
+.button60 {width: 60px;}
+
+textarea {width: 99%;  reSize: yes;  }
+
+
+iframe {
+    border: none; /* Removes the border around the iframe */
+}
+
+.iframe-container, iframe {margin: 0; padding: 0;}
+
+
+@keyframes blink {0%, 100% { opacity: 1; } 50% { opacity: 0; }}
+.blinking {animation: blink 0.3s linear 1; /* Blink for 1 second, 1 times */}

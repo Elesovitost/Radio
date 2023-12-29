@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="index.css">
+	
+<style> 
+
+</style>  
+
+</head>
+
+<body>
+
+<div id="SEG1">
+
+
+	<div class="dropdown">
+		<button class="dropbtn">Vyber vyšetření...</button>
+		<div class="dropdown-content">
+			<a href="#" onclick="changePage('FDGPET.html')">PET/CT/MR trupu</a>
+			<a href="#" onclick="changePage('NaFskelet.html')">NaF PET skeletu</a>
+			<a href="#" >------------------------</a>
+			<a href="#" onclick="changePage('MRrekta.html')">MR rekta</a>
+			<a href="#" onclick="changePage('MRprostaty.html')">MR prostaty</a>
+			<a href="#" onclick="changePage('MRcervix.html')">MR cervixu</a>
+			<a href="#" >------------------------</a>
+			<a href="#" onclick="changePage('MRmozku.html')">MR mozku</a>
+			<a href="#" onclick="changePage('MRBrainAngio.html')">MR angiografie</a>
+			<a href="#" onclick="changePage('MRCP.html')">MR C páteře</a>
+			<a href="#" onclick="changePage('MRLP.html')">MR L páteře</a>
+			<a href="#" onclick="changePage('MRramene.html')">MR ramene</a>
+			<a href="#" onclick="changePage('MRkolene.html')">MR kolene</a>
+			<a href="#" >------------------------</a>
+			<a href="#" onclick="changePage('MRITexts.html')">MR texty</a>
+		</div>
+	</div>
+	
+</div>
+
+<div id="page-container">
+
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    setupRefreshOnAction(document);
+
+    var container = document.getElementById("page-container");
+    var iframes = container.getElementsByTagName("iframe");
+    for (var i = 0; i < iframes.length; i++) {
+        bindEventsToIframe(iframes[i]);
+    }
+
+    var textareas = document.querySelectorAll('.FINALXXL');
+    textareas.forEach(adjustTextareaHeight);
+
+    var links = document.querySelectorAll('.dropdown-content a[href="#"]');
+    links.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            var url = link.getAttribute('onclick').replace("changePage('", "").replace("')", "");
+            changePage(url);
+            event.preventDefault();
+        });
+    });
+	checkAndUpdateDivVisibility(); // Immediate check
+	setupRefreshOnAction(document);
+});
+
+
+function adjustTextareaHeight(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+}
+
+function changePage(url) {
+    var container = document.getElementById("page-container");
+    if (document.getElementById("iframe-" + url)) {
+        return;
+    }
+
+    var iframeContainer = document.createElement("div");
+    iframeContainer.className = "iframe-container"; 
+
+    var iframe = document.createElement("iframe");
+    iframe.id = "iframe-" + url;
+    iframe.src = url;
+    iframe.style.width = "100%";
+    iframe.style.border = "none";
+    iframe.onload = function() {
+        try {
+            adjustIframeHeight(iframe); 
+            bindEventsToIframe(iframe);
+            updateFinalTextAreas(); 
+			checkAndUpdateDivVisibility();
+        } catch (e) {
+            console.log('Error in iframe onload:', e);
+        }
+    };
+
+    var removeButton = document.createElement("button");
+    removeButton.textContent = "X";
+    removeButton.className = "remove-button"; 
+    removeButton.onclick = function() {
+        container.removeChild(iframeContainer);
+    };
+
+    iframeContainer.appendChild(removeButton);
+    iframeContainer.appendChild(iframe);
+    container.appendChild(iframeContainer);
+}
+
+function adjustIframeHeight(iframe) {
+    var observer = new MutationObserver(function() {
+        updateIframeHeight(iframe);
+    });
+
+    observer.observe(iframe.contentWindow.document.body, {
+        attributes: true,
+        childList: true,
+        subtree: true
+    });
+
+    updateIframeHeight(iframe);
+}
+
+function updateIframeHeight(iframe) {
+    var iframeContentHeight = iframe.contentWindow.document.body.scrollHeight;
+    iframe.style.height = iframeContentHeight + 'px';
+}
+
+function bindEventsToIframe(iframe) {
+    try {
+        var doc = iframe.contentWindow.document;
+        setupRefreshOnAction(doc);
+    } catch (e) {
+        console.log('Error binding events to iframe:', e);
+    }
+}
+
+function setupRefreshOnAction(doc) {
+    function delayedUpdate() {
+        setTimeout(function() {
+            updateFinalTextAreas();
+            checkAndUpdateDivVisibility(); // Call this function after updating text areas
+        }, 1);
+    }
+
+    doc.addEventListener('keydown', delayedUpdate);
+    doc.addEventListener('mouseup', delayedUpdate);
+    doc.addEventListener('wheel', delayedUpdate);
+}
+
+
+function updateFinalTextAreas() {
+    var container = document.getElementById("page-container");
+    var iframes = container.getElementsByTagName("iframe");
+    
+    var finalNAMEText = '';
+    var finalINDText = '';
+    var finalSEKVText = '';
+    var finalPOPText = '';
+    var finalRESText = '';
+
+    for (var i = 0; i < iframes.length; i++) {
+        var iframe = iframes[i];
+        try {
+            var doc = iframe.contentWindow.document;
+            
+            // Extract NAMEText
+            var nameTextAreas = doc.querySelectorAll("textarea[id$='NAMEText']");
+            for (var j = 0; j < nameTextAreas.length; j++) {
+                finalNAMEText += nameTextAreas[j].value + ", ";
+            }
+
+            // Extract INDText
+            var indTextAreas = doc.querySelectorAll("textarea[id$='INDText']");
+            for (var j = 0; j < indTextAreas.length; j++) {
+                finalINDText += indTextAreas[j].value + ", ";
+            }
+
+            // Extract SEKVText
+            var sekvTextAreas = doc.querySelectorAll("textarea[id$='SEKVText']");
+            for (var j = 0; j < sekvTextAreas.length; j++) {
+                finalSEKVText += sekvTextAreas[j].value + ". ";
+            }
+
+            // Extract POPText
+            var popTextAreas = doc.querySelectorAll("textarea[id$='POPText']");
+            for (var j = 0; j < popTextAreas.length; j++) {
+                finalPOPText += popTextAreas[j].value + "\n\n";
+            }
+
+            // Extract RESText
+            var resTextAreas = doc.querySelectorAll("textarea[id$='RESText']");
+            for (var j = 0; j < resTextAreas.length; j++) {
+                finalRESText += resTextAreas[j].value + "\n\n";
+            }
+
+        } catch (e) {
+            console.log('Error accessing iframe contents:', e);
+        }
+    }
+
+    // Update final text areas
+    document.getElementById("FINALNAMEText").value = finalNAMEText.slice(0, -2).trim();
+    document.getElementById("FINALINDText").value = finalINDText.slice(0, -2).trim();
+    document.getElementById("FINALSEKVText").value = finalSEKVText.trim();
+    document.getElementById("FINALPOPText").value = finalPOPText.trim();
+    document.getElementById("FINALRESText").value = finalRESText.trim();
+
+    // Combine into FINALCOMPLETEText
+    var finalCompleteText = 
+        finalNAMEText.slice(0, -2) + "\n\n" +
+        "Sekvence: " + finalSEKVText.trim() + "\n\n" + 
+        "Indikace: " + finalINDText.slice(0, -2) + "\n\n" + 
+        finalPOPText.trim() + "\n\n" + 
+        "Závěr: " + "\n" + finalRESText.trim();
+
+    document.getElementById("FINALCOMPLETEText").value = finalCompleteText;
+}
+
+
+
+function checkAndUpdateDivVisibility() {
+    var popText = document.getElementById("FINALPOPText").value.trim();
+    var resText = document.getElementById("FINALRESText").value.trim();
+	var compText = document.getElementById("FINALCOMPLETEText").value.trim();
+    var div = document.getElementById("texty1");
+
+    if (popText === '' && resText === '') {
+        div.style.display = 'none';
+    } else {
+        div.style.display = 'block';
+    }
+	
+	adjustTextareaHeight(document.getElementById("FINALPOPText"));
+    adjustTextareaHeight(document.getElementById("FINALRESText"));
+	adjustTextareaHeight(document.getElementById("FINALCOMPLETEText"));
+}
+
+function adjustTextareaHeight(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+}
+
+
+// COPY
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Function to add the copy functionality and blinking effect
+    function setupCopyButton(buttonId, textAreaId) {
+        var button = document.getElementById(buttonId);
+        var textArea = document.getElementById(textAreaId);
+
+        button.addEventListener('click', function() {
+            navigator.clipboard.writeText(textArea.value)
+            .then(() => {
+                this.classList.add('blinking');
+
+                // Remove the class after the animation ends
+                setTimeout(() => {
+                    this.classList.remove('blinking');
+                }, 3000); // 3 seconds, same as the duration of the animation
+            })
+            .catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        });
+    }
+
+    // Setup for copyCOMP button
+    setupCopyButton('copyCOMP', 'FINALCOMPLETEText');
+
+    // Setup for copyPOP button
+    setupCopyButton('copyPOP', 'FINALPOPText');
+
+    // Setup for copyRES button
+    setupCopyButton('copyRES', 'FINALRESText');
+});
+
+
+</script>
+
+
+<div style="display: none;">
+&nbsp; NÁZEV <button id="copyNAME" class="button60">COPY</button>
+<textarea id="FINALNAMEText" class="FINALXXL" readonly></textarea>
+
+&nbsp; INDIKACE <button id="copyIND" class="button60">COPY</button>
+<textarea id="FINALINDText" class="FINALXXL" readonly></textarea>
+
+&nbsp; SEKVENCE <button id="copySEKV" class="button60">COPY</button>
+<textarea id="FINALSEKVText" class="FINALXXL" readonly></textarea>
+</div>
+
+<div id="texty1" class=" standardwidth mydiv0 ">
+
+&nbsp; POPIS <button id="copyPOP" class="button60">COPY</button>
+<textarea id="FINALPOPText" class="FINALXXL" readonly></textarea>
+
+&nbsp; ZÁVĚR <button id="copyRES" class="button60">COPY</button> 
+<textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
+
+&nbsp; COMPLETE <button id="copyCOMP" class="button60">COPY</button> 
+</div>
+
+<div style="display: none;">
+<textarea id="FINALCOMPLETEText" class="FINALXXL" readonly></textarea>
+</div>
+
+
+
+</body>
+</html>
+
