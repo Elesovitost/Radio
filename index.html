@@ -23,19 +23,23 @@
 		<div class="dropdown-content">
 			<a href="#" onclick="changePage('FDGPET.html')">PET/CT/MR trupu</a>
 			<a href="#" onclick="changePage('NaFskelet.html')">NaF PET skeletu</a>
-			<a href="#" >------------------------</a>
+			<a href="#" > </a>
 			<a href="#" onclick="changePage('MRrekta.html')">MR rekta</a>
 			<a href="#" onclick="changePage('MRprostaty.html')">MR prostaty</a>
 			<a href="#" onclick="changePage('MRcervix.html')">MR cervixu</a>
-			<a href="#" >------------------------</a>
+			<a href="#" > </a>
 			<a href="#" onclick="changePage('MRmozku.html')">MR mozku</a>
 			<a href="#" onclick="changePage('MRBrainAngio.html')">MR angiografie</a>
+			<a href="#" > </a>
 			<a href="#" onclick="changePage('MRCP.html')">MR C páteře</a>
+			<a href="#" onclick="changePage('MRTP.html')">MR T páteře</a>
 			<a href="#" onclick="changePage('MRLP.html')">MR L páteře</a>
+			<a href="#" onclick="changePage('MRSIS.html')">MR SIS</a>
+			<a href="#" > </a>
 			<a href="#" onclick="changePage('MRramene.html')">MR ramene</a>
+			<a href="#" onclick="changePage('MRhips.html')">MR kyčlí</a>
 			<a href="#" onclick="changePage('MRkolene.html')">MR kolene</a>
-			<a href="#" >------------------------</a>
-			<a href="#" onclick="changePage('MRITexts.html')">MR texty</a>
+			<a href="#" onclick="changePage('MRankle.html')">MR hlezna</a>
 		</div>
 	</div>
 	
@@ -59,14 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var textareas = document.querySelectorAll('.FINALXXL');
     textareas.forEach(adjustTextareaHeight);
 
-    var links = document.querySelectorAll('.dropdown-content a[href="#"]');
-    links.forEach(function(link) {
-        link.addEventListener('click', function(event) {
-            var url = link.getAttribute('onclick').replace("changePage('", "").replace("')", "");
-            changePage(url);
-            event.preventDefault();
-        });
-    });
 	checkAndUpdateDivVisibility(); // Immediate check
 	setupRefreshOnAction(document);
 });
@@ -79,15 +75,15 @@ function adjustTextareaHeight(textarea) {
 
 function changePage(url) {
     var container = document.getElementById("page-container");
-    if (document.getElementById("iframe-" + url)) {
-        return;
-    }
+
+    // Create a unique ID for the iframe using the URL and current timestamp
+    var uniqueId = "iframe-" + url + "-" + Date.now();
 
     var iframeContainer = document.createElement("div");
     iframeContainer.className = "iframe-container"; 
 
     var iframe = document.createElement("iframe");
-    iframe.id = "iframe-" + url;
+    iframe.id = uniqueId; // Set the unique ID
     iframe.src = url;
     iframe.style.width = "100%";
     iframe.style.border = "none";
@@ -96,7 +92,7 @@ function changePage(url) {
             adjustIframeHeight(iframe); 
             bindEventsToIframe(iframe);
             updateFinalTextAreas(); 
-			checkAndUpdateDivVisibility();
+            checkAndUpdateDivVisibility();
         } catch (e) {
             console.log('Error in iframe onload:', e);
         }
@@ -114,6 +110,8 @@ function changePage(url) {
     container.appendChild(iframeContainer);
 }
 
+
+
 function adjustIframeHeight(iframe) {
     var observer = new MutationObserver(function() {
         updateIframeHeight(iframe);
@@ -129,9 +127,11 @@ function adjustIframeHeight(iframe) {
 }
 
 function updateIframeHeight(iframe) {
+    var minHeight = 100; // Set this to whatever minimum height you deem appropriate
     var iframeContentHeight = iframe.contentWindow.document.body.scrollHeight;
-    iframe.style.height = iframeContentHeight + 'px';
+    iframe.style.height = Math.max(iframeContentHeight, minHeight) + 'px';
 }
+
 
 function bindEventsToIframe(iframe) {
     try {
@@ -180,13 +180,15 @@ function updateFinalTextAreas() {
             // Extract INDText
             var indTextAreas = doc.querySelectorAll("textarea[id$='INDText']");
             for (var j = 0; j < indTextAreas.length; j++) {
-                finalINDText += indTextAreas[j].value + ", ";
-            }
+				if (indTextAreas[j].value.trim() !== "") { // Check if the textarea is not empty
+					finalINDText += (finalINDText ? ", " : "") + indTextAreas[j].value; // Add separator only if finalINDText is not empty
+				}
+			}
 
             // Extract SEKVText
             var sekvTextAreas = doc.querySelectorAll("textarea[id$='SEKVText']");
             for (var j = 0; j < sekvTextAreas.length; j++) {
-                finalSEKVText += sekvTextAreas[j].value + ". ";
+                finalSEKVText += sekvTextAreas[j].value;
             }
 
             // Extract POPText
@@ -198,7 +200,7 @@ function updateFinalTextAreas() {
             // Extract RESText
             var resTextAreas = doc.querySelectorAll("textarea[id$='RESText']");
             for (var j = 0; j < resTextAreas.length; j++) {
-                finalRESText += resTextAreas[j].value + "\n\n";
+                finalRESText += resTextAreas[j].value + "\n";
             }
 
         } catch (e) {
@@ -208,7 +210,7 @@ function updateFinalTextAreas() {
 
     // Update final text areas
     document.getElementById("FINALNAMEText").value = finalNAMEText.slice(0, -2).trim();
-    document.getElementById("FINALINDText").value = finalINDText.slice(0, -2).trim();
+    document.getElementById("FINALINDText").value = finalINDText.trim();
     document.getElementById("FINALSEKVText").value = finalSEKVText.trim();
     document.getElementById("FINALPOPText").value = finalPOPText.trim();
     document.getElementById("FINALRESText").value = finalRESText.trim();
@@ -217,7 +219,7 @@ function updateFinalTextAreas() {
     var finalCompleteText = 
         finalNAMEText.slice(0, -2) + "\n\n" +
         "Sekvence: " + finalSEKVText.trim() + "\n\n" + 
-        "Indikace: " + finalINDText.slice(0, -2) + "\n\n" + 
+        "Indikace: " + finalINDText.trim() + "\n\n" + 
         finalPOPText.trim() + "\n\n" + 
         "Závěr: " + "\n" + finalRESText.trim();
 
@@ -298,18 +300,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
 <textarea id="FINALSEKVText" class="FINALXXL" readonly></textarea>
 </div>
 
-<div id="texty1" class=" standardwidth mydiv0 ">
-
-&nbsp; POPIS <button id="copyPOP" class="button60">COPY</button>
+<div id="texty1" class="standardwidth mydiv0" style="display: xnone;">
+<button id="copyPOP" class="button60">POPIS</button> 
 <textarea id="FINALPOPText" class="FINALXXL" readonly></textarea>
-
-&nbsp; ZÁVĚR <button id="copyRES" class="button60">COPY</button> 
+<button id="copyRES" class="button60">ZÁVĚR</button> 
 <textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
-
-&nbsp; COMPLETE <button id="copyCOMP" class="button60">COPY</button> 
+<button id="copyCOMP" class="button60">KOMPLETNÍ</button>
 </div>
 
-<div style="display: none;">
+<div id="texty2" class="standardwidth mydiv0" style="display: none;"> 
 <textarea id="FINALCOMPLETEText" class="FINALXXL" readonly></textarea>
 </div>
 

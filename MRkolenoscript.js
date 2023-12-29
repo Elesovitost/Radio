@@ -238,32 +238,25 @@ document.addEventListener('contextmenu', function(event) {
 });
 
 
-// COPY
+function updateTextAndCycleText(event, texts, index, buttonElement, cycleFunc) {  cycleFunc(event);  updateTexts();}
 
-var copyfinal = document.getElementById('copyfinal');
-var FINALText = document.getElementById('FINALText');
+function cycleStranaText(event) {  indexStrana = cycleText(event, textsStrana, indexStrana, buttonElementStrana);  updateTexts();}
 
-copyfinal.addEventListener('click', function() {
-	
-	const StranaText = document.getElementById('StranaButton').innerText;
+function cyclePkNaplnText(event) {  indexPkNapln = cycleText(event, textsPkNapln, indexPkNapln, buttonElementPkNapln, updateBackgroundColor);  updateTexts();}
+function cyclePkWibergText(event) {  indexPkWiberg = cycleText(event, textsPkWiberg, indexPkWiberg, buttonElementPkWiberg, updateBackgroundColor);  updateTexts();}
 
-    // Check the value of StranaText
-    if (StranaText === "jakého?") {
-        alert("vyplnit stranu vyšetření"); // Show popup message
-        return; // Exit the function early
-    }
-	
-    navigator.clipboard.writeText(FINALText.value)
-    .then(() => {
-        FINALText.classList.add('highlight');
+function cycleMkFemurCHrText(event) {  indexMkFemurCHr = cycleText(event, textsMkFemurCHr, indexMkFemurCHr, buttonElementMkFemurCHr, updateBackgroundColor);  updateTexts();}
+function cycleMkMenText(event) {  indexMkMen = cycleText(event, textsMkMen, indexMkMen, buttonElementMkMen, updateBackgroundColor);  updateTexts();}
+function cycleMkMenMEText(event) {  indexMkMenME = cycleText(event, textsMkMenME, indexMkMenME, buttonElementMkMenME, updateBackgroundColor);  updateTexts();}
+function cycleMkTibieCHrText(event) {  indexMkTibieCHr = cycleText(event, textsMkTibieCHr, indexMkTibieCHr, buttonElementMkTibieCHr, updateBackgroundColor);  updateTexts();}
 
-        setTimeout(function() {
-            FINALText.classList.remove('highlight');
-        }, 100);
-    })
-    .catch(err => {
-    });
-});
+function cycleLkFemurCHrText(event) {  indexLkFemurCHr = cycleText(event, textsLkFemurCHr, indexLkFemurCHr, buttonElementLkFemurCHr, updateBackgroundColor);  updateTexts();}
+function cycleLkMenText(event) {  indexLkMen = cycleText(event, textsLkMen, indexLkMen, buttonElementLkMen, updateBackgroundColor);  updateTexts();}
+function cycleLkMenMEText(event) {  indexLkMenME = cycleText(event, textsLkMenME, indexLkMenME, buttonElementLkMenME, updateBackgroundColor);  updateTexts();}
+function cycleLkTibieCHrText(event) {  indexLkTibieCHr = cycleText(event, textsLkTibieCHr, indexLkTibieCHr, buttonElementLkTibieCHr, updateBackgroundColor);  updateTexts();}
 
+function cycleLCMText(event) {  indexLCM = cycleText(event, textsLCM, indexLCM, buttonElementLCM, updateBackgroundColor);  updateTexts();}
+function cycleLCLText(event) {  indexLCL = cycleText(event, textsLCL, indexLCL, buttonElementLCL, updateBackgroundColor);  updateTexts();}
 
+function cycleOstBakerText(event) {  indexOstBaker = cycleText(event, textsOstBaker, indexOstBaker, buttonElementOstBaker, updateBackgroundColor);  updateTexts();}
 

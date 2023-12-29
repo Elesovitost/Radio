@@ -1,4 +1,4 @@
-
+body {font-family: "Arial";  font-Size: 14px; font-weight: bold;}
 	
 #SEG1 {
 	width: 986px; background-color: #9DAAA2; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid black;
@@ -16,16 +16,15 @@
 		
 
 
-.remove-button {display: block; margin: 5px 0; background-color: #FFADAD; color: black; border: 1px solid black; padding: 2px 2px; cursor: pointer;	}
+.remove-button {display: block; margin: 5px 0px 0px 0px; width: 20px; background-color: #FFADAD; color: black; border: 1px solid black; padding: 0px 0px; cursor: pointer;	}
 
 
 /* divs  */
 .standardwidth {width: 1000px; border: 1px solid black; padding: 3px; }
-.mydiv0 {background-color: #DDD5D5; font-Size: 10; font-weight: bold;}
+.mydiv0 {background-color: #DDD5D5; font-Size: 12px; font-weight: bold;}
 .table-container {display: flex; align-items: flex-start; }
 
-button {border-radius: 1px; border: 1px solid black; height: 20px; background-color: #EDEDED; width: 20px;text-align: center; border-radius: 0px;}
-.button60 {width: 60px;}
+button60 {font-Size: 12px; border-radius: 1px; border: 1px solid black; height: 18px; background-color: #EDEDED; width: 80px;text-align: center;}
 
 textarea {width: 99%;  reSize: yes;  }
 

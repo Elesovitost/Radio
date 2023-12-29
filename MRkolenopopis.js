@@ -8,10 +8,9 @@ var obecnetext = document.getElementById("obecnetext");
 var PKtext = document.getElementById("PKtext");
 var MKtext = document.getElementById("MKtext");
 var LKtext = document.getElementById("LKtext");
-var POPtext = document.getElementById("POPtext");
-var RESText = document.getElementById("RESText");
+var MRKneePOPText = document.getElementById("MRKneePOPText");
+var MRKneeRESText = document.getElementById("MRKneeRESText");
 var FINALText = document.getElementById("FINALText");
-
 
 
 function updateTexts() {
@@ -821,7 +820,15 @@ if (LigLCPRes !== "") {
 
 
 
-POPText.value = 
+
+MRKneeNAMEText.value = Nadpis;
+
+MRKneeINDText.value = indikace;
+
+MRKneeSEKVText.value = "Koleno vyšetřeno v PDW FS, T1W, T2W.";
+
+
+MRKneePOPText.value = 
 PkNaplnP + " " + OstBakerP + " " + SynovitisP + " " + VolnaTeliskaP + "\n" + 
 PkLuxaceP + " " + PkCartText + " " + PkFParthrosisP + " " + PkWibergP + " " + PkBipartitaP + " " + PkPlicaP + " " + PkJumperP + " " + PkOsgoodP + " " + "\n" +
 MkMenP + " " + MkFemCondText + " " + MkTibCondText + " " + GonarthrosisMkP + "\n" +
@@ -831,19 +838,18 @@ LigLCPText + "\n" +
 LCMP + "\n" + 
 LCLP + "\n\n";
 
-POPText.value = POPText.value.trim(); 
-POPText.value = POPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
-POPText.value = POPText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
-POPText.value = POPText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
-POPText.value = POPText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
-POPText.value = POPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
-POPText.value = POPText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
-POPText.value = POPText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
-POPText.value = POPText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
-POPText.value = POPText.value.replace(/  +/g, ' '); // dvojmezery
+MRKneePOPText.value = MRKneePOPText.value.trim(); 
+MRKneePOPText.value = MRKneePOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
+MRKneePOPText.value = MRKneePOPText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
+MRKneePOPText.value = MRKneePOPText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
+MRKneePOPText.value = MRKneePOPText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
+MRKneePOPText.value = MRKneePOPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
+MRKneePOPText.value = MRKneePOPText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
+MRKneePOPText.value = MRKneePOPText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
+MRKneePOPText.value = MRKneePOPText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
+MRKneePOPText.value = MRKneePOPText.value.replace(/  +/g, ' '); // dvojmezery
 
-RESText.value = 
-"Závěr: " + "\n" +
+MRKneeRESText.value = 
 MkMenR + " " + MkFemCondRES + MkTibCondRES + "\n" +
 LkMenR + " " + LkFemCondRES + LkTibCondRES + "\n" +
 LigLCARes + "\n" + 
@@ -854,46 +860,24 @@ PkCartRes + " " + PkLuxaceR + " " + PkWibergR + " " + PkBipartitaR + " " + PkPli
 PkNaplnR + " " + OstBakerR + " " + SynovitisR + " " + VolnaTeliskaR + "\n" +
 GonarthrosisR + " " + PkFParthrosisR; 
 
-RESText.value = RESText.value.trim(); 
-RESText.value = RESText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
-RESText.value = RESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
-RESText.value = RESText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
-RESText.value = RESText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
-RESText.value = RESText.value.replace(/\s+\./g, '.'); // smazat mezeru před tečkou
-RESText.value = RESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
-RESText.value = RESText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
-RESText.value = RESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
-RESText.value = RESText.value.replace(/  +/g, ' '); // dvojmezery
+MRKneeRESText.value = MRKneeRESText.value.trim(); 
+MRKneeRESText.value = MRKneeRESText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
+MRKneeRESText.value = MRKneeRESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
+MRKneeRESText.value = MRKneeRESText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
+MRKneeRESText.value = MRKneeRESText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
+MRKneeRESText.value = MRKneeRESText.value.replace(/\s+\./g, '.'); // smazat mezeru před tečkou
+MRKneeRESText.value = MRKneeRESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
+MRKneeRESText.value = MRKneeRESText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
+MRKneeRESText.value = MRKneeRESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
+MRKneeRESText.value = MRKneeRESText.value.replace(/  +/g, ' '); // dvojmezery
 
-FINALText.value =
-Nadpis + "\n\n" +
-"Indikace: " + indikace + "\n\n" + 
-"Sekvence: Koleno vyšetřeno v cor, tra, sag PDW FS, cor T1W, sag T2W." + "\n\n" +
-POPText.value + "\n\n" + 
-RESText.value;
+if (MRKneeRESText.value.trim() === "") {
+        MRKneeRESText.value = "Bez patrné signifikantní patologie.";
+    }
+
+
 
 document.getElementById("indikace").addEventListener("input", updateTexts);
 }
 updateTexts();	
 
-function updateTextAndCycleText(event, texts, index, buttonElement, cycleFunc) {  cycleFunc(event);  updateTexts();}
-
-function cycleStranaText(event) {  indexStrana = cycleText(event, textsStrana, indexStrana, buttonElementStrana);  updateTexts();}
-
-function cyclePkNaplnText(event) {  indexPkNapln = cycleText(event, textsPkNapln, indexPkNapln, buttonElementPkNapln, updateBackgroundColor);  updateTexts();}
-function cyclePkWibergText(event) {  indexPkWiberg = cycleText(event, textsPkWiberg, indexPkWiberg, buttonElementPkWiberg, updateBackgroundColor);  updateTexts();}
-
-function cycleMkFemurCHrText(event) {  indexMkFemurCHr = cycleText(event, textsMkFemurCHr, indexMkFemurCHr, buttonElementMkFemurCHr, updateBackgroundColor);  updateTexts();}
-function cycleMkMenText(event) {  indexMkMen = cycleText(event, textsMkMen, indexMkMen, buttonElementMkMen, updateBackgroundColor);  updateTexts();}
-function cycleMkMenMEText(event) {  indexMkMenME = cycleText(event, textsMkMenME, indexMkMenME, buttonElementMkMenME, updateBackgroundColor);  updateTexts();}
-function cycleMkTibieCHrText(event) {  indexMkTibieCHr = cycleText(event, textsMkTibieCHr, indexMkTibieCHr, buttonElementMkTibieCHr, updateBackgroundColor);  updateTexts();}
-
-function cycleLkFemurCHrText(event) {  indexLkFemurCHr = cycleText(event, textsLkFemurCHr, indexLkFemurCHr, buttonElementLkFemurCHr, updateBackgroundColor);  updateTexts();}
-function cycleLkMenText(event) {  indexLkMen = cycleText(event, textsLkMen, indexLkMen, buttonElementLkMen, updateBackgroundColor);  updateTexts();}
-function cycleLkMenMEText(event) {  indexLkMenME = cycleText(event, textsLkMenME, indexLkMenME, buttonElementLkMenME, updateBackgroundColor);  updateTexts();}
-function cycleLkTibieCHrText(event) {  indexLkTibieCHr = cycleText(event, textsLkTibieCHr, indexLkTibieCHr, buttonElementLkTibieCHr, updateBackgroundColor);  updateTexts();}
-
-function cycleLCMText(event) {  indexLCM = cycleText(event, textsLCM, indexLCM, buttonElementLCM, updateBackgroundColor);  updateTexts();}
-function cycleLCLText(event) {  indexLCL = cycleText(event, textsLCL, indexLCL, buttonElementLCL, updateBackgroundColor);  updateTexts();}
-
-function cycleOstBakerText(event) {  indexOstBaker = cycleText(event, textsOstBaker, indexOstBaker, buttonElementOstBaker, updateBackgroundColor);  updateTexts();}

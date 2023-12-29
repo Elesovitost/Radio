@@ -668,8 +668,8 @@ GCAR + lobaratrophyR + "\n" +
 ventriclesR + "\n" +
 MMKR + "\n" +
 PituitaryR + PinealR + "\n" +
-MastoidyR + SinusR + "\n" + 
-ANGIOR; 
+MastoidyR + SinusR 
+; 
 
 MRbrainRESText.value = MRbrainRESText.value.trim(); 
 MRbrainRESText.value = MRbrainRESText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
@@ -692,6 +692,10 @@ MRbrainPOPText.value + "\n\n" +
 FINALText.value = FINALText.value.replace(/  +/g, ' '); // dvojmezery
 FINALText.value = FINALText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
 
+
+if (MRbrainRESText.value.trim() === "") {
+        MRbrainRESText.value = "Bez patrné patologie.";
+    }
 
 
 

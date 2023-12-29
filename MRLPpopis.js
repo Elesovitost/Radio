@@ -15,8 +15,8 @@ var LLmicha = "";
 var LLmulti = "";
 var LLnormalR = ""; var L12variousR  = "";
 
-var POPText = document.getElementById("POPText");
-var RESText = document.getElementById("RESText");
+var MRLumbarPOPText = document.getElementById("MRLumbarPOPText");
+var MRLumbarRESText = document.getElementById("MRLumbarRESText");
 var FINALText = document.getElementById("FINALText");
 
 
@@ -644,9 +644,15 @@ LLnormalR = "Přiměřený nález na bederní páteři.";
 LLnormalR = ""; 
 }
 	
-// FINÁLNÍ TEXT
+// FINÁLNÍ TEXTY
 
-POPText.value = 
+MRLumbarNAMEText.value = "MR bederní páteře";
+
+MRLumbarINDText.value = indikace;
+
+MRLumbarSEKVText.value = "L páteř v sag T1W, T2W, STIR, tra T2W, (event. tra T1W dle potřeby). ";
+
+MRLumbarPOPText.value = 
 Osy + "\n" + 
 LLoperace + LLobratlenormal + LLlozisko + LLfraktura + LLostatniobratlenormal + "\n" +
 LLdiskynormal + "\n" +
@@ -658,17 +664,13 @@ L5S1nativ + L5listezaP + " " + L5S1degenerdP + " " + L5S1edemP + " " + L5S1herni
 LLostatnidiskynormal + "\n" + 
 LLmicha;
 
-POPText.value = POPText.value.replace(/^\s*[\r\n]/gm, '');  // smaže prázdné řádky
-POPText.value = POPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
-POPText.value = POPText.value.replace(/  +/g, ' '); // dvojmezery
+MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/^\s*[\r\n]/gm, '');  // smaže prázdné řádky
+MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
+MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/  +/g, ' '); // dvojmezery
 
 
 
-// RESUME
-
-
-RESText.value = 
-"Závěr: " + "\n" +
+MRLumbarRESText.value = 
 LLmulti + "\n" +
 LLnormalR + "\n" +
 LLloziskoR + LLfrakturaR + "\n" +
@@ -682,29 +684,19 @@ OsyR;
 
 
 //náhrady ostatní
-RESText.value = RESText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
-RESText.value = RESText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
-RESText.value = RESText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
-RESText.value = RESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
-RESText.value = RESText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
-RESText.value = RESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
-RESText.value = RESText.value.replace(/,\s*na\s+podkladě\s*,\s*|\s*,\s*na\s+podkladě\s*,|,\s*na\s+podkladě\s*|\s*,\s*na\s+podkladě/g, ' na podkladě ');   //odstraní čárku před podkladem
-RESText.value = RESText.value.replace(/  +/g, ' '); // dvojmezery
-RESText.value = RESText.value.replace(/,\s((?!L[1-5]|S1)[A-ZÚ])/g, function(fullMatch, groupMatch) {    return ', ' + groupMatch.toLowerCase();}); // po čárce malé písmeno, nevztahuje se na L1-5 a S1.
-RESText.value = RESText.value.replace("Edém pod krycími plotnami Modic I v rámci dekompenzace degenerativních změn. Edém při facet. skloubeních v rámci dekompenzace degenerativních změn.", "Edém pod krycími plotnami Modic I a edém při facet. skloubeních v rámci dekompenzace degenerativních změn."); // combine. edém
-RESText.value = RESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
+MRLumbarRESText.value = MRLumbarRESText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
+MRLumbarRESText.value = MRLumbarRESText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
+MRLumbarRESText.value = MRLumbarRESText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
+MRLumbarRESText.value = MRLumbarRESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
+MRLumbarRESText.value = MRLumbarRESText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
+MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
+MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s*na\s+podkladě\s*,\s*|\s*,\s*na\s+podkladě\s*,|,\s*na\s+podkladě\s*|\s*,\s*na\s+podkladě/g, ' na podkladě ');   //odstraní čárku před podkladem
+MRLumbarRESText.value = MRLumbarRESText.value.replace(/  +/g, ' '); // dvojmezery
+MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s((?!L[1-5]|S1)[A-ZÚ])/g, function(fullMatch, groupMatch) {    return ', ' + groupMatch.toLowerCase();}); // po čárce malé písmeno, nevztahuje se na L1-5 a S1.
+MRLumbarRESText.value = MRLumbarRESText.value.replace("Edém pod krycími plotnami Modic I v rámci dekompenzace degenerativních změn. Edém při facet. skloubeních v rámci dekompenzace degenerativních změn.", "Edém pod krycími plotnami Modic I a edém při facet. skloubeních v rámci dekompenzace degenerativních změn."); // combine. edém
+MRLumbarRESText.value = MRLumbarRESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
 
 
-
-
-// FINAL
-
-FINALText.value =
-"MRI bederní páteře" + "\n\n" +
-"Indikace: " + indikace + "\n\n" + 
-"Sekvence: Lp vyšetřena v sag T1W, T2W, STIR, tra T2W, (event. tra T1W dle potřeby)." + "\n\n" +
-POPText.value + "\n\n" + 
-RESText.value;
 
 
 document.getElementById("indikace").addEventListener("input", updateTexts);
@@ -713,125 +705,4 @@ document.getElementById("indikace").addEventListener("input", updateTexts);
 
 
 
-
-
-
-
 updateTexts();
-
-function updateTextAndCycleText(event, texts, index, buttonElement, cycleFunc) {  cycleFunc(event);  updateTexts();}
-
-function cycleOSAText(event) {  indexOSA = cycleText(event, textsOSA, indexOSA, buttonElementOSA);  updateTexts(); }
-function cycleLORDText(event) {  indexLORD = cycleText(event, textsLORD, indexLORD, buttonElementLORD);  updateTexts(); }
-
-function cycleL1KOMText(event) {  indexL1KOM = cycleText(event, textsL1KOM, indexL1KOM, buttonElementL1KOM, updateBackgroundColor);  updateTexts(); }
-function cycleL1LESText(event) {  indexL1LES = cycleText(event, textsL1LES, indexL1LES, buttonElementL1LES, updateBackgroundColor);  updateTexts(); }
-function cycleL1LLText(event) {  indexL1LL = cycleText(event, textsL1LL, indexL1LL, buttonElementL1LL, updateBackgroundColor);  updateTexts(); }
-function cycleL1LISDText(event) {  indexL1LISD = cycleText(event, textsL1LISD, indexL1LISD, buttonElementL1LISD);  updateTexts(); }
-function cycleL1SLText(event) {  indexL1SL = cycleText(event, textsL1SL, indexL1SL, buttonElementL1SL, updateBackgroundColor);  updateTexts(); }
-function cycleL12BHText(event) {  indexL12BH = cycleText(event, textsL12BH, indexL12BH, buttonElementL12BH, updateBackgroundColor);  updateTexts(); }
-function cycleL12DDText(event) {  indexL12DD = cycleText(event, textsL12DD, indexL12DD, buttonElementL12DD, updateBackgroundColor);  updateTexts(); }
-function cycleL12MODText(event) {  indexL12MOD = cycleText(event, textsL12MOD, indexL12MOD, buttonElementL12MOD, updateBackgroundColor);  updateTexts(); }
-function cycleL12HDText(event) {  indexL12HD = cycleText(event, textsL12HD, indexL12HD, buttonElementL12HD, updateBackgroundColor);  updateTexts(); }
-function cycleL12HERPFText(event) {  indexL12HERPF = cycleText(event, textsL12HERPF, indexL12HERPF, buttonElementL12HERPF, updateBackgroundColor);  updateTexts(); }
-function cycleL12HERPPText(event) {  indexL12HERPP = cycleText(event, textsL12HERPP, indexL12HERPP, buttonElementL12HERPP, updateBackgroundColor);  updateTexts(); }
-function cycleL12HERCText(event) {  indexL12HERC = cycleText(event, textsL12HERC, indexL12HERC, buttonElementL12HERC, updateBackgroundColor);  updateTexts(); }
-function cycleL12HERLPText(event) {  indexL12HERLP = cycleText(event, textsL12HERLP, indexL12HERLP, buttonElementL12HERLP, updateBackgroundColor);  updateTexts(); }
-function cycleL12HERLFText(event) {  indexL12HERLF = cycleText(event, textsL12HERLF, indexL12HERLF, buttonElementL12HERLF, updateBackgroundColor);  updateTexts(); }
-function cycleL12MIGText(event) {  indexL12MIG = cycleText(event, textsL12MIG, indexL12MIG, buttonElementL12MIG, updateBackgroundColor);  updateTexts(); }
-function cycleL12FAText(event) {  indexL12FA = cycleText(event, textsL12FA, indexL12FA, buttonElementL12FA, updateBackgroundColor);  updateTexts(); }
-function cycleL12PFText(event) {  indexL12PF = cycleText(event, textsL12PF, indexL12PF, buttonElementL12PF, updateBackgroundColor);  updateTexts();}
-function cycleL12PRText(event) {  indexL12PR = cycleText(event, textsL12PR, indexL12PR, buttonElementL12PR, updateBackgroundColor);  updateTexts();}
-function cycleL12PKText(event) {  indexL12PK = cycleText(event, textsL12PK, indexL12PK, buttonElementL12PK, updateBackgroundColor);  updateTexts();}
-function cycleL12LRText(event) {  indexL12LR = cycleText(event, textsL12LR, indexL12LR, buttonElementL12LR, updateBackgroundColor);  updateTexts();}
-function cycleL12LFText(event) {  indexL12LF = cycleText(event, textsL12LF, indexL12LF, buttonElementL12LF, updateBackgroundColor);  updateTexts();}
-
-function cycleL2KOMText(event) {  indexL2KOM = cycleText(event, textsL2KOM, indexL2KOM, buttonElementL2KOM, updateBackgroundColor);  updateTexts(); }
-function cycleL2LESText(event) {  indexL2LES = cycleText(event, textsL2LES, indexL2LES, buttonElementL2LES, updateBackgroundColor);  updateTexts(); }
-function cycleL2LLText(event) {  indexL2LL = cycleText(event, textsL2LL, indexL2LL, buttonElementL2LL, updateBackgroundColor);  updateTexts(); }
-function cycleL2LISDText(event) {  indexL2LISD = cycleText(event, textsL2LISD, indexL2LISD, buttonElementL2LISD);  updateTexts(); }
-function cycleL2SLText(event) {  indexL2SL = cycleText(event, textsL2SL, indexL2SL, buttonElementL2SL, updateBackgroundColor);  updateTexts(); }
-function cycleL23BHText(event) {  indexL23BH = cycleText(event, textsL23BH, indexL23BH, buttonElementL23BH, updateBackgroundColor);  updateTexts(); }
-function cycleL23DDText(event) {  indexL23DD = cycleText(event, textsL23DD, indexL23DD, buttonElementL23DD, updateBackgroundColor);  updateTexts(); }
-function cycleL23MODText(event) {  indexL23MOD = cycleText(event, textsL23MOD, indexL23MOD, buttonElementL23MOD, updateBackgroundColor);  updateTexts(); }
-function cycleL23HDText(event) {  indexL23HD = cycleText(event, textsL23HD, indexL23HD, buttonElementL23HD, updateBackgroundColor);  updateTexts(); }
-function cycleL23HERPFText(event) {  indexL23HERPF = cycleText(event, textsL23HERPF, indexL23HERPF, buttonElementL23HERPF, updateBackgroundColor);  updateTexts(); }
-function cycleL23HERPPText(event) {  indexL23HERPP = cycleText(event, textsL23HERPP, indexL23HERPP, buttonElementL23HERPP, updateBackgroundColor);  updateTexts(); }
-function cycleL23HERCText(event) {  indexL23HERC = cycleText(event, textsL23HERC, indexL23HERC, buttonElementL23HERC, updateBackgroundColor);  updateTexts(); }
-function cycleL23HERLPText(event) {  indexL23HERLP = cycleText(event, textsL23HERLP, indexL23HERLP, buttonElementL23HERLP, updateBackgroundColor);  updateTexts(); }
-function cycleL23HERLFText(event) {  indexL23HERLF = cycleText(event, textsL23HERLF, indexL23HERLF, buttonElementL23HERLF, updateBackgroundColor);  updateTexts(); }
-function cycleL23MIGText(event) {  indexL23MIG = cycleText(event, textsL23MIG, indexL23MIG, buttonElementL23MIG, updateBackgroundColor);  updateTexts(); }
-function cycleL23FAText(event) {  indexL23FA = cycleText(event, textsL23FA, indexL23FA, buttonElementL23FA, updateBackgroundColor);  updateTexts(); }
-function cycleL23PFText(event) {  indexL23PF = cycleText(event, textsL23PF, indexL23PF, buttonElementL23PF, updateBackgroundColor);  updateTexts();}
-function cycleL23PRText(event) {  indexL23PR = cycleText(event, textsL23PR, indexL23PR, buttonElementL23PR, updateBackgroundColor);  updateTexts();}
-function cycleL23PKText(event) {  indexL23PK = cycleText(event, textsL23PK, indexL23PK, buttonElementL23PK, updateBackgroundColor);  updateTexts();}
-function cycleL23LRText(event) {  indexL23LR = cycleText(event, textsL23LR, indexL23LR, buttonElementL23LR, updateBackgroundColor);  updateTexts();}
-function cycleL23LFText(event) {  indexL23LF = cycleText(event, textsL23LF, indexL23LF, buttonElementL23LF, updateBackgroundColor);  updateTexts();}
-
-function cycleL3KOMText(event) {  indexL3KOM = cycleText(event, textsL3KOM, indexL3KOM, buttonElementL3KOM, updateBackgroundColor);  updateTexts(); }
-function cycleL3LESText(event) {  indexL3LES = cycleText(event, textsL3LES, indexL3LES, buttonElementL3LES, updateBackgroundColor);  updateTexts(); }
-function cycleL3LLText(event) {  indexL3LL = cycleText(event, textsL3LL, indexL3LL, buttonElementL3LL, updateBackgroundColor);  updateTexts(); }
-function cycleL3LISDText(event) {  indexL3LISD = cycleText(event, textsL3LISD, indexL3LISD, buttonElementL3LISD);  updateTexts(); }
-function cycleL3SLText(event) {  indexL3SL = cycleText(event, textsL3SL, indexL3SL, buttonElementL3SL, updateBackgroundColor);  updateTexts(); }
-function cycleL34BHText(event) {  indexL34BH = cycleText(event, textsL34BH, indexL34BH, buttonElementL34BH, updateBackgroundColor);  updateTexts(); }
-function cycleL34DDText(event) {  indexL34DD = cycleText(event, textsL34DD, indexL34DD, buttonElementL34DD, updateBackgroundColor);  updateTexts(); }
-function cycleL34MODText(event) {  indexL34MOD = cycleText(event, textsL34MOD, indexL34MOD, buttonElementL34MOD, updateBackgroundColor);  updateTexts(); }
-function cycleL34HDText(event) {  indexL34HD = cycleText(event, textsL34HD, indexL34HD, buttonElementL34HD, updateBackgroundColor);  updateTexts(); }
-function cycleL34HERPFText(event) {  indexL34HERPF = cycleText(event, textsL34HERPF, indexL34HERPF, buttonElementL34HERPF, updateBackgroundColor);  updateTexts(); }
-function cycleL34HERPPText(event) {  indexL34HERPP = cycleText(event, textsL34HERPP, indexL34HERPP, buttonElementL34HERPP, updateBackgroundColor);  updateTexts(); }
-function cycleL34HERCText(event) {  indexL34HERC = cycleText(event, textsL34HERC, indexL34HERC, buttonElementL34HERC, updateBackgroundColor);  updateTexts(); }
-function cycleL34HERLPText(event) {  indexL34HERLP = cycleText(event, textsL34HERLP, indexL34HERLP, buttonElementL34HERLP, updateBackgroundColor);  updateTexts(); }
-function cycleL34HERLFText(event) {  indexL34HERLF = cycleText(event, textsL34HERLF, indexL34HERLF, buttonElementL34HERLF, updateBackgroundColor);  updateTexts(); }
-function cycleL34MIGText(event) {  indexL34MIG = cycleText(event, textsL34MIG, indexL34MIG, buttonElementL34MIG, updateBackgroundColor);  updateTexts(); }
-function cycleL34FAText(event) {  indexL34FA = cycleText(event, textsL34FA, indexL34FA, buttonElementL34FA, updateBackgroundColor);  updateTexts(); }
-function cycleL34PFText(event) {  indexL34PF = cycleText(event, textsL34PF, indexL34PF, buttonElementL34PF, updateBackgroundColor);  updateTexts();}
-function cycleL34PRText(event) {  indexL34PR = cycleText(event, textsL34PR, indexL34PR, buttonElementL34PR, updateBackgroundColor);  updateTexts();}
-function cycleL34PKText(event) {  indexL34PK = cycleText(event, textsL34PK, indexL34PK, buttonElementL34PK, updateBackgroundColor);  updateTexts();}
-function cycleL34LRText(event) {  indexL34LR = cycleText(event, textsL34LR, indexL34LR, buttonElementL34LR, updateBackgroundColor);  updateTexts();}
-function cycleL34LFText(event) {  indexL34LF = cycleText(event, textsL34LF, indexL34LF, buttonElementL34LF, updateBackgroundColor);  updateTexts();}
-
-function cycleL4KOMText(event) {  indexL4KOM = cycleText(event, textsL4KOM, indexL4KOM, buttonElementL4KOM, updateBackgroundColor);  updateTexts(); }
-function cycleL4LESText(event) {  indexL4LES = cycleText(event, textsL4LES, indexL4LES, buttonElementL4LES, updateBackgroundColor);  updateTexts(); }
-function cycleL4LLText(event) {  indexL4LL = cycleText(event, textsL4LL, indexL4LL, buttonElementL4LL, updateBackgroundColor);  updateTexts(); }
-function cycleL4LISDText(event) {  indexL4LISD = cycleText(event, textsL4LISD, indexL4LISD, buttonElementL4LISD);  updateTexts(); }
-function cycleL4SLText(event) {  indexL4SL = cycleText(event, textsL4SL, indexL4SL, buttonElementL4SL, updateBackgroundColor);  updateTexts(); }
-function cycleL45BHText(event) {  indexL45BH = cycleText(event, textsL45BH, indexL45BH, buttonElementL45BH, updateBackgroundColor);  updateTexts(); }
-function cycleL45DDText(event) {  indexL45DD = cycleText(event, textsL45DD, indexL45DD, buttonElementL45DD, updateBackgroundColor);  updateTexts(); }
-function cycleL45MODText(event) {  indexL45MOD = cycleText(event, textsL45MOD, indexL45MOD, buttonElementL45MOD, updateBackgroundColor);  updateTexts(); }
-function cycleL45HDText(event) {  indexL45HD = cycleText(event, textsL45HD, indexL45HD, buttonElementL45HD, updateBackgroundColor);  updateTexts(); }
-function cycleL45HERPFText(event) {  indexL45HERPF = cycleText(event, textsL45HERPF, indexL45HERPF, buttonElementL45HERPF, updateBackgroundColor);  updateTexts(); }
-function cycleL45HERPPText(event) {  indexL45HERPP = cycleText(event, textsL45HERPP, indexL45HERPP, buttonElementL45HERPP, updateBackgroundColor);  updateTexts(); }
-function cycleL45HERCText(event) {  indexL45HERC = cycleText(event, textsL45HERC, indexL45HERC, buttonElementL45HERC, updateBackgroundColor);  updateTexts(); }
-function cycleL45HERLPText(event) {  indexL45HERLP = cycleText(event, textsL45HERLP, indexL45HERLP, buttonElementL45HERLP, updateBackgroundColor);  updateTexts(); }
-function cycleL45HERLFText(event) {  indexL45HERLF = cycleText(event, textsL45HERLF, indexL45HERLF, buttonElementL45HERLF, updateBackgroundColor);  updateTexts(); }
-function cycleL45MIGText(event) {  indexL45MIG = cycleText(event, textsL45MIG, indexL45MIG, buttonElementL45MIG, updateBackgroundColor);  updateTexts(); }
-function cycleL45FAText(event) {  indexL45FA = cycleText(event, textsL45FA, indexL45FA, buttonElementL45FA, updateBackgroundColor);  updateTexts(); }
-function cycleL45PFText(event) {  indexL45PF = cycleText(event, textsL45PF, indexL45PF, buttonElementL45PF, updateBackgroundColor);  updateTexts();}
-function cycleL45PRText(event) {  indexL45PR = cycleText(event, textsL45PR, indexL45PR, buttonElementL45PR, updateBackgroundColor);  updateTexts();}
-function cycleL45PKText(event) {  indexL45PK = cycleText(event, textsL45PK, indexL45PK, buttonElementL45PK, updateBackgroundColor);  updateTexts();}
-function cycleL45LRText(event) {  indexL45LR = cycleText(event, textsL45LR, indexL45LR, buttonElementL45LR, updateBackgroundColor);  updateTexts();}
-function cycleL45LFText(event) {  indexL45LF = cycleText(event, textsL45LF, indexL45LF, buttonElementL45LF, updateBackgroundColor);  updateTexts();}
-
-function cycleL5KOMText(event) {  indexL5KOM = cycleText(event, textsL5KOM, indexL5KOM, buttonElementL5KOM, updateBackgroundColor);  updateTexts(); }
-function cycleL5LESText(event) {  indexL5LES = cycleText(event, textsL5LES, indexL5LES, buttonElementL5LES, updateBackgroundColor);  updateTexts(); }
-function cycleL5LLText(event) {  indexL5LL = cycleText(event, textsL5LL, indexL5LL, buttonElementL5LL, updateBackgroundColor);  updateTexts(); }
-function cycleL5LISDText(event) {  indexL5LISD = cycleText(event, textsL5LISD, indexL5LISD, buttonElementL5LISD);  updateTexts(); }
-function cycleL5SLText(event) {  indexL5SL = cycleText(event, textsL5SL, indexL5SL, buttonElementL5SL, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1BHText(event) {  indexL5S1BH = cycleText(event, textsL5S1BH, indexL5S1BH, buttonElementL5S1BH, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1DDText(event) {  indexL5S1DD = cycleText(event, textsL5S1DD, indexL5S1DD, buttonElementL5S1DD, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1MODText(event) {  indexL5S1MOD = cycleText(event, textsL5S1MOD, indexL5S1MOD, buttonElementL5S1MOD, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1HDText(event) {  indexL5S1HD = cycleText(event, textsL5S1HD, indexL5S1HD, buttonElementL5S1HD, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1HERPFText(event) {  indexL5S1HERPF = cycleText(event, textsL5S1HERPF, indexL5S1HERPF, buttonElementL5S1HERPF, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1HERPPText(event) {  indexL5S1HERPP = cycleText(event, textsL5S1HERPP, indexL5S1HERPP, buttonElementL5S1HERPP, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1HERCText(event) {  indexL5S1HERC = cycleText(event, textsL5S1HERC, indexL5S1HERC, buttonElementL5S1HERC, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1HERLPText(event) {  indexL5S1HERLP = cycleText(event, textsL5S1HERLP, indexL5S1HERLP, buttonElementL5S1HERLP, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1HERLFText(event) {  indexL5S1HERLF = cycleText(event, textsL5S1HERLF, indexL5S1HERLF, buttonElementL5S1HERLF, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1MIGText(event) {  indexL5S1MIG = cycleText(event, textsL5S1MIG, indexL5S1MIG, buttonElementL5S1MIG, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1FAText(event) {  indexL5S1FA = cycleText(event, textsL5S1FA, indexL5S1FA, buttonElementL5S1FA, updateBackgroundColor);  updateTexts(); }
-function cycleL5S1PFText(event) {  indexL5S1PF = cycleText(event, textsL5S1PF, indexL5S1PF, buttonElementL5S1PF, updateBackgroundColor);  updateTexts();}
-function cycleL5S1PRText(event) {  indexL5S1PR = cycleText(event, textsL5S1PR, indexL5S1PR, buttonElementL5S1PR, updateBackgroundColor);  updateTexts();}
-function cycleL5S1PKText(event) {  indexL5S1PK = cycleText(event, textsL5S1PK, indexL5S1PK, buttonElementL5S1PK, updateBackgroundColor);  updateTexts();}
-function cycleL5S1LRText(event) {  indexL5S1LR = cycleText(event, textsL5S1LR, indexL5S1LR, buttonElementL5S1LR, updateBackgroundColor);  updateTexts();}
-function cycleL5S1LFText(event) {  indexL5S1LF = cycleText(event, textsL5S1LF, indexL5S1LF, buttonElementL5S1LF, updateBackgroundColor);  updateTexts();}
-
-function cycleS1LESText(event) {  indexS1LES = cycleText(event, textsS1LES, indexS1LES, buttonElementS1LES, updateBackgroundColor);  updateTexts(); }

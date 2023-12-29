@@ -1,8 +1,8 @@
 //buttons: ACdegenerace, ACsubluxace, Acromion, GHdegenerace, GHsubluxace, SASD, SC, Bankart, IGHL, RMsupra, RMsupraLokVert, RMsupraLokHoriz, RMinfra, RMsub, LHBT
 //checkboxes: SAprostor, SLAP, HS, LHBTsulkus, LHBTdisl
 
-var POPtext = document.getElementById("POPtext");
-var RESText = document.getElementById("RESText");
+var MRShoulderPOPText = document.getElementById("MRShoulderPOPText");
+var MRShoulderRESText = document.getElementById("MRShoulderRESText");
 var FINALText = document.getElementById("FINALText");
 
 function updateTexts() {
@@ -495,9 +495,16 @@ if (checkboxLHBTdisl.checked)  {
 }
 
 
-//POPIS
+//POPISY
 
-POPText.value = 
+MRShoulderNAMEText.value = Nadpis;
+
+MRShoulderINDText.value = indikace;
+
+MRShoulderSEKVText.value = "Rameno vyšetřeno v PDW FS, T1W, T2W. ";
+
+
+MRShoulderPOPText.value = 
 NaplnP + " " + VolnaTeliskaP + " " + ACsubluxaceP + " " + ACdegeneraceP + " " + AcromionP + " " + SAprostorP + "\n" + 
 GHdegeneraceP + " " + GHsubluxaceP + " " + IGHLP + " " + HSP + " " + SASDP + " " + SCP + "\n" +
 RMsupraFinalP + "\n" +
@@ -506,21 +513,20 @@ RMssFinalP + "\n" +
 LezeLabraFinalP + "\n" +
 LHBTP + " " + LHBTdislP + " " + LHBTsulkusP;
 	
-POPText.value = POPText.value.trim(); 
-POPText.value = POPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
-POPText.value = POPText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
-POPText.value = POPText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
-POPText.value = POPText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
-POPText.value = POPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
-POPText.value = POPText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
-POPText.value = POPText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
-POPText.value = POPText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
-POPText.value = POPText.value.replace(/  +/g, ' '); // dvojmezery
-POPText.value = POPText.value.replace(/^(\.+)/gm, ''); //odstraní tečku pokud je to první věc na řádce
+MRShoulderPOPText.value = MRShoulderPOPText.value.trim(); 
+MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
+MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
+MRShoulderPOPText.value = MRShoulderPOPText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
+MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
+MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
+MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
+MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
+MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
+MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/  +/g, ' '); // dvojmezery
+MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/^(\.+)/gm, ''); //odstraní tečku pokud je to první věc na řádce
 
 
-RESText.value = 
-"Závěr: " + "\n" +
+MRShoulderRESText.value = 
 NaplnR + " " + VolnaTeliskaR + " " + ACsubluxaceR + " " + ACdegeneraceR + " " + AcromionR + " " + SAprostorR + "\n" +
 GHdegeneraceR + " " + GHsubluxaceR + " " + IGHLR + " " +HSR + " " + SASDR + " " + SCR + "\n" + 
 RMsupraFinalR + "\n" +
@@ -529,56 +535,24 @@ RMssFinalR + "\n" +
 LezeLabraFinalR + "\n" +
 LHBTR + " " + LHBTdislR; 
 
-RESText.value = RESText.value.trim(); 
-RESText.value = RESText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
-RESText.value = RESText.value.replace(/^(\.+)/gm, ''); //odstraní tečku pokud je to první věc na řádce
-RESText.value = RESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
-RESText.value = RESText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
-RESText.value = RESText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
-RESText.value = RESText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
-RESText.value = RESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
-RESText.value = RESText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
-RESText.value = RESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
-RESText.value = RESText.value.replace(/  +/g, ' '); // dvojmezery
+MRShoulderRESText.value = MRShoulderRESText.value.trim(); 
+MRShoulderRESText.value = MRShoulderRESText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
+MRShoulderRESText.value = MRShoulderRESText.value.replace(/^(\.+)/gm, ''); //odstraní tečku pokud je to první věc na řádce
+MRShoulderRESText.value = MRShoulderRESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
+MRShoulderRESText.value = MRShoulderRESText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
+MRShoulderRESText.value = MRShoulderRESText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
+MRShoulderRESText.value = MRShoulderRESText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
+MRShoulderRESText.value = MRShoulderRESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
+MRShoulderRESText.value = MRShoulderRESText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
+MRShoulderRESText.value = MRShoulderRESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
+MRShoulderRESText.value = MRShoulderRESText.value.replace(/  +/g, ' '); // dvojmezery
 
 
-FINALText.value =
-Nadpis + "\n\n" +
-"Indikace: " + indikace + "\n\n" + 
-"Sekvence: Rameno vyšetřeno v cor, tra, sag PDW FS, cor T1W, sag T2W." + "\n\n" +
-POPText.value + "\n\n" + 
-RESText.value;
-
+if (MRShoulderRESText.value.trim() === "") {
+        MRShoulderRESText.value = "Bez patrné signifikantní patologie.";
+    }
 
 document.getElementById("indikace").addEventListener("input", updateTexts);
 }
 updateTexts();	
-
-function updateTextAndCycleText(event, texts, index, buttonElement, cycleFunc) {  cycleFunc(event);  updateTexts();}
-
-function cycleStranaText(event) {  indexStrana = cycleText(event, textsStrana, indexStrana, buttonElementStrana);  updateTexts();}
-function cycleNaplnText(event) {  indexNapln = cycleText(event, textsNapln, indexNapln, buttonElementNapln, updateBackgroundColor);  updateTexts();}
-function cycleACdegeneraceText(event) { indexACdegenerace = cycleText(event, textsACdegenerace, indexACdegenerace, buttonElementACdegenerace, updateBackgroundColor); updateTexts(); }
-function cycleACsubluxaceText(event) { indexACsubluxace = cycleText(event, textsACsubluxace, indexACsubluxace, buttonElementACsubluxace, updateBackgroundColor); updateTexts(); }
-function cycleAcromionText(event) { indexAcromion = cycleText(event, textsAcromion, indexAcromion, buttonElementAcromion, updateBackgroundColor); updateTexts(); }
-function cycleGHdegeneraceText(event) { indexGHdegenerace = cycleText(event, textsGHdegenerace, indexGHdegenerace, buttonElementGHdegenerace, updateBackgroundColor); updateTexts(); }
-function cycleGHsubluxaceText(event) { indexGHsubluxace = cycleText(event, textsGHsubluxace, indexGHsubluxace, buttonElementGHsubluxace, updateBackgroundColor); updateTexts(); }
-function cycleSASDText(event) { indexSASD = cycleText(event, textsSASD, indexSASD, buttonElementSASD, updateBackgroundColor); updateTexts(); }
-function cycleSCText(event) { indexSC = cycleText(event, textsSC, indexSC, buttonElementSC, updateBackgroundColor); updateTexts(); }
-function cycleBankartText(event) { indexBankart = cycleText(event, textsBankart, indexBankart, buttonElementBankart, updateBackgroundColor); updateTexts(); }
-function cycleIGHLText(event) { indexIGHL = cycleText(event, textsIGHL, indexIGHL, buttonElementIGHL, updateBackgroundColor); updateTexts(); }
-
-function cycleRMsupraText(event) { indexRMsupra = cycleText(event, textsRMsupra, indexRMsupra, buttonElementRMsupra, updateBackgroundColor); updateTexts(); }
-function cycleRMsupraLokVertText(event) { indexRMsupraLokVert = cycleText(event, textsRMsupraLokVert, indexRMsupraLokVert, buttonElementRMsupraLokVert, updateBackgroundColor); updateTexts(); }
-function cycleRMsupraLokHorizText(event) { indexRMsupraLokHoriz = cycleText(event, textsRMsupraLokHoriz, indexRMsupraLokHoriz, buttonElementRMsupraLokHoriz, updateBackgroundColor); updateTexts(); }
-
-function cycleRMinfraText(event) { indexRMinfra = cycleText(event, textsRMinfra, indexRMinfra, buttonElementRMinfra, updateBackgroundColor); updateTexts(); }
-function cycleRMinfraLokVertText(event) { indexRMinfraLokVert = cycleText(event, textsRMinfraLokVert, indexRMinfraLokVert, buttonElementRMinfraLokVert, updateBackgroundColor); updateTexts(); }
-function cycleRMinfraLokHorizText(event) { indexRMinfraLokHoriz = cycleText(event, textsRMinfraLokHoriz, indexRMinfraLokHoriz, buttonElementRMinfraLokHoriz, updateBackgroundColor); updateTexts(); }
-
-function cycleRMssText(event) { indexRMss = cycleText(event, textsRMss, indexRMss, buttonElementRMss, updateBackgroundColor); updateTexts(); }
-function cycleRMssLokVertText(event) { indexRMssLokVert = cycleText(event, textsRMssLokVert, indexRMssLokVert, buttonElementRMssLokVert, updateBackgroundColor); updateTexts(); }
-function cycleRMssLokHorizText(event) { indexRMssLokHoriz = cycleText(event, textsRMssLokHoriz, indexRMssLokHoriz, buttonElementRMssLokHoriz, updateBackgroundColor); updateTexts(); }
-
-function cycleLHBTText(event) { indexLHBT = cycleText(event, textsLHBT, indexLHBT, buttonElementLHBT, updateBackgroundColor); updateTexts(); }
 

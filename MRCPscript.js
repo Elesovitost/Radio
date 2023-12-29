@@ -922,36 +922,121 @@ var indexC7T1LF = 0;function cycleC7T1LFText(event) {  indexC7T1LF = cycleText(e
 var indexT1LES = 0;function cycleT1LESText(event) {  indexT1LES = cycleText(event, textsT1LES, indexT1LES, buttonElementT1LES, updateBackgroundColor);}
 
 
-// COPY
-
-var copyfinal = document.getElementById('copyfinal');
-var FINALText = document.getElementById('FINALText');
-
-copyfinal.addEventListener('click', function() {
-    navigator.clipboard.writeText(FINALText.value)
-    .then(() => {
-        FINALText.classList.add('highlight');
-
-        setTimeout(function() {
-            FINALText.classList.remove('highlight');
-        }, 100);
-    })
-    .catch(err => {
-    });
-});
-
-//UNHIDE POPISY
-
-var tmp = document.getElementById('tmp');
-var texts = document.getElementById('texts');
 
 
-tmp.addEventListener("click", function() {
-  if (texts.classList.contains("hidden")) {
-    texts.classList.remove("hidden");
-  } else {
-    texts.classList.add("hidden");
-  }
-});
+function updateTextAndCycleText(event, texts, index, buttonElement, cycleFunc) {  cycleFunc(event);  updateTexts();}
 
+function cycleOSAText(event) {  indexOSA = cycleText(event, textsOSA, indexOSA, buttonElementOSA);  updateTexts(); }
+function cycleLORDText(event) {  indexLORD = cycleText(event, textsLORD, indexLORD, buttonElementLORD);  updateTexts(); }
 
+function cycleC3KOMText(event) {  indexC3KOM = cycleText(event, textsC3KOM, indexC3KOM, buttonElementC3KOM, updateBackgroundColor);  updateTexts(); }
+function cycleC3LESText(event) {  indexC3LES = cycleText(event, textsC3LES, indexC3LES, buttonElementC3LES, updateBackgroundColor);  updateTexts(); }
+function cycleC3CCText(event) {  indexC3CC = cycleText(event, textsC3CC, indexC3CC, buttonElementC3CC, updateBackgroundColor);  updateTexts(); }
+function cycleC3LISDText(event) {  indexC3LISD = cycleText(event, textsC3LISD, indexC3LISD, buttonElementC3LISD);  updateTexts(); }
+function cycleC3SLText(event) {  indexC3SL = cycleText(event, textsC3SL, indexC3SL, buttonElementC3SL, updateBackgroundColor);  updateTexts(); }
+function cycleC34BHText(event) {  indexC34BH = cycleText(event, textsC34BH, indexC34BH, buttonElementC34BH, updateBackgroundColor);  updateTexts(); }
+function cycleC34DDText(event) {  indexC34DD = cycleText(event, textsC34DD, indexC34DD, buttonElementC34DD, updateBackgroundColor);  updateTexts(); }
+function cycleC34MODText(event) {  indexC34MOD = cycleText(event, textsC34MOD, indexC34MOD, buttonElementC34MOD, updateBackgroundColor);  updateTexts(); }
+function cycleC34HDText(event) {  indexC34HD = cycleText(event, textsC34HD, indexC34HD, buttonElementC34HD, updateBackgroundColor);  updateTexts(); }
+function cycleC34HERPFText(event) {  indexC34HERPF = cycleText(event, textsC34HERPF, indexC34HERPF, buttonElementC34HERPF, updateBackgroundColor);  updateTexts(); }
+function cycleC34HERPPText(event) {  indexC34HERPP = cycleText(event, textsC34HERPP, indexC34HERPP, buttonElementC34HERPP, updateBackgroundColor);  updateTexts(); }
+function cycleC34HERCText(event) {  indexC34HERC = cycleText(event, textsC34HERC, indexC34HERC, buttonElementC34HERC, updateBackgroundColor);  updateTexts(); }
+function cycleC34HERLPText(event) {  indexC34HERLP = cycleText(event, textsC34HERLP, indexC34HERLP, buttonElementC34HERLP, updateBackgroundColor);  updateTexts(); }
+function cycleC34HERLFText(event) {  indexC34HERLF = cycleText(event, textsC34HERLF, indexC34HERLF, buttonElementC34HERLF, updateBackgroundColor);  updateTexts(); }
+function cycleC34MIGText(event) {  indexC34MIG = cycleText(event, textsC34MIG, indexC34MIG, buttonElementC34MIG, updateBackgroundColor);  updateTexts(); }
+function cycleC34FAText(event) {  indexC34FA = cycleText(event, textsC34FA, indexC34FA, buttonElementC34FA, updateBackgroundColor);  updateTexts(); }
+function cycleC34PFText(event) {  indexC34PF = cycleText(event, textsC34PF, indexC34PF, buttonElementC34PF, updateBackgroundColor);  updateTexts();}
+function cycleC34PRText(event) {  indexC34PR = cycleText(event, textsC34PR, indexC34PR, buttonElementC34PR, updateBackgroundColor);  updateTexts();}
+function cycleC34PKText(event) {  indexC34PK = cycleText(event, textsC34PK, indexC34PK, buttonElementC34PK, updateBackgroundColor);  updateTexts();}
+function cycleC34LRText(event) {  indexC34LR = cycleText(event, textsC34LR, indexC34LR, buttonElementC34LR, updateBackgroundColor);  updateTexts();}
+function cycleC34LFText(event) {  indexC34LF = cycleText(event, textsC34LF, indexC34LF, buttonElementC34LF, updateBackgroundColor);  updateTexts();}
+
+function cycleC4KOMText(event) {  indexC4KOM = cycleText(event, textsC4KOM, indexC4KOM, buttonElementC4KOM, updateBackgroundColor);  updateTexts(); }
+function cycleC4LESText(event) {  indexC4LES = cycleText(event, textsC4LES, indexC4LES, buttonElementC4LES, updateBackgroundColor);  updateTexts(); }
+function cycleC4CCText(event) {  indexC4CC = cycleText(event, textsC4CC, indexC4CC, buttonElementC4CC, updateBackgroundColor);  updateTexts(); }
+function cycleC4LISDText(event) {  indexC4LISD = cycleText(event, textsC4LISD, indexC4LISD, buttonElementC4LISD);  updateTexts(); }
+function cycleC4SLText(event) {  indexC4SL = cycleText(event, textsC4SL, indexC4SL, buttonElementC4SL, updateBackgroundColor);  updateTexts(); }
+function cycleC45BHText(event) {  indexC45BH = cycleText(event, textsC45BH, indexC45BH, buttonElementC45BH, updateBackgroundColor);  updateTexts(); }
+function cycleC45DDText(event) {  indexC45DD = cycleText(event, textsC45DD, indexC45DD, buttonElementC45DD, updateBackgroundColor);  updateTexts(); }
+function cycleC45MODText(event) {  indexC45MOD = cycleText(event, textsC45MOD, indexC45MOD, buttonElementC45MOD, updateBackgroundColor);  updateTexts(); }
+function cycleC45HDText(event) {  indexC45HD = cycleText(event, textsC45HD, indexC45HD, buttonElementC45HD, updateBackgroundColor);  updateTexts(); }
+function cycleC45HERPFText(event) {  indexC45HERPF = cycleText(event, textsC45HERPF, indexC45HERPF, buttonElementC45HERPF, updateBackgroundColor);  updateTexts(); }
+function cycleC45HERPPText(event) {  indexC45HERPP = cycleText(event, textsC45HERPP, indexC45HERPP, buttonElementC45HERPP, updateBackgroundColor);  updateTexts(); }
+function cycleC45HERCText(event) {  indexC45HERC = cycleText(event, textsC45HERC, indexC45HERC, buttonElementC45HERC, updateBackgroundColor);  updateTexts(); }
+function cycleC45HERLPText(event) {  indexC45HERLP = cycleText(event, textsC45HERLP, indexC45HERLP, buttonElementC45HERLP, updateBackgroundColor);  updateTexts(); }
+function cycleC45HERLFText(event) {  indexC45HERLF = cycleText(event, textsC45HERLF, indexC45HERLF, buttonElementC45HERLF, updateBackgroundColor);  updateTexts(); }
+function cycleC45MIGText(event) {  indexC45MIG = cycleText(event, textsC45MIG, indexC45MIG, buttonElementC45MIG, updateBackgroundColor);  updateTexts(); }
+function cycleC45FAText(event) {  indexC45FA = cycleText(event, textsC45FA, indexC45FA, buttonElementC45FA, updateBackgroundColor);  updateTexts(); }
+function cycleC45PFText(event) {  indexC45PF = cycleText(event, textsC45PF, indexC45PF, buttonElementC45PF, updateBackgroundColor);  updateTexts();}
+function cycleC45PRText(event) {  indexC45PR = cycleText(event, textsC45PR, indexC45PR, buttonElementC45PR, updateBackgroundColor);  updateTexts();}
+function cycleC45PKText(event) {  indexC45PK = cycleText(event, textsC45PK, indexC45PK, buttonElementC45PK, updateBackgroundColor);  updateTexts();}
+function cycleC45LRText(event) {  indexC45LR = cycleText(event, textsC45LR, indexC45LR, buttonElementC45LR, updateBackgroundColor);  updateTexts();}
+function cycleC45LFText(event) {  indexC45LF = cycleText(event, textsC45LF, indexC45LF, buttonElementC45LF, updateBackgroundColor);  updateTexts();}
+
+function cycleC5KOMText(event) {  indexC5KOM = cycleText(event, textsC5KOM, indexC5KOM, buttonElementC5KOM, updateBackgroundColor);  updateTexts(); }
+function cycleC5LESText(event) {  indexC5LES = cycleText(event, textsC5LES, indexC5LES, buttonElementC5LES, updateBackgroundColor);  updateTexts(); }
+function cycleC5CCText(event) {  indexC5CC = cycleText(event, textsC5CC, indexC5CC, buttonElementC5CC, updateBackgroundColor);  updateTexts(); }
+function cycleC5LISDText(event) {  indexC5LISD = cycleText(event, textsC5LISD, indexC5LISD, buttonElementC5LISD);  updateTexts(); }
+function cycleC5SLText(event) {  indexC5SL = cycleText(event, textsC5SL, indexC5SL, buttonElementC5SL, updateBackgroundColor);  updateTexts(); }
+function cycleC56BHText(event) {  indexC56BH = cycleText(event, textsC56BH, indexC56BH, buttonElementC56BH, updateBackgroundColor);  updateTexts(); }
+function cycleC56DDText(event) {  indexC56DD = cycleText(event, textsC56DD, indexC56DD, buttonElementC56DD, updateBackgroundColor);  updateTexts(); }
+function cycleC56MODText(event) {  indexC56MOD = cycleText(event, textsC56MOD, indexC56MOD, buttonElementC56MOD, updateBackgroundColor);  updateTexts(); }
+function cycleC56HDText(event) {  indexC56HD = cycleText(event, textsC56HD, indexC56HD, buttonElementC56HD, updateBackgroundColor);  updateTexts(); }
+function cycleC56HERPFText(event) {  indexC56HERPF = cycleText(event, textsC56HERPF, indexC56HERPF, buttonElementC56HERPF, updateBackgroundColor);  updateTexts(); }
+function cycleC56HERPPText(event) {  indexC56HERPP = cycleText(event, textsC56HERPP, indexC56HERPP, buttonElementC56HERPP, updateBackgroundColor);  updateTexts(); }
+function cycleC56HERCText(event) {  indexC56HERC = cycleText(event, textsC56HERC, indexC56HERC, buttonElementC56HERC, updateBackgroundColor);  updateTexts(); }
+function cycleC56HERLPText(event) {  indexC56HERLP = cycleText(event, textsC56HERLP, indexC56HERLP, buttonElementC56HERLP, updateBackgroundColor);  updateTexts(); }
+function cycleC56HERLFText(event) {  indexC56HERLF = cycleText(event, textsC56HERLF, indexC56HERLF, buttonElementC56HERLF, updateBackgroundColor);  updateTexts(); }
+function cycleC56MIGText(event) {  indexC56MIG = cycleText(event, textsC56MIG, indexC56MIG, buttonElementC56MIG, updateBackgroundColor);  updateTexts(); }
+function cycleC56FAText(event) {  indexC56FA = cycleText(event, textsC56FA, indexC56FA, buttonElementC56FA, updateBackgroundColor);  updateTexts(); }
+function cycleC56PFText(event) {  indexC56PF = cycleText(event, textsC56PF, indexC56PF, buttonElementC56PF, updateBackgroundColor);  updateTexts();}
+function cycleC56PRText(event) {  indexC56PR = cycleText(event, textsC56PR, indexC56PR, buttonElementC56PR, updateBackgroundColor);  updateTexts();}
+function cycleC56PKText(event) {  indexC56PK = cycleText(event, textsC56PK, indexC56PK, buttonElementC56PK, updateBackgroundColor);  updateTexts();}
+function cycleC56LRText(event) {  indexC56LR = cycleText(event, textsC56LR, indexC56LR, buttonElementC56LR, updateBackgroundColor);  updateTexts();}
+function cycleC56LFText(event) {  indexC56LF = cycleText(event, textsC56LF, indexC56LF, buttonElementC56LF, updateBackgroundColor);  updateTexts();}
+
+function cycleC6KOMText(event) {  indexC6KOM = cycleText(event, textsC6KOM, indexC6KOM, buttonElementC6KOM, updateBackgroundColor);  updateTexts(); }
+function cycleC6LESText(event) {  indexC6LES = cycleText(event, textsC6LES, indexC6LES, buttonElementC6LES, updateBackgroundColor);  updateTexts(); }
+function cycleC6CCText(event) {  indexC6CC = cycleText(event, textsC6CC, indexC6CC, buttonElementC6CC, updateBackgroundColor);  updateTexts(); }
+function cycleC6LISDText(event) {  indexC6LISD = cycleText(event, textsC6LISD, indexC6LISD, buttonElementC6LISD);  updateTexts(); }
+function cycleC6SLText(event) {  indexC6SL = cycleText(event, textsC6SL, indexC6SL, buttonElementC6SL, updateBackgroundColor);  updateTexts(); }
+function cycleC67BHText(event) {  indexC67BH = cycleText(event, textsC67BH, indexC67BH, buttonElementC67BH, updateBackgroundColor);  updateTexts(); }
+function cycleC67DDText(event) {  indexC67DD = cycleText(event, textsC67DD, indexC67DD, buttonElementC67DD, updateBackgroundColor);  updateTexts(); }
+function cycleC67MODText(event) {  indexC67MOD = cycleText(event, textsC67MOD, indexC67MOD, buttonElementC67MOD, updateBackgroundColor);  updateTexts(); }
+function cycleC67HDText(event) {  indexC67HD = cycleText(event, textsC67HD, indexC67HD, buttonElementC67HD, updateBackgroundColor);  updateTexts(); }
+function cycleC67HERPFText(event) {  indexC67HERPF = cycleText(event, textsC67HERPF, indexC67HERPF, buttonElementC67HERPF, updateBackgroundColor);  updateTexts(); }
+function cycleC67HERPPText(event) {  indexC67HERPP = cycleText(event, textsC67HERPP, indexC67HERPP, buttonElementC67HERPP, updateBackgroundColor);  updateTexts(); }
+function cycleC67HERCText(event) {  indexC67HERC = cycleText(event, textsC67HERC, indexC67HERC, buttonElementC67HERC, updateBackgroundColor);  updateTexts(); }
+function cycleC67HERLPText(event) {  indexC67HERLP = cycleText(event, textsC67HERLP, indexC67HERLP, buttonElementC67HERLP, updateBackgroundColor);  updateTexts(); }
+function cycleC67HERLFText(event) {  indexC67HERLF = cycleText(event, textsC67HERLF, indexC67HERLF, buttonElementC67HERLF, updateBackgroundColor);  updateTexts(); }
+function cycleC67MIGText(event) {  indexC67MIG = cycleText(event, textsC67MIG, indexC67MIG, buttonElementC67MIG, updateBackgroundColor);  updateTexts(); }
+function cycleC67FAText(event) {  indexC67FA = cycleText(event, textsC67FA, indexC67FA, buttonElementC67FA, updateBackgroundColor);  updateTexts(); }
+function cycleC67PFText(event) {  indexC67PF = cycleText(event, textsC67PF, indexC67PF, buttonElementC67PF, updateBackgroundColor);  updateTexts();}
+function cycleC67PRText(event) {  indexC67PR = cycleText(event, textsC67PR, indexC67PR, buttonElementC67PR, updateBackgroundColor);  updateTexts();}
+function cycleC67PKText(event) {  indexC67PK = cycleText(event, textsC67PK, indexC67PK, buttonElementC67PK, updateBackgroundColor);  updateTexts();}
+function cycleC67LRText(event) {  indexC67LR = cycleText(event, textsC67LR, indexC67LR, buttonElementC67LR, updateBackgroundColor);  updateTexts();}
+function cycleC67LFText(event) {  indexC67LF = cycleText(event, textsC67LF, indexC67LF, buttonElementC67LF, updateBackgroundColor);  updateTexts();}
+
+function cycleC7KOMText(event) {  indexC7KOM = cycleText(event, textsC7KOM, indexC7KOM, buttonElementC7KOM, updateBackgroundColor);  updateTexts(); }
+function cycleC7LESText(event) {  indexC7LES = cycleText(event, textsC7LES, indexC7LES, buttonElementC7LES, updateBackgroundColor);  updateTexts(); }
+function cycleC7CCText(event) {  indexC7CC = cycleText(event, textsC7CC, indexC7CC, buttonElementC7CC, updateBackgroundColor);  updateTexts(); }
+function cycleC7LISDText(event) {  indexC7LISD = cycleText(event, textsC7LISD, indexC7LISD, buttonElementC7LISD);  updateTexts(); }
+function cycleC7SLText(event) {  indexC7SL = cycleText(event, textsC7SL, indexC7SL, buttonElementC7SL, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1BHText(event) {  indexC7T1BH = cycleText(event, textsC7T1BH, indexC7T1BH, buttonElementC7T1BH, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1DDText(event) {  indexC7T1DD = cycleText(event, textsC7T1DD, indexC7T1DD, buttonElementC7T1DD, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1MODText(event) {  indexC7T1MOD = cycleText(event, textsC7T1MOD, indexC7T1MOD, buttonElementC7T1MOD, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1HDText(event) {  indexC7T1HD = cycleText(event, textsC7T1HD, indexC7T1HD, buttonElementC7T1HD, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1HERPFText(event) {  indexC7T1HERPF = cycleText(event, textsC7T1HERPF, indexC7T1HERPF, buttonElementC7T1HERPF, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1HERPPText(event) {  indexC7T1HERPP = cycleText(event, textsC7T1HERPP, indexC7T1HERPP, buttonElementC7T1HERPP, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1HERCText(event) {  indexC7T1HERC = cycleText(event, textsC7T1HERC, indexC7T1HERC, buttonElementC7T1HERC, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1HERLPText(event) {  indexC7T1HERLP = cycleText(event, textsC7T1HERLP, indexC7T1HERLP, buttonElementC7T1HERLP, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1HERLFText(event) {  indexC7T1HERLF = cycleText(event, textsC7T1HERLF, indexC7T1HERLF, buttonElementC7T1HERLF, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1MIGText(event) {  indexC7T1MIG = cycleText(event, textsC7T1MIG, indexC7T1MIG, buttonElementC7T1MIG, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1FAText(event) {  indexC7T1FA = cycleText(event, textsC7T1FA, indexC7T1FA, buttonElementC7T1FA, updateBackgroundColor);  updateTexts(); }
+function cycleC7T1PFText(event) {  indexC7T1PF = cycleText(event, textsC7T1PF, indexC7T1PF, buttonElementC7T1PF, updateBackgroundColor);  updateTexts();}
+function cycleC7T1PRText(event) {  indexC7T1PR = cycleText(event, textsC7T1PR, indexC7T1PR, buttonElementC7T1PR, updateBackgroundColor);  updateTexts();}
+function cycleC7T1PKText(event) {  indexC7T1PK = cycleText(event, textsC7T1PK, indexC7T1PK, buttonElementC7T1PK, updateBackgroundColor);  updateTexts();}
+function cycleC7T1LRText(event) {  indexC7T1LR = cycleText(event, textsC7T1LR, indexC7T1LR, buttonElementC7T1LR, updateBackgroundColor);  updateTexts();}
+function cycleC7T1LFText(event) {  indexC7T1LF = cycleText(event, textsC7T1LF, indexC7T1LF, buttonElementC7T1LF, updateBackgroundColor);  updateTexts();}
+
+function cycleT1LESText(event) {  indexT1LES = cycleText(event, textsT1LES, indexT1LES, buttonElementT1LES, updateBackgroundColor);  updateTexts(); }

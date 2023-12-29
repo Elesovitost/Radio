@@ -207,33 +207,34 @@ buttonElementRMss.addEventListener("mousedown", function() {
     }
 });
 
-// COPY
 
-var copyfinal = document.getElementById('copyfinal');
-var FINALText = document.getElementById('FINALText');
-const StranaText = buttonElementStrana.innerText;
 
-copyfinal.addEventListener('click', function() {
-	
-	const StranaText = document.getElementById('StranaButton').innerText;
+function updateTextAndCycleText(event, texts, index, buttonElement, cycleFunc) {  cycleFunc(event);  updateTexts();}
 
-    // Check the value of StranaText
-    if (StranaText === "jakého?") {
-        alert("vyplnit stranu vyšetření"); // Show popup message
-        return; // Exit the function early
-    }
-	
-	
-    navigator.clipboard.writeText(FINALText.value)
-    .then(() => {
-        FINALText.classList.add('highlight');
+function cycleStranaText(event) {  indexStrana = cycleText(event, textsStrana, indexStrana, buttonElementStrana);  updateTexts();}
+function cycleNaplnText(event) {  indexNapln = cycleText(event, textsNapln, indexNapln, buttonElementNapln, updateBackgroundColor);  updateTexts();}
+function cycleACdegeneraceText(event) { indexACdegenerace = cycleText(event, textsACdegenerace, indexACdegenerace, buttonElementACdegenerace, updateBackgroundColor); updateTexts(); }
+function cycleACsubluxaceText(event) { indexACsubluxace = cycleText(event, textsACsubluxace, indexACsubluxace, buttonElementACsubluxace, updateBackgroundColor); updateTexts(); }
+function cycleAcromionText(event) { indexAcromion = cycleText(event, textsAcromion, indexAcromion, buttonElementAcromion, updateBackgroundColor); updateTexts(); }
+function cycleGHdegeneraceText(event) { indexGHdegenerace = cycleText(event, textsGHdegenerace, indexGHdegenerace, buttonElementGHdegenerace, updateBackgroundColor); updateTexts(); }
+function cycleGHsubluxaceText(event) { indexGHsubluxace = cycleText(event, textsGHsubluxace, indexGHsubluxace, buttonElementGHsubluxace, updateBackgroundColor); updateTexts(); }
+function cycleSASDText(event) { indexSASD = cycleText(event, textsSASD, indexSASD, buttonElementSASD, updateBackgroundColor); updateTexts(); }
+function cycleSCText(event) { indexSC = cycleText(event, textsSC, indexSC, buttonElementSC, updateBackgroundColor); updateTexts(); }
+function cycleBankartText(event) { indexBankart = cycleText(event, textsBankart, indexBankart, buttonElementBankart, updateBackgroundColor); updateTexts(); }
+function cycleIGHLText(event) { indexIGHL = cycleText(event, textsIGHL, indexIGHL, buttonElementIGHL, updateBackgroundColor); updateTexts(); }
 
-        setTimeout(function() {
-            FINALText.classList.remove('highlight');
-        }, 100);
-    })
-    .catch(err => {
-    });
-});
+function cycleRMsupraText(event) { indexRMsupra = cycleText(event, textsRMsupra, indexRMsupra, buttonElementRMsupra, updateBackgroundColor); updateTexts(); }
+function cycleRMsupraLokVertText(event) { indexRMsupraLokVert = cycleText(event, textsRMsupraLokVert, indexRMsupraLokVert, buttonElementRMsupraLokVert, updateBackgroundColor); updateTexts(); }
+function cycleRMsupraLokHorizText(event) { indexRMsupraLokHoriz = cycleText(event, textsRMsupraLokHoriz, indexRMsupraLokHoriz, buttonElementRMsupraLokHoriz, updateBackgroundColor); updateTexts(); }
+
+function cycleRMinfraText(event) { indexRMinfra = cycleText(event, textsRMinfra, indexRMinfra, buttonElementRMinfra, updateBackgroundColor); updateTexts(); }
+function cycleRMinfraLokVertText(event) { indexRMinfraLokVert = cycleText(event, textsRMinfraLokVert, indexRMinfraLokVert, buttonElementRMinfraLokVert, updateBackgroundColor); updateTexts(); }
+function cycleRMinfraLokHorizText(event) { indexRMinfraLokHoriz = cycleText(event, textsRMinfraLokHoriz, indexRMinfraLokHoriz, buttonElementRMinfraLokHoriz, updateBackgroundColor); updateTexts(); }
+
+function cycleRMssText(event) { indexRMss = cycleText(event, textsRMss, indexRMss, buttonElementRMss, updateBackgroundColor); updateTexts(); }
+function cycleRMssLokVertText(event) { indexRMssLokVert = cycleText(event, textsRMssLokVert, indexRMssLokVert, buttonElementRMssLokVert, updateBackgroundColor); updateTexts(); }
+function cycleRMssLokHorizText(event) { indexRMssLokHoriz = cycleText(event, textsRMssLokHoriz, indexRMssLokHoriz, buttonElementRMssLokHoriz, updateBackgroundColor); updateTexts(); }
+
+function cycleLHBTText(event) { indexLHBT = cycleText(event, textsLHBT, indexLHBT, buttonElementLHBT, updateBackgroundColor); updateTexts(); }
 
 
