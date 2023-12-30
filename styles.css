@@ -22,11 +22,14 @@ body {
 body {
     margin: 0;
     padding: 0;
+	min-height: 20px;
 }
 
 
+
+
 /* divs  */
-.standardwidth {max-width: 1000px; border: 1px solid black; padding: 3px; }
+.standardwidth {max-width: 1000px; border: 1px solid black; padding: 3px;}
 .standardwidthHALF {max-width: 496px; border: 1px solid black; padding: 3px; }
 .standardwidthV {max-width: 1000px; border-left: 1px solid black; border-right: 1px solid black; padding-left: 2px; padding-right: 2px; }
 .table-container {display: flex; align-items: flex-start; }
@@ -195,6 +198,9 @@ input {  border: 1px solid black; text-align: left; padding-left: 5px; border-ra
 
 .inputothers {box-sizing: border-box; width: 140px; }
 
+#INDIKACE .mydiv1.standardwidth input {
+  width: 400px;
+}
   
 /* COPY */
 

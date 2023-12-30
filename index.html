@@ -46,7 +46,31 @@
 </div>
 
 <div id="page-container">
+</div>
 
+<span style="display: inline-block; height: 20px; width: 100%;"></span>
+
+<div style="display: none;">
+&nbsp; NÁZEV <button id="copyNAME" class="button60">COPY</button>
+<textarea id="FINALNAMEText" class="FINALXXL" readonly></textarea>
+
+&nbsp; INDIKACE <button id="copyIND" class="button60">COPY</button>
+<textarea id="FINALINDText" class="FINALXXL" readonly></textarea>
+
+&nbsp; SEKVENCE <button id="copySEKV" class="button60">COPY</button>
+<textarea id="FINALSEKVText" class="FINALXXL" readonly></textarea>
+</div>
+
+<div id="texty1" class="standardwidth mydiv0" style="display: xnone;">
+<button id="copyPOP" class="button60">POPIS</button> 
+<textarea id="FINALPOPText" class="FINALXXL" readonly></textarea>
+<button id="copyRES" class="button60">ZÁVĚR</button> 
+<textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
+<button id="copyCOMP" class="button60">KOMPLETNÍ</button>
+</div>
+
+<div id="texty2" class="standardwidth mydiv0" style="display: none;"> 
+<textarea id="FINALCOMPLETEText" class="FINALXXL" readonly></textarea>
 </div>
 
 
@@ -88,6 +112,7 @@ function changePage(url) {
     iframe.style.width = "100%";
     iframe.style.border = "none";
     iframe.onload = function() {
+		 iframe.style.height = "0px";
         try {
             adjustIframeHeight(iframe); 
             bindEventsToIframe(iframe);
@@ -111,7 +136,6 @@ function changePage(url) {
 }
 
 
-
 function adjustIframeHeight(iframe) {
     var observer = new MutationObserver(function() {
         updateIframeHeight(iframe);
@@ -127,7 +151,7 @@ function adjustIframeHeight(iframe) {
 }
 
 function updateIframeHeight(iframe) {
-    var minHeight = 100; // Set this to whatever minimum height you deem appropriate
+    var minHeight = 10; // Set this to whatever minimum height you deem appropriate
     var iframeContentHeight = iframe.contentWindow.document.body.scrollHeight;
     iframe.style.height = Math.max(iframeContentHeight, minHeight) + 'px';
 }
@@ -295,30 +319,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 </script>
-
-
-<div style="display: none;">
-&nbsp; NÁZEV <button id="copyNAME" class="button60">COPY</button>
-<textarea id="FINALNAMEText" class="FINALXXL" readonly></textarea>
-
-&nbsp; INDIKACE <button id="copyIND" class="button60">COPY</button>
-<textarea id="FINALINDText" class="FINALXXL" readonly></textarea>
-
-&nbsp; SEKVENCE <button id="copySEKV" class="button60">COPY</button>
-<textarea id="FINALSEKVText" class="FINALXXL" readonly></textarea>
-</div>
-
-<div id="texty1" class="standardwidth mydiv0" style="display: xnone;">
-<button id="copyPOP" class="button60">POPIS</button> 
-<textarea id="FINALPOPText" class="FINALXXL" readonly></textarea>
-<button id="copyRES" class="button60">ZÁVĚR</button> 
-<textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
-<button id="copyCOMP" class="button60">KOMPLETNÍ</button>
-</div>
-
-<div id="texty2" class="standardwidth mydiv0" style="display: none;"> 
-<textarea id="FINALCOMPLETEText" class="FINALXXL" readonly></textarea>
-</div>
 
 
 </body>
