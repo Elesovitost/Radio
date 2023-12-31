@@ -1,14 +1,14 @@
-html {
+body {overflow: auto; scroll-behavior: smooth; font-Size: 12px; font-weight: bold;}
 
+body, button, input, textarea {
+    font-family: 'Tahoma', sans-serif;
 }
-body {
-    overflow: auto;
-
-}
-body {font-family: "Arial";  font-Size: 14px; font-weight: bold; scroll-behavior: smooth; }
 	
+
 #SEG1 {
-	max-width: 986px; background-color: #9DAAA2; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid black;
+	background-color: rgba(157, 170, 162, 0.5);
+	z-index: 3;
+	max-width: 986px; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid black;
 }
 
 .dropdown {float: right; position: relative; display: inline-block;}
@@ -29,18 +29,27 @@ body {font-family: "Arial";  font-Size: 14px; font-weight: bold; scroll-behavior
 /* divs  */
 .standardwidth {max-width: 1000px; border: 1px solid black; padding: 3px; }
 .mydiv0 {background-color: #D3DCE9; font-Size: 12px; font-weight: bold;}
-.page-container {display: flex; align-items: flex-start; max-width: 1020px; }
+.page-container {display: flex; align-items: flex-start; max-width: 1020px; min-height: 10 px; z-index: 2;}
+iframe, iframes {min-height: 10px; z-index: 2; background-color: white;} 
 
 
-button60 {font-Size: 12px; border-radius: 1px; border: 1px solid black; height: 18px; background-color: #EDEDED; width: 120px;text-align: center;}
+
+.button60 {font-Size: 12px; font-weight: bold; border-radius: 1px; border: 1px solid black; height: 18px; background-color: #EDCC8B; width: 100px;text-align: left;}
 
 textarea {width: 99%;  reSize: yes;  }
 
 
-.page-container.style.height="0px";
 
-@keyframes blink {0%, 100% { opacity: 1; } 50% { opacity: 0; }}
-.blinking {animation: blink 0.3s linear 1; /* Blink for 1 second, 1 times */}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.blinking { animation: blink 0.2s linear 1; /* Blink for 0.5 seconds, 2 times */ }
 
 
+
+
+.background-image {
+    position: absolute;
+    top: 0; /* Adjust as necessary */
+    left: 0; /* Adjust as necessary */
+    z-index: -1; /* Puts the image behind the content */
 }
+

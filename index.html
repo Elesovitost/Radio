@@ -19,7 +19,7 @@
 
 
 	<div class="dropdown">
-		<button class="dropbtn">Vyber vyšetření...</button>
+		<button class="dropbtn">VYBER VYŠETŘENÍ...</button>
 		<div class="dropdown-content">
 			<a href="#" onclick="changePage('FDGPET.html')">PET/CT/MR trupu</a>
 			<a href="#" onclick="changePage('NaFskelet.html')">NaF PET skeletu</a>
@@ -43,6 +43,11 @@
 		</div>
 	</div>
 	
+
+
+<img src="LOGO.jpg" alt="A beautiful landscape" class="background-image">
+
+	
 </div>
 
 <div id="page-container">
@@ -61,12 +66,12 @@
 <textarea id="FINALSEKVText" class="FINALXXL" readonly></textarea>
 </div>
 
-<div id="texty1" class="standardwidth mydiv0" style="display: xnone;">
+<div id="texty1" class="standardwidth mydiv0" style="display: ;">
 <button id="copyPOP" class="button60">POPIS</button> 
 <textarea id="FINALPOPText" class="FINALXXL" readonly></textarea>
 <button id="copyRES" class="button60">ZÁVĚR</button> 
 <textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
-<button id="copyCOMP" class="button60">KOMPLETNÍ NÁLEZ</button>
+<button id="copyCOMP" class="button60">KOMPLETNÍ</button>
 </div>
 
 <div id="texty2" class="standardwidth mydiv0" style="display: none;"> 
@@ -155,7 +160,7 @@ function updateIframeHeight(iframe) {
     // Remember the current scroll position
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    iframe.style.height = 'auto';
+    iframe.style.height = '0px';
     var minHeight = 10; // Minimum height
     var iframeContentHeight = iframe.contentWindow.document.body.scrollHeight;
     iframe.style.height = Math.max(iframeContentHeight, minHeight) + 'px';
@@ -292,10 +297,9 @@ function adjustTextareaHeight(textarea) {
 }
 
 
-// COPY
+// COPY and blink
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    // Function to add the copy functionality and blinking effect
     function setupCopyButton(buttonId, textAreaId) {
         var button = document.getElementById(buttonId);
         var textArea = document.getElementById(textAreaId);
@@ -305,10 +309,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
             .then(() => {
                 this.classList.add('blinking');
 
-                // Remove the class after the animation ends
                 setTimeout(() => {
                     this.classList.remove('blinking');
-                }, 3000); // 3 seconds, same as the duration of the animation
+                }, 1000); // Change to 1 second to match the CSS animation
             })
             .catch(err => {
                 console.error('Error copying text: ', err);
@@ -316,15 +319,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     }
 
-    // Setup for copyCOMP button
     setupCopyButton('copyCOMP', 'FINALCOMPLETEText');
-
-    // Setup for copyPOP button
     setupCopyButton('copyPOP', 'FINALPOPText');
-
-    // Setup for copyRES button
     setupCopyButton('copyRES', 'FINALRESText');
 });
+
 
 
 </script>

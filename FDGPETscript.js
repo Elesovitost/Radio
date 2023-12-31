@@ -109,6 +109,18 @@ document.addEventListener('click', function(event) {
     });
 });
 
+//input textareas resizable
+
+var InputTextAreas = document.querySelectorAll('.inputothers');
+InputTextAreas.forEach(function(InputTextArea) {
+    InputTextArea.addEventListener('input', function() {
+        // Reset the height to ensure correct calculation
+        this.style.height = 'auto';
+        // Set the height to the scrollHeight to fit the content
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+});
+
 // button tables overlay change color
 
 function isAnyCheckboxChecked(tableId) {
