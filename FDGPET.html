@@ -10,7 +10,7 @@
 <img id="chestsegImage" src="./picchestseg/chestseg-02.png" alt="chestseg" style="display: none;">
 
 <div id="FDGPET" class="standardwidth mydiv0" >
-<button id="PETTypeButton" class="Button80" onmousedown="cyclePETTypeText(event)">FDG</button> - PET / CT (MR)
+<button id="PETTypeButton" class="buttonSELECT" onmousedown="cyclePETTypeText(event)">FDG</button> - PET / CT (MR)
 <label class="CHB hidden"> + variabilně: MR <input type="checkbox" id="ChbMRrekta" onChange="updateTexts()"><span>+</span></label>
 </div>
 
@@ -256,7 +256,7 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbHeadMaxSinusFluidR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbHeadMaxSinusFluidL" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="HeadMaxSinusOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="HeadMaxSinusOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -279,7 +279,7 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbHeadAllTonsils" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="HeadTonsilsOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="HeadTonsilsOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -302,7 +302,7 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbParotidRresection" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbParotidLresection" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="NeckParotidOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="NeckParotidOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -338,7 +338,7 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbThyroidaviddiffuse" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="NeckThyroidOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="NeckThyroidOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -361,7 +361,7 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbNeckRradiation" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbNeckLradiation" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="NeckTreatmentOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="NeckTreatmentOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -659,7 +659,7 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbDevicesMalposition" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="ThoraxDevicesOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="ThoraxDevicesOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -690,7 +690,7 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbMammaReplaceR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMammaReplaceL" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="ThoraxMammaOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="ThoraxMammaOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -733,7 +733,7 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbLResectionR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbLResectionL" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="ThoraxLobectomyOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="ThoraxLobectomyOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -792,7 +792,7 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbThoraxParenchymaEmphysPanlob" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-			<td colspan="2" ><input id="ThoraxParenchymaOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+			<td colspan="2" ><textarea id="ThoraxParenchymaOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 		</tr>
 		</table>
 		</td>
@@ -823,7 +823,7 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbOesophAnastomosis" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="ThoraxOesophOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="ThoraxOesophOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -846,7 +846,7 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbThoraxThymusAct" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="ThoraxThymusOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="ThoraxThymusOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -869,7 +869,7 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbThoraxEmbolisationSevereR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbThoraxEmbolisationSevereL" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="ThoraxEmbolisationOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="ThoraxEmbolisationOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -1404,7 +1404,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbLiverResectionR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbLiverResectionL" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="AbdomenLiverOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="AbdomenLiverOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -1435,7 +1435,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbGallbladderEctomy" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2"><input id="GallbladderOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2"><input id="GallbladderOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -1474,7 +1474,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbSpleenEctomy" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="AbdomenSpleenOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="AbdomenSpleenOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -1505,7 +1505,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbStomachGastrectomyTot" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="AbdomenStomachOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="AbdomenStomachOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -1540,7 +1540,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbPancreasEctomy" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="AbdomenPancreasOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="AbdomenPancreasOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -1580,7 +1580,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"><input id="AbdomenAdrenalOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2"><input id="AbdomenAdrenalOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -1643,7 +1643,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbKidneysEctomyR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbKidneysEctomyL" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2"><input id="AbdomenKidneysOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2"><input id="AbdomenKidneysOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -1682,7 +1682,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
                 <td class="right"><label class="CHB"><input type="checkbox" id="ChbColonInfiltrate" onChange="updateTexts()"><span>+</span></label></td>
             </tr>
             <tr>
-                <td colspan="2"><input id="AbdomenColonOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+                <td colspan="2"><input id="AbdomenColonOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
             </tr>
         </table>
         </td>
@@ -1716,7 +1716,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
                 <td class="right"><label class="CHB"><input type="checkbox" id="ChbBladderEctomy" onChange="updateTexts()"><span>+</span></label></td>
             </tr>
             <tr>
-                <td colspan="2"><input id="AbdomenBladderOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+                <td colspan="2"><input id="AbdomenBladderOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
             </tr>
         </table>
         </td>
@@ -1743,7 +1743,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
                 <td class="right"><label class="CHB"><input type="checkbox" id="ChbUterusEctomy" onChange="updateTexts()"><span>+</span></label></td>
             </tr>
             <tr>
-                <td colspan="2"><input id="AbdomenUterusOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+                <td colspan="2"><input id="AbdomenUterusOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
             </tr>
         </table>
         </td>
@@ -1766,7 +1766,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
                 <td class="right"><label class="CHB"><input type="checkbox" id="ChbOvariesCystR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbOvariesCystL" onChange="updateTexts()"><span>L</span></label></td>
             </tr>
             <tr>
-                <td colspan="2"><input id="AbdomenOvariesOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+                <td colspan="2"><input id="AbdomenOvariesOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
             </tr>
         </table>
         </td>
@@ -1797,7 +1797,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
                 <td class="right"><label class="CHB"><input type="checkbox" id="ChbProstateEctomy" onChange="updateTexts()"><span>+</span></label></td>
             </tr>
             <tr>
-                <td colspan="2"><input id="AbdomenProstateOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+                <td colspan="2"><input id="AbdomenProstateOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
             </tr>
         </table>
         </td>
@@ -1820,7 +1820,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbTestesHydroceleR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbTestesHydroceleL" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2"><input id="AbdomenTestesOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2"><input id="AbdomenTestesOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -1865,7 +1865,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
                 </td>
             </tr>
 			<tr>
-				<td colspan="2"><input id="AbdomenWallOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2"><input id="AbdomenWallOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
         </table>
         </td>
@@ -2042,7 +2042,7 @@ DALŠÍ <button id="SkeletonNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletonEnostosis" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbSkeletonEnostosisM" onChange="updateTexts()"><span>++</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="SkeletonActivityOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="SkeletonActivityOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -2065,14 +2065,14 @@ DALŠÍ <button id="SkeletonNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletSurgVertC" onChange="updateTexts()"><span>C</span></label><label class="CHB"><input type="checkbox" id="ChbSkeletSurgVertT" onChange="updateTexts()"><span>T</span></label><label class="CHB"><input type="checkbox" id="ChbSkeletSurgVertL" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="SkeletSurgVertLoc" type="text" placeholder="kde..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="SkeletSurgVertLoc" type="text" placeholder="kde..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 			<tr>
 				<td>TEP kyčle</td>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletSurgTEPR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbSkeletSurgTEPL" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="SkeletSurgOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="SkeletSurgOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -2091,14 +2091,14 @@ DALŠÍ <button id="SkeletonNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletTraumaRecent" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="SkeletTraumaRecentOther" type="text" placeholder="kde..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="SkeletTraumaRecentOther" type="text" placeholder="kde..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 			<tr>
 				<td>Starší (FDG-)</td>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletTraumaOlder" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="SkeletTraumaOlderOther" type="text" placeholder="kde..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="SkeletTraumaOlderOther" type="text" placeholder="kde..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -2125,7 +2125,7 @@ DALŠÍ <button id="SkeletonNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletDegenerHipR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbSkeletDegenerHipL" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="SkeletDegenerOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="SkeletDegenerOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -2176,7 +2176,7 @@ DALŠÍ <button id="SkeletonNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletJointsPolyMyaR" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><textarea id="SkeletJointsOther" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></textarea></td>
+				<td colspan="2" ><textarea id="SkeletJointsOther" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>

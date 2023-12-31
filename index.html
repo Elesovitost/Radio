@@ -325,9 +325,96 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
-
 </script>
 
+    <style>
+        .palette {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+        }
+        .color-swatch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .color-box {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+        .color-name {
+            margin-bottom: 10px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+	
+<div class="palette">
+    <!-- Color Swatch 1 -->
+    <div class="color-swatch">
+        <div class="color-box" style="background-color: #FFD6A5;"></div>
+        <span class="color-name">#FFD6A5</span>
+        <div class="color-box" style="background-color: #b38667;"></div>
+        <span class="color-name">#b38667</span>
+    </div>
+    <!-- Color Swatch 2 -->
+    <div class="color-swatch">
+        <div class="color-box" style="background-color: #f9f9f9;"></div>
+        <span class="color-name">#f9f9f9</span>
+        <div class="color-box" style="background-color: #333333;"></div>
+        <span class="color-name">#333333</span>
+    </div>
+    <!-- Color Swatch 3 -->
+    <div class="color-swatch">
+        <div class="color-box" style="background-color: #FFADAD;"></div>
+        <span class="color-name">#FFADAD</span>
+        <div class="color-box" style="background-color: #885555;"></div>
+        <span class="color-name">#885555</span>
+    </div>
+    <!-- Color Swatch 4 -->
+    <div class="color-swatch">
+        <div class="color-box" style="background-color: #EDCC8B;"></div>
+        <span class="color-name">#EDCC8B</span>
+        <div class="color-box" style="background-color: #997a58;"></div>
+        <span class="color-name">#997a58</span>
+    </div>
+    <!-- Color Swatch 5 -->
+    <div class="color-swatch">
+        <div class="color-box" style="background-color: #D3DCE9;"></div>
+        <span class="color-name">#D3DCE9</span>
+        <div class="color-box" style="background-color: #5b6378;"></div>
+        <span class="color-name">#5b6378</span>
+    </div>
+    <!-- Color Swatch 6 -->
+    <div class="color-swatch">
+        <div class="color-box" style="background-color: #DDD5D5;"></div>
+        <span class="color-name">#DDD5D5</span>
+        <div class="color-box" style="background-color: #595959;"></div>
+        <span class="color-name">#595959</span>
+    </div>
+    <!-- Color Swatch 7 -->
+    <div class="color-swatch">
+        <div class="color-box" style="background-color: #E8E1D5;"></div>
+        <span class="color-name">#E8E1D5</span>
+        <div class="color-box" style="background-color: #6b6457;"></div>
+        <span class="color-name">#6b6457</span>
+    </div>
+    <!-- Color Swatch 8 -->
+    <div class="color-swatch">
+        <div class="color-box" style="background-color: #EDEDED;"></div>
+        <span class="color-name">#EDEDED</span>
+        <div class="color-box" style="background-color: #424242;"></div>
+        <span class="color-name">#424242</span>
+    </div>
+</div>	
 
 </body>
 

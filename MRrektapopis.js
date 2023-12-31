@@ -125,8 +125,6 @@ var locationsLNReg = [
     ];
     
     var inputsLNReg = [
-        document.getElementById("RectTuLNExtR"),
-        document.getElementById("RectTuLNExtL"),
         document.getElementById("RectTuLNIntR"),
         document.getElementById("RectTuLNIntL"),
 		document.getElementById("RectTuLNObturR"),
