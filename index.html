@@ -138,7 +138,7 @@ function changePage(url) {
 
 function adjustIframeHeight(iframe) {
     var observer = new MutationObserver(function() {
-        updateIframeHeight(iframe);
+        forceRefreshIframeHeight(iframe);
     });
 
     observer.observe(iframe.contentWindow.document.body, {
@@ -147,14 +147,20 @@ function adjustIframeHeight(iframe) {
         subtree: true
     });
 
-    updateIframeHeight(iframe);
+    setInterval(function() {
+        forceRefreshIframeHeight(iframe);
+    }, 1000); // Adjust the interval as needed
+
+    forceRefreshIframeHeight(iframe);
 }
 
-function updateIframeHeight(iframe) {
-    var minHeight = 10; // Set this to whatever minimum height you deem appropriate
+function forceRefreshIframeHeight(iframe) {
+    iframe.style.height = '0px'; // Temporarily collapse the iframe
     var iframeContentHeight = iframe.contentWindow.document.body.scrollHeight;
+    var minHeight = 10;
     iframe.style.height = Math.max(iframeContentHeight, minHeight) + 'px';
 }
+
 
 
 function bindEventsToIframe(iframe) {

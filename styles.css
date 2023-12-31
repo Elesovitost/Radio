@@ -30,9 +30,11 @@ body {
 
 /* divs  */
 .standardwidth {max-width: 1000px; border: 1px solid black; padding: 3px;}
-.standardwidthHALF {max-width: 496px; border: 1px solid black; padding: 3px; }
+.standardwidthHALF {max-width: 496px; border: 1px solid black; padding: 3px; flex-grow: 1;}
 .standardwidthV {max-width: 1000px; border-left: 1px solid black; border-right: 1px solid black; padding-left: 2px; padding-right: 2px; }
 .table-container {display: flex; align-items: flex-start; }
+
+#indikace {width: 100%;box-sizing: border-box; }
 
 /* vzhled  */
 .mydiv0 {background-color: #D3DCE9; font-Size: 13; font-weight: bold;}
@@ -143,7 +145,7 @@ tr { height: 20px;}
 
 .center-content {display: flex;justify-content: center;align-items: center;}
 
-.overlay { position: fixed; z-index: 10; background-color: white; border: 0px solid black; }
+.overlay { position: absolute; z-index: 10; background-color: white; border: 0px solid black; }
 .overlay td { background-color: white; box-sizing: border-box;}
 .overlay table { background-color: white; border: 1px solid black; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
 
