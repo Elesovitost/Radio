@@ -11,7 +11,7 @@
 <img id="chestsegImage" src="./picchestseg/chestseg-02.png" alt="chestseg" style="display: none;">
 
 <div id="FDGPET" class="standardwidth mydiv0" >
-<button id="PETTypeButton" class="Button50" onmousedown="cyclePETTypeText(event)">FDG</button> - PET / CT (MR)
+<button id="PETTypeButton" class="Button80" onmousedown="cyclePETTypeText(event)">FDG</button> - PET / CT (MR)
 <label class="CHB hidden"> + variabilně: MR <input type="checkbox" id="ChbMRrekta" onChange="updateTexts()"><span>+</span></label>
 </div>
 
@@ -2191,10 +2191,11 @@ DALŠÍ <button id="SkeletonNewOther1" class="myButtonO">x</button>
 
 
 <div id="texty1" class=" standardwidth mydiv0 hideonline">
-&nbsp; POPIS <button id="copyPOP" class="button60">copy</button>
+NÁZEV<textarea id="PETCTNAMEText" class="medium"></textarea>
+INDIKACE<textarea id="PETCTINDText" class="medium"></textarea>
+POPIS <button id="copyPOP" class="button60">copy</button>
 <textarea id="POPText" class="superlarge" readonly></textarea>
-
-&nbsp; ZÁVĚR <button id="copyRES" class="button60">copy</button> <label class="CHB" style="float: right;"> &nbsp;&nbsp;&nbsp; Alt<input type="checkbox" id="ChbMAAlt" onChange="updateTexts()"><span>+</span></label> <label class="CHB" style="float: right;">bez nových ložisek<input type="checkbox" id="ChbNoNew" onChange="updateTexts()"><span>+</span></label>
+ZÁVĚR <button id="copyRES" class="button60">copy</button> <label class="CHB" style="float: right;"> &nbsp;&nbsp;&nbsp; Alt<input type="checkbox" id="ChbMAAlt" onChange="updateTexts()"><span>+</span></label> <label class="CHB" style="float: right;">bez nových ložisek<input type="checkbox" id="ChbNoNew" onChange="updateTexts()"><span>+</span></label>
 <textarea id="RESText" class="large" readonly></textarea>
 </div>
 

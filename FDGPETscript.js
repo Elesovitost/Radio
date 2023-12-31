@@ -73,7 +73,7 @@ function updateBackgroundColor(index, buttonElement, color1 = "transparent", col
   buttonElement.style.backgroundColor = index === 0 ? color1 : color2;
 }
 
-var textsPETType = ["FDG", "PSMA", "???"];
+var textsPETType = ["FDG", "PSMA", "DOTATOC"];
 var buttonElementPETType = document.getElementById("PETTypeButton");
 var indexPETType = 0;function cyclePETTypeText(event) {  indexPETType = cycleText(event, textsPETType, indexPETType, buttonElementPETType, updateBackgroundColor);}
 

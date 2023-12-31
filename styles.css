@@ -39,7 +39,7 @@ body {
 /* vzhled  */
 .mydiv0 {background-color: #D3DCE9; font-Size: 13; font-weight: bold;}
 .mydiv1 {background-color: #DDD5D5;}
-.DIVLesions {background-color: #E8E1D5; padding: 2px; font-Size: 12;}
+.DIVLesions {background-color: ; padding: 2px; font-Size: 12;}
 
 body {font-family: "Arial";  font-Size: 10px; }
 
@@ -114,7 +114,7 @@ body {font-family: "Arial";  font-Size: 10px; }
 
 
 #MRLPshape body {font-family: "Arial", sans-serif; font-size: 12px; font-weight: bold; }
-#MRLPshape table {border-collapse: collapse;border: 0px solid black; font-weight: bold; background-color: E8E1D5;}
+#MRLPshape table {border-collapse: collapse;border: 0px solid black; font-weight: bold; background-color: ;}
 #MRLPshape td {border: 1px #E8DF90;}
 
 #NADPISY0 {color:black;  text-align: center; font-weight: bold; border: 0px solid black; border-bottom: none;}

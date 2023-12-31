@@ -8,9 +8,10 @@
 <div id="MRLPshape">
 
 <div id="MRLP" class="mydiv0 standardwidth">MR BEDERNÍ PÁTEŘE</div>
-<div id="INDLINE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off" class="standardwidth"></div>
+<div id="INDLINE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
 <div id="OSYLINE" class="standardwidth">
 	<div class="DIVLesions">
+		<button class="title">OBECNÉ</button>
 		Osa  <button id="myOSAButton" class="button40" onmousedown="cycleOSAText(event)">|</button>
 		Lordóza <button id="myLORDButton" class="button40" onmousedown="cycleLORDText(event)">(</button>
 		Operace <label class="CHB"><input type="checkbox" class="mycheckbox" id="operace" onchange="toggleLastCells()"/><span>+</span></label>
@@ -18,6 +19,7 @@
 </div>
 <div id="TABULKAdiv" class="standardwidth"">
 <div class="DIVLesions">
+	<button class="title">SEGMENTY</button>
 	<table id="TABULKA" style="font-size: 12px;">
 	<tr id="NADPISY0">
         <th></th>
@@ -334,8 +336,6 @@
 </div>
 </div>
 
-<div id="OSTATNILINE" class="mydiv1 standardwidth">
-</div>
 
 <div id="texty1" class=" standardwidth hidden">
 NÁZEV<textarea id="MRLumbarNAMEText" class="medium"></textarea>

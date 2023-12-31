@@ -5,7 +5,7 @@
 
 function updateTexts() {
 
-
+var indikace = document.getElementById("indikace").value;
 
 // universal SUV
 
@@ -205,12 +205,16 @@ if (ObecneTexts.trim() === "") {
 
 const PETTypeText = buttonElementPETType.innerText;
 
+if (PETTypeText === "FDG") {
+ nazev = "FDG-PET/CT(MR) trupu"; 
+}
 if (PETTypeText === "PSMA") {
  ObecneNativeText = "Nativní text pro PSMA."; 
+ nazev = "PSMA-PET/CT(MR) trupu"; 
 }
-
-if (PETTypeText === "???") {
- ObecneNativeText = "Nativní text pro ???."; 
+if (PETTypeText === "DOTATOC") {
+ ObecneNativeText = "Nativní text pro DOTATOC."; 
+ nazev = "DOTATOC-PET/CT(MR) trupu"; 
 }
 
 // NECK	
@@ -2918,6 +2922,10 @@ if (SUVLiver === "" && SUVLiverPrevious === "") {
 
 	
 // POPIS
+
+PETCTNAMEText.value = nazev;
+
+PETCTINDText.value = indikace; document.getElementById("indikace").addEventListener("input", updateTexts);
 
 var POPText = document.getElementById("POPText"); 
 	
