@@ -75,6 +75,7 @@
 
 
 <script>
+
 document.addEventListener('DOMContentLoaded', function() {
     setupRefreshOnAction(document);
 
@@ -151,10 +152,18 @@ function adjustIframeHeight(iframe) {
 }
 
 function updateIframeHeight(iframe) {
-    var minHeight = 10; // Set this to whatever minimum height you deem appropriate
+    // Remember the current scroll position
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    iframe.style.height = 'auto';
+    var minHeight = 10; // Minimum height
     var iframeContentHeight = iframe.contentWindow.document.body.scrollHeight;
     iframe.style.height = Math.max(iframeContentHeight, minHeight) + 'px';
+
+    // Restore the scroll position
+    window.scrollTo(0, scrollTop);
 }
+
 
 
 function bindEventsToIframe(iframe) {
