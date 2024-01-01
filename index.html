@@ -5,17 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="index.css">
-	
-<style> 
 
-</style>  
+<link rel="stylesheet" href="styles.css">
+
 
 </head>
 
 <body>
 
+
+
 <div id="SEG1">
+<button id="modeSwitch">Toggle Dark/Light Mode</button>
 
 
 	<div class="dropdown">
@@ -45,7 +46,7 @@
 	
 
 
-<img src="LOGO.jpg" alt="A beautiful landscape" class="background-image">
+<img src="LOGO.png" alt="A beautiful landscape" class="background-image">
 
 	
 </div>
@@ -56,22 +57,22 @@
 <span style="display: inline-block; height: 20px; width: 100%;"></span>
 
 <div style="display: none;">
-&nbsp; NÁZEV <button id="copyNAME" class="button60">COPY</button>
+&nbsp; NÁZEV <button id="copyNAME" class="buttonTEXT">COPY</button>
 <textarea id="FINALNAMEText" class="FINALXXL" readonly></textarea>
 
-&nbsp; INDIKACE <button id="copyIND" class="button60">COPY</button>
+&nbsp; INDIKACE <button id="copyIND" class="buttonTEXT">COPY</button>
 <textarea id="FINALINDText" class="FINALXXL" readonly></textarea>
 
-&nbsp; SEKVENCE <button id="copySEKV" class="button60">COPY</button>
+&nbsp; SEKVENCE <button id="copySEKV" class="buttonTEXT">COPY</button>
 <textarea id="FINALSEKVText" class="FINALXXL" readonly></textarea>
 </div>
 
 <div id="texty1" class="standardwidth mydiv0" style="display: ;">
-<button id="copyPOP" class="button60">POPIS</button> 
+<button id="copyPOP" class="buttonTEXT">POPIS</button> 
 <textarea id="FINALPOPText" class="FINALXXL" readonly></textarea>
-<button id="copyRES" class="button60">ZÁVĚR</button> 
+<button id="copyRES" class="buttonTEXT">ZÁVĚR</button> 
 <textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
-<button id="copyCOMP" class="button60">KOMPLETNÍ</button>
+<button id="copyCOMP" class="buttonTEXT">KOMPLETNÍ</button>
 </div>
 
 <div id="texty2" class="standardwidth mydiv0" style="display: none;"> 
@@ -79,7 +80,52 @@
 </div>
 
 
+
+
 <script>
+function injectDarkModeStyles() {
+    var darkModeStyles = `
+        body {
+            --text-color: #FFFFFF;
+            --standard-button: #4E5D78;
+            --checked-button: #875C5A;
+            --alt-background: #2E2E2E;
+            --title-color: #F0B67F;
+            --important-marking: #FF686B;
+            --main-background: #121212;
+        }
+    `;
+
+    var styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = darkModeStyles;
+    document.head.appendChild(styleSheet);
+}
+
+function toggleDarkMode() {
+    if (document.body.classList.contains('dark-mode')) {
+        // Remove dark mode
+        document.body.classList.remove('dark-mode');
+        document.querySelectorAll('style').forEach(style => {
+            if (style.innerText.includes('--text-color: #FFFFFF')) {
+                style.remove();
+            }
+        });
+    } else {
+        // Apply dark mode
+        injectDarkModeStyles();
+        document.body.classList.add('dark-mode');
+    }
+}
+
+document.getElementById('modeSwitch').addEventListener('click', toggleDarkMode);
+
+
+
+
+
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
     setupRefreshOnAction(document);

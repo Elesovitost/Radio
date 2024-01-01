@@ -1,21 +1,21 @@
-body {overflow: auto; scroll-behavior: smooth; font-Size: 12px; font-weight: bold;}
+body {overflow: auto; scroll-behavior: smooth; font-Size: 12px; font-weight: bold; background-color: #FFFFFF;}
 
 body, button, input, textarea {
-    font-family: 'Tahoma', sans-serif;
+    font-family: 'Tahoma', sans-serif; color: #000000;
 }
 	
 
 #SEG1 {
 	background-color: rgba(157, 170, 162, 0.5);
 	z-index: 3;
-	max-width: 986px; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid black;
+	max-width: 986px; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid #000000;
 }
 
 .dropdown {float: right; position: relative; display: inline-block;}
-	.dropbtn {background-color: #FFD6A5; width: 140px; height: 26px; color: black; padding: 3px; font-size: 14px; border: 1 px; cursor: pointer; margin-bottom: 2px;}
+	.dropbtn {background-color: #FFD6A5; width: 140px; height: 26px; color: #000000; padding: 3px; font-size: 14px; border: 1 px; cursor: pointer; margin-bottom: 2px;}
 	.dropbtn::before {content: ''; position: absolute; top: -2px; right: -2px; bottom: -2px; left: -2px; z-index: 2;}
-	.dropdown-content {display: none; position: absolute; background-color: #f9f9f9; min-width: 140px; border: 1px solid black; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 3;}
-	.dropdown-content a {color: black; padding: 3px 3px; text-decoration: none; display: block;}
+	.dropdown-content {display: none; position: absolute; background-color: #f9f9f9; min-width: 140px; border: 1px solid #000000; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 3;}
+	.dropdown-content a {color: #000000; padding: 3px 3px; text-decoration: none; display: block;}
 	.dropdown:hover .dropdown-content {display: block;}
 	.dropdown-content a:hover {background-color: #FFADAD;}
 	.dropdown:hover .dropbtn {background-color: #EDCC8B;}
@@ -23,26 +23,25 @@ body, button, input, textarea {
 		
 
 
-.remove-button {display: block; margin: 5px 0px 0px 0px; width: 20px; background-color: #FFADAD; color: black; border: 1px solid black; padding: 0px 0px; cursor: pointer;	}
+.remove-button {display: block; margin: 5px 0px 0px 0px; width: 20px; background-color: #FFADAD; color: #000000; border: 1px solid #000000; padding: 0px 0px; cursor: pointer;	}
 
 
 /* divs  */
-.standardwidth {max-width: 1000px; border: 1px solid black; padding: 3px; }
+.standardwidth {max-width: 1000px; border: 1px solid #000000; padding: 3px; }
 .mydiv0 {background-color: #D3DCE9; font-Size: 12px; font-weight: bold;}
 .page-container {display: flex; align-items: flex-start; max-width: 1020px; min-height: 10 px; z-index: 2;}
-iframe, iframes {min-height: 10px; z-index: 2; background-color: white;} 
+iframe, iframes {min-height: 10px; z-index: 2; background-color: #FFFFFF;} 
 
 
 
-.button60 {font-Size: 12px; font-weight: bold; border-radius: 1px; border: 1px solid black; height: 18px; background-color: #EDCC8B; width: 100px;text-align: left;}
+.button60 {font-Size: 12px; font-weight: bold; border-radius: 1px; border: 1px solid #000000; height: 18px; background-color: #EDCC8B; width: 100px;text-align: left;}
 
-textarea {width: 99%;  reSize: none;  }
+textarea {width: 99%;  reSize: none; background-color: #FFFFFF; }
 
 
 
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 .blinking { animation: blink 0.2s linear 1; /* Blink for 0.5 seconds, 2 times */ }
-
 
 
 

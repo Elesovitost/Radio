@@ -23,18 +23,44 @@ body {
     margin: 0;
     padding: 0;
 	min-height: 20px;
+	background-color: #FFFFFF;
 }
 
 body, button, input, textarea {
-    font-family: 'Tahoma', sans-serif;
+    font-family: 'Tahoma', sans-serif; color: #000000; scroll-behavior: smooth;
 }
+
+/* SEGMENT UPPER  */
+#SEG1 {
+	background-color: rgba(157, 170, 162, 0.5);
+	z-index: 3;
+	max-width: 986px; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid #000000;
+}
+
+
+/* DROPDOWN MENU UPPER */
+.dropdown {float: right; position: relative; display: inline-block;}
+	.dropbtn {background-color: #FFD6A5; width: 140px; height: 26px; color: #000000; padding: 3px; font-size: 14px; border: 1 px; cursor: pointer; margin-bottom: 2px;}
+	.dropbtn::before {content: ''; position: absolute; top: -2px; right: -2px; bottom: -2px; left: -2px; z-index: 2;}
+	.dropdown-content {display: none; position: absolute; background-color: #f9f9f9; min-width: 140px; border: 1px solid #000000; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 3;}
+	.dropdown-content a {color: #000000; padding: 3px 3px; text-decoration: none; display: block;}
+	.dropdown:hover .dropdown-content {display: block;}
+	.dropdown-content a:hover {background-color: #FFADAD;}
+	.dropdown:hover .dropbtn {background-color: #EDCC8B;}
+				
+.remove-button {display: block; margin: 5px 0px 0px 0px; width: 20px; background-color: #FFADAD; color: #000000; border: 1px solid #000000; padding: 0px 0px; cursor: pointer;	}
+
+
+/* IFRAMES   */
+.page-container {display: flex; align-items: flex-start; max-width: 1020px; min-height: 10 px; z-index: 2;}
+iframe, iframes {min-height: 10px; z-index: 2; background-color: #FFFFFF;} 
 
 
 
 /* divs  */
-.standardwidth {max-width: 1000px; border: 1px solid black; padding: 3px;}
-.standardwidthHALF {max-width: 496px; border: 1px solid black; padding: 3px; flex-grow: 1;}
-.standardwidthV {max-width: 1000px; border-left: 1px solid black; border-right: 1px solid black; padding-left: 2px; padding-right: 2px; }
+.standardwidth {max-width: 1000px; border: 1px solid #000000; padding: 3px;}
+.standardwidthHALF {max-width: 496px; border: 1px solid #000000; padding: 3px; flex-grow: 1;}
+.standardwidthV {max-width: 1000px; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-left: 2px; padding-right: 2px; }
 .table-container {display: flex; align-items: flex-start; }
 
 
@@ -59,44 +85,44 @@ body, button, input, textarea {
 
 /* PROSTATE */
 
-.prostatesegments {height: 498px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: white; z-index: 1;  left: 38px; border-radius: 2px;  box-shadow: 0px 5px 10px rgba(0,0,0,0.5);} 
+.prostatesegments {height: 498px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1;  left: 38px; border-radius: 2px;  box-shadow: 0px 5px 10px rgba(0,0,0,0.5);} 
 .overlay-button {position: absolute; border: 0px;}
-.CTLesion1 {cursor: pointer; color: black; font-weight: bold; background-color: rgba(255, 255, 255, 0.7); border-radius: 4px;}
+.CTLesion1 {cursor: pointer; color: #000000; font-weight: bold; background-color: rgba(255, 255, 255, 0.7); border-radius: 4px;}
 .CTLesion1.active {color: red; }
-.CTLesion2 {cursor: pointer; color: black; font-weight: bold; background-color: rgba(255, 255, 255, 0.7); border-radius: 4px;}
+.CTLesion2 {cursor: pointer; color: #000000; font-weight: bold; background-color: rgba(255, 255, 255, 0.7); border-radius: 4px;}
 .CTLesion2.active {color: red; }
-.CTLesion3 {cursor: pointer; color: black; font-weight: bold; background-color: rgba(255, 255, 255, 0.7); border-radius: 4px;}
+.CTLesion3 {cursor: pointer; color: #000000; font-weight: bold; background-color: rgba(255, 255, 255, 0.7); border-radius: 4px;}
 .CTLesion3.active {color: red; }
 .prostateinput {width: 225px;}
 
-.prostateLNRegclass {vertical-align: middle; cursor: default; position: absolute; background: white; z-index: 1;  left: 326px; border-radius: 2px; border: 0px solid black; } 
-.ProstateLNReg {width: 225px; background-color: white; border: 1px solid black; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
-.ProstateLNReg td {border: 1px white; width: 100px; text-align: center; padding: 1px;}
+.prostateLNRegclass {vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1;  left: 326px; border-radius: 2px; border: 0px solid #000000; } 
+.ProstateLNReg {width: 225px; background-color: #FFFFFF; border: 1px solid #000000; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
+.ProstateLNReg td {border: 1px #FFFFFF; width: 100px; text-align: center; padding: 1px;}
 .ProstateLNReg td:nth-child(1), .ProstateLNReg td:nth-child(3) {width: 55px;}
 
-.prostateLNNonRegclass {vertical-align: middle; cursor: default; position: absolute; background: white; z-index: 1;  left: 326px; border-radius: 2px; border: 0px solid black; } 
-.ProstateLNNonReg {width: 225px; background-color: white; border: 1px solid black; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
-.ProstateLNNonReg td {border: 1px white; width: 100px; text-align: center; padding: 1px;}
+.prostateLNNonRegclass {vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1;  left: 326px; border-radius: 2px; border: 0px solid #000000; } 
+.ProstateLNNonReg {width: 225px; background-color: #FFFFFF; border: 1px solid #000000; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
+.ProstateLNNonReg td {border: 1px #FFFFFF; width: 100px; text-align: center; padding: 1px;}
 .ProstateLNNonReg td:nth-child(1), .ProstateLNNonReg td:nth-child(3) {width: 55px;}
 
 
 /* RECTUM */
-.titleRect {width: 100px; background-color: #EDCC8B	; text-align: left; font-weight: bold; border: 1px solid black; font-Size: 12;}
+.titleRect {width: 100px; background-color: #EDCC8B	; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
 
-.RectTuLNRegclass {vertical-align: middle; cursor: default; position: absolute; background: white; z-index: 1;  left: 326px; border-radius: 2px; border: 0px solid black; } 
-.RectTuLNReg {width: 225px; background-color: white; border: 1px solid black; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
-.RectTuLNReg td {border: 1px white; width: 100px; text-align: center; padding: 1px;}
+.RectTuLNRegclass {vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1;  left: 326px; border-radius: 2px; border: 0px solid #000000; } 
+.RectTuLNReg {width: 225px; background-color: #FFFFFF; border: 1px solid #000000; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
+.RectTuLNReg td {border: 1px #FFFFFF; width: 100px; text-align: center; padding: 1px;}
 .RectTuLNReg td:nth-child(1), .RectTuLNReg td:nth-child(3) {width: 55px;}
 
 
 /* CERVIX */
-.titleCervix {width: 100px; background-color: #EDCC8B	; text-align: left; font-weight: bold; border: 1px solid black; font-Size: 12;}
+.titleCervix {width: 100px; background-color: #EDCC8B	; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
 
 .Cervixinput {width: 225px;}
 
-.CervixLNRegclass {vertical-align: middle; cursor: default; position: absolute; background: white; z-index: 1;  left: 321px; border-radius: 2px; border: 0px solid black;} 
-.CervixLNReg {width: 225px; background-color: white; border: 0px solid black; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
-.CervixLNReg td {border: 1px white; width: 100px; text-align: center; padding: 1px;}
+.CervixLNRegclass {vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1;  left: 321px; border-radius: 2px; border: 0px solid #000000;} 
+.CervixLNReg {width: 225px; background-color: #FFFFFF; border: 0px solid #000000; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
+.CervixLNReg td {border: 1px #FFFFFF; width: 100px; text-align: center; padding: 1px;}
 .CervixLNReg td:nth-child(1), .CervixLNReg td:nth-child(3) {width: 55px;}
 
 /* CP, LP */
@@ -118,48 +144,48 @@ body, button, input, textarea {
 
 
 #MRLPshape body {font-family: "Arial", sans-serif; font-size: 12px; font-weight: bold; }
-#MRLPshape table {border-collapse: collapse;border: 0px solid black; font-weight: bold; background-color: ;}
+#MRLPshape table {border-collapse: collapse;border: 0px solid #000000; font-weight: bold; background-color: ;}
 #MRLPshape td {border: 1px #E8DF90;}
 
-#NADPISY0 {color:black;  text-align: center; font-weight: bold; border: 0px solid black; border-bottom: none;}
-#NADPISY {color:black;  text-align: center; font-weight: bold; border: 0px solid black; border-top: none;}
+#NADPISY0 {color:#000000;  text-align: center; font-weight: bold; border: 0px solid #000000; border-bottom: none;}
+#NADPISY {color:#000000;  text-align: center; font-weight: bold; border: 0px solid #000000; border-top: none;}
 
 
 /* NaF */
-.NaFLocation {cursor: pointer; color: black; font-weight: bold; font-size: 20px; background-color: rgba(255, 255, 255, 0.5); border-radius: 4px; padding: 2px 4px;}
+.NaFLocation {cursor: pointer; color: #000000; font-weight: bold; font-size: 20px; background-color: rgba(255, 255, 255, 0.5); border-radius: 4px; padding: 2px 4px;}
 .NaFLocation.mild {color: purple;}
 .NaFLocation.active {color: red; }
 
 /* TABLES */
 
 
-table {border-collapse: collapse; border: 0px solid black; font-Size: 12px; }
+table {border-collapse: collapse; border: 0px solid #000000; font-Size: 12px; }
 tr { height: 20px;}
 
-.options {height: 24px; padding: 5px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: white; z-index: 1; left: 160px; border-radius: 2px; border: 1px solid black; table-layout: auto;  } 
-.optionsWML {height: 24px; padding: 5px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: white; z-index: 1; left: 128px; border-radius: 2px; border: 1px solid black; table-layout: auto;  } 
+.options {height: 24px; padding: 5px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1; left: 160px; border-radius: 2px; border: 1px solid #000000; table-layout: auto;  } 
+.optionsWML {height: 24px; padding: 5px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1; left: 128px; border-radius: 2px; border: 1px solid #000000; table-layout: auto;  } 
 .options td {vertical-align: top;}
-.suboptions {height: 24px; padding: 5px; text-align: left; vertical-align: top; cursor: default; background: white; z-index: 1; left: 160px; border-radius: 2px; border: 0px solid black; } 
+.suboptions {height: 24px; padding: 5px; text-align: left; vertical-align: top; cursor: default; background: #FFFFFF; z-index: 1; left: 160px; border-radius: 2px; border: 0px solid #000000; } 
 .Lesions {height: 24px;  text-align: center; vertical-align: middle; cursor: default;}
-.LymphNodes {height: 24px; border-right: 3px solid white; text-align: center; vertical-align: middle; cursor: default;}
+.LymphNodes {height: 24px; border-right: 3px solid #FFFFFF; text-align: center; vertical-align: middle; cursor: default;}
 .Others {height: 24px; text-align: left; vertical-align: top; cursor: default;}
-.organs {height: 24px; border-right: 3px solid white; text-align: center; vertical-align: middle; cursor: default;}
+.organs {height: 24px; border-right: 3px solid #FFFFFF; text-align: center; vertical-align: middle; cursor: default;}
 .middle {text-align: center;}
 .right {text-align: right; padding-right: 3px;}
 
 .center-content {display: flex;justify-content: center;align-items: center;}
 
-.overlay { position: absolute; z-index: 10; background-color: white; border: 0px solid black; }
-.overlay td { background-color: white; box-sizing: border-box;}
-.overlay table { background-color: white; border: 1px solid black; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
+.overlay { position: absolute; z-index: 10; background-color: #FFFFFF; border: 0px solid #000000; }
+.overlay td { background-color: #FFFFFF; box-sizing: border-box;}
+.overlay table { background-color: #FFFFFF; border: 1px solid #000000; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
 
 .inputothers {box-sizing: border-box; width: 100%; min-width: 100%; resize: none; height: 22px; font-Size: 12px; overflow: hidden;}
 
 /* BUTTONS */
 
-button {border-radius: 1px; border: 1px solid black; height: 20px; background-color: #EDEDED; width: 20px;text-align: center; border-radius: 0px;}
-.title {width: 86px; background-color: #EDCC8B	; text-align: left; font-weight: bold; border: 1px solid black; font-Size: 12;}
-.titleFlex {width: auto; background-color: #EDCC8B; text-align: left; font-weight: bold; border: 1px solid black; font-Size: 12;}
+button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-color: #EDEDED; width: 20px;text-align: center; border-radius: 0px;}
+.title {width: 86px; background-color: #EDCC8B; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
+.titleFlex {width: auto; background-color: #EDCC8B; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
 .myButtonLesion {width: 30px; background-color: #D3DCE9;}
 .myButtonLesionS {width: 30px; background-color: #FFADAD;}
 .myButtonLN {width: 30px; background-color: #D3DCE9;}
@@ -176,6 +202,7 @@ button {border-radius: 1px; border: 1px solid black; height: 20px; background-co
 .button140 {width: 140px;}.buttonX {width: 25px; background-color: rgba(255, 255, 255, 0.8); }
 .button160 {width: 160px;}
 .buttonStrana {width: 80px; height: 18px; border: 1px solid orange;}
+.buttonTEXT {font-Size: 12px; font-weight: bold; width: 86px; text-align: left; background-color: #EDCC8B;}
 .inputAddLocation {width: 220px; }
 .others {width: 80px; height: 18px;}
 .others100 {width: 100px; height: 20px;}
@@ -185,7 +212,7 @@ button {border-radius: 1px; border: 1px solid black; height: 20px; background-co
 
 /* TEXTS */
 
-textarea {width: 100%;  height: 20px; resize: none;  }
+textarea {width: 99%;  height: 20px; resize: none; background-color: #FFFFFF; }
 textarea.small { width: 99.8%; height: 50px; }
 textarea.medium { width: 99.8%; height: 100px;}
 textarea.large { width: 99.8%; height: 150px; }
@@ -194,7 +221,7 @@ textarea.XXL { width: 99.8%; height: 350px; }
 
 /* INPUT TEXT */
 
-input {  border: 1px solid black; text-align: left; padding-left: 5px; border-radius: 0px; text-align: left; } 
+input {  border: 1px solid #000000; text-align: left; padding-left: 5px; border-radius: 0px; text-align: left; background-color: #FFFFFF;} 
 .input80 {width: 80px;}
 .input100 {width: 100px;}
 .input140 {width: 140px;}
@@ -206,6 +233,7 @@ input {  border: 1px solid black; text-align: left; padding-left: 5px; border-ra
 
 #INDIKACE .mydiv1.standardwidth input {
   width: 400px;
+  background-color: #FFFFFF;
 }
   
 /* COPY */
@@ -252,8 +280,8 @@ input {  border: 1px solid black; text-align: left; padding-left: 5px; border-ra
   height: 18px;
   margin: 0px 0px 0px 3px;
   vertical-align: middle;
-  background: white;
-  border: 1px solid black;
+  background: #FFFFFF;
+  border: 1px solid #000000;
   border-radius: 1px;
   box-sizing: border-box;
   cursor: pointer;
@@ -266,7 +294,7 @@ input {  border: 1px solid black; text-align: left; padding-left: 5px; border-ra
 
 .CHB input[type="checkbox"]:checked :after {
   content: '+';
-  color: black;
+  color: #000000;
   font-Size: 14px; /* adjust this as needed */
 }
 
@@ -289,3 +317,16 @@ input {  border: 1px solid black; text-align: left; padding-left: 5px; border-ra
   max-height: 360px;
   width: auto;
 }
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.blinking { animation: blink 0.2s linear 1; /* Blink for 0.5 seconds, 2 times */ }
+
+
+
+.background-image {
+    position: absolute;
+    top: 0; /* Adjust as necessary */
+    left: 0; /* Adjust as necessary */
+    z-index: -1; /* Puts the image behind the content */
+}
+
