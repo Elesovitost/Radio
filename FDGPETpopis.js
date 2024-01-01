@@ -204,18 +204,23 @@ if (ObecneTexts.trim() === "") {
 }
 
 const PETTypeText = buttonElementPETType.innerText;
+var elementParotid = document.getElementById('suvmax-parotid-container');
 
 if (PETTypeText === "FDG") {
- nazev = "FDG-PET/CT(MR) trupu"; 
+    nazev = "FDG-PET/CT(MR) trupu"; 
+    elementParotid.classList.add('hidden');
 }
-if (PETTypeText === "PSMA") {
- ObecneNativeText = "Nativní text pro PSMA."; 
- nazev = "PSMA-PET/CT(MR) trupu"; 
+else if (PETTypeText === "PSMA") {
+    ObecneNativeText = "Nativní text pro PSMA."; 
+    nazev = "PSMA-PET/CT(MR) trupu"; 
+    elementParotid.classList.remove('hidden');
 }
-if (PETTypeText === "DOTATOC") {
- ObecneNativeText = "Nativní text pro DOTATOC."; 
- nazev = "DOTATOC-PET/CT(MR) trupu"; 
+else if (PETTypeText === "DOTATOC") {
+    ObecneNativeText = "Nativní text pro DOTATOC."; 
+    nazev = "DOTATOC-PET/CT(MR) trupu"; 
+    elementParotid.classList.add('hidden');
 }
+
 
 // NECK	
 // neck lesions (clones)
@@ -2906,6 +2911,7 @@ if (SkeletonOther1Pop !== "" && SkeletonOther1Res ==="") {SkeletonOther1Priority
 //Latest examination comparison
 if (DateCompare === "") {ExamCompareText = ""; POPExamCompareText = "";} else {ExamCompareText = "Oproti vyšetření z " + DateComparison + ":"; POPExamCompareText = "Srovnáno s vyšetřením z " + DateComparison + ". ";}
 
+
 //SUVLiver
 var SUVLiver = document.getElementById('SUVLiver').value; SUVLiver = SUVLiver.trim().replace('.', ',');
 var SUVLiverPrevious = document.getElementById("SUVLiverPrevious").value; SUVLiverPrevious = SUVLiverPrevious.trim().replace('.', ',');
@@ -2918,7 +2924,16 @@ if (SUVLiver === "" && SUVLiverPrevious === "") {
     SUVLiverText = "Jaterní parenchym s SUVmax=" + SUVLiver + " (minule " + DateComparison + " byla hodnota " + SUVLiverPrevious + "), tedy v závěru bude zohledněna korekce.";
 }
 
+//SUVParotid
+var SUVParotid = document.getElementById('SUVParotid').value;
+SUVParotid = SUVParotid.trim().replace('.', ',');
+var SUVParotidText = "";
 
+if (SUVParotid === "") {
+    SUVParotidText = "";
+} else {
+    SUVParotidText = "Parotické žlázy s SUVmax=" + SUVParotid + ". ";
+}
 
 	
 // POPIS
@@ -2936,7 +2951,7 @@ POPExamCompareText + "\n" +
 "Hrudník: " + POPThoraxNative + " " + window.POPThoraxLesion1 + " " + window.POPThoraxLesion2 + " " + window.POPThoraxLesion3 + " " + ThoraxLymphNodePlusText + " " + POPThoraxLymphNode1 + " " + ThoraxOther1Priority + " " + ThoraxParenchymaText + " " + POPThoraxLungOk + " " + ThoraxFluidText + " " + ThoraxOesophText + " " + ThoraxMammaText + " " + ThoraxThymusText + " " + ThoraxDevicesText + " " + ThoraxEmbolisationText + " " + ThoraxOther1NoPriority + "\n" +
 "Břicho: " + POPAbdomenNative + " " + window.POPAbdomenLesion1 + " " + window.POPAbdomenLesion2 + " " + window.POPAbdomenLesion3 + " " + POPAbdomenLymphNode1 + " " + AbdomenOther1Priority + " " + AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + "\n" + 
 "Skelet a měkké tkáně: " + POPSkeletonNative + " " + window.POPSkeletonLesion1 + " " + window.POPSkeletonLesion2 + " " + window.POPSkeletonLesion3 + " " + SkeletonOther1Priority + " " + SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + "\n" +			
-ObecneTexts + " " + ObecneNativeText + " " + SUVLiverText;
+ObecneTexts + " " + ObecneNativeText + " " + SUVLiverText + " " + SUVParotidText;
 
 
 	POPText.value = POPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek

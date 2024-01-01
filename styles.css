@@ -153,7 +153,7 @@ tr { height: 20px;}
 .overlay td { background-color: white; box-sizing: border-box;}
 .overlay table { background-color: white; border: 1px solid black; border-collapse: collapse; border-spacing: 0; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);}
 
-.inputothers {box-sizing: border-box; width: 100%; min-width: 100%; resize: none; height: 20px; font-Size: 12px; overflow: hidden;}
+.inputothers {box-sizing: border-box; width: 100%; min-width: 100%; resize: none; height: 22px; font-Size: 12px; overflow: hidden;}
 
 /* BUTTONS */
 
@@ -185,7 +185,7 @@ button {border-radius: 1px; border: 1px solid black; height: 20px; background-co
 
 /* TEXTS */
 
-textarea {width: 100%;  height: 20px; reSize: yes;  }
+textarea {width: 100%;  height: 20px; resize: none;  }
 textarea.small { width: 99.8%; height: 50px; }
 textarea.medium { width: 99.8%; height: 100px;}
 textarea.large { width: 99.8%; height: 150px; }

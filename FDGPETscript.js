@@ -953,6 +953,13 @@ document.getElementById('SUVLiverPrevious').addEventListener('input', () => {
   });
 });
 
+document.getElementById('SUVParotid').addEventListener('input', () => {
+  let event = new Event('input');
+  document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
+    input.dispatchEvent(event);
+  });
+});
+
 // NUMBERS MOUSE WHEELING
 
 window.addEventListener('load', function() {

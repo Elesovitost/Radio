@@ -36,7 +36,7 @@ iframe, iframes {min-height: 10px; z-index: 2; background-color: white;}
 
 .button60 {font-Size: 12px; font-weight: bold; border-radius: 1px; border: 1px solid black; height: 18px; background-color: #EDCC8B; width: 100px;text-align: left;}
 
-textarea {width: 99%;  reSize: yes;  }
+textarea {width: 99%;  reSize: none;  }
 
 
 
