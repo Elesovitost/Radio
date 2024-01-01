@@ -16,9 +16,6 @@
 
 
 <div id="SEG1">
-<button id="modeSwitch">Toggle Dark/Light Mode</button>
-
-
 	<div class="dropdown">
 		<button class="dropbtn">VYBER VYŠETŘENÍ...</button>
 		<div class="dropdown-content">
@@ -83,48 +80,6 @@
 
 
 <script>
-function injectDarkModeStyles() {
-    var darkModeStyles = `
-        body {
-            --text-color: #FFFFFF;
-            --standard-button: #4E5D78;
-            --checked-button: #875C5A;
-            --alt-background: #2E2E2E;
-            --title-color: #F0B67F;
-            --important-marking: #FF686B;
-            --main-background: #121212;
-        }
-    `;
-
-    var styleSheet = document.createElement("style");
-    styleSheet.type = "text/css";
-    styleSheet.innerText = darkModeStyles;
-    document.head.appendChild(styleSheet);
-}
-
-function toggleDarkMode() {
-    if (document.body.classList.contains('dark-mode')) {
-        // Remove dark mode
-        document.body.classList.remove('dark-mode');
-        document.querySelectorAll('style').forEach(style => {
-            if (style.innerText.includes('--text-color: #FFFFFF')) {
-                style.remove();
-            }
-        });
-    } else {
-        // Apply dark mode
-        injectDarkModeStyles();
-        document.body.classList.add('dark-mode');
-    }
-}
-
-document.getElementById('modeSwitch').addEventListener('click', toggleDarkMode);
-
-
-
-
-
-
 
 
 document.addEventListener('DOMContentLoaded', function() {
