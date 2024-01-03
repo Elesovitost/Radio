@@ -59,17 +59,19 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonO">x</button>
 		<td><button id="NeckLesion1no" class="myButtonLesionS">L1</button></td>
 		<td><select id="NeckLesion1type" class="select80" onchange="updateTexts()">
 			<option value="|"selected>typ léze...</option>
-			<option value="Ložisko| ložiska">ložisko</option>
-			<option value="Masa| masy">masa</option>
-			<option value="Expanze| expanze">expanze</option>
-			<option value="Infiltrace| infiltrace">infiltrace</option>
-			<option value="Fokus| fokusy">fokus</option>
+			<option value="ložisko| ložiska">ložisko</option>
+			<option value="masa| masy">masa</option>
+			<option value="expanze| expanzePL">expanze</option>
+			<option value="tumor| tumory">tumor</option>
+			<option value="infiltrace| infiltracePL">infiltrace</option>
+			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
 		<td><select id="NeckLesion1number" class="select40" onchange="updateTexts()">
 			<option value="" selected>1</option>
-			<option value="Vícečetné">++</option>
-			<option value="Mnohočetné">+++</option>
+			<option value="dva">2</option>
+			<option value="vícečetné">++</option>
+			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
 		<td><input id="NeckLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> <input id="NeckLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
@@ -152,18 +154,19 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonO">x</button>
 
 <table id="NeckLymphNode1" class="LymphNodeX hidden" >
 	<tr>
-		<td><button id="NeckLymphNode1no" class="myButtonLN">LN</button></td>
+		<td><button id="NeckLymphNode1no" class="myButtonLNselect">LN</button></td>
 		<td><select id="NeckLymphNode1type" class="select80" onchange="updateTexts()">
 			<option value="|" selected>typ uzlin...</option>
-			<option value="Uzlina| uzliny">uzlina</option>
-			<option value="Paket| pakety">paket</option>
-			<option value="Fokus| fokusy">fokus</option>
+			<option value="uzlina| uzliny">uzlina</option>
+			<option value="paket| pakety">paket</option>
+			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
 		<td><select id="NeckLymphNode1number" class="select40" onchange="updateTexts()">
 			<option value="" selected>1</option>
-			<option value="Vícečetné">více</option>
-			<option value="Mnohočetné">mnoho</option>
+			<option value="dva">2</option>
+			<option value="vícečetné">++</option>
+			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
 		<td><input id="NeckLymphNode1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200" > <input id="NeckLymphNode1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
@@ -397,18 +400,20 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">x</button>
 		<td><button id="ThoraxLesion1no" class="myButtonLesionS">L1</button></td>
 		<td><select id="ThoraxLesion1type" class="select80" onchange="updateTexts()">
 			<option value="|"selected>typ léze...</option>
-			<option value="Ložisko| ložiska">ložisko</option>
-			<option value="Nodul| noduly">nodul</option>
-			<option value="Opacita| opacity">opacita</option>
-			<option value="Expanze| expanze">expanze</option>
-			<option value="Konsolidace| konsolidace">konsolidace</option>
-			<option value="Fokus| fokusy">fokus</option>
+			<option value="ložisko| ložiska">ložisko</option>
+			<option value="nodul| noduly">nodul</option>
+			<option value="opacita| opacity">opacita</option>
+			<option value="expanze| expanzePL">expanze</option>
+			<option value="tumor| tumory">tumor</option>
+			<option value="konsolidace| konsolidacePL">konsolidace</option>
+			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
 		<td><select id="ThoraxLesion1number" class="select40" onchange="updateTexts()">
 			<option value="" selected>1</option>
-			<option value="Vícečetné">++</option>
-			<option value="Mnohočetné">+++</option>
+			<option value="dva">2</option>
+			<option value="vícečetné">++</option>
+			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
 		<td><input id="ThoraxLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> <input id="ThoraxLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
@@ -523,18 +528,19 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">x</button>
 
 <table id="ThoraxLymphNode1" class="LymphNodeX hidden" >
 	<tr>
-		<td><button id="ThoraxLymphNode1no" class="myButtonLN">LN</button></td>
+		<td><button id="ThoraxLymphNode1no" class="myButtonLNselect">LN</button></td>
 		<td><select id="ThoraxLymphNode1type" class="select80" onchange="updateTexts()">
 			<option value="|" selected>typ uzlin...</option>
-			<option value="Uzlina| uzliny">uzlina</option>
-			<option value="Paket| pakety">paket</option>
-			<option value="Fokus| fokusy">fokus</option>
+			<option value="uzlina| uzliny">uzlina</option>
+			<option value="paket| pakety">paket</option>
+			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
 		<td><select id="ThoraxLymphNode1number" class="select40" onchange="updateTexts()">
 			<option value="" selected>1</option>
-			<option value="Vícečetné">více</option>
-			<option value="Mnohočetné">mnoho</option>
+			<option value="dva">2</option>
+			<option value="vícečetné">++</option>
+			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
 		<td><input id="ThoraxLymphNode1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200" > <input id="ThoraxLymphNode1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
@@ -951,18 +957,20 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
 		<td><button id="AbdomenLesion1no" class="myButtonLesionS">L1</button></td>
 		<td><select id="AbdomenLesion1type" class="select80" onchange="updateTexts()">
 			<option value="|"selected>typ léze...</option>
-			<option value="Ložisko| ložiska">ložisko</option>
-			<option value="Masa| masy">masa</option>
-			<option value="Expanze| expanze">expanze</option>
-			<option value="Infiltrát| infiltráty">infiltrace</option>
-			<option value="Struktura| struktury">struktura</option>
-			<option value="Fokus| fokusy">fokus</option>
+			<option value="ložisko| ložiska">ložisko</option>
+			<option value="masa| masy">masa</option>
+			<option value="expanze| expanze">expanze</option>
+			<option value="tumor| tumory">tumor</option>
+			<option value="infiltrát| infiltráty">infiltrace</option>
+			<option value="struktura| struktury">struktura</option>
+			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
 		<td><select id="AbdomenLesion1number" class="select40" onchange="updateTexts()">
 			<option value="" selected>1</option>
-			<option value="Vícečetné">++</option>
-			<option value="Mnohočetné">+++</option>
+			<option value="dva">2</option>
+			<option value="vícečetné">++</option>
+			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
 		<td><input id="AbdomenLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> <input id="AbdomenLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
@@ -1286,18 +1294,19 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">x</button>
 
 <table id="AbdomenLymphNode1" class="LymphNodeX hidden" >
 	<tr>
-		<td><button id="AbdomenLymphNode1no" class="myButtonLN">LN</button></td>
+		<td><button id="AbdomenLymphNode1no" class="myButtonLNselect">LN</button></td>
 		<td><select id="AbdomenLymphNode1type" class="select80" onchange="updateTexts()">
 			<option value="|" selected>typ uzlin...</option>
-			<option value="Uzlina| uzliny">uzlina</option>
-			<option value="Paket| pakety">paket</option>
-			<option value="Fokus| fokusy">fokus</option>
+			<option value="uzlina| uzliny">uzlina</option>
+			<option value="paket| pakety">paket</option>
+			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
 		<td><select id="AbdomenLymphNode1number" class="select40" onchange="updateTexts()">
 			<option value="" selected>1</option>
-			<option value="Vícečetné">více</option>
-			<option value="Mnohočetné">mnoho</option>
+			<option value="dva">2</option>
+			<option value="vícečetné">++</option>
+			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
 		<td><input id="AbdomenLymphNode1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200" > <input id="AbdomenLymphNode1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
@@ -1916,20 +1925,22 @@ DALŠÍ <button id="SkeletonNewOther1" class="myButtonO">x</button>
 		<td><button id="SkeletonLesion1no" class="myButtonLesionS">L1</button></td>
 		<td><select id="SkeletonLesion1type" class="select80" onchange="updateTexts()">
 			<option value="|" selected>vyber...</option>
-			<option value="Ložisko| ložiska">ložisko</option>
-			<option value="Ložisko kostní dřeně| ložiska kostní dřeně">ložisko kostní dřeně</option>
-			<option value="Lytické ložisko| lytická ložiska">ložisko lytické</option>
-			<option value="Sklerotické ložisko| sklerotická ložiska">ložisko sklerotické</option>
-			<option value="Smíšené ložisko| smíšená ložiska">ložisko smíšené</option>
-			<option value="Kožní ložisko| kožní ložiska">ložisko kůže</option>
-			<option value="Ložisko podkoží| ložiska podkoží">ložisko podkoží</option>
-			<option value="Fokus| fokusy">fokus</option>
+			<option value="ložisko| ložiska">ložisko</option>
+			<option value="ložisko kostní dřeně| ložiska kostní dřeně">ložisko kostní dřeně</option>
+			<option value="lytické ložisko| lytická ložiska">ložisko lytické</option>
+			<option value="sklerotické ložisko| sklerotická ložiska">ložisko sklerotické</option>
+			<option value="smíšené ložisko| smíšená ložiska">ložisko smíšené</option>
+			<option value="kožní ložisko| kožní ložiska">ložisko kůže</option>
+			<option value="ložisko podkoží| ložiska podkoží">ložisko podkoží</option>
+			<option value="tumor| tumory">tumor</option>
+			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
 		<td><select id="SkeletonLesion1number" class="select40" onchange="updateTexts()">
 			<option value="" selected>1</option>
-			<option value="Vícečetné">++</option>
-			<option value="Mnohočetné">+++</option>
+			<option value="dva">2</option>
+			<option value="vícečetné">++</option>
+			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
 		<td><input id="SkeletonLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> <input id="SkeletonLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>

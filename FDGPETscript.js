@@ -44,6 +44,8 @@ cloneAndUpdateIds("SkeletonLesion1", "SkeletonLesion3");
 cloneAndUpdateIds("SkeletonLesion1selectLocation", "SkeletonLesion3selectLocation");
 
 
+
+
 //button cycling
 
 function cycleText(event, texts, index, buttonElement, callback) {
@@ -859,11 +861,12 @@ document.getElementById('SkeletonOther1no').addEventListener('click', function()
 
   
 var aktivitaOptions = [
-    { text: "není", value: "bez akumulace RF", valuez1: "bez metabolické aktivity", valuez2: "Ametabolické"},
-    { text: "nízká", value: "s nízkou akumulací RF", valuez1: "s nízkou metabolickou aktivitou", valuez2: "Nízce metabolicky aktivní "},
-    { text: "intermed.", value: "se střední akumulací RF", valuez1: "se střední metabolickou aktivitou", valuez2: "Intermediárně metabolicky aktivní "},
-    { text: "zvýšená", value: "se zvýšenou akumulací RF", valuez1: "se zvýšenou metabolickou aktivitou", valuez2: "Mírně hypermetabolické "},
-    { text: "vysoká", value: "s vysokou akumulací RF", valuez1: "s vysokou metabolickou aktivitou", valuez2: "Hypermetabolické "}
+    { text: "není", value: "bez akumulace RF", valuez1: "bez metabolické aktivity", valuez2: "ametabolické"},
+    { text: "nízká", value: "s nízkou akumulací RF", valuez1: "s nízkou metabolickou aktivitou", valuez2: "nízce metabolicky aktivní "},
+    { text: "intermed.", value: "se střední akumulací RF", valuez1: "se střední metabolickou aktivitou", valuez2: "intermediárně metabolicky aktivní "},
+    { text: "zvýšená", value: "s mírně zvýšenou akumulací RF", valuez1: "s mírně zvýšenou metabolickou aktivitou", valuez2: "mírně hypermetabolické "},
+    { text: "vysoká", value: "s vysokou akumulací RF", valuez1: "s vysokou metabolickou aktivitou", valuez2: "hypermetabolické "},
+	{ text: "enormní", value: "s velmi vysokou akumulací RF", valuez1: "s velmi vysokou metabolickou aktivitou", valuez2: "výrazně hypermetabolické "}
 ];
 
 function populateAktivitaOptions() {
@@ -892,8 +895,8 @@ var hodnoceniOptions = [
     { text: "-", value: ": nemá charakter viabilní neoplázie", valuez1: ": v.s. zánětlivá aktivace"},
     { text: "+/-", value: ": nespecifický nález", valuez1: ": nespecifický nález"},
     { text: "+", value: ": suspektní z viabilní neoplázie", valuez1: ": suspektní z infiltrace neoplazií"},
-    { text: "+++", value:": obrazu viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"},
-	{ text: "M1", value:": charakteru meta", valuez1: ": charakteru infiltrace neoplazií"}
+    { text: "+++", value:": charakteru viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"},
+	{ text: "M1", value:": obrazu metastáz", valuez1: ": infiltrace neoplazií"}
 ];
 
 function populateHodnoceniOptions() {
@@ -931,9 +934,11 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
       } else if (ratio >= 0.8 && ratio < 1.2) {
         aktSelect.value = 'se střední akumulací RF';
       } else if (ratio >= 1.2 && ratio < 1.5) {
-        aktSelect.value = 'se zvýšenou akumulací RF';
-      } else if (ratio >= 1.5) {
+        aktSelect.value = 's mírně zvýšenou akumulací RF';
+      } else if (ratio >= 1.5 && ratio < 3) {
         aktSelect.value = 's vysokou akumulací RF';
+      } else if (ratio >= 3) {
+        aktSelect.value = 's velmi vysokou akumulací RF';
       }
     }
   });

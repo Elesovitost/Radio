@@ -197,6 +197,7 @@ button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-
 .myButtonLesion {width: 30px; background-color: #D3DCE9;}
 .myButtonLesionS {width: 30px; background-color: #FFADAD;}
 .myButtonLN {width: 30px; background-color: #D3DCE9;}
+.myButtonLNselect {width: 30px; background-color: #FFADAD;}
 .toggleColorRed {background-color: #FFADAD;}
 .myButtonO {width: 20px; background-color: #D3DCE9;}
 .button20 {width: 20px;}
@@ -322,13 +323,13 @@ input {  border: 1px solid #000000; text-align: left; padding-left: 5px; border-
   right: 20px;
   z-index: 9999;
   display: none;
-  max-height: 360px;
+  height: 377px;
   width: auto;
 }
+#krknodImage { transform: scale(1.2); }
 
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 .blinking { animation: blink 0.2s linear 1; /* Blink for 0.5 seconds, 2 times */ }
-
 
 
 .background-image {
