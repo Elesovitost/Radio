@@ -369,6 +369,10 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonO">x</button>
 				<td class="right"><label class="CHB"><input type="checkbox" id="ChbNeckRradiation" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbNeckLradiation" onChange="updateTexts()"><span>L</span></label></td>
 			</tr>
 			<tr>
+				<td>TS kanyla</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbNeckTSK" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
 				<td colspan="2" ><textarea id="NeckTreatmentOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
@@ -1926,12 +1930,12 @@ DALŠÍ <button id="SkeletonNewOther1" class="myButtonO">x</button>
 		<td><select id="SkeletonLesion1type" class="select70" onchange="updateTexts()">
 			<option value="|" selected>vyber...</option>
 			<option value="ložisko| ložiska">ložisko</option>
-			<option value="ložisko kostní dřeně| ložiska kostní dřeně">ložisko kostní dřeně</option>
-			<option value="lytické ložisko| lytická ložiska">ložisko lytické</option>
-			<option value="sklerotické ložisko| sklerotická ložiska">ložisko sklerotické</option>
-			<option value="smíšené ložisko| smíšená ložiska">ložisko smíšené</option>
-			<option value="kožní ložisko| kožní ložiska">ložisko kůže</option>
-			<option value="ložisko podkoží| ložiska podkoží">ložisko podkoží</option>
+			<option value="ložisko kostní dřeně| ložiska kostní dřeně">- dřeně</option>
+			<option value="lytické ložisko| lytická ložiska">- lytické</option>
+			<option value="sklerotické ložisko| sklerotická ložiska">- sklerotické</option>
+			<option value="smíšené ložisko| smíšená ložiska">- smíšené</option>
+			<option value="kožní ložisko| kožní ložiska">- kůže</option>
+			<option value="ložisko podkoží| ložiska podkoží">- podkoží</option>
 			<option value="tumor| tumory">tumor</option>
 			<option value="fokus| fokusy">fokus</option>
 		</select>
