@@ -39,6 +39,7 @@ body, button, input, textarea {
 
 
 /* DROPDOWN MENU UPPER */
+.container {text-align: center; overflow: auto; }
 .dropdown {float: right; position: relative; display: inline-block; color: #000000;}
 	.dropbtn {background-color: #EDCC8B; width: 140px; height: 26px; color: #000000; padding: 3px; font-size: 14px; border: 1 px; cursor: pointer; margin-bottom: 2px;}
 	.dropbtn::before {content: ''; position: absolute; top: -2px; right: -2px; bottom: -2px; left: -2px; z-index: 2;}
@@ -50,6 +51,12 @@ body, button, input, textarea {
 				
 .remove-button {display: block; margin: 5px 0px 0px 0px; width: 20px; background-color: #FFADAD; color: #000000; border: 1px solid #000000; padding: 0px 0px; cursor: pointer;	}
 
+.dropTNM {
+    float: left;
+    position: relative;
+    display: inline-block;
+    color: #000000;
+}
 
 /* IFRAMES   */
 .page-container {display: flex; align-items: flex-start; max-width: 1020px; min-height: 10 px; z-index: 2;}
@@ -67,6 +74,7 @@ iframe, iframes {min-height: 10px; z-index: 2; background-color: #FFFFFF;}
 
 .mydiv0 {background-color: #D3DCE9; font-Size: 13; font-weight: bold;}
 .mydiv1 {background-color: #DDD5D5;}
+.mydivTNM {background-color: none;}
 .DIVLesions {background-color: ; padding: 2px; font-Size: 12;}
 
 
@@ -337,4 +345,47 @@ input {  border: 1px solid #000000; text-align: left; padding-left: 5px; border-
     top: 0; /* Adjust as necessary */
     left: 0; /* Adjust as necessary */
     z-index: -1; /* Puts the image behind the content */
+}
+
+
+/* TNM FILES */
+
+.standardwidthTNM {max-width: 1006px; border: 1px solid #000000; padding:0px;}
+
+body.TNM, body.TNM p {
+    margin: 0;
+    padding: 0;
+    font-family: 'Tahoma', sans-serif; 
+    color: #000000; 
+    scroll-behavior: smooth; 
+    font-size: 12px; 
+}
+
+body.TNM .standardwidth {
+    max-width: 1000px; 
+    border: 1px solid #000000;
+}
+
+body.TNM {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+body.TNM th, body.TNM td {
+    border: 1px solid #cccccc;
+    padding: 1px;
+    text-align: left;
+}
+
+body.TNM th {
+    background-color: #D3DCE9;
+    color: #000000;
+}
+
+body.TNM td {
+    background-color: #ffffff;
+}
+
+body.TNM td:first-child, body.TNM td:nth-child(2), body.TNM .main-row {
+    font-weight: bold;
 }
