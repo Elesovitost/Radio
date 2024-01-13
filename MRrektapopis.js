@@ -112,8 +112,6 @@ if (RectTuInvasionFrom !== "" && RectTuInvasionTo !== "") {RectTuInvasionSegment
 // Lymph nodes Reg
 
 var locationsLNReg = [
-        "při externí ilice vpravo",
-        "při externí ilice vlevo",
         "při interní ilice vpravo",
         "při interní ilice vlevo",
 		"obturátorové vpravo",
@@ -145,13 +143,14 @@ var locationsLNReg = [
             totalNodesReg += parseInt(inputsLNReg[i].value);
         }
     }
+	
+//	RectTuLNRegLocation = "Celkem: " + totalNodesReg;
 
 
 if (nodesArrayReg.length === 0) {
     RectTuLNRegP = "Nejsou patrné suspektní regionální lymfatické uzliny. ";
     RectTuLNRegR = "Bez suspektních regionálních lymfatických uzlin. ";
 } else {
-    // Handling the comma and 'a' separators
     RectTuLNRegP += nodesArrayReg.slice(0, -2).join(", ") + 
                    (nodesArrayReg.length > 2 ? ", " : "") + 
                    nodesArrayReg.slice(-2).join(" a ") + ". ";
@@ -236,7 +235,9 @@ RectTuLNRegP + " " + RectTuLNNonRegP
 
 //RESUME
 RectTuRESText.value = TMNLoc + TNMLength + ". " + "\n" + 
-"TNM stage: " + RectTuInvasionTSTAGE + " " + RectTuLNRegNSTAGE + " " + RectTuMstageR + " " + TNMMRF + ".";
+RectTuLNRegR + "\n" + 
+RectTuLNNonRegP + "\n" + 
+"TNM stage: " + RectTuInvasionTSTAGE + " " + TNMMRF + " " + RectTuLNRegNSTAGE + " " + RectTuMstageR + ".";
 
 ;
 

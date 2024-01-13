@@ -935,9 +935,9 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
         aktSelect.value = 'se střední akumulací RF';
       } else if (ratio >= 1.2 && ratio < 1.5) {
         aktSelect.value = 's mírně zvýšenou akumulací RF';
-      } else if (ratio >= 1.5 && ratio < 3) {
+      } else if (ratio >= 1.5 && ratio < 5) {
         aktSelect.value = 's vysokou akumulací RF';
-      } else if (ratio >= 3) {
+      } else if (ratio >= 5) {
         aktSelect.value = 's velmi vysokou akumulací RF';
       }
     }
