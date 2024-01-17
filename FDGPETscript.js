@@ -77,6 +77,7 @@ function updateBackgroundColor(index, buttonElement, color1 = "transparent", col
 
 var textsPETType = ["FDG", "PSMA", "DOTATOC"];
 var buttonElementPETType = document.getElementById("PETTypeButton");
+buttonElementPETType.value = "FDG";
 var indexPETType = 0;function cyclePETTypeText(event) {  indexPETType = cycleText(event, textsPETType, indexPETType, buttonElementPETType, updateBackgroundColor);}
 
 function cyclePETTypeText(event) {  indexPETType = cycleText(event, textsPETType, indexPETType, buttonElementPETType, updateBackgroundColor);  updateTexts();}
@@ -113,15 +114,16 @@ document.addEventListener('click', function(event) {
 
 //input textareas resizable
 
-var InputTextAreas = document.querySelectorAll('.inputothers');
+var InputTextAreas = document.querySelectorAll('.inputothers, .inputOtherFinding');
 InputTextAreas.forEach(function(InputTextArea) {
     InputTextArea.addEventListener('input', function() {
         // Reset the height to ensure correct calculation
-        this.style.height = 'auto';
+        this.style.height = '22px';
         // Set the height to the scrollHeight to fit the content
         this.style.height = (this.scrollHeight) + 'px';
     });
 });
+
 
 // button tables overlay change color
 
@@ -861,12 +863,12 @@ document.getElementById('SkeletonOther1no').addEventListener('click', function()
 
   
 var aktivitaOptions = [
-    { text: "není", value: "bez akumulace RF", valuez1: "bez metabolické aktivity", valuez2: "ametabolické"},
-    { text: "nízká", value: "s nízkou akumulací RF", valuez1: "s nízkou metabolickou aktivitou", valuez2: "nízce metabolicky aktivní "},
-    { text: "intermed.", value: "se střední akumulací RF", valuez1: "se střední metabolickou aktivitou", valuez2: "intermediárně metabolicky aktivní "},
-    { text: "zvýšená", value: "s mírně zvýšenou akumulací RF", valuez1: "s mírně zvýšenou metabolickou aktivitou", valuez2: "mírně hypermetabolické "},
-    { text: "vysoká", value: "s vysokou akumulací RF", valuez1: "s vysokou metabolickou aktivitou", valuez2: "hypermetabolické "},
-	{ text: "enormní", value: "s velmi vysokou akumulací RF", valuez1: "s velmi vysokou metabolickou aktivitou", valuez2: "výrazně hypermetabolické "}
+    { text: "není", value: "bez akumulace RF", valuez1: "bez PSMA exprese", valuez2: "ametabolické"},
+    { text: "nízká", value: "s nízkou akumulací RF", valuez1: "s nízkou PSMA expresí", valuez2: "nízce metabolicky aktivní "},
+    { text: "intermed.", value: "se střední akumulací RF", valuez1: "se střední PSMA expresí", valuez2: "středně metabolicky aktivní "},
+    { text: "zvýšená", value: "se zvýšenou akumulací RF", valuez1: "se zvýšenou PSMA expresí", valuez2: "mírně hypermetabolické "},
+    { text: "vysoká", value: "s vysokou akumulací RF", valuez1: "s vysokou PSMA expresí", valuez2: "hypermetabolické "},
+	{ text: "enormní", value: "s velmi vysokou akumulací RF", valuez1: "s vysokou PSMA expresí", valuez2: "výrazně hypermetabolické "}
 ];
 
 function populateAktivitaOptions() {
@@ -922,10 +924,11 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
     let name = event.target.id.replace('SUV', '');
     let suv = parseFloat(document.getElementById(`${name}SUV`).value);
     let Liver = parseFloat(document.getElementById('SUVLiver').value);
+    let Parotid = parseFloat(document.getElementById('SUVParotid').value);
+    let aktSelect = document.getElementById(`${name}Activity`);
 
-    if (!isNaN(suv) && !isNaN(Liver) && Liver != "") {
+    if (buttonElementPETType.value === "FDG" && !isNaN(suv) && !isNaN(Liver) && Liver != "") {
       let ratio = suv / Liver;
-      let aktSelect = document.getElementById(`${name}Activity`);
 
       if (ratio >= 0 && ratio < 0.2) {
         aktSelect.value = 'bez akumulace RF';
@@ -934,15 +937,25 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
       } else if (ratio >= 0.8 && ratio < 1.2) {
         aktSelect.value = 'se střední akumulací RF';
       } else if (ratio >= 1.2 && ratio < 1.5) {
-        aktSelect.value = 's mírně zvýšenou akumulací RF';
+        aktSelect.value = 'se zvýšenou akumulací RF';
       } else if (ratio >= 1.5 && ratio < 5) {
         aktSelect.value = 's vysokou akumulací RF';
       } else if (ratio >= 5) {
         aktSelect.value = 's velmi vysokou akumulací RF';
       }
-    }
+	} else if (buttonElementPETType.value === "PSMA" && !isNaN(suv) && !isNaN(Liver) && Liver != "") {
+		if (suv >= Parotid) {
+			aktSelect.value = 's vysokou akumulací RF';
+		} else if (suv >= Liver) {
+			aktSelect.value = 'se střední akumulací RF';
+		} else {
+			aktSelect.value = 's nízkou akumulací RF';
+		}
+	} 
+    updateTexts();
   });
-});
+});  
+	  
 
 document.getElementById('SUVLiver').addEventListener('input', () => {
   let event = new Event('input');
