@@ -898,7 +898,7 @@ var hodnoceniOptions = [
     { text: "+/-", value: ": nespecifický nález", valuez1: ": nespecifický nález"},
     { text: "+", value: ": suspektní z viabilní neoplázie", valuez1: ": suspektní z infiltrace neoplazií"},
     { text: "+++", value:": charakteru viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"},
-	{ text: "M1", value:": obrazu metastáz", valuez1: ": infiltrace neoplazií"}
+	{ text: "M1", value:": charakteru meta", valuez1: ": infiltrace neoplazií"}
 ];
 
 function populateHodnoceniOptions() {

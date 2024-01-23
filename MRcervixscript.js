@@ -33,7 +33,7 @@ var buttonElementCervixTuType = document.getElementById("CervixTuTypeButton");
 var indexCervixTuType = 0;function cycleCervixTuTypeText(event) {  indexCervixTuType = cycleText(event, textsCervixTuType, indexCervixTuType, buttonElementCervixTuType);}
 function cycleCervixTuTypeText(event) {  indexCervixTuType = cycleText(event, textsCervixTuType, indexCervixTuType, buttonElementCervixTuType, updateBackgroundColor);  updateTexts();}
 
-var textsCervixTuInvasion = ["invaze <3mm", "invaze 3-5mm", "invaze >5mm, vel. <2cm", "velikost 2-4cm", "velikost >4cm"];
+var textsCervixTuInvasion = ["invaze <3mm", "invaze 3-5mm", "inv >5mm, vel <2cm", "velikost 2-4cm", "velikost >4cm"];
 var buttonElementCervixTuInvasion = document.getElementById("CervixTuInvasionButton");
 var indexCervixTuInvasion = 0;function cycleCervixTuInvasionText(event) {  indexCervixTuInvasion = cycleText(event, textsCervixTuInvasion, indexCervixTuInvasion, buttonElementCervixTuInvasion);}
 function cycleCervixTuInvasionText(event) {  indexCervixTuInvasion = cycleText(event, textsCervixTuInvasion, indexCervixTuInvasion, buttonElementCervixTuInvasion, updateBackgroundColor);  updateTexts();}

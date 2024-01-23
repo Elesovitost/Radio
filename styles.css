@@ -21,14 +21,21 @@ body {
 
 body {
     margin: 0;
-    padding: 0;
+    padding: 0px;
 	min-height: 20px;
 	background-color: #FFFFFF;
 }
 
+.bodyINDEX {padding: 3px;}
+
 body, button, input, textarea {
     font-family: 'Tahoma', sans-serif; color: #000000; scroll-behavior: smooth;
 }
+
+#IND {display: flex; justify-content: space-between; /* This spaces out the children */}
+#indikace {width: 100%; box-sizing: border-box;}
+.nowrap {white-space: nowrap;}
+
 
 /* SEGMENT UPPER  */
 #SEG1 {
@@ -41,7 +48,7 @@ body, button, input, textarea {
 /* DROPDOWN MENU UPPER */
 .container {text-align: center; overflow: auto; }
 .dropdown {float: right; position: relative; display: inline-block; color: #000000;}
-	.dropbtn {background-color: #EDCC8B; width: 140px; height: 26px; color: #000000; padding: 3px; font-size: 14px; border: 1 px; cursor: pointer; margin-bottom: 2px;}
+	.dropbtn {background-color: #EDCC8B; width: 140px; height: 26px; color: #000000; padding: 3px; font-size: 12px; border: 1 px; cursor: pointer; margin-bottom: 2px;}
 	.dropbtn::before {content: ''; position: absolute; top: -2px; right: -2px; bottom: -2px; left: -2px; z-index: 2;}
 	.dropdown-content {display: none; position: absolute; background-color: #FFFFFF; font-size: 12px; min-width: 80px; border: 1px solid #000000; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 3;}
 	.dropdown-content a {color: #000000; padding: 3px 3px; text-decoration: none; display: block;}
@@ -68,9 +75,7 @@ iframe, iframes {min-height: 10px; z-index: 2; background-color: #FFFFFF;}
 .standardwidth {max-width: 1000px; border: 1px solid #000000; padding: 3px;}
 .standardwidthHALF {max-width: 496px; border: 1px solid #000000; padding: 3px; flex-grow: 1;}
 .standardwidthV {max-width: 1000px; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-left: 2px; padding-right: 2px; }
-.table-container {display: flex; align-items: flex-start; }
-
-#indikace {width: 100%;box-sizing: border-box;}
+.table-container {display: flex; align-items: flex-start; flex-wrap: wrap; gap: 1px; }
 
 .mydiv0 {background-color: #D3DCE9; font-Size: 13; font-weight: bold;}
 .mydiv1 {background-color: #DDD5D5;}
@@ -200,7 +205,7 @@ tr { height: 20px;}
 
 /* BUTTONS */
 
-button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-color: #EDEDED; width: 20px;text-align: center; border-radius: 0px;}
+button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-color: #FFFFFF; width: 20px;text-align: center; border-radius: 0px;}
 .title {width: 86px; background-color: #EDCC8B; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
 .titleBrain {width: 96px; background-color: #EDCC8B; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
 .titleFlex {width: auto; background-color: #EDCC8B; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
@@ -222,12 +227,12 @@ button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-
 .button160 {width: 160px;}
 .buttonStrana {width: 80px; height: 18px; border: 1px solid orange;}
 .buttonTEXT {font-Size: 12px; font-weight: bold; width: 86px; text-align: left; background-color: #EDCC8B;}
-.inputAddLocation {width: 220px; }
-.others {width: 80px; height: 18px;}
+.others {width: 86px; height: 18px;}
 .others100 {width: 100px; height: 20px;}
 .othersX {width: 180px; height: 18px;}
 
 .float {float: left;}
+.floatR {float: right;}
 
 /* TEXTS */
 
@@ -244,8 +249,11 @@ input {  border: 1px solid #000000; text-align: left; padding-left: 5px; border-
 .input80 {width: 80px;}
 .input100 {width: 100px;}
 .input140 {width: 140px;}
+.input140flex {flex: 1 1 140px; max-width: 140px;}
 .input160 {width: 160px;}
 .input200 {width: 200px;}
+.input200flex {flex: 1 1 200px;max-width: 200px;}
+.inputAddLocation {flex: 1 1 220px; max-width: 220px; }
 .input300 {width: 300px;}
 .input400 {width: 400px;}
 .inputOtherFinding {width: 400px; overflow: hidden;}}
@@ -358,6 +366,7 @@ input {  border: 1px solid #000000; text-align: left; padding-left: 5px; border-
 /* TNM FILES */
 
 .standardwidthTNM {max-width: 1006px; border: 1px solid #000000; padding:0px;}
+.TNMtable {width: 100%; }
 
 body.TNM, body.TNM p {
     margin: 0;
@@ -395,4 +404,28 @@ body.TNM td {
 
 body.TNM td:first-child, body.TNM td:nth-child(2), body.TNM .main-row {
     font-weight: bold;
+}
+
+
+/* Transition effects */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.iframe-fade-in {
+    animation: fadeIn 0.2s ease;
+}
+
+
+
+.invisible {
+    transition: opacity 0.2s ease, visibility 0.5s;
+    opacity: 0;
+    visibility: hidden;
+}
+.visible {
+	transition: opacity 0.2s ease, visibility 0.5s;
+    opacity: 1;
+    visibility: visible;
 }

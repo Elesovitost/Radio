@@ -21,41 +21,6 @@ if (!CervixTuSizeValue) {
 
 
 
-// Tstage
-if (CervixTuInvasionText === "invaze <3mm") {
- CervixTuInvasionP = "V oblasti endocervixu až stromatu krčku dělohy na T2 infiltrativní zvýšení SI do hloubky < 3 mm, vykazující restrikci difuze. "; 
- CervixTuFIGO = "IA1";
- CervixTuTNMT = "T1b";
- CervixTuInvasionR = ""; 
-} else if (CervixTuInvasionText === "invaze 3-5mm") {
- CervixTuInvasionP = "V oblasti endocervixu až stromatu krčku dělohy na T2 infiltrativní zvýšení SI do hloubky 3 mm a více, ale méně než 5 mm, vykazující restrikci difuze. ";
- CervixTuFIGO = "IA2";
- CervixTuTNMT = "T1b";
- CervixTuInvasionR = "";
-} else if (CervixTuInvasionText === "invaze >5mm, vel. <2cm") {
- CervixTuInvasionP = "V oblasti endocervixu až stromatu krčku dělohy na T2 infiltrativní zvýšení SI do hloubky 5 mm a více, v největším rozměru celkové velikosti do 2 cm, vykazující restrikci difuze. ";
- CervixTuFIGO = "IB1";
- CervixTuTNMT = "T1b";
- CervixTuInvasionR = "";
-} else if (CervixTuInvasionText === "velikost 2-4cm") {
- CervixTuInvasionP = "V oblasti krčku dělohy na T2 infiltrativní zvýšení SI v největším rozměru 2cm a více, ale méně než 4 cm, vykazující restrikci difuze. ";
- CervixTuFIGO = "IB2";
- CervixTuTNMT = "T1b";
- CervixTuInvasionR = "";
-} else if (CervixTuInvasionText === "velikost >4cm") {
- CervixTuInvasionP = "V oblasti krčku dělohy na T2 infiltrativní zvýšení SI v největším rozměru ≥ 4cm, vykazující restrikci difuze. ";
- CervixTuFIGO = "IB3";
- CervixTuTNMT = "T1b2";
- CervixTuInvasionR = "";
-}
-
-// tumor type
-
-if (CervixTuTypeText === "není") {
- CervixTuInvasionP = "V oblasti endocervixu až stromatu krčku dělohy na T2 bez přesvědčivého infiltrativního zvýšení SI, bez známek restrikce difuze. ";
-} 
-
-
 //pochva
 if (document.getElementById('ChbCervixVagUpperInvasion').checked && document.getElementById('ChbCervixVagLowerInvasion').checked) {
     CervixVagInvasionP = "Nádorová infiltrace se šíří do stěny pochvy a zasahuje až do její dolní třetiny. ";
@@ -251,40 +216,73 @@ if (document.getElementById('ChbCervixMeta').checked) {
 }
 
 
-//FIGO / TNM
-
-if (CervixMetaP !== "" || CervixLNNonRegP !== "") {
-    CervixTuFIGO = "IVB";
-	CervixTuTNMT = "T1b";
-} else if (document.getElementById('ChbCervixRectumInvasion').checked || document.getElementById('ChbCervixBladderInvasion').checked) {
-    CervixTuFIGO = "IVA";
+// Tstage
+if (document.getElementById('ChbCervixRectumInvasion').checked || document.getElementById('ChbCervixBladderInvasion').checked) {
 	CervixTuTNMT = "T4";
-} else if (CervixLNRegP.includes("paraaortálně")) {
-    CervixTuFIGO = "IIIC2";
-	CervixTuTNMN = "N1";
-} else if (nodesArrayReg.length !== 0 && !CervixLNRegP.includes("paraaortálně")) {
-    CervixTuFIGO = "IIIC1";
-	CervixTuTNMN = "N1";
 } else if (document.getElementById('ChbCervixWallInvasion').checked || document.getElementById('ChbCervixHydronephR').checked || document.getElementById('ChbCervixHydronephL').checked) {
-    CervixTuFIGO = "IIIB";
 	CervixTuTNMT = "T3b";
 } else if (CervixVagInvX === "++") {
-    CervixTuFIGO = "IIIA";
 	CervixTuTNMT = "T3a";
 } else if (document.getElementById('ChbCervixParamRInvasion').checked || document.getElementById('ChbCervixParamLInvasion').checked) {
-    CervixTuFIGO = "IIB";
 	CervixTuTNMT = "T2b";
-} else if (CervixVagInvX === "+" && CervixTuFIGO === "IB3") {
+} else if (CervixVagInvX === "+" && CervixTuInvasionText === "velikost >4cm") {
+	CervixTuTNMT = "T2a";
+} else if (CervixVagInvX === "+" && CervixTuInvasionText === "velikost 2-4cm") {
+	CervixTuTNMT = "T2a";
+} else if (CervixTuInvasionText === "velikost >4cm") {
+	CervixTuInvasionP = "V oblasti krčku dělohy na T2 infiltrativní zvýšení SI v největším diametru ≥ 4cm, vykazující restrikci difuze. ";
+	CervixTuTNMT = "T1b2";
+} else if (CervixTuInvasionText === "velikost 2-4cm") {
+	CervixTuInvasionP = "V oblasti krčku dělohy na T2 infiltrativní zvýšení SI v největším diametru 2cm a více, ale méně než 4 cm, vykazující restrikci difuze. ";
+	CervixTuTNMT = "T1b";
+} else if (CervixTuInvasionText === "inv >5mm, vel <2cm") {
+	CervixTuInvasionP = "V oblasti endocervixu až stromatu krčku dělohy na T2 infiltrativní zvýšení SI do hloubky přes 5 mm, ale v největším rozměru diametru do 2 cm, vykazující restrikci difuze. ";
+	CervixTuTNMT = "T1b";
+} else if (CervixTuInvasionText === "invaze 3-5mm") {
+	CervixTuInvasionP = "V oblasti endocervixu až stromatu krčku dělohy na T2 infiltrativní zvýšení SI do hloubky 3 až 5 mm, vykazující restrikci difuze. ";
+	CervixTuTNMT = "T1b";
+} else if (CervixTuInvasionText === "invaze <3mm") {
+	CervixTuInvasionP = "V oblasti endocervixu až stromatu krčku dělohy na T2 infiltrativní zvýšení SI do hloubky max 3 mm, vykazující restrikci difuze. "; 
+	CervixTuTNMT = "T1b";
+}
+
+
+// FIGO
+if (CervixMetaP !== "" || CervixLNNonRegP !== "") {
+    CervixTuFIGO = "IVB";
+} else if (document.getElementById('ChbCervixRectumInvasion').checked || document.getElementById('ChbCervixBladderInvasion').checked) {
+    CervixTuFIGO = "IVA";
+} else if (CervixLNRegP.includes("paraaortálně")) {
+    CervixTuFIGO = "IIIC2";
+} else if (nodesArrayReg.length !== 0 && !CervixLNRegP.includes("paraaortálně")) {
+    CervixTuFIGO = "IIIC1";
+} else if (document.getElementById('ChbCervixWallInvasion').checked || document.getElementById('ChbCervixHydronephR').checked || document.getElementById('ChbCervixHydronephL').checked) {
+    CervixTuFIGO = "IIIB";
+} else if (CervixVagInvX === "++") {
+    CervixTuFIGO = "IIIA";
+} else if (document.getElementById('ChbCervixParamRInvasion').checked || document.getElementById('ChbCervixParamLInvasion').checked) {
+    CervixTuFIGO = "IIB";
+} else if (CervixVagInvX === "+" && CervixTuInvasionText === "velikost >4cm") {
     CervixTuFIGO = "IIA2";
-	CervixTuTNMT = "T2a";
-} else if (CervixVagInvX === "+" && CervixTuFIGO === "IB2") {
+} else if (CervixVagInvX === "+" && CervixTuInvasionText === "velikost 2-4cm") {
     CervixTuFIGO = "IIA1";
-	CervixTuTNMT = "T2a";
+} else if (CervixTuInvasionText === "velikost >4cm") {
+	CervixTuFIGO = "IB3";
+} else if (CervixTuInvasionText === "velikost 2-4cm") {
+	CervixTuFIGO = "IB2";
+} else if (CervixTuInvasionText === "inv >5mm, vel <2cm") {
+	CervixTuFIGO = "IB1";
+} else if (CervixTuInvasionText === "invaze 3-5mm") {
+	CervixTuFIGO = "IA2";
+} else if (CervixTuInvasionText === "invaze <3mm") {
+	CervixTuFIGO = "IA1";
 }
 
 // TNM - N
 
-if (nodesArrayReg.length !== 0) {
+if (nodesArrayReg.length !== 0 && CervixLNRegP.includes("paraaortálně")) {
+	CervixTuTNMN = "N2";
+} else if (nodesArrayReg.length !== 0 && !CervixLNRegP.includes("paraaortálně")) { 
 	CervixTuTNMN = "N1";
 } else CervixTuTNMN = "N0";
 
@@ -295,9 +293,17 @@ if (document.getElementById('ChbCervixLNNonReg').checked || document.getElementB
 } else CervixTuTNMM = "M0";
 
 
-CervixTuFIGOR = "FIGO klasifikace stage " + CervixTuFIGO + ", TNM klasifikace stage " + CervixTuTNMT + CervixTuTNMN + CervixTuTNMM + ".";
+// tumor yes or no
 
-//TNM
+if (CervixTuTypeText === "není") {
+ CervixTuInvasionP = "V oblasti endocervixu až stromatu krčku dělohy na T2 bez přesvědčivého infiltrativního zvýšení SI, bez známek restrikce difuze. ";
+} 
+
+
+
+CervixTuFIGOR = "FIGO klasifikace stage " + CervixTuFIGO + ", TNM klasifikace stage " + CervixTuTNMT + " " + CervixTuTNMN + " " + CervixTuTNMM + ".";
+
+
 
 
 

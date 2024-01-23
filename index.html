@@ -11,7 +11,7 @@
 
 </head>
 
-<body>
+<body  class="bodyINDEX">
 
 
 
@@ -22,6 +22,7 @@
         <div class="dropdown-content">
             <a href="#" onclick="changePage('TNMRectum.html')">Ca rekta</a>
             <a href="#" onclick="changePage('TNMmiProstate.html')">Ca prostaty</a>
+			<a href="#" onclick="changePage('TNMCervix.html')">Ca cervixu</a>
         </div>
     </div>
 
@@ -113,25 +114,34 @@ function adjustTextareaHeight(textarea) {
 
 function changePage(url) {
     var container = document.getElementById("page-container");
-
-    // Create a unique ID for the iframe using the URL and current timestamp
     var uniqueId = "iframe-" + url + "-" + Date.now();
 
     var iframeContainer = document.createElement("div");
-    iframeContainer.className = "iframe-container"; 
+    iframeContainer.className = "iframe-container";
 
     var iframe = document.createElement("iframe");
-    iframe.id = uniqueId; // Set the unique ID
+    iframe.id = uniqueId;
     iframe.src = url;
     iframe.style.width = "100%";
     iframe.style.border = "none";
+    iframe.style.opacity = 0; // Initially invisible
     iframe.onload = function() {
-		 iframe.style.height = "0px";
+        iframe.style.height = "0px";
         try {
-            adjustIframeHeight(iframe); 
+            adjustIframeHeight(iframe);
             bindEventsToIframe(iframe);
-            updateFinalTextAreas(); 
+            updateFinalTextAreas();
             checkAndUpdateDivVisibility();
+
+            // Delay the fade-in animation until the iframe is loaded
+            setTimeout(() => {
+                iframe.style.opacity = 1; // Make the iframe visible
+                iframe.classList.add('iframe-fade-in');
+            }, 100); // Short delay before fade-in starts
+
+            setTimeout(() => {
+                iframe.classList.remove('iframe-fade-in');
+            }, 1100); // Duration of the animation plus initial delay
         } catch (e) {
             console.log('Error in iframe onload:', e);
         }
@@ -289,9 +299,11 @@ function checkAndUpdateDivVisibility() {
     var div = document.getElementById("texty1");
 
     if (popText === '' && resText === '') {
-        div.style.display = 'none';
+        div.classList.add('invisible');
+		div.classList.remove('visible');
     } else {
-        div.style.display = 'block';
+        div.classList.add('visible');
+		div.classList.remove('invisible');
     }
 	
 	adjustTextareaHeight(document.getElementById("FINALPOPText"));

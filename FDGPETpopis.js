@@ -741,6 +741,41 @@ if (ThyroidavidLesionR && ThyroidavidLesionL) {NeckThyroidText += "noduly se zv�
     NeckThyroidText = NeckThyroidText.slice(0, -2) + ".";
   }
 
+// Hlasivky
+
+var NeckVCordsText = "";
+  var NeckVCordsRes = "";
+
+  var ChbVCordsR = document.getElementById("ChbVCordsR").checked;
+  var ChbVCordsL = document.getElementById("ChbVCordsL").checked;
+  var NeckVCordsOther = document.getElementById("NeckVCordsOther").value.trim();
+
+  if (ChbVCordsR || ChbVCordsL || NeckVCordsOther) {
+    NeckVCordsText += "Hlasivky: ";
+  }
+
+  if (ChbVCordsR && ChbVCordsL) {
+    NeckVCordsText += "obě bez patrné akumulace RF, ";
+} else {
+    if (ChbVCordsR) {
+        NeckVCordsText += "pravá asymetricky bez patrné akumulace RF, "; 
+        NeckVCordsRes = "Paréza pravé hlasivky. ";
+    }
+    if (ChbVCordsL) {
+        NeckVCordsText += "levá asymetricky bez patrné akumulace RF, "; 
+        NeckVCordsRes = "Paréza levé hlasivky. ";
+    }
+}
+
+
+  if (NeckVCordsOther) {
+    NeckVCordsText += NeckVCordsOther + ", ";
+  }
+
+  if (NeckVCordsText.endsWith(", ")) {
+    NeckVCordsText = NeckVCordsText.slice(0, -2) + ". ";
+  }
+
 // zakrok
 
 var NeckTreatmentText = "";
@@ -1229,10 +1264,10 @@ if (ThoraxMammaMER && ThoraxMammaMEL) ThoraxMammaText += "St.p. oboustranné mas
 	if (ThoraxMammaMEL) ThoraxMammaText += "St.p. levostranné mastektomii. ";
   }
 
-if (ThoraxMammaKVER && ThoraxMammaKVEL) ThoraxMammaText += "St.p. oboustranné kvadrantektomii. ";
+if (ThoraxMammaKVER && ThoraxMammaKVEL) ThoraxMammaText += "St.p. kvadrantektomii obou prsů. ";
   else {  
-	if (ThoraxMammaKVER) ThoraxMammaText += "St.p. pravostranné kvadrantektomii. ";
-	if (ThoraxMammaKVEL) ThoraxMammaText += "St.p. levostranné kvadrantektomii. ";
+	if (ThoraxMammaKVER) ThoraxMammaText += "St.p. kvadrantektomii pravého prsu. ";
+	if (ThoraxMammaKVEL) ThoraxMammaText += "St.p. kvadrantektomii levého prsu. ";
   }
 
 if (ThoraxMammaSegR && ThoraxMammaSegL) ThoraxMammaText += "St.p. segmentektomii obou prsů. ";
@@ -1935,6 +1970,7 @@ var ChbAbdomenMesenterial = document.getElementById("ChbAbdomenMesenterial").che
 var ChbAbdomenRetroperit = document.getElementById("ChbAbdomenRetroperit").checked;
 var ChbAbdomenParaaortalR = document.getElementById("ChbAbdomenParaaortalR").checked;
 var ChbAbdomenParaaortalL = document.getElementById("ChbAbdomenParaaortalL").checked;
+var ChbAbdomenPelvic = document.getElementById("ChbAbdomenPelvic").checked;
 var ChbAbdomenParaAICR = document.getElementById("ChbAbdomenParaAICR").checked;
 var ChbAbdomenParaAICL = document.getElementById("ChbAbdomenParaAICL").checked;
 var ChbAbdomenParaAIER = document.getElementById("ChbAbdomenParaAIER").checked;
@@ -1950,6 +1986,7 @@ if (ChbAbdomenSubphrenic) descriptions.push("subfrenicky");
 if (ChbAbdomenPeriportal) descriptions.push("periportálně");
 if (ChbAbdomenMesenterial) descriptions.push("mesenteria");
 if (ChbAbdomenRetroperit) descriptions.push("retroperitonea");
+if (ChbAbdomenPelvic) descriptions.push("pánve");
 
 if (ChbAbdomenParaaortalR && ChbAbdomenParaaortalL) {
     descriptions.push("paraortálně bilat.");
@@ -3011,7 +3048,7 @@ var POPText = document.getElementById("POPText");
 	
 POPText.value = 
 POPExamCompareText + "\n" +
-"Hlava/krk: " + POPNeckNative + " " + window.POPNeckLesion1 + " " + window.POPNeckLesion2 + " " + window.POPNeckLesion3 + " " + POPNeckLymphNode1 + " " + NeckOther1Priority + " " + 
+"Hlava/krk: " + POPNeckNative + " " + window.POPNeckLesion1 + " " + window.POPNeckLesion2 + " " + window.POPNeckLesion3 + " " + POPNeckLymphNode1 + " " + NeckOther1Priority + " " + NeckVCordsText + " " +
 	HeadTonsilsText + " " + NeckParotidText + " " + NeckThyroidText + " " + NeckTreatmentText + " " + HeadMaxSinusText + " " + NeckOther1NoPriority + "\n" +
 "Hrudník: " + POPThoraxNative + " " + window.POPThoraxLesion1 + " " + window.POPThoraxLesion2 + " " + window.POPThoraxLesion3 + " " + ThoraxLymphNodePlusText + " " + POPThoraxLymphNode1 + " " + ThoraxOther1Priority + " " + ThoraxParenchymaText + " " + POPThoraxLungOk + " " + ThoraxFluidText + " " + ThoraxOesophText + " " + ThoraxMammaText + " " + ThoraxThymusText + " " + ThoraxDevicesText + " " + ThoraxEmbolisationText + " " + ThoraxOther1NoPriority + "\n" +
 "Břicho: " + POPAbdomenNative + " " + window.POPAbdomenLesion1 + " " + window.POPAbdomenLesion2 + " " + window.POPAbdomenLesion3 + " " + POPAbdomenLymphNode1 + " " + AbdomenOther1Priority + " " + AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + "\n" + 
@@ -3031,8 +3068,33 @@ ObecneTexts + " " + ObecneNativeText + " " + SUVLiverText + " " + SUVParotidText
 
 // ZÁVĚR
 
-//bez známek přítomnosti ano / ne - změnit bude čekovat spíš jestli neoplazie
-if ( POPNeckNative === "" || POPThoraxNative === "" || POPAbdomenNative === "" || POPSkeletonNative === "") {RESTextNative = "";} else {RESTextNative = "Bez známek přítomnosti FDG-avidní neoplázie. ";}
+//checking jestli bez známek přítomnosti nebo ne
+let variablesToCheck = [
+    window.RESNeckLesion1, window.RESNeckLesion2, window.RESNeckLesion3, RESNeckLymphNode1,
+    window.RESThoraxLesion1, window.RESThoraxLesion2, window.RESThoraxLesion3, RESThoraxLymphNode1,
+    window.RESAbdomenLesion1, window.RESAbdomenLesion2, window.RESAbdomenLesion3, RESAbdomenLymphNode1,
+    window.RESSkeletonLesion1, window.RESSkeletonLesion2, window.RESSkeletonLesion3
+];
+
+let bannedWords = ['suspektní', 'tumor', 'meta'];
+
+function containsBannedWord(str) {
+    return bannedWords.some(bannedWord => str.includes(bannedWord));
+}
+
+let containsBanned = variablesToCheck.some(variable => variable && containsBannedWord(variable));
+if (containsBanned) {
+    RESTextNative = "";
+} else {
+    if (buttonElementPETType.value === "FDG") {
+        RESTextNative = "Bez známek přítomnosti FDG-avidní neoplázie. ";
+    } else if (buttonElementPETType.value === "PSMA") {
+        RESTextNative = "Bez známek přítomnosti ložisek zvýšené exprese PSMA. ";
+    } else {
+        RESTextNative = ""; 
+    }
+}
+
 
 // bez nových ložisek
 var ChbNoNew = document.getElementById("ChbNoNew").checked;
@@ -3047,7 +3109,7 @@ RESTextNative + "\n" +
 ExamCompareText + "\n" + 
 window.RESNeckLesion1 + " " + window.RESNeckLesion2 + " " + window.RESNeckLesion3 + "\n" +
 RESNeckLymphNode1 + "\n" +
-NeckOther1ResPriority + "\n" +
+NeckOther1ResPriority + " " + NeckVCordsRes + "\n" +
 window.RESThoraxLesion1 + " " + window.RESThoraxLesion2 + " " + window.RESThoraxLesion3 + "\n" +
 RESThoraxLymphNode1 + "\n" +
 ThoraxOther1ResPriority + "\n" +

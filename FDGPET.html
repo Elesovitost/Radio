@@ -14,7 +14,10 @@
 <label class="CHB hidden"> + variabilně: MR <input type="checkbox" id="ChbMRrekta" onChange="updateTexts()"><span>+</span></label>
 </div>
 
-<div id="IND" class="mydiv0 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off" ></div>
+<div id="IND" class="mydiv0 standardwidth">
+<input id="indikace" type="text" placeholder="indikace..." autocomplete="off" >
+<div class="nowrap">&nbsp;&nbsp;srovnat s: <input type="date" id="DateCompare" name="dateInput" onchange="updateTexts(); toggleElements();"></div>
+</div>
 
 <!-- OBECNE -->
 
@@ -24,15 +27,12 @@
     <button class="title">OBECNÉ</button>
     SUVmax jater <input type="number" class="numbers" id="SUVLiver" min="0" max="10" step="0.1" style="width: 50px;" onchange="updateTexts()">&nbsp;&nbsp;
     <span id="suvmax-parotid-container" class="hidden"> SUVmax parotid <input type="number" class="numbers" id="SUVParotid" min="0" max="10" step="0.1" style="width: 50px;" onchange="updateTexts()"></span>
-	srovnat s: <input type="date" id="DateCompare" name="dateInput" onchange="updateTexts(); toggleElements();">
-    <text id="SUVLiverTextCompare" class="hidden">kdy SUVmax jater</text> <input type="number" class="hidden numbers" id="SUVLiverPrevious" min="0" max="10" step="0.1" style="width: 50px;" onchange="updateTexts()">
-    <label class="CHB" style="float: right;"> RECIST <input type="checkbox" id="ChbRECIST" onChange="updateTexts()"><span>+</span></label>
-   
-    <div style="margin-left: 90px; margin-top: 5px;"> 
-    aktivace tuku <label class="CHB"><input type="checkbox" id="ChbFat" value="Zvýšená akumulace RF v oblasti metabolicky aktivního tuku krku a trupu symetricky bilat. " onChange="updateTexts()"><span>+</span></label>&nbsp;&nbsp;&nbsp;
+    <input type="number" class="hidden numbers floatR" id="SUVLiverPrevious" min="0" max="10" step="0.1" style="width: 50px;" onchange="updateTexts()"> <text id="SUVLiverTextCompare" class="hidden floatR">event. SUVmax jater &nbsp;&nbsp;</text>
+       
+    aktivace tuku <label class="CHB"><input type="checkbox" id="ChbFat" value="Zvýšená akumulace RF v oblasti metabolicky aktivního tuku krku a trupu symetricky bilat. " onChange="updateTexts()"><span>+</span></label>&nbsp;&nbsp;
     paravazace <label class="CHB"><input type="checkbox" id="ChbParavasR" value="Zvýšená akumulace RF v průběhu lymfatik PHK po parc. extravazaci RF při aplikaci. " onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbParavasL" value="Zvýšená akumulace RF v průběhu lymfatik LHK po parc. extravazaci RF při aplikaci. "onChange="updateTexts()"><span>L</span></label>&nbsp;&nbsp;&nbsp;
-    nelačnění <label class="CHB"><input type="checkbox" id="ChbFull" value="Vysoká akumulace RF v kosterním svalstvu pravděpodobně při nedodržení lačnení. " onclick="updateTexts()"><span>+</span></label>&nbsp;&nbsp;&nbsp;    
-    </div>
+    nelačnění <label class="CHB"><input type="checkbox" id="ChbFull" value="Vysoká akumulace RF v kosterním svalstvu pravděpodobně při nedodržení lačnení. " onclick="updateTexts()"><span>+</span></label>&nbsp;&nbsp;
+	<label class="CHB"> RECIST <input type="checkbox" id="ChbRECIST" onChange="updateTexts()"><span>+</span></label>
 </div>
 
 
@@ -345,6 +345,25 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonO">...</button>
 			</tr>
 			<tr>
 				<td colspan="2" ><textarea id="NeckThyroidOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<td><button id="NeckVCords" class="others">Hlasivky</button></td>
+	</tr>
+	<tr id="NeckVCordstable" class="hidden">
+		<td>
+		<table>
+			<tr>
+				<td>Paréza</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbVCordsR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbVCordsL" onChange="updateTexts()"><span>L</span></label></td>
+			</tr>
+			<tr>
+				<td colspan="2" ><textarea id="NeckVCordsOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -679,7 +698,7 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">...</button>
 
 <table>
 	<tr>
-		<td><button id="ThoraxMamma" class="others">Mamma</button></td>
+		<td><button id="ThoraxMamma" class="others">Mamma-op</button></td>
 	</tr>
 	<tr id="ThoraxMammatable" class="hidden">
 		<td>
@@ -710,7 +729,7 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">...</button>
 
 <table>
 	<tr>
-		<td><button id="ThoraxLobectomy" class="others">Operace</button></td>
+		<td><button id="ThoraxLobectomy" class="others">Plíce-op</button></td>
 	</tr>
 	<tr id="ThoraxLobectomytable" class="hidden">
 		<td>
@@ -1355,6 +1374,10 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">...</button>
 			<td class="right"><label class="CHB"><input type="checkbox" id="ChbAbdomenParaaortalR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbAbdomenParaaortalL" onChange="updateTexts()"><span>L</span></label></td>
 		  </tr>
 		  <tr>
+			<td>Pánevní</td>
+			<td class="right"><label class="CHB"><input type="checkbox" id="ChbAbdomenPelvic" onChange="updateTexts()"><span>+</span></td>
+		  </tr>
+		  <tr>
 			<td>Pánevní AIC</td>
 			<td class="right"><label class="CHB"><input type="checkbox" id="ChbAbdomenParaAICR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbAbdomenParaAICL" onChange="updateTexts()"><span>L</span></label></td>
 		  </tr>
@@ -1704,9 +1727,6 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">...</button>
         </td>
     </tr>
 </table>
-</div> 
-
-<div class="table-container">
 
 <table>
     <tr>
