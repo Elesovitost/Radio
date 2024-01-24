@@ -885,6 +885,33 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonO">...</button>
 
 <table>
 	<tr>
+		<td><button id="ThoraxHeart" class="others">Srdce</button></td>
+	</tr>
+	<tr id="ThoraxHearttable" class="hidden">
+		<td>
+		<table>
+			<tr>	
+				<td>Dilatace síně</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbThoraxHeartAtrialDilatR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbThoraxHeartAtrialDilatL" onChange="updateTexts()"><span>L</span></label></td>
+			</tr>
+			<tr>
+				<td>Valve</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbThoraxHeartValveMi" onChange="updateTexts()"><span>Mi</span></label><label class="CHB"><input type="checkbox" id="ChbThoraxHeartValveAo" onChange="updateTexts()"><span>Ao</span></label></td>
+			</tr>
+			<tr>
+				<td>AS koronárek</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbThoraxHeartAS" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td colspan="2" ><textarea id="ThoraxHeartOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+
+<table>
+	<tr>
 		<td><button id="ThoraxEmbolisation" class="others">Embolizace</button></td>
 	</tr>
 	<tr id="ThoraxEmbolisationtable" class="hidden">

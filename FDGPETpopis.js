@@ -1435,6 +1435,35 @@ if (descriptionsThymus.length && (ThoraxThymusAct || ThoraxThymusEnlarge)) {
 	}
 	
 
+// srdce
+var ThoraxHeartText = "";
+var ThoraxHeartRes = "";
+
+var ThoraxHeartAtrialDilatR = document.getElementById("ChbThoraxHeartAtrialDilatR").checked;
+var ThoraxHeartAtrialDilatL = document.getElementById("ChbThoraxHeartAtrialDilatL").checked;
+var ThoraxHeartValveMi = document.getElementById("ChbThoraxHeartValveMi").checked;
+var ThoraxHeartValveAo = document.getElementById("ChbThoraxHeartValveAo").checked;
+var ThoraxHeartAS = document.getElementById("ChbThoraxHeartAS").checked;
+var ThoraxHeartOther = document.getElementById("ThoraxHeartOther").value.trim();
+
+if (ThoraxHeartAtrialDilatR && ThoraxHeartAtrialDilatL) ThoraxHeartText += "Dilatace srdečních síní. ";
+else { 
+	if (ThoraxHeartAtrialDilatR) ThoraxHeartText += "Dilatace pravé srdeční síně. ";
+	if (ThoraxHeartAtrialDilatL) ThoraxHeartText += "Dilatace levé srdeční síně. ";
+}
+
+if (ThoraxHeartValveMi && ThoraxHeartValveAo) ThoraxHeartText += "Náhrada mitrálních a aortální chlopně. ";
+else {
+	if (ThoraxHeartValveMi) ThoraxHeartText += "Náhrada mitrálních chlopně. ";
+	if (ThoraxHeartValveAo) ThoraxHeartText += "Náhrada aortální chlopně. ";
+}
+
+if (ThoraxHeartAS) ThoraxHeartText += "AS koronárních tepen. ";
+
+if (ThoraxHeartOther) {
+ThoraxHeartText += ThoraxHeartOther + ". ";
+}
+
 
 // active mediastinal lymph nodes 
 var ThoraxLymphNodePlusText = "";
@@ -3048,11 +3077,14 @@ var POPText = document.getElementById("POPText");
 	
 POPText.value = 
 POPExamCompareText + "\n" +
-"Hlava/krk: " + POPNeckNative + " " + window.POPNeckLesion1 + " " + window.POPNeckLesion2 + " " + window.POPNeckLesion3 + " " + POPNeckLymphNode1 + " " + NeckOther1Priority + " " + NeckVCordsText + " " +
-	HeadTonsilsText + " " + NeckParotidText + " " + NeckThyroidText + " " + NeckTreatmentText + " " + HeadMaxSinusText + " " + NeckOther1NoPriority + "\n" +
-"Hrudník: " + POPThoraxNative + " " + window.POPThoraxLesion1 + " " + window.POPThoraxLesion2 + " " + window.POPThoraxLesion3 + " " + ThoraxLymphNodePlusText + " " + POPThoraxLymphNode1 + " " + ThoraxOther1Priority + " " + ThoraxParenchymaText + " " + POPThoraxLungOk + " " + ThoraxFluidText + " " + ThoraxOesophText + " " + ThoraxMammaText + " " + ThoraxThymusText + " " + ThoraxDevicesText + " " + ThoraxEmbolisationText + " " + ThoraxOther1NoPriority + "\n" +
-"Břicho: " + POPAbdomenNative + " " + window.POPAbdomenLesion1 + " " + window.POPAbdomenLesion2 + " " + window.POPAbdomenLesion3 + " " + POPAbdomenLymphNode1 + " " + AbdomenOther1Priority + " " + AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + "\n" + 
-"Skelet a měkké tkáně: " + POPSkeletonNative + " " + window.POPSkeletonLesion1 + " " + window.POPSkeletonLesion2 + " " + window.POPSkeletonLesion3 + " " + SkeletonOther1Priority + " " + SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + "\n" +			
+"Hlava/krk: " + POPNeckNative + " " + window.POPNeckLesion1 + " " + window.POPNeckLesion2 + " " + window.POPNeckLesion3 + " " + POPNeckLymphNode1 + " " + 
+	NeckOther1Priority + " " + NeckVCordsText + " " + HeadTonsilsText + " " + NeckParotidText + " " + NeckThyroidText + " " + NeckTreatmentText + " " + HeadMaxSinusText + " " + NeckOther1NoPriority + "\n" +
+"Hrudník: " + POPThoraxNative + " " + window.POPThoraxLesion1 + " " + window.POPThoraxLesion2 + " " + window.POPThoraxLesion3 + " " + ThoraxLymphNodePlusText + " " + POPThoraxLymphNode1 + " " + ThoraxOther1Priority + " " + 
+	ThoraxParenchymaText + " " + POPThoraxLungOk + " " + ThoraxFluidText + " " + ThoraxOesophText + " " + ThoraxMammaText + " " + ThoraxThymusText + " " + ThoraxHeartText + " " + ThoraxDevicesText + " " + ThoraxEmbolisationText + " " + ThoraxOther1NoPriority + "\n" +
+"Břicho: " + POPAbdomenNative + " " + window.POPAbdomenLesion1 + " " + window.POPAbdomenLesion2 + " " + window.POPAbdomenLesion3 + " " + POPAbdomenLymphNode1 + " " + AbdomenOther1Priority + " " + 
+	AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + "\n" + 
+"Skelet a měkké tkáně: " + POPSkeletonNative + " " + window.POPSkeletonLesion1 + " " + window.POPSkeletonLesion2 + " " + window.POPSkeletonLesion3 + " " + SkeletonOther1Priority + " " + 
+	SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + "\n" +			
 ObecneTexts + " " + ObecneNativeText + " " + SUVLiverText + " " + SUVParotidText;
 
 
