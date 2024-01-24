@@ -237,3 +237,99 @@ copyfinal.addEventListener('click', function() {
 
 
 
+// TABLES others OVERLAY
+
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('others')) {
+        var tableId = event.target.id + 'table';
+        var table = document.getElementById(tableId);
+        
+        var overlayTables = document.querySelectorAll('.overlay');
+        overlayTables.forEach(function(otherTable) {
+            if (otherTable.id !== tableId) {
+                otherTable.classList.add('hidden');
+                otherTable.classList.remove('overlay');
+            }
+        });
+        
+        table.classList.toggle('overlay');
+        table.classList.toggle('hidden');
+    }
+});
+
+document.addEventListener('click', function(event) {
+    var overlayTables = document.querySelectorAll('.overlay');
+    overlayTables.forEach(function(table) {
+        if (!table.contains(event.target) && !event.target.classList.contains('others')) {
+            table.classList.add('hidden');
+            table.classList.remove('overlay');
+        }
+    });
+});
+
+//input textareas resizable
+
+var InputTextAreas = document.querySelectorAll('.inputothers, .inputOtherFinding');
+InputTextAreas.forEach(function(InputTextArea) {
+    InputTextArea.addEventListener('input', function() {
+        // Reset the height to ensure correct calculation
+        this.style.height = '22px';
+        // Set the height to the scrollHeight to fit the content
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+});
+
+
+// button tables overlay change color
+
+function isAnyCheckboxChecked(tableId) {
+    var checkboxes = document.querySelectorAll('#' + tableId + ' input[type="checkbox"]');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function updateButtonColor(buttonId, tableId) {
+    var button = document.getElementById(buttonId);
+    if (isAnyCheckboxChecked(tableId)) {
+        button.style.backgroundColor = '#D4A29C';
+    } else {
+        button.style.backgroundColor = ''; 
+    }
+}
+
+document.addEventListener('change', function(event) {
+    if (event.target.type === 'checkbox') {
+        var table = event.target.closest('[id$="table"]');
+        if (table) {
+            var buttonId = table.id.replace('table', '');
+            updateButtonColor(buttonId, table.id);
+        }
+    }
+});
+
+// button tables overlay unchecked
+
+function uncheckAllCheckboxes(tableId) {
+    var checkboxes = document.querySelectorAll('#' + tableId + ' input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = false;
+    });
+}
+
+document.addEventListener('contextmenu', function(event) {
+    if (event.target.classList.contains('others')) {
+        event.preventDefault(); // Prevent the default right-click context menu
+
+        var tableId = event.target.id + 'table';
+        uncheckAllCheckboxes(tableId);
+
+        var buttonId = tableId.replace('table', '');
+        updateButtonColor(buttonId, tableId);
+		updateTexts();
+    }
+});
+

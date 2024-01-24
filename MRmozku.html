@@ -277,51 +277,59 @@
 </table>
 </div>
 
-<div id="ostatni" class="standardwidth"><button class="titleBrain float">EXTRAKRAN.</button>
-<table style="margin-left: 3em;">
-	<tr>	
-	<th>&nbsp;&nbsp;&nbsp;</th>
-	<th></th>
-	<th>vpravo</th>
-	<th>vlevo</th>
-	<th></th>
-	<th></th>
-	<th>vpravo</th>
-	<th>vlevo</th>
-  </tr>
-  <tr>
-	<td></td>
-	<td>maxilární siny</td>
-	<td><button id="MaxillarRButton" class="Button60" onmousedown="cycleMaxillarRText(event)">0</button></td>
-	<td><button id="MaxillarLButton" class="Button60" onmousedown="cycleMaxillarLText(event)">0</button></td>
-	<td>&nbsp;&nbsp;&nbsp;</td>
-	<td>orbity</td>
+<div id="ostatni" class="standardwidth table-container"><button class="titleBrain float">EXTRAKRAN.</button>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<table>
+	<tr>
+		<td><button id="HeadSinuses" class="others">Vedlejší siny</button></td>
+	</tr>
+	<tr id="HeadSinusestable" class="hidden">
+		<td>
+			<table>
+				<tr>	
+				<th></th>
+				<th></th>
+				<th>vpravo</th>
+				<th>vlevo</th>
+			  </tr>
+			  <tr>
+				<td></td>
+				<td>maxilární siny</td>
+				<td><button id="MaxillarRButton" class="Button60" onmousedown="cycleMaxillarRText(event)">0</button></td>
+				<td><button id="MaxillarLButton" class="Button60" onmousedown="cycleMaxillarLText(event)">0</button></td>
+			  </tr>
+			  <tr>
+				<td></td>
+				<td>frontální siny</td>
+				<td><button id="FrontalRButton" class="Button60" onmousedown="cycleFrontalRText(event)">0</button></td>
+				<td><button id="FrontalLButton" class="Button60" onmousedown="cycleFrontalLText(event)">0</button></td>
+				
+			  </tr>
+			  <tr>
+				<td></td>
+				<td>ethmoidy</td>
+				<td><button id="EthmoidRButton" class="Button60" onmousedown="cycleEthmoidRText(event)">0</button></td>
+				<td><button id="EthmoidLButton" class="Button60" onmousedown="cycleEthmoidLText(event)">0</button></td>
+			  </tr>
+			  <tr>
+				<td></td>
+				<td>sphenoidy</td>
+				<td><button id="SphenoidRButton" class="Button60" onmousedown="cycleSphenoidRText(event)">0</button></td>
+				<td><button id="SphenoidLButton" class="Button60" onmousedown="cycleSphenoidLText(event)">0</button></td>
+			  </tr>
+		  </table>
+		</td>
+	</tr>
+</table>
+<table>
+	<td>&nbsp;&nbsp;orbity</td>
 	<td><button id="OrbitRButton" class="Button60" onmousedown="cycleOrbitRText(event)">0</button></td>
 	<td><button id="OrbitLButton" class="Button60" onmousedown="cycleOrbitLText(event)">0</button></td>
-  </tr>
-  <tr>
-	<td></td>
-	<td>frontální siny</td>
-	<td><button id="FrontalRButton" class="Button60" onmousedown="cycleFrontalRText(event)">0</button></td>
-	<td><button id="FrontalLButton" class="Button60" onmousedown="cycleFrontalLText(event)">0</button></td>
-	
-  </tr>
-  <tr>
-	<td></td>
-	<td>ethmoidy</td>
-	<td><button id="EthmoidRButton" class="Button60" onmousedown="cycleEthmoidRText(event)">0</button></td>
-	<td><button id="EthmoidLButton" class="Button60" onmousedown="cycleEthmoidLText(event)">0</button></td>
-	<td>&nbsp;&nbsp;&nbsp;</td>
-	<td>mastoidy&nbsp;</td>
+</table>
+<table>
+	<td>&nbsp;&nbsp;mastoidy</td>
 	<td><button id="MastoidRButton" class="Button60" onmousedown="cycleMastoidRText(event)">0</button></td>
 	<td><button id="MastoidLButton" class="Button60" onmousedown="cycleMastoidLText(event)">0</button></td>
-  </tr>
-  <tr>
-	<td></td>
-	<td>sphenoidy</td>
-	<td><button id="SphenoidRButton" class="Button60" onmousedown="cycleSphenoidRText(event)">0</button></td>
-	<td><button id="SphenoidLButton" class="Button60" onmousedown="cycleSphenoidLText(event)">0</button></td>
-  </tr>
 </table>
 </div>
 
@@ -331,7 +339,7 @@
 <textarea id="FINALText" class="superlarge"></textarea>  
  </div>
 
-<div id="texty1" class=" standardwidth hidden">
+<div id="texty1" class=" standardwidth ">
 NÁZEV<textarea id="MRbrainNAMEText" class="medium"></textarea>
 INDIKACE<textarea id="MRbrainINDText" class="medium"></textarea>
 SEKVENCE<textarea id="MRbrainSEKVText" class="medium"></textarea>
