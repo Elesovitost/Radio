@@ -1952,6 +1952,46 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonO">...</button>
         </td>
     </tr>
 </table>
+
+<table>
+	<tr>
+		<td><button id="AbdomenVessels" class="others">Cévy</button></td>
+	</tr>
+	<tr id="AbdomenVesselstable" class="hidden">
+		<td>
+		<table>
+			<tr>	
+				<td>Aneurysma supraren.</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbAbdomenVesselsAoAneurysmSupra" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>	
+				<td>Aneurysma subren.</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbAbdomenVesselsAoAneurysmSub" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>	
+				<td>Aneurysma bifurkace</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbAbdomenVesselsAoAneurysmBif" onChange="updateTexts()"><span>+</span></label></td>
+			</tr>
+			<tr>
+				<td>AS a. iliaca com.</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbAbdomenVesselsASIliacComR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbAbdomenVesselsASIliacComL" onChange="updateTexts()"><span>L</span></label></td>
+			</tr>
+			<tr>
+				<td>AS a. iliaca ext.</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbAbdomenVesselsASIliacExtR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbAbdomenVesselsASIliacExtL" onChange="updateTexts()"><span>L</span></label></td>
+			</tr>
+			<tr>
+				<td>AS a. femoralis</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbAbdomenVesselsASFemR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbAbdomenVesselsASFemL" onChange="updateTexts()"><span>L</span></label></td>
+			</tr>
+			<tr>
+				<td colspan="2" ><textarea id="AbdomenVesselsOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+
 </div> 
 
 </div>

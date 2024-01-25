@@ -2623,6 +2623,66 @@ if (ChbAbdomenFluidL) {AbdomenFluidText = "Tekutina okolo jater, sleziny, mezikl
 if (ChbAbdomenFluidXL) {AbdomenFluidText = "Velké množství tekutiny intraperitoneálně.";AbdomenFluidRes = "Výrazný ascites. ";}
 
 
+// Vessels
+var AbdomenVesselsText = "";
+var AbdomenVesselsRes = "";
+
+var ChbAbdomenVesselsAoAneurysmSupra = document.getElementById("ChbAbdomenVesselsAoAneurysmSupra").checked;
+var ChbAbdomenVesselsAoAneurysmSub = document.getElementById("ChbAbdomenVesselsAoAneurysmSub").checked;
+var ChbAbdomenVesselsAoAneurysmBif = document.getElementById("ChbAbdomenVesselsAoAneurysmBif").checked;
+var ChbAbdomenVesselsASIliacComR = document.getElementById("ChbAbdomenVesselsASIliacComR").checked;
+var ChbAbdomenVesselsASIliacComL = document.getElementById("ChbAbdomenVesselsASIliacComL").checked;
+var ChbAbdomenVesselsASIliacExtR = document.getElementById("ChbAbdomenVesselsASIliacExtR").checked;
+var ChbAbdomenVesselsASIliacExtL = document.getElementById("ChbAbdomenVesselsASIliacExtL").checked;
+var ChbAbdomenVesselsASFemR = document.getElementById("ChbAbdomenVesselsASFemR").checked;
+var ChbAbdomenVesselsASFemL = document.getElementById("ChbAbdomenVesselsASFemL").checked;
+var AbdomenVesselsOther = document.getElementById("AbdomenVesselsOther").value.trim();
+
+var aneurysmText = "";
+var isSupra = ChbAbdomenVesselsAoAneurysmSupra;
+var isSub = ChbAbdomenVesselsAoAneurysmSub;
+var isBif = ChbAbdomenVesselsAoAneurysmBif;
+
+if (isSupra || isSub || isBif) {
+    aneurysmText += "Aneurysma ";
+    if (isSupra) aneurysmText += "suprarenální aorty";
+    if (isSub) aneurysmText += (isSupra ? " a " : "") + "subrenální aorty";
+    if (isBif) aneurysmText += ((isSupra || isSub) ? " a " : "") + "bifurkace přecházející na ilické tepny";
+    aneurysmText += ". ";
+}
+
+AbdomenVesselsText = aneurysmText;
+AbdomenVesselsRes = aneurysmText;
+
+
+
+var arteries = [];
+var BilateralArteries = {
+    "a. iliaca communis": [ChbAbdomenVesselsASIliacComR, ChbAbdomenVesselsASIliacComL],
+    "a. iliaca externa": [ChbAbdomenVesselsASIliacExtR, ChbAbdomenVesselsASIliacExtL],
+    "a. femoralis": [ChbAbdomenVesselsASFemR, ChbAbdomenVesselsASFemL]
+};
+
+for (var artery in BilateralArteries) {
+    if (BilateralArteries[artery][0] && BilateralArteries[artery][1]) {
+        arteries.push(artery + " bilat.");
+    } else {
+        if (BilateralArteries[artery][0]) arteries.push(artery + " vpravo");
+        if (BilateralArteries[artery][1]) arteries.push(artery + " vlevo");
+    }
+}
+
+if (arteries.length > 0) {
+    var arteryText = arteries.length > 2 ? arteries.slice(0, -2).join(", ") + ", " + arteries.slice(-2).join(" a ") : arteries.join(" a ");
+    AbdomenVesselsText += "Pokročilá AS " + arteryText + " zužující lumen. ";
+	AbdomenVesselsRes += "Stenóza lumen " + arteryText + " na podkladě pokročilé aterosklerózy. ";
+}
+
+if (AbdomenVesselsOther.length > 0) {
+    AbdomenVesselsText += AbdomenVesselsOther;
+}
+
+
 
 //Abdomen Organs Combine
 
@@ -3082,7 +3142,7 @@ POPExamCompareText + "\n" +
 "Hrudník: " + POPThoraxNative + " " + window.POPThoraxLesion1 + " " + window.POPThoraxLesion2 + " " + window.POPThoraxLesion3 + " " + ThoraxLymphNodePlusText + " " + POPThoraxLymphNode1 + " " + ThoraxOther1Priority + " " + 
 	ThoraxParenchymaText + " " + POPThoraxLungOk + " " + ThoraxFluidText + " " + ThoraxOesophText + " " + ThoraxMammaText + " " + ThoraxThymusText + " " + ThoraxHeartText + " " + ThoraxDevicesText + " " + ThoraxEmbolisationText + " " + ThoraxOther1NoPriority + "\n" +
 "Břicho: " + POPAbdomenNative + " " + window.POPAbdomenLesion1 + " " + window.POPAbdomenLesion2 + " " + window.POPAbdomenLesion3 + " " + POPAbdomenLymphNode1 + " " + AbdomenOther1Priority + " " + 
-	AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + "\n" + 
+	AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + " " + AbdomenVesselsText + "\n" +
 "Skelet a měkké tkáně: " + POPSkeletonNative + " " + window.POPSkeletonLesion1 + " " + window.POPSkeletonLesion2 + " " + window.POPSkeletonLesion3 + " " + SkeletonOther1Priority + " " + 
 	SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + "\n" +			
 ObecneTexts + " " + ObecneNativeText + " " + SUVLiverText + " " + SUVParotidText;
@@ -3150,7 +3210,8 @@ window.RESAbdomenLesion1 + " " + window.RESAbdomenLesion2 + " " + window.RESAbdo
 RESAbdomenLymphNode1 + "\n" +
 AbdomenOther1ResPriority + "\n" +
 AbdomenProstateRes + "\n" +
-AbdomenFluidRes + "\n" +
+AbdomenFluidRes + " " + 
+AbdomenVesselsRes + "\n" +
 window.RESSkeletonLesion1 + " " + window.RESSkeletonLesion2 + " " + window.RESSkeletonLesion3 + "\n" +
 SkeletonTraumaRecentRes + "\n" +
 SkeletonOther1ResPriority + "\n" +
