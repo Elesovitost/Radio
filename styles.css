@@ -207,7 +207,7 @@ tr { height: 20px;}
 /* BUTTONS */
 
 button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-color: #FFFFFF; width: 20px;text-align: center; border-radius: 0px;}
-.title {width: 86px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
+.title {width: 86px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12; }
 .titleBrain {width: 96px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
 .titleKnee {width: 126px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
 .titleShoulder {width: 126px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
@@ -365,6 +365,12 @@ input {  border: 1px solid #000000; text-align: left; padding-left: 5px; border-
     z-index: -1; /* Puts the image behind the content */
 }
 
+
+
+.button-icon {
+    height: 100%; /* Set the icon height to match the button */
+    margin-right: 5px; /* Add some space between the icon and the text */
+}
 
 /* TNM FILES */
 
