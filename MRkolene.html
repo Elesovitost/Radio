@@ -6,11 +6,12 @@
 <body>
 
 <div id="MRkolene" class="standardwidth mydiv0">MR <button id="StranaButton" class="ButtonStrana" onmousedown="cycleStranaText(event)">jakého?</button> KOLENE  </div>
-<div id="IND" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
-<div id="kneeobecne" class="standardwidth"><button class="titleFlex">KLOUBNÍ DUTINA</button></div>
-<div id="obecnecontent"  class="standardwidth">
+<div id="IND" class="mydivIND standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
+<div id="kneeobecne" class="standardwidth"><button class="titleKnee float">KLOUBNÍ DUTINA</button>
+
 <table>
 <tr>
+	<td>&nbsp;&nbsp;&nbsp;</td>
 	<td>náplň</td>
 	<td><button id="PkNaplnButton" class="Button40" onmousedown="cyclePkNaplnText(event)">0</button></td>
 	<td></td>
@@ -26,12 +27,11 @@
 </tr>
 </table>
 </div>
-<div id="komppredni" class="standardwidth"><button class="titleFlex">PŘEDNÍ KOMPARTMENT</button></div>
-
-<div id="Pkcontent"  class="standardwidth">
+<div id="komppredni" class="standardwidth"><button class="titleKnee float">PŘEDNÍ KOM.</button>
 
 <table>
 	<tr>
+		<td>&nbsp;&nbsp;&nbsp;</td>
 		<td><button id="PkCartilages" class="others100">FP chrupavky</button></td>
 		<td>&nbsp;&nbsp;&nbsp;</td>
 		<td>Wiberg</td>
@@ -95,8 +95,8 @@
 </div>
 
 <div class="flex-container">
-  <div  id="kommedlat" class="standardwidthHALF"><button class="titleFlex">MEDIÁLNÍ KOMPARTMENT</button></div>
-  <div  id="kommedlat" class="standardwidthHALF"><button class="titleFlex">LATERÁLNÍ KOMPARTMENT</button></div>
+  <div  id="kommedlat" class="standardwidthHALF"><button class="titleKnee float">MEDIÁLNÍ KOM.</button></div>
+  <div  id="kommedlat" class="standardwidthHALF"><button class="titleKnee float">LATERÁLNÍ KOM.</button></div>
 </div>
 <div class="flex-container">
   <div  id="Mkcontent" class="standardwidthHALF">
@@ -342,8 +342,7 @@
  
 </div>
 
-<div id="vazy"  class="standardwidth"><button class="titleFlex">LIGAMENTA</button></div>
-<div id="vazycontent"  class="standardwidth table-container">
+<div id="vazy"  class="standardwidth flex-container"><button class="titleKnee float">VAZY</button>
 
 <button id="LCMButton" class="Button80" onmousedown="cycleLCMText(event)">LCM</button>
 &nbsp;
@@ -417,8 +416,13 @@
 
 </div>
 
-<div id="others"  class="standardwidth"><button class="titleFlex">OSTATNÍ</button></div>
-<div id="otherscontent"  class="standardwidth table-container">
+<div id="others"  class="standardwidth hidden"><button class="titleKnee float">OSTATNÍ</button>
+
+<table>
+<tr>
+	<td>&nbsp;&nbsp;&nbsp;</td>
+</tr>
+</table>
 
 </div>
 

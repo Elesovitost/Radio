@@ -8,20 +8,19 @@
 <div id="MRramene" class="standardwidth mydiv0">MR <button id="StranaButton" class="buttonStrana" onmousedown="cycleStranaText(event)">jakého?</button> RAMENE  </div>
 <div id="IND" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
 
-<div id="shouldergeneral" class="standardwidth"><button class="titleFlex">KLOUBNÍ DUTINA</button></div>
-
-<div id="obecnecontent"  class="standardwidth">
+<div id="shouldergeneral" class="standardwidth"><button class="titleShoulder float">KLOUBNÍ DUTINA</button>
 <table>
 <tr>
+	<td>&nbsp;&nbsp;&nbsp;</td>
 	<td>náplň</td>
 	<td><button id="NaplnButton" class="button40" onmousedown="cycleNaplnText(event)">0</button></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
     <td>volná tělíska</td>
     <td><label class="CHB"><input type="checkbox" id="checkboxVolnaTeliska" onChange="updateTexts()"><span>+</span></label></td>
-    <td></td>
+    <td>&nbsp;&nbsp;</td>
 	<td>SASD burza</td>
 	<td><button id="SASDButton" class="button40" onmousedown="cycleSASDText(event)">0</button></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
 	<td>SC burza</td>
 	<td><button id="SCButton" class="button40" onmousedown="cycleSCText(event)">0</button></td>
 </tr>
@@ -29,20 +28,19 @@
 </div>
 
 
-<div id="AC" class="standardwidth"><button class="titleFlex">AC SKLOUBENÍ</button></div>
-
-<div id="ACcontent"  class="standardwidth">
+<div id="AC" class="standardwidth"><button class="titleShoulder float">AC SKLOUBENÍ</button>
 <table>
   <tr>
+	<td>&nbsp;&nbsp;&nbsp;</td>
 	<td>degenerace</td>
 	<td><button id="ACdegeneraceButton" class="button60" onmousedown="cycleACdegeneraceText(event)">0</button></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
     <td>subluxace</td>
     <td><button id="ACsubluxaceButton" class="button60" onmousedown="cycleACsubluxaceText(event)">není</button></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
     <td>akromion</td>
 	<td><button id="AcromionButton" class="button80" onmousedown="cycleAcromionText(event)">0</button></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
 	<td>zúžení SA prostoru</td>
 	<td><label class="CHB"><input type="checkbox" id="checkboxSAprostor" onChange="updateTexts()"><span>+</span></label></td>
 	<td></td>
@@ -52,20 +50,19 @@
 
 
 
-<div id="GH" class="standardwidth"><button class="titleFlex">GH KLOUB</button></div>
-
-<div id="GHcontent"  class="standardwidth">
+<div id="GH" class="standardwidth"><button class="titleShoulder float">GH KLOUB</button>
 <table>
 <tr>
+	<td>&nbsp;&nbsp;&nbsp;</td>
 	<td>degenerace</td>
 	<td><button id="GHdegeneraceButton" class="button60" onmousedown="cycleGHdegeneraceText(event)">0</button></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
     <td>subluxace</td>
     <td><button id="GHsubluxaceButton" class="button60" onmousedown="cycleGHsubluxaceText(event)">0</button></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
 	<td>Hill-Sachs</td>
 	<td><label class="CHB"><input type="checkbox" id="checkboxHS" onChange="updateTexts()"><span>+</span></label></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
 	<td>IGHL</td>
 	<td><button id="IGHLButton" class="button100" onmousedown="cycleIGHLText(event)">OK</button></td>
 </tr>
@@ -73,11 +70,10 @@
 </div>
 
 
-<div id="RM"  class="standardwidth"><button class="titleFlex">ROTÁTOROVÁ MANŽETA</button></div>
-
-<div id="RMcontent"  class="standardwidth">
+<div id="RM"  class="standardwidth"><button class="titleShoulder float">ROTATOR CUFF</button>
 <table>
   <tr>
+	<td>&nbsp;&nbsp;&nbsp;</td>
 	<td>M. supraspinatus</td>
     <td><button id="RMsupraButton" class="button100" onmousedown="cycleRMsupraText(event)">OK</button></td>
 	<td id="supralok" class="hidden">lokalizace</td>
@@ -87,6 +83,7 @@
 	<td id="supraatrofie" class="hidden"><label class="CHB"><input type="checkbox" id="checkboxsupraAtrofie" onChange="updateTexts()"><span>+</span></label></td>
   </tr>
   <tr>
+	<td>&nbsp;&nbsp;&nbsp;</td>
 	<td>M. infraspinatus</td>
     <td><button id="RMinfraButton" class="button100" onmousedown="cycleRMinfraText(event)">OK</button></td>
 	<td id="infralok" class="hidden">lokalizace</td>
@@ -96,6 +93,7 @@
 	<td id="infraatrofie" class="hidden"><label class="CHB"><input type="checkbox" id="checkboxinfraAtrofie" onChange="updateTexts()"><span>+</span></label></td>
   </tr>
   <tr>
+	<td>&nbsp;&nbsp;&nbsp;</td>
 	<td>M. subscapularis</td>
 	<td><button id="RMssButton" class="button100" onmousedown="cycleRMssText(event)">OK</button></td>
 	<td id="sslok" class="hidden">lokalizace</td>
@@ -107,24 +105,23 @@
 </table>
 </div>
 
-<div id="labrum" class="standardwidth"><button class="titleFlex">LABRUM</button></div>
-
-<div id="labrumcontent"  class="standardwidth">
+<div id="labrum" class="standardwidth"><button class="titleShoulder float">LABRUM</button>
 <table>
   <tr>
+	<td>&nbsp;&nbsp;&nbsp;</td>
     <td>léze labra</td>
     <td><select id="LezeLabra" class="select100" onchange="updateTexts()">  
-  <option value=""selected>OK</option>
-  <option value="difuzní">difuzní</option>
-  <option value="horního">horního</option>
-  <option value="předního">předního</option>
-  <option value="zadního">zadního</option>
-  <option value="dolního">dolního</option>
+	  <option value=""selected>OK</option>
+	  <option value="difuzní">difuzní</option>
+	  <option value="horního">horního</option>
+	  <option value="předního">předního</option>
+	  <option value="zadního">zadního</option>
+	  <option value="dolního">dolního</option>
   	</select></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
 	<td>SLAP</td>
     <td><label class="CHB"><input type="checkbox" id="checkboxSLAP" onChange="updateTexts()"><span>+</span></label></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
 	<td>Bankart</td>
 	<td><button id="BankartButton" class="button60" onmousedown="cycleBankartText(event)">0</button></td>
 	<td></td>
@@ -132,25 +129,23 @@
 </table>
 </div>
 
-<div id="biceps"  class="standardwidth"><button class="titleFlex">LHBT</button></div>
-
-<div id="bicepscontent"  class="standardwidth">
+<div id="biceps"  class="standardwidth"><button class="titleShoulder float">LHBT</button>
 <table>
   <tr>
+	<td>&nbsp;&nbsp;&nbsp;</td>
 	<td>LHBT</td>
     <td><button id="LHBTButton" class="button100" onmousedown="cycleLHBTText(event)">OK</button></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
 	<td>sulkus</td>
 	<td><label class="CHB"><input type="checkbox" id="checkboxLHBTsulkus" onChange="updateTexts()"><span>+</span></label></td>
-	<td></td>
+	<td>&nbsp;&nbsp;</td>
 	<td>dislokace</td>
 	<td><label class="CHB"><input type="checkbox" id="checkboxLHBTdisl" onChange="updateTexts()"><span>+</span></label></td>
   </tr>
 </table>
 </div>
 
-<div id="shoulderothers" class="standardwidth"><button class="titleFlex">OSTATNÍ</button></div>
-<div id="ostatnicontent"  class="standardwidth">
+<div id="shoulderothers" class="standardwidth hidden"><button class="titleShoulder float">OSTATNÍ</button>
 <table>
 <tr>
     <td></td>
