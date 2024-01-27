@@ -207,16 +207,16 @@ var vyraznaList = [];
 for (var i = 0; i < selectedKOM.length; i++) {
     switch (selectedKOM[i]) {
         case "schmorl":
-            schmorlList.push("L" + (i + 1));
+            schmorlList.push("C" + (i + 3));
             break;
 		case "horní":
-            horniList.push("L" + (i + 1));
+            horniList.push("C" + (i + 3));
             break;
         case "klínovitá":
-            klinovitaList.push("L" + (i + 1));
+            klinovitaList.push("C" + (i + 3));
             break;
         case "výrazná":
-            vyraznaList.push("L" + (i + 1));
+            vyraznaList.push("C" + (i + 3));
             break;
         default:
             break;
