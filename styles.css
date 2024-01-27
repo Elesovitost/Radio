@@ -153,6 +153,7 @@ option {color: #000000; background-color: #FFFFFF;}
 
 #TABULKA tr td:nth-last-child(-n+3), #TABULKA tr th:last-child { display: none;}
 
+
 #myL1LISDButton, #myL1SLButton, #myL12HDButton, #myL12HERPFButton, #myL12HERPPButton, #myL12HERCButton, #myL12HERLPButton, #myL12HERLFButton, #myL12MIGButton {display: none;} 
 #myL2LISDButton, #myL2SLButton, #myL23HDButton, #myL23HERPFButton, #myL23HERPPButton, #myL23HERCButton, #myL23HERLPButton, #myL23HERLFButton, #myL23MIGButton {display: none;} 
 #myL3LISDButton, #myL3SLButton, #myL34HDButton, #myL34HERPFButton, #myL34HERPPButton, #myL34HERCButton, #myL34HERLPButton, #myL34HERLFButton, #myL34MIGButton {display: none;} 

@@ -109,16 +109,38 @@ function formatLymphNodeSize(variableName) {
 let DateCompare = document.getElementById("DateCompare").value; 
 let date = new Date(DateCompare); let day = String(date.getDate()).padStart(2, '0'); let month = String(date.getMonth() + 1).padStart(2, '0'); let year = date.getFullYear(); let DateComparison = day + "." + month + "." + year + " ";
 
-// checking if the current date is not chosen
-let currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);  
+// checking if the current date is not chosen else popup
+function showDatePopup() {
+    var popup = document.getElementById('popupMessageDate');
+    var dateInput = document.getElementById('DateCompare');
 
-    let timeDifference = Math.abs(currentDate - date);
+    var inputRect = dateInput.getBoundingClientRect();
+    var topPosition = inputRect.bottom + window.scrollY + 5; // Position below the input
+    var leftPosition = inputRect.left + window.scrollX;
+
+    popup.textContent = "Pozor, datum současné"; 
+    popup.style.top = topPosition + 'px';
+    popup.style.left = leftPosition + 'px';
+    popup.style.display = 'block';
+
+    setTimeout(() => {
+        popup.style.display = 'none';
+    }, 2000); // Hide after 1 second
+}
+
+document.getElementById('DateCompare').addEventListener('change', function() {
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    let selectedDate = new Date(this.value);
+    let timeDifference = Math.abs(currentDate - selectedDate);
     let dayDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
     if (dayDifference <= 7) {
-        alert("pozor, datum současné");
+        showDatePopup();
     }
+});
+
 
 
 // universal comparison
