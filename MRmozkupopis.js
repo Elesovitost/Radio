@@ -612,7 +612,11 @@ var SinusP = combineStrings([FrontalP, MaxillarP, EthmoidP, SphenoidP]);
 var SinusR = combineStrings([FrontalR, MaxillarR, EthmoidR, SphenoidR]);
 }
 
+// bez ložiskových změn
+POPNoLesions = "";
+if (POPBrainLesion1 === "" && POPBrainLesion2 === "") {POPNoLesions = "Bez ložiskových změn. ";} else {POPNoLesions = "";}
 
+//bez restrikce
 
 //POPIS
 
@@ -625,6 +629,7 @@ MRbrainSEKVText.value = "Mozek v T2W, FLAIR, DWI+ADC, T1W, (event. dle potřeby 
 MRbrainPOPText.value = 
 POPBrainLesion1 + "\n" +
 POPBrainLesion2 + "\n" +
+POPNoLesions + "\n" +
 WMLP + WMLkdeP + RSP + "." + "\n" +
 GCAP + " " + lobaratrophyP + "\n" +
 ventriclesP + "\n" +
