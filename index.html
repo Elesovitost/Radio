@@ -166,8 +166,11 @@ function changePage(url) {
     removeButton.onclick = function() {
         container.removeChild(iframeContainer);
 		
-		document.querySelector('.background-image').style.opacity = 1;
-        document.querySelector('.background-image').style.transition = 'opacity 1s';
+		if (container.children.length === 0) {
+            // Reset the background image opacity to 1 (fully opaque) if it is empty
+            document.querySelector('.background-image').style.opacity = 1;
+            document.querySelector('.background-image').style.transition = 'opacity 2s';
+        }
     };
 
     iframeContainer.appendChild(removeButton);
