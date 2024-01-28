@@ -1,3 +1,89 @@
+// LESIONS (cloning)   --- doplnovat --- 
+
+function cloneAndUpdateIds(sourceId, destId) {
+    let sourceElement = document.getElementById(sourceId);
+    let clonedElement = sourceElement.cloneNode(true);
+    clonedElement.id = destId;
+
+    let sourceNumber = sourceId.match(/\d+/); // extracts number from sourceId (e.g., "1" from "Lesion1")
+    let destNumber = destId.match(/\d+/); // extracts number from destId (e.g., "2" from "Lesion2")
+
+    let elements = clonedElement.querySelectorAll("*");
+    
+    elements.forEach(element => {
+        if (element.id) {
+            element.id = element.id.replace(`Lesion${sourceNumber}`, `Lesion${destNumber}`);
+            element.id = element.id.replace(`Chb${sourceNumber}`, `Chb${destNumber}`);
+			
+			 if (element.id.endsWith(`${destNumber}no`)) {
+                    element.textContent = `L${destNumber}`;
+                }
+        }
+    });
+    
+    sourceElement.parentNode.appendChild(clonedElement);
+}
+
+
+cloneAndUpdateIds("BrainLesion1", "BrainLesion2");
+
+
+// GRAMMAR
+
+function processSentence(sentence) {
+	sentence = sentence.trim();
+    const words = sentence.split(/\s+/);
+    const containsExactWord = (word) => words.includes(word);
+
+    if (containsExactWord("fokusy") || 
+		containsExactWord("noduly") || 
+		containsExactWord("ložisko") || 
+		containsExactWord("infiltráty") || 
+		containsExactWord("tumory") || 
+		containsExactWord("pakety")) {
+        // No changes needed
+    }
+
+    if (containsExactWord("fokus") || 
+		containsExactWord("nodul") || 
+		containsExactWord("infiltrát") || 
+		containsExactWord("tumor") || 
+		containsExactWord("paket")) {
+        sentence = sentence.replace(/metabolické/g, "metabolický").replace(/četné /g, "četný ");
+    }
+
+    if (containsExactWord("masa") || 
+		containsExactWord("expanze") || 
+		containsExactWord("infiltrace") || 
+		containsExactWord("konsolidace") || 
+		containsExactWord("opacita") || 
+		containsExactWord("ložiska") || 
+		containsExactWord("struktura") ||
+		containsExactWord("uzlina")) {
+        sentence = sentence.replace(/metabolické/g, "metabolická").replace(/četné /g, "četná ");
+    }
+
+    if (containsExactWord("masy") || 
+		containsExactWord("expanzePL") || 
+		containsExactWord("infiltracePL") || 
+		containsExactWord("konsolidacePL") || 
+		containsExactWord("opacity") || 
+		containsExactWord("struktury") ||
+		containsExactWord("uzliny")) {
+        sentence = sentence.replace(/expanzePL/g, "expanze").replace(/infiltracePL/g, "infiltrace").replace(/dva/g, "dvě");
+    }
+	
+	if (containsExactWord("ložiska")) 
+		{
+        sentence = sentence.replace(/dva/g, "dvě");
+    }
+
+    sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+
+    return sentence;
+}
+
+
 // checkbox clickable by right mouse
 
 const checkboxes = document.querySelectorAll('.CHB input[type="checkbox"]');
@@ -85,10 +171,7 @@ var textsStrana = ["jakého?", "PRAVÉHO", "LEVÉHO"];
 var textsWML = ["0", "ojedinělé", "sporadické", "vícečetné", "splývající"];
 var textsGCA = ["0", "1", "2", "3"];
 var textsventricles = ["0", "↑", "↑↑", "↑↑↑"];
-var newLesion1 = document.getElementById("newLesion1");
-var newLesion2 = document.getElementById("newLesion2");
 var newLesionV = document.getElementById("newLesionV");
-var textsLesion1enhancement = ["?", "0", "↑", "↑↑", "↑↑↑"];
 var textsLesion2enhancement = ["?", "0", "↑", "↑↑", "↑↑↑"];
 var textsMMKR = ["0", "ložisko", "konflikt"];
 var textsMMKL = ["0", "ložisko", "konflikt"];
@@ -114,7 +197,6 @@ var buttonElementWML = document.getElementById("WMLButton");
 var selectElementWMLkde = document.getElementById("WMLkde");
 var buttonElementGCA = document.getElementById("GCAButton");
 var buttonElementventricles = document.getElementById("ventriclesButton");
-var buttonElementLesion1enhancement = document.getElementById("Lesion1enhancementButton");
 var buttonElementLesion2enhancement = document.getElementById("Lesion2enhancementButton");
 var buttonElementMMKR = document.getElementById("MMKRButton");
 var buttonElementMMKL = document.getElementById("MMKLButton");
@@ -138,7 +220,6 @@ var indexStrana = 0;function cycleStranaText(event) {  indexStrana = cycleText(e
 var indexWML = 0;function cycleWMLText(event) {  indexWML = cycleText(event, textsWML, indexWML, buttonElementWML, updateBackgroundColor);}
 var indexGCA = 0;function cycleGCAText(event) {  indexGCA = cycleText(event, textsGCA, indexGCA, buttonElementGCA, updateBackgroundColor);}
 var indexventricles = 0;function cycleventriclesText(event) {  indexventricles = cycleText(event, textsventricles, indexventricles, buttonElementventricles, updateBackgroundColor);}
-var indexLesion1enhancement = 0;function cycleLesion1enhancementText(event) {  indexLesion1enhancement = cycleText(event, textsLesion1enhancement, indexLesion1enhancement, buttonElementLesion1enhancement, updateBackgroundColor);}
 var indexLesion2enhancement = 0;function cycleLesion2enhancementText(event) {  indexLesion2enhancement = cycleText(event, textsLesion2enhancement, indexLesion2enhancement, buttonElementLesion2enhancement, updateBackgroundColor);}
 var indexMMKR = 0;function cycleMMKRText(event) {  indexMMKR = cycleText(event, textsMMKR, indexMMKR, buttonElementMMKR, updateBackgroundColor);}
 var indexMMKL = 0;function cycleMMKLText(event) {  indexMMKL = cycleText(event, textsMMKL, indexMMKL, buttonElementMMKL, updateBackgroundColor);}
@@ -165,7 +246,6 @@ function cycleStranaText(event) {  indexStrana = cycleText(event, textsStrana, i
 function cycleWMLText(event) {  indexWML = cycleText(event, textsWML, indexWML, buttonElementWML, updateBackgroundColor);  updateTexts();}
 function cycleGCAText(event) {  indexGCA = cycleText(event, textsGCA, indexGCA, buttonElementGCA, updateBackgroundColor);  updateTexts();}
 function cycleventriclesText(event) {  indexventricles = cycleText(event, textsventricles, indexventricles, buttonElementventricles, updateBackgroundColor);  updateTexts();}
-function cycleLesion1enhancementText(event) {  indexLesion1enhancement = cycleText(event, textsLesion1enhancement, indexLesion1enhancement, buttonElementLesion1enhancement, updateBackgroundColor);  updateTexts();}
 function cycleLesion2enhancementText(event) {  indexLesion2enhancement = cycleText(event, textsLesion2enhancement, indexLesion2enhancement, buttonElementLesion2enhancement, updateBackgroundColor);  updateTexts();}
 function cycleMMKRText(event) {  indexMMKR = cycleText(event, textsMMKR, indexMMKR, buttonElementMMKR, updateBackgroundColor);  updateTexts();}
 function cycleMMKLText(event) {  indexMMKL = cycleText(event, textsMMKL, indexMMKL, buttonElementMMKL, updateBackgroundColor);  updateTexts();}
@@ -184,7 +264,7 @@ function cycleOrbitRText(event) {    indexOrbitR = cycleText(event, textsOrbitR,
 function cycleOrbitLText(event) {    indexOrbitL = cycleText(event, textsOrbitL, indexOrbitL, buttonElementOrbitL, updateBackgroundColor);    updateTexts();}
 
 
-//hiding 
+//hiding WML
 document.getElementById('WMLkde').addEventListener('focus', function() {
   document.getElementById('WMLLokace').classList.remove('hidden');
 });
@@ -205,17 +285,159 @@ buttonElementWML.addEventListener("mousedown", function() {
     }
 });
 
-newLesion1.addEventListener("click", function() {
-    Lozisko1content.classList.toggle("hidden");
-    });
-	
-newLesion2.addEventListener("click", function() {
-    Lozisko2content.classList.toggle("hidden");
-    });
 	
 newLesionV.addEventListener("click", function() {
     LesionVcontent.classList.toggle("hidden");
     });
+
+
+
+// Brainlesions hide
+
+// LESION1
+
+document.getElementById('BrainNewLesion1').addEventListener('click', function() {
+  var element = document.getElementById('BrainLesion1');
+  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
+  updateTexts();
+});
+
+document.getElementById('BrainLesion1no').addEventListener('click', function() {
+  var element = document.getElementById('BrainLesion1');
+  element.classList.add('hidden');
+  updateTexts();
+});
+
+document.getElementById('BrainLesion1number').addEventListener('change', function() {
+  let selectedValue = this.value;
+  let BrainLesion1LoclargestElement = document.getElementById('BrainLesion1Loclargest');
+
+  if (selectedValue !== "") {
+    BrainLesion1LoclargestElement.classList.remove('hidden');
+  } else {
+    BrainLesion1LoclargestElement.classList.add('hidden');
+  }
+});
+
+document.getElementById('BrainLesion1Location').addEventListener('focus', function() {
+  document.getElementById('BrainLesion1selectLocation').classList.remove('hidden');
+});
+document.addEventListener('click', function(e) {
+  const BrainLesion1LocationElement = document.getElementById('BrainLesion1Location');
+  const BrainLesion1selectLocationElement = document.getElementById('BrainLesion1selectLocation');
+  if (!BrainLesion1LocationElement.contains(e.target) && !BrainLesion1selectLocationElement.contains(e.target)) {
+	BrainLesion1selectLocationElement.classList.add('hidden');
+  }
+});
+
+//LESION2
+
+document.getElementById('BrainNewLesion2').addEventListener('click', function() {
+  var element = document.getElementById('BrainLesion2');
+  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
+  updateTexts();
+});
+
+document.getElementById('BrainLesion2no').addEventListener('click', function() {
+  var element = document.getElementById('BrainLesion2');
+  element.classList.add('hidden');
+  updateTexts();
+});
+
+document.getElementById('BrainLesion2number').addEventListener('change', function() {
+  let selectedValue = this.value;
+  let BrainLesion2LoclargestElement = document.getElementById('BrainLesion2Loclargest');
+
+  if (selectedValue !== "") {
+    BrainLesion2LoclargestElement.classList.remove('hidden');
+  } else {
+    BrainLesion2LoclargestElement.classList.add('hidden');
+  }
+});
+
+document.getElementById('BrainLesion2Location').addEventListener('focus', function() {
+  document.getElementById('BrainLesion2selectLocation').classList.remove('hidden');
+});
+document.addEventListener('click', function(e) {
+  const BrainLesion2LocationElement = document.getElementById('BrainLesion2Location');
+  const BrainLesion2selectLocationElement = document.getElementById('BrainLesion2selectLocation');
+  if (!BrainLesion2LocationElement.contains(e.target) && !BrainLesion2selectLocationElement.contains(e.target)) {
+	BrainLesion2selectLocationElement.classList.add('hidden');
+  }
+});
+
+
+// universal size
+
+function formatLesionSize(variableName) {
+  var elementValue = document.getElementById(variableName).value;
+  if (elementValue !== "") {
+    if (/^\d+$/.test(elementValue)) { 
+      return "diametru " + elementValue + " mm";
+    } else { 
+      return "rozměru " + elementValue + " mm";
+    }
+  }
+  return "";
+}
+
+
+// Lesion aktivita   
+  
+var aktivitaOptions = [
+    { text: "není", value: "bez akumulace RF", valuez1: "bez PSMA exprese", valuez2: "ametabolické"},
+    { text: "nízká", value: "s nízkou akumulací RF", valuez1: "s nízkou PSMA expresí", valuez2: "nízce metabolicky aktivní "},
+    { text: "intermed.", value: "se střední akumulací RF", valuez1: "se střední PSMA expresí", valuez2: "středně metabolicky aktivní "},
+    { text: "zvýšená", value: "se zvýšenou akumulací RF", valuez1: "se zvýšenou PSMA expresí", valuez2: "mírně hypermetabolické "},
+    { text: "vysoká", value: "s vysokou akumulací RF", valuez1: "s vysokou PSMA expresí", valuez2: "hypermetabolické "},
+	{ text: "enormní", value: "s velmi vysokou akumulací RF", valuez1: "s vysokou PSMA expresí", valuez2: "výrazně hypermetabolické "}
+];
+
+function populateAktivitaOptions() {
+    var selectElements = document.querySelectorAll("select[id$='Activity']");
+
+    selectElements.forEach(function (selectElement) {
+        aktivitaOptions.forEach(function (option) {
+            var optionElement = document.createElement("option");
+            optionElement.value = option.value;
+            optionElement.textContent = option.text;
+            optionElement.dataset.valuez1 = option.valuez1;
+			optionElement.dataset.valuez2 = option.valuez2;
+            selectElement.appendChild(optionElement);
+        });
+    });
+}
+
+populateAktivitaOptions();
+
+
+
+// Lesion hodnoceni
+
+var hodnoceniOptions = [
+    { text: "---", value: ": benigního vzhledu", valuez1: ": benigního vzhledu"},
+    { text: "-", value: ": nemá charakter viabilní neoplázie", valuez1: ": v.s. zánětlivá aktivace"},
+    { text: "+/-", value: ": nespecifický nález", valuez1: ": nespecifický nález"},
+    { text: "+", value: ": suspektní z viabilní neoplázie", valuez1: ": suspektní z infiltrace neoplazií"},
+    { text: "+++", value:": charakteru viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"},
+	{ text: "M1", value:": charakteru meta", valuez1: ": infiltrace neoplazií"}
+];
+
+function populateHodnoceniOptions() {
+    var selectElements = document.querySelectorAll("select[id$='Decision']");
+
+    selectElements.forEach(function (selectElement) {
+        hodnoceniOptions.forEach(function (option) {
+            var optionElement = document.createElement("option");
+            optionElement.value = option.value;
+            optionElement.textContent = option.text;
+            optionElement.dataset.valuez1 = option.valuez1;
+            selectElement.appendChild(optionElement);
+        });
+    });
+}
+populateHodnoceniOptions();
+
 
 // COPY
 

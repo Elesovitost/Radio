@@ -6,13 +6,6 @@
 
 <div id="MRmozku" class="standardwidth mydiv0">MR MOZKU</div>
 <div id="IND" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
-<div id="sekvence" class="standardwidth">+sekvence: 
-	MMK <label class="CHB"><input type="checkbox" id="checkboxsekMMK" onChange="updateTexts()"><span></span></label>
-	HEMA <label class="CHB"><input type="checkbox" id="checkboxsekHEMA" onChange="updateTexts()"><span></span></label>
-	kontrast <label class="CHB"><input type="checkbox" id="checkboxsekkontrast" onChange="updateTexts()"><span></span></label>
-	angio <label class="CHB"><input type="checkbox" id="checkboxsekangio" onChange="updateTexts()"><span></span></label>
-	C mícha <label class="CHB"><input type="checkbox" id="checkboxsekCmicha" onChange="updateTexts()"><span></span></label>
-</div>
 <div id="WM" class="standardwidth"><button class="titleBrain float">BÍLÁ HMOTA</button>
 <table>
 <tr>
@@ -108,124 +101,95 @@
 </table>
 </div>
 
-<div id="Loziska"  class="standardwidth"><button class="titleBrain">LOŽISKA</button> <td>&nbsp;&nbsp;&nbsp;</td> <button id="newLesion1" class="Button20">1</button> <button id="newLesion2" class="Button20">2</button> <button id="newLesionV" class="Button20">v</button>
+<div id="Loziska"  class="standardwidth"><button class="titleBrain">LOŽISKA</button> 
+<td>&nbsp;&nbsp;&nbsp;</td> <button id="BrainNewLesion1" class="Button20">1</button> <button id="BrainNewLesion2" class="Button20">2</button> <button id="newLesionV" class="Button20">v</button>
 
-<table id="Lozisko1content"  class="hidden">
-  <tr>	
-    <th><button class="ButtonNo">1</button></th>
-    <th>ložisko</th>
-	<th>signál</th>
-    <th>lokace</th> 
-	<th>vpravo</th>
-    <th>vlevo</th>
-    <th>upřesnění</th>
-    <th>sycení</th>
-	<th>rozměr</th>
-    <th></th>
-  </tr>
-  <tr>
-    <td></td>
-	<td><select id="Lesion1" class="select100" onchange="updateTexts()">
-		<option value=""selected>vyber...</option>
-		<option value="Cystické ložisko">cysta</option>
-		<option value="Ložisko">ložisko</option>
-		<option value="Pruhovitá léze">DVA</option>
-		<option value="Léze">kavernom</option>
-	</select></td>
-	<td><input id="Lesion1signal" type="text" placeholder="nepovinné..." style="width: 100px; autocomplete="off"></td>
-	<td><select id="Lesion1axial" class="select100" onchange="updateTexts()">
-		<option value=""selected>vyber...</option>
-		<option value="intraaxiálně">intraaxiálně</option>
-		<option value="extraaxiálně">extraaxiálně</option>
-	</select></td>
-    <td><select id="Lesion1lokR" class="select100" onchange="updateTexts()">
-		<option value="" selected>vyber...</option>
-		<option value="frontálně vpravo">frontálně</option>
-		<option value="parietálně vpravo">parietálně</option>
-		<option value="paracentrálně vpravo">paracentrálně</option>
-		<option value="temporálně vpravo">temporálně</option>
-		<option value="mediotemporálně vpravo">mediotemporálně</option>
-		<option value="okcipitálně vpravo">okcipitálně</option>
-		<option value="cerebellárně vpravo">cerebellárně</option>
-		<option value="v bazálních gangliích vpravo">v BG</option>
-	  </select></td>
-    <td><select id="Lesion1lokL" class="select100" onchange="updateTexts()">
-		<option value="" selected>vyber...</option>
-		<option value="frontálně vlevo">frontálně</option>
-		<option value="parietálně vlevo">parietálně</option>
-		<option value="paracentrálně vlevo">paracentrálně</option>
-		<option value="temporálně vlevo">temporálně</option>
-		<option value="mediotemporálně vlevo">mediotemporálně</option>
-		<option value="okcipitálně vlevo">okcipitálně</option>
-		<option value="cerebellárně vlevo">cerebellárně</option>
-		<option value="v bazálních gangliích vlevo">v BG</option>
-	</select></td>
-    <td><input id="Lesion1detail" type="text" placeholder="nepovinné..." style="width: 100px; autocomplete="off"></td>
-    <td><button id="Lesion1enhancementButton" class="Button40" onmousedown="cycleLesion1enhancementText(event)">?</button></td>
-    <td><input id="Lesion1size" type="text" style="width: 100px; autocomplete="off"></td>
-    <td></td>
-  </tr>
+<!-- BRAIN LESION1 -->
+<table id="BrainLesion1" class="LesionX hidden">
+	<tr>
+		<td><button id="BrainLesion1no" class="myButtonLesionS">L1</button></td>
+		<td><select id="BrainLesion1type" class="selectLESION" onchange="updateTexts()">
+			<option value="ložisko| ložiska"selected>ložisko</option>
+			<option value="tumor| tumory">tumor</option>
+			<option value="cysta| cysty">cysta</option>
+			<option value="expanze| expanzePL">expanze</option>
+			<option value="infiltrace| infiltracePL">infiltrace</option>
+		</select>
+		</td>
+		<td><select id="BrainLesion1number" class="select35" onchange="updateTexts()">
+			<option value="" selected>1</option>
+			<option value="dva">2</option>
+			<option value="vícečetné">++</option>
+			<option value="mnohočetné">+++</option>
+			</select>
+		</td>
+		<td><input id="BrainLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> <input id="BrainLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
+		</td>
+		<td><input id="BrainLesion1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
+		<td><select id="BrainLesion1Activity" class="select60" onchange="updateTexts()">
+			<option value="" selected>aktivita...</option>
+			</select>
+		</td>
+		<td><input id="BrainLesion1Size" class="select80 num" placeholder="rozměr..." oninput="updateTexts()"></td>
+		<td><select id="BrainLesion1Decision" class="hod" class="select40" onchange="updateTexts()">
+			<option value="" selected>?</option>
+			</select>
+		</td>
+    </tr>
+    <tr id="BrainLesion1Previous" class="hidden">
+		<td colspan="5"></td>
+		<td>&nbsp;minule:</td>
+		<td><input type="number" class="numbers" id="BrainLesion1SUVPrev" placeholder="SUVmax" min="0" max="100" step="0.1" style="width: 80px;" oninput="updateTexts()"></td>
+		<td><input id="BrainLesion1PrevSize" class="select80 num" placeholder="rozměr..." oninput="updateTexts()"></td>
+		<td></td>
+    </tr>
 </table>
-
   
-<table id="Lozisko2content"  class="hidden">
-  <tr>	
-    <th><button class="ButtonNo">2</button></th>
-    <th>ložisko</th>
-	<th>signál</th>
-    <th>lokace</th> 
-	<th>vpravo</th>
-    <th>vlevo</th>
-    <th>upřesnění</th>
-    <th>sycení</th>
-	<th>rozměr</th>
-    <th></th>
-  </tr>
-  <tr>
-    <td></td>
-	<td><select id="Lesion2" class="select100" onchange="updateTexts()">
-		<option value=""selected>vyber...</option>
-		<option value="Cystické ložisko">cysta</option>
-		<option value="Ložisko">ložisko</option>
-		<option value="Pruhovitá léze">DVA</option>
-		<option value="Léze">kavernom</option>
-	</select></td>
-	<td><input id="Lesion2signal" type="text" placeholder="nepovinné..." style="width: 100px; autocomplete="off"></td>
-	<td><select id="Lesion2axial" class="select100" onchange="updateTexts()">
-		<option value=""selected>vyber...</option>
-		<option value="intraaxiálně">intraaxiálně</option>
-		<option value="extraaxiálně">extraaxiálně</option>
-	</select></td>
-    <td><select id="Lesion2lokR" class="select100" onchange="updateTexts()">
-		<option value="" selected>vyber...</option>
-		<option value="frontálně vpravo">frontálně</option>
-		<option value="parietálně vpravo">parietálně</option>
-		<option value="paracentrálně vpravo">paracentrálně</option>
-		<option value="temporálně vpravo">temporálně</option>
-		<option value="mediotemporálně vpravo">mediotemporálně</option>
-		<option value="okcipitálně vpravo">okcipitálně</option>
-		<option value="cerebellárně vpravo">cerebellárně</option>
-		<option value="v bazálních gangliích vpravo">v BG</option>
-	  </select></td>
-    <td><select id="Lesion2lokL" class="select100" onchange="updateTexts()">
-		<option value="" selected>vyber...</option>
-		<option value="frontálně vlevo">frontálně</option>
-		<option value="parietálně vlevo">parietálně</option>
-		<option value="paracentrálně vlevo">paracentrálně</option>
-		<option value="temporálně vlevo">temporálně</option>
-		<option value="mediotemporálně vlevo">mediotemporálně</option>
-		<option value="okcipitálně vlevo">okcipitálně</option>
-		<option value="cerebellárně vlevo">cerebellárně</option>
-		<option value="v bazálních gangliích vlevo">v BG</option>
-	</select></td>
-    <td><input id="Lesion2detail" type="text" placeholder="nepovinné..." style="width: 100px; autocomplete="off"></td>
-    <td><button id="Lesion2enhancementButton" class="Button40" onmousedown="cycleLesion2enhancementText(event)">?</button></td>
-    <td><input id="Lesion2size" type="text" style="width: 100px; autocomplete="off"></td>
-    <td></td>
-  </tr>
+  
+<table id="BrainLesion1selectLocation" class="options hidden">
+    <tr>
+        <td>Frontálně</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1FrontalR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1FrontalL" onChange="updateTexts()"><span>L</span></label></td>
+        <td>Zadní jáma</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1PosteriorFosaR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1PosteriorFosaL" onChange="updateTexts()"><span>L</span></label></td>
+		<td>Intraaxiálně</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1Intraaxial" onChange="updateTexts()"><span>+</span></label></td>
+    </tr>
+    <tr>
+        <td>Parietálně</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1ParietalR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1ParietalL" onChange="updateTexts()"><span>L</span></label></td>
+        <td>Mozeček</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1CerebellarR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1CerebellarL" onChange="updateTexts()"><span>L</span></label></td>
+		<td>Extraaxiálně</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1Extraaxial" onChange="updateTexts()"><span>+</span></label></td>
+    </tr>
+    <tr>
+        <td>Temporálně</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1TemporalR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1TemporalL" onChange="updateTexts()"><span>L</span></label></td>
+		<td>Thalamus</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1ThalamusR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1ThalamusL" onChange="updateTexts()"><span>L</span></label></td>
+	</tr>
+    <tr>
+        <td>Insulárně</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1InsuleR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1InsuleL" onChange="updateTexts()"><span>L</span></label></td>
+        <td>Mesencephalon</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1MesencephR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1MesencephL" onChange="updateTexts()"><span>L</span></label></td>
+    </tr>
+    <tr>
+        <td>Okcipitálně</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1OccipitalR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1OccipitalL" onChange="updateTexts()"><span>L</span></label></td>
+        <td>Pons</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1PonsR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1PonsL" onChange="updateTexts()"><span>L</span></label></td>
+    </tr>
+    <tr>
+        <td>BG</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1BasalGangliaR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1BasalGangliaL" onChange="updateTexts()"><span>L</span></label></td>
+        <td>Oblongata</td>
+        <td class="right"><label class="CHB"><input type="checkbox" id="Chb1OblongataR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1OblongataL" onChange="updateTexts()"><span>L</span></label></td>
+    </tr>
 </table>
 
-
+<!-- BRAIN LESION V -->
 <table id="LesionVcontent"  class="hidden">
   <tr>	
     <th><button class="ButtonNo">v</button></th>
@@ -238,6 +202,8 @@
 </table>
 
 </div>
+
+<!-- MMK -->
 
 <div id="MMK"  class="standardwidth hidden"><button class="titleBrain">MMK</button></div>
 

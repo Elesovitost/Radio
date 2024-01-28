@@ -141,6 +141,10 @@ function changePage(url) {
             bindEventsToIframe(iframe);
             updateFinalTextAreas();
             checkAndUpdateDivVisibility();
+			
+			// Make the background image 80% transparent
+            document.querySelector('.background-image').style.opacity = 0.1;
+            document.querySelector('.background-image').style.transition = 'opacity 1s';
 
             // Delay the fade-in animation until the iframe is loaded
             setTimeout(() => {
@@ -161,6 +165,9 @@ function changePage(url) {
     removeButton.className = "remove-button"; 
     removeButton.onclick = function() {
         container.removeChild(iframeContainer);
+		
+		document.querySelector('.background-image').style.opacity = 1;
+        document.querySelector('.background-image').style.transition = 'opacity 1s';
     };
 
     iframeContainer.appendChild(removeButton);

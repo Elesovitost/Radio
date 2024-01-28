@@ -14,12 +14,6 @@ function updateTexts() {
 
 var indikace = document.getElementById("indikace").value;
 
-var checkboxsekMMK = document.getElementById('checkboxsekMMK');
-var checkboxsekHEMA = document.getElementById('checkboxsekHEMA');
-var checkboxsekkontrast = document.getElementById('checkboxsekkontrast');
-var checkboxsekangio = document.getElementById('checkboxsekangio');
-var checkboxsekCmicha = document.getElementById('checkboxsekCmicha');
-
 const WMLText = buttonElementWML.innerText;
 var WMLkdeText = document.getElementById("WMLkde").value;
 var RSP = ""; var RSR = ""; var checkboxRS = document.getElementById('checkboxRS');
@@ -30,24 +24,6 @@ const ventriclesText = buttonElementventricles.innerText;
 
 const MMKRText = buttonElementMMKR.innerText;
 const MMKLText = buttonElementMMKL.innerText;
-
-var Lesion1 = document.getElementById("Lesion1").value; 
-var Lesion1axial = document.getElementById("Lesion1axial").value; 
-var Lesion1lokR = document.getElementById("Lesion1lokR").value; 
-var Lesion1lokL = document.getElementById("Lesion1lokL").value; 
-var Lesion1detail = document.getElementById("Lesion1detail").value; 
-var Lesion1signal = document.getElementById("Lesion1signal").value; 
-const Lesion1enhancementText = buttonElementLesion1enhancement.innerText;
-var Lesion1size = document.getElementById("Lesion1size").value; 
-
-var Lesion2 = document.getElementById("Lesion2").value; 
-var Lesion2axial = document.getElementById("Lesion2axial").value; 
-var Lesion2lokR = document.getElementById("Lesion2lokR").value; 
-var Lesion2lokL = document.getElementById("Lesion2lokL").value; 
-var Lesion2detail = document.getElementById("Lesion2detail").value; 
-var Lesion2signal = document.getElementById("Lesion2signal").value; 
-const Lesion2enhancementText = buttonElementLesion2enhancement.innerText;
-var Lesion2size = document.getElementById("Lesion2size").value; 
 
 var LesionVP = document.getElementById("LesionVP").value;
 var LesionVR = document.getElementById("LesionVR").value;
@@ -72,31 +48,6 @@ const OrbitLText = buttonElementOrbitL.innerText;
 //nadpis
 
 const Nadpis = "MR mozku";
-
-// sekvence
-
-var SEK = ""; var NADPISext = ""; var ANGIOP = ""; var ANGIOR = "";
-
-if (checkboxsekMMK.checked) {
-    SEK += " T2 SPACE tra. ";
-} 
-if (checkboxsekHEMA.checked) {
-    SEK += " T2 FLASH tra. ";
-} 
-if (checkboxsekkontrast.checked) {
-    SEK += " T1W postkontrastně ve 3 rovinách. ";
-} 
-if (checkboxsekangio.checked) {
-    SEK += " MRA technikou TOF, MIP rekonstrukce. ";
-	NADPISext += " + MR angiografie ";
-	ANGIOP = " Přívodné mozkové tepny mají normální šířku i průběh, Willisův okruh se zobrazuje obvykle, cévy přiměřené šíře do periferie, bez patrných aneurysmat. ";
-	ANGIOR = " Přiměřený nález na MR angiografii. ";
-} 
-
-if (checkboxsekCmicha.checked) {
-    SEK += " C páteř vyšetřena v sag T1W, T2W, STIR, tra T2W, (event. tra T1W, cor T2 FS dle potřeby). ";
-	NADPISext += " + MR C páteře ";
-} 
 
  
 // WML
@@ -351,108 +302,144 @@ PinealR = "";
 
 
 // LESION1
+let codeForBrainLesion1 = `
 
-if (Lesion1enhancementText === "?") {
-Lesion1enhancementP = ""; 
-Lesion1enhancementR = "";
-} else if (Lesion1enhancementText === "0") {
- Lesion1enhancementP = "bez enhancementu postkontrastně ";
- Lesion1enhancementR = "";
-} else if (Lesion1enhancementText === "↑") {
- Lesion1enhancementP = "s mírným sycením postkontrastně ";
- Lesion1enhancementR = "";
-} else if (Lesion1enhancementText === "↑↑") {
- Lesion1enhancementP = "se sycením postkontrastně ";
- Lesion1enhancementR = "";
-} else if (Lesion1enhancementText === "↑↑↑") {
- Lesion1enhancementP = "s výrazným sycením postkontrastně ";
- Lesion1enhancementR = "";
+var BrainLesion1Button = document.getElementById("BrainLesion1");
+var BrainLesion1number = document.getElementById("BrainLesion1number").value;
+var BrainLesion1type = document.getElementById("BrainLesion1type").value.split("|");
+var BrainLesion1Location = document.getElementById("BrainLesion1Location").value;
+var BrainLesion1AddLocation = document.getElementById("BrainLesion1AddLocation").value;
+var BrainLesion1Loclargest = document.getElementById("BrainLesion1Loclargest").value;
+var BrainLesion1Activity = document.getElementById("BrainLesion1Activity").value; var BrainLesion1ActivityCopy = document.getElementById("BrainLesion1Activity").value;
+var BrainLesion1RESActivityFDG = document.getElementById("BrainLesion1Activity"); var selectedOption = BrainLesion1RESActivityFDG.options[BrainLesion1RESActivityFDG.selectedIndex]; var BrainLesion1RESActivityFDG = selectedOption.dataset.valuez2 ? selectedOption.dataset.valuez2 : '';
+var BrainLesion1Size = formatLesionSize("BrainLesion1Size");
+var BrainLesion1RESDecision = document.getElementById("BrainLesion1Decision").value; 
+var BrainLesion1AllLocations = "";
+
+
+//location
+var BrainLesion1Location = "";
+var locationRight = [];
+var locationLeft = [];
+var bilateralLocations = [];
+
+function addLocation(id, locationName, sideArray, bilateralArray) {
+	var rightCheckbox = document.getElementById(id + "R");
+	var leftCheckbox = document.getElementById(id + "L");
+	if (rightCheckbox && leftCheckbox && rightCheckbox.checked && leftCheckbox.checked) {
+		bilateralArray.push(locationName + " bilat.");
+	} else {
+		if (rightCheckbox && rightCheckbox.checked) sideArray.push(locationName + " vpravo");
+		if (leftCheckbox && leftCheckbox.checked) sideArray.push(locationName + " vlevo");
+	}
 }
 
-if (Lesion1size === "") {
-Lesion1sizeFinal = ""; 
+var locationIds = ["Chb1Frontal", "Chb1Parietal", "Chb1Temporal", "Chb1Insule", "Chb1Occipital", "Chb1BasalGanglia", "Chb1Cerebellar", "Chb1Thalamus", "Chb1Mesenceph", "Chb1Pons", "Chb1Oblongata", "Chb1PosteriorFosa"];
+var locationNames = ["frontálně", "parietálně", "temporálně", "inzulárně", "okcipitálně", "v bazálních gangliích", "v mozečku", "v thalamu", "v mesencephalu", "v pontu", "v oblongatě", "v zadní jámě"];
+
+for (var i = 0; i < locationIds.length; i++) {
+	addLocation(locationIds[i], locationNames[i], locationRight, locationLeft, bilateralLocations);
+}
+
+function formatLocationString(locationsArray) {
+	if (locationsArray.length === 0) return "";
+
+	if (locationsArray.length === 1) {
+		return locationsArray[0];
+	}
+
+	if (locationsArray.length === 2) {
+		return locationsArray.join(" a ");
+	}
+
+	var lastLocation = locationsArray.pop();
+	return locationsArray.join(", ") + " a " + lastLocation;
+}
+
+if (BrainLesion1number === "") {
+	var combinedRight = combineSameSideLocations(locationRight, "vpravo");
+	var combinedLeft = combineSameSideLocations(locationLeft, "vlevo");
+	BrainLesion1Location = formatLocationString(combinedRight.concat(combinedLeft));
 } else {
- Lesion1sizeFinal = "rozměru " + Lesion1size + " mm";
-} 
-
-var Lesion1P = "";
-var Lesion1R = "";
-
-if (Lesion1 === "Cystické ložisko" && Lesion1axial === "extraaxiálně") {
- Lesion1signal = " signálu likvoru ";
- Lesion1R = "Arachnoidální cysta" + " " + Lesion1lokR + " " + Lesion1lokL + " " + Lesion1detail + "."; 
-} else if (Lesion1 === "Cystické ložisko" && Lesion1axial === "intraaxiálně") {
- Lesion1signal = " signálu tekutiny ";
- Lesion1R = "Rozšířený perivaskulární prostor" + " " + Lesion1lokR + " " + Lesion1lokL + " " + Lesion1detail + "."; 
-} else if (Lesion1 === "Pruhovitá léze") {
- Lesion1signal = " T2W+ FLAIR+";
- Lesion1R = "Vývojová venózní anomálie" + " " + Lesion1lokR + " " + Lesion1lokL + " " + Lesion1detail + "."; 
-} else if (Lesion1 === "Léze") {
- Lesion1signal = " s SWI artefakty ";
- Lesion1R = "Kavernom" + " " + Lesion1lokR + " " + Lesion1lokL + " " + Lesion1detail + "."; 
-} else if (Lesion1 === "Ložisko") {
- Lesion1R = "Ložisko" + " " + Lesion1lokR + " " + Lesion1lokL + " " + Lesion1detail + ": v dif. dg.:"; 
+	BrainLesion1Location = formatLocationString(bilateralLocations.concat(locationRight, locationLeft));
 }
 
 
-//LESION2
+function combineSameSideLocations(locationsArray, side) {
+    var combinedLocations = [];
+    
+    var frontoParietal = locationsArray.includes("frontálně " + side) && locationsArray.includes("parietálně " + side);
+    var frontoTemporal = locationsArray.includes("frontálně " + side) && locationsArray.includes("temporálně " + side);
+    var parietoOccipital = locationsArray.includes("parietálně " + side) && locationsArray.includes("okcipitálně " + side);
+    var temporoParietal = locationsArray.includes("temporálně " + side) && locationsArray.includes("parietálně " + side);
+    var frontoTemporoParietal = locationsArray.includes("frontálně " + side) && locationsArray.includes("parietálně " + side) && locationsArray.includes("temporálně " + side);
 
-if (Lesion2enhancementText === "?") {
-Lesion2enhancementP = ""; 
-Lesion2enhancementR = "";
-} else if (Lesion2enhancementText === "0") {
- Lesion2enhancementP = "bez enhancementu postkontrastně ";
- Lesion2enhancementR = "";
-} else if (Lesion2enhancementText === "↑") {
- Lesion2enhancementP = "s mírným sycením postkontrastně ";
- Lesion2enhancementR = "";
-} else if (Lesion2enhancementText === "↑↑") {
- Lesion2enhancementP = "se sycením postkontrastně ";
- Lesion2enhancementR = "";
-} else if (Lesion2enhancementText === "↑↑↑") {
- Lesion2enhancementP = "s výrazným sycením postkontrastně ";
- Lesion2enhancementR = "";
+    if (frontoTemporoParietal) {
+        combinedLocations.push("frontotemporoparietálně " + side);
+        locationsArray = locationsArray.filter(location => !["frontálně " + side, "parietálně " + side, "temporálně " + side].includes(location));
+    } else {
+        if (frontoParietal) {
+            combinedLocations.push("frontoparietálně " + side);
+            locationsArray = locationsArray.filter(location => !["frontálně " + side, "parietálně " + side].includes(location));
+        }
+        if (frontoTemporal) {
+            combinedLocations.push("frontotemporálně " + side);
+            locationsArray = locationsArray.filter(location => !["frontálně " + side, "temporálně " + side].includes(location));
+        }
+        if (parietoOccipital) {
+            combinedLocations.push("parietookcipitálně " + side);
+            locationsArray = locationsArray.filter(location => !["parietálně " + side, "okcipitálně " + side].includes(location));
+        }
+        if (temporoParietal) {
+            combinedLocations.push("temporoparietálně " + side);
+            locationsArray = locationsArray.filter(location => !["temporálně " + side, "parietálně " + side].includes(location));
+        }
+    }
+
+    return combinedLocations.concat(locationsArray);
 }
 
-if (Lesion2size === "") {
-Lesion2sizeFinal = ""; 
-} else {
- Lesion2sizeFinal = "rozměru " + Lesion2size + " mm";
-} 
+var BrainLesion1LocationInput = document.getElementById("BrainLesion1Location"); if (BrainLesion1LocationInput) {BrainLesion1LocationInput.value = BrainLesion1Location.trim();}
+//end location 
 
-var Lesion2P = "";
-var Lesion2R = "";
+var POPBrainLesion1 = "";
+var RESBrainLesion1 = "";
 
-if (Lesion2 === "Cystické ložisko" && Lesion2axial === "extraaxiálně") {
- Lesion2signal = " signálu likvoru ";
- Lesion2R = "Arachnoidální cysta" + " " + Lesion2lokR + " " + Lesion2lokL + " " + Lesion2detail + "."; 
-} else if (Lesion2 === "Cystické ložisko" && Lesion2axial === "intraaxiálně") {
- Lesion2signal = " signálu tekutiny ";
- Lesion2R = "Rozšířený perivaskulární prostor" + " " + Lesion2lokR + " " + Lesion2lokL + " " + Lesion2detail + "."; 
-} else if (Lesion2 === "Pruhovitá léze") {
- Lesion2signal = " T2W+ FLAIR+";
- Lesion2R = "Vývojová venózní anomálie" + " " + Lesion2lokR + " " + Lesion2lokL + " " + Lesion2detail + "."; 
-} else if (Lesion2 === "Léze") {
- Lesion2signal = " s SWI artefakty ";
- Lesion2R = "Kavernom" + " " + Lesion2lokR + " " + Lesion2lokL + " " + Lesion2detail + "."; 
-} else if (Lesion2 === "Ložisko") {
- Lesion2R = "Ložisko" + " " + Lesion2lokR + " " + Lesion2lokL + " " + Lesion2detail + ": v dif. dg.:"; 
+if (BrainLesion1Loclargest !== "") {
+	BrainLesion1Loclargest = BrainLesion1ActivityCopy + ". Největší " + BrainLesion1Loclargest + " ";
+	BrainLesion1Activity = "";
 }
 
+BrainLesion1AllLocations = BrainLesion1Location + " " + BrainLesion1AddLocation;
 
 
-// LESIONS COMBINED
+if (BrainLesion1number === "") {
+	BrainLesion1type = BrainLesion1type[0];
+} else if (BrainLesion1number !== "" && BrainLesion1Loclargest !== "") {
+	BrainLesion1type = BrainLesion1type[1];
+} else if (BrainLesion1number !== "" && BrainLesion1Loclargest === "") {
+	BrainLesion1type = BrainLesion1type[1];
+	BrainLesion1Size = BrainLesion1Size.replace('diametru ', 'diametru až '); 
+	BrainLesion1Size = BrainLesion1Size.replace('rozměru ', 'rozměru až '); 
+} 	
 
-var LesionsP = "";
-var LesionsR = "";
+let processedSentencePOPBrainLesion1 = processSentence(BrainLesion1number + " " + BrainLesion1type);	
+POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " + BrainLesion1Activity + ".";
 
-if (Lesion1 === "" && Lesion2 === "" && LesionVP === "" && LesionVR === "") {
- LesionsP = "Bez patologických ložiskových změn. "; 
-} else {
- LesionsP = Lesion1 + " " + Lesion1signal + " " + Lesion1axial + " " + Lesion1lokR + " " + Lesion1lokL + " " + Lesion1detail + " " + Lesion1enhancementP + " " + Lesion1sizeFinal + ". " + 
-			Lesion2 + " " + Lesion2signal + " " + Lesion2axial + " " + Lesion2lokR + " " + Lesion2lokL + " " + Lesion2detail + " " + Lesion2enhancementP + " " + Lesion2sizeFinal + ". " + 
-			LesionVP;
-} 
+let processedSentenceRESBrainLesionFDG = processSentence(BrainLesion1number + " " + BrainLesion1RESActivityFDG + " " + BrainLesion1type);
+
+RESBrainLesion1 = processedSentenceRESBrainLesionFDG + " " + BrainLesion1AllLocations + " " + BrainLesion1RESDecision + ".";
+
+if (BrainLesion1RESDecision.includes("meta") && BrainLesion1type.includes("ožisk")) {window.RESBrainLesion1 = window.RESBrainLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
+
+if (BrainLesion1.classList.contains('hidden')) {POPBrainLesion1 = ""; RESBrainLesion1 = "";}
+
+`;
+
+let codeForBrainLesion2 = codeForBrainLesion1.replace(/Lesion1/g, 'Lesion2').replace(/Chb1/g, 'Chb2');
+eval(codeForBrainLesion1);
+eval(codeForBrainLesion2);
+
 
 //MMK
 
@@ -633,17 +620,18 @@ MRbrainNAMEText.value = "MR mozku";
 
 MRbrainINDText.value = indikace;
 
-MRbrainSEKVText.value = "Mozek v T2W, FLAIR, DWI+ADC, T1W, (event. dle potřeby T2 SPACE, FLASH, SWI, FS). ";
+MRbrainSEKVText.value = "Mozek v T2W, FLAIR, DWI+ADC, T1W, (event. dle potřeby T2-SPACE, T2-FLASH, SWI, FS, C+). ";
 
 MRbrainPOPText.value = 
-LesionsP + "\n" +
+POPBrainLesion1 + "\n" +
+POPBrainLesion2 + "\n" +
 WMLP + WMLkdeP + RSP + "." + "\n" +
 GCAP + " " + lobaratrophyP + "\n" +
 ventriclesP + "\n" +
 MMKP + "\n" +
 PituitaryP + PinealP + "\n" +
-OrbitsP + MastoidyP + SinusP + "\n" +
-ANGIOP;
+OrbitsP + MastoidyP + SinusP
+;
 
 MRbrainPOPText.value = MRbrainPOPText.value.trim(); 
 MRbrainPOPText.value = MRbrainPOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
@@ -660,8 +648,8 @@ MRbrainPOPText.value = MRbrainPOPText.value.replace(/^\./gm, ''); // odstraní t
 MRbrainPOPText.value = MRbrainPOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
 
 MRbrainRESText.value = 
-Lesion1R + "\n" +
-Lesion2R + "\n" +
+RESBrainLesion1 + "\n" +
+RESBrainLesion2 + "\n" +
 LesionVR + "\n" +
 WMLR + WMLkdeR + RSR + "\n" + 
 GCAR + lobaratrophyR + "\n" +
@@ -700,18 +688,6 @@ if (MRbrainRESText.value.trim() === "") {
 
 
 document.getElementById("indikace").addEventListener("input", updateTexts);
-
-document.getElementById("Lesion1detail").addEventListener("input", updateTexts);
-document.getElementById("Lesion1signal").addEventListener("input", updateTexts);
-document.getElementById("Lesion2detail").addEventListener("input", updateTexts);
-document.getElementById("Lesion2signal").addEventListener("input", updateTexts);
-document.getElementById("Lesion1size").addEventListener("input", updateTexts);
-
-document.getElementById("Lesion2detail").addEventListener("input", updateTexts);
-document.getElementById("Lesion2signal").addEventListener("input", updateTexts);
-document.getElementById("Lesion2detail").addEventListener("input", updateTexts);
-document.getElementById("Lesion2signal").addEventListener("input", updateTexts);
-document.getElementById("Lesion2size").addEventListener("input", updateTexts);
 
 document.getElementById("LesionVP").addEventListener("input", updateTexts);
 document.getElementById("LesionVR").addEventListener("input", updateTexts);
