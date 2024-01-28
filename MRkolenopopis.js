@@ -175,7 +175,7 @@ if (PkCartCHPIV) {
 	PkCartDescr = "Prakticky chybějící chrupavka ";
 	PkCartCP = "Pokročilá chondropatie ";
 } else if (PkCartCHPIII) {
-	PkCartDescr = "Výrazné snížení chrupavky ";
+	PkCartDescr = "Snížení chrupavky ";
 	PkCartCP = "Chondropatie ";
 } else if (PkCartCHPII) {
 	PkCartDescr = "Nepravidelné mírné snížení chrupavky ";
@@ -328,7 +328,7 @@ if (MkFemCondCHPIV) {
 	descriptionsMkFemCondRES.push("s pokročilou chondropatií");
 }
 if (MkFemCondCHPIII) {
-	descriptionsMkFemCondText.push("s výrazným nepravidelným snížením chrupavky");
+	descriptionsMkFemCondText.push("se snížením chrupavky");
 	descriptionsMkFemCondRES.push("s chondropatií");
 }
 if (MkFemCondCHPII) {
