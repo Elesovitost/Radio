@@ -245,15 +245,19 @@ document.getElementById('NeckLesion1number').addEventListener('change', function
 });
 
 document.getElementById('NeckLesion1Location').addEventListener('focus', function() {
-  document.getElementById('NeckLesion1selectLocation').classList.remove('hidden');
+  var inputRect = this.getBoundingClientRect();
+  var dropdown = document.getElementById('NeckLesion1selectLocation');
+  dropdown.style.left = inputRect.left + 'px'; dropdown.style.top = inputRect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const NeckLesion1LocationElement = document.getElementById('NeckLesion1Location');
-  const NeckLesion1selectLocationElement = document.getElementById('NeckLesion1selectLocation');
-  if (!NeckLesion1LocationElement.contains(e.target) && !NeckLesion1selectLocationElement.contains(e.target)) {
-	NeckLesion1selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('NeckLesion1selectLocation');
+  if (!document.getElementById('NeckLesion1Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
+
+
 
 document.getElementById('NeckNewLesion2').addEventListener('click', function() {
   var element = document.getElementById('NeckLesion2');
@@ -279,15 +283,18 @@ document.getElementById('NeckLesion2number').addEventListener('change', function
 });
 
 document.getElementById('NeckLesion2Location').addEventListener('focus', function() {
-  document.getElementById('NeckLesion2selectLocation').classList.remove('hidden');
+  var inputRect = this.getBoundingClientRect();
+  var dropdown = document.getElementById('NeckLesion2selectLocation');
+  dropdown.style.left = inputRect.left + 'px'; dropdown.style.top = inputRect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const NeckLesion2LocationElement = document.getElementById('NeckLesion2Location');
-  const NeckLesion2selectLocationElement = document.getElementById('NeckLesion2selectLocation');
-  if (!NeckLesion2LocationElement.contains(e.target) && !NeckLesion2selectLocationElement.contains(e.target)) {
-	NeckLesion2selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('NeckLesion2selectLocation');
+  if (!document.getElementById('NeckLesion2Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
+
 
 document.getElementById('NeckNewLesion3').addEventListener('click', function() {
   var element = document.getElementById('NeckLesion3');
@@ -313,13 +320,15 @@ document.getElementById('NeckLesion3number').addEventListener('change', function
 });
 
 document.getElementById('NeckLesion3Location').addEventListener('focus', function() {
-  document.getElementById('NeckLesion3selectLocation').classList.remove('hidden');
+  var inputRect = this.getBoundingClientRect();
+  var dropdown = document.getElementById('NeckLesion3selectLocation');
+  dropdown.style.left = inputRect.left + 'px'; dropdown.style.top = inputRect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const NeckLesion3LocationElement = document.getElementById('NeckLesion3Location');
-  const NeckLesion3selectLocationElement = document.getElementById('NeckLesion3selectLocation');
-  if (!NeckLesion3LocationElement.contains(e.target) && !NeckLesion3selectLocationElement.contains(e.target)) {
-	NeckLesion3selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('NeckLesion3selectLocation');
+  if (!document.getElementById('NeckLesion3Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
 
@@ -352,13 +361,17 @@ document.getElementById('NeckLymphNode1number').addEventListener('change', funct
 
 
 document.getElementById('NeckLymphNode1Location').addEventListener('focus', function() {
-  document.getElementById('NeckLymphNode1selectLocation').classList.remove('hidden');
+  var dropdown = document.getElementById('NeckLymphNode1selectLocation');
+  var rect = this.getBoundingClientRect();
+  dropdown.style.left = rect.left + 'px';
+  dropdown.style.top = rect.bottom + 2 + 'px';
+  dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const NeckLymphNode1LocationElement = document.getElementById('NeckLymphNode1Location');
-  const NeckLymphNode1selectLocationElement = document.getElementById('NeckLymphNode1selectLocation');
-  if (!NeckLymphNode1LocationElement.contains(e.target) && !NeckLymphNode1selectLocationElement.contains(e.target)) {
-	NeckLymphNode1selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('NeckLymphNode1selectLocation');
+  if (!document.getElementById('NeckLymphNode1Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
 
@@ -404,13 +417,15 @@ document.getElementById('ThoraxLesion1number').addEventListener('change', functi
 });
 
 document.getElementById('ThoraxLesion1Location').addEventListener('focus', function() {
-  document.getElementById('ThoraxLesion1selectLocation').classList.remove('hidden');
+  var inputRect = this.getBoundingClientRect();
+  var dropdown = document.getElementById('ThoraxLesion1selectLocation');
+  dropdown.style.left = inputRect.left + 'px'; dropdown.style.top = inputRect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const ThoraxLesion1LocationElement = document.getElementById('ThoraxLesion1Location');
-  const ThoraxLesion1selectLocationElement = document.getElementById('ThoraxLesion1selectLocation');
-  if (!ThoraxLesion1LocationElement.contains(e.target) && !ThoraxLesion1selectLocationElement.contains(e.target)) {
-	ThoraxLesion1selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('ThoraxLesion1selectLocation');
+  if (!document.getElementById('ThoraxLesion1Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
 
@@ -439,13 +454,15 @@ document.getElementById('ThoraxLesion2number').addEventListener('change', functi
 });
 
 document.getElementById('ThoraxLesion2Location').addEventListener('focus', function() {
-  document.getElementById('ThoraxLesion2selectLocation').classList.remove('hidden');
+  var inputRect = this.getBoundingClientRect();
+  var dropdown = document.getElementById('ThoraxLesion2selectLocation');
+  dropdown.style.left = inputRect.left + 'px'; dropdown.style.top = inputRect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const ThoraxLesion2LocationElement = document.getElementById('ThoraxLesion2Location');
-  const ThoraxLesion2selectLocationElement = document.getElementById('ThoraxLesion2selectLocation');
-  if (!ThoraxLesion2LocationElement.contains(e.target) && !ThoraxLesion2selectLocationElement.contains(e.target)) {
-	ThoraxLesion2selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('ThoraxLesion2selectLocation');
+  if (!document.getElementById('ThoraxLesion2Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
 
@@ -474,13 +491,15 @@ document.getElementById('ThoraxLesion3number').addEventListener('change', functi
 });
 
 document.getElementById('ThoraxLesion3Location').addEventListener('focus', function() {
-  document.getElementById('ThoraxLesion3selectLocation').classList.remove('hidden');
+  var inputRect = this.getBoundingClientRect();
+  var dropdown = document.getElementById('ThoraxLesion3selectLocation');
+  dropdown.style.left = inputRect.left + 'px'; dropdown.style.top = inputRect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const ThoraxLesion3LocationElement = document.getElementById('ThoraxLesion3Location');
-  const ThoraxLesion3selectLocationElement = document.getElementById('ThoraxLesion3selectLocation');
-  if (!ThoraxLesion3LocationElement.contains(e.target) && !ThoraxLesion3selectLocationElement.contains(e.target)) {
-	ThoraxLesion3selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('ThoraxLesion3selectLocation');
+  if (!document.getElementById('ThoraxLesion3Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
 
@@ -514,13 +533,15 @@ document.getElementById('ThoraxLymphNode1number').addEventListener('change', fun
 
 
 document.getElementById('ThoraxLymphNode1Location').addEventListener('focus', function() {
-  document.getElementById('ThoraxLymphNode1selectLocation').classList.remove('hidden');
+  var dropdown = document.getElementById('ThoraxLymphNode1selectLocation');
+  var rect = this.getBoundingClientRect();
+  dropdown.style.left = rect.left + 'px'; dropdown.style.top = rect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const ThoraxLymphNode1LocationElement = document.getElementById('ThoraxLymphNode1Location');
-  const ThoraxLymphNode1selectLocationElement = document.getElementById('ThoraxLymphNode1selectLocation');
-  if (!ThoraxLymphNode1LocationElement.contains(e.target) && !ThoraxLymphNode1selectLocationElement.contains(e.target)) {
-	ThoraxLymphNode1selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('ThoraxLymphNode1selectLocation');
+  if (!document.getElementById('ThoraxLymphNode1Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
 
@@ -566,17 +587,26 @@ document.getElementById('AbdomenLesion1number').addEventListener('change', funct
 });
 
 document.getElementById('AbdomenLesion1Location').addEventListener('focus', function() {
-  document.getElementById('AbdomenLesion1selectLocation').classList.remove('hidden'); document.getElementById('AbdomenLesion1selectLocationA').classList.remove('hidden'); 
+  var rect = this.getBoundingClientRect();
+  var dropdown1 = document.getElementById('AbdomenLesion1selectLocation');
+  var dropdown2 = document.getElementById('AbdomenLesion1selectLocationA');
+  dropdown1.style.left = rect.left + 'px';
+  dropdown1.style.top = rect.bottom + 2 + 'px';
+  dropdown2.style.left = rect.left + 'px';
+  dropdown2.style.top = rect.bottom + 2 + 'px';
+  dropdown1.classList.remove('hidden');
+  dropdown2.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const AbdomenLesion1LocationElement = document.getElementById('AbdomenLesion1Location');
-  const AbdomenLesion1selectLocationElement = document.getElementById('AbdomenLesion1selectLocation'); 
-  const AbdomenLesion1selectLocationAElement = document.getElementById('AbdomenLesion1selectLocationA');
-  if (!AbdomenLesion1LocationElement.contains(e.target) && !AbdomenLesion1selectLocationElement.contains(e.target) && !AbdomenLesion1selectLocationAElement.contains(e.target) ) {
-	AbdomenLesion1selectLocationElement.classList.add('hidden'); 
-	AbdomenLesion1selectLocationAElement.classList.add('hidden');
+  var dropdown1 = document.getElementById('AbdomenLesion1selectLocation');
+  var dropdown2 = document.getElementById('AbdomenLesion1selectLocationA');
+  if (!document.getElementById('AbdomenLesion1Location').contains(e.target) && !dropdown1.contains(e.target) && !dropdown2.contains(e.target)) {
+    dropdown1.classList.add('hidden');
+    dropdown2.classList.add('hidden');
   }
 });
+
 
 
 document.getElementById('AbdomenNewLesion2').addEventListener('click', function() {
@@ -603,17 +633,27 @@ document.getElementById('AbdomenLesion2number').addEventListener('change', funct
 });
 
 document.getElementById('AbdomenLesion2Location').addEventListener('focus', function() {
-  document.getElementById('AbdomenLesion2selectLocation').classList.remove('hidden'); document.getElementById('AbdomenLesion2selectLocationA').classList.remove('hidden'); 
+  var rect = this.getBoundingClientRect();
+  var dropdown1 = document.getElementById('AbdomenLesion2selectLocation');
+  var dropdown2 = document.getElementById('AbdomenLesion2selectLocationA');
+  dropdown1.style.left = rect.left + 'px';
+  dropdown1.style.top = rect.bottom + 2 + 'px';
+  dropdown2.style.left = rect.left + 'px';
+  dropdown2.style.top = rect.bottom + 2 + 'px';
+  dropdown1.classList.remove('hidden');
+  dropdown2.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const AbdomenLesion2LocationElement = document.getElementById('AbdomenLesion2Location');
-  const AbdomenLesion2selectLocationElement = document.getElementById('AbdomenLesion2selectLocation'); 
-  const AbdomenLesion2selectLocationAElement = document.getElementById('AbdomenLesion2selectLocationA');
-  if (!AbdomenLesion2LocationElement.contains(e.target) && !AbdomenLesion2selectLocationElement.contains(e.target) && !AbdomenLesion2selectLocationAElement.contains(e.target) ) {
-	AbdomenLesion2selectLocationElement.classList.add('hidden'); 
-	AbdomenLesion2selectLocationAElement.classList.add('hidden');
+  var dropdown1 = document.getElementById('AbdomenLesion2selectLocation');
+  var dropdown2 = document.getElementById('AbdomenLesion2selectLocationA');
+  if (!document.getElementById('AbdomenLesion2Location').contains(e.target) && !dropdown1.contains(e.target) && !dropdown2.contains(e.target)) {
+    dropdown1.classList.add('hidden');
+    dropdown2.classList.add('hidden');
   }
 });
+
+
 
 document.getElementById('AbdomenNewLesion3').addEventListener('click', function() {
   var element = document.getElementById('AbdomenLesion3');
@@ -639,17 +679,27 @@ document.getElementById('AbdomenLesion3number').addEventListener('change', funct
 });
 
 document.getElementById('AbdomenLesion3Location').addEventListener('focus', function() {
-  document.getElementById('AbdomenLesion3selectLocation').classList.remove('hidden'); document.getElementById('AbdomenLesion3selectLocationA').classList.remove('hidden'); 
+  var rect = this.getBoundingClientRect();
+  var dropdown1 = document.getElementById('AbdomenLesion3selectLocation');
+  var dropdown2 = document.getElementById('AbdomenLesion3selectLocationA');
+  dropdown1.style.left = rect.left + 'px';
+  dropdown1.style.top = rect.bottom + 2 + 'px';
+  dropdown2.style.left = rect.left + 'px';
+  dropdown2.style.top = rect.bottom + 2 + 'px';
+  dropdown1.classList.remove('hidden');
+  dropdown2.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const AbdomenLesion3LocationElement = document.getElementById('AbdomenLesion3Location');
-  const AbdomenLesion3selectLocationElement = document.getElementById('AbdomenLesion3selectLocation'); 
-  const AbdomenLesion3selectLocationAElement = document.getElementById('AbdomenLesion3selectLocationA');
-  if (!AbdomenLesion3LocationElement.contains(e.target) && !AbdomenLesion3selectLocationElement.contains(e.target) && !AbdomenLesion3selectLocationAElement.contains(e.target) ) {
-	AbdomenLesion3selectLocationElement.classList.add('hidden'); 
-	AbdomenLesion3selectLocationAElement.classList.add('hidden');
+  var dropdown1 = document.getElementById('AbdomenLesion3selectLocation');
+  var dropdown2 = document.getElementById('AbdomenLesion3selectLocationA');
+  if (!document.getElementById('AbdomenLesion3Location').contains(e.target) && !dropdown1.contains(e.target) && !dropdown2.contains(e.target)) {
+    dropdown1.classList.add('hidden');
+    dropdown2.classList.add('hidden');
   }
 });
+
+
 
 // abdomen suboptions showing-hiding
 function handleCheckboxChangeFactory(prefix, tablePrefix) {
@@ -711,13 +761,15 @@ document.getElementById('AbdomenLymphNode1number').addEventListener('change', fu
 
 
 document.getElementById('AbdomenLymphNode1Location').addEventListener('focus', function() {
-  document.getElementById('AbdomenLymphNode1selectLocation').classList.remove('hidden');
+  var dropdown = document.getElementById('AbdomenLymphNode1selectLocation');
+  var rect = this.getBoundingClientRect();
+  dropdown.style.left = rect.left + 'px'; dropdown.style.top = rect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const AbdomenLymphNode1LocationElement = document.getElementById('AbdomenLymphNode1Location');
-  const AbdomenLymphNode1selectLocationElement = document.getElementById('AbdomenLymphNode1selectLocation');
-  if (!AbdomenLymphNode1LocationElement.contains(e.target) && !AbdomenLymphNode1selectLocationElement.contains(e.target)) {
-	AbdomenLymphNode1selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('AbdomenLymphNode1selectLocation');
+  if (!document.getElementById('AbdomenLymphNode1Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
 
@@ -764,13 +816,15 @@ document.getElementById('SkeletonLesion1number').addEventListener('change', func
 });
 
 document.getElementById('SkeletonLesion1Location').addEventListener('focus', function() {
-  document.getElementById('SkeletonLesion1selectLocation').classList.remove('hidden');
+  var inputRect = this.getBoundingClientRect();
+  var dropdown = document.getElementById('SkeletonLesion1selectLocation');
+  dropdown.style.left = inputRect.left + 'px'; dropdown.style.top = inputRect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const SkeletonLesion1LocationElement = document.getElementById('SkeletonLesion1Location');
-  const SkeletonLesion1selectLocationElement = document.getElementById('SkeletonLesion1selectLocation');
-  if (!SkeletonLesion1LocationElement.contains(e.target) && !SkeletonLesion1selectLocationElement.contains(e.target)) {
-	SkeletonLesion1selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('SkeletonLesion1selectLocation');
+  if (!document.getElementById('SkeletonLesion1Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
 
@@ -788,13 +842,15 @@ document.getElementById('SkeletonLesion2no').addEventListener('click', function(
 });
 
 document.getElementById('SkeletonLesion2Location').addEventListener('focus', function() {
-  document.getElementById('SkeletonLesion2selectLocation').classList.remove('hidden');
+  var inputRect = this.getBoundingClientRect();
+  var dropdown = document.getElementById('SkeletonLesion2selectLocation');
+  dropdown.style.left = inputRect.left + 'px'; dropdown.style.top = inputRect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const SkeletonLesion2LocationElement = document.getElementById('SkeletonLesion2Location');
-  const SkeletonLesion2selectLocationElement = document.getElementById('SkeletonLesion2selectLocation');
-  if (!SkeletonLesion2LocationElement.contains(e.target) && !SkeletonLesion2selectLocationElement.contains(e.target)) {
-	SkeletonLesion2selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('SkeletonLesion2selectLocation');
+  if (!document.getElementById('SkeletonLesion2Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
 
@@ -823,13 +879,15 @@ document.getElementById('SkeletonLesion3no').addEventListener('click', function(
 });
 
 document.getElementById('SkeletonLesion3Location').addEventListener('focus', function() {
-  document.getElementById('SkeletonLesion3selectLocation').classList.remove('hidden');
+  var inputRect = this.getBoundingClientRect();
+  var dropdown = document.getElementById('SkeletonLesion3selectLocation');
+  dropdown.style.left = inputRect.left + 'px'; dropdown.style.top = inputRect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const SkeletonLesion3LocationElement = document.getElementById('SkeletonLesion3Location');
-  const SkeletonLesion3selectLocationElement = document.getElementById('SkeletonLesion3selectLocation');
-  if (!SkeletonLesion3LocationElement.contains(e.target) && !SkeletonLesion3selectLocationElement.contains(e.target)) {
-	SkeletonLesion3selectLocationElement.classList.add('hidden');
+  var dropdown = document.getElementById('SkeletonLesion3selectLocation');
+  if (!document.getElementById('SkeletonLesion3Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
 
