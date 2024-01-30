@@ -126,6 +126,7 @@
 		<td><input id="BrainLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> <input id="BrainLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
 		</td>
 		<td><input id="BrainLesion1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
+		<td><input id="BrainLesion1Signal" type="text" placeholder="signál..." autocomplete="off" class="input200"></td>
 		<td><select id="BrainLesion1Activity" class="select60" onchange="updateTexts()">
 			<option value="" selected>aktivita...</option>
 			</select>
@@ -188,6 +189,47 @@
         <td class="right"><label class="CHB"><input type="checkbox" id="Chb1OblongataR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1OblongataL" onChange="updateTexts()"><span>L</span></label></td>
     </tr>
 </table>
+
+
+<table id="BrainLesion1selectSignal" class="options hidden">
+    <tr>
+        <td>T1</td>
+        <td class="right">
+			<label class="CHB"><input type="checkbox" id="Chb1SignalT1hyper" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1iso" onChange="updateTexts()"><span>0</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1hypo" onChange="updateTexts()"><span>-</span></label>
+		</td>
+    </tr>
+    <tr>
+        <td>T2</td>
+        <td class="right">
+			<label class="CHB"><input type="checkbox" id="Chb1SignalT2hyper" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT2iso" onChange="updateTexts()"><span>0</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT2hypo" onChange="updateTexts()"><span>-</span></label>
+		</td>
+    </tr>
+	<tr>
+		<td>FLAIR</td>
+		<td class="right">
+			<label class="CHB"><input type="checkbox" id="Chb1SignalFLAIRhyper" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalFLAIRiso" onChange="updateTexts()"><span>0</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalFLAIRhypo" onChange="updateTexts()"><span>-</span></label>
+		</td>
+	</tr>
+	<tr>
+		<td>DWI</td>
+		<td class="right">
+			<label class="CHB"><input type="checkbox" id="Chb1SignalDWIhyper" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalDWIiso" onChange="updateTexts()"><span>0</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalDWIhypo" onChange="updateTexts()"><span>-</span></label>
+		</td>
+	</tr>
+	<tr>
+		<td>SWI</td>
+		<td class="right">
+			<label class="CHB"><input type="checkbox" id="Chb1SignalSWIhyper" onChange="updateTexts()"><span>+</span></label>
+		</td>
+	</tr>
+	<tr>
+		<td>T1C+</td>
+		<td class="right">
+			<label class="CHB"><input type="checkbox" id="Chb1SignalT1Chyper" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1Ciso" onChange="updateTexts()"><span>0</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1Chypo" onChange="updateTexts()"><span>-</span></label>
+		</td>
+	</tr>
+</table>
+
 
 <!-- BRAIN LESION V -->
 <table id="LesionVcontent"  class="hidden">

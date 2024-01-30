@@ -187,7 +187,7 @@ option {color: #000000; background-color: #FFFFFF;}
 table {border-collapse: collapse; border: 0px solid #000000; font-Size: 12px; }
 tr { height: 20px;}
 
-.options {height: 24px; padding: 5px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1; left: 160px; border-radius: 2px; border: 1px solid #000000; table-layout: auto;  } 
+.options {height: 24px; padding: 5px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1;  border-radius: 2px; border: 1px solid #000000; table-layout: auto;  } 
 .optionsWML {height: 24px; padding: 5px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1; left: 128px; border-radius: 2px; border: 1px solid #000000; table-layout: auto;  } 
 .options td {vertical-align: top;}
 .suboptions {height: 24px; padding: 5px; text-align: left; vertical-align: top; cursor: default; background: #FFFFFF; z-index: 1; left: 160px; border-radius: 2px; border: 0px solid #000000; } 

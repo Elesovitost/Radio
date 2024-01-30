@@ -27,6 +27,7 @@ function cloneAndUpdateIds(sourceId, destId) {
 
 cloneAndUpdateIds("BrainLesion1", "BrainLesion2");
 cloneAndUpdateIds("BrainLesion1selectLocation", "BrainLesion2selectLocation");
+cloneAndUpdateIds("BrainLesion1selectSignal", "BrainLesion2selectSignal");
 
 
 // GRAMMAR
@@ -333,6 +334,19 @@ document.addEventListener('click', function(e) {
   }
 });
 
+document.getElementById('BrainLesion1Signal').addEventListener('focus', function() {
+  var dropdown = document.getElementById('BrainLesion1selectSignal');
+  var rect = this.getBoundingClientRect();
+  dropdown.style.left = rect.left + 'px'; dropdown.style.top = rect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
+});
+
+document.addEventListener('click', function(e) {
+  var dropdown = document.getElementById('BrainLesion1selectSignal');
+  if (!document.getElementById('BrainLesion1Signal').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
+  }
+});
+
 
 
 
@@ -370,6 +384,19 @@ document.getElementById('BrainLesion2Location').addEventListener('focus', functi
 document.addEventListener('click', function(e) {
   var dropdown = document.getElementById('BrainLesion2selectLocation');
   if (!document.getElementById('BrainLesion2Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
+  }
+});
+
+document.getElementById('BrainLesion2Signal').addEventListener('focus', function() {
+  var dropdown = document.getElementById('BrainLesion2selectSignal');
+  var rect = this.getBoundingClientRect();
+  dropdown.style.left = rect.left + 'px'; dropdown.style.top = rect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
+});
+
+document.addEventListener('click', function(e) {
+  var dropdown = document.getElementById('BrainLesion2selectSignal');
+  if (!document.getElementById('BrainLesion2Signal').contains(e.target) && !dropdown.contains(e.target)) {
     dropdown.classList.add('hidden');
   }
 });

@@ -315,6 +315,7 @@ var BrainLesion1RESActivityFDG = document.getElementById("BrainLesion1Activity")
 var BrainLesion1Size = formatLesionSize("BrainLesion1Size");
 var BrainLesion1RESDecision = document.getElementById("BrainLesion1Decision").value; 
 var BrainLesion1AllLocations = "";
+var BrainLesion1SignalIntensity = "";
 
 
 //location
@@ -402,6 +403,58 @@ function combineSameSideLocations(locationsArray, side) {
 var BrainLesion1LocationInput = document.getElementById("BrainLesion1Location"); if (BrainLesion1LocationInput) {BrainLesion1LocationInput.value = BrainLesion1Location.trim();}
 //end location 
 
+
+
+var BrainLesion1descriptions = [];
+
+// T1
+if (document.getElementById('Chb1SignalT1hyper').checked) BrainLesion1descriptions.push("T1+");
+if (document.getElementById('Chb1SignalT1iso').checked) BrainLesion1descriptions.push("T1izo");
+if (document.getElementById('Chb1SignalT1hypo').checked) BrainLesion1descriptions.push("T1-");
+
+// T2
+if (document.getElementById('Chb1SignalT2hyper').checked) BrainLesion1descriptions.push("T2+");
+if (document.getElementById('Chb1SignalT2iso').checked) BrainLesion1descriptions.push("T2izo");
+if (document.getElementById('Chb1SignalT2hypo').checked) BrainLesion1descriptions.push("T2-");
+
+// FLAIR
+if (document.getElementById('Chb1SignalFLAIRhyper').checked) BrainLesion1descriptions.push("FLAIR+");
+if (document.getElementById('Chb1SignalFLAIRiso').checked) BrainLesion1descriptions.push("FLAIRizo");
+if (document.getElementById('Chb1SignalFLAIRhypo').checked) BrainLesion1descriptions.push("FLAIR-");
+
+// DWI
+if (document.getElementById('Chb1SignalDWIhyper').checked) BrainLesion1descriptions.push("se zvýšenou restrikcí difuze");
+if (document.getElementById('Chb1SignalDWIiso').checked) BrainLesion1descriptions.push("");
+if (document.getElementById('Chb1SignalDWIhypo').checked) BrainLesion1descriptions.push("se sníženou restrikcí difuze");
+
+// SWI
+if (document.getElementById('Chb1SignalSWIhyper').checked) BrainLesion1descriptions.push("se suscept. artefakty");
+
+// T1C+
+if (document.getElementById('Chb1SignalT1Chyper').checked) descriptions.push("s enahancementem postkontrastně");
+if (document.getElementById('Chb1SignalT1Ciso').checked) descriptions.push("s mírným enahancementem postkontrastně");
+if (document.getElementById('Chb1SignalT1Chypo').checked) descriptions.push("bez postkontrastního sycení");
+
+
+
+// Remove empty strings
+BrainLesion1descriptions = BrainLesion1descriptions.filter(Boolean);
+
+// Joining BrainLesion1descriptions with proper grammar
+var descriptionText;
+if (BrainLesion1descriptions.length > 1) {
+	var lastDescription = BrainLesion1descriptions.pop();
+	descriptionText = BrainLesion1descriptions.join(", ") + " a " + lastDescription + ".";
+} else {
+	descriptionText = BrainLesion1descriptions.join("");
+}
+
+BrainLesion1Signal.value = BrainLesion1descriptions.length > 0 ? descriptionText.trim() + "." : "";
+
+
+
+
+
 var POPBrainLesion1 = "";
 var RESBrainLesion1 = "";
 
@@ -424,7 +477,7 @@ if (BrainLesion1number === "") {
 } 	
 
 let processedSentencePOPBrainLesion1 = processSentence(BrainLesion1number + " " + BrainLesion1type);	
-POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " + BrainLesion1Activity + ".";
+POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " + BrainLesion1SignalIntensity + " " + BrainLesion1Activity + ".";
 
 let processedSentenceRESBrainLesionFDG = processSentence(BrainLesion1number + " " + BrainLesion1RESActivityFDG + " " + BrainLesion1type);
 
