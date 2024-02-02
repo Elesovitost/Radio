@@ -1066,6 +1066,26 @@ if (ChbProstateRecidR && ChbProstateRecidL) {
   }
 }
 
+//Meta
+
+let ProstateSkeletonMetaP = "", ProstateSkeletonMetaR = "", ProstateOtherMetaR = "", ProstateMetaR = "";
+
+if (document.getElementById('ChbProstateSkeletonMeta').checked) {
+	ProstateSkeletonMetaP = "Přítomna meta skeletu. ";
+	ProstateMetaR += "Přítomna meta skeletu. ";
+} else {
+	ProstateSkeletonMetaP = "Bez patrných ložisek skeletu. ";
+}		
+
+if (document.getElementById('ChbProstateOtherMeta').checked) {
+	ProstateMetaR += "Přítomna orgánová meta. ";
+} 
+
+if (!document.getElementById('ChbProstateSkeletonMeta').checked && !document.getElementById('ChbProstateOtherMeta').checked && totalNodesReg === 0) {
+	ProstateMetaR += "Bez známek přítomnosti vzdálených meta ložisek. ";
+}
+
+
 
 //TNM
 let ProstateTstageR = "", ProstateNstageR = "", ProstateMstageR = ""; ProstateTMN = "";
@@ -1091,12 +1111,20 @@ if (totalNodesReg === 0) {
 }
 
 if (totalNodesNonReg > 0) {
-    ProstateMstageR = "M1a";
+    ProstateMstageR = "M1a ";
 }
 
-if (document.getElementById('ChbProstateMeta').checked) {
-	ProstateMstageR = "M1b";
+
+if (document.getElementById('ChbProstateSkeletonMeta').checked) {
+	ProstateMstageR += "M1b ";
+} 	
+if (document.getElementById('ChbProstateOtherMeta').checked) {
+	ProstateMstageR += "M1c ";
+} 
+if (!document.getElementById('ChbProstateSkeletonMeta').checked && !document.getElementById('ChbProstateOtherMeta').checked && totalNodesReg === 0) {
+	ProstateMstageR = "M0";
 }
+
 
 
 //miTNM
@@ -1127,15 +1155,20 @@ if (totalNodesReg === 0) {
 }
 
 
-if (totalNodesNonReg === 0) {
-    ProstatemiMstageR = "miM0";
-} else if (totalNodesNonReg > 0) {
-    ProstatemiMstageR = "miM1a";
+if (totalNodesNonReg > 0) {
+    ProstatemiMstageR = "miM1a ";
 }
 
-if (document.getElementById('ChbProstateMeta').checked) {
-	ProstatemiMstageR = "miM1b";
+if (document.getElementById('ChbProstateSkeletonMeta').checked) {
+	ProstatemiMstageR += "M1b ";
+} 	
+if (document.getElementById('ChbProstateOtherMeta').checked) {
+	ProstatemiMstageR += "M1c ";
+} 
+if (!document.getElementById('ChbProstateSkeletonMeta').checked && !document.getElementById('ChbProstateOtherMeta').checked && totalNodesReg === 0) {
+	ProstatemiMstageR = "M0";
 }
+
 
 // TMN or miTNM 
 if (document.getElementById('ChbProstatePSMA').checked) {
@@ -1158,7 +1191,8 @@ ProstateLesion1P + "\n" +
 ProstateLesion2P + "\n" +
 ProstateLesion3P + "\n" +
 ProstateSizeP + ProstateHyperplasiaP + ProstateSemVesP + "\n" +
-ProstateLNRegP + ProstateLNNonRegP + "\n" 
+ProstateLNRegP + ProstateLNNonRegP + "\n" +
+ProstateSkeletonMetaP
 ;
 
 	//ProstateTuPOPText.value = ProstateTuPOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
