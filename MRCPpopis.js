@@ -578,24 +578,51 @@ eval(codeForC7T1);
 // normální Závěr
 
 //komprese normal vs ostatni
-if (C3KOMText === "není" && C3LESText === "není" && C4KOMText === "není" && C4LESText === "není" && C5KOMText === "není" && C5LESText === "není" && C6KOMText === "není" && C6LESText === "není" && C7KOMText === "není" && C7LESText === "není" && T1LESText === "není") {
+if (C3KOMText === "není" && C4KOMText === "není" && C5KOMText === "není" && C6KOMText === "není" &&  C7KOMText === "není") {
  CCobratlenormal = "Obratlová těla přiměřených výšek. "; 
  CCostatniobratlenormal = ""; 
  } else {
  CCobratlenormal = "";
- CCostatniobratlenormal = "Jinak obratlová těla přiměřených výšek. ";
+ CCostatniobratlenormal = "Ostatní obratlová těla přiměřených výšek. ";
  } 
 
 // disky a kanál vs ostatní normální
-if (C34nativ === "" && C45nativ  === "" && C56nativ  === "" && C67nativ  === "" && C7T1nativ  === "") {
-CCdiskynormal = "Disky přiměřené výšky bez výraznějších protruzí." + "\n" + "Páteřní kanál volný, foramina volná. "; 
-CCostatnidiskynormal = "";
-} else if (C34nativ !== "" && C45nativ  !== "" && C56nativ  !== "" && C67nativ  !== "" && C7T1nativ  !== "") {
-CCdiskynormal = "Disky přiměřené výšky bez výraznějších protruzí." + "\n" + "Páteřní kanál volný, foramina volná. "; 
-CCostatnidiskynormal = "";
-} else {
-CCdiskynormal = ""; 
-CCostatnidiskynormal = "V ostatních etážích disky výraznější nesníženy bez výraznějších protruzí." + "\n" + "Páteřní kanál volný. Ostatní foramina relativně volná. ";	
+if (C34DDText === "není" && C34BHText === "není" && C45DDText === "není" && C45BHText === "není" && C56DDText === "není" && C56BHText === "není" && C67DDText === "není" && C67BHText === "není" && C7T1DDText === "není" && C7T1BHText === "není") {
+	CCdiskynormal = "Disky přiměřené výšky bez výraznějších protruzí.";
+	CCostatnidiskynormal = "";
+} else if ((C34DDText !== "není" || C34BHText !== "není") && (C45DDText !== "není" || C45BHText !== "není") && (C56DDText !== "není" || C56BHText !== "není") && (C67DDText !== "není" || C67BHText !== "není") && (C7T1DDText !== "není" || C7T1BHText !== "není")) {
+	CCdiskynormal = "";
+	CCostatnidiskynormal = "";
+} else if ((C34DDText !== "není" || C34BHText !== "není") || (C45DDText !== "není" || C45BHText !== "není") || (C56DDText !== "není" || C56BHText !== "není") || (C67DDText !== "není" || C67BHText !== "není") || (C7T1DDText !== "není" || C7T1BHText !== "není")) {
+	CCdiskynormal = "";
+	CCostatnidiskynormal = "V ostatních etážích disky přiměřené výšky bez výraznějších protruzí.";
+}	
+
+// stenóza kanálu ano vs jinak
+if (C34PKText === "0" && C45PKText === "0" && C56PKText === "0" && C67PKText === "0" && C7T1PKText === "0") {
+	CCstenozakanalne = "Páteřní kanál je volný. ";
+	CCkanaljinak = "";
+} else if (C34PKText !== "0" && C45PKText !== "0" && C56PKText !== "0" && C67PKText !== "0" && C7T1PKText !== "0") {
+	CCstenozakanalne = "";
+	CCkanaljinak = "";
+} else if (C34PKText !== "0" || C45PKText !== "0" || C56PKText !== "0" || C67PKText !== "0" || C7T1PKText !== "0") {
+	CCstenozakanalne = "";
+	CCkanaljinak = "V ostatních etážích je páteřní kanál volný. ";
+}
+
+// stenóza foramin ano vs jinak
+if (C34PFText === "0" && C45PFText === "0" && C56PFText === "0" && C67PFText === "0" && C7T1PFText === "0" &&
+	C34LFText === "0" && C45LFText === "0" && C56LFText === "0" && C67LFText === "0" && C7T1LFText === "0") {
+	CCstenozaforaminne = "Foramina jsou relativně volná. ";
+	CCforaminjinak = "";
+} else if (C34PFText !== "0" && C45PFText !== "0" && C56PFText !== "0" && C67PFText !== "0" && C7T1PFText !== "0" &&
+			C34LFText !== "0" && C45LFText !== "0" && C56LFText !== "0" && C67LFText !== "0" && C7T1LFText !== "0") {
+	CCstenozaforaminne = "";
+	CCforaminjinak = "";
+} else if (C34PFText !== "0" || C45PFText !== "0" || C56PFText !== "0" || C67PFText !== "0" || C7T1PFText !== "0" ||
+			C34LFText !== "0" || C45LFText !== "0" || C56LFText !== "0" || C67LFText !== "0" || C7T1LFText !== "0") {
+	CCstenozaforaminne = "";
+	CCforaminjinak = "Ostatní foramina jsou relativně volná. ";
 }
 
 // multietážové degener. změny.
@@ -653,6 +680,8 @@ C56nativ + C5listezaP + " " + C56degenerdP + " " + C56edemP + " " + C56herniace 
 C67nativ + C6listezaP + " " + C67degenerdP + " " + C67edemP + " " + C67herniace + " " + C67degenerfaP + " " + C67stenozyP + "\n" +
 C7T1nativ + C7listezaP + " " + C7T1degenerdP + " " + C7T1edemP + " " + C7T1herniace + " " + C7T1degenerfaP + " " + C7T1stenozyP + "\n" +
 CCostatnidiskynormal + "\n" + 
+CCstenozakanalne + CCkanaljinak + "\n" + 
+CCstenozaforaminne + CCforaminjinak + "\n" + 
 CCmicha;
 
 MRCervicalPOPText.value = MRCervicalPOPText.value.replace(/^\s*[\r\n]/gm, '');  // smaže prázdné řádky

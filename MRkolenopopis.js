@@ -383,6 +383,8 @@ if (descriptionsMkFemCondText.length > 1) {
 } else {
 	MkFemCondRES = descriptionsMkFemCondRES.length ? "Mediální kondyl femuru " + descriptionsMkFemCondRES[0] + ". " : "";
 }
+
+
 `;
 
 let codeForMkTib = codeForMkFem.replace(/MkFem/g, 'MkTib').replace(/kondyl femuru/g, 'plato tibie');
@@ -401,6 +403,7 @@ var isMkFemOtherConditionsNotChecked = !MkFemCondFrS && !MkFemCondFrL && !MkFemC
 var isMkTibChpChecked = MkTibCondCHPII || MkTibCondCHPIII || MkTibCondCHPIV;
 var isMkTibOtherConditionsNotChecked = !MkTibCondFrS && !MkTibCondFrL && !MkTibCondOCDII && !MkTibCondOCDIII && !MkTibCondOCDIV && !MkTibCondEdemaCont && !MkTibCondEdemaDif;
 var isMkAnySubEdema = MkFemCondEdemaSub && MkTibCondEdemaSub;
+var isMkFissureDefect = MkFemCondFisOne || MkFemCondFisMore || MkFemCondDefOne || MkFemCondDefMore || MkTibCondFisOne || MkTibCondFisMore || MkTibCondDefOne || MkTibCondDefMore;
 
 if ((isMkFemChpChecked && isMkFemOtherConditionsNotChecked) && (isMkTibChpChecked && isMkTibOtherConditionsNotChecked)) {
     if (MkFemCondCHPIV || MkTibCondCHPIV) {
@@ -422,6 +425,12 @@ if ((isMkFemChpChecked && isMkFemOtherConditionsNotChecked) && (isMkTibChpChecke
     MkFemCondRES += ". ";
 }
 
+if (!isMkFemChpChecked && isMkFemOtherConditionsNotChecked && !isMkTibChpChecked && isMkTibOtherConditionsNotChecked && !isMkFissureDefect) {
+	MkFemCondText = "Chrupavky mediálního kompartmentu bez výraznější patologie. "; MkTibCondT = "";
+}
+
+// edem kostní dřeně
+
 
 
 // Lk chondropatie
@@ -431,6 +440,7 @@ var isLkFemOtherConditionsNotChecked = !LkFemCondFrS && !LkFemCondFrL && !LkFemC
 var isLkTibChpChecked = LkTibCondCHPII || LkTibCondCHPIII || LkTibCondCHPIV;
 var isLkTibOtherConditionsNotChecked = !LkTibCondFrS && !LkTibCondFrL && !LkTibCondOCDII && !LkTibCondOCDIII && !LkTibCondOCDIV && !LkTibCondEdemaCont && !LkTibCondEdemaDif;
 var isLkAnySubEdema = LkFemCondEdemaSub || LkTibCondEdemaSub;
+var isLkFissureDefect = LkFemCondFisOne || LkFemCondFisMore || LkFemCondDefOne || LkFemCondDefMore || LkTibCondFisOne || LkTibCondFisMore || LkTibCondDefOne || LkTibCondDefMore;
 
 if ((isLkFemChpChecked && isLkFemOtherConditionsNotChecked) && (isLkTibChpChecked && isLkTibOtherConditionsNotChecked)) {
     if (LkFemCondCHPIV || LkTibCondCHPIV) {
@@ -450,6 +460,10 @@ if ((isLkFemChpChecked && isLkFemOtherConditionsNotChecked) && (isLkTibChpChecke
 	}
 
     LkFemCondRES += ". ";
+}
+
+if (!isLkFemChpChecked && isLkFemOtherConditionsNotChecked && !isLkTibChpChecked && isLkTibOtherConditionsNotChecked && !isLkFissureDefect) {
+	LkFemCondText = "Chrupavky laterálního kompartmentu bez výraznější patologie. "; LkTibCondT = "";
 }
 
 // Mk meniskus

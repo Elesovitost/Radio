@@ -587,25 +587,53 @@ eval(codeForL5S1);
 // normální Závěr
 
 //komprese normal vs ostatni
-if (L1KOMText === "není" && L1LESText === "není" && L2KOMText === "není" && L2LESText === "není" && L3KOMText === "není" && L3LESText === "není" && L4KOMText === "není" && L4LESText === "není" && L5KOMText === "není" && L5LESText === "není" && S1LESText === "není") {
+if (L1KOMText === "není" && L2KOMText === "není" && L3KOMText === "není" && L4KOMText === "není" && L5KOMText === "není") {
  LLobratlenormal = "Obratlová těla přiměřených výšek. "; 
  LLostatniobratlenormal = ""; 
  } else {
  LLobratlenormal = "";
- LLostatniobratlenormal = "Jinak obratlová těla přiměřených výšek. ";
+ LLostatniobratlenormal = "Ostatní obratlová těla přiměřených výšek. ";
  } 
 
 // disky a kanál vs ostatní normální
-if (L12nativ === "" && L23nativ  === "" && L34nativ  === "" && L45nativ  === "" && L5S1nativ  === "") {
-LLdiskynormal = "Disky přiměřené výšky bez výraznějších protruzí." + "\n" + "Páteřní kanál volný, foramina volná. "; 
-LLostatnidiskynormal = "";
-} else if (L12nativ !== "" && L23nativ  !== "" && L34nativ  !== "" && L45nativ  !== "" && L5S1nativ  !== "") {
-LLdiskynormal = ""; 
-LLostatnidiskynormal = "";	
-} else {
-LLdiskynormal = ""; 
-LLostatnidiskynormal = "V ostatních etážích disky výrazněji nesníženy bez výraznějších protruzí" + "\n" + "Páteřní kanál volný. Ostatní foramina relativně volná. ";	
+if (L12DDText === "není" && L12BHText === "není" && L23DDText === "není" && L23BHText === "není" && L34DDText === "není" && L34BHText === "není" && L45DDText === "není" && L45BHText === "není" && L5S1DDText === "není" && L5S1BHText === "není") {
+	LLdiskynormal = "Disky přiměřené výšky bez výraznějších protruzí.";
+	LLostatnidiskynormal = "";
+} else if ((L12DDText !== "není" || L12BHText !== "není") && (L23DDText !== "není" || L23BHText !== "není") && (L34DDText !== "není" || L34BHText !== "není") && (L45DDText !== "není" || L45BHText !== "není") && (L5S1DDText !== "není" || L5S1BHText !== "není")) {
+	LLdiskynormal = "";
+	LLostatnidiskynormal = "";
+} else if ((L12DDText !== "není" || L12BHText !== "není") || (L23DDText !== "není" || L23BHText !== "není") || (L34DDText !== "není" || L34BHText !== "není") || (L45DDText !== "není" || L45BHText !== "není") || (L5S1DDText !== "není" || L5S1BHText !== "není")) {
+	LLdiskynormal = "";
+	LLostatnidiskynormal = "V ostatních etážích disky přiměřené výšky bez výraznějších protruzí.";
+}	
+
+// stenóza kanálu ano vs jinak
+if (L12PKText === "0" && L23PKText === "0" && L34PKText === "0" && L45PKText === "0" && L5S1PKText === "0") {
+	LLstenozakanalne = "Páteřní kanál je volný. ";
+	LLkanaljinak = "";
+} else if (L12PKText !== "0" && L23PKText !== "0" && L34PKText !== "0" && L45PKText !== "0" && L5S1PKText !== "0") {
+	LLstenozakanalne = "";
+	LLkanaljinak = "";
+} else if (L12PKText !== "0" || L23PKText !== "0" || L34PKText !== "0" || L45PKText !== "0" || L5S1PKText !== "0") {
+	LLstenozakanalne = "";
+	LLkanaljinak = "V ostatních etážích je páteřní kanál volný. ";
 }
+
+// stenóza foramin ano vs jinak
+if (L12PFText === "0" && L23PFText === "0" && L34PFText === "0" && L45PFText === "0" && L5S1PFText === "0" &&
+	L12LFText === "0" && L23LFText === "0" && L34LFText === "0" && L45LFText === "0" && L5S1LFText === "0") {
+	LLstenozaforaminne = "Foramina jsou relativně volná. ";
+	LLforaminjinak = "";
+} else if (L12PFText !== "0" && L23PFText !== "0" && L34PFText !== "0" && L45PFText !== "0" && L5S1PFText !== "0" &&
+			L12LFText !== "0" && L23LFText !== "0" && L34LFText !== "0" && L45LFText !== "0" && L5S1LFText !== "0") {
+	LLstenozaforaminne = "";
+	LLforaminjinak = "";
+} else if (L12PFText !== "0" || L23PFText !== "0" || L34PFText !== "0" || L45PFText !== "0" || L5S1PFText !== "0" ||
+			L12LFText !== "0" || L23LFText !== "0" || L34LFText !== "0" || L45LFText !== "0" || L5S1LFText !== "0") {
+	LLstenozaforaminne = "";
+	LLforaminjinak = "Ostatní foramina jsou relativně volná. ";
+}
+
 
 // multietážové degener. změny.
 let DDbuttons = [myL12DDButton, myL23DDButton, myL34DDButton, myL45DDButton, myL5S1DDButton];
@@ -662,6 +690,8 @@ L34nativ + L3listezaP + " " + L34degenerdP + " " + L34edemP + " " + L34herniace 
 L45nativ + L4listezaP + " " + L45degenerdP + " " + L45edemP + " " + L45herniace + " " + L45degenerfaP + " " + L45stenozyP + "\n" +
 L5S1nativ + L5listezaP + " " + L5S1degenerdP + " " + L5S1edemP + " " + L5S1herniace + " " + L5S1degenerfaP + " " + L5S1stenozyP + "\n" +
 LLostatnidiskynormal + "\n" + 
+LLstenozakanalne + LLkanaljinak + "\n" + 
+LLstenozaforaminne + LLforaminjinak + "\n" + 
 LLmicha;
 
 MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/^\s*[\r\n]/gm, '');  // smaže prázdné řádky

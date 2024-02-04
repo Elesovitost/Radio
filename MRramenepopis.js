@@ -429,7 +429,7 @@ if (LezeLabra === "") {
 }
 
 if (checkboxSLAP.checked)  {
-  SLAPP = "Vysoká SI labra na pozici 11-12 zasahující sublabrálně.";
+  SLAPP = "Vysoká SI sublabrálně na pozici 11-12, široká nebo zasahující směrem k odstupu šlachy.";
   SLAPR = "SLAP léze."; 
 } else {
   SLAPP = "";
@@ -527,13 +527,16 @@ MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/^(\.+)/gm, ''); //ods
 
 
 MRShoulderRESText.value = 
-NaplnR + " " + VolnaTeliskaR + " " + ACsubluxaceR + " " + ACdegeneraceR + " " + AcromionR + " " + SAprostorR + "\n" +
-GHdegeneraceR + " " + GHsubluxaceR + " " + IGHLR + " " +HSR + " " + SASDR + " " + SCR + "\n" + 
-RMsupraFinalR + "\n" +
+RMsupraFinalR + "\n" + 
 RMinfraFinalR + "\n" +
 RMssFinalR + "\n" +
+SASDR + " " + SCR + "\n" +
 LezeLabraFinalR + "\n" +
-LHBTR + " " + LHBTdislR; 
+LHBTR + " " + LHBTdislR + "\n" +
+GHdegeneraceR + " " + GHsubluxaceR + " " + IGHLR + " " + HSR + "\n" + 
+VolnaTeliskaR + " " + ACsubluxaceR + " " + ACdegeneraceR + " " + AcromionR + " " + SAprostorR  + "\n" +
+NaplnR
+; 
 
 MRShoulderRESText.value = MRShoulderRESText.value.trim(); 
 MRShoulderRESText.value = MRShoulderRESText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
