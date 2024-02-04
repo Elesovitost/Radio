@@ -431,9 +431,9 @@ if (document.getElementById('Chb1SignalDWIhypo').checked) BrainLesion1descriptio
 if (document.getElementById('Chb1SignalSWIhyper').checked) BrainLesion1descriptions.push("se suscept. artefakty");
 
 // T1C+
-if (document.getElementById('Chb1SignalT1Chyper').checked) descriptions.push("s enahancementem postkontrastně");
-if (document.getElementById('Chb1SignalT1Ciso').checked) descriptions.push("s mírným enahancementem postkontrastně");
-if (document.getElementById('Chb1SignalT1Chypo').checked) descriptions.push("bez postkontrastního sycení");
+if (document.getElementById('Chb1SignalT1Chyper').checked) BrainLesion1descriptions.push("se sycením postkontrastně");
+if (document.getElementById('Chb1SignalT1Ciso').checked) BrainLesion1descriptions.push("s mírným sycením postkontrastně");
+if (document.getElementById('Chb1SignalT1Chypo').checked) BrainLesion1descriptions.push("bez postkontrastního sycení");
 
 
 
@@ -444,12 +444,12 @@ BrainLesion1descriptions = BrainLesion1descriptions.filter(Boolean);
 var descriptionText;
 if (BrainLesion1descriptions.length > 1) {
 	var lastDescription = BrainLesion1descriptions.pop();
-	descriptionText = BrainLesion1descriptions.join(", ") + " a " + lastDescription + ".";
+	descriptionText = BrainLesion1descriptions.join(", ") + ", " + lastDescription;
 } else {
 	descriptionText = BrainLesion1descriptions.join("");
 }
 
-BrainLesion1Signal.value = BrainLesion1descriptions.length > 0 ? descriptionText.trim() + "." : "";
+BrainLesion1Signal.value = BrainLesion1descriptions.length > 0 ? descriptionText.trim() : "";
 
 
 
@@ -477,7 +477,7 @@ if (BrainLesion1number === "") {
 } 	
 
 let processedSentencePOPBrainLesion1 = processSentence(BrainLesion1number + " " + BrainLesion1type);	
-POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " + BrainLesion1SignalIntensity + " " + BrainLesion1Activity + ".";
+POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " + BrainLesion1Signal.value + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " + BrainLesion1SignalIntensity + " " + BrainLesion1Activity + ".";
 
 let processedSentenceRESBrainLesionFDG = processSentence(BrainLesion1number + " " + BrainLesion1RESActivityFDG + " " + BrainLesion1type);
 
