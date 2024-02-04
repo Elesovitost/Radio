@@ -198,7 +198,7 @@ if (checkboxRS.checked) {
     RSR = ". Distribucí a charakterem jsou léze suspektní z demyelinizace. ";
 } else if (!checkboxRS.checked && (WMLText === "vícečetné" || WMLText === "splývající")) {
     RSP = "";
-    RSR = " v.s. postichemické etiologie.";
+    RSR = " v.s. v rámci 'small vessel disease'.";
 } else if (WMLkdeText === "" && WMLText === "0") {
     RSP = "";
     RSR = "";
