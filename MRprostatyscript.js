@@ -47,7 +47,7 @@ var buttonElementProstateLesion1C = document.getElementById("ProstateLesion1CBut
 var indexProstateLesion1C = 0;function cycleProstateLesion1CText(event) {  indexProstateLesion1C = cycleText(event, textsProstateLesion1C, indexProstateLesion1C, buttonElementProstateLesion1C);}
 function cycleProstateLesion1CText(event) {  indexProstateLesion1C = cycleText(event, textsProstateLesion1C, indexProstateLesion1C, buttonElementProstateLesion1C, updateBackgroundColor);  updateTexts();}
 
-var textsProstateLesion1Invasion = ["bez invaze", "invaze kapsuly", "přes kapsulu", "semen. váčků", "okolních struktur"];
+var textsProstateLesion1Invasion = ["bez invaze", "přes kapsulu", "semen. váčků", "okolních struktur"];
 var buttonElementProstateLesion1Invasion = document.getElementById("ProstateLesion1InvasionButton");
 var indexProstateLesion1Invasion = 0;function cycleProstateLesion1InvasionText(event) {  indexProstateLesion1Invasion = cycleText(event, textsProstateLesion1Invasion, indexProstateLesion1Invasion, buttonElementProstateLesion1Invasion);}
 function cycleProstateLesion1InvasionText(event) {  indexProstateLesion1Invasion = cycleText(event, textsProstateLesion1Invasion, indexProstateLesion1Invasion, buttonElementProstateLesion1Invasion, updateBackgroundColor);  updateTexts();}

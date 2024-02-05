@@ -1,4 +1,8 @@
+//PSMA checked
+document.getElementById('ChbProstatePSMA').checked = true;
+
 function updateTexts() {
+
 
 // LESION1
 
@@ -171,10 +175,7 @@ var ProstateLesion1InvasionText = buttonElementProstateLesion1Invasion.innerText
 
 if (ProstateLesion1InvasionText === "bez invaze") {
     ProstateLesion1InvasionP = ""; 
-    ProstateLesion1InvasionR = ""; 
-} else if (ProstateLesion1InvasionText === "invaze kapsuly") {
-    ProstateLesion1InvasionP = "s invazí kapsuly, "; 
-    ProstateLesion1InvasionR = ", s invazí kapsuly"; 
+    ProstateLesion1InvasionR = "";  
 } else if (ProstateLesion1InvasionText === "přes kapsulu") {
     ProstateLesion1InvasionP = "s invazí přes kapsulu, "; 
     ProstateLesion1InvasionR = ", s invazí přes kapsulu"; 
@@ -1211,7 +1212,7 @@ ProstateRecidR + "\n" +
 ProstateLesion1R + "\n" +
 ProstateLesion2R + "\n" +
 ProstateLesion3R + "\n" +
-ProstateLNRegR + " " + ProstateLNNonRegR + "\n" +
+ProstateLNRegR + " " + ProstateLNNonRegR + " " + ProstateMetaR +  "\n" +
 ProstateTMN + ProstatemiTMN
 ;
 
