@@ -103,6 +103,8 @@
 
 <div id="Loziska"  class="standardwidth"><button class="titleBrain">LOŽISKA</button> 
 <td>&nbsp;&nbsp;&nbsp;</td> <button id="BrainNewLesion1" class="Button20">1</button> <button id="BrainNewLesion2" class="Button20">2</button> <button id="newLesionV" class="Button20">V</button>
+<span style="display: block; height: 2px;"></span>
+
 
 <!-- BRAIN LESION1 -->
 <table id="BrainLesion1" class="LesionX hidden">
@@ -123,10 +125,11 @@
 			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
-		<td><input id="BrainLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> <input id="BrainLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
+		<td><input id="BrainLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> </td>
+		<td style="width: 100%;"><input id="BrainLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" style="width: 100%;" oninput="updateTexts()"></td>
 		</td>
 		<td><input id="BrainLesion1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
-		<td><input id="BrainLesion1Signal" type="text" placeholder="signál..." autocomplete="off" class="input200"></td>
+		<td><input id="BrainLesion1Signal" type="text" placeholder="signál..." autocomplete="off" class="input140"></td>
 		<td><select id="BrainLesion1Activity" class="select60" onchange="updateTexts()">
 			<option value="" selected>aktivita...</option>
 			</select>

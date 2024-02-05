@@ -15,7 +15,7 @@ function cloneAndUpdateIds(sourceId, destId) {
             element.id = element.id.replace(`Lesion${sourceNumber}`, `Lesion${destNumber}`);
             element.id = element.id.replace(`Chb${sourceNumber}`, `Chb${destNumber}`);
             if (element.id.endsWith(`${destNumber}no`)) {
-                element.textContent = `L${destNumber}`;
+                element.textContent = `${destNumber}`;
             }
         }
     });

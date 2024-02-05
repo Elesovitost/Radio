@@ -430,9 +430,9 @@ if (document.getElementById('Chb1SignalDWIhypo').checked) BrainLesion1descriptio
 if (document.getElementById('Chb1SignalSWIhyper').checked) BrainLesion1descriptions.push("se suscept. artefakty");
 
 // T1C+
-if (document.getElementById('Chb1SignalT1Chyper').checked) BrainLesion1descriptions.push("se sycením postkontrastně");
-if (document.getElementById('Chb1SignalT1Ciso').checked) BrainLesion1descriptions.push("s mírným sycením postkontrastně");
-if (document.getElementById('Chb1SignalT1Chypo').checked) BrainLesion1descriptions.push("bez postkontrastního sycení");
+if (document.getElementById('Chb1SignalT1Chyper').checked) BrainLesion1descriptions.push("T1C++");
+if (document.getElementById('Chb1SignalT1Ciso').checked) BrainLesion1descriptions.push("T1C+");
+if (document.getElementById('Chb1SignalT1Chypo').checked) BrainLesion1descriptions.push("T1C0");
 
 
 
@@ -449,10 +449,9 @@ if (BrainLesion1descriptions.length > 1) {
 }
 
 BrainLesion1Signal.value = BrainLesion1descriptions.length > 0 ? descriptionText.trim() : "";
-BrainLesion1POPSignal = BrainLesion1Signal.value
-BrainLesion1POPSignal = BrainLesion1POPSignal.replace("DWI+", "se zvýšenou restrikcí difuze");
-BrainLesion1POPSignal = BrainLesion1POPSignal.replace("DWI-", "bez zvýšené restrikce difuze");
-
+BrainLesion1POPSignal = BrainLesion1Signal.value;
+BrainLesion1POPSignal = BrainLesion1POPSignal.replace("DWI+", "se zvýšenou restrikcí difuze"); BrainLesion1POPSignal = BrainLesion1POPSignal.replace("DWI-", "bez zvýšené restrikce difuze");
+BrainLesion1POPSignal = BrainLesion1POPSignal.replace("T1C++", "s výrazným postkontrastním sycením"); BrainLesion1POPSignal = BrainLesion1POPSignal.replace("T1C+", "s mírným postkontrastním sycením"); BrainLesion1POPSignal = BrainLesion1POPSignal.replace("T1C0", "bez sycení postkontrastně");
 
 var POPBrainLesion1 = "";
 var RESBrainLesion1 = "";
