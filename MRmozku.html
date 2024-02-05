@@ -102,12 +102,12 @@
 </div>
 
 <div id="Loziska"  class="standardwidth"><button class="titleBrain">LOŽISKA</button> 
-<td>&nbsp;&nbsp;&nbsp;</td> <button id="BrainNewLesion1" class="Button20">1</button> <button id="BrainNewLesion2" class="Button20">2</button> <button id="newLesionV" class="Button20">v</button>
+<td>&nbsp;&nbsp;&nbsp;</td> <button id="BrainNewLesion1" class="Button20">1</button> <button id="BrainNewLesion2" class="Button20">2</button> <button id="newLesionV" class="Button20">V</button>
 
 <!-- BRAIN LESION1 -->
 <table id="BrainLesion1" class="LesionX hidden">
 	<tr>
-		<td><button id="BrainLesion1no" class="myButtonLesionS">L1</button></td>
+		<td><button id="BrainLesion1no" class="myButtonLesionS">1</button></td>
 		<td><select id="BrainLesion1type" class="selectLESION" onchange="updateTexts()">
 			<option value="ložisko| ložiska"selected>ložisko</option>
 			<option value="tumor| tumory">tumor</option>
@@ -213,35 +213,33 @@
 	<tr>
 		<td>DWI</td>
 		<td class="right">
-			<label class="CHB"><input type="checkbox" id="Chb1SignalDWIhyper" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalDWIiso" onChange="updateTexts()"><span>0</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalDWIhypo" onChange="updateTexts()"><span>-</span></label>
+			<label class="CHB"><input type="checkbox" id="Chb1SignalDWIhyper" onChange="updateTexts()"><span>+</span></label><span style="display: inline-block; width: 0px; height: 0px; margin-right: 21px;"></span><label class="CHB"><input type="checkbox" id="Chb1SignalDWIhypo" onChange="updateTexts()"><span>-</span></label>
 		</td>
 	</tr>
 	<tr>
 		<td>SWI</td>
 		<td class="right">
-			<label class="CHB"><input type="checkbox" id="Chb1SignalSWIhyper" onChange="updateTexts()"><span>+</span></label>
+			<label class="CHB"><input type="checkbox" id="Chb1SignalSWIhyper" onChange="updateTexts()"><span>+</span></label><span style="display: inline-block; width: 0px; height: 0px; margin-right: 42px;"></span>
 		</td>
 	</tr>
 	<tr>
 		<td>T1C+</td>
 		<td class="right">
-			<label class="CHB"><input type="checkbox" id="Chb1SignalT1Chyper" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1Ciso" onChange="updateTexts()"><span>0</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1Chypo" onChange="updateTexts()"><span>-</span></label>
+			<label class="CHB"><input type="checkbox" id="Chb1SignalT1Chyper" onChange="updateTexts()"><span>++</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1Ciso" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1Chypo" onChange="updateTexts()"><span>0</span></label>
 		</td>
 	</tr>
 </table>
 
-
 <!-- BRAIN LESION V -->
-<table id="LesionVcontent"  class="hidden">
-  <tr>	
-    <th><button class="ButtonNo">v</button></th>
-	<td><input id="LesionVP" type="text" placeholder="vlastní popis..." autocomplete="off" style="text-align: left; padding-left: 10px; width: 770px"; ></td>
-  </tr>
+<table id="LesionVcontent" class="hidden" style="width: 100%;">
   <tr>
-    <td></td>
-	<td><input id="LesionVR" type="text" placeholder="vlastní závěr..." autocomplete="off" style="text-align: left; padding-left: 10px; width: 770px"; ></td>
+    <td style="width: 1%; white-space: nowrap;"><button class="myButtonLesionS">V</button></td>
+    <td><input id="LesionVP" type="text" placeholder="vlastní popis..." autocomplete="off" style="width: 100%;"></td>
+    <td><input id="LesionVR" type="text" placeholder="vlastní závěr..." autocomplete="off" style="width: 100%;"></td>
   </tr>
 </table>
+
+
 
 </div>
 

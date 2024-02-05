@@ -423,9 +423,8 @@ if (document.getElementById('Chb1SignalFLAIRiso').checked) BrainLesion1descripti
 if (document.getElementById('Chb1SignalFLAIRhypo').checked) BrainLesion1descriptions.push("FLAIR-");
 
 // DWI
-if (document.getElementById('Chb1SignalDWIhyper').checked) BrainLesion1descriptions.push("se zvýšenou restrikcí difuze");
-if (document.getElementById('Chb1SignalDWIiso').checked) BrainLesion1descriptions.push("");
-if (document.getElementById('Chb1SignalDWIhypo').checked) BrainLesion1descriptions.push("se sníženou restrikcí difuze");
+if (document.getElementById('Chb1SignalDWIhyper').checked) BrainLesion1descriptions.push("DWI+");
+if (document.getElementById('Chb1SignalDWIhypo').checked) BrainLesion1descriptions.push("DWI-");
 
 // SWI
 if (document.getElementById('Chb1SignalSWIhyper').checked) BrainLesion1descriptions.push("se suscept. artefakty");
@@ -450,9 +449,9 @@ if (BrainLesion1descriptions.length > 1) {
 }
 
 BrainLesion1Signal.value = BrainLesion1descriptions.length > 0 ? descriptionText.trim() : "";
-
-
-
+BrainLesion1POPSignal = BrainLesion1Signal.value
+BrainLesion1POPSignal = BrainLesion1POPSignal.replace("DWI+", "se zvýšenou restrikcí difuze");
+BrainLesion1POPSignal = BrainLesion1POPSignal.replace("DWI-", "bez zvýšené restrikce difuze");
 
 
 var POPBrainLesion1 = "";
@@ -477,7 +476,7 @@ if (BrainLesion1number === "") {
 } 	
 
 let processedSentencePOPBrainLesion1 = processSentence(BrainLesion1number + " " + BrainLesion1type);	
-POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " + BrainLesion1Signal.value + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " + BrainLesion1SignalIntensity + " " + BrainLesion1Activity + ".";
+POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " + BrainLesion1POPSignal + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " + BrainLesion1SignalIntensity + " " + BrainLesion1Activity + ".";
 
 let processedSentenceRESBrainLesionFDG = processSentence(BrainLesion1number + " " + BrainLesion1RESActivityFDG + " " + BrainLesion1type);
 

@@ -5,8 +5,8 @@ function cloneAndUpdateIds(sourceId, destId) {
     let clonedElement = sourceElement.cloneNode(true);
     clonedElement.id = destId;
 
-    let sourceNumber = sourceId.match(/\d+/); // extracts number from sourceId (e.g., "1" from "Lesion1")
-    let destNumber = destId.match(/\d+/); // extracts number from destId (e.g., "2" from "Lesion2")
+    let sourceNumber = sourceId.match(/\d+/); // Extracts number from sourceId (e.g., "1" from "Lesion1")
+    let destNumber = destId.match(/\d+/); // Extracts number from destId (e.g., "2" from "Lesion2")
 
     let elements = clonedElement.querySelectorAll("*");
     
@@ -14,15 +14,22 @@ function cloneAndUpdateIds(sourceId, destId) {
         if (element.id) {
             element.id = element.id.replace(`Lesion${sourceNumber}`, `Lesion${destNumber}`);
             element.id = element.id.replace(`Chb${sourceNumber}`, `Chb${destNumber}`);
-			
-			 if (element.id.endsWith(`${destNumber}no`)) {
-                    element.textContent = `L${destNumber}`;
-                }
+            if (element.id.endsWith(`${destNumber}no`)) {
+                element.textContent = `L${destNumber}`;
+            }
         }
     });
-    
-    sourceElement.parentNode.appendChild(clonedElement);
+
+    // Check if sourceElement has a next sibling, and use insertBefore to place the clone after sourceElement
+    let parent = sourceElement.parentNode;
+    let nextSibling = sourceElement.nextElementSibling;
+    if (nextSibling) {
+        parent.insertBefore(clonedElement, nextSibling);
+    } else {
+        parent.appendChild(clonedElement); // Fallback if sourceElement is the last child
+    }
 }
+
 
 
 cloneAndUpdateIds("BrainLesion1", "BrainLesion2");
@@ -288,11 +295,6 @@ buttonElementWML.addEventListener("mousedown", function() {
 });
 
 	
-newLesionV.addEventListener("click", function() {
-    LesionVcontent.classList.toggle("hidden");
-    });
-
-
 
 // Brainlesions hide
 
@@ -400,6 +402,14 @@ document.addEventListener('click', function(e) {
     dropdown.classList.add('hidden');
   }
 });
+
+//LesionV unhiding
+
+newLesionV.addEventListener("click", function() {
+    LesionVcontent.classList.toggle("hidden"); this.classList.toggle('toggleColorRed');
+    });
+
+
 
 // universal size
 
