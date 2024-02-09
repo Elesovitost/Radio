@@ -1330,6 +1330,8 @@ var ThoraxLobectomyOther = document.getElementById("ThoraxLobectomyOther").value
 var ThoraxParenchymaNodulesR = document.getElementById("ChbThoraxParenchymaNodulesR").checked;
 var ThoraxParenchymaNodulesL = document.getElementById("ChbThoraxParenchymaNodulesL").checked;
 var ThoraxParenchymaNodulesMore = document.getElementById("ChbThoraxParenchymaNodulesMore").checked;
+var ThoraxParenchymaConsolidR = document.getElementById("ChbThoraxParenchymaConsolidR").checked;
+var ThoraxParenchymaConsolidL = document.getElementById("ChbThoraxParenchymaConsolidL").checked;
 var ThoraxParenchymaRTR = document.getElementById("ChbThoraxParenchymaRTR").checked;
 var ThoraxParenchymaRTL = document.getElementById("ChbThoraxParenchymaRTL").checked;
 var ThoraxParenchymaHypoventR = document.getElementById("ChbThoraxParenchymaHypoventR").checked;
@@ -1343,7 +1345,7 @@ var ThoraxParenchymaEmphysPanlob = document.getElementById("ChbThoraxParenchymaE
 var ThoraxParenchymaOther = document.getElementById("ThoraxParenchymaOther").value.trim();
 
 if (ThoraxPulmonectomyR || ThoraxPulmonectomyL || ThoraxULobectomyR || ThoraxULobectomyL || ThoraxMLobectomyR || ThoraxLLobectomyR || ThoraxLLobectomyL || ThoraxUResectionR || ThoraxUResectionL || ThoraxMResectionR || ThoraxLResectionR || ThoraxLResectionL || 
-	ThoraxParenchymaNodulesR || ThoraxParenchymaNodulesL || ThoraxParenchymaRTR || ThoraxParenchymaRTL || ThoraxParenchymaHypoventR || ThoraxParenchymaHypoventL || ThoraxParenchymaFibrSub || ThoraxParenchymaFibr || ThoraxParenchymaFibrAdv || ThoraxParenchymaEmphysMild || 
+	ThoraxParenchymaNodulesR || ThoraxParenchymaNodulesL || ThoraxParenchymaConsolidR || ThoraxParenchymaConsolidL || ThoraxParenchymaRTR || ThoraxParenchymaRTL || ThoraxParenchymaHypoventR || ThoraxParenchymaHypoventL || ThoraxParenchymaFibrSub || ThoraxParenchymaFibr || ThoraxParenchymaFibrAdv || ThoraxParenchymaEmphysMild || 
 	ThoraxParenchymaEmphysParasept || ThoraxParenchymaEmphysPanlob || ThoraxParenchymaOther) {
     if (ThoraxLesion1Locationtext.includes("plíce")) {
         ThoraxParenchymaText += "Dále: ";
@@ -1406,6 +1408,12 @@ if (ThoraxParenchymaNodulesR && ThoraxParenchymaNodulesL) {
         ThoraxParenchymaText += ThoraxParenchymaNodulesMore ? "drobné nespecifické noduly bez zvýšené akumulace RF vlevo, " : "drobný nespecifický nodul bez zvýšené akumulace RF vlevo, ";
     }
 }
+
+if (ThoraxParenchymaConsolidR && ThoraxParenchymaConsolidL) ThoraxParenchymaText += "drobné infiltráty / konsolidace v parenchymu bilat, ";
+  else {
+if (ThoraxParenchymaConsolidR) ThoraxParenchymaText += "drobné infiltráty / konsolidace v parenchymu vpravo, ";
+if (ThoraxParenchymaConsolidL) ThoraxParenchymaText += "drobné infiltráty / konsolidace v parenchymu vlevo, ";
+  }
 
 if (ThoraxParenchymaRTR && ThoraxParenchymaRTL) ThoraxParenchymaText += "poradiační změny v parenchymu bilat, ";
   else {
