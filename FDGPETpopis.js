@@ -832,8 +832,10 @@ var NeckTreatmentText = "";
   }
 
   if (NeckTreatmentOther) {
-    NeckTreatmentText += NeckTreatmentOther + ". ";
+    NeckTreatmentText += NeckTreatmentOther[0].toUpperCase() + NeckTreatmentOther.slice(1) + ". ";
   }
+
+
 
 //Neck Others by priority
 var NeckOther1Priority = ""; var NeckOther1NoPriority = ""; var NeckOther1ResPriority = "";
@@ -1249,8 +1251,10 @@ var ThoraxDevicesRes = "";
 	if (ThoraxDevicesMalposition) ThoraxDevicesText += "Malpozice katetru. ";
 
   if (ThoraxDevicesOther) {
-    ThoraxDevicesText += ThoraxDevicesOther + ". ";
+    ThoraxDevicesText += ThoraxDevicesOther[0].toUpperCase() + ThoraxDevicesOther.slice(1) + ". ";
   }
+  
+ 
 
 // oesophagus
 var ThoraxOesophText = "";
@@ -1305,7 +1309,7 @@ if (ThoraxMammaReplaceL) ThoraxMammaText += "St.p. náhradě levého prsu. ";
   }
   
 if (ThoraxMammaOther) {
-  ThoraxMammaText += ThoraxMammaOther + ". ";
+  ThoraxMammaText += ThoraxMammaOther[0].toUpperCase() + ThoraxMammaOther.slice(1) + ". ";
 }
 
 // thorax parenchyma and surgery

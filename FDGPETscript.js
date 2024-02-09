@@ -125,7 +125,7 @@ InputTextAreas.forEach(function(InputTextArea) {
 });
 
 
-// button tables overlay change color
+// button tables overlay change color when something is entered or checked
 
 function isAnyCheckboxChecked(tableId) {
     var checkboxes = document.querySelectorAll('#' + tableId + ' input[type="checkbox"]');
@@ -137,17 +137,27 @@ function isAnyCheckboxChecked(tableId) {
     return false;
 }
 
+function isTextInputFilled(tableId) {
+    var textInputs = document.querySelectorAll('#' + tableId + ' input[type="text"], #' + tableId + ' textarea');
+    for (var i = 0; i < textInputs.length; i++) {
+        if (textInputs[i].value.trim() !== '') {
+            return true;
+        }
+    }
+    return false;
+}
+
 function updateButtonColor(buttonId, tableId) {
     var button = document.getElementById(buttonId);
-    if (isAnyCheckboxChecked(tableId)) {
+    if (isAnyCheckboxChecked(tableId) || isTextInputFilled(tableId)) {
         button.style.backgroundColor = '#D4A29C';
     } else {
-        button.style.backgroundColor = ''; 
+        button.style.backgroundColor = '';
     }
 }
 
-document.addEventListener('change', function(event) {
-    if (event.target.type === 'checkbox') {
+document.addEventListener('input', function(event) {
+    if (event.target.type === 'checkbox' || event.target.type === 'text' || event.target.tagName.toLowerCase() === 'textarea') {
         var table = event.target.closest('[id$="table"]');
         if (table) {
             var buttonId = table.id.replace('table', '');
@@ -155,6 +165,7 @@ document.addEventListener('change', function(event) {
         }
     }
 });
+
 
 // button tables overlay unchecked
 
