@@ -45,6 +45,109 @@ const OrbitRText = buttonElementOrbitR.innerText;
 const OrbitLText = buttonElementOrbitL.innerText;
 
 
+//Date
+let DateCompare = document.getElementById("DateCompare").value; 
+let date = new Date(DateCompare); let day = String(date.getDate()).padStart(2, '0'); let month = String(date.getMonth() + 1).padStart(2, '0'); let year = date.getFullYear(); let DateComparison = day + "." + month + "." + year + " ";
+
+// checking if the current date is not chosen else popup
+function showDatePopup() {
+    var popup = document.getElementById('popupMessageDate');
+    var dateInput = document.getElementById('DateCompare');
+
+    var inputRect = dateInput.getBoundingClientRect();
+    var topPosition = inputRect.bottom + window.scrollY + 5; // Position below the input
+    var leftPosition = inputRect.left + window.scrollX;
+
+    popup.textContent = "Pozor, datum současné"; 
+    popup.style.top = topPosition + 'px';
+    popup.style.left = leftPosition + 'px';
+    popup.style.display = 'block';
+
+    setTimeout(() => {
+        popup.style.display = 'none';
+    }, 2000); // Hide after 1 second
+}
+
+document.getElementById('DateCompare').addEventListener('change', function() {
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    let selectedDate = new Date(this.value);
+    let timeDifference = Math.abs(currentDate - selectedDate);
+    let dayDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+    if (dayDifference <= 7) {
+        showDatePopup();
+    }
+});
+
+// universal comparison
+
+function generateComparisonText(prevSize, date) {
+    if (prevSize.trim() !== "") {
+		return " (minule " + prevSize + ")";   
+    } else {
+        return "";
+    }
+}
+
+
+// RES Size Comparison
+
+function getMaxDimension(sizeString) {
+    var numbers = sizeString.match(/\d+,\d+|\d+/g).map(s => parseFloat(s.replace(',', '.')));
+    return Math.max(...numbers);
+}
+
+function compareSizes(currentSize, prevSize) {
+    if (!currentSize || !prevSize || currentSize.trim() === "" || prevSize.trim() === "") {
+        return "";
+    }
+
+    var currentMax = getMaxDimension(currentSize);
+    var prevMax = getMaxDimension(prevSize);
+
+    if (prevMax === 0) { // To avoid division by zero
+        return "Cannot calculate percentage change due to zero previous size.";
+    }
+
+    var change = ((currentMax - prevMax) / prevMax) * 100;
+    var roundedChange = Math.round(change / 5) * 5;  // Round to nearest five
+
+    // Check the checkbox state
+    var percentageString =  " (cca o " + roundedChange + "%)" ;
+
+    var result = "";
+    if (change <= -50) {
+        result = "ve výrazné rozměrové regresi";
+    } else if (change > -50 && change <= -20) {
+        result = "v parciální rozměrové regresi";
+    } else if (change > -20 && change < 20) {
+        result = "rozměrově přibližně stacionární";
+    } else if (change >= 20 && change < 50) {
+        result = "v parciální rozměrové progresi";
+    } else if (change >= 50) {
+        result = "ve výrazné rozměrové progresi";
+    }
+
+    return result + percentageString;  // Append the percentage string if needed
+}
+
+
+// combine results
+
+function combineComparisonResults(sizeRes, number) {
+    if (!sizeRes) {
+        return "";
+    }
+
+    var prefix = (number && number.trim() !== "") ? "jsou " : "je ";
+
+    // No need for separate handling for stationary results
+    return prefix + sizeRes;
+}
+
+
 //nadpis
 
 const Nadpis = "MR mozku";
@@ -316,7 +419,11 @@ var BrainLesion1Size = formatLesionSize("BrainLesion1Size");
 var BrainLesion1RESDecision = document.getElementById("BrainLesion1Decision").value; 
 var BrainLesion1AllLocations = "";
 var BrainLesion1SignalIntensity = "";
+var BrainLesion1PrevSize = formatLesionSize("BrainLesion1PrevSize");
 
+var BrainLesion1ComparisonText = generateComparisonText(BrainLesion1PrevSize, DateComparison);
+var BrainLesion1ComparisonSizeRes = compareSizes(BrainLesion1Size, BrainLesion1PrevSize);
+var BrainLesion1CombinedResult = combineComparisonResults( BrainLesion1ComparisonSizeRes,  BrainLesion1number);
 
 //location
 var BrainLesion1Location = "";
@@ -475,21 +582,23 @@ if (BrainLesion1number === "") {
 } 	
 
 let processedSentencePOPBrainLesion1 = processSentence(BrainLesion1number + " " + BrainLesion1type);	
-POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " + BrainLesion1POPSignal + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " + BrainLesion1SignalIntensity + " " + BrainLesion1Activity + ".";
+POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " + BrainLesion1POPSignal + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " + BrainLesion1SignalIntensity + " " + BrainLesion1Activity + " " + BrainLesion1ComparisonText + ".";
 
 let processedSentenceRESBrainLesionFDG = processSentence(BrainLesion1number + " " + BrainLesion1RESActivityFDG + " " + BrainLesion1type);
 
-RESBrainLesion1 = processedSentenceRESBrainLesionFDG + " " + BrainLesion1AllLocations + " " + BrainLesion1RESDecision + ".";
+RESBrainLesion1 = processedSentenceRESBrainLesionFDG + " " + BrainLesion1AllLocations + " " + BrainLesion1CombinedResult + " " + BrainLesion1RESDecision + ".";
 
-if (BrainLesion1RESDecision.includes("meta") && BrainLesion1type.includes("ožisk")) {window.RESBrainLesion1 = window.RESBrainLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
+if (BrainLesion1RESDecision.includes("meta") && BrainLesion1type.includes("ožisk")) {RESBrainLesion1 = RESBrainLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 
 if (BrainLesion1.classList.contains('hidden')) {POPBrainLesion1 = ""; RESBrainLesion1 = "";}
 
 `;
 
 let codeForBrainLesion2 = codeForBrainLesion1.replace(/Lesion1/g, 'Lesion2').replace(/Chb1/g, 'Chb2');
+let codeForBrainLesion3 = codeForBrainLesion1.replace(/Lesion1/g, 'Lesion3').replace(/Chb1/g, 'Chb3');
 eval(codeForBrainLesion1);
 eval(codeForBrainLesion2);
+eval(codeForBrainLesion3);
 
 
 //MMK
@@ -669,6 +778,12 @@ if (POPBrainLesion1 === "" && POPBrainLesion2 === "" && LesionVP === "") {POPNoL
 
 //bez restrikce
 
+
+//Latest examination comparison
+if (DateCompare === "") {ExamCompareText = ""; POPExamCompareText = "";} else {ExamCompareText = "Oproti vyšetření z " + DateComparison + ":"; POPExamCompareText = "Srovnáno s vyšetřením z " + DateComparison + ". ";}
+
+
+
 //POPIS
 
 MRbrainNAMEText.value = "MR mozku";
@@ -678,6 +793,7 @@ MRbrainINDText.value = indikace;
 MRbrainSEKVText.value = "Mozek v T2W, FLAIR, DWI+ADC, T1W, (event. dle potřeby T2-SPACE, T2-FLASH, SWI, FS, C+). ";
 
 MRbrainPOPText.value = 
+POPExamCompareText + "\n" +
 POPBrainLesion1 + "\n" +
 POPBrainLesion2 + "\n" +
 LesionVP + "\n" +
@@ -705,6 +821,7 @@ MRbrainPOPText.value = MRbrainPOPText.value.replace(/^\./gm, ''); // odstraní t
 MRbrainPOPText.value = MRbrainPOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
 
 MRbrainRESText.value = 
+ExamCompareText + "\n" +
 RESBrainLesion1 + "\n" +
 RESBrainLesion2 + "\n" +
 LesionVR + "\n" +

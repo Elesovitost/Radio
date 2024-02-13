@@ -30,12 +30,13 @@ function cloneAndUpdateIds(sourceId, destId) {
     }
 }
 
-
-
 cloneAndUpdateIds("BrainLesion1", "BrainLesion2");
 cloneAndUpdateIds("BrainLesion1selectLocation", "BrainLesion2selectLocation");
 cloneAndUpdateIds("BrainLesion1selectSignal", "BrainLesion2selectSignal");
 
+cloneAndUpdateIds("BrainLesion1", "BrainLesion3");
+cloneAndUpdateIds("BrainLesion1selectLocation", "BrainLesion3selectLocation");
+cloneAndUpdateIds("BrainLesion1selectSignal", "BrainLesion3selectSignal");
 
 // GRAMMAR
 
@@ -402,6 +403,73 @@ document.addEventListener('click', function(e) {
     dropdown.classList.add('hidden');
   }
 });
+
+
+//LESION3
+
+document.getElementById('BrainNewLesion3').addEventListener('click', function() {
+  var element = document.getElementById('BrainLesion3');
+  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
+  updateTexts();
+});
+
+document.getElementById('BrainLesion3no').addEventListener('click', function() {
+  var element = document.getElementById('BrainLesion3');
+  element.classList.add('hidden');
+  updateTexts();
+});
+
+document.getElementById('BrainLesion3number').addEventListener('change', function() {
+  let selectedValue = this.value;
+  let BrainLesion3LoclargestElement = document.getElementById('BrainLesion3Loclargest');
+
+  if (selectedValue !== "") {
+    BrainLesion3LoclargestElement.classList.remove('hidden');
+  } else {
+    BrainLesion3LoclargestElement.classList.add('hidden');
+  }
+});
+
+document.getElementById('BrainLesion3Location').addEventListener('focus', function() {
+  var dropdown = document.getElementById('BrainLesion3selectLocation');
+  var rect = this.getBoundingClientRect();
+  dropdown.style.left = rect.left + 'px'; dropdown.style.top = rect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
+});
+
+document.addEventListener('click', function(e) {
+  var dropdown = document.getElementById('BrainLesion3selectLocation');
+  if (!document.getElementById('BrainLesion3Location').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
+  }
+});
+
+document.getElementById('BrainLesion3Signal').addEventListener('focus', function() {
+  var dropdown = document.getElementById('BrainLesion3selectSignal');
+  var rect = this.getBoundingClientRect();
+  dropdown.style.left = rect.left + 'px'; dropdown.style.top = rect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
+});
+
+document.addEventListener('click', function(e) {
+  var dropdown = document.getElementById('BrainLesion3selectSignal');
+  if (!document.getElementById('BrainLesion3Signal').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
+  }
+});
+
+
+// compare older
+
+function toggleElements() {
+    var dateInput = document.getElementById('DateCompare');
+	var BrainLesion1Previous = document.getElementById('BrainLesion1Previous'); var BrainLesion2Previous = document.getElementById('BrainLesion2Previous'); var BrainLesion3Previous = document.getElementById('BrainLesion3Previous'); 
+
+    if (dateInput.value !== '') {
+	  BrainLesion1Previous.classList.remove('hidden'); BrainLesion2Previous.classList.remove('hidden'); BrainLesion3Previous.classList.remove('hidden');
+ } else {
+	  BrainLesion1Previous.classList.add('hidden'); BrainLesion2Previous.classList.add('hidden'); BrainLesion3Previous.classList.add('hidden');
+	 }
+  }
+
 
 //LesionV unhiding
 
