@@ -2076,14 +2076,14 @@ if (ChbAbdomenParaAIER && ChbAbdomenParaAIEL) {
     descriptions.push("při zevních ilikách bilat.");
 } else {
     if (ChbAbdomenParaAIER) descriptions.push("při zevní ilice vpravo");
-    if (ChbAbdomenParaAIEL) descriptions.push("při zevní ilice vpravo");
+    if (ChbAbdomenParaAIEL) descriptions.push("při zevní ilice vlevo");
 }
 
 if (ChbAbdomenParaAIIR && ChbAbdomenParaAIIL) {
     descriptions.push("při vnitřních ilikách bilat.");
 } else {
     if (ChbAbdomenParaAIIR) descriptions.push("při vnitřní ilice vpravo");
-    if (ChbAbdomenParaAIIL) descriptions.push("při vnitřní ilice vpravo");
+    if (ChbAbdomenParaAIIL) descriptions.push("při vnitřní ilice vlevo");
 }
 
 if (ChbAbdomenInguinsR && ChbAbdomenInguinsL) {
