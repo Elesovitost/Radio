@@ -164,6 +164,13 @@ function changeText(buttonId, forward) {
         document.getElementById(buttonId).classList.remove('red-background');
     }
 
+	let button = document.getElementById(buttonId);
+    let tableId = button.closest('[id$="table"]').id;
+    if (tableId) {
+        let superiorButtonId = tableId.replace('table', '');
+        updateButtonColor(superiorButtonId, tableId);
+    }
+	updateTexts();
 }
 
 
@@ -190,12 +197,26 @@ function isTextInputFilled(tableId) {
     return false;
 }
 
+function isAnyButtonTextChanged(tableId) {
+    var buttonCheckboxes = document.querySelectorAll('#' + tableId + ' .buttonCheckbox');
+    for (var i = 0; i < buttonCheckboxes.length; i++) {
+        let btn = buttonCheckboxes[i];
+        // Check if the button's current text is different from its original text
+        if (buttonTexts[btn.id] && buttonTexts[btn.id][0] !== btn.innerText) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 function updateButtonColor(buttonId, tableId) {
     var button = document.getElementById(buttonId);
-    if (isAnyCheckboxChecked(tableId) || isTextInputFilled(tableId)) {
-        button.style.backgroundColor = '#D4A29C';
+    // Extend the condition to check for buttonCheckbox text changes
+    if (isAnyCheckboxChecked(tableId) || isTextInputFilled(tableId) || isAnyButtonTextChanged(tableId)) {
+        button.style.backgroundColor = '#D4A29C'; // Change color if conditions are met
     } else {
-        button.style.backgroundColor = '';
+        button.style.backgroundColor = ''; // Revert color if no conditions are met
     }
 }
 

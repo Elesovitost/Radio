@@ -2374,12 +2374,6 @@ if (descriptionsAdrenal.length) {
 // Kidneys
 var AbdomenKidneysText = "";
 
-var ChbKidneysHydrIR = document.getElementById("ChbKidneysHydrIR").checked;
-var ChbKidneysHydrIL = document.getElementById("ChbKidneysHydrIL").checked;
-var ChbKidneysHydrIIR = document.getElementById("ChbKidneysHydrIIR").checked;
-var ChbKidneysHydrIIL = document.getElementById("ChbKidneysHydrIIL").checked;
-var ChbKidneysHydrIIIR = document.getElementById("ChbKidneysHydrIIIR").checked;
-var ChbKidneysHydrIIIL = document.getElementById("ChbKidneysHydrIIIL").checked;
 var ChbKidneysLithR = document.getElementById("ChbKidneysLithR").checked;
 var ChbKidneysLithL = document.getElementById("ChbKidneysLithL").checked;
 var ChbKidneysCystR = document.getElementById("ChbKidneysCystR").checked;
@@ -2401,8 +2395,8 @@ var ChbKidneysEctomyL = document.getElementById("ChbKidneysEctomyL").checked;
 var AbdomenKidneysOther = document.getElementById("AbdomenKidneysOther").value.trim();
 
 updateButtonTexts({
-            'ChbKidneysHydroR': ['R', 'A', 'B', 'C'],
-            'ChbKidneysHydroL': ['L', 'X', 'Y', 'Z']
+            'ChbKidneysHydroR': ['R', 'I', 'II', 'III', 'IV'],
+            'ChbKidneysHydroL': ['L', 'I', 'II', 'III', 'IV']
         });
 
 var descriptionsKidneys = [];
@@ -2416,9 +2410,6 @@ function addBilateralDescription(rCheck, lCheck, bilateralDesc, rDesc, lDesc) {
     }
 }
 
-addBilateralDescription(ChbKidneysHydrIR, ChbKidneysHydrIL, "hydronefróza I.st. bilat.", "hydronefróza I.st. vpravo", "hydronefróza I.st. vlevo");
-addBilateralDescription(ChbKidneysHydrIIR, ChbKidneysHydrIIL, "hydronefróza II.st. bilat.", "hydronefróza II.st. vpravo", "hydronefróza II.st. vlevo");
-addBilateralDescription(ChbKidneysHydrIIIR, ChbKidneysHydrIIIL, "hydronefróza III.st. bilat.", "hydronefróza III.st. vpravo", "hydronefróza III.st. vlevo");
 addBilateralDescription(ChbKidneysLithR, ChbKidneysLithL, "kalikolitiáza bilat.", "kalikolitiáza vpravo", "kalikolitiáza vlevo");
 addBilateralDescription(ChbKidneysCystR, ChbKidneysCystL, "fotopenická cysta bilat.", "fotopenická cysta vpravo", "fotopenická cysta vlevo");
 addBilateralDescription(ChbKidneysCystsR, ChbKidneysCystsL, "fotopenické cysty bilat.", "fotopenické cysty vpravo", "fotopenické cysty vlevo");
@@ -2429,6 +2420,38 @@ addBilateralDescription(ChbKidneysStomyR, ChbKidneysStomyL, "nefrostomie bilat."
 addBilateralDescription(ChbKidneysParcResectionR, ChbKidneysParcResectionL, "obě po parc. resekci", "pravá po parc. resekci", "levá po parc. resekci");
 addBilateralDescription(ChbKidneysEctomyR, ChbKidneysEctomyL, "obě chybí po totální nefrektomii", "pravá chybí po totální nefrektomii", "levá chybí po totální nefrektomii");
 if (AbdomenKidneysOther) descriptionsKidneys.push(AbdomenKidneysOther);
+
+
+function addHydroDescription(buttonIdR, buttonIdL, sideTextR, sideTextL) {
+	var buttonTextR = document.getElementById(buttonIdR).innerText;
+	var buttonTextL = document.getElementById(buttonIdL).innerText;
+
+	if (buttonTextR === buttonTextL && ['I', 'II', 'III', 'IV'].includes(buttonTextR)) {
+		descriptionsKidneys.push(`oboustranně hydronefróza ${buttonTextR}.st`);
+		return; 
+	}
+
+	var sides = [{ id: buttonIdR, text: sideTextR }, { id: buttonIdL, text: sideTextL }];
+	sides.forEach(side => {
+		switch (document.getElementById(side.id).innerText) {
+			case 'I':
+				descriptionsKidneys.push(`${side.text} hydronefróza I.st`);
+				break;
+			case 'II':
+				descriptionsKidneys.push(`${side.text} hydronefróza II.st`);
+				break;
+			case 'III':
+				descriptionsKidneys.push(`${side.text} hydronefróza III.st`);
+				break;
+			case 'IV':
+				descriptionsKidneys.push(`${side.text} hydronefróza IV.st`);
+				break;
+		}
+	});
+}
+
+addHydroDescription('ChbKidneysHydroR', 'ChbKidneysHydroL', 'vpravo', 'vlevo');
+
 
 if (descriptionsKidneys.length) {
   AbdomenKidneysText = "Ledviny: " + descriptionsKidneys.join(", ") + ". ";
