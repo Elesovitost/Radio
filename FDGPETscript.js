@@ -125,6 +125,49 @@ InputTextAreas.forEach(function(InputTextArea) {
 });
 
 
+//Customcheckboxes
+
+let buttonTexts = {}; // Initialize empty object
+
+        function updateButtonTexts(newTexts) {
+            buttonTexts = {...buttonTexts, ...newTexts};
+        }
+
+document.querySelectorAll('.buttonCheckbox').forEach(button => {
+	button.addEventListener('contextmenu', function(e) {
+		e.preventDefault(); // Prevent the context menu from showing
+		changeText(this.id, true); // Change text forward on right click
+	});
+
+	button.addEventListener('click', function(e) {
+		e.preventDefault(); // Prevent any default action
+		changeText(this.id, false); // Change text backward on left click
+	});
+});
+
+
+function changeText(buttonId, forward) {
+    const texts = buttonTexts[buttonId];
+    let currentText = document.getElementById(buttonId).innerText;
+    let currentIndex = texts.indexOf(currentText);
+
+    if (forward) {
+        currentIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : currentIndex;
+    } else {
+        currentIndex = currentIndex + 1 < texts.length ? currentIndex + 1 : currentIndex;
+    }
+
+    document.getElementById(buttonId).innerText = texts[currentIndex];
+    if (currentIndex !== 0) {
+        document.getElementById(buttonId).classList.add('red-background');
+    } else {
+        document.getElementById(buttonId).classList.remove('red-background');
+    }
+
+}
+
+
+
 // button tables overlay change color when something is entered or checked
 
 function isAnyCheckboxChecked(tableId) {
@@ -188,6 +231,7 @@ document.addEventListener('contextmenu', function(event) {
 		updateTexts();
     }
 });
+
 
 
 // srovnani SUV hidden  --- doplnovat --- 
@@ -1097,11 +1141,19 @@ if (Chb1) {
 
 allChbes.forEach(function(Chb) {
     Chb.parentElement.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // Prevent the default context menu
         Chb.checked = !Chb.checked;
-        updateTexts(); 
+        updateTexts();
+        // Trigger color update
+        var table = Chb.closest('[id$="table"]');
+        if (table) {
+            var tableId = table.id;
+            var buttonId = tableId.replace('table', '');
+            updateButtonColor(buttonId, tableId);
+        }
     });
 });
+
 
 // buttons clickable by right mouse
 

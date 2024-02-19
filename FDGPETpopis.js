@@ -2400,6 +2400,11 @@ var ChbKidneysEctomyR = document.getElementById("ChbKidneysEctomyR").checked;
 var ChbKidneysEctomyL = document.getElementById("ChbKidneysEctomyL").checked;
 var AbdomenKidneysOther = document.getElementById("AbdomenKidneysOther").value.trim();
 
+updateButtonTexts({
+            'ChbKidneysHydroR': ['R', 'A', 'B', 'C'],
+            'ChbKidneysHydroL': ['L', 'X', 'Y', 'Z']
+        });
+
 var descriptionsKidneys = [];
 
 function addBilateralDescription(rCheck, lCheck, bilateralDesc, rDesc, lDesc) {
