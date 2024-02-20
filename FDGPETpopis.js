@@ -2376,10 +2376,6 @@ var AbdomenKidneysText = "";
 
 var ChbKidneysLithR = document.getElementById("ChbKidneysLithR").checked;
 var ChbKidneysLithL = document.getElementById("ChbKidneysLithL").checked;
-var ChbKidneysCystR = document.getElementById("ChbKidneysCystR").checked;
-var ChbKidneysCystL = document.getElementById("ChbKidneysCystL").checked;
-var ChbKidneysCystsR = document.getElementById("ChbKidneysCystsR").checked;
-var ChbKidneysCystsL = document.getElementById("ChbKidneysCystsL").checked;
 var ChbKidneysAMLR = document.getElementById("ChbKidneysAMLR").checked;
 var ChbKidneysAMLL = document.getElementById("ChbKidneysAMLL").checked;
 var ChbKidneysScarR = document.getElementById("ChbKidneysScarR").checked;
@@ -2396,7 +2392,9 @@ var AbdomenKidneysOther = document.getElementById("AbdomenKidneysOther").value.t
 
 updateButtonTexts({
             'ChbKidneysHydroR': ['R', 'I', 'II', 'III', 'IV'],
-            'ChbKidneysHydroL': ['L', 'I', 'II', 'III', 'IV']
+            'ChbKidneysHydroL': ['L', 'I', 'II', 'III', 'IV'],
+			'ChbKidneysCystsR': ['R', '+', '++'],
+			'ChbKidneysCystsL': ['L', '+', '++']
         });
 
 var descriptionsKidneys = [];
@@ -2411,8 +2409,6 @@ function addBilateralDescription(rCheck, lCheck, bilateralDesc, rDesc, lDesc) {
 }
 
 addBilateralDescription(ChbKidneysLithR, ChbKidneysLithL, "kalikolitiáza bilat.", "kalikolitiáza vpravo", "kalikolitiáza vlevo");
-addBilateralDescription(ChbKidneysCystR, ChbKidneysCystL, "fotopenická cysta bilat.", "fotopenická cysta vpravo", "fotopenická cysta vlevo");
-addBilateralDescription(ChbKidneysCystsR, ChbKidneysCystsL, "fotopenické cysty bilat.", "fotopenické cysty vpravo", "fotopenické cysty vlevo");
 addBilateralDescription(ChbKidneysAMLR, ChbKidneysAMLL, "bilat. ložiska s tuk. denzitami bez zvýšené akumulace RF obrazu AML", "vpravo ložisko s tuk. denzitami bez zvýšené akumulace RF obrazu AML", "vlevo ložisko s tuk. denzitami bez zvýšené akumulace RF obrazu AML");
 addBilateralDescription(ChbKidneysScarR, ChbKidneysScarL, "jizevnaté změny parenchymu bilat.", "jizevnaté změny parenchymu vpravo", "jizevnaté změny parenchymu vlevo");
 addBilateralDescription(ChbKidneysStentR, ChbKidneysStentL, "double pig-tail katetr pánvička - ureter bilat.", "double pig-tail katetr pánvička - ureter vpravo", "double pig-tail katetr pánvička - ureter vlevo");
@@ -2449,8 +2445,35 @@ function addHydroDescription(buttonIdR, buttonIdL, sideTextR, sideTextL) {
 		}
 	});
 }
-
 addHydroDescription('ChbKidneysHydroR', 'ChbKidneysHydroL', 'vpravo', 'vlevo');
+
+function updateCystDescriptions() {
+    var buttonCystsRText = document.getElementById("ChbKidneysCystsR").innerText;
+    var buttonCystsLText = document.getElementById("ChbKidneysCystsL").innerText;
+
+    if (buttonCystsRText === "+" && buttonCystsLText === "+") {
+        descriptionsKidneys.push("fotopenické cysty bilat.");
+    } else {
+        if (buttonCystsRText === "+") {
+            descriptionsKidneys.push("fotopenická cysta vpravo");
+        }
+        if (buttonCystsLText === "+") {
+            descriptionsKidneys.push("fotopenická cysta vlevo");
+        }
+    }
+
+    if (buttonCystsRText === "++" && buttonCystsLText === "++") {
+        descriptionsKidneys.push("vícečetné fotopenické cysty bilat.");
+    } else {
+        if (buttonCystsRText === "++") {
+            descriptionsKidneys.push("vícečetné fotopenické cysty vpravo");
+        }
+        if (buttonCystsLText === "++") {
+            descriptionsKidneys.push("vícečetné fotopenické cysty vlevo");
+        }
+    }
+}
+updateCystDescriptions();
 
 
 if (descriptionsKidneys.length) {

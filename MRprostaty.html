@@ -291,4 +291,11 @@ Ostatní meta <label class="CHB"><input type="checkbox" id="ChbProstateOtherMeta
 <script src="MRprostatyscript.js"></script>  
 <script src="MRprostatypopis.js"></script>
 
+<script>
+//PSMA checked
+document.getElementById('ChbProstatePSMA').checked = true;
+var event = new Event('change');
+document.getElementById('ChbProstatePSMA').dispatchEvent(event);
+</script>
+
 </body>

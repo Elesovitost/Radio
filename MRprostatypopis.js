@@ -1,8 +1,5 @@
-//PSMA checked
-document.getElementById('ChbProstatePSMA').checked = true;
 
 function updateTexts() {
-
 
 // LESION1
 
@@ -1107,14 +1104,16 @@ if (ProstateLesion1R === "" && ProstateLesion2R === "" && ProstateLesion3R === "
 
 if (totalNodesReg === 0) {
     ProstateNstageR = "N0";
+} else if (totalNodesReg > 1) {
+    ProstateNstageR = "N2";
 } else if (totalNodesReg > 0) {
     ProstateNstageR = "N1";
 }
 
+
 if (totalNodesNonReg > 0) {
     ProstateMstageR = "M1a ";
 }
-
 
 if (document.getElementById('ChbProstateSkeletonMeta').checked) {
 	ProstateMstageR += "M1b ";
@@ -1122,7 +1121,7 @@ if (document.getElementById('ChbProstateSkeletonMeta').checked) {
 if (document.getElementById('ChbProstateOtherMeta').checked) {
 	ProstateMstageR += "M1c ";
 } 
-if (!document.getElementById('ChbProstateSkeletonMeta').checked && !document.getElementById('ChbProstateOtherMeta').checked && totalNodesReg === 0) {
+if (!document.getElementById('ChbProstateSkeletonMeta').checked && !document.getElementById('ChbProstateOtherMeta').checked && totalNodesNonReg === 0) {
 	ProstateMstageR = "M0";
 }
 
@@ -1157,17 +1156,17 @@ if (totalNodesReg === 0) {
 
 
 if (totalNodesNonReg > 0) {
-    ProstatemiMstageR = "miM1a ";
+    ProstatemiMstageR += "miM1a ";
 }
 
 if (document.getElementById('ChbProstateSkeletonMeta').checked) {
-	ProstatemiMstageR += "M1b ";
+	ProstatemiMstageR += "miM1b ";
 } 	
 if (document.getElementById('ChbProstateOtherMeta').checked) {
-	ProstatemiMstageR += "M1c ";
+	ProstatemiMstageR += "miM1c ";
 } 
-if (!document.getElementById('ChbProstateSkeletonMeta').checked && !document.getElementById('ChbProstateOtherMeta').checked && totalNodesReg === 0) {
-	ProstatemiMstageR = "M0";
+if (!document.getElementById('ChbProstateSkeletonMeta').checked && !document.getElementById('ChbProstateOtherMeta').checked && totalNodesNonReg === 0) {
+	ProstatemiMstageR = "miM0";
 }
 
 
