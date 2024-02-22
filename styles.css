@@ -351,16 +351,21 @@ input {  border: 1px solid #000000; text-align: left; padding-left: 5px; border-
 
 /* images */
 
+#krknodImage {
+  transform: scale(1.2);
+  transform-origin: left top; /* Ensure scaling expands right and downwards from the top-left corner */
+}
+
 #krknodImage, #mednodImage, #chestsegImage {
   position: fixed;
   top: 0px;
-  right: 20px;
+  left: 1010px;
   z-index: 9999;
   display: none;
   height: 377px;
   width: auto;
 }
-#krknodImage { transform: scale(1.2); }
+
 
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 .blinking { animation: blink 0.2s linear 1; /* Blink for 0.5 seconds, 2 times */ }

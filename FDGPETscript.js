@@ -1365,131 +1365,112 @@ copyRES.addEventListener('click', function() {
 
 
 
-// IMAGE KRK NODES
-let krknodImage = document.getElementById('krknodImage'); 
-let krknodImageIndex = 1; 
+// IMAGES
 
-krknodImage.src = `./pickrknod/krknod-${String(krknodImageIndex).padStart(2, '0')}.jpg`; 
 
-document.getElementById('NeckLymphNode1Location').addEventListener('focus', function() {
-  showImageKrknod();
-});
-
-document.addEventListener('click', function(e) {
-  const NeckLymphNode1LocationElement = document.getElementById('NeckLymphNode1Location');
-  const NeckLymphNode1selectLocationElement = document.getElementById('NeckLymphNode1selectLocation');
-  if (!NeckLymphNode1LocationElement.contains(e.target) && !NeckLymphNode1selectLocationElement.contains(e.target) && !krknodImage.contains(e.target)) {
-    hideImageKrknod();
+// Define a general structure for managing images
+const imageConfigs = [
+  {
+    imageElementId: 'krknodImage',
+    imageIndex: 1,
+    imagePath: './pickrknod/krknod-',
+    maxIndex: 34,
+    focusElementId: 'NeckLymphNode1Location',
+    selectElementId: 'NeckLymphNode1selectLocation',
+    fileExtension: '.jpg'
+  },
+  {
+    imageElementId: 'mednodImage',
+    imageIndex: 1,
+    imagePath: './picmednod/mednod-',
+    maxIndex: 28,
+    focusElementId: 'ThoraxLymphNode1Location',
+    selectElementId: 'ThoraxLymphNode1selectLocation',
+    fileExtension: '.jpg'
+  },
+  {
+    imageElementId: 'chestsegImage',
+    imageIndex: 2,
+    imagePath: './picchestseg/chestseg-',
+    maxIndex: 28,
+    focusElementsIds: ['ThoraxLesion1Location', 'ThoraxLesion2Location', 'ThoraxLesion3Location'],
+    selectElementsIds: ['ThoraxLesion1selectLocation', 'ThoraxLesion2selectLocation', 'ThoraxLesion3selectLocation'],
+    fileExtension: '.png'
   }
-});
+];
 
-function showImageKrknod() {
-  krknodImage.style.display = 'block';
-}
+// Initialize each image configuration
+imageConfigs.forEach(config => {
+  const imageElement = document.getElementById(config.imageElementId);
+  let isMouseDown = false; // Track if the mouse button is held down
+  let startY = 0; // Starting Y position when the mouse button is pressed
 
-function hideImageKrknod() {
-  krknodImage.style.display = 'none';
-}
+  const updateImageSrc = () => {
+    imageElement.src = `${config.imagePath}${String(config.imageIndex).padStart(2, '0')}${config.fileExtension}`;
+  };
 
-krknodImage.addEventListener('wheel', scrollImagesKrknod);
+  const onMouseDown = (event) => {
+    if (event.button === 2) {
+      event.preventDefault();
+    }
+    isMouseDown = true;
+    startY = event.clientY;
+    document.addEventListener('mousemove', onMouseMove);
+    event.preventDefault();
+  };
 
-function scrollImagesKrknod(event) {
-  if (event.deltaY > 0) {
-    if (krknodImageIndex < 34) krknodImageIndex++;
-  } else {
-    if (krknodImageIndex > 1) krknodImageIndex--;
-  }
+  const onMouseMove = (event) => {
+    if (!isMouseDown) return;
 
-  krknodImage.src = `./pickrknod/krknod-${String(krknodImageIndex).padStart(2, '0')}.jpg`;
+    const diffY = event.clientY - startY;
+    if (Math.abs(diffY) > 5) { // Add a threshold to reduce sensitivity
+      if (diffY > 0) {
+        // Moved down
+        if (config.imageIndex > 1) config.imageIndex--;
+      } else {
+        // Moved up
+        if (config.imageIndex < config.maxIndex) config.imageIndex++;
+      }
+      updateImageSrc();
+      startY = event.clientY; // Reset start position
+    }
+  };
 
-  event.preventDefault();
-}
+  // Function to handle mouse up events
+  const onMouseUp = () => {
+    isMouseDown = false;
+    document.removeEventListener('mousemove', onMouseMove);
+  };
 
+  // Prevent context menu on the image
+  imageElement.addEventListener('contextmenu', event => event.preventDefault());
 
-// IMAGE MED NODES
-let mednodImage = document.getElementById('mednodImage'); 
-let mednodImageIndex = 1; 
+  // Attach the event listeners to the image element
+  imageElement.addEventListener('mousedown', onMouseDown);
+  document.addEventListener('mouseup', onMouseUp);
 
-mednodImage.src = `./picmednod/mednod-${String(mednodImageIndex).padStart(2, '0')}.jpg`; 
+  const focusElementIds = config.focusElementsIds || [config.focusElementId];
+  focusElementIds.forEach(id => {
+    document.getElementById(id).addEventListener('focus', () => {
+      imageElement.style.display = 'block';
+    });
+  });
 
-document.getElementById('ThoraxLymphNode1Location').addEventListener('focus', function() {
-  showImageMednod();
-});
+  const selectElementIds = config.selectElementsIds || [config.selectElementId];
+  document.addEventListener('click', function(e) {
+    if (selectElementIds.concat(focusElementIds).every(id => !document.getElementById(id).contains(e.target)) && !imageElement.contains(e.target)) {
+      imageElement.style.display = 'none';
+    }
+  });
 
-document.addEventListener('click', function(e) {
-  const ThoraxLymphNode1LocationElement = document.getElementById('ThoraxLymphNode1Location');
-  const ThoraxLymphNode1selectLocationElement = document.getElementById('ThoraxLymphNode1selectLocation');
-  if (!ThoraxLymphNode1LocationElement.contains(e.target) && !ThoraxLymphNode1selectLocationElement.contains(e.target) && !mednodImage.contains(e.target)) {
-    hideImageMednod();
-  }
-});
-
-function showImageMednod() {
-  mednodImage.style.display = 'block';
-}
-
-function hideImageMednod() {
-  mednodImage.style.display = 'none';
-}
-
-mednodImage.addEventListener('wheel', scrollImagesMednod);
-
-function scrollImagesMednod(event) {
-  if (event.deltaY > 0) {
-    if (mednodImageIndex < 28) mednodImageIndex++;
-  } else {
-    if (mednodImageIndex > 1) mednodImageIndex--;
-  }
-  // Update the src attribute within the event handler to match the new naming format and file extension
-  mednodImage.src = `./picmednod/mednod-${String(mednodImageIndex).padStart(2, '0')}.jpg`;
-
-  event.preventDefault();
-}
-
-
-// IMAGE CHEST SEG
-let chestsegImage = document.getElementById('chestsegImage'); 
-let chestsegImageIndex = 2; 
-
-chestsegImage.src = `./picchestseg/chestseg-${String(chestsegImageIndex).padStart(2, '0')}.png`;
-
-['ThoraxLesion1Location', 'ThoraxLesion2Location', 'ThoraxLesion3Location'].forEach(id => {
-  document.getElementById(id).addEventListener('focus', function() {
-    showImageChestseg();
+  imageElement.addEventListener('wheel', (event) => {
+    if (event.deltaY > 0) {
+      if (config.imageIndex < config.maxIndex) config.imageIndex++;
+    } else {
+      if (config.imageIndex > 1) config.imageIndex--;
+    }
+    updateImageSrc();
+    event.preventDefault();
   });
 });
-
-document.addEventListener('click', function(e) {
-  const thoraxLesionElements = [
-    document.getElementById('ThoraxLesion1Location'), document.getElementById('ThoraxLesion2Location'), document.getElementById('ThoraxLesion3Location'),
-    document.getElementById('ThoraxLesion1selectLocation'), document.getElementById('ThoraxLesion2selectLocation'), document.getElementById('ThoraxLesion3selectLocation'),
-  ];
-
-  if (thoraxLesionElements.every(el => !el.contains(e.target)) && !chestsegImage.contains(e.target)) {
-    hideImageChestseg();
-  }
-});
-
-function showImageChestseg() {
-  chestsegImage.style.display = 'block';
-}
-
-function hideImageChestseg() {
-  chestsegImage.style.display = 'none';
-}
-
-chestsegImage.addEventListener('wheel', scrollImagesChestseg);
-
-function scrollImagesChestseg(event) {
-  if (event.deltaY > 0) {
-    if (chestsegImageIndex < 28) chestsegImageIndex++;
-  } else {
-    if (chestsegImageIndex > 2) chestsegImageIndex--;
-  }
-
-  chestsegImage.src = `./picchestseg/chestseg-${String(chestsegImageIndex).padStart(2, '0')}.png`;
-
-  event.preventDefault();
-}
-
 
