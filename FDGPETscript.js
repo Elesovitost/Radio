@@ -295,13 +295,52 @@ function toggleElements() {
 
 // NECK 
 
+// new LESIONS
+
+document.getElementById('NeckNewLesions').addEventListener('click', function() {
+  var lesionIds = ['NeckLesion1', 'NeckLesion2', 'NeckLesion3'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (element.classList.contains('hidden')) {
+      element.classList.remove('hidden');
+      break; 
+    }
+  }
+  updateNeckButtonColor();
+});
+
+document.getElementById('NeckNewLesions').addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+  var lesionIds = ['NeckLesion3', 'NeckLesion2', 'NeckLesion1'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (!element.classList.contains('hidden')) {
+      element.classList.add('hidden');
+      break; 
+    }
+  }
+  updateNeckButtonColor();
+});
+
+function updateNeckButtonColor() {
+    var Necklesions = ['NeckLesion1', 'NeckLesion2', 'NeckLesion3'];
+    var Neckbutton = document.getElementById('NeckNewLesions');
+    var isHidden = Necklesions.every(function(id) {
+        return document.getElementById(id).classList.contains('hidden');
+    });
+
+    if (isHidden) {
+        Neckbutton.classList.remove('toggleColorRed');
+    } else {
+        Neckbutton.classList.add('toggleColorRed');
+    }
+}
+
+
 //  lesions
 
-document.getElementById('NeckNewLesion1').addEventListener('click', function() {
-  var element = document.getElementById('NeckLesion1');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
 
 document.getElementById('NeckLesion1no').addEventListener('click', function() {
   var element = document.getElementById('NeckLesion1');
@@ -335,11 +374,6 @@ document.addEventListener('click', function(e) {
 
 
 
-document.getElementById('NeckNewLesion2').addEventListener('click', function() {
-  var element = document.getElementById('NeckLesion2');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
 
 document.getElementById('NeckLesion2no').addEventListener('click', function() {
   var element = document.getElementById('NeckLesion2');
@@ -372,11 +406,6 @@ document.addEventListener('click', function(e) {
 });
 
 
-document.getElementById('NeckNewLesion3').addEventListener('click', function() {
-  var element = document.getElementById('NeckLesion3');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
 
 document.getElementById('NeckLesion3no').addEventListener('click', function() {
   var element = document.getElementById('NeckLesion3');
@@ -467,13 +496,50 @@ document.getElementById('NeckOther1no').addEventListener('click', function() {
 
 // THORAX
 
-// lesion show
+// new LESIONS
 
-document.getElementById('ThoraxNewLesion1').addEventListener('click', function() {
-  var element = document.getElementById('ThoraxLesion1');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
+document.getElementById('ThoraxNewLesions').addEventListener('click', function() {
+  var lesionIds = ['ThoraxLesion1', 'ThoraxLesion2', 'ThoraxLesion3'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (element.classList.contains('hidden')) {
+      element.classList.remove('hidden');
+      break; 
+    }
+  }
+  updateThoraxButtonColor();
 });
+
+document.getElementById('ThoraxNewLesions').addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+  var lesionIds = ['ThoraxLesion3', 'ThoraxLesion2', 'ThoraxLesion1'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (!element.classList.contains('hidden')) {
+      element.classList.add('hidden');
+      break; 
+    }
+  }
+  updateThoraxButtonColor();
+});
+
+function updateThoraxButtonColor() {
+    var Thoraxlesions = ['ThoraxLesion1', 'ThoraxLesion2', 'ThoraxLesion3'];
+    var Thoraxbutton = document.getElementById('ThoraxNewLesions');
+    var isHidden = Thoraxlesions.every(function(id) {
+        return document.getElementById(id).classList.contains('hidden');
+    });
+
+    if (isHidden) {
+        Thoraxbutton.classList.remove('toggleColorRed');
+    } else {
+        Thoraxbutton.classList.add('toggleColorRed');
+    }
+}
+
+// lesion show
 
 document.getElementById('ThoraxLesion1no').addEventListener('click', function() {
   var element = document.getElementById('ThoraxLesion1');
@@ -506,12 +572,6 @@ document.addEventListener('click', function(e) {
 });
 
 
-document.getElementById('ThoraxNewLesion2').addEventListener('click', function() {
-  var element = document.getElementById('ThoraxLesion2');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
-
 document.getElementById('ThoraxLesion2no').addEventListener('click', function() {
   var element = document.getElementById('ThoraxLesion2');
   element.classList.add('hidden');
@@ -542,12 +602,6 @@ document.addEventListener('click', function(e) {
   }
 });
 
-
-document.getElementById('ThoraxNewLesion3').addEventListener('click', function() {
-  var element = document.getElementById('ThoraxLesion3');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
 
 document.getElementById('ThoraxLesion3no').addEventListener('click', function() {
   var element = document.getElementById('ThoraxLesion3');
@@ -637,13 +691,50 @@ document.getElementById('ThoraxOther1no').addEventListener('click', function() {
 
 // ABDOMEN
 
-// new lesion1
+// new LESIONS
 
-document.getElementById('AbdomenNewLesion1').addEventListener('click', function() {
-  var element = document.getElementById('AbdomenLesion1');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
+document.getElementById('AbdomenNewLesions').addEventListener('click', function() {
+  var lesionIds = ['AbdomenLesion1', 'AbdomenLesion2', 'AbdomenLesion3'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (element.classList.contains('hidden')) {
+      element.classList.remove('hidden');
+      break; 
+    }
+  }
+  updateAbdomenButtonColor();
 });
+
+document.getElementById('AbdomenNewLesions').addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+  var lesionIds = ['AbdomenLesion3', 'AbdomenLesion2', 'AbdomenLesion1'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (!element.classList.contains('hidden')) {
+      element.classList.add('hidden');
+      break; 
+    }
+  }
+  updateAbdomenButtonColor();
+});
+
+function updateAbdomenButtonColor() {
+    var Abdomenlesions = ['AbdomenLesion1', 'AbdomenLesion2', 'AbdomenLesion3'];
+    var Abdomenbutton = document.getElementById('AbdomenNewLesions');
+    var isHidden = Abdomenlesions.every(function(id) {
+        return document.getElementById(id).classList.contains('hidden');
+    });
+
+    if (isHidden) {
+        Abdomenbutton.classList.remove('toggleColorRed');
+    } else {
+        Abdomenbutton.classList.add('toggleColorRed');
+    }
+}
+
+// new lesion1
 
 document.getElementById('AbdomenLesion1no').addEventListener('click', function() {
   var element = document.getElementById('AbdomenLesion1');
@@ -685,12 +776,6 @@ document.addEventListener('click', function(e) {
 
 
 
-document.getElementById('AbdomenNewLesion2').addEventListener('click', function() {
-  var element = document.getElementById('AbdomenLesion2');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
-
 document.getElementById('AbdomenLesion2no').addEventListener('click', function() {
   var element = document.getElementById('AbdomenLesion2');
   element.classList.add('hidden');
@@ -730,12 +815,6 @@ document.addEventListener('click', function(e) {
 });
 
 
-
-document.getElementById('AbdomenNewLesion3').addEventListener('click', function() {
-  var element = document.getElementById('AbdomenLesion3');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
 
 document.getElementById('AbdomenLesion3no').addEventListener('click', function() {
   var element = document.getElementById('AbdomenLesion3');
@@ -866,13 +945,50 @@ document.getElementById('AbdomenOther1no').addEventListener('click', function() 
 
 // SKELETON 
 
-//  lesions
+// new LESIONS
 
-document.getElementById('SkeletonNewLesion1').addEventListener('click', function() {
-  var element = document.getElementById('SkeletonLesion1');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
+document.getElementById('SkeletonNewLesions').addEventListener('click', function() {
+  var lesionIds = ['SkeletonLesion1', 'SkeletonLesion2', 'SkeletonLesion3'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (element.classList.contains('hidden')) {
+      element.classList.remove('hidden');
+      break; 
+    }
+  }
+  updateSkeletonButtonColor();
 });
+
+document.getElementById('SkeletonNewLesions').addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+  var lesionIds = ['SkeletonLesion3', 'SkeletonLesion2', 'SkeletonLesion1'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (!element.classList.contains('hidden')) {
+      element.classList.add('hidden');
+      break; 
+    }
+  }
+  updateSkeletonButtonColor();
+});
+
+function updateSkeletonButtonColor() {
+    var Skeletonlesions = ['SkeletonLesion1', 'SkeletonLesion2', 'SkeletonLesion3'];
+    var Skeletonbutton = document.getElementById('SkeletonNewLesions');
+    var isHidden = Skeletonlesions.every(function(id) {
+        return document.getElementById(id).classList.contains('hidden');
+    });
+
+    if (isHidden) {
+        Skeletonbutton.classList.remove('toggleColorRed');
+    } else {
+        Skeletonbutton.classList.add('toggleColorRed');
+    }
+}
+
+//  lesions
 
 document.getElementById('SkeletonLesion1no').addEventListener('click', function() {
   var element = document.getElementById('SkeletonLesion1');
@@ -905,12 +1021,6 @@ document.addEventListener('click', function(e) {
 });
 
 
-document.getElementById('SkeletonNewLesion2').addEventListener('click', function() {
-  var element = document.getElementById('SkeletonLesion2');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
-
 document.getElementById('SkeletonLesion2no').addEventListener('click', function() {
   var element = document.getElementById('SkeletonLesion2');
   element.classList.toggle('hidden');
@@ -941,12 +1051,6 @@ document.getElementById('SkeletonLesion2number').addEventListener('change', func
   }
 });
 
-
-document.getElementById('SkeletonNewLesion3').addEventListener('click', function() {
-  var element = document.getElementById('SkeletonLesion3');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
 
 document.getElementById('SkeletonLesion3no').addEventListener('click', function() {
   var element = document.getElementById('SkeletonLesion3');

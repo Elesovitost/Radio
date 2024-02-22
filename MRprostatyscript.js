@@ -30,6 +30,48 @@ function updateBackgroundColor(index, buttonElement, color1 = "transparent", col
   buttonElement.style.backgroundColor = index === 0 ? color1 : color2;
 }
 
+// new LESIONS
+
+document.getElementById('ProstateNewLesions').addEventListener('click', function() {
+  var lesionIds = ['ProstateLesion1', 'ProstateLesion2', 'ProstateLesion3'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (element.classList.contains('hidden')) {
+      element.classList.remove('hidden');
+      break; 
+    }
+  }
+  updateProstateButtonColor();
+});
+
+document.getElementById('ProstateNewLesions').addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+  var lesionIds = ['ProstateLesion3', 'ProstateLesion2', 'ProstateLesion1'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (!element.classList.contains('hidden')) {
+      element.classList.add('hidden');
+      break; 
+    }
+  }
+  updateProstateButtonColor();
+});
+
+function updateProstateButtonColor() {
+    var Prostatelesions = ['ProstateLesion1', 'ProstateLesion2', 'ProstateLesion3'];
+    var Prostatebutton = document.getElementById('ProstateNewLesions');
+    var isHidden = Prostatelesions.every(function(id) {
+        return document.getElementById(id).classList.contains('hidden');
+    });
+
+    if (isHidden) {
+        Prostatebutton.classList.remove('toggleColorRed');
+    } else {
+        Prostatebutton.classList.add('toggleColorRed');
+    }
+}
 
 // LESION1
 var textsProstateLesion1T2 = ["T2 score 1", "T2 score 2", "T2 score 3", "T2 score 4", "T2 score 5"];
@@ -93,12 +135,6 @@ clickableTextsLesion1.forEach(text => {
 });
 
 // Lesion1 hiding
-
-document.getElementById('ProstateNewLesion1').addEventListener('click', function() {
-  var element = document.getElementById('ProstateLesion1');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
 
 document.getElementById('ProstateLesion1No').addEventListener('click', function() {
   var element = document.getElementById('ProstateLesion1');
@@ -196,12 +232,6 @@ clickableTextsLesion2.forEach(text => {
 
 // Lesion2 hiding
 
-document.getElementById('ProstateNewLesion2').addEventListener('click', function() {
-  var element = document.getElementById('ProstateLesion2');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
-
 document.getElementById('ProstateLesion2No').addEventListener('click', function() {
   var element = document.getElementById('ProstateLesion2');
   element.classList.add('hidden');
@@ -295,12 +325,6 @@ clickableTextsLesion3.forEach(text => {
 });
 
 // Lesions3 hiding
-
-document.getElementById('ProstateNewLesion3').addEventListener('click', function() {
-  var element = document.getElementById('ProstateLesion3');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
 
 document.getElementById('ProstateLesion3No').addEventListener('click', function() {
   var element = document.getElementById('ProstateLesion3');
