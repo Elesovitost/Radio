@@ -295,7 +295,9 @@ function toggleElements() {
 
 // NECK 
 
+
 // new LESIONS
+
 
 document.getElementById('NeckNewLesions').addEventListener('click', function() {
   var lesionIds = ['NeckLesion1', 'NeckLesion2', 'NeckLesion3'];
@@ -324,6 +326,8 @@ document.getElementById('NeckNewLesions').addEventListener('contextmenu', functi
   updateNeckButtonColor();
 });
 
+
+
 function updateNeckButtonColor() {
     var Necklesions = ['NeckLesion1', 'NeckLesion2', 'NeckLesion3'];
     var Neckbutton = document.getElementById('NeckNewLesions');
@@ -338,14 +342,14 @@ function updateNeckButtonColor() {
     }
 }
 
-
 //  lesions
 
 
 document.getElementById('NeckLesion1no').addEventListener('click', function() {
   var element = document.getElementById('NeckLesion1');
-  element.classList.add('hidden');
+  element.classList.add('hidden'); 
   updateTexts();
+  updateNeckButtonColor();
 });
 
 document.getElementById('NeckLesion1number').addEventListener('change', function() {
@@ -379,6 +383,7 @@ document.getElementById('NeckLesion2no').addEventListener('click', function() {
   var element = document.getElementById('NeckLesion2');
   element.classList.add('hidden');
   updateTexts();
+  updateNeckButtonColor();
 });
 
 document.getElementById('NeckLesion2number').addEventListener('change', function() {
@@ -411,6 +416,7 @@ document.getElementById('NeckLesion3no').addEventListener('click', function() {
   var element = document.getElementById('NeckLesion3');
   element.classList.add('hidden');
   updateTexts();
+  updateNeckButtonColor();
 });
 
 document.getElementById('NeckLesion3number').addEventListener('change', function() {
@@ -437,24 +443,28 @@ document.addEventListener('click', function(e) {
   }
 });
 
+
+
 // new lymph node 1
 
 document.getElementById('NeckNewLymphNode1').addEventListener('click', function() {
   var element = document.getElementById('NeckLymphNode1');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
+  element.classList.remove('hidden'); this.classList.add('toggleColorRed');
   updateTexts();
 });
 
 document.getElementById('NeckNewLymphNode1').addEventListener('contextmenu', function(event) {
   event.preventDefault(); 
   var element = document.getElementById('NeckLymphNode1');
-  element.classList.toggle('hidden');   this.classList.toggle('toggleColorRed');
+  element.classList.add('hidden');   this.classList.remove('toggleColorRed');
   updateTexts();
 });
 
 document.getElementById('NeckLymphNode1no').addEventListener('click', function() {
   var element = document.getElementById('NeckLymphNode1');
   element.classList.add('hidden');
+  var button = document.getElementById('NeckNewLymphNode1');
+  button.classList.remove('toggleColorRed');
   updateTexts();
 });
 
@@ -488,19 +498,30 @@ document.addEventListener('click', function(e) {
 });
 
 
-// new neck others 
+// new neck OTHERS 
+
 document.getElementById('NeckNewOther1').addEventListener('click', function() {
   var element = document.getElementById('NeckOther1');
-  element.classList.toggle('hidden');  this.classList.toggle('toggleColorRed');
+  element.classList.remove('hidden');  this.classList.add('toggleColorRed');
   updateTexts();
 });
 
 document.getElementById('NeckNewOther1').addEventListener('contextmenu', function(event) {
   event.preventDefault(); 
   var element = document.getElementById('NeckOther1');
-  element.classList.toggle('hidden');  this.classList.toggle('toggleColorRed');
+  element.classList.add('hidden');  this.classList.remove('toggleColorRed');
   updateTexts();
 });
+
+document.getElementById('NeckOther1no').addEventListener('click', function() {
+  var element = document.getElementById('NeckOther1');
+  element.classList.add('hidden');
+  var button = document.getElementById('NeckNewOther1');
+  button.classList.remove('toggleColorRed');
+  updateTexts();
+});
+
+
 
 // THORAX
 
@@ -533,6 +554,7 @@ document.getElementById('ThoraxNewLesions').addEventListener('contextmenu', func
   updateThoraxButtonColor();
 });
 
+
 function updateThoraxButtonColor() {
     var Thoraxlesions = ['ThoraxLesion1', 'ThoraxLesion2', 'ThoraxLesion3'];
     var Thoraxbutton = document.getElementById('ThoraxNewLesions');
@@ -553,6 +575,7 @@ document.getElementById('ThoraxLesion1no').addEventListener('click', function() 
   var element = document.getElementById('ThoraxLesion1');
   element.classList.add('hidden');
   updateTexts();
+  updateThoraxButtonColor();
 });
 
 document.getElementById('ThoraxLesion1number').addEventListener('change', function() {
@@ -584,6 +607,7 @@ document.getElementById('ThoraxLesion2no').addEventListener('click', function() 
   var element = document.getElementById('ThoraxLesion2');
   element.classList.add('hidden');
   updateTexts();
+  updateThoraxButtonColor();
 });
 
 document.getElementById('ThoraxLesion2number').addEventListener('change', function() {
@@ -615,6 +639,7 @@ document.getElementById('ThoraxLesion3no').addEventListener('click', function() 
   var element = document.getElementById('ThoraxLesion3');
   element.classList.add('hidden');
   updateTexts();
+  updateThoraxButtonColor();
 });
 
 document.getElementById('ThoraxLesion3number').addEventListener('change', function() {
@@ -645,14 +670,14 @@ document.addEventListener('click', function(e) {
 
 document.getElementById('ThoraxNewLymphNode1').addEventListener('click', function() {
   var element = document.getElementById('ThoraxLymphNode1');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
+  element.classList.remove('hidden'); this.classList.add('toggleColorRed');
   updateTexts();
 });
 
 document.getElementById('ThoraxNewLymphNode1').addEventListener('contextmenu', function(event) {
   event.preventDefault(); 
   var element = document.getElementById('ThoraxLymphNode1');
-  element.classList.toggle('hidden');   this.classList.toggle('toggleColorRed');
+  element.classList.add('hidden');   this.classList.remove('toggleColorRed');
   updateTexts();
 });
 
@@ -660,6 +685,8 @@ document.getElementById('ThoraxNewLymphNode1').addEventListener('contextmenu', f
 document.getElementById('ThoraxLymphNode1no').addEventListener('click', function() {
   var element = document.getElementById('ThoraxLymphNode1');
   element.classList.add('hidden');
+  var button = document.getElementById('ThoraxNewLymphNode1');
+  button.classList.remove('toggleColorRed');
   updateTexts();
 });
 
@@ -691,17 +718,26 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// new Thorax others 
+// new Thorax OTHERS 
+
 document.getElementById('ThoraxNewOther1').addEventListener('click', function() {
   var element = document.getElementById('ThoraxOther1');
-  element.classList.toggle('hidden');  this.classList.toggle('toggleColorRed');
+  element.classList.remove('hidden');  this.classList.add('toggleColorRed');
   updateTexts();
 });
 
 document.getElementById('ThoraxNewOther1').addEventListener('contextmenu', function(event) {
   event.preventDefault(); 
   var element = document.getElementById('ThoraxOther1');
-  element.classList.toggle('hidden');  this.classList.toggle('toggleColorRed');
+  element.classList.add('hidden');  this.classList.remove('toggleColorRed');
+  updateTexts();
+});
+
+document.getElementById('ThoraxOther1no').addEventListener('click', function() {
+  var element = document.getElementById('ThoraxOther1');
+  element.classList.add('hidden');
+  var button = document.getElementById('ThoraxNewOther1');
+  button.classList.remove('toggleColorRed');
   updateTexts();
 });
 
@@ -756,6 +792,7 @@ document.getElementById('AbdomenLesion1no').addEventListener('click', function()
   var element = document.getElementById('AbdomenLesion1');
   element.classList.add('hidden');
   updateTexts();
+  updateAbdomenButtonColor();
 });
 
 document.getElementById('AbdomenLesion1number').addEventListener('change', function() {
@@ -796,6 +833,7 @@ document.getElementById('AbdomenLesion2no').addEventListener('click', function()
   var element = document.getElementById('AbdomenLesion2');
   element.classList.add('hidden');
   updateTexts();
+  updateAbdomenButtonColor();
 });
 
 document.getElementById('AbdomenLesion2number').addEventListener('change', function() {
@@ -836,6 +874,7 @@ document.getElementById('AbdomenLesion3no').addEventListener('click', function()
   var element = document.getElementById('AbdomenLesion3');
   element.classList.add('hidden');
   updateTexts();
+  updateAbdomenButtonColor();
 });
 
 document.getElementById('AbdomenLesion3number').addEventListener('change', function() {
@@ -906,14 +945,14 @@ bindCheckboxListeners('Chb3AbdomenSelect', 'AbdomenLesion3selectLocation', organ
 
 document.getElementById('AbdomenNewLymphNode1').addEventListener('click', function() {
   var element = document.getElementById('AbdomenLymphNode1');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
+  element.classList.remove('hidden'); this.classList.add('toggleColorRed');
   updateTexts();
 });
 
 document.getElementById('AbdomenNewLymphNode1').addEventListener('contextmenu', function(event) {
   event.preventDefault(); 
   var element = document.getElementById('AbdomenLymphNode1');
-  element.classList.toggle('hidden');   this.classList.toggle('toggleColorRed');
+  element.classList.add('hidden');   this.classList.remove('toggleColorRed');
   updateTexts();
 });
 
@@ -921,6 +960,8 @@ document.getElementById('AbdomenNewLymphNode1').addEventListener('contextmenu', 
 document.getElementById('AbdomenLymphNode1no').addEventListener('click', function() {
   var element = document.getElementById('AbdomenLymphNode1');
   element.classList.add('hidden');
+  var button = document.getElementById('AbdomenNewLymphNode1');
+  button.classList.remove('toggleColorRed');
   updateTexts();
 });
 
@@ -956,20 +997,22 @@ document.addEventListener('click', function(e) {
 // new Abdomen OTHERS 
 document.getElementById('AbdomenNewOther1').addEventListener('click', function() {
   var element = document.getElementById('AbdomenOther1');
-  element.classList.toggle('hidden');  this.classList.toggle('toggleColorRed');
+  element.classList.remove('hidden');  this.classList.add('toggleColorRed');
   updateTexts();
 });
 
 document.getElementById('AbdomenNewOther1').addEventListener('contextmenu', function(event) {
   event.preventDefault(); 
   var element = document.getElementById('AbdomenOther1');
-  element.classList.toggle('hidden');  this.classList.toggle('toggleColorRed');
+  element.classList.add('hidden');  this.classList.remove('toggleColorRed');
   updateTexts();
 });
 
 document.getElementById('AbdomenOther1no').addEventListener('click', function() {
   var element = document.getElementById('AbdomenOther1');
   element.classList.add('hidden');
+  var button = document.getElementById('AbdomenNewOther1');
+  button.classList.remove('toggleColorRed');
   updateTexts();
 });
 
@@ -1025,6 +1068,7 @@ document.getElementById('SkeletonLesion1no').addEventListener('click', function(
   var element = document.getElementById('SkeletonLesion1');
   element.classList.toggle('hidden'); 
   updateTexts();
+  updateSkeletonButtonColor();
 });
 
 document.getElementById('SkeletonLesion1number').addEventListener('change', function() {
@@ -1056,6 +1100,7 @@ document.getElementById('SkeletonLesion2no').addEventListener('click', function(
   var element = document.getElementById('SkeletonLesion2');
   element.classList.toggle('hidden');
   updateTexts();
+  updateSkeletonButtonColor();
 });
 
 document.getElementById('SkeletonLesion2Location').addEventListener('focus', function() {
@@ -1087,6 +1132,7 @@ document.getElementById('SkeletonLesion3no').addEventListener('click', function(
   var element = document.getElementById('SkeletonLesion3');
   element.classList.toggle('hidden');
   updateTexts();
+  updateSkeletonButtonColor();
 });
 
 document.getElementById('SkeletonLesion3Location').addEventListener('focus', function() {
@@ -1113,24 +1159,31 @@ document.getElementById('SkeletonLesion3number').addEventListener('change', func
   }
 });
 
-// new Skeleton others 
+// new Skeleton OTHERS 
+
 document.getElementById('SkeletonNewOther1').addEventListener('click', function() {
   var element = document.getElementById('SkeletonOther1');
-  element.classList.toggle('hidden');  this.classList.toggle('toggleColorRed');
+  element.classList.remove('hidden');  this.classList.add('toggleColorRed');
   updateTexts();
 });
 
 document.getElementById('SkeletonNewOther1').addEventListener('contextmenu', function(event) {
   event.preventDefault(); 
   var element = document.getElementById('SkeletonOther1');
-  element.classList.toggle('hidden');  this.classList.toggle('toggleColorRed');
+  element.classList.add('hidden');  this.classList.remove('toggleColorRed');
+  updateTexts();
+});
+
+document.getElementById('SkeletonOther1no').addEventListener('click', function() {
+  var element = document.getElementById('SkeletonOther1');
+  element.classList.add('hidden');
+  var button = document.getElementById('SkeletonNewOther1');
+  button.classList.remove('toggleColorRed');
   updateTexts();
 });
 
 
 // Lesion aktivita   
-
-
   
 var aktivitaOptions = [
     { text: "není", value: "bez akumulace RF", valuez1: "bez PSMA exprese", valuez2: "ametabolické"},
@@ -1474,3 +1527,13 @@ imageConfigs.forEach(config => {
   });
 });
 
+// new lesions animation
+
+document.querySelectorAll('.myButtonLesion').forEach(button => {
+  button.addEventListener('click', function() {
+    button.classList.add('click-animation');
+    setTimeout(() => {
+      button.classList.remove('click-animation');
+    }, 300); // This duration should match your CSS animation duration
+  });
+});

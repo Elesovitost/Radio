@@ -9,6 +9,8 @@
 <img id="mednodImage" src="./picmednod/mednod-01.jpg" alt="mednod" style="display: none;">
 <img id="chestsegImage" src="./picchestseg/chestseg-02.png" alt="chestseg" style="display: none;">
 
+<!-- <div class="MainDIV"> -->
+
 <div id="FDGPET" class="standardwidth mydiv0" >
 <button id="PETTypeButton" class="buttonSELECT" onmousedown="cyclePETTypeText(event)">FDG</button> - PET / CT (MR)
 <label class="CHB hidden"> + variabilně: MR <input type="checkbox" id="ChbMRrekta" onChange="updateTexts()"><span>+</span></label>
@@ -48,7 +50,7 @@
 <div id="Neck" class="DIVLesions">
 <button class="title">HLAVA/KRK</button>
 LOŽISKA <button id="NeckNewLesions" class="myButtonLesion">+</button>
-UZLINY <button id="NeckNewLymphNode1" class="myButtonLN">+</button> 
+UZLINY <button id="NeckNewLymphNode1" class="myButtonLesion">+</button> 
 DALŠÍ <button id="NeckNewOther1" class="myButtonLesion">...</button>
 
 </div>
@@ -156,7 +158,7 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonLesion">...</button>
 
 <table id="NeckLymphNode1" class="LymphNodeX hidden" >
 	<tr>
-		<td><button id="NeckLymphNode1no" class="myButtonLNselect">LN</button></td>
+		<td><button id="NeckLymphNode1no" class="myButtonLesionS">LN</button></td>
 		<td><select id="NeckLymphNode1type" class="selectLESION" onchange="updateTexts()">
 			<option value="uzlina| uzliny"selected>uzlina</option>
 			<option value="paket| pakety">paket</option>
@@ -410,7 +412,7 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonLesion">...</button>
 <div id="Thorax" class="DIVLesions">
 <button class="title">HRUDNÍK</button>
 LOŽISKA <button id="ThoraxNewLesions" class="myButtonLesion">+</button>
-UZLINY <button id="ThoraxNewLymphNode1" class="myButtonLN">+</button> 
+UZLINY <button id="ThoraxNewLymphNode1" class="myButtonLesion">+</button> 
 DALŠÍ <button id="ThoraxNewOther1" class="myButtonLesion">...</button>
 </div>
 
@@ -551,7 +553,7 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonLesion">...</button>
 
 <table id="ThoraxLymphNode1" class="LymphNodeX hidden" >
 	<tr>
-		<td><button id="ThoraxLymphNode1no" class="myButtonLNselect">LN</button></td>
+		<td><button id="ThoraxLymphNode1no" class="myButtonLesionS">LN</button></td>
 		<td><select id="ThoraxLymphNode1type" class="selectLESION" onchange="updateTexts()">
 			<option value="uzlina| uzliny"selected>uzlina</option>
 			<option value="paket| pakety">paket</option>
@@ -975,7 +977,7 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonLesion">...</button>
 <div id="Abdomen" class="DIVLesions">
 <button class="title">BŘICHO</button>
 LOŽISKA <button id="AbdomenNewLesions" class="myButtonLesion">+</button>
-UZLINY <button id="AbdomenNewLymphNode1" class="myButtonLN">+</button> 
+UZLINY <button id="AbdomenNewLymphNode1" class="myButtonLesion">+</button> 
 DALŠÍ <button id="AbdomenNewOther1" class="myButtonLesion">...</button>
 </div>
 
@@ -1324,7 +1326,7 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonLesion">...</button>
 
 <table id="AbdomenLymphNode1" class="LymphNodeX hidden" >
 	<tr>
-		<td><button id="AbdomenLymphNode1no" class="myButtonLNselect">LN</button></td>
+		<td><button id="AbdomenLymphNode1no" class="myButtonLesionS">LN</button></td>
 		<td><select id="AbdomenLymphNode1type" class="selectLESION" onchange="updateTexts()">
 			<option value="uzlina| uzliny"selected>uzlina</option>
 			<option value="paket| pakety">paket</option>
@@ -2266,7 +2268,7 @@ DALŠÍ <button id="SkeletonNewOther1" class="myButtonLesion">...</button>
 
 </div>
 
-
+<!-- </div> -->
 
 <div id="texty1" class=" standardwidth mydiv0 hideonline">
 NÁZEV<textarea id="PETCTNAMEText" class="medium"></textarea>

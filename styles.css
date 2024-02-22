@@ -72,6 +72,7 @@ iframe, iframes {min-height: 10px; z-index: 2; background-color: #FFFFFF;}
 
 
 /* divs  */
+/* .MainDIV {max-width: 1000px; border: 1px solid #000000;} */
 .standardwidth {max-width: 1000px; border: 1px solid #000000; padding: 3px;}
 .standardwidthHALF {max-width: 496px; border: 1px solid #000000; padding: 3px; flex-grow: 1;}
 .standardwidthV {max-width: 1000px; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-left: 2px; padding-right: 2px; }
@@ -209,18 +210,18 @@ tr { height: 20px;}
 
 /* BUTTONS */
 
-button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-color: #FFFFFF; width: 20px;text-align: center; border-radius: 0px;}
+button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-color: #FFFFFF; width: 20px; text-align: center; justify-content: center; display: inline-flex; border-radius: 0px;}
 .title {width: 86px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12; }
 .titleBrain {width: 96px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
 .titleKnee {width: 126px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
 .titleShoulder {width: 126px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
 .titleFlex {width: auto; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
-.myButtonLesion {width: 30px; background-color: #D3DCE9;}
-.myButtonLesionS {width: 30px; background-color: #FFADAD;}
-.myButtonLN {width: 30px; background-color: #D3DCE9;}
-.myButtonLNselect {width: 30px; background-color: #FFADAD;}
+.myButtonLesion {width: 20px; background-color: #D3DCE9; text-align: center; justify-content: center;}
+.myButtonLesionS {width: 20px; background-color: #FFADAD;}
+.myButtonLN {width: 20px; background-color: #D3DCE9;}
+.myButtonLNselect {width: 20px; background-color: #FFADAD;}
 .toggleColorRed {background-color: #FFADAD;}
-.myButtonO {width: 30px; background-color: #D3DCE9;}
+.myButtonO {width: 20px; background-color: #FFADAD;}
 .button20 {width: 20px;}
 .buttonCheckbox {width: 18px; height: 18px; text-align: center; justify-content: center; display: inline-flex;   margin: 0px 0px 0px 3px; }
 .buttonCheckbox {background-color: white;}
@@ -451,3 +452,9 @@ body.TNM td:first-child, body.TNM td:nth-child(2), body.TNM .main-row {
     opacity: 1;
     visibility: visible;
 }
+
+/* Click animation effects */
+
+@keyframes clickEffect {0% {transform: scale(1);}   50% {transform: scale(0.9);}   100% {transform: scale(1);}}
+.myButtonLesion {cursor: pointer;transition: transform 0.3s ease;}
+.myButtonLesion.click-animation {animation: clickEffect 0.3s ease;}
