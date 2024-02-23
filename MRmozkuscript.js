@@ -516,9 +516,26 @@ function toggleElements() {
 
 //LesionV unhiding
 
-newLesionV.addEventListener("click", function() {
-    LesionVcontent.classList.toggle("hidden"); this.classList.toggle('toggleColorRed');
-    });
+document.getElementById('BrainNewOther1').addEventListener('click', function() {
+  var element = document.getElementById('BrainOther1');
+  element.classList.remove('hidden');  this.classList.add('toggleColorRed');
+  updateTexts();
+});
+
+document.getElementById('BrainNewOther1').addEventListener('contextmenu', function(event) {
+  event.preventDefault(); 
+  var element = document.getElementById('BrainOther1');
+  element.classList.add('hidden');  this.classList.remove('toggleColorRed');
+  updateTexts();
+});
+
+document.getElementById('BrainOther1no').addEventListener('click', function() {
+  var element = document.getElementById('BrainOther1');
+  element.classList.add('hidden');
+  var button = document.getElementById('BrainNewOther1');
+  button.classList.remove('toggleColorRed');
+  updateTexts();
+});
 
 
 
@@ -710,3 +727,13 @@ document.addEventListener('contextmenu', function(event) {
     }
 });
 
+// new lesions animation
+
+document.querySelectorAll('.myButtonLesion').forEach(button => {
+  button.addEventListener('click', function() {
+    button.classList.add('click-animation');
+    setTimeout(() => {
+      button.classList.remove('click-animation');
+    }, 300); // This duration should match your CSS animation duration
+  });
+});

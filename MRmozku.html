@@ -92,7 +92,7 @@
 	<td>&nbsp;&nbsp;&nbsp;GCA</td>
 	<td><button id="GCAButton" class="Button40" onmousedown="cycleGCAText(event)">0</button></td>
 	<td></td>
-    <td>&nbsp; lobární atrofie</td>
+    <td>&nbsp; Lobární atrofie</td>
     <td><select id="lobaratrophy" class="select120 rounded" onchange="updateTexts()">  
 		<option value=""selected>není</option>
 		<option value="frontálně">frontálně</option>
@@ -102,18 +102,27 @@
 		<option value="okcipitálně">okcipitálně</option>
   	</select></td>
     <td></td>
-	<td>&nbsp; šíře komor</td>
+	<td>&nbsp; Šíře komor</td>
 	<td><button id="ventriclesButton" class="Button40" onmousedown="cycleventriclesText(event)">0</button></td>
   </tr>
 </table>
 </div>
 
-<div id="Loziska"  class="standardwidth"><button class="titleBrain">LOŽISKA</button> 
-<td>&nbsp;&nbsp;&nbsp;</td> <button id="BrainNewLesions" class="myButtonLesion">+</button> <button id="newLesionV" class="Button20">V</button>
-<span style="display: block; height: 2px;"></span>
+<div id="Loziska"  class="standardwidth"><button class="titleBrain float">LÉZE</button> 
+<table>
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;Ložiska </td>
+		<td><button id="BrainNewLesions" class="myButtonLesion">+</button></td>
+		<td>&nbsp;&nbsp;&nbsp;Ostatní </td>
+		<td><button id="BrainNewOther1" class="myButtonLesion">...</button></td>
+	</tr>
+</table>
+<span style="display: block; height: 1px;"></span>
 
-
+<div>
 <!-- BRAIN LESION1 -->
+
+
 <table id="BrainLesion1" class="LesionX hidden">
 	<tr>
 		<td><button id="BrainLesion1no" class="myButtonLesionS">1</button></td>
@@ -238,11 +247,12 @@
 		</td>
 	</tr>
 </table>
+</div>
 
 <!-- BRAIN LESION V -->
-<table id="LesionVcontent" class="hidden" style="width: 100%;">
+<table id="BrainOther1" class="hidden" style="width: 100%;">
   <tr>
-    <td style="width: 1%; white-space: nowrap;"><button class="myButtonLesionS">V</button></td>
+    <td style="width: 1%; white-space: nowrap;"><button id="BrainOther1no" class="myButtonLesionS">V</button></td>
     <td><input id="LesionVP" type="text" placeholder="vlastní popis..." autocomplete="off" style="width: 100%;"></td>
     <td><input id="LesionVR" type="text" placeholder="vlastní závěr..." autocomplete="off" style="width: 100%;"></td>
   </tr>
@@ -274,7 +284,7 @@
 <div id="hypoepi"  class="standardwidth"><button class="titleBrain float">HYPO + EPI</button>
 <table>
 	<td>&nbsp;&nbsp;&nbsp;</td>
-	<td>sella: </td>
+	<td>Sella: </td>
 	<td><select id="Pituitary" class="select100 rounded" onchange="updateTexts()">  
 			<option value=""selected>normální...</option>
 			<option value="partial empty">partial empty</option>
@@ -284,7 +294,7 @@
 		</select></td>
 		
 	<td>&nbsp;&nbsp;</td>
-    <td>epifýza: </td>
+    <td>Epifýza: </td>
 	<td><select id="Pineal" class="select100 rounded" onchange="updateTexts()">  
 		  <option value=""selected>normální...</option>
 		  <option value="cysta">cysta</option>
@@ -337,12 +347,12 @@
 	</tr>
 </table>
 <table>
-	<td>&nbsp;&nbsp;orbity</td>
+	<td>&nbsp;&nbsp;Orbity</td>
 	<td><button id="OrbitRButton" class="Button60" onmousedown="cycleOrbitRText(event)">0</button></td>
 	<td><button id="OrbitLButton" class="Button60" onmousedown="cycleOrbitLText(event)">0</button></td>
 </table>
 <table>
-	<td>&nbsp;&nbsp;mastoidy</td>
+	<td>&nbsp;&nbsp;Mastoidy</td>
 	<td><button id="MastoidRButton" class="Button60" onmousedown="cycleMastoidRText(event)">0</button></td>
 	<td><button id="MastoidLButton" class="Button60" onmousedown="cycleMastoidLText(event)">0</button></td>
 </table>
