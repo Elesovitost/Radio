@@ -1218,11 +1218,11 @@ populateAktivitaOptions();
 // Lesion hodnoceni
 
 var hodnoceniOptions = [
-    { text: "---", value: ": benigního vzhledu", valuez1: ": benigního vzhledu"},
-    { text: "-", value: ": nemá charakter viabilní neoplázie", valuez1: ": v.s. zánětlivá aktivace"},
-    { text: "+/-", value: ": nespecifický nález", valuez1: ": nespecifický nález"},
-    { text: "+", value: ": suspektní z viabilní neoplázie", valuez1: ": suspektní z infiltrace neoplazií"},
-    { text: "+++", value:": charakteru viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"},
+    { text: "benigní", value: ": benigního vzhledu", valuez1: ": benigního vzhledu"},
+    { text: "spíše ben.", value: ": nemá charakter viabilní neoplázie", valuez1: ": v.s. zánětlivá aktivace"},
+    { text: "nerozhodný", value: ": nespecifický nález", valuez1: ": nespecifický nález"},
+    { text: "spíše mal.", value: ": suspektní z viabilní neoplázie", valuez1: ": suspektní z infiltrace neoplazií"},
+    { text: "maligní", value:": charakteru viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"},
 	{ text: "tumor", value:": charakteru tumoru", valuez1: ": infiltrace neoplazií"},
 	{ text: "meta", value:": charakteru meta", valuez1: ": infiltrace neoplazií"}
 ];
