@@ -309,6 +309,7 @@ document.getElementById('NeckNewLesions').addEventListener('click', function() {
       break; 
     }
   }
+  updateTexts();
   updateNeckButtonColor();
 });
 
@@ -323,6 +324,7 @@ document.getElementById('NeckNewLesions').addEventListener('contextmenu', functi
       break; 
     }
   }
+  updateTexts();
   updateNeckButtonColor();
 });
 
@@ -1221,7 +1223,8 @@ var hodnoceniOptions = [
     { text: "+/-", value: ": nespecifický nález", valuez1: ": nespecifický nález"},
     { text: "+", value: ": suspektní z viabilní neoplázie", valuez1: ": suspektní z infiltrace neoplazií"},
     { text: "+++", value:": charakteru viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"},
-	{ text: "M1", value:": charakteru meta", valuez1: ": infiltrace neoplazií"}
+	{ text: "tumor", value:": charakteru tumoru", valuez1: ": infiltrace neoplazií"},
+	{ text: "meta", value:": charakteru meta", valuez1: ": infiltrace neoplazií"}
 ];
 
 function populateHodnoceniOptions() {

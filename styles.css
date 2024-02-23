@@ -79,7 +79,9 @@ iframe, iframes {min-height: 10px; z-index: 2; background-color: #FFFFFF;}
 .standardwidthFinalText {max-width: 1006px; border: 0px solid #000000; padding: 0px;}
 .table-container {display: flex; align-items: flex-start; flex-wrap: wrap; gap: 1px; }
 
-.mydiv0 {background-color: #EDCC8B; font-Size: 13; font-weight: bold;}
+.TextsDIV {max-width: 1000px; border: 1px solid #000000; padding: 3px; border-bottom: none;} 
+
+.mydiv0 {background-color: #EDCC8B; font-Size: 13; font-weight: bold; }
 .mydivIND {background-color: #E9E0D3; font-Size: 12; }
 .mydiv1 {background-color: #DDD5D5;}
 .mydivTNM {background-color: none;}

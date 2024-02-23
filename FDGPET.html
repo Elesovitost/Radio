@@ -66,8 +66,6 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonLesion">...</button>
 		<td><select id="NeckLesion1type" class="selectLESION" onchange="updateTexts()">
 			<option value="ložisko| ložiska"selected>ložisko</option>
 			<option value="masa| masy">masa</option>
-			<option value="expanze| expanzePL">expanze</option>
-			<option value="tumor| tumory">tumor</option>
 			<option value="infiltrace| infiltracePL">infiltrace</option>
 			<option value="fokus| fokusy">fokus</option>
 		</select>
@@ -79,8 +77,8 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonLesion">...</button>
 			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
-		<td><input id="NeckLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> <input id="NeckLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
-		</td>
+		<td><input id="NeckLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> </td>
+		<td style="width: 100%;"><input id="NeckLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" style="width: 100%;" oninput="updateTexts()"></td>
 		<td><input id="NeckLesion1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
 		<td><select id="NeckLesion1Activity" class="select60" onchange="updateTexts()">
 			<option value="" selected>aktivita...</option>
@@ -166,14 +164,15 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonLesion">...</button>
 			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
-		<td><select id="NeckLymphNode1number" class="select40" onchange="updateTexts()">
+		<td><select id="NeckLymphNode1number" class="select35" onchange="updateTexts()">
 			<option value="" selected>1</option>
 			<option value="dva">2</option>
 			<option value="vícečetné">++</option>
 			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
-		<td><input id="NeckLymphNode1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200" > <input id="NeckLymphNode1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
+		<td><input id="NeckLymphNode1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200" ></td>
+		<td style="width: 100%;"><input id="NeckLymphNode1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" style="width: 100%;" oninput="updateTexts()"></td>
 		<td><input id="NeckLymphNode1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
 		<td><select id="NeckLymphNode1Activity" class="select60" onchange="updateTexts()">
 			<option value="" selected>aktivita...</option>
@@ -234,9 +233,9 @@ DALŠÍ <button id="NeckNewOther1" class="myButtonLesion">...</button>
 
 <table id="NeckOther1" class="LymphNodeX hidden" >
 	<tr>
-		<td><button id="NeckOther1no" class="myButtonO">...</button></td>
-		<td><textarea id="NeckOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
-		<td><textarea id="NeckOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
+		 <td style="width: 1%; white-space: nowrap;"><button id="NeckOther1no" class="myButtonO">...</button></td>
+		<td><textarea id="NeckOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"  style="width: 100%;"></textarea></td>
+		<td><textarea id="NeckOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"  style="width: 100%;"></textarea></td>
     </tr>
 </table> 
 
@@ -430,20 +429,19 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonLesion">...</button>
 			<option value="nodul| noduly">nodul</option>
 			<option value="opacita| opacity">opacita</option>
 			<option value="expanze| expanzePL">expanze</option>
-			<option value="tumor| tumory">tumor</option>
 			<option value="konsolidace| konsolidacePL">konsolidace</option>
 			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
-		<td><select id="ThoraxLesion1number" class="select40" onchange="updateTexts()">
+		<td><select id="ThoraxLesion1number" class="select35" onchange="updateTexts()">
 			<option value="" selected>1</option>
 			<option value="dva">2</option>
 			<option value="vícečetné">++</option>
 			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
-		<td><input id="ThoraxLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> <input id="ThoraxLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
-		</td>
+		<td><input id="ThoraxLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> </td>
+		<td style="width: 100%;"><input id="ThoraxLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" style="width: 100%;" oninput="updateTexts()"></td>
 		<td><input id="ThoraxLesion1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
 		<td><select id="ThoraxLesion1Activity" class="select60" onchange="updateTexts()">
 			<option value="" selected>aktivita...</option>
@@ -561,15 +559,15 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonLesion">...</button>
 			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
-		<td><select id="ThoraxLymphNode1number" class="select40" onchange="updateTexts()">
+		<td><select id="ThoraxLymphNode1number" class="select35" onchange="updateTexts()">
 			<option value="" selected>1</option>
 			<option value="dva">2</option>
 			<option value="vícečetné">++</option>
 			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
-		<td><input id="ThoraxLymphNode1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200" > <input id="ThoraxLymphNode1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
-		<td><input id="ThoraxLymphNode1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
+		<td><input id="ThoraxLymphNode1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200" ></td>
+		<td style="width: 100%;"><input id="ThoraxLymphNode1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" style="width: 100%;" oninput="updateTexts()"></td><td><input id="ThoraxLymphNode1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
 		<td><select id="ThoraxLymphNode1Activity" class="select60" onchange="updateTexts()">
 			<option value="" selected>aktivita...</option>
 			</select>
@@ -658,9 +656,9 @@ DALŠÍ <button id="ThoraxNewOther1" class="myButtonLesion">...</button>
 
 <table id="ThoraxOther1" class="LymphNodeX hidden" >
 	<tr>
-		<td><button id="ThoraxOther1no" class="myButtonO">...</button></td>
-		<td><textarea id="ThoraxOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
-		<td><textarea id="ThoraxOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
+		 <td style="width: 1%; white-space: nowrap;"><button id="ThoraxOther1no" class="myButtonO">...</button></td>
+		<td><textarea id="ThoraxOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
+		<td><textarea id="ThoraxOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
     </tr>
 </table> 
 
@@ -992,22 +990,20 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonLesion">...</button>
 		<td><select id="AbdomenLesion1type" class="selectLESION" onchange="updateTexts()">
 			<option value="ložisko| ložiska"selected>ložisko</option>
 			<option value="masa| masy">masa</option>
-			<option value="expanze| expanze">expanze</option>
-			<option value="tumor| tumory">tumor</option>
 			<option value="infiltrát| infiltráty">infiltrace</option>
 			<option value="struktura| struktury">struktura</option>
 			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
-		<td><select id="AbdomenLesion1number" class="select40" onchange="updateTexts()">
+		<td><select id="AbdomenLesion1number" class="select35" onchange="updateTexts()">
 			<option value="" selected>1</option>
 			<option value="dva">2</option>
 			<option value="vícečetné">++</option>
 			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
-		<td><input id="AbdomenLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> <input id="AbdomenLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
-		</td>
+		<td><input id="AbdomenLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> </td>
+		<td style="width: 100%;"><input id="AbdomenLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" style="width: 100%;" oninput="updateTexts()"></td>
 		<td><input id="AbdomenLesion1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
 		<td><select id="AbdomenLesion1Activity" class="select60" onchange="updateTexts()">
 			<option value="" selected>aktivita...</option>
@@ -1334,15 +1330,15 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonLesion">...</button>
 			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
-		<td><select id="AbdomenLymphNode1number" class="select40" onchange="updateTexts()">
+		<td><select id="AbdomenLymphNode1number" class="select35" onchange="updateTexts()">
 			<option value="" selected>1</option>
 			<option value="dva">2</option>
 			<option value="vícečetné">++</option>
 			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
-		<td><input id="AbdomenLymphNode1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200" > <input id="AbdomenLymphNode1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
-		<td><input id="AbdomenLymphNode1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
+		<td><input id="AbdomenLymphNode1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200" ></td>
+		<td style="width: 100%;"><input id="AbdomenLymphNode1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" style="width: 100%;" oninput="updateTexts()"></td><td><input id="AbdomenLymphNode1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
 		<td><select id="AbdomenLymphNode1Activity" class="select60" onchange="updateTexts()">
 			<option value="" selected>aktivita...</option>
 			</select>
@@ -1413,9 +1409,9 @@ DALŠÍ <button id="AbdomenNewOther1" class="myButtonLesion">...</button>
 <!-- ABODMEN OTHERS -->
 <table id="AbdomenOther1" class="LymphNodeX hidden" >
 	<tr>
-		<td><button id="AbdomenOther1no" class="myButtonO">...</button></td>
-		<td><textarea id="AbdomenOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
-		<td><textarea id="AbdomenOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
+		<td style="width: 1%; white-space: nowrap;"><button id="AbdomenOther1no" class="myButtonO">...</button></td>
+		<td><textarea id="AbdomenOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
+		<td><textarea id="AbdomenOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
     </tr>
 </table> 
 
@@ -2001,19 +1997,18 @@ DALŠÍ <button id="SkeletonNewOther1" class="myButtonLesion">...</button>
 			<option value="smíšené ložisko| smíšená ložiska">- smíšené</option>
 			<option value="kožní ložisko| kožní ložiska">- kůže</option>
 			<option value="ložisko podkoží| ložiska podkoží">- podkoží</option>
-			<option value="tumor| tumory">tumor</option>
 			<option value="fokus| fokusy">fokus</option>
 		</select>
 		</td>
-		<td><select id="SkeletonLesion1number" class="select40" onchange="updateTexts()">
+		<td><select id="SkeletonLesion1number" class="select35" onchange="updateTexts()">
 			<option value="" selected>1</option>
 			<option value="dva">2</option>
 			<option value="vícečetné">++</option>
 			<option value="mnohočetné">+++</option>
 			</select>
 		</td>
-		<td><input id="SkeletonLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> <input id="SkeletonLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" oninput="updateTexts()"></td>
-		</td>
+		<td><input id="SkeletonLesion1Location" type="text" placeholder="lokace..." autocomplete="off" class="input200"> </td>
+		<td style="width: 100%;"><input id="SkeletonLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" style="width: 100%;" oninput="updateTexts()"></td>
 		<td><input id="SkeletonLesion1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
 		<td><select id="SkeletonLesion1Activity" class="select60" onchange="updateTexts()">
 			<option value="" selected>aktivita...</option>
@@ -2092,13 +2087,14 @@ DALŠÍ <button id="SkeletonNewOther1" class="myButtonLesion">...</button>
     </tr>
 </table>
 
+
 <!-- SKELETON OTHERS -->	
 
 <table id="SkeletonOther1" class="LymphNodeX hidden" >
 	<tr>
-		<td><button id="SkeletonOther1no" class="myButtonO">...</button></td>
-		<td><textarea id="SkeletonOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
-		<td><textarea id="SkeletonOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
+		<td style="width: 1%; white-space: nowrap;"><button id="SkeletonOther1no" class="myButtonO">...</button></td>
+		<td><textarea id="SkeletonOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
+		<td><textarea id="SkeletonOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
     </tr>
 </table>
 

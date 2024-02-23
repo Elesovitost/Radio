@@ -20,14 +20,7 @@ function cloneAndUpdateIds(sourceId, destId) {
         }
     });
 
-    // Check if sourceElement has a next sibling, and use insertBefore to place the clone after sourceElement
-    let parent = sourceElement.parentNode;
-    let nextSibling = sourceElement.nextElementSibling;
-    if (nextSibling) {
-        parent.insertBefore(clonedElement, nextSibling);
-    } else {
-        parent.appendChild(clonedElement); // Fallback if sourceElement is the last child
-    }
+    sourceElement.parentNode.appendChild(clonedElement);
 }
 
 cloneAndUpdateIds("BrainLesion1", "BrainLesion2");
@@ -299,13 +292,75 @@ buttonElementWML.addEventListener("mousedown", function() {
 
 // Brainlesions hide
 
+// new LESIONS
+
+document.getElementById('BrainNewLesions').addEventListener('click', function() {
+  var lesionIds = ['BrainLesion1', 'BrainLesion2', 'BrainLesion3'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (element.classList.contains('hidden')) {
+      element.classList.remove('hidden');
+      break; 
+    }
+  }
+  updateBrainButtonColor();
+});
+
+document.getElementById('BrainNewLesions').addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+  var lesionIds = ['BrainLesion3', 'BrainLesion2', 'BrainLesion1'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (!element.classList.contains('hidden')) {
+      element.classList.add('hidden');
+      break; 
+    }
+  }
+  updateBrainButtonColor();
+});
+
+
+function updateBrainButtonColor() {
+    var Brainlesions = ['BrainLesion1', 'BrainLesion2', 'BrainLesion3'];
+    var Brainbutton = document.getElementById('BrainNewLesions');
+    var isHidden = Brainlesions.every(function(id) {
+        return document.getElementById(id).classList.contains('hidden');
+    });
+
+    if (isHidden) {
+        Brainbutton.classList.remove('toggleColorRed');
+    } else {
+        Brainbutton.classList.add('toggleColorRed');
+    }
+}
+
+
+document.getElementById('BrainLesion1no').addEventListener('click', function() {
+  var element = document.getElementById('BrainLesion1');
+  element.classList.add('hidden'); 
+  updateTexts();
+  updateBrainButtonColor();
+});
+
+document.getElementById('BrainLesion2no').addEventListener('click', function() {
+  var element = document.getElementById('BrainLesion2');
+  element.classList.add('hidden');
+  updateTexts();
+  updateBrainButtonColor();
+});
+
+document.getElementById('BrainLesion3no').addEventListener('click', function() {
+  var element = document.getElementById('BrainLesion3');
+  element.classList.add('hidden');
+  updateTexts();
+  updateBrainButtonColor();
+});
+
+
 // LESION1
 
-document.getElementById('BrainNewLesion1').addEventListener('click', function() {
-  var element = document.getElementById('BrainLesion1');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
 
 document.getElementById('BrainLesion1no').addEventListener('click', function() {
   var element = document.getElementById('BrainLesion1');
@@ -355,12 +410,6 @@ document.addEventListener('click', function(e) {
 
 //LESION2
 
-document.getElementById('BrainNewLesion2').addEventListener('click', function() {
-  var element = document.getElementById('BrainLesion2');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
-
 document.getElementById('BrainLesion2no').addEventListener('click', function() {
   var element = document.getElementById('BrainLesion2');
   element.classList.add('hidden');
@@ -406,12 +455,6 @@ document.addEventListener('click', function(e) {
 
 
 //LESION3
-
-document.getElementById('BrainNewLesion3').addEventListener('click', function() {
-  var element = document.getElementById('BrainLesion3');
-  element.classList.toggle('hidden'); this.classList.toggle('toggleColorRed');
-  updateTexts();
-});
 
 document.getElementById('BrainLesion3no').addEventListener('click', function() {
   var element = document.getElementById('BrainLesion3');

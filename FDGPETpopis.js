@@ -401,6 +401,7 @@ if (buttonElementPETType.value === "FDG") {
 
 if (NeckLesion1RESDecision.includes("meta") && NeckLesion1type.includes("ožisk")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 
+if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("ožisk")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
 
 `;
 
@@ -1057,6 +1058,7 @@ if (buttonElementPETType.value === "FDG") {
 
 if (ThoraxLesion1RESDecision.includes("meta") && ThoraxLesion1type.includes("ožisk")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 
+if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("ožisk")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
 
 `;
 
@@ -2044,6 +2046,7 @@ if (buttonElementPETType.value === "FDG") {
 
 if (AbdomenLesion1RESDecision.includes("meta") && AbdomenLesion1type.includes("ožisk")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 
+if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("ožisk")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
 
 `;
 
@@ -3290,7 +3293,7 @@ let variablesToCheck = [
     window.RESSkeletonLesion1, window.RESSkeletonLesion2, window.RESSkeletonLesion3
 ];
 
-let bannedWords = ['suspektní', 'tumor', 'meta', 'Meta', 'charakteru', 'nespecifický'];
+let bannedWords = ['suspektní', 'tumor',  'tumorózní',  'Tumorózní', 'meta', 'Meta', 'charakteru', 'nespecifický'];
 
 function containsBannedWord(str) {
     return bannedWords.some(bannedWord => str.includes(bannedWord));
