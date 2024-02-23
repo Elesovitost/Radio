@@ -341,7 +341,7 @@ if (L12FAText === "není") {
  L12degenerfaR = "facetové artrózy ";
  L12edemR += "";
 } else if (L12FAText === "těžká") {
- L12degenerfaP = "Pokročilá facetová degenerace s hypertrofií žlutých vazů. ";
+ L12degenerfaP = "Pokročilá facetová degenerace. ";
  L12degenerfaR = "pokročilé facetové artrózy ";
  L12edemR += "";
 } else if (L12FAText === "edém") {
@@ -384,8 +384,11 @@ if (L12BHText === "není") {
  L12herniace = "Herniace disku " + "o " + L12HDText;
  L12herniaceR = "Objemná herniace disku"; 
  L12herniacePodklad = "objemné herniace disku ";
+} else if (L12BHText === "kombinace") {
+ L12herniace = "Spondylofyty a protruze disku " + "o " + L12HDText;
+ L12herniaceR = "Spondylofyty a protruze disku"; 
+ L12herniacePodklad = "spondylofytů a bulgingu disku "; 
 }
-
 
 //HERNIACE SMĚR
 const L12herniaDirections = [

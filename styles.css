@@ -72,9 +72,9 @@ iframe, iframes {min-height: 10px; z-index: 2; background-color: #FFFFFF;}
 
 
 /* divs  */
-/* .MainDIV {max-width: 1000px; border: 1px solid #000000;} */
-.standardwidth {max-width: 1000px; border: 1px solid #000000; padding: 3px;}
-.standardwidthHALF {max-width: 496px; border: 1px solid #000000; padding: 3px; flex-grow: 1;}
+.MainDIV {max-width: 1006px; border: 1px solid #000000; } 
+.standardwidth {max-width: 1000px; border: 0px solid #000000; padding: 3px;}
+.standardwidthHALF {max-width: 496px; border: 0px solid #000000; padding: 3px; flex-grow: 1;}
 .standardwidthV {max-width: 1000px; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-left: 2px; padding-right: 2px; }
 .standardwidthFinalText {max-width: 1006px; border: 0px solid #000000; padding: 0px;}
 .table-container {display: flex; align-items: flex-start; flex-wrap: wrap; gap: 1px; }

@@ -579,7 +579,7 @@ LkMenLezeR = "s rupturou";
  LkMenLezeP = "s longitudinální linií vysoké SI ";
  LkMenLezeR = "s longitudinální rupturou ";
 } else if (LkMenLeze === "koml") {
- LkMenLezeP = "s vícečetnými liniemi vysoké SI ";
+ LkMenLezeP = "s tvarovou defigurací a liniemi vysoké SI  ";
  LkMenLezeR = "s komplexní rupturou ";
 } else if (LkMenLeze === "BH") {
  LkMenLezeP = "s odtržením vnitřní části a dislokací protilehle ";
@@ -688,13 +688,13 @@ if (LCMText === "LCM") {
  LCMR = ""; 
 } else if (LCMText === "ruptura I") {
  LCMP = "Mediální kolaterální vaz má zachovalou kontinuitu, přítomen edém okolí.";
- LCMR = "Mediální kolaterální vaz s distenzí.";
+ LCMR = "Mediální kolaterální vaz s distenzí / low-grade parc. lézí.";
 } else if (LCMText === "ruptura II") {
  LCMP = "Mediální kolaterální vaz je nehomogenní, s vyšší SI, kontinuita parc. zachována, přítomen edém okolí.";
- LCMR = "Mediální kolaterální vaz s parciální rupturou II.st.";
+ LCMR = "Mediální kolaterální vaz s parciální rupturou.";
 } else if (LCMText === "ruptura III") {
  LCMP = "Mediální kolaterální vaz má přerušenou kontinuitu, přítomen edém okolí.";
- LCMR = "Mediální kolaterální vaz s rupturou III.st.";
+ LCMR = "Mediální kolaterální vaz s high-grade rupturou.";
 } 
 
 
@@ -704,13 +704,13 @@ if (LCLText === "LCL") {
  LCLR = ""; 
 } else if (LCLText === "ruptura I") {
  LCLP = "Laterální kolaterální vaz má zachovalou kontinuitu, přítomen edém okolí.";
- LCLR = "Laterální kolaterální vaz s distenzí.";
+ LCLR = "Laterální kolaterální vaz s distenzí / low-grade parc. lézí.";
 } else if (LCLText === "ruptura II") {
  LCLP = "Laterální kolaterální vaz je nehomogenní, s vyšší SI, kontinuita parc. zachována, přítomen edém okolí.";
- LCLR = "Laterální kolaterální vaz s parciální rupturou II.st.";
+ LCLR = "Laterální kolaterální vaz s parciální rupturou. ";
 } else if (LCLText === "ruptura III") {
  LCLP = "Laterální kolaterální vaz má přerušenou kontinuitu, přítomen edém okolí.";
- LCLR = "Laterální kolaterální vaz s rupturou III.st.";
+ LCLR = "Laterální kolaterální vaz s high-grade rupturou.";
 } 
 
 // LCA
@@ -738,7 +738,7 @@ if (LigLCAII) {
 }
 if (LigLCAI) {
 	LigLCAText = "Přední zkřížený vaz má zachovalou kontinuitu, vyšší SI, ne zcela strmý průběh. ";
-	LigLCARes = "Přední zkřížený vaz v.s. s low-grade parc. lézí ";
+	LigLCARes = "Přední zkřížený vaz v.s. s distenzí / low-grade parc. lézí ";
 }
 if (LigLCAEdema) {
 	LigLCAText += "Vysoká SI v PD FS v kostní dřeni laterálního kondylu femuru a dorzálních aspektů tibie. ";

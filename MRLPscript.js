@@ -61,7 +61,7 @@ var textsL1LISD = ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm
 var textsL1SL = ["nelýza", "lýza"];
 var textsL12DD = ["není", "mírná", "střední", "těžká"];
 var textsL12MOD = ["není", "I", "II", "III"];
-var textsL12BH = ["není", "bulging", "herniace", "osteofyty"];
+var textsL12BH = ["není", "bulging", "herniace", "osteofyty", "kombinace"];
 var textsL12HD = ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm", "9 mm", "10 mm"];
 var textsL12FA = ["není", "mírná", "střední", "těžká", "edém"];
 
@@ -112,7 +112,7 @@ var textsL2LISD = ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm
 var textsL2SL = ["nelýza", "lýza"];
 var textsL23DD = ["není", "mírná", "střední", "těžká"];
 var textsL23MOD = ["není", "I", "II", "III"];
-var textsL23BH = ["není", "bulging", "herniace", "osteofyty"];
+var textsL23BH = ["není", "bulging", "herniace", "osteofyty", "kombinace"];
 var textsL23HD = ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm", "9 mm", "10 mm"];
 var textsL23FA = ["není", "mírná", "střední", "těžká", "edém"];
 
@@ -164,7 +164,7 @@ var textsL3LISD = ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm
 var textsL3SL = ["nelýza", "lýza"];
 var textsL34DD = ["není", "mírná", "střední", "těžká"];
 var textsL34MOD = ["není", "I", "II", "III"];
-var textsL34BH = ["není", "bulging", "herniace", "osteofyty"];
+var textsL34BH = ["není", "bulging", "herniace", "osteofyty", "kombinace"];
 var textsL34HD = ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm", "9 mm", "10 mm"];
 var textsL34FA = ["není", "mírná", "střední", "těžká", "edém"];
 
@@ -216,7 +216,7 @@ var textsL4LISD = ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm
 var textsL4SL = ["nelýza", "lýza"];
 var textsL45DD = ["není", "mírná", "střední", "těžká"];
 var textsL45MOD = ["není", "I", "II", "III"];
-var textsL45BH = ["není", "bulging", "herniace", "osteofyty"];
+var textsL45BH = ["není", "bulging", "herniace", "osteofyty", "kombinace"];
 var textsL45HD = ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm", "9 mm", "10 mm"];
 var textsL45FA = ["není", "mírná", "střední", "těžká", "edém"];
 
@@ -268,7 +268,7 @@ var textsL5LISD = ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm
 var textsL5SL = ["nelýza", "lýza"];
 var textsL5S1DD = ["není", "mírná", "střední", "těžká"];
 var textsL5S1MOD = ["není", "I", "II", "III"];
-var textsL5S1BH = ["není", "bulging", "herniace", "osteofyty"];
+var textsL5S1BH = ["není", "bulging", "herniace", "osteofyty", "kombinace"];
 var textsL5S1HD = ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm", "9 mm", "10 mm"];
 var textsL5S1FA = ["není", "mírná", "střední", "těžká", "edém"];
 

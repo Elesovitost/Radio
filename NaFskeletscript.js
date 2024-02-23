@@ -71,6 +71,29 @@ clickableTextsLesion1.forEach(text => {
 });
 
 
+// new NaFskelet OTHERS 
+
+document.getElementById('NaFskeletNewOther1').addEventListener('click', function() {
+  var element = document.getElementById('NaFskeletOther1');
+  element.classList.remove('hidden');  this.classList.add('toggleColorRed');
+  updateTexts();
+});
+
+document.getElementById('NaFskeletNewOther1').addEventListener('contextmenu', function(event) {
+  event.preventDefault(); 
+  var element = document.getElementById('NaFskeletOther1');
+  element.classList.add('hidden');  this.classList.remove('toggleColorRed');
+  updateTexts();
+});
+
+document.getElementById('NaFskeletOther1no').addEventListener('click', function() {
+  var element = document.getElementById('NaFskeletOther1');
+  element.classList.add('hidden');
+  var button = document.getElementById('NaFskeletNewOther1');
+  button.classList.remove('toggleColorRed');
+  updateTexts();
+});
+
 // Chb clickable by right mouse
 
 const ChbesFromCHB = document.querySelectorAll('.CHB input[type="checkbox"]');

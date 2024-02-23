@@ -366,6 +366,10 @@ if (C34BHText === "není") {
  C34herniace = "Spondylofyty " + "o " + C34HDText;
  C34herniaceR = "Spondylofyty"; 
  C34herniacePodklad = "spondylofytů ";
+} else if (C34BHText === "kombinace") {
+ C34herniace = "Spondylofyty a protruze disku " + "o " + C34HDText;
+ C34herniaceR = "Spondylofyty a protruze disku"; 
+ C34herniacePodklad = "spondylofytů a bulgingu disku "; 
 } else if (C34BHText === "herniace" && C34HDdiameter < 4) {
  C34herniace = "Herniace disku " + "o " + C34HDText;
  C34herniaceR = "Drobná herniace disku"; 

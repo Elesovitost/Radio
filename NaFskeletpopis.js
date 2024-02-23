@@ -329,6 +329,11 @@ if (SegmentT12L1.trim() === "" && SegmentL1L2.trim() === "" && SegmentL2L3.trim(
 }
 
 
+// Others
+
+var NaFskeletOther1Pop = document.getElementById("NaFskeletOther1Pop").value;
+var NaFskeletOther1Res = document.getElementById("NaFskeletOther1Res").value;
+
 
 // POPIS
 
@@ -340,7 +345,8 @@ SegmentL2L3 + "\n" +
 SegmentL3L4 + "\n" +
 SegmentL4L5 + "\n" +
 SegmentL5S1 + "\n" +
-PelvisText
+PelvisText + "\n" +
+NaFskeletOther1Pop
 ;
 
 	NaFPOPText.value = NaFPOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
@@ -358,7 +364,8 @@ PelvisText
 NaFRESText.value = 
 NativeRESText + "\n" +
 ActiveRESText + "\n" +
-MildRESText;
+MildRESText + "\n" +
+NaFskeletOther1Res;
 
 	NaFRESText.value = NaFRESText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
 	NaFRESText.value = NaFRESText.value.replace(/ {2,}/g, ' ');  // více mezer = jedna mezera

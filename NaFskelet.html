@@ -5,19 +5,18 @@
 
 <body>
 
+<div class="MainDIV">
+
 <div id="NaFskelet" class="standardwidth mydiv0" >
-MR prostaty 
+NaF PET / CT skeletu L páteře
 </div>
 
 <div id="GeneralDIV" class="standardwidth DIV">
 
-<div id="rozsah" class="DIVLesions"><button class="title">OBECNÉ</button>
-</div>
-
 
 <div id="Segments" class="DIVLesions"><button class="title">SEGMENTY</button> 
 </div >  
-	<table border="1">
+	<table border="0" style="text-align: center;">
     <tr>
 		<td>T12/L1</td>
 		<td>L1/2</td>
@@ -98,8 +97,22 @@ MR prostaty
 		</td>
     </tr>
 	</table>	
+
+<div id="rozsah" class="DIVLesions">
+
+	<button class="title">OSTATNÍ</button> DALŠÍ <button id="NaFskeletNewOther1" class="myButtonLesion">+</button>
+
+	<table id="NaFskeletOther1" class="LymphNodeX hidden" >
+		<tr>
+			<td><button id="NaFskeletOther1no" class="myButtonO">-</button></td>
+			<td><textarea id="NaFskeletOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
+			<td><textarea id="NaFskeletOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
+		</tr>
+	</table> 
+	
 </div>
 
+</div>
 
 </div>
 
