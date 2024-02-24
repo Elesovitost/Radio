@@ -197,7 +197,7 @@ var textsOrbitL = ["0", "čočka", "enukl"];
 var buttonElementStrana = document.getElementById("StranaButton");
 
 var buttonElementWML = document.getElementById("WMLButton");
-var selectElementWMLkde = document.getElementById("WMLkde");
+var selectElementWMLLocation = document.getElementById("WMLLocation");
 var buttonElementGCA = document.getElementById("GCAButton");
 var buttonElementventricles = document.getElementById("ventriclesButton");
 var buttonElementLesion2enhancement = document.getElementById("Lesion2enhancementButton");
@@ -268,23 +268,25 @@ function cycleOrbitLText(event) {    indexOrbitL = cycleText(event, textsOrbitL,
 
 
 //hiding WML
-document.getElementById('WMLkde').addEventListener('focus', function() {
-  document.getElementById('WMLLokace').classList.remove('hidden');
+document.getElementById('WMLLocation').addEventListener('focus', function() {
+  var inputRect = this.getBoundingClientRect();
+  var dropdown = document.getElementById('WMLselectLocation');
+  dropdown.style.left = inputRect.left + 'px'; dropdown.style.top = inputRect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
 });
+
 document.addEventListener('click', function(e) {
-  const WMLkdeElement = document.getElementById('WMLkde');
-  const WMLLokaceElement = document.getElementById('WMLLokace');
-  if (!WMLkdeElement.contains(e.target) && !WMLLokaceElement.contains(e.target)) {
-	WMLLokaceElement.classList.add('hidden');
+  var dropdown = document.getElementById('WMLselectLocation');
+  if (!document.getElementById('WMLLocation').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
   }
 });
 
 
 buttonElementWML.addEventListener("mousedown", function() {
     if(this.innerText === '0') {
-       selectElementWMLkde.classList.add('hidden'); 
+       selectElementWMLLocation.classList.add('hidden'); 
     } else {
-       selectElementWMLkde.classList.remove('hidden');
+       selectElementWMLLocation.classList.remove('hidden');
     }
 });
 

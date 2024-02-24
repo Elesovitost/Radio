@@ -192,7 +192,7 @@ table {border-collapse: collapse; border: 0px solid #000000; font-Size: 12px; }
 tr { height: 20px;}
 
 .options {height: 24px; padding: 5px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1;  border-radius: 2px; border: 1px solid #000000; table-layout: auto;  } 
-.optionsWML {height: 24px; padding: 5px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1; left: 128px; border-radius: 2px; border: 1px solid #000000; table-layout: auto;  } 
+.optionsWML {height: 24px; padding: 5px; text-align: left; vertical-align: middle; cursor: default; position: absolute; background: #FFFFFF; z-index: 1; border-radius: 2px; border: 1px solid #000000; table-layout: auto;  } 
 .options td {vertical-align: top;}
 .suboptions {height: 24px; padding: 5px; text-align: left; vertical-align: top; cursor: default; background: #FFFFFF; z-index: 1; left: 160px; border-radius: 2px; border: 0px solid #000000; } 
 .Lesions {height: 24px;  text-align: center; vertical-align: middle; cursor: default;}
@@ -212,7 +212,7 @@ tr { height: 20px;}
 
 /* BUTTONS */
 
-button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-color: #FFFFFF; width: 20px; text-align: center; justify-content: center; display: inline-flex; border-radius: 0px;}
+button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-color: #FFFFFF; text-align: center; justify-content: center; display: inline-flex; border-radius: 0px;}
 .title {width: 86px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12; }
 .titleBrain {width: 96px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
 .titleKnee {width: 126px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}

@@ -15,7 +15,7 @@ function updateTexts() {
 var indikace = document.getElementById("indikace").value;
 
 const WMLText = buttonElementWML.innerText;
-var WMLkdeText = document.getElementById("WMLkde").value;
+var WMLLocationText = document.getElementById("WMLLocation").value;
 var RSP = ""; var RSR = ""; var checkboxRS = document.getElementById('checkboxRS');
 
 const GCAText = buttonElementGCA.innerText;
@@ -173,7 +173,7 @@ if (WMLText === "0") {
 }
 
 
-var WMLkdeP = ""; var WMLkdeR = "";
+var WMLLocationP = ""; var WMLLocationR = "";
 var results = []; var checkedCount = 0; var checkedCountR = 0; var checkedCountL = 0;
 
 const WMLCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.id.startsWith('ChbWML'));
@@ -276,24 +276,24 @@ if (document.getElementById('ChbWMLObloR').checked && document.getElementById('C
 
 if (results.length > 1) {
     var last = results.pop();
-    WMLkdeP = results.join(", ") + " a " + last;
+    WMLLocationP = results.join(", ") + " a " + last;
 } else if (results.length === 1) {
-    WMLkdeP = results[0];
+    WMLLocationP = results[0];
 } else {
-    WMLkdeP = "";
+    WMLLocationP = "";
 }
 
 if (checkedCount > 2 && checkedCountR > 0 && checkedCountL > 0) {
-    WMLkdeR = "supratentoriálně bilat.";
+    WMLLocationR = "supratentoriálně bilat.";
 } else if (checkedCountR > 1) {
-    WMLkdeR = "supratentoriálně vpravo";
+    WMLLocationR = "supratentoriálně vpravo";
 } else if (checkedCountL > 1) {
-    WMLkdeR = "supratentoriálně vlevo";
+    WMLLocationR = "supratentoriálně vlevo";
 } else {
-    WMLkdeR = WMLkdeP;
+    WMLLocationR = WMLLocationP;
 }
 
-document.getElementById('WMLkde').value = WMLkdeR;
+document.getElementById('WMLLocation').value = WMLLocationR;
 
 
 if (checkboxRS.checked) {
@@ -302,12 +302,12 @@ if (checkboxRS.checked) {
 } else if (!checkboxRS.checked && (WMLText === "vícečetné" || WMLText === "splývající")) {
     RSP = "";
     RSR = " v.s. v rámci 'small vessel disease'.";
-} else if (WMLkdeText === "" && WMLText === "0") {
+} else if (WMLLocationText === "" && WMLText === "0") {
     RSP = "";
     RSR = "";
-} else if (WMLkdeText !== "" && WMLText === "0") {
- WMLkdeP = ""; 
- WMLkdeR = "";
+} else if (WMLLocationText !== "" && WMLText === "0") {
+ WMLLocationP = ""; 
+ WMLLocationR = "";
 } else {
     RSP = "";
     RSR = ".";
@@ -798,7 +798,7 @@ POPBrainLesion1 + "\n" +
 POPBrainLesion2 + "\n" +
 LesionVP + "\n" +
 POPNoLesions + "\n" +
-WMLP + WMLkdeP + RSP + "." + "\n" +
+WMLP + WMLLocationP + RSP + "." + "\n" +
 GCAP + " " + lobaratrophyP + "\n" +
 ventriclesP + "\n" +
 MMKP + "\n" +
@@ -825,7 +825,7 @@ ExamCompareText + "\n" +
 RESBrainLesion1 + "\n" +
 RESBrainLesion2 + "\n" +
 LesionVR + "\n" +
-WMLR + WMLkdeR + RSR + "\n" + 
+WMLR + WMLLocationR + RSR + "\n" + 
 GCAR + lobaratrophyR + "\n" +
 ventriclesR + "\n" +
 MMKR + "\n" +
