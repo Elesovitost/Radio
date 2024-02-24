@@ -1,67 +1,7 @@
-// DODĚLAT
-// hlasivky aktivita
-// minule ložisko (stac. a nově)
-// u patol. uzlin procent. rozdíl nemá smysl, když je to v krátké ose. Řešit tlačítkem?
-
 function updateTexts() {
 
 var indikace = document.getElementById("indikace").value;
 
-
-// GRAMMAR
-
-function processSentence(sentence) {
-	sentence = sentence.trim();
-    const words = sentence.split(/\s+/);
-    const containsExactWord = (word) => words.includes(word);
-
-    if (containsExactWord("fokusy") || 
-		containsExactWord("noduly") || 
-		containsExactWord("ložisko") || 
-		containsExactWord("infiltráty") || 
-		containsExactWord("tumory") || 
-		containsExactWord("pakety")) {
-        // No changes needed
-    }
-
-    if (containsExactWord("fokus") || 
-		containsExactWord("nodul") || 
-		containsExactWord("infiltrát") || 
-		containsExactWord("tumor") || 
-		containsExactWord("paket")) {
-        sentence = sentence.replace(/metabolické/g, "metabolický").replace(/četné /g, "četný ");
-    }
-
-    if (containsExactWord("masa") || 
-		containsExactWord("expanze") || 
-		containsExactWord("infiltrace") || 
-		containsExactWord("konsolidace") || 
-		containsExactWord("opacita") || 
-		containsExactWord("ložiska") || 
-		containsExactWord("struktura") ||
-		containsExactWord("uzlina")) {
-        sentence = sentence.replace(/metabolické/g, "metabolická").replace(/četné /g, "četná ");
-    }
-
-    if (containsExactWord("masy") || 
-		containsExactWord("expanzePL") || 
-		containsExactWord("infiltracePL") || 
-		containsExactWord("konsolidacePL") || 
-		containsExactWord("opacity") || 
-		containsExactWord("struktury") ||
-		containsExactWord("uzliny")) {
-        sentence = sentence.replace(/expanzePL/g, "expanze").replace(/infiltracePL/g, "infiltrace").replace(/dva/g, "dvě");
-    }
-	
-	if (containsExactWord("ložiska")) 
-		{
-        sentence = sentence.replace(/dva/g, "dvě");
-    }
-
-    sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-
-    return sentence;
-}
 
 
 // universal SUV

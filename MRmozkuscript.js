@@ -31,143 +31,15 @@ cloneAndUpdateIds("BrainLesion1", "BrainLesion3");
 cloneAndUpdateIds("BrainLesion1selectLocation", "BrainLesion3selectLocation");
 cloneAndUpdateIds("BrainLesion1selectSignal", "BrainLesion3selectSignal");
 
-// GRAMMAR
-
-function processSentence(sentence) {
-	sentence = sentence.trim();
-    const words = sentence.split(/\s+/);
-    const containsExactWord = (word) => words.includes(word);
-
-    if (containsExactWord("fokusy") || 
-		containsExactWord("noduly") || 
-		containsExactWord("ložisko") || 
-		containsExactWord("infiltráty") || 
-		containsExactWord("tumory") || 
-		containsExactWord("pakety")) {
-        // No changes needed
-    }
-
-    if (containsExactWord("fokus") || 
-		containsExactWord("nodul") || 
-		containsExactWord("infiltrát") || 
-		containsExactWord("tumor") || 
-		containsExactWord("paket")) {
-        sentence = sentence.replace(/metabolické/g, "metabolický").replace(/četné /g, "četný ");
-    }
-
-    if (containsExactWord("masa") || 
-		containsExactWord("expanze") || 
-		containsExactWord("infiltrace") || 
-		containsExactWord("konsolidace") || 
-		containsExactWord("opacita") || 
-		containsExactWord("ložiska") || 
-		containsExactWord("struktura") ||
-		containsExactWord("uzlina")) {
-        sentence = sentence.replace(/metabolické/g, "metabolická").replace(/četné /g, "četná ");
-    }
-
-    if (containsExactWord("masy") || 
-		containsExactWord("expanzePL") || 
-		containsExactWord("infiltracePL") || 
-		containsExactWord("konsolidacePL") || 
-		containsExactWord("opacity") || 
-		containsExactWord("struktury") ||
-		containsExactWord("uzliny")) {
-        sentence = sentence.replace(/expanzePL/g, "expanze").replace(/infiltracePL/g, "infiltrace").replace(/dva/g, "dvě");
-    }
-	
-	if (containsExactWord("ložiska")) 
-		{
-        sentence = sentence.replace(/dva/g, "dvě");
-    }
-
-    sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-
-    return sentence;
-}
 
 
-// checkbox clickable by right mouse
-
-const checkboxes = document.querySelectorAll('.CHB input[type="checkbox"]');
-checkboxes.forEach(function(checkbox) {
-    checkbox.addEventListener('change', function() {
-        updateTexts();
-    });
-    checkbox.parentElement.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        checkbox.checked = !checkbox.checked;
-        updateTexts();
-    });
-});
-
-// buttons clickable by right mouse
-
-var buttons = document.getElementsByTagName("button");
-
-for (var i = 0; i < buttons.length; i++) {
-    // Add 'contextmenu' event to each button
-    buttons[i].addEventListener("contextmenu", function(e){
-        // Prevent the default context menu from showing up
-        e.preventDefault();
-    });
-}
-
-// AUTOCOMPLETE OFF
-
-window.onload = function() {
-  var inputs = document.getElementsByTagName('input');
-  for(var i = 0; i < inputs.length; i++) {
-    inputs[i].setAttribute('autocomplete', 'off');
-  }
-
-  var textareas = document.getElementsByTagName('textarea');
-  for(var i = 0; i < textareas.length; i++) {
-    textareas[i].setAttribute('autocomplete', 'off');
-  }
-};
-
-//BUTTONS ANIMATIONS
-	var buttonsLEZE = document.querySelectorAll('.myButton20');
-    	buttonsLEZE.forEach(function(button) {
-      button.addEventListener('click', function() {
-        this.classList.add('animate-rotate');
-        setTimeout(() => this.classList.remove('animate-rotate'), 500);
-		this.classList.toggle('clicked');
-      });
-    });
-
-//button cycling
-
-function cycleText(event, texts, index, buttonElement, callback) {
-    event.preventDefault(); // Add this line to prevent the default action (context menu in this case)
-
-    if (event.button === 0) {
-        if (index === texts.length - 1) {
-            index = texts.length - 1;
-        } else {
-            index = (index + 1) % texts.length;
-        }
-    } else if (event.button === 2) {
-        if (index === 0) {
-            index = 0;
-        } else {
-            index = (index - 1 + texts.length) % texts.length;
-        }
-    }
-
-    buttonElement.innerText = texts[index];
-    buttonElement.value = texts[index];
-    if (callback) callback(index, buttonElement);
-    return index;
-}
-
-
-
+//button change color
 
 function updateBackgroundColor(index, buttonElement, color1 = "transparent", color2 = "#D4A29C") {
   buttonElement.style.backgroundColor = index === 0 ? color1 : color2;
 }
+
+//button texts
 
 var textsStrana = ["jakého?", "PRAVÉHO", "LEVÉHO"];
 
@@ -268,6 +140,7 @@ function cycleOrbitLText(event) {    indexOrbitL = cycleText(event, textsOrbitL,
 
 
 //hiding WML
+
 document.getElementById('WMLLocation').addEventListener('focus', function() {
   var inputRect = this.getBoundingClientRect();
   var dropdown = document.getElementById('WMLselectLocation');
@@ -633,109 +506,3 @@ copyfinal.addEventListener('click', function() {
 
 
 
-// TABLES others OVERLAY
-
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('others')) {
-        var tableId = event.target.id + 'table';
-        var table = document.getElementById(tableId);
-        
-        var overlayTables = document.querySelectorAll('.overlay');
-        overlayTables.forEach(function(otherTable) {
-            if (otherTable.id !== tableId) {
-                otherTable.classList.add('hidden');
-                otherTable.classList.remove('overlay');
-            }
-        });
-        
-        table.classList.toggle('overlay');
-        table.classList.toggle('hidden');
-    }
-});
-
-document.addEventListener('click', function(event) {
-    var overlayTables = document.querySelectorAll('.overlay');
-    overlayTables.forEach(function(table) {
-        if (!table.contains(event.target) && !event.target.classList.contains('others')) {
-            table.classList.add('hidden');
-            table.classList.remove('overlay');
-        }
-    });
-});
-
-//input textareas resizable
-
-var InputTextAreas = document.querySelectorAll('.inputothers, .inputOtherFinding');
-InputTextAreas.forEach(function(InputTextArea) {
-    InputTextArea.addEventListener('input', function() {
-        // Reset the height to ensure correct calculation
-        this.style.height = '22px';
-        // Set the height to the scrollHeight to fit the content
-        this.style.height = (this.scrollHeight) + 'px';
-    });
-});
-
-
-// button tables overlay change color
-
-function isAnyCheckboxChecked(tableId) {
-    var checkboxes = document.querySelectorAll('#' + tableId + ' input[type="checkbox"]');
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function updateButtonColor(buttonId, tableId) {
-    var button = document.getElementById(buttonId);
-    if (isAnyCheckboxChecked(tableId)) {
-        button.style.backgroundColor = '#D4A29C';
-    } else {
-        button.style.backgroundColor = ''; 
-    }
-}
-
-document.addEventListener('change', function(event) {
-    if (event.target.type === 'checkbox') {
-        var table = event.target.closest('[id$="table"]');
-        if (table) {
-            var buttonId = table.id.replace('table', '');
-            updateButtonColor(buttonId, table.id);
-        }
-    }
-});
-
-// button tables overlay unchecked
-
-function uncheckAllCheckboxes(tableId) {
-    var checkboxes = document.querySelectorAll('#' + tableId + ' input[type="checkbox"]');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.checked = false;
-    });
-}
-
-document.addEventListener('contextmenu', function(event) {
-    if (event.target.classList.contains('others')) {
-        event.preventDefault(); // Prevent the default right-click context menu
-
-        var tableId = event.target.id + 'table';
-        uncheckAllCheckboxes(tableId);
-
-        var buttonId = tableId.replace('table', '');
-        updateButtonColor(buttonId, tableId);
-		updateTexts();
-    }
-});
-
-// new lesions animation
-
-document.querySelectorAll('.myButtonLesion').forEach(button => {
-  button.addEventListener('click', function() {
-    button.classList.add('click-animation');
-    setTimeout(() => {
-      button.classList.remove('click-animation');
-    }, 300); // This duration should match your CSS animation duration
-  });
-});

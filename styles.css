@@ -210,6 +210,11 @@ tr { height: 20px;}
 
 .inputothers {box-sizing: border-box; width: 100%; min-width: 100%; resize: none; height: 22px; font-Size: 12px; overflow: hidden;}
 
+.UZabdomentable {  width: 100%;   table-layout: fixed; /  border-collapse: collapse; }
+.UZabdomentable td {  border: none;   text-align: center; }
+.BG1 {  background-color: #E9E0D3;}
+
+
 /* BUTTONS */
 
 button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-color: #FFFFFF; text-align: center; justify-content: center; display: inline-flex; border-radius: 0px;}
@@ -228,6 +233,9 @@ button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-
 .buttonCheckbox {width: 18px; height: 18px; text-align: center; justify-content: center; display: inline-flex;   margin: 0px 0px 0px 3px; }
 .buttonCheckbox {background-color: white;}
 .buttonCheckbox.red-background {background-color: #D4A29C;}
+
+
+.ButtonCycleText.red-background {  background-color: #D4A29C;}
 		
 .button40 {width: 40px;}
 .button50 {width: 50px;}
@@ -246,6 +254,9 @@ button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-
 
 .float {float: left;}
 .floatR {float: right;}
+
+
+
 
 /* TEXTS */
 

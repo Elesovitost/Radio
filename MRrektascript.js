@@ -1,27 +1,4 @@
-// BUTTONS CYCLING
-
-function cycleText(event, texts, index, buttonElement, callback) {
-    event.preventDefault(); // Add this line to prevent the default action (context menu in this case)
-
-    if (event.button === 0) {
-        if (index === texts.length - 1) {
-            index = texts.length - 1;
-        } else {
-            index = (index + 1) % texts.length;
-        }
-    } else if (event.button === 2) {
-        if (index === 0) {
-            index = 0;
-        } else {
-            index = (index - 1 + texts.length) % texts.length;
-        }
-    }
-
-    buttonElement.innerText = texts[index];
-    buttonElement.value = texts[index];
-    if (callback) callback(index, buttonElement);
-    return index;
-}
+// BUTTONS texts
 
 
 function updateBackgroundColor(index, buttonElement, color1 = "transparent", color2 = "#D4A29C") {
@@ -48,36 +25,6 @@ var buttonElementRectTuLNNonReg = document.getElementById("RectTuLNNonRegButton"
 var indexRectTuLNNonReg = 0;function cycleRectTuLNNonRegText(event) {  indexRectTuLNNonReg = cycleText(event, textsRectTuLNNonReg, indexRectTuLNNonReg, buttonElementRectTuLNNonReg);}
 function cycleRectTuLNNonRegText(event) {  indexRectTuLNNonReg = cycleText(event, textsRectTuLNNonReg, indexRectTuLNNonReg, buttonElementRectTuLNNonReg, updateBackgroundColor);  updateTexts();}
 
-
-// Chb clickable by right mouse
-
-const ChbesFromCHB = document.querySelectorAll('.CHB input[type="checkbox"]');
-const Chb1 = document.querySelector('#Chb1');
-const allChbes = [...ChbesFromCHB];
-
-if (Chb1) {
-    allChbes.push(Chb1);
-}
-
-allChbes.forEach(function(Chb) {
-    Chb.parentElement.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        Chb.checked = !Chb.checked;
-        updateTexts(); 
-    });
-});
-
-// buttons clickable by right mouse
-
-var buttons = document.getElementsByTagName("button");
-
-for (var i = 0; i < buttons.length; i++) {
-    // Add 'contextmenu' event to each button
-    buttons[i].addEventListener("contextmenu", function(e){
-        // Prevent the default context menu from showing up
-        e.preventDefault();
-    });
-}
 
 
 // LN
