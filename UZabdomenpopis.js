@@ -10,7 +10,7 @@ var POPUSLiverSentences = [];
 var RESUSLiverSentences = [];
 
 
-ButtonCycleInnerTexts["BTCLiverSize"] = ["normální", "mírně zvětšena", "výrazně zvětšena", "zmenšena"];
+ButtonCycleInnerTexts["BTCLiverSize"] = ["zmenšena", "normální", "mírně zvětšena", "výrazně zvětšena"];
 var BTCLiverSize = document.getElementById("BTCLiverSize").innerText;
 
 if (BTCLiverSize === "normální") {

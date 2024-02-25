@@ -11,7 +11,38 @@
 <div id="INDLINE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
 
 <div id="MAIN" class="standardwidth">
-
+<table class="UZkarotidtable">
+  <tr>
+    <td>	
+		<table class="UZkarotsubtable">
+			<tr><td class="BG1" colspan="6">Vpravo</td></tr>
+			<tr><td>CCA:</td>
+				<td> <input type="number" class="numbers" id="UZkarotCCAR" placeholder="PSV" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
+				<td>ICA:</td>
+				<td> <input type="number" class="numbers" id="UZkarotICAR" placeholder="PSV" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
+				<td></td>
+				<td> <input type="number" class="numbers" id="UZkarotICARIR" placeholder="RI" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
+			</tr>
+			<tr><td>AS:</td>
+			</tr>
+		</table>
+	</td>
+    <td>	
+		<table class="UZkarotsubtable">
+			<tr><td class="BG1" colspan="6">Vlevo</td></tr>
+			<tr><td>CCA:</td>
+				<td> <input type="number" class="numbers" id="UZkarotCCAL" placeholder="PSV" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
+				<td>ICA:</td>
+				<td> <input type="number" class="numbers" id="UZkarotICAL" placeholder="PSV" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
+				<td></td>
+				<td> <input type="number" class="numbers" id="UZkarotICARIL" placeholder="RI" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
+			</tr>
+			<tr><td>AS:</td>
+			</tr>
+		</table>
+	</td>
+  </tr>
+</table>
 
 </div>
 
@@ -28,7 +59,6 @@ ZÁVĚR<textarea id="UZkarotidRESText" class="superlarge"></textarea>
 
 
 <script src="Universal.js"></script>  
-<script src="UZkarotidscript.js"></script>  
 <script src="UZkarotidpopis.js"></script>          
 
 	</body>

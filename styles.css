@@ -226,8 +226,8 @@ tr { height: 20px;}
 .UZsubtable td:nth-child(2) {    text-align: left;}
 
 
-.UZsubtable td.BG1, .UZsubtable .BG1 {   background-color: #E9E0D3;  text-align: center; /* Ensures text in .BG1 cells is centered */}
-
+.UZsubtable td.BG1, .UZsubtable .BG1 {   background-color: #E9E0D3;  text-align: center; }
+.UZkarotsubtable td.BG1, .UZkarotsubtable .BG1 {   background-color: #E9E0D3; }
 
 /* BUTTONS */
 
