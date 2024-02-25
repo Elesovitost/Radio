@@ -18,33 +18,6 @@ function formatSUV(variableName) {
 }
 
 
-// universal size
-
-function formatLesionSize(variableName) {
-  var elementValue = document.getElementById(variableName).value;
-  if (elementValue !== "") {
-    if (/^\d+$/.test(elementValue)) { 
-      return "diametru " + elementValue + " mm";
-    } else { 
-      return "rozměru " + elementValue + " mm";
-    }
-  }
-  return "";
-}
-
-function formatLymphNodeSize(variableName) {
-  var elementValue = document.getElementById(variableName).value;
-  if (elementValue !== "") {
-    if (/^\d+$/.test(elementValue)) { 
-      return "diametru " + elementValue + " mm v krátké ose";
-    } else { 
-      return "rozměru " + elementValue + " mm";
-    }
-  }
-  return "";
-}
-
-
 //Date
 let DateCompare = document.getElementById("DateCompare").value; 
 let date = new Date(DateCompare); let day = String(date.getDate()).padStart(2, '0'); let month = String(date.getMonth() + 1).padStart(2, '0'); let year = date.getFullYear(); let DateComparison = day + "." + month + "." + year + " ";

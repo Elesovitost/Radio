@@ -18,6 +18,12 @@ body {
                                   supported by Chrome, Opera and Firefox */
 }
 
+/* no spinners */
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; } /* Chrome, Safari, Edge, Opera */
+input[type=number] { -moz-appearance: textfield; } /* Firefox */
+input[type=number]::-ms-clear, input[type=number]::-ms-reveal { display: none; } /* IE11 */
+
+
 
 body {
     margin: 0;
@@ -211,11 +217,16 @@ tr { height: 20px;}
 .inputothers {box-sizing: border-box; width: 100%; min-width: 100%; resize: none; height: 22px; font-Size: 12px; overflow: hidden;}
 
 .UZabdomentable {  width: 100%;  table-layout: fixed;  border-collapse: collapse;}
-.UZabdomentable td {  border: none;  text-align: center;  display: table-cell;  vertical-align: top; }
+.UZabdomentable td {  border: none;  text-align: center;  display: table-cell;  vertical-align: top;  }
 .UZabdomentable tr {  height: 1px; }
-.UZsubtable {  width: 100%;  table-layout: fixed;  border-collapse: collapse;}
+.UZsubtable tr:first-child td {  font-weight: bold; height: 30px; vertical-align: middle;   }
 
-.BG1 {  background-color: #E9E0D3;}
+.UZsubtable {  width: 100%; table-layout: fixed;  border-collapse: collapse;}
+.UZsubtable td:first-child {    text-align: right;}
+.UZsubtable td:nth-child(2) {    text-align: left;}
+
+
+.UZsubtable td.BG1, .UZsubtable .BG1 {   background-color: #E9E0D3;  text-align: center; /* Ensures text in .BG1 cells is centered */}
 
 
 /* BUTTONS */

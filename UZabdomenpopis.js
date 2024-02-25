@@ -9,16 +9,6 @@ document.getElementById("indikace").addEventListener("input", updateTexts);
 var POPUSLiverSentences = [];
 var RESUSLiverSentences = [];
 
-ButtonCycleInnerTexts["BTCLiverMalign"] = ["0", "1", "++"];
-var BTCLiverMalign = document.getElementById("BTCLiverMalign").innerText;
-
-if (BTCLiverMalign === "1") {
-    POPUSLiverSentences.push("s hypoechogenním ložiskem");
-    RESUSLiverSentences.push("Ložisko jater obrazu malignity");
-} else if (BTCLiverMalign === "++") {
-    POPUSLiverSentences.push("s vícečetnými hypechogenními ložisky");
-    RESUSLiverSentences.push("Vícečetná ložiska jater obrazu meta postižení");
-}
 
 ButtonCycleInnerTexts["BTCLiverSize"] = ["normální", "mírně zvětšena", "výrazně zvětšena", "zmenšena"];
 var BTCLiverSize = document.getElementById("BTCLiverSize").innerText;
@@ -50,6 +40,28 @@ if (BTCLiverParenchyma === "normální") {
     POPUSLiverSentences.push("s hrubou echotexturou parenchymu a zvlněným okrajem");
     RESUSLiverSentences.push("Obraz jaterní cirhózy");
 }
+
+
+//Liver malign
+
+ButtonCycleInnerTexts["BTCLiverMalign"] = ["0", "1", "++"];
+var BTCLiverMalign = document.getElementById("BTCLiverMalign").innerText;
+var LiverMalignSizemm = formatLesionSize('LiverMalignSize');
+var LiverMalignSize = document.getElementById('LiverMalignSize');
+
+if (BTCLiverMalign === "0") {
+	LiverMalignSize.classList.add('hidden');
+} else if (BTCLiverMalign === "1") {
+	LiverMalignSize.classList.remove('hidden');
+    POPUSLiverSentences.push("s hypoechogenním ložiskem " + LiverMalignSizemm);
+    RESUSLiverSentences.push("Ložisko jater obrazu malignity");
+} else if (BTCLiverMalign === "++") {
+	LiverMalignSize.classList.remove('hidden');
+    POPUSLiverSentences.push("s vícečetnými hypechogenními ložisky, největší " + LiverMalignSizemm);
+    RESUSLiverSentences.push("Vícečetná ložiska jater obrazu meta postižení");
+}
+
+
 
 ButtonCycleInnerTexts["BTCLiverCyst"] = ["0", "1", "++", "+++"];
 var BTCLiverCyst = document.getElementById("BTCLiverCyst").innerText;
@@ -208,17 +220,23 @@ if (BTCPancreasParenchyma === "chybí") {
 
 ButtonCycleInnerTexts["BTCPancreasMalign"] = ["0", "CN", "IPMN", "Tumor"];
 var BTCPancreasMalign = document.getElementById("BTCPancreasMalign").innerText;
+var PancreasMalignSizemm = formatLesionSize('PancreasMalignSize');
+var PancreasMalignSize = document.getElementById('PancreasMalignSize');
 
-if (BTCPancreasMalign === "CN") {
-    POPUSPancreasSentences.push("s cystickým ložiskem");
-    RESUSPancreasSentences.push("Cystické ložisko pankreatu podezřelé z cystické neoplazie");
+if (BTCPancreasMalign === "0") {
+    PancreasMalignSize.classList.add('hidden');
+} else if (BTCPancreasMalign === "CN") {
+    PancreasMalignSize.classList.remove('hidden');
+    POPUSPancreasSentences.push("s cystickým ložiskem " + PancreasMalignSizemm);
+    RESUSPancreasSentences.push("Cystoidní ložisko pankreatu podezřelé z cystické neoplazie");
 } else if (BTCPancreasMalign === "IPMN") {
-    POPUSPancreasSentences.push("s cystickým rozšířením / ložiskem v kontkatu s duktem");
+    POPUSPancreasSentences.push("s cystickým rozšířením / ložiskem " + PancreasMalignSizemm + " v kontaktu s duktem");
     RESUSPancreasSentences.push("Cystické ložisko pankreatu podezřelé z IPMN");
 } else if (BTCPancreasMalign === "Tumor") {
-    POPUSPancreasSentences.push("se solidním ložiskem");
+    POPUSPancreasSentences.push("se solidním ložiskem " + PancreasMalignSizemm);
     RESUSPancreasSentences.push("Tumor pankreatu");
-} 
+}
+
 
 ButtonCycleInnerTexts["BTCPancreasDuct"] = ["normální", "rozšířen"];
 var BTCPancreasDuct = document.getElementById("BTCPancreasDuct").innerText;
@@ -292,41 +310,48 @@ if (BTCKidneyLSize === "normální") {
 // Right Kidney Tumor
 ButtonCycleInnerTexts["BTCKidneyRMalign"] = ["0", "B 2F", "B 3", "B 4", "Tumor"];
 let BTCKidneyRMalign = document.getElementById("BTCKidneyRMalign").innerText;
+var KidneyRMalignSizemm = formatLesionSize('KidneyRMalignSize');
+var KidneyRMalignSize = document.getElementById('KidneyRMalignSize');
 
-if (BTCKidneyRMalign !== "0") {
-    if (BTCKidneyRMalign === "B 2F") {
-        POPUSKidneyRSentences.push("s hypoechogenním ložiskem s jemnými septy");
-        RESUSKidneyRSentences.push("Ložisko pravé ledviny obrazu septované cysty Bosniak 2F, k follow-up");
-    } else if (BTCKidneyRMalign === "B 3") {
-        POPUSKidneyRSentences.push("s hypoechogenním ložiskem se zesílenými septy či nodulem");
-        RESUSKidneyRSentences.push("Ložisko pravé ledviny obrazu komplexní cysty Bosniak 3, susp. z malignity");
-    } else if (BTCKidneyRMalign === "B 4") {
-        POPUSKidneyRSentences.push("se solidně-cystickým ložiskem");
-        RESUSKidneyRSentences.push("Solidně-cystický tumor pravé ledviny");
-    } else if (BTCKidneyRMalign === "Tumor") {
-        POPUSKidneyRSentences.push("se solidním ložiskem obrazu tumoru");
-        RESUSKidneyRSentences.push("Tumor pravé ledviny");
-    }
+if (BTCKidneyRMalign === "0") {
+    KidneyRMalignSize.classList.add('hidden');
+} else if (BTCKidneyRMalign === "B 2F") {
+    KidneyRMalignSize.classList.remove('hidden');
+    POPUSKidneyRSentences.push("s hypoechogenním ložiskem " + KidneyRMalignSizemm + " s jemnými septy");
+    RESUSKidneyRSentences.push("Ložisko pravé ledviny obrazu septované cysty Bosniak 2F, k follow-up");
+} else if (BTCKidneyRMalign === "B 3") {
+    POPUSKidneyRSentences.push("s hypoechogenním ložiskem " + KidneyRMalignSizemm + " se zesílenými septy či nodulem");
+    RESUSKidneyRSentences.push("Ložisko pravé ledviny obrazu komplexní cysty Bosniak 3, susp. z malignity");
+} else if (BTCKidneyRMalign === "B 4") {
+    POPUSKidneyRSentences.push("se solidně-cystickým ložiskem " + KidneyRMalignSizemm);
+    RESUSKidneyRSentences.push("Solidně-cystický tumor pravé ledviny");
+} else if (BTCKidneyRMalign === "Tumor") {
+    POPUSKidneyRSentences.push("se solidním ložiskem " + KidneyRMalignSizemm + " obrazu tumoru");
+    RESUSKidneyRSentences.push("Tumor pravé ledviny");
 }
+
 
 // Left Kidney TUmor
 ButtonCycleInnerTexts["BTCKidneyLMalign"] = ["0", "B 2F", "B 3", "B 4", "Tumor"];
 let BTCKidneyLMalign = document.getElementById("BTCKidneyLMalign").innerText;
+var KidneyLMalignSizemm = formatLesionSize('KidneyLMalignSize');
+var KidneyLMalignSize = document.getElementById('KidneyLMalignSize');
 
-if (BTCKidneyLMalign !== "0") {
-    if (BTCKidneyLMalign === "B 2F") {
-        POPUSKidneyLSentences.push("s hypoechogenním ložiskem s jemnými septy");
-        RESUSKidneyLSentences.push("Ložisko levé ledviny obrazu septované cysty Bosniak 2F, k follow-up");
-    } else if (BTCKidneyLMalign === "B 3") {
-        POPUSKidneyLSentences.push("s hypoechogenním ložiskem se zesílenými septy či nodulem");
-        RESUSKidneyLSentences.push("Ložisko levé ledviny obrazu komplexní cysty Bosniak 3, susp. z malignity");
-    } else if (BTCKidneyLMalign === "B 4") {
-        POPUSKidneyLSentences.push("se solidně-cystickým ložiskem");
-        RESUSKidneyLSentences.push("Solidně-cystický tumor levé ledviny");
-    } else if (BTCKidneyLMalign === "Tumor") {
-        POPUSKidneyLSentences.push("se solidním ložiskem obrazu tumoru");
-        RESUSKidneyLSentences.push("Tumor levé ledviny");
-    }
+if (BTCKidneyLMalign === "0") {
+    KidneyLMalignSize.classList.add('hidden');
+} else if (BTCKidneyLMalign === "B 2F") {
+    KidneyLMalignSize.classList.remove('hidden');
+    POPUSKidneyLSentences.push("s hypoechogenním ložiskem " + KidneyLMalignSizemm + " s jemnými septy");
+    RESUSKidneyLSentences.push("Ložisko pravé ledviny obrazu septované cysty Bosniak 2F, k follow-up");
+} else if (BTCKidneyLMalign === "B 3") {
+    POPUSKidneyLSentences.push("s hypoechogenním ložiskem " + KidneyLMalignSizemm + " se zesílenými septy či nodulem");
+    RESUSKidneyLSentences.push("Ložisko pravé ledviny obrazu komplexní cysty Bosniak 3, susp. z malignity");
+} else if (BTCKidneyLMalign === "B 4") {
+    POPUSKidneyLSentences.push("se solidně-cystickým ložiskem " + KidneyLMalignSizemm);
+    RESUSKidneyLSentences.push("Solidně-cystický tumor pravé ledviny");
+} else if (BTCKidneyLMalign === "Tumor") {
+    POPUSKidneyLSentences.push("se solidním ložiskem " + KidneyLMalignSizemm + " obrazu tumoru");
+    RESUSKidneyLSentences.push("Tumor pravé ledviny");
 }
 
 // Right Kidney Stone
@@ -446,6 +471,8 @@ var RESUSAppendixSentences = [];
 
 ButtonCycleInnerTexts["BTCAppendixSize"] = ["nevyšetřován", "nedetekován", "normální", "akcentován", "zánět"];
 var BTCAppendixSize = document.getElementById("BTCAppendixSize").innerText;
+var Appendixcmvalue = document.getElementById('Appendixcm').value;
+var Appendixcm = document.getElementById('Appendixcm');
 
 if (BTCAppendixSize === "nedetekován") {
     POPUSAppendixSentences.push("nenalezen");
@@ -453,16 +480,30 @@ if (BTCAppendixSize === "nedetekován") {
 } else if (BTCAppendixSize === "normální") {
     POPUSAppendixSentences.push("normální šíře s jemnou stěnou");
     RESUSAppendixSentences.push("Appendix bez známek zánětu");
+	Appendixcm.classList.add('hidden');
 } else if (BTCAppendixSize === "akcentován") {
-    POPUSAppendixSentences.push("hraničního diametru či šíře stěny");
+	Appendixcm.classList.remove('hidden');
+    if (Appendixcm) { // If Appendixcm is not empty
+        POPUSAppendixSentences.push("hraničního diametru " + Appendixcmvalue + " mm s hraniční šíře stěny");
+    } else {
+        POPUSAppendixSentences.push("hraničního diametru či šíře stěny");
+    }
     RESUSAppendixSentences.push("Appendix hranční šíře obrazu iritace / počínajícího zánětu");
 } else if (BTCAppendixSize === "zánět") {
-	POPUSAppendixSentences.push("objemný, s rozšířenou stěnou a edémem okolí");
+	Appendixcm.classList.remove('hidden');
+    if (Appendixcm) { // If Appendixcm is not empty
+        POPUSAppendixSentences.push("objemný diametru " + Appendixcmvalue + " mm, s rozšířenou stěnou a edémem okolí");
+    } else {
+        POPUSAppendixSentences.push("objemný, s rozšířenou stěnou a edémem okolí");
+    }
     RESUSAppendixSentences.push("Appendix je zánětlivě rozšířen");
 }
 
+
 POPUSAppendix = POPUSAppendixSentences.length > 0 ? "Appendix " + POPUSAppendixSentences.join(", ") + "." : "";
 RESUSAppendix = RESUSAppendixSentences.length > 0 ? RESUSAppendixSentences.join(". ") + "." : "";
+
+
 
 // urinary bladder
 
@@ -596,7 +637,7 @@ ButtonCycleInnerTexts["BTCAscites"] = ["není", "minimum", "v pánvi", "i mezikl
 var BTCAscites = document.getElementById("BTCAscites").innerText;
 
 if (BTCAscites === "není") {
-    POPUSAscitesSentences.push("bez volné tekutiny v dutině břišní");
+    POPUSAscitesSentences.push("bez volné tekutiny");
 } else if (BTCAscites === "minimum") {
     POPUSAscitesSentences.push("s minimem tekutiny v malé pánvi");
 } else if (BTCAscites === "v pánvi") {
@@ -652,7 +693,7 @@ UZabdomenPOPText.value =
 "Močový měchýř " + POPUSBladder + "\n" + 
 POPUSAppendix + RESUSSigma + "\n" + 
 POPUSUterus + POPUSAdnexaR + POPUSAdnexaL + "\n" +
-POPUSAscitesSentences + POPUSPleural
+POPUSAscites + POPUSPleural
 ;
 
 UZabdomenRESText.value = 
@@ -664,7 +705,7 @@ RESUSKidneyR + "\n" +
 RESUSKidneyL + "\n" + 
 RESUSAppendix + POPUSSigma + "\n" +
 RESUSUterus + RESUSAdnexaR + RESUSAdnexaL + "\n" +
-RESUSAscitesSentences + RESUSPleural
+RESUSAscites + RESUSPleural
 ;
 
 

@@ -293,13 +293,13 @@ window.addEventListener('load', function() {
             if (this.value === "") {
                 this.value = 0;
             }
-            e.preventDefault();			// Prevents the browser from scrolling while changing the number
+            e.preventDefault();	
             if (e.deltaY < 0) {
                 this.stepUp(); 
             } else {
                 this.stepDown(); 
                 if (this.value == 0) {
-                    this.value = ''; // Delete the number if it's 0
+                    this.value = ''; 
                 }
             }
             var event = new Event('input');
@@ -307,6 +307,58 @@ window.addEventListener('load', function() {
         });
     }
 });
+
+// NUMBERSTEXT MOUSE WHEELING
+window.addEventListener('load', function() {
+    var textInputs = document.getElementsByClassName("numberstext");
+    for (var i = 0; i < textInputs.length; i++) {
+        textInputs[i].addEventListener('wheel', function(e) {
+            var isNumeric = /^\d+$/.test(this.value);
+            var isEmpty = this.value === "";
+            if (isNumeric || isEmpty) {
+                e.preventDefault();
+                var currentValue = parseInt(this.value, 10) || 0;
+                if (e.deltaY < 0) {
+                    this.value = currentValue + 1;
+                } else if (currentValue > 0) {
+                    this.value = currentValue - 1;
+                }
+                if (this.value == 0) {
+                    this.value = '';
+                }
+                var event = new Event('input');
+                this.dispatchEvent(event);
+            }
+        });
+    }
+});
+
+
+// universal size
+
+function formatLesionSize(variableName) {
+  var elementValue = document.getElementById(variableName).value;
+  if (elementValue !== "") {
+    if (/^\d+$/.test(elementValue)) { 
+      return "diametru " + elementValue + " mm";
+    } else { 
+      return "rozměru " + elementValue + " mm";
+    }
+  }
+  return "";
+}
+
+function formatLymphNodeSize(variableName) {
+  var elementValue = document.getElementById(variableName).value;
+  if (elementValue !== "") {
+    if (/^\d+$/.test(elementValue)) { 
+      return "diametru " + elementValue + " mm v krátké ose";
+    } else { 
+      return "rozměru " + elementValue + " mm";
+    }
+  }
+  return "";
+}
 
 
 // AUTOCOMPLETE OFF
