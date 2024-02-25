@@ -76,8 +76,8 @@ if (BTCLiverHema === "1") {
     RESUSLiverSentences.push("Vícečetné hemangiomy jater");
 }
 
-var POPUSLiver = POPUSLiverSentences.join(", ") + ".";
-var RESUSLiver = RESUSLiverSentences.join(". ") + ".";
+POPUSLiver = POPUSLiverSentences.join(", ") + ".";
+RESUSLiver = RESUSLiverSentences.length > 0 ? RESUSLiverSentences.join(". ") + "." : "";
 
 
 
@@ -135,8 +135,32 @@ if (BTCGallbladderContent === "normální") {
 }
 
 POPUSGallbladder = POPUSGallbladderSentences.join(", ") + ".";
-RESUSGallbladder = RESUSGallbladderSentences.join(". ") + ".";
+RESUSGallbladder = RESUSGallbladderSentences.length > 0 ? RESUSGallbladderSentences.join(". ") + "." : "";
 
+
+// hepatocholedochus
+
+let POPUSHepatocholSentences = []; let RESUSHepatocholSentences = [];
+
+ButtonCycleInnerTexts["BTCHepatochol"] = ["nepřehledný", "normální", "prostornější", "rozšířen", "s konkrementem"];
+let BTCHepatochol = document.getElementById("BTCHepatochol").innerText;
+
+if (BTCHepatochol === "normální") {
+    POPUSHepatocholSentences.push("není rozšířen");
+} else if (BTCHepatochol === "prostornější") {
+    POPUSHepatocholSentences.push("je mírně rozšířen");
+} else if (BTCHepatochol === "rozšířen") {
+    POPUSHepatocholSentences.push("je dilatován");
+	RESUSHepatocholSentences.push("Dilatace d. hepatocholedochus");
+} else if (BTCHepatochol === "s konkrementem") {
+    POPUSHepatocholSentences.push("je rozšířený s patrným konkrementem");
+	RESUSHepatocholSentences.push("Choledocholitiáza s dilatací žlučových cest");
+} else if (BTCHepatochol === "nepřehledný") {
+    POPUSHepatocholSentences.push("není přehledný");
+}	
+
+POPUSHepatochol = POPUSHepatocholSentences.join(", ") + ".";
+RESUSHepatochol = RESUSHepatocholSentences.length > 0 ? RESUSHepatocholSentences.join(". ") + "." : "";
 
 //Spleen
 
@@ -156,6 +180,74 @@ if (BTCSpleenSize === "normální") {
 	POPUSSpleen = "není přítomna. ";
 	RESUSSpleen = "St.p. splenektomii. ";
 }
+
+// Pancreas
+
+var POPUSPancreasSentences = [];
+var RESUSPancreasSentences = [];
+
+ButtonCycleInnerTexts["BTCPancreasParenchyma"] = ["chybí", "nepřehledný", "atrofický", "normální", "lipomatózní", "zvětšený"];
+var BTCPancreasParenchyma = document.getElementById("BTCPancreasParenchyma").innerText;
+
+if (BTCPancreasParenchyma === "chybí") {
+    POPUSPancreasSentences.push("není po operaci přítomen");
+	RESUSPancreasSentences.push("St.p. pancreatektomii");
+} else if (BTCPancreasParenchyma === "nepřehledný") {
+    POPUSPancreasSentences.push("nelze zobrazit pro plyn v GIT");
+} else if (BTCPancreasParenchyma === "atrofický") {
+    POPUSPancreasSentences.push("je atrofický");
+    RESUSPancreasSentences.push("Atrofie pankreatu");
+} else if (BTCPancreasParenchyma === "normální") {
+    POPUSPancreasSentences.push("má normální velikost a vzhled");
+} else if (BTCPancreasParenchyma === "lipomatózní") {
+    POPUSPancreasSentences.push("s vysokou echogenitou");
+} else if (BTCPancreasParenchyma === "zvětšený") {
+    POPUSPancreasSentences.push("je edematózně rozšířen");
+    RESUSPancreasSentences.push("Edematózní pankreas podezřelý z akutní pankreatitidy");
+}
+
+ButtonCycleInnerTexts["BTCPancreasMalign"] = ["0", "CN", "IPMN", "Tumor"];
+var BTCPancreasMalign = document.getElementById("BTCPancreasMalign").innerText;
+
+if (BTCPancreasMalign === "CN") {
+    POPUSPancreasSentences.push("s cystickým ložiskem");
+    RESUSPancreasSentences.push("Cystické ložisko pankreatu podezřelé z cystické neoplazie");
+} else if (BTCPancreasMalign === "IPMN") {
+    POPUSPancreasSentences.push("s cystickým rozšířením / ložiskem v kontkatu s duktem");
+    RESUSPancreasSentences.push("Cystické ložisko pankreatu podezřelé z IPMN");
+} else if (BTCPancreasMalign === "Tumor") {
+    POPUSPancreasSentences.push("se solidním ložiskem");
+    RESUSPancreasSentences.push("Tumor pankreatu");
+} 
+
+ButtonCycleInnerTexts["BTCPancreasDuct"] = ["normální", "rozšířen"];
+var BTCPancreasDuct = document.getElementById("BTCPancreasDuct").innerText;
+
+if (!(BTCPancreasParenchyma === "chybí" || BTCPancreasParenchyma === "nepřehledný")) {
+    ButtonCycleInnerTexts["BTCPancreasDuct"] = ["normální", "rozšířen"];
+    var BTCPancreasDuct = document.getElementById("BTCPancreasDuct").innerText;
+
+    if (BTCPancreasDuct === "normální") {
+        POPUSPancreasSentences.push("vývod nerozšířen");
+    } else if (BTCPancreasDuct === "rozšířen") {
+        POPUSPancreasSentences.push("vývod je rozšířen");
+        RESUSPancreasSentences.push("Dilatace pankreatického vývodu");
+    }
+}
+
+ButtonCycleInnerTexts["BTCPancreasCyst"] = ["0", "1", "++"];
+var BTCPancreasCyst = document.getElementById("BTCPancreasCyst").innerText;
+
+if (BTCPancreasCyst === "1") {
+    POPUSPancreasSentences.push("s anechogenním ložiskem s jemnou stěnou");
+    RESUSPancreasSentences.push("Pseudocysta pankreatu");
+} else if (BTCPancreasCyst === "++") {
+    POPUSPancreasSentences.push("s vícečetnými anechogenními ložisky s jemnou stěnou");
+    RESUSPancreasSentences.push("Vícečetné pseudocysty pankreatu");
+} 
+
+POPUSPancreas = POPUSPancreasSentences.join(", ") + ".";
+RESUSPancreas = RESUSPancreasSentences.length > 0 ? RESUSPancreasSentences.join(". ") + "." : "";
 
 //Kidneys
 
@@ -237,6 +329,39 @@ if (BTCKidneyLMalign !== "0") {
     }
 }
 
+// Right Kidney Stone
+ButtonCycleInnerTexts["BTCKidneyRLith"] = ["ne", "v kalichu", "v pánvičce", "v ureteru"];
+let BTCKidneyRLith = document.getElementById("BTCKidneyRLith").innerText;
+
+if (BTCKidneyRLith === "ne") {
+    POPUSKidneyRSentences.push("bez litiázy");
+} else if (BTCKidneyRLith === "v kalichu") {
+    POPUSKidneyRSentences.push("s hyperechem s dorzálním stínem v kalichu");
+    RESUSKidneyRSentences.push("Kalikolitiáza vpravo");
+} else if (BTCKidneyRLith === "v pánvičce") {
+    POPUSKidneyRSentences.push("s hyperechem s dorzálním stínem v pánvičce");
+    RESUSKidneyRSentences.push("Pánvičková litiáza vpravo");
+} else if (BTCKidneyRLith === "v ureteru") {
+    POPUSKidneyRSentences.push("s hyperechem s dorzálním stínem v ureteru");
+    RESUSKidneyRSentences.push("Ureterolitiáza vpravo");
+}
+
+// Right Kidney Stone
+ButtonCycleInnerTexts["BTCKidneyLLith"] = ["ne", "v kalichu", "v pánvičce", "v ureteru"];
+let BTCKidneyLLith = document.getElementById("BTCKidneyLLith").innerText;
+
+if (BTCKidneyLLith === "ne") {
+    POPUSKidneyLSentences.push("bez litiázy");
+} else if (BTCKidneyLLith === "v kalichu") {
+    POPUSKidneyLSentences.push("s hyperechem s dorzálním stínem v kalichu");
+    RESUSKidneyLSentences.push("Kalikolitiáza vlevo");
+} else if (BTCKidneyLLith === "v pánvičce") {
+    POPUSKidneyLSentences.push("s hyperechem s dorzálním stínem v pánvičce");
+    RESUSKidneyLSentences.push("Pánvičková litiáza vlevo");
+} else if (BTCKidneyLLith === "v ureteru") {
+    POPUSKidneyLSentences.push("s hyperechem s dorzálním stínem v ureteru");
+    RESUSKidneyLSentences.push("Ureterolitiáza vlevo");
+}
 
 // Right Kidney CPS
 ButtonCycleInnerTexts["BTCKidneyRCPS"] = ["štíhlý", "akcentován", "hydronefróza II", "hydronefróza III", "hydronefróza IV"];
@@ -311,10 +436,205 @@ if (BTCKidneyLCyst === "1") {
 
 POPUSKidneyR = POPUSKidneyRSentences.join(", ") + ". ";
 POPUSKidneyL = POPUSKidneyLSentences.join(", ") + ". ";
-RESUSKidneyR = RESUSKidneyRSentences.join(". ") + ". ";
-RESUSKidneyL = RESUSKidneyLSentences.join(". ") + ". ";
+RESUSKidneyR = RESUSKidneyRSentences.length > 0 ? RESUSKidneyRSentences.join(". ") + "." : "";
+RESUSKidneyL = RESUSKidneyLSentences.length > 0 ? RESUSKidneyLSentences.join(". ") + "." : "";
   
+// appendix
 
+var POPUSAppendixSentences = [];
+var RESUSAppendixSentences = [];
+
+ButtonCycleInnerTexts["BTCAppendixSize"] = ["nevyšetřován", "nedetekován", "normální", "akcentován", "zánět"];
+var BTCAppendixSize = document.getElementById("BTCAppendixSize").innerText;
+
+if (BTCAppendixSize === "nedetekován") {
+    POPUSAppendixSentences.push("nenalezen");
+    RESUSAppendixSentences.push("Appendix není přehledný");
+} else if (BTCAppendixSize === "normální") {
+    POPUSAppendixSentences.push("normální šíře s jemnou stěnou");
+    RESUSAppendixSentences.push("Appendix bez známek zánětu");
+} else if (BTCAppendixSize === "akcentován") {
+    POPUSAppendixSentences.push("hraničního diametru či šíře stěny");
+    RESUSAppendixSentences.push("Appendix hranční šíře obrazu iritace / počínajícího zánětu");
+} else if (BTCAppendixSize === "zánět") {
+	POPUSAppendixSentences.push("objemný, s rozšířenou stěnou a edémem okolí");
+    RESUSAppendixSentences.push("Appendix je zánětlivě rozšířen");
+}
+
+POPUSAppendix = POPUSAppendixSentences.length > 0 ? "Appendix " + POPUSAppendixSentences.join(", ") + "." : "";
+RESUSAppendix = RESUSAppendixSentences.length > 0 ? RESUSAppendixSentences.join(". ") + "." : "";
+
+// urinary bladder
+
+var POPUSBladderSentences = [];
+var RESUSBladderSentences = [];
+
+ButtonCycleInnerTexts["BTCBladderSize"] = ["vyprázdněn", "katetr", "normální", "reziduum"];
+var BTCBladderSize = document.getElementById("BTCBladderSize").innerText;
+
+if (BTCBladderSize === "vyprázdněn") {
+    POPUSBladderSentences.push("s minimální náplní");
+} else if (BTCBladderSize === "katetr") {
+    POPUSBladderSentences.push("s balonkem katetru");
+} else if (BTCBladderSize === "normální") {
+    POPUSBladderSentences.push("s přiměřenou náplní");
+} else if (BTCBladderSize === "reziduum") {
+    POPUSBladderSentences.push("s reziduem po mikci");
+	RESUSBladderSentences.push("Po mikci reziduum v močovém měchýři");
+} 
+
+POPUSBladder = POPUSBladderSentences.join(", ") + ".";
+RESUSBladder = RESUSBladderSentences.length > 0 ? RESUSBladderSentences.join(". ") + "." : "";
+
+// sigma
+
+var POPUSSigmaSentences = [];
+var RESUSSigmaSentences = [];
+
+ButtonCycleInnerTexts["BTCSigmaInflam"] = ["nevyšetřováno", "normální", "divertikly", "zánět"];
+var BTCSigmaInflam = document.getElementById("BTCSigmaInflam").innerText;
+
+if (BTCSigmaInflam === "normální") {
+    POPUSSigmaSentences.push("bez zřetelné patologie");
+    RESUSSigmaSentences.push("Předhledný levostranný tračník bez zřetelné patologie");
+} else if (BTCSigmaInflam === "divertikly") {
+    POPUSSigmaSentences.push("s klidnými divertikly");
+    RESUSSigmaSentences.push("Divertikulóza c. sigmoideum");
+} else if (BTCSigmaInflam === "zánět") {
+    POPUSSigmaSentences.push("s fokálně rozšířenou stěnou s edémem okolí");
+    RESUSSigmaSentences.push("Zánětlivé změny c. sigmoideum (divertikulitis)");
+} 
+
+POPUSSigma = POPUSSigmaSentences.length > 0 ? "C. sigmoideum " + POPUSSigmaSentences.join(", ") + "." : "";
+RESUSSigma = RESUSSigmaSentences.length > 0 ? RESUSSigmaSentences.join(". ") + "." : "";
+
+// uterus
+
+var POPUSUterusSentences = [];
+var RESUSUterusSentences = [];
+
+ButtonCycleInnerTexts["BTCUterus"] = ["nevyšetřována", "není", "normální", "IUD", "myom"];
+var BTCUterus = document.getElementById("BTCUterus").innerText;
+
+if (BTCUterus === "není") {
+    POPUSUterusSentences.push("není přítomna");
+    RESUSUterusSentences.push("St.p. HYE");
+} else if (BTCUterus === "normální") {
+    POPUSUterusSentences.push("obvyklého vzhledu");
+} else if (BTCUterus === "IUD") {
+    POPUSUterusSentences.push("s IUD v dutině");
+    RESUSUterusSentences.push("IUD");
+} else if (BTCUterus === "myom") {
+    POPUSUterusSentences.push("se solidním hladce ohraničeným kulovitým ložiskem");
+    RESUSUterusSentences.push("Myom děložní");
+} else if (BTCUterus === "myom") {
+    POPUSUterusSentences.push("se solidním hladce ohraničeným kulovitým ložiskem");
+    RESUSUterusSentences.push("Myom děložní");
+} 
+
+POPUSUterus = POPUSUterusSentences.length > 0 ? "Děloha " + POPUSUterusSentences.join(", ") + ". " : "";
+RESUSUterus = RESUSUterusSentences.length > 0 ? RESUSUterusSentences.join(". ") + ". " : "";
+
+//Ovary R
+
+var POPUSAdnexaRSentences = [];
+var RESUSAdnexaRSentences = [];
+
+ButtonCycleInnerTexts["BTCAdnexaR"] = ["nevyšetřováno", "normální", "cysta do 5 cm", "cysta 5-7 cm", "cysta nad 7 cm", "tumor"];
+var BTCAdnexaR = document.getElementById("BTCAdnexaR").innerText;
+
+if (BTCAdnexaR === "normální") {
+    POPUSAdnexaRSentences.push("bez patrné patologie");
+} else if (BTCAdnexaR === "cysta do 5 cm") {
+    POPUSAdnexaRSentences.push("s cystickým ložiskem s jemnou stěnou diametru do 5 cm");
+} else if (BTCAdnexaR === "cysta 5-7 cm") {
+    POPUSAdnexaRSentences.push("s cystickým ložiskem s jemnou stěnou diametru 5-7 cm");
+    RESUSAdnexaRSentences.push("Cysta pravého ovária k follow up (za rok)");
+} else if (BTCAdnexaR === "cysta nad 7 cm") {
+    POPUSAdnexaRSentences.push("s cystickým ložiskem diametru nad 7 cm");
+    RESUSAdnexaRSentences.push("Cystické ložisko pravého ovária nad 7 cm, k dovyšetření");
+} else if (BTCAdnexaR === "tumor") {
+    POPUSAdnexaRSentences.push("se solidním či solidně-cystickým ložiskem");
+    RESUSAdnexaRSentences.push("Patologické ložisko v oblasti pravého ovária obrazu tumoru");
+} 
+
+POPUSAdnexaR = POPUSAdnexaRSentences.length > 0 ? "Pravé ovárium " + POPUSAdnexaRSentences.join(", ") + ". " : "";
+RESUSAdnexaR = RESUSAdnexaRSentences.length > 0 ? RESUSAdnexaRSentences.join(". ") + ". " : "";
+
+//Ovary L
+
+var POPUSAdnexaLSentences = [];
+var RESUSAdnexaLSentences = [];
+
+ButtonCycleInnerTexts["BTCAdnexaL"] = ["nevyšetřováno", "normální", "cysta do 5 cm", "cysta 5-7 cm", "cysta nad 7 cm", "tumor"];
+var BTCAdnexaL = document.getElementById("BTCAdnexaL").innerText;
+
+if (BTCAdnexaL === "normální") {
+    POPUSAdnexaLSentences.push("bez patrné patologie");
+} else if (BTCAdnexaL === "cysta do 5 cm") {
+    POPUSAdnexaLSentences.push("s cystickým ložiskem s jemnou stěnou diametru do 5 cm");
+} else if (BTCAdnexaL === "cysta 5-7 cm") {
+    POPUSAdnexaLSentences.push("s cystickým ložiskem s jemnou stěnou diametru 5-7 cm");
+    RESUSAdnexaLSentences.push("Cysta levého ovária k follow up (za rok)");
+} else if (BTCAdnexaL === "cysta nad 7 cm") {
+    POPUSAdnexaLSentences.push("s cystickým ložiskem diametru nad 7 cm");
+    RESUSAdnexaLSentences.push("Cystické ložisko levého ovária nad 7 cm, k dovyšetření");
+} else if (BTCAdnexaL === "tumor") {
+    POPUSAdnexaLSentences.push("se solidním či solidně-cystickým ložiskem");
+    RESUSAdnexaLSentences.push("Patologické ložisko v oblasti levého ovária obrazu tumoru");
+} 
+
+POPUSAdnexaL = POPUSAdnexaLSentences.length > 0 ? "Levé ovárium " + POPUSAdnexaLSentences.join(", ") + ". " : "";
+RESUSAdnexaL = RESUSAdnexaLSentences.length > 0 ? RESUSAdnexaLSentences.join(". ") + ". " : "";
+
+// ascites
+
+var POPUSAscitesSentences = [];
+var RESUSAscitesSentences = [];
+
+ButtonCycleInnerTexts["BTCAscites"] = ["není", "minimum", "v pánvi", "i mezikličkově", "i u jater", "masivně"];
+var BTCAscites = document.getElementById("BTCAscites").innerText;
+
+if (BTCAscites === "není") {
+    POPUSAscitesSentences.push("bez volné tekutiny v dutině břišní");
+} else if (BTCAscites === "minimum") {
+    POPUSAscitesSentences.push("s minimem tekutiny v malé pánvi");
+} else if (BTCAscites === "v pánvi") {
+    POPUSAscitesSentences.push("s lehce zvýšeným množstvím tekutiny v malé pánvi");
+    RESUSAscitesSentences.push("Malý ascites s tekutinou v pánvi");
+} else if (BTCAscites === "i mezikličkově") {
+    POPUSAscitesSentences.push("s tekutinou v pánvi a mezikličkově");
+    RESUSAscitesSentences.push("Ascites s tekutinou v pánvi a mezikličkově");
+} else if (BTCAscites === "i u jater") {
+    POPUSAscitesSentences.push("s tekutinou v pánvi, mezikličkově i pod játry");
+    RESUSAscitesSentences.push("Ascites s tekutinou v pánvi, mezikličkově i pod játry");
+} else if (BTCAscites === "masivně") {
+    POPUSAscitesSentences.push("s velkým množstvím tekutiny v celém rozsahu");
+    RESUSAscitesSentences.push("Výrazný ascites");
+} 
+
+POPUSAscites = POPUSAscitesSentences.length > 0 ? "Dutina břišní " + POPUSAscitesSentences.join(", ") + ". " : "";
+RESUSAscites = RESUSAscitesSentences.length > 0 ? RESUSAscitesSentences.join(". ") + ". " : "";
+
+
+// pleural
+
+var PleuralR = document.getElementById('PleuralR').value; var PleuralL = document.getElementById('PleuralL').value;
+
+var POPUSPleuralSentences = [];
+var RESUSPleuralSentences = [];
+
+if (PleuralR !== "") {
+	POPUSPleuralSentences.push("Pleurálně vpravo " + PleuralR + " cm tekutiny");
+    RESUSPleuralSentences.push("Fluidothorax vpravo (" + PleuralR + " cm)");
+} 
+
+if (PleuralL !== "") {
+	POPUSPleuralSentences.push("Pleurálně vlevo " + PleuralL + " cm tekutiny");
+    RESUSPleuralSentences.push("Fluidothorax vlevo (" + PleuralL + " cm)");
+} 
+POPUSPleural = POPUSPleuralSentences.length > 0 ? POPUSPleuralSentences.join(". ") + ". " : "";
+RESUSPleural = RESUSPleuralSentences.length > 0 ? RESUSPleuralSentences.join(". ") + ". " : "";
 
 // POPIS
 
@@ -324,20 +644,31 @@ UZabdomenINDText.value = indikace; document.getElementById("indikace").addEventL
 
 UZabdomenPOPText.value = 
 "Játra " + POPUSLiver + "\n" + 
-"Žlučník " + POPUSGallbladder + "\n" + 
+"Žlučník " + POPUSGallbladder + " Ductus hepatocholedochus " + POPUSHepatochol + "\n" + 
+"Pankreas " + POPUSPancreas + "\n" +
 "Slezina " + POPUSSpleen + "\n" + 
 "Pravá ledvina " + POPUSKidneyR + "\n" + 
-"Levá ledvina " + POPUSKidneyL
+"Levá ledvina " + POPUSKidneyL + "\n" + 
+"Močový měchýř " + POPUSBladder + "\n" + 
+POPUSAppendix + RESUSSigma + "\n" + 
+POPUSUterus + POPUSAdnexaR + POPUSAdnexaL + "\n" +
+POPUSAscitesSentences + POPUSPleural
 ;
 
 UZabdomenRESText.value = 
 RESUSLiver + "\n" + 
-RESUSGallbladder + "\n" + 
+RESUSGallbladder + RESUSHepatochol + "\n" + 
+RESUSPancreas + "\n" + 
 RESUSSpleen + "\n" + 
 RESUSKidneyR + "\n" + 
-RESUSKidneyL
+RESUSKidneyL + "\n" + 
+RESUSAppendix + POPUSSigma + "\n" +
+RESUSUterus + RESUSAdnexaR + RESUSAdnexaL + "\n" +
+RESUSAscitesSentences + RESUSPleural
 ;
 
+
+UZabdomenPOPText.value = UZabdomenPOPText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
 
 UZabdomenRESText.value = UZabdomenRESText.value.replace(/^\./gm, ''); // odstraní tečku na začátku řádek
 UZabdomenRESText.value = UZabdomenRESText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek

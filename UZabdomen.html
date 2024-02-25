@@ -14,14 +14,19 @@
 <table class="UZabdomentable">
   <tr>
     <td>	
-		<table class="UZabdomentable" id="pleural-right">
+		<table class="UZsubtable" id="pleural-right">
 			<tr><td class="BG1">Pleurální prostor vpravo</td></tr>
 			<tr><td>Tekutina (cm): <input type="number" class="numbers" id="PleuralR" placeholder="není" min="0" max="10" step="0.5" style="width: 60px;" oninput="updateTexts()"></td></tr>
 		</table>
 	</td>
-    <td>O</td>
     <td>	
-		<table class="UZabdomentable" id="pleural-right">
+		<table class="UZsubtable" id="pleural-right">
+			<tr><td class="BG1">Dutina břišní</td></tr>
+			<tr><td>Ascites: <button id="BTCAscites" class="ButtonCycleText button120">není</button> </td></tr>
+		</table>
+	</td>
+    <td>	
+		<table class="UZsubtable" id="pleural-right">
 			<tr><td class="BG1">Pleurální prostor vlevo</td></tr>
 			<tr><td>Tekutina (cm): <input type="number" class="numbers" id="PleuralL" placeholder="není" min="0" max="10" step="0.5" style="width: 60px;" oninput="updateTexts()"></td></td></tr>
 		</table>
@@ -29,7 +34,7 @@
   </tr>
   <tr>
     <td>	
-		<table class="UZabdomentable" id="pleural-right">
+		<table class="UZsubtable" id="pleural-right">
 			<tr><td class="BG1">Játra</td></tr>
 			<tr><td>Velikost jater: <button id="BTCLiverSize" class="ButtonCycleText button120">normální</button> </td></tr>
 			<tr><td>Jaterní parenchym: <button id="BTCLiverParenchyma" class="ButtonCycleText button120">normální</button> </td></tr>
@@ -37,68 +42,68 @@
 		</table>
 	</td>
     <td>	
-		<table class="UZabdomentable" id="pleural-right">
+		<table class="UZsubtable" id="pleural-right">
 			<tr><td class="BG1">Žlučník</td></tr>
 			<tr><td>Velikost žlučníku: <button id="BTCGallbladderSize" class="ButtonCycleText button120">normální</button> </td></tr>
 			<tr><td>Náplň žlučníku: <button id="BTCGallbladderContent" class="ButtonCycleText button120">normální</button> </td></tr>
 			<tr><td>Stěna žlučníku: <button id="BTCGallbladderWall" class="ButtonCycleText button120">normální</button> </td></tr>
+			<tr><td>Hepatocholedochus: <button id="BTCHepatochol" class="ButtonCycleText button120">normální</button> </td></tr>
 		</table>
 	</td>
     <td>	
-		<table class="UZabdomentable" id="pleural-right">
+		<table class="UZsubtable" id="pleural-right">
 			<tr><td class="BG1">Slezina</td></tr>
 			<tr><td>Velikost sleziny: <button id="BTCSpleenSize" class="ButtonCycleText button120">normální</button> </td></tr>
-			<tr><td>C</td></tr>
 		</table>
 	</td>
   </tr>
   <tr>
     <td>	
-		<table class="UZabdomentable" id="pleural-right">
+		<table class="UZsubtable" id="pleural-right">
 			<tr><td class="BG1">Ledvina pravá</td></tr>
 			<tr><td>Velikost ledviny: <button id="BTCKidneyRSize" class="ButtonCycleText button120">normální</button> </td></tr>
 			<tr><td>KPS: <button id="BTCKidneyRCPS" class="ButtonCycleText button120">štíhlý</button> </td></tr>
-			<tr><td>Cysta: <button id="BTCKidneyRCyst" class="ButtonCycleText button40">0</button> Malignita: <button id="BTCKidneyRMalign" class="ButtonCycleText button40">0</button></td></tr>
-			<tr><td>C</td></tr>
+			<tr><td>Litiáza: <button id="BTCKidneyRLith" class="ButtonCycleText button120">ne</button> </td></tr>
+			<tr><td>Cysta: <button id="BTCKidneyRCyst" class="ButtonCycleText button40">0</button> Malignita: <button id="BTCKidneyRMalign" class="ButtonCycleText button50">0</button></td></tr>
 		</table>
 	</td>
     <td>	
-		<table class="UZabdomentable" id="pleural-right">
+		<table class="UZsubtable" id="pleural-right">
 			<tr><td class="BG1">Pankreas a Retroperitoneum</td></tr>
-			<tr><td>B</td></tr>
-			<tr><td>C</td></tr>
+			<tr><td>Vzhled: <button id="BTCPancreasParenchyma" class="ButtonCycleText button120">normální</button> </td></tr>
+			<tr><td>Vývod: <button id="BTCPancreasDuct" class="ButtonCycleText button120">normální</button> </td></tr>
+			<tr><td>Pseudocysta: <button id="BTCPancreasCyst" class="ButtonCycleText button50">0</button> Malignita: <button id="BTCPancreasMalign" class="ButtonCycleText button50">0</button></td></tr>
 		</table>
 	</td>
     <td>	
-		<table class="UZabdomentable" id="pleural-right">
+		<table class="UZsubtable" id="pleural-right">
 			<tr><td class="BG1">Ledvina levá</td></tr>
 			<tr><td>Velikost ledviny: <button id="BTCKidneyLSize" class="ButtonCycleText button120">normální</button> </td></tr>
 			<tr><td>KPS: <button id="BTCKidneyLCPS" class="ButtonCycleText button120">štíhlý</button> </td></tr>
-			<tr><td>Cysta: <button id="BTCKidneyLCyst" class="ButtonCycleText button40">0</button> Malignita: <button id="BTCKidneyLMalign" class="ButtonCycleText button40">0</button></td></tr>
-			<tr><td>C</td></tr>
+			<tr><td>Litiáza: <button id="BTCKidneyLLith" class="ButtonCycleText button120">ne</button> </td></tr>
+			<tr><td>Cysta: <button id="BTCKidneyLCyst" class="ButtonCycleText button40">0</button> Malignita: <button id="BTCKidneyLMalign" class="ButtonCycleText button50">0</button></td></tr>
 		</table>
 	</td>
   </tr>
   <tr>
     <td>	
-		<table class="UZabdomentable" id="pleural-right">
+		<table class="UZsubtable" id="pleural-right">
 			<tr><td class="BG1">Cékum a apendix</td></tr>
-			<tr><td>B</td></tr>
-			<tr><td>C</td></tr>
+			<tr><td>Appendix: <button id="BTCAppendixSize" class="ButtonCycleText button120">nevyšetřován</button> </td></tr>
 		</table>
 	</td>
     <td>	
-		<table class="UZabdomentable" id="pleural-right">
+		<table class="UZsubtable" id="pleural-right">
 			<tr><td class="BG1">Měchýř, děloha, prostata</td></tr>
-			<tr><td>B</td></tr>
-			<tr><td>C</td></tr>
+			<tr><td>Měchýř náplň: <button id="BTCBladderSize" class="ButtonCycleText button120">normální</button> </td></tr>
+			<tr><td>Děloha: <button id="BTCUterus" class="ButtonCycleText button120">nevyšetřována</button> </td></tr>
+			<tr><td>Ovárium P: <button id="BTCAdnexaR" class="ButtonCycleText button120">nevyšetřováno</button> L: <button id="BTCAdnexaL" class="ButtonCycleText button120">nevyšetřováno</button></td></tr>
 		</table>
 	</td>
     <td>	
-		<table class="UZabdomentable" id="pleural-right">
+		<table class="UZsubtable" id="pleural-right">
 			<tr><td class="BG1">Sigma</td></tr>
-			<tr><td>B</td></tr>
-			<tr><td>C</td></tr>
+			<tr><td>Vzhled: <button id="BTCSigmaInflam" class="ButtonCycleText button120">nevyšetřováno</button> </td></tr>
 		</table>
 	</td>
   </tr>

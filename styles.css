@@ -210,8 +210,11 @@ tr { height: 20px;}
 
 .inputothers {box-sizing: border-box; width: 100%; min-width: 100%; resize: none; height: 22px; font-Size: 12px; overflow: hidden;}
 
-.UZabdomentable {  width: 100%;   table-layout: fixed; /  border-collapse: collapse; }
-.UZabdomentable td {  border: none;   text-align: center; }
+.UZabdomentable {  width: 100%;  table-layout: fixed;  border-collapse: collapse;}
+.UZabdomentable td {  border: none;  text-align: center;  display: table-cell;  vertical-align: top; }
+.UZabdomentable tr {  height: 1px; }
+.UZsubtable {  width: 100%;  table-layout: fixed;  border-collapse: collapse;}
+
 .BG1 {  background-color: #E9E0D3;}
 
 
