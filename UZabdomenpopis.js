@@ -709,6 +709,7 @@ RESUSAscites + RESUSPleural
 ;
 
 
+
 UZabdomenPOPText.value = UZabdomenPOPText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
 
 UZabdomenRESText.value = UZabdomenRESText.value.replace(/^\./gm, ''); // odstraní tečku na začátku řádek
@@ -722,6 +723,9 @@ UZabdomenRESText.value = UZabdomenRESText.value.replace(/\,{2,}/g, ','); // víc
 UZabdomenRESText.value = UZabdomenRESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
 UZabdomenRESText.value = UZabdomenRESText.value.replace(/  +/g, ' '); // dvojmezery
 
+if (!UZabdomenRESText.value.trim() || !UZabdomenRESText.value.replace(/[\n\r\s]+/g, '').length) {
+    UZabdomenRESText.value = "Bez patrné patologie.";
+}
 
 
 }

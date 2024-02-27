@@ -1,0 +1,88 @@
+<head>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body>
+
+<div id="UZCarotidshape" class="MainDIV">
+
+<div id="UZCarotid" class="mydiv0 standardwidth">UZ karotid</div>
+<div id="INDLINE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
+
+<div id="MAIN" class="standardwidth">
+<table class="UZCarotidtable">
+  <tr>
+    <td>	
+		<table class="UZCarotsubtable">
+			<tr><td class="BG1" colspan="6">Vpravo</td></tr>
+			<tr><td>CCA:</td>
+				<td> <input type="number" class="numbers" id="UZCarotRCCA" placeholder="PSV" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
+				<td>ICA:</td>
+				<td> <input type="number" class="numbers" id="UZCarotRICA" placeholder="PSV" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
+				<td></td>
+				<td> <input type="number" class="numbers" id="UZCarotRRI" placeholder="RI" min="0" max="1" step="0.05" style="width: 40px;" oninput="updateTexts()"> </td>
+			</tr>
+				<td>pláty:</td>
+				<td  colspan="5"> 
+					<button id="UZCarotRASno" class="ButtonCycleText button40">0</button> 
+					<button id="UZCarotRASmater" class="ButtonCycleText button60 hidden">kalcif.</button> 
+				</td>
+			</tr>
+			</tr>
+				<td>VA:</td>
+				<td  colspan="5"> 
+					<button id="UZVertRsize" class="ButtonCycleText button60">normální</button> 
+					<button id="UZVertRflow" class="ButtonCycleText button40">tok↑</button> 
+				</td>
+			</tr>
+		</table>
+	</td>
+    <td>	
+		<table class="UZCarotsubtable">
+			<tr><td class="BG1" colspan="6">Vpravo</td></tr>
+			<tr><td>CCA:</td>
+				<td> <input type="number" class="numbers" id="UZCarotLCCA" placeholder="PSV" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
+				<td>ICA:</td>
+				<td> <input type="number" class="numbers" id="UZCarotLICA" placeholder="PSV" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
+				<td></td>
+				<td> <input type="number" class="numbers" id="UZCarotLRI" placeholder="RI" min="0" max="1" step="0.05" style="width: 40px;" oninput="updateTexts()"> </td>
+			</tr>
+				<td>pláty:</td>
+				<td  colspan="5"> 
+					<button id="UZCarotLASno" class="ButtonCycleText button40">0</button> 
+					<button id="UZCarotLASmater" class="ButtonCycleText button60 hidden">kalcif.</button> 
+				</td>
+			</tr>
+			</tr>
+				<td>VA:</td>
+				<td  colspan="5"> 
+					<button id="UZVertLsize" class="ButtonCycleText button60">normální</button> 
+					<button id="UZVertLflow" class="ButtonCycleText button40">tok↑</button> 
+				</td>
+			</tr>
+		</table>
+	</td>
+  </tr>
+</table>
+
+</div>
+
+</div>
+
+
+<div id="texty1" class=" standardwidth hidden">
+NÁZEV<textarea id="UZCarotidNAMEText" class="medium"></textarea>
+INDIKACE<textarea id="UZCarotidINDText" class="medium"></textarea>
+POPIS<textarea id="UZCarotidPOPText" class="superlarge"></textarea>
+ZÁVĚR<textarea id="UZCarotidRESText" class="superlarge"></textarea>
+</div>
+
+
+
+<script src="Universal.js"></script>  
+<script src="UZCarotidpopis.js"></script>          
+
+	</body>
+</html>
+  

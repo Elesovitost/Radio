@@ -63,7 +63,7 @@
 		<button class="dropbtn">UZ</button>
 		<div class="dropdown-content">
 			<a href="#" onclick="changePage('UZabdomen.html')">UZ břicha</a>
-			<a href="#" onclick="changePage('UZkarotid.html')">UZ karotid</a>
+			<a href="#" onclick="changePage('UZcarotid.html')">UZ karotid</a>
 		</div>
 	</div>
 	
@@ -315,14 +315,19 @@ function updateFinalTextAreas() {
     document.getElementById("FINALRESText").value = finalRESText.trim();
 
     // Combine into FINALCOMPLETEText
-    var finalCompleteText = 
-        finalNAMEText.slice(0, -2) + "\n\n" +
-        "Sekvence: " + finalSEKVText.trim() + "\n\n" + 
-        "Indikace: " + finalINDText.trim() + "\n\n" + 
-        finalPOPText.trim() + "\n\n" + 
-        "Závěr: " + "\n" + finalRESText.trim();
+    var finalCompleteText = finalNAMEText.slice(0, -2);
 
-    document.getElementById("FINALCOMPLETEText").value = finalCompleteText;
+    if (finalSEKVText.trim()) {
+        finalCompleteText += "\n\nSekvence: " + finalSEKVText.trim();
+    }
+
+    if (finalINDText.trim()) {
+        finalCompleteText += (finalCompleteText ? "\n\n" : "") + "Indikace: " + finalINDText.trim();
+    }
+
+    finalCompleteText += "\n\n" + finalPOPText.trim() + "\n\n" + "Závěr: " + "\n" + finalRESText.trim();
+
+    document.getElementById("FINALCOMPLETEText").value = finalCompleteText.trim();
 }
 
 

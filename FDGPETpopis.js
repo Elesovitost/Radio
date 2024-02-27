@@ -208,7 +208,7 @@ else if (PETTypeText === "PSMA") {
     elementParotid.classList.remove('hidden');
 }
 else if (PETTypeText === "DOTATOC") {
-    ObecneNativeText = "Nativní text pro DOTATOC."; 
+    ObecneNativeText = "Neložisková akumulace radiofarmaka v hypofýze, štítné žláze, nadledvinách a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález."; 
     nazev = "DOTATOC-PET/CT(MR) trupu"; 
     elementParotid.classList.add('hidden');
 }
