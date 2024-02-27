@@ -457,15 +457,42 @@ function addEventListenersForButtons() {
             updateTexts();
         });
     });
+}
+addEventListenersForButtons();
 
-    document.querySelectorAll('button[id^="BTC"]').forEach(button => {
-        button.addEventListener('click', function() {
-            updateTexts();
+// tooltip
+
+function showInnerTextsOnHover() {
+    document.querySelectorAll('.ButtonCycleText').forEach(button => {
+        let hoverTimer;
+
+        button.addEventListener('mouseenter', function() {
+            clearTimeout(hoverTimer);
+            hoverTimer = setTimeout(() => {
+                const texts = ButtonCycleInnerTexts[button.id];
+                let tooltip = document.getElementById('tooltip');
+                if (!tooltip) {
+                    tooltip = document.createElement('div');
+                    tooltip.id = 'tooltip';
+                    document.body.appendChild(tooltip);
+                }
+
+                tooltip.innerText = texts.join(', ');
+                tooltip.style.display = 'block';
+                tooltip.style.position = 'absolute';
+                tooltip.style.left = button.getBoundingClientRect().right + 'px';
+                tooltip.style.top = button.getBoundingClientRect().top + 'px';
+            }, 1000); // 1 second delay
         });
-        button.addEventListener('contextmenu', function(event) {
-            event.preventDefault();
-            updateTexts();
+
+        button.addEventListener('mouseleave', function() {
+            clearTimeout(hoverTimer);
+            const tooltip = document.getElementById('tooltip');
+            if (tooltip) {
+                tooltip.style.display = 'none';
+            }
         });
     });
 }
-addEventListenersForButtons();
+
+showInnerTextsOnHover();

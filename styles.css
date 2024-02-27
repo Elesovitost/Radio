@@ -221,9 +221,9 @@ tr { height: 20px;}
 .UZabdomentable tr {  height: 1px; }
 .UZsubtable tr:first-child td {  font-weight: bold; height: 30px; vertical-align: middle;   }
 
-.UZsubtable {  width: 100%; table-layout: fixed;  border-collapse: collapse;}
-.UZsubtable td:first-child {    text-align: right;}
-.UZsubtable td:nth-child(2) {    text-align: left;}
+.UZsubtable {  width: 100%;  border-collapse: collapse;}
+.UZsubtable td:first-child {    text-align: right; width: 40%;}
+.UZsubtable td:nth-child(2) {    text-align: left; width: 60%;}
 
 
 .UZsubtable td.BG1, .UZsubtable .BG1 {   background-color: #E9E0D3;  text-align: center; }
@@ -485,3 +485,16 @@ body.TNM td:first-child, body.TNM td:nth-child(2), body.TNM .main-row {
 @keyframes clickEffect {0% {transform: scale(1);}   50% {transform: scale(0.9);}   100% {transform: scale(1);}}
 .myButtonLesion {cursor: pointer;transition: transform 0.3s ease;}
 .myButtonLesion.click-animation {animation: clickEffect 0.3s ease;}
+
+/* tooltip*/
+
+#tooltip {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+	font-size: 12px;
+    border: 1px solid #ddd;
+    padding: 3px;
+    z-index: 1000; /* Ensure it's above other elements */
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}

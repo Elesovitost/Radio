@@ -62,7 +62,6 @@ if (BTCLiverMalign === "0") {
 }
 
 
-
 ButtonCycleInnerTexts["BTCLiverCyst"] = ["0", "1", "++", "+++"];
 var BTCLiverCyst = document.getElementById("BTCLiverCyst").innerText;
 
@@ -146,8 +145,8 @@ if (BTCGallbladderContent === "normální") {
 	RESUSGallbladderSentences.push("Žlučník je vyplněn konkrementy");
 }
 
-POPUSGallbladder = POPUSGallbladderSentences.join(", ") + ".";
-RESUSGallbladder = RESUSGallbladderSentences.length > 0 ? RESUSGallbladderSentences.join(". ") + "." : "";
+POPUSGallbladder = POPUSGallbladderSentences.join(", ") + ". ";
+RESUSGallbladder = RESUSGallbladderSentences.length > 0 ? RESUSGallbladderSentences.join(". ") + ". " : "";
 
 
 // hepatocholedochus
@@ -198,12 +197,12 @@ if (BTCSpleenSize === "normální") {
 var POPUSPancreasSentences = [];
 var RESUSPancreasSentences = [];
 
-ButtonCycleInnerTexts["BTCPancreasParenchyma"] = ["chybí", "nepřehledný", "atrofický", "normální", "lipomatózní", "zvětšený"];
+ButtonCycleInnerTexts["BTCPancreasParenchyma"] = ["chybí", "nepřehledný", "atrofický", "normální", "lipomatózní", "edematózní"];
 var BTCPancreasParenchyma = document.getElementById("BTCPancreasParenchyma").innerText;
 
 if (BTCPancreasParenchyma === "chybí") {
     POPUSPancreasSentences.push("není po operaci přítomen");
-	RESUSPancreasSentences.push("St.p. pancreatektomii");
+	RESUSPancreasSentences.push("St.p. pankreatektomii");
 } else if (BTCPancreasParenchyma === "nepřehledný") {
     POPUSPancreasSentences.push("nelze zobrazit pro plyn v GIT");
 } else if (BTCPancreasParenchyma === "atrofický") {
@@ -213,7 +212,7 @@ if (BTCPancreasParenchyma === "chybí") {
     POPUSPancreasSentences.push("má normální velikost a vzhled");
 } else if (BTCPancreasParenchyma === "lipomatózní") {
     POPUSPancreasSentences.push("s vysokou echogenitou");
-} else if (BTCPancreasParenchyma === "zvětšený") {
+} else if (BTCPancreasParenchyma === "edematózní") {
     POPUSPancreasSentences.push("je edematózně rozšířen");
     RESUSPancreasSentences.push("Edematózní pankreas podezřelý z akutní pankreatitidy");
 }
@@ -730,4 +729,5 @@ if (!UZabdomenRESText.value.trim() || !UZabdomenRESText.value.replace(/[\n\r\s]+
 
 }
 updateTexts();
+
 
