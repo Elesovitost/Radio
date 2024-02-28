@@ -137,11 +137,19 @@ else if (UZCarotRASno === "0" && UZCarotRICA < 125) {
 else if (UZCarotRASno === "0" && UZCarotRICA >= 125) {
     RESCarotR = "Vpravo abnormální rychlost v ICA bez AS změn a bez stenóz. ";
 }
+
+
 `;
 
 let codeforL = codeforR.replace(/CarotR/g, 'CarotL').replace(/VertR/g, 'VertL').replace(/prav/g, 'lev').replace(/Prav/g, 'Lev');;
 eval(codeforR);
 eval(codeforL);
+
+if (UZCarotRCCA !== 0 && UZCarotRCCA !== "") {POPUZCarotRCCAPSV = "R-CCA: PSV " + UZCarotRCCA + " cm/s.";} else {POPUZCarotRCCAPSV = "";}
+if (UZCarotRRI !== 0 && UZCarotRRI !== "") {POPUZCarotRICARI = "RI: PSV " + UZCarotRRI + ". ";} else {POPUZCarotRICARI = "";}
+
+if (UZCarotLCCA !== 0 && UZCarotLCCA !== "") {POPUZCarotLCCAPSV = "L-CCA: PSV " + UZCarotLCCA + " cm/s.";} else {POPUZCarotLCCAPSV = "";}
+if (UZCarotLRI !== 0 && UZCarotLRI !== "") {POPUZCarotLICARI = "RI: PSV " + UZCarotLRI + ". ";} else {POPUZCarotLICARI = "";}
 
 // POPIS
 
@@ -150,12 +158,12 @@ UZCarotidNAMEText.value = "UZ karotid";
 UZCarotidINDText.value = indikace; document.getElementById("indikace").addEventListener("input", updateTexts);
 
 UZCarotidPOPText.value = 
-"R-CCA: PSV " + UZCarotRCCA + " cm/s. " + "\n" +
-"R-ICA: PSV " + UZCarotRICA + " cm/s. " + "RI " + UZCarotRRI + " cm/s." + "\n" + 
+POPUZCarotRCCAPSV + "\n" +
+"R-ICA: PSV " + UZCarotRICA + " cm/s. " + POPUZCarotRICARI + "\n" + 
 "Aterosklerotické pláty " + POPUSCarotR + "\n" +
 "R-VA: " + POPUSVertR + "\n\n" +
-"L-CCA: PSV " + UZCarotLCCA + " cm/s. " + "\n" +
-"L-ICA: PSV " + UZCarotLICA + " cm/s. " + "RI " + UZCarotLRI + " cm/s." + "\n" + 
+POPUZCarotLCCAPSV + "\n" +
+"L-ICA: PSV " + UZCarotLICA + " cm/s. " + POPUZCarotLICARI + "\n" + 
 "Aterosklerotické pláty " + POPUSCarotL + "\n" +
 "L-VA: " + POPUSVertL
 ;
