@@ -12,6 +12,10 @@
 MR prostaty <label class="CHB"><input type="checkbox" id="ChbProstatePSMA" onChange="updateTexts()"><span>+</span></label> PSMA PET
 </div>
 
+<div id="IND" class="mydiv1 standardwidth hidden">
+<input id="indikace" type="text" placeholder="indikace..." autocomplete="off" >
+</div>
+
 <div id="GeneralDIV" class="standardwidth DIV">
 
 <div id="rozsah" class="DIVLesions"><button class="title">OBECNÉ</button>
@@ -282,6 +286,8 @@ Ostatní meta <label class="CHB"><input type="checkbox" id="ChbProstateOtherMeta
 </div id="end">
 
 <div id="texty1" class=" standardwidth mydiv0 hidden">
+NÁZEV<textarea id="ProstateTuNAMEText" class="medium"></textarea>
+INDIKACE<textarea id="ProstateTuINDText" class="medium"></textarea>
 &nbsp; POPIS <button id="copyFINAL" class="button60">copy</button>
 <textarea id="ProstateFinalText" class="superlarge" readonly></textarea>
 </div>

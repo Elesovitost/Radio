@@ -216,13 +216,17 @@ if (document.getElementById('ChbRectTuPerit').checked) {
 
 
 // POPIS
+
+RectTuNAMEText.value = "MR rekta"; 
+
+RectTuINDText.value = document.getElementById("indikace").addEventListener("input", updateTexts);
+
 if (RectTuTypeText !== "není") {
 	TumorDescription = "V T2W je přítomno " + RectTuTypeP + " zvýšení signálu stěny rekta " + RectTuSpread + ". " + RectTuStartP + RectTuTotDistanceP + ". " + "\n" +
 	RectTuInvasionSegment + RectTuInvasionP + RectTuAngioInvasion + RectTuMRF;
 }
 
 RectTuPOPText.value = 
-"Rektum:" + "\n" +
 TumorDescription + "\n" +
 RectTuLNRegP + " " + RectTuLNNonRegP
 ;

@@ -1182,9 +1182,11 @@ if (document.getElementById('ChbProstatePSMA').checked) {
 	
 	
 // POPIS
+ProstateTuNAMEText.value = "MR prostaty"; 
+
+ProstateTuINDText.value = document.getElementById("indikace").addEventListener("input", updateTexts);
 
 ProstateTuPOPText.value = 
-"Prostata:" + "\n" +
 ProstateOkP + "\n" +
 ProstateRecidP + "\n" +
 ProstateLesion1P + "\n" +

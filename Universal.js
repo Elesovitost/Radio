@@ -460,29 +460,60 @@ function addEventListenersForButtons() {
 }
 addEventListenersForButtons();
 
-// tooltip
-
-function showInnerTextsOnHover() {
+// tooltip (only when chbTooltip is checked)
+ 
+ function showInnerTextsOnHover() {
     document.querySelectorAll('.ButtonCycleText').forEach(button => {
         let hoverTimer;
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.type === "characterData" || mutation.type === "childList") {
+                    updateTooltipContent(button);
+                }
+            });
+        });
+
+        const updateTooltipContent = (button) => {
+            const texts = ButtonCycleInnerTexts[button.id];
+            let tooltip = document.getElementById('tooltip');
+            if (!tooltip) {
+                tooltip = document.createElement('div');
+                tooltip.id = 'tooltip';
+                document.body.appendChild(tooltip);
+            }
+
+            tooltip.innerHTML = '';
+
+            texts.forEach((text, index) => {
+                const span = document.createElement('span');
+                span.textContent = text;
+                if (text === button.innerText) {
+                    span.style.fontWeight = 'bold';
+                    span.style.color = '#D4A29C';
+                } else {
+                    span.style.fontWeight = 'normal';
+                    span.style.color = 'black';
+                }
+				tooltip.appendChild(span);
+
+				if (index < texts.length - 1) {
+					tooltip.appendChild(document.createTextNode(', '));
+				}
+			});
+
+            tooltip.style.display = 'block';
+            tooltip.style.position = 'absolute';
+            tooltip.style.left = button.getBoundingClientRect().right + 'px';
+            tooltip.style.top = button.getBoundingClientRect().top + 'px';
+        };
 
         button.addEventListener('mouseenter', function() {
-            clearTimeout(hoverTimer);
-            hoverTimer = setTimeout(() => {
-                const texts = ButtonCycleInnerTexts[button.id];
-                let tooltip = document.getElementById('tooltip');
-                if (!tooltip) {
-                    tooltip = document.createElement('div');
-                    tooltip.id = 'tooltip';
-                    document.body.appendChild(tooltip);
-                }
+            const chbTooltip = document.getElementById('ChbTooltip');
+            if (!chbTooltip || !chbTooltip.checked) return; 
 
-                tooltip.innerText = texts.join(', ');
-                tooltip.style.display = 'block';
-                tooltip.style.position = 'absolute';
-                tooltip.style.left = button.getBoundingClientRect().right + 'px';
-                tooltip.style.top = button.getBoundingClientRect().top + 'px';
-            }, 1000); // 1 second delay
+            clearTimeout(hoverTimer);
+            hoverTimer = setTimeout(() => updateTooltipContent(button), 500); // Show tooltip after a delay of 1 second
+            observer.observe(button, { childList: true, subtree: true, characterData: true });
         });
 
         button.addEventListener('mouseleave', function() {
@@ -491,6 +522,7 @@ function showInnerTextsOnHover() {
             if (tooltip) {
                 tooltip.style.display = 'none';
             }
+            observer.disconnect();
         });
     });
 }

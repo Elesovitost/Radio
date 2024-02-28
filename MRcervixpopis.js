@@ -308,8 +308,12 @@ CervixTuFIGOR = "FIGO klasifikace stage " + CervixTuFIGO + ", TNM klasifikace st
 
 
 // POPIS
+CervixTuNAMEText.value = "MR dělohy"; 
+
+CervixTuINDText.value = document.getElementById("indikace").addEventListener("input", updateTexts);
+
+
 CervixTuPOPText.value = 
-"Cervix:" + "\n" +
 CervixTuInvasionP + CervixTuSizeP + CervixVagInvasionP + CervixParamRInvasionP + CervixWallInvasionP + CervixBladderInvasionP + CervixRectumInvasionP + CervixHydronephroP + "\n" +
 CervixLNRegP + CervixLNNonRegP + "\n" +
 CervixMetaP

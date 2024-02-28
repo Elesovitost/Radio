@@ -21,6 +21,12 @@ document.getElementById("indikace").addEventListener("input", updateTexts);
 //let codeforR = `
 //ThyroidR 
 
+var UZThyroidRVol = document.getElementById('UZThyroidRVol').value;
+
+ButtonCycleInnerTexts["UZThyroidRParenchyma"] = ["normální", "nehomogenní", "fibrotický", "edematózní"];
+var UZThyroidRParenchyma = document.getElementById("UZThyroidRParenchyma").innerText;
+
+
 //`;
 
 // let codeforL = codeforR.replace(/ThyroidR/g, 'ThyroidL').replace(/prav/g, 'lev').replace(/Prav/g, 'Lev'); eval(codeforR); eval(codeforL);

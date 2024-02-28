@@ -8,11 +8,9 @@
 
 <link rel="stylesheet" href="styles.css">
 
-
 </head>
 
 <body  class="bodyINDEX">
-
 
 
 <div id="SEG1">
@@ -114,6 +112,7 @@
 
 
 <script>
+
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -254,7 +253,7 @@ function setupRefreshOnAction(doc) {
 	doc.addEventListener('wheel', delayedUpdate);
 }
 
-
+//Příprava textů s názvy apod.
 
 function updateFinalTextAreas() {
     var container = document.getElementById("page-container");
@@ -265,25 +264,28 @@ function updateFinalTextAreas() {
     var finalSEKVText = '';
     var finalPOPText = '';
     var finalRESText = '';
+    var nameTexts = []; // Array to hold NAMEText values
+    var popTexts = []; // Array to hold POPText values
 
     for (var i = 0; i < iframes.length; i++) {
         var iframe = iframes[i];
         try {
             var doc = iframe.contentWindow.document;
             
-            // Extract NAMEText
+            // Extract NAMEText and store in array
             var nameTextAreas = doc.querySelectorAll("textarea[id$='NAMEText']");
             for (var j = 0; j < nameTextAreas.length; j++) {
                 finalNAMEText += nameTextAreas[j].value + ", ";
+                nameTexts.push(nameTextAreas[j].value); // Add to array
             }
 
             // Extract INDText
             var indTextAreas = doc.querySelectorAll("textarea[id$='INDText']");
             for (var j = 0; j < indTextAreas.length; j++) {
-				if (indTextAreas[j].value.trim() !== "") { // Check if the textarea is not empty
-					finalINDText += (finalINDText ? ", " : "") + indTextAreas[j].value; // Add separator only if finalINDText is not empty
-				}
-			}
+                if (indTextAreas[j].value.trim() !== "") {
+                    finalINDText += (finalINDText ? ", " : "") + indTextAreas[j].value;
+                }
+            }
 
             // Extract SEKVText
             var sekvTextAreas = doc.querySelectorAll("textarea[id$='SEKVText']");
@@ -291,10 +293,10 @@ function updateFinalTextAreas() {
                 finalSEKVText += sekvTextAreas[j].value;
             }
 
-            // Extract POPText
+            // Extract POPText and store in array
             var popTextAreas = doc.querySelectorAll("textarea[id$='POPText']");
             for (var j = 0; j < popTextAreas.length; j++) {
-                finalPOPText += popTextAreas[j].value + "\n\n";
+                popTexts.push(popTextAreas[j].value); // Add to array without modification
             }
 
             // Extract RESText
@@ -306,6 +308,13 @@ function updateFinalTextAreas() {
         } catch (e) {
             console.log('Error accessing iframe contents:', e);
         }
+    }
+
+    // Prepend NAMEText to corresponding POPText if more than one NAMEText
+    if (nameTexts.length > 1) {
+        finalPOPText = nameTexts.map((name, index) => name + ":\n" + (popTexts[index] || "")).join("\n\n");
+    } else {
+        finalPOPText = popTexts.join("\n\n"); // Use as is if only one POPText
     }
 
     // Update final text areas
@@ -330,6 +339,7 @@ function updateFinalTextAreas() {
 
     document.getElementById("FINALCOMPLETEText").value = finalCompleteText.trim();
 }
+
 
 
 
