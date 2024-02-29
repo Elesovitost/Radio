@@ -528,3 +528,16 @@ addEventListenersForButtons();
 }
 
 showInnerTextsOnHover();
+
+
+// copyButtons blink
+
+document.addEventListener('click', function(event) {
+  if (event.target.tagName === 'BUTTON' && event.target.id.startsWith('copy')) {
+    event.target.classList.add('blinking');
+    
+    setTimeout(function() {
+      event.target.classList.remove('blinking');
+    }, 200); // Adjust the timeout to match the animation duration
+  }
+});
