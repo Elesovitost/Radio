@@ -1182,7 +1182,7 @@ if (document.getElementById('ChbProstatePSMA').checked) {
 	
 	
 // POPIS
-ProstateTuNAMEText.value = "MR prostaty"; 
+ProstateTuNAMEText.value = "MR prostaty"; if (document.getElementById('ChbProstatePSMA').checked) {ProstateTuNAMEText.value = "PSMA-PET/MR prostaty";}
 
 ProstateTuINDText.value = document.getElementById("indikace").addEventListener("input", updateTexts);
 

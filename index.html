@@ -66,6 +66,13 @@
 		</div>
 	</div>
 	
+	<div class="dropdown">
+		<button class="dropbtn">RTG</button>
+		<div class="dropdown-content">
+			<a href="#" onclick="changePage('RTGpre.html')">RTG předdefinované</a>
+		</div>
+	</div>
+	
 <img src="LOGO.png" alt="A beautiful landscape" class="background-image">
 	
 </div>
@@ -312,7 +319,7 @@ function updateFinalTextAreas() {
 
     // Prepend NAMEText to corresponding POPText if more than one NAMEText
     if (nameTexts.length > 1) {
-        finalPOPText = nameTexts.map((name, index) => name + ":\n" + (popTexts[index] || "")).join("\n\n");
+        finalPOPText = nameTexts.map((name, index) => name + ":\n" + (popTexts[index] || "")).join("\n+\n");
     } else {
         finalPOPText = popTexts.join("\n\n"); // Use as is if only one POPText
     }

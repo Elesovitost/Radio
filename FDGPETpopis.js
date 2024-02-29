@@ -199,17 +199,17 @@ const PETTypeText = buttonElementPETType.innerText;
 var elementParotid = document.getElementById('suvmax-parotid-container');
 
 if (PETTypeText === "FDG") {
-    nazev = "FDG-PET/CT(MR) trupu"; 
+    nazev = "FDG-PET/CT trupu"; 
     elementParotid.classList.add('hidden');
 }
 else if (PETTypeText === "PSMA") {
     ObecneNativeText = "Neložisková akumulace radiofarmaka ve slinných a slzných žlazách, v jaterním parenchymu, slezině, v gastrointestinální traktu a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález."; 
-    nazev = "PSMA-PET/CT(MR) trupu"; 
+    nazev = "PSMA-PET/CT trupu"; 
     elementParotid.classList.remove('hidden');
 }
 else if (PETTypeText === "DOTATOC") {
     ObecneNativeText = "Neložisková akumulace radiofarmaka v hypofýze, štítné žláze, nadledvinách a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález."; 
-    nazev = "DOTATOC-PET/CT(MR) trupu"; 
+    nazev = "DOTATOC-PET/CT trupu"; 
     elementParotid.classList.add('hidden');
 }
 

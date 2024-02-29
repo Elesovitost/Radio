@@ -74,27 +74,6 @@ document.addEventListener('click', function(e) {
 
 
 
-// NUMBERS MOUSE WHEELING
-
-window.addEventListener('load', function() {
-    var numberInputs = document.getElementsByClassName("numbers");
-    for (var i = 0; i < numberInputs.length; i++) {
-        numberInputs[i].addEventListener('wheel', function(e) {
-            if (this.value === "") {
-                this.value = 0;
-            }
-            e.preventDefault(); // Prevents the browser from scrolling while changing the number
-            if (e.deltaY < 0) {
-                this.stepUp(); 
-            } else {
-                this.stepDown(); 
-            }
-            var event = new Event('input');
-            this.dispatchEvent(event);
-        });
-    }
-});
-
 
 // COPY
 
