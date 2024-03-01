@@ -23,9 +23,27 @@ document.getElementById("indikace").addEventListener("input", updateTexts);
 
 var UZThyroidRVol = document.getElementById('UZThyroidRVol').value;
 
-ButtonCycleInnerTexts["UZThyroidRParenchyma"] = ["normální", "nehomogenní", "fibrotický", "edematózní"];
-var UZThyroidRParenchyma = document.getElementById("UZThyroidRParenchyma").innerText;
+ButtonCycleInnerTexts["UZThyroidParenchyma"] = ["normální", "hypoechogenní", "nehomogenní"];
+var UZThyroidParenchyma = document.getElementById("UZThyroidParenchyma").innerText;
 
+ButtonCycleInnerTexts["UZThyroidNodules"] = ["0", "1", "++", "+++"];
+var UZThyroidNodules = document.getElementById("UZThyroidNodules").innerText;
+
+
+ButtonCycleInnerTexts["UZThyroidNodComp"] = ["cystická", "spongiformní", "cysticko-solidní", "solidní"];
+var UZThyroidNodComp = document.getElementById("UZThyroidNodComp").innerText;
+
+ButtonCycleInnerTexts["UZThyroidNodEcho"] = ["anecho", "hyper (izo)", "hypo", "velmi hypo"];
+var UZThyroidNodEcho = document.getElementById("UZThyroidNodEcho").innerText;
+
+ButtonCycleInnerTexts["UZThyroidNodShape"] = ["široký", "vysoký"];
+var UZThyroidNodShape = document.getElementById("UZThyroidNodShape").innerText;
+
+ButtonCycleInnerTexts["UZThyroidNodMargin"] = ["jemný", "rozmazaný", "nepravidelný", "i mimo žlázu"];
+var UZThyroidNodMargin = document.getElementById("UZThyroidNodMargin").innerText;
+
+ButtonCycleInnerTexts["UZThyroidNodFoci"] = ["nejsou", "makro", "stěna", "mikro"];
+var UZThyroidNodFoci = document.getElementById("UZThyroidNodFoci").innerText;
 
 //`;
 

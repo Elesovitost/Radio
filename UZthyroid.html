@@ -11,56 +11,116 @@
 <div id="INDLINE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
 
 <div id="MAIN" class="standardwidth">
+
+<table border="1">
+    <tr>
+		<td>Pravý lalok</td>
+		<td></td>
+  </tr>
+  <tr>
+    <td>Objem: <input type="number" class="numbers" id="UZThyroidRVol" placeholder="ml" min="0" max="50" step="1" style="width: 30px;" oninput="updateTexts()"> 
+			nebo rozměry: <input type="number" class="numberstext" id="UZThyroidRSize" placeholder="AxBxC v mm" min="0" max="100" step="1" style="width: 90px;" oninput="updateTexts()"></td>
+	<td></td>	
+  </tr>
+  <tr>
+    <td  colspan="2">
+		Parenchym:<button id="UZThyroidParenchyma" class="ButtonCycleText button100">normální</button> 
+    </td>
+  </tr>
+  <tr>
+    <td  colspan="2">
+		Uzly:<button id="UZThyroidNodules" class="ButtonCycleText button40">0</button> 
+    </td>
+  </tr>
+  <tr>
+    <td  colspan="2">
+		Dominantní:
+		<button id="UZThyroidNodComp" class="ButtonCycleText button110">cystická</button> 
+		<button id="UZThyroidNodEcho" class="ButtonCycleText button90">anecho</button> 
+		<button id="UZThyroidNodShape" class="ButtonCycleText button60">široký</button> 
+		<button id="UZThyroidNodMargin" class="ButtonCycleText button90">jemný</button> 
+		<button id="UZThyroidNodFoci" class="ButtonCycleText button60">nejsou</button> 
+    </td>
+  </tr>
+  <tr>
+    <td>Row 5, Column 1</td>
+    <td>Row 5, Column 2</td>
+  </tr>
+</table>
+
+
+
 <table class="UZThyroidtable">
   <tr>
     <td>	
-		<table class="UZThyroidsubtable">
-			<tr><td class="BG1" colspan="6">Pravý lalok</td></tr>
-				<tr>
-				<td>Rozměry (mm):</td>
-				<td> <input type="number" class="numberstext" id="UZThyroidRSize" placeholder="LLxAPxCC" min="0" max="100" step="1" style="width: 90px;" oninput="updateTexts()"> </td>
-				<td>Objem (ml):</td>
-				<td> <input type="number" class="numbers" id="UZThyroidRVol" placeholder="..." min="0" max="50" step="1" style="width: 30px;" oninput="updateTexts()"> </td>
+		<table class="UZtsubtable">
+			<tr>
+				<td class="BG1" colspan="6">Pravý lalok</td></tr>
+				<td>Objem:</td>
+				<td> <input type="number" class="numbers" id="UZThyroidRVol" placeholder="ml" min="0" max="50" step="1" style="width: 30px;" oninput="updateTexts()"> 
+						nebo rozměry: <input type="number" class="numberstext" id="UZThyroidRSize" placeholder="AxBxC v mm" min="0" max="100" step="1" style="width: 90px;" oninput="updateTexts()"> 
+				</td>
 			</tr>
+			<tr>
 				<td>Parenchym:</td>
 				<td  colspan="5"> 
-					<button id="UZThyroidRParenchyma" class="ButtonCycleText button90">normální</button> 
+					<button id="UZThyroidParenchyma" class="ButtonCycleText button100">normální</button> 
 				</td>
 			</tr>
-			</tr>
-				<td>VA:</td>
+			<tr>
+				<td>Uzly</td>
 				<td  colspan="5"> 
-					<button id="UZVertRsize" class="ButtonCycleText button60">normální</button> 
-					<button id="UZVertRflow" class="ButtonCycleText button40">tok↑</button> 
+					<button id="UZThyroidNodules" class="ButtonCycleText button40">0</button> 
+				</td>
+			</tr>
+			<tr>
+				<td>Dominantní</td>
+				<td  colspan="5"> 
+					<button id="UZThyroidNodComp" class="ButtonCycleText button110">cystická</button> 
+					<button id="UZThyroidNodEcho" class="ButtonCycleText button90">anecho</button> 
+					<button id="UZThyroidNodShape" class="ButtonCycleText button60">široký</button> 
+					<button id="UZThyroidNodMargin" class="ButtonCycleText button90">jemný</button> 
+					<button id="UZThyroidNodFoci" class="ButtonCycleText button60">nejsou</button> 				
 				</td>
 			</tr>
 		</table>
 	</td>
-    <td>	
-		<table class="UZThyroidsubtable">
-			<tr><td class="BG1" colspan="6">Vpravo</td></tr>
-			<tr><td>CCA:</td>
-				<td> <input type="number" class="numbers" id="UZThyroidLCCA" placeholder="PSV" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
-				<td>ICA:</td>
-				<td> <input type="number" class="numbers" id="UZThyroidLICA" placeholder="PSV" min="0" max="300" step="5" style="width: 40px;" oninput="updateTexts()"> </td>
-				<td></td>
-				<td> <input type="number" class="numbers" id="UZThyroidLRI" placeholder="RI" min="0" max="1" step="0.05" style="width: 40px;" oninput="updateTexts()"> </td>
-			</tr>
-				<td>pláty:</td>
-				<td  colspan="5"> 
-					<button id="UZThyroidLASno" class="ButtonCycleText button40">0</button> 
-					<button id="UZThyroidLASmater" class="ButtonCycleText button60 hidden">kalcif.</button> 
+	    <td>	
+		<table class="UZtsubtable">
+			<tr>
+				<td class="BG1" colspan="6">Pravý lalok</td></tr>
+				<td>Objem:</td>
+				<td> <input type="number" class="numbers" id="UZThyroidRVol" placeholder="ml" min="0" max="50" step="1" style="width: 30px;" oninput="updateTexts()"> 
+						nebo rozměry: <input type="number" class="numberstext" id="UZThyroidRSize" placeholder="AxBxC v mm" min="0" max="100" step="1" style="width: 90px;" oninput="updateTexts()"> 
 				</td>
 			</tr>
-			</tr>
-				<td>VA:</td>
+			<tr>
+				<td>Parenchym:</td>
 				<td  colspan="5"> 
-					<button id="UZVertLsize" class="ButtonCycleText button60">normální</button> 
-					<button id="UZVertLflow" class="ButtonCycleText button40">tok↑</button> 
+					<button id="UZThyroidParenchyma" class="ButtonCycleText button100">normální</button> 
+				</td>
+			</tr>
+			<tr>
+				<td>Uzly</td>
+				<td  colspan="5"> 
+					<button id="UZThyroidNodules" class="ButtonCycleText button40">0</button> 
+				</td>
+			</tr>
+			<tr>
+				<td>Dominantní</td>
+				<td  colspan="5"> 
+					<button id="UZThyroidNodComp" class="ButtonCycleText button110">cystická</button> 
+					<button id="UZThyroidNodEcho" class="ButtonCycleText button90">anecho</button> 
+					<button id="UZThyroidNodShape" class="ButtonCycleText button60">široký</button> 
+					<button id="UZThyroidNodMargin" class="ButtonCycleText button90">jemný</button> 
+					<button id="UZThyroidNodFoci" class="ButtonCycleText button60">nejsou</button> 				
 				</td>
 			</tr>
 		</table>
 	</td>
+  </tr>
+  <tr>
+  
   </tr>
 </table>
 

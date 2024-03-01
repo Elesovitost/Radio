@@ -1173,7 +1173,7 @@ if (!document.getElementById('ChbProstateSkeletonMeta').checked && !document.get
 // TMN or miTNM 
 if (document.getElementById('ChbProstatePSMA').checked) {
 	ProstateTMN = ""; 
-	ProstatemiTMN = "Dnešní molekulární zobrazení (mi) odpovídá stagingu " + ProstatemiTstageR + " " + ProstatemiNstageR + " " + ProstatemiMstageR + ".";
+	ProstatemiTMN = "Dnešní molekulární zobrazení (mi) odpovídá stagingu ca prostaty: " + ProstatemiTstageR + " " + ProstatemiNstageR + " " + ProstatemiMstageR + ".";
 } else {
 	ProstateTMN = "TNM stage: " + ProstateTstageR + " " + ProstateNstageR + " " + ProstateMstageR;
 	ProstatemiTMN = "";
