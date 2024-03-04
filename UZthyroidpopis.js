@@ -1,24 +1,24 @@
-
+//let codeForUZThyroidLesion1 = `
 // highlight
 document.addEventListener("DOMContentLoaded", function() {
-    var cells = document.querySelectorAll("#UZThyroidLesion1long td");
+    var cellsLesion1 = document.querySelectorAll("#UZThyroidLesion1long td");
 
-    cells.forEach(function(cell) {
+    cellsLesion1.forEach(function(cell) {
         cell.addEventListener("mousedown", function(event) {
             if (event.button === 2) { // Right-click
                 event.preventDefault();
             }
 
-            var columnCells = getColumnCells(cell);
+            var columnCellsLesion1 = getColumnCellsLesion1(cell);
 
             if (event.button === 0) { // Left-click
-                columnCells.forEach(function(c) { c.style.border = ""; });
+                columnCellsLesion1.forEach(function(c) { c.style.border = ""; });
                 cell.style.border = "1px solid red";
             } else if (event.button === 2) { // Right-click
                 cell.style.border = ""; // Remove border on right-click
             }
             
-            updateButtonsBasedOnTable(); // Update button texts based on table cell selections
+            updateButtonsBasedOnTableLesion1(); // Update button texts based on table cell selections
 			updateTexts(); 
         });
 
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    function getColumnCells(clickedCell) {
+    function getColumnCellsLesion1(clickedCell) {
         var column = clickedCell.cellIndex; // Get the index of the cell's column
         var table = clickedCell.closest("table");
         return [...table.querySelectorAll('tr td:nth-child(' + (column + 1) + ')')];
@@ -35,16 +35,16 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-function updateButtonsBasedOnTable() {
+function updateButtonsBasedOnTableLesion1() {
     var table = document.getElementById("UZThyroidLesion1long");
     var rows = table.querySelectorAll("tr");
 
     // Reset all buttons to their default text initially
-    resetButtonsToDefault();
+    resetButtonsToDefaultLesion1();
 
     rows.forEach(row => {
-        var cells = row.querySelectorAll("td");
-        cells.forEach((cell, index) => {
+        var cellsLesion1 = row.querySelectorAll("td");
+        cellsLesion1.forEach((cell, index) => {
             if (cell.style.border === "1px solid red") {
                 updateButtonBasedOnCell(cell, index);
             }
@@ -52,31 +52,31 @@ function updateButtonsBasedOnTable() {
     });
 }
 
-function resetButtonsToDefault() {
+function resetButtonsToDefaultLesion1() {
     // Reset each button to its original text and ensure the default background is applied
     var compButton = document.getElementById("UZThyroidLesion1Comp");
     compButton.innerText = originalButtonTexts["UZThyroidLesion1Comp"];
-    applyBackgroundStyle(compButton, compButton.innerText);
+    applyBackgroundStyleLesion1(compButton, compButton.innerText);
     
     var echoButton = document.getElementById("UZThyroidLesion1Echo");
     echoButton.innerText = originalButtonTexts["UZThyroidLesion1Echo"];
-    applyBackgroundStyle(echoButton, echoButton.innerText);
+    applyBackgroundStyleLesion1(echoButton, echoButton.innerText);
     
     var shapeButton = document.getElementById("UZThyroidLesion1Shape");
     shapeButton.innerText = originalButtonTexts["UZThyroidLesion1Shape"];
-    applyBackgroundStyle(shapeButton, shapeButton.innerText);
+    applyBackgroundStyleLesion1(shapeButton, shapeButton.innerText);
     
     var marginButton = document.getElementById("UZThyroidLesion1Margin");
     marginButton.innerText = originalButtonTexts["UZThyroidLesion1Margin"];
-    applyBackgroundStyle(marginButton, marginButton.innerText);
+    applyBackgroundStyleLesion1(marginButton, marginButton.innerText);
     
     var fociButton = document.getElementById("UZThyroidLesion1Foci");
     fociButton.innerText = originalButtonTexts["UZThyroidLesion1Foci"];
-    applyBackgroundStyle(fociButton, fociButton.innerText);
+    applyBackgroundStyleLesion1(fociButton, fociButton.innerText);
 }
 
 
-function applyBackgroundStyle(button, newText) {
+function applyBackgroundStyleLesion1(button, newText) {
     const isDifferentFromOriginal = newText !== originalButtonTexts[button.id];
     button.classList.toggle('red-background', isDifferentFromOriginal);
 }
@@ -98,7 +98,7 @@ function updateButtonBasedOnCell(cell, columnIndex) {
     if (button) {
         button.innerText = buttonText;
         // Apply the red-background styling if the newText is different from the original
-        applyBackgroundStyle(button, buttonText);
+        applyBackgroundStyleLesion1(button, buttonText);
     }
 }
 
@@ -140,13 +140,15 @@ function getFociTextFromImgSrc(imgSrc) {
     return "kalcifikace?"; // Default text if none match
 }
 
+//`; let codeForUZThyroidLesion2 = codeForUZThyroidLesion1.replace(/Lesion1/g, 'Lesion2'); eval(codeForUZThyroidLesion1); eval(codeForUZThyroidLesion2);
+
 
 
 // new LESIONS
 
 document.getElementById('UZThyroidNewLesions').addEventListener('click', function() {
-  var lesionIds = ['UZThyroidLesion1', 'UZThyroidLesion2'];
-
+  var lesionIds = ['UZThyroidLesion1'];
+//var lesionIds = ['UZThyroidLesion1', 'UZThyroidLesion2'];
   for (var i = 0; i < lesionIds.length; i++) {
     var element = document.getElementById(lesionIds[i]);
     if (element.classList.contains('hidden')) {
@@ -159,8 +161,8 @@ document.getElementById('UZThyroidNewLesions').addEventListener('click', functio
 
 document.getElementById('UZThyroidNewLesions').addEventListener('contextmenu', function(event) {
   event.preventDefault();
-  var lesionIds = ['UZThyroidLesion2', 'UZThyroidLesion1'];
-
+  var lesionIds = ['UZThyroidLesion1'];
+//var lesionIds = ['UZThyroidLesion2', 'UZThyroidLesion1'];
   for (var i = 0; i < lesionIds.length; i++) {
     var element = document.getElementById(lesionIds[i]);
     if (!element.classList.contains('hidden')) {
@@ -174,6 +176,7 @@ document.getElementById('UZThyroidNewLesions').addEventListener('contextmenu', f
 
 function updateUZThyroidButtonColor() {
     var UZThyroidlesions = ['UZThyroidLesion1', 'UZThyroidLesion2'];
+//  var UZThyroidlesions = ['UZThyroidLesion1'];
     var UZThyroidbutton = document.getElementById('UZThyroidNewLesions');
     var isHidden = UZThyroidlesions.every(function(id) {
         return document.getElementById(id).classList.contains('hidden');
@@ -194,12 +197,6 @@ document.getElementById('UZThyroidLesion1no').addEventListener('click', function
   updateUZThyroidButtonColor();
 });
 
-document.getElementById('UZThyroidLesion2no').addEventListener('click', function() {
-  var element = document.getElementById('UZThyroidLesion2');
-  element.classList.add('hidden');
-  updateTexts();
-  updateUZThyroidButtonColor();
-});
 
 
 //Lesion size words
@@ -252,16 +249,6 @@ document.getElementById("indikace").addEventListener("input", updateTexts);
         UZThyroidLesion1long.classList.add("hidden");
     }
 
-    var UZThyroidLesion2short = document.getElementById("UZThyroidLesion2short");
-    var UZThyroidLesion2long = document.getElementById("UZThyroidLesion2long");
-
-    if (ChbLesionExt.checked) {
-        UZThyroidLesion2short.classList.add("hidden");
-        UZThyroidLesion2long.classList.remove("hidden");
-    } else {
-        UZThyroidLesion2short.classList.remove("hidden");
-        UZThyroidLesion2long.classList.add("hidden");
-    }
 
 //ThyroidVol
 
@@ -380,7 +367,7 @@ if (RESUZThyroidParenchymaSentences.length > 1) {
 }
 
 // Lesion1
-let codeForUZThyroidLesion1 = `
+//let codeForUZThyroidLesion1 = `
 
 ButtonCycleInnerTexts["UZThyroidLesion1Side"] = ["strana?", "vpravo", "vlevo"];
 var UZThyroidLesion1Side = document.getElementById("UZThyroidLesion1Side").innerText;
@@ -518,11 +505,7 @@ RESUZThyroidLesion1Final = RESUZThyroidLesion1 + ". (TI-RADS score: TR" + RESUZT
 } else
 RESUZThyroidLesion1Final = "";
 	
-`;
-
-let codeForUZThyroidLesion2 = codeForUZThyroidLesion1.replace(/Lesion1/g, 'Lesion2');
-eval(codeForUZThyroidLesion1);
-eval(codeForUZThyroidLesion2);
+//`; let codeForUZThyroidLesion2 = codeForUZThyroidLesion1.replace(/Lesion1/g, 'Lesion2'); eval(codeForUZThyroidLesion1); eval(codeForUZThyroidLesion2);
 
 
 
@@ -535,14 +518,12 @@ UZThyroidINDText.value = indikace; document.getElementById("indikace").addEventL
 UZThyroidPOPText.value = 
 POPUZThyroidVolume + "\n" +
 POPUZThyroidParenchyma + "\n" +
-POPUZThyroidLesion1 + "\n" +
-POPUZThyroidLesion2
+POPUZThyroidLesion1
 ;
 
 UZThyroidRESText.value = 
 RESUZThyroidVolume + RESUZThyroidParenchyma + "\n" +
-RESUZThyroidLesion1Final + "\n" +
-RESUZThyroidLesion2Final
+RESUZThyroidLesion1Final
 ;
 
 
