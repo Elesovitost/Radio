@@ -510,3 +510,8 @@ body.TNM td:first-child, body.TNM td:nth-child(2), body.TNM .main-row {
 #UZThyroidLesion1long td {    padding: 3;    width: 100px; 	vertical-align: top;  }
 #UZThyroidLesion1long img {    width: 100%;     height: auto;   }
 #UZThyroidLesion1long td:hover {    border: 1px solid blue;}
+
+#UZThyroidLesion2long {    border-collapse: collapse; background-color: black; color: white;  }
+#UZThyroidLesion2long td {    padding: 3;    width: 100px; 	vertical-align: top;  }
+#UZThyroidLesion2long img {    width: 100%;     height: auto;   }
+#UZThyroidLesion2long td:hover {    border: 1px solid blue;}

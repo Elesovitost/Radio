@@ -1,3 +1,4 @@
+
 // highlight
 document.addEventListener("DOMContentLoaded", function() {
     var cells = document.querySelectorAll("#UZThyroidLesion1long td");
@@ -8,62 +9,143 @@ document.addEventListener("DOMContentLoaded", function() {
                 event.preventDefault();
             }
 
-            if (event.button === 0 || event.button === 2) { // Check if left-click or right-click
-                var columnCells = getColumnCells(cell);
+            var columnCells = getColumnCells(cell);
 
-                if (this.style.border === "1px solid red") {
-                    this.style.border = "";
-                    updateButtonBasedOnImage(""); // Clear button text when deselecting
-                } else {
-                    columnCells.forEach(function(c) {
-                        c.style.border = "";
-                    });
-                    this.style.border = "1px solid red";
-                    updateButtonBasedOnImage(this.querySelector('img').src); // Update button text based on image
-                }
+            if (event.button === 0) { // Left-click
+                columnCells.forEach(function(c) { c.style.border = ""; });
+                cell.style.border = "1px solid red";
+            } else if (event.button === 2) { // Right-click
+                cell.style.border = ""; // Remove border on right-click
             }
+            
+            updateButtonsBasedOnTable(); // Update button texts based on table cell selections
+			updateTexts(); 
         });
 
-        cell.addEventListener("mouseleave", function() {
-            if(this.style.border != "1px solid red") {
-                this.style.border = "";
-            }
+        cell.addEventListener("contextmenu", function(event) {
+            event.preventDefault(); // Prevent the context menu
         });
     });
 
     function getColumnCells(clickedCell) {
         var column = clickedCell.cellIndex; // Get the index of the cell's column
         var table = clickedCell.closest("table");
-        return table.querySelectorAll(`td:nth-child(${column + 1})`);
-    }
-    
-    function updateButtonBasedOnImage(imgSrc) {
-        var compbuttonText = "";
-        if (imgSrc.includes("UZThyrCompCystic.png")) {
-            compbuttonText = "cystická";
-        } else if (imgSrc.includes("UZThyrCompSpongi.png")) {
-            compbuttonText = "spongiformní";
-        } else if (imgSrc.includes("UZThyrCompMixed.png")) {
-            compbuttonText = "cysticko-solidní";
-        } else if (imgSrc.includes("UZThyrCompSolid.png")) {
-            compbuttonText = "solidní";
-        }
-        
-        var compButton = document.getElementById("UZThyroidLesion1Comp");
-        if (compButton) {
-            compButton.innerText = compbuttonText;
-        }
-		updateTexts();
+        return [...table.querySelectorAll('tr td:nth-child(' + (column + 1) + ')')];
+
     }
 });
 
+function updateButtonsBasedOnTable() {
+    var table = document.getElementById("UZThyroidLesion1long");
+    var rows = table.querySelectorAll("tr");
+
+    // Reset all buttons to their default text initially
+    resetButtonsToDefault();
+
+    rows.forEach(row => {
+        var cells = row.querySelectorAll("td");
+        cells.forEach((cell, index) => {
+            if (cell.style.border === "1px solid red") {
+                updateButtonBasedOnCell(cell, index);
+            }
+        });
+    });
+}
+
+function resetButtonsToDefault() {
+    // Reset each button to its original text and ensure the default background is applied
+    var compButton = document.getElementById("UZThyroidLesion1Comp");
+    compButton.innerText = originalButtonTexts["UZThyroidLesion1Comp"];
+    applyBackgroundStyle(compButton, compButton.innerText);
+    
+    var echoButton = document.getElementById("UZThyroidLesion1Echo");
+    echoButton.innerText = originalButtonTexts["UZThyroidLesion1Echo"];
+    applyBackgroundStyle(echoButton, echoButton.innerText);
+    
+    var shapeButton = document.getElementById("UZThyroidLesion1Shape");
+    shapeButton.innerText = originalButtonTexts["UZThyroidLesion1Shape"];
+    applyBackgroundStyle(shapeButton, shapeButton.innerText);
+    
+    var marginButton = document.getElementById("UZThyroidLesion1Margin");
+    marginButton.innerText = originalButtonTexts["UZThyroidLesion1Margin"];
+    applyBackgroundStyle(marginButton, marginButton.innerText);
+    
+    var fociButton = document.getElementById("UZThyroidLesion1Foci");
+    fociButton.innerText = originalButtonTexts["UZThyroidLesion1Foci"];
+    applyBackgroundStyle(fociButton, fociButton.innerText);
+}
+
+
+function applyBackgroundStyle(button, newText) {
+    const isDifferentFromOriginal = newText !== originalButtonTexts[button.id];
+    button.classList.toggle('red-background', isDifferentFromOriginal);
+}
+
+
+function updateButtonBasedOnCell(cell, columnIndex) {
+    var imgSrc = cell.querySelector('img') ? cell.querySelector('img').src : "";
+    var buttonText = "";
+    var buttonId = "";
+    switch(columnIndex) {
+        case 0: buttonText = getCompTextFromImgSrc(imgSrc); buttonId = "UZThyroidLesion1Comp"; break;
+        case 1: buttonText = getEchoTextFromImgSrc(imgSrc); buttonId = "UZThyroidLesion1Echo"; break;
+        case 2: buttonText = getShapeTextFromImgSrc(imgSrc); buttonId = "UZThyroidLesion1Shape"; break;
+        case 3: buttonText = getMarginTextFromImgSrc(imgSrc); buttonId = "UZThyroidLesion1Margin"; break;
+        case 4: buttonText = getFociTextFromImgSrc(imgSrc); buttonId = "UZThyroidLesion1Foci"; break;
+    }
+
+    var button = document.getElementById(buttonId);
+    if (button) {
+        button.innerText = buttonText;
+        // Apply the red-background styling if the newText is different from the original
+        applyBackgroundStyle(button, buttonText);
+    }
+}
+
+function getCompTextFromImgSrc(imgSrc) {
+    if (imgSrc.includes("UZThyrCompCystic.png")) return "cystická";
+    if (imgSrc.includes("UZThyrCompSpongi.png")) return "spongiformní";
+    if (imgSrc.includes("UZThyrCompMixed.png")) return "cysticko-solidní";
+    if (imgSrc.includes("UZThyrCompSolid.png")) return "solidní";
+    return "kompozice?"; // Default text if none match
+}
+
+function getEchoTextFromImgSrc(imgSrc) {
+    if (imgSrc.includes("UZThyrEchoAnecho.png")) return "anecho";
+    if (imgSrc.includes("UZThyrEchoHyper.png")) return "hyper (izo)";
+    if (imgSrc.includes("UZThyrEchoHypo.png")) return "hypo";
+    if (imgSrc.includes("UZThyrEchoVeryhypo.png")) return "velmi hypo";
+    return "echogenita?"; // Default text if none match
+}
+
+function getShapeTextFromImgSrc(imgSrc) {
+    if (imgSrc.includes("UZThyrShapeWide.png")) return "široký";
+    if (imgSrc.includes("UZThyrShapeTall.png")) return "vysoký";
+    return "tvar?"; // Default text if none match
+}
+
+function getMarginTextFromImgSrc(imgSrc) {
+    if (imgSrc.includes("UZThyrMargSmooth.png")) return "jemný";
+    if (imgSrc.includes("UZThyrMargIll.png")) return "smazaný";
+    if (imgSrc.includes("UZThyrMargIrr.png")) return "nepravidelný";
+    if (imgSrc.includes("UZThyrMargExtra.png")) return "mimo žlázu";
+    return "okraj?"; // Default text if none match
+}
+
+function getFociTextFromImgSrc(imgSrc) {
+    if (imgSrc.includes("UZThyrCalcNone.png")) return "bez kalcifikací";
+    if (imgSrc.includes("UZThyrCalcMacro.png")) return "makrokalcifikace";
+    if (imgSrc.includes("UZThyrCalcRim.png")) return "kalcif. stěna";
+    if (imgSrc.includes("UZThyrCalcMicro.png")) return "mikrokalcifikace";
+    return "kalcifikace?"; // Default text if none match
+}
 
 
 
 // new LESIONS
 
 document.getElementById('UZThyroidNewLesions').addEventListener('click', function() {
-  var lesionIds = ['UZThyroidLesion1', 'UZThyroidLesion2', 'UZThyroidLesion3'];
+  var lesionIds = ['UZThyroidLesion1', 'UZThyroidLesion2'];
 
   for (var i = 0; i < lesionIds.length; i++) {
     var element = document.getElementById(lesionIds[i]);
@@ -77,7 +159,7 @@ document.getElementById('UZThyroidNewLesions').addEventListener('click', functio
 
 document.getElementById('UZThyroidNewLesions').addEventListener('contextmenu', function(event) {
   event.preventDefault();
-  var lesionIds = ['UZThyroidLesion3', 'UZThyroidLesion2', 'UZThyroidLesion1'];
+  var lesionIds = ['UZThyroidLesion2', 'UZThyroidLesion1'];
 
   for (var i = 0; i < lesionIds.length; i++) {
     var element = document.getElementById(lesionIds[i]);
@@ -91,7 +173,7 @@ document.getElementById('UZThyroidNewLesions').addEventListener('contextmenu', f
 
 
 function updateUZThyroidButtonColor() {
-    var UZThyroidlesions = ['UZThyroidLesion1', 'UZThyroidLesion2', 'UZThyroidLesion3'];
+    var UZThyroidlesions = ['UZThyroidLesion1', 'UZThyroidLesion2'];
     var UZThyroidbutton = document.getElementById('UZThyroidNewLesions');
     var isHidden = UZThyroidlesions.every(function(id) {
         return document.getElementById(id).classList.contains('hidden');
@@ -114,13 +196,6 @@ document.getElementById('UZThyroidLesion1no').addEventListener('click', function
 
 document.getElementById('UZThyroidLesion2no').addEventListener('click', function() {
   var element = document.getElementById('UZThyroidLesion2');
-  element.classList.add('hidden');
-  updateTexts();
-  updateUZThyroidButtonColor();
-});
-
-document.getElementById('UZThyroidLesion3no').addEventListener('click', function() {
-  var element = document.getElementById('UZThyroidLesion3');
   element.classList.add('hidden');
   updateTexts();
   updateUZThyroidButtonColor();
@@ -175,6 +250,17 @@ document.getElementById("indikace").addEventListener("input", updateTexts);
     } else {
         UZThyroidLesion1short.classList.remove("hidden");
         UZThyroidLesion1long.classList.add("hidden");
+    }
+
+    var UZThyroidLesion2short = document.getElementById("UZThyroidLesion2short");
+    var UZThyroidLesion2long = document.getElementById("UZThyroidLesion2long");
+
+    if (ChbLesionExt.checked) {
+        UZThyroidLesion2short.classList.add("hidden");
+        UZThyroidLesion2long.classList.remove("hidden");
+    } else {
+        UZThyroidLesion2short.classList.remove("hidden");
+        UZThyroidLesion2long.classList.add("hidden");
     }
 
 //ThyroidVol
@@ -296,22 +382,22 @@ if (RESUZThyroidParenchymaSentences.length > 1) {
 // Lesion1
 let codeForUZThyroidLesion1 = `
 
-ButtonCycleInnerTexts["UZThyroidLesion1Side"] = ["strana", "vpravo", "vlevo"];
+ButtonCycleInnerTexts["UZThyroidLesion1Side"] = ["strana?", "vpravo", "vlevo"];
 var UZThyroidLesion1Side = document.getElementById("UZThyroidLesion1Side").innerText;
 
-ButtonCycleInnerTexts["UZThyroidLesion1Comp"] = ["kompozice", "cystická", "spongiformní", "cysticko-solidní", "solidní"];
+ButtonCycleInnerTexts["UZThyroidLesion1Comp"] = ["kompozice?", "cystická", "spongiformní", "cysticko-solidní", "solidní"];
 var UZThyroidLesion1Comp = document.getElementById("UZThyroidLesion1Comp").innerText;
 
-ButtonCycleInnerTexts["UZThyroidLesion1Echo"] = ["echogenita", "anecho", "hyper (izo)", "hypo", "velmi hypo"];
+ButtonCycleInnerTexts["UZThyroidLesion1Echo"] = ["echogenita?", "anecho", "hyper (izo)", "hypo", "velmi hypo"];
 var UZThyroidLesion1Echo = document.getElementById("UZThyroidLesion1Echo").innerText;
 
-ButtonCycleInnerTexts["UZThyroidLesion1Shape"] = ["tvar", "široký", "vysoký"];
+ButtonCycleInnerTexts["UZThyroidLesion1Shape"] = ["tvar?", "široký", "vysoký"];
 var UZThyroidLesion1Shape = document.getElementById("UZThyroidLesion1Shape").innerText;
 
-ButtonCycleInnerTexts["UZThyroidLesion1Margin"] = ["okraj", "jemný", "smazaný", "nepravidelný", "mimo žlázu"];
+ButtonCycleInnerTexts["UZThyroidLesion1Margin"] = ["okraj?", "jemný", "smazaný", "nepravidelný", "mimo žlázu"];
 var UZThyroidLesion1Margin = document.getElementById("UZThyroidLesion1Margin").innerText;
 
-ButtonCycleInnerTexts["UZThyroidLesion1Foci"] = ["kalcifikace", "bez kalcifikací", "makrokalcifikace", "kalcif. stěna", "mikrokalcifikace"];
+ButtonCycleInnerTexts["UZThyroidLesion1Foci"] = ["kalcifikace?", "bez kalcifikací", "makrokalcifikace", "kalcif. stěna", "mikrokalcifikace"];
 var UZThyroidLesion1Foci = document.getElementById("UZThyroidLesion1Foci").innerText;
 
 
@@ -435,10 +521,8 @@ RESUZThyroidLesion1Final = "";
 `;
 
 let codeForUZThyroidLesion2 = codeForUZThyroidLesion1.replace(/Lesion1/g, 'Lesion2');
-let codeForUZThyroidLesion3 = codeForUZThyroidLesion1.replace(/Lesion1/g, 'Lesion3');
 eval(codeForUZThyroidLesion1);
 eval(codeForUZThyroidLesion2);
-eval(codeForUZThyroidLesion3);
 
 
 
@@ -452,15 +536,13 @@ UZThyroidPOPText.value =
 POPUZThyroidVolume + "\n" +
 POPUZThyroidParenchyma + "\n" +
 POPUZThyroidLesion1 + "\n" +
-POPUZThyroidLesion2 + "\n" +
-POPUZThyroidLesion3 
+POPUZThyroidLesion2
 ;
 
 UZThyroidRESText.value = 
 RESUZThyroidVolume + RESUZThyroidParenchyma + "\n" +
 RESUZThyroidLesion1Final + "\n" +
-RESUZThyroidLesion2Final + "\n" +
-RESUZThyroidLesion3Final 
+RESUZThyroidLesion2Final
 ;
 
 

@@ -9,7 +9,7 @@
 
 <div id="UZThyroid" class="mydiv0 standardwidth">UZ štítné žlázy</div>
 <div id="INDLINE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
-<div style="font-size: 12px; padding: 5px" ><label class="CHB"> <input type="checkbox" id="ChbLesionExt" onChange="updateTexts()"><span>+</span></label> Nápověda</div>
+<div style="font-size: 12px; padding: 5px" ><label class="CHB"> <input type="checkbox" id="ChbLesionExt" onChange="updateTexts()"><span>+</span></label> TI-RADS obrazově</div>
 <div id="MAIN" class="standardwidth">
 
 <table border="0">
@@ -31,15 +31,17 @@
   <tr>
     <td colspan="2">
 		Parenchym: <button id="UZThyroidParenchyma" class="ButtonCycleText button100">normální</button> 
+		Uzlovitost: <button id="UZThyroidNodules" class="ButtonCycleText button40">0</button> 
     </td>
   </tr>
   <tr>
     <td colspan="2">
-		Uzly: <button id="UZThyroidNodules" class="ButtonCycleText button40">0</button> 
-		Dominantní: <button id="UZThyroidNewLesions" class="myButtonLesion">+</button>
+		Dominantní uzly: <button id="UZThyroidNewLesions" class="myButtonLesion">+</button>
     </td>
   </tr>
 </table>
+
+
 <table id="UZThyroidLesion1" class="LesionX hidden">
   <tr>
     <td style="vertical-align: top;">
@@ -49,11 +51,11 @@
 	</td>
 	<td>
 		<div id="UZThyroidLesion1short" class="hidden">
-			<button id="UZThyroidLesion1Comp" class="ButtonCycleText button110">kompozice</button> 
-			<button id="UZThyroidLesion1Echo" class="ButtonCycleText button90">echogenita</button> 
-			<button id="UZThyroidLesion1Shape" class="ButtonCycleText button60">tvar</button> 
-			<button id="UZThyroidLesion1Margin" class="ButtonCycleText button90">okraj</button> 
-			<button id="UZThyroidLesion1Foci" class="ButtonCycleText button110">kalcifikace</button> 
+			<button id="UZThyroidLesion1Comp" class="ButtonCycleText button110">kompozice?</button> 
+			<button id="UZThyroidLesion1Echo" class="ButtonCycleText button90">echogenita?</button> 
+			<button id="UZThyroidLesion1Shape" class="ButtonCycleText button60">tvar?</button> 
+			<button id="UZThyroidLesion1Margin" class="ButtonCycleText button90">okraj?</button> 
+			<button id="UZThyroidLesion1Foci" class="ButtonCycleText button110">kalcifikace?</button> 
 		</div>
 			<table border="1" id="UZThyroidLesion1long" class="hidden" >
 			  <tr>
@@ -98,32 +100,57 @@
 
 <table id="UZThyroidLesion2" class="LesionX hidden">
   <tr>
-    <td>
-		<button id="UZThyroidLesion2no" class="myButtonLesionS">2</button> 
+    <td style="vertical-align: top;">
+		<button id="UZThyroidLesion2no" class="myButtonLesionS">1</button> 
 		<input type="text" class="numberstext" id="UZThyroidLesion2Size" placeholder="rozměr..." min="0" max="100" step="1" style="width: 90px;" oninput="updateTexts()">
 		<button id="UZThyroidLesion2Side" class="ButtonCycleText button60">strana</button> 
-		<button id="UZThyroidLesion2Comp" class="ButtonCycleText button110">kompozice</button> 
-		<button id="UZThyroidLesion2Echo" class="ButtonCycleText button90">echogenita</button> 
-		<button id="UZThyroidLesion2Shape" class="ButtonCycleText button60">tvar</button> 
-		<button id="UZThyroidLesion2Margin" class="ButtonCycleText button90">okraj</button> 
-		<button id="UZThyroidLesion2Foci" class="ButtonCycleText button110">kalcifikace</button> 
+	</td>
+	<td>
+		<div id="UZThyroidLesion2short" class="hidden">
+			<button id="UZThyroidLesion2Comp" class="ButtonCycleText button110">kompozice?</button> 
+			<button id="UZThyroidLesion2Echo" class="ButtonCycleText button90">echogenita?</button> 
+			<button id="UZThyroidLesion2Shape" class="ButtonCycleText button60">tvar?</button> 
+			<button id="UZThyroidLesion2Margin" class="ButtonCycleText button90">okraj?</button> 
+			<button id="UZThyroidLesion2Foci" class="ButtonCycleText button110">kalcifikace?</button> 
+		</div>
+			<table border="1" id="UZThyroidLesion2long" class="hidden" >
+			  <tr>
+				<th><strong>Kompozice</strong></th>
+				<th><strong>Echogenita</strong></th>
+				<th><strong>Tvar</strong></th>
+				<th><strong>Okraj</strong></th>
+				<th><strong>Kalcifikace</strong></th>
+			  </tr>
+			  <tr>
+				<td><img src="\picThyroidTR\UZThyrCompCystic.png" alt="TR"> cystická nebo téměř cystická</td>
+				<td><img src="\picThyroidTR\UZThyrEchoAnecho.png" alt="TR">anechogenní</td> 
+				<td><img src="\picThyroidTR\UZThyrShapeWide.png" alt="TR">širší než vyšší</td> 
+				<td><img src="\picThyroidTR\UZThyrMargSmooth.png" alt="TR">jemný</td> 
+				<td><img src="\picThyroidTR\UZThyrCalcNone.png" alt="TR">bez kalcifikací</td>
+			  </tr>
+			  <tr>
+				<td><img src="\picThyroidTR\UZThyrCompSpongi.png" alt="TR"> spongiformní</td>
+				<td><img src="\picThyroidTR\UZThyrEchoHyper.png" alt="TR">hyper / izoechogenní</td>
+				<td><img src="\picThyroidTR\UZThyrShapeTall.png" alt="TR">vyšší než širší</td>
+				<td><img src="\picThyroidTR\UZThyrMargIll.png" alt="TR">nejasný, smazaný</td> 
+				<td><img src="\picThyroidTR\UZThyrCalcMacro.png" alt="TR">makrokalcifikace</td>
+			  </tr>
+			  <tr>
+				<td><img src="\picThyroidTR\UZThyrCompMixed.png" alt="TR"> smíšená cysticko-solidní</td>
+				<td><img src="\picThyroidTR\UZThyrEchoHypo.png" alt="TR">hypoechogenní</td>
+				<td></td>
+				<td><img src="\picThyroidTR\UZThyrMargIrr.png" alt="TR">nepravidelný, lobulární</td> 
+				<td><img src="\picThyroidTR\UZThyrCalcRim.png" alt="TR">periferní kalcifikace</td>
+			  </tr>
+			  <tr>
+				<td><img src="\picThyroidTR\UZThyrCompSolid.png" alt="TR"> solidní</td>
+				<td><img src="\picThyroidTR\UZThyrEchoVeryhypo.png" alt="TR">velmi hypoechogenní</td>
+				<td></td>
+				<td><img src="\picThyroidTR\UZThyrMargExtra.png" alt="TR">extrathyroidální extenze</td> 
+				<td><img src="\picThyroidTR\UZThyrCalcMicro.png" alt="TR">bodové echogenní foci</td>
+			  </tr>
+			</table>
     </td>
-  </tr>
-</table>
-
-<table id="UZThyroidLesion3" class="LesionX hidden">
-  <tr>
-    <td>
-		<button id="UZThyroidLesion3no" class="myButtonLesionS">3</button> 
-		<input type="text" class="numberstext" id="UZThyroidLesion3Size" placeholder="rozměr..." min="0" max="100" step="1" style="width: 90px;" oninput="updateTexts()">
-		<button id="UZThyroidLesion3Side" class="ButtonCycleText button60">strana</button> 
-		<button id="UZThyroidLesion3Comp" class="ButtonCycleText button110">kompozice</button> 
-		<button id="UZThyroidLesion3Echo" class="ButtonCycleText button90">echogenita</button> 
-		<button id="UZThyroidLesion3Shape" class="ButtonCycleText button60">tvar</button> 
-		<button id="UZThyroidLesion3Margin" class="ButtonCycleText button90">okraj</button> 
-		<button id="UZThyroidLesion3Foci" class="ButtonCycleText button110">kalcifikace</button> 
-    </td>
-  </tr>
 </table>
 
 </div>
