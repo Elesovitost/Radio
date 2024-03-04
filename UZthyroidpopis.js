@@ -142,7 +142,26 @@ function getFociTextFromImgSrc(imgSrc) {
 
 //`; let codeForUZThyroidLesion2 = codeForUZThyroidLesion1.replace(/Lesion1/g, 'Lesion2'); eval(codeForUZThyroidLesion1); eval(codeForUZThyroidLesion2);
 
+//Thyroid size
+    function calculateVolumeAndUpdateField(sizeInputId, volInputId) {
+        const input = document.getElementById(sizeInputId);
+        const dimensions = input.value.split(/x|\*|,|;/); // Updated to include ';' as a possible delimiter
+        if (dimensions.length === 3) {
+            const [A, B, C] = dimensions.map(Number); // Convert strings to numbers
+            const volume = Math.round(A * B * C / 2000);
+            document.getElementById(volInputId).value = volume;
+			updateTexts();
+        }
+    }
 
+    // Attach event listeners to the size input fields
+    document.getElementById('UZThyroidRSize').addEventListener('input', function() {
+        calculateVolumeAndUpdateField('UZThyroidRSize', 'UZThyroidRVol');
+    });
+
+    document.getElementById('UZThyroidLSize').addEventListener('input', function() {
+        calculateVolumeAndUpdateField('UZThyroidLSize', 'UZThyroidLVol');
+    });
 
 // new LESIONS
 
@@ -250,6 +269,7 @@ document.getElementById("indikace").addEventListener("input", updateTexts);
     }
 
 
+
 //ThyroidVol
 
 var UZThyroidRVol = document.getElementById('UZThyroidRVol').value;
@@ -338,10 +358,10 @@ if (UZThyroidParenchyma === "normální") {
 	RESUZThyroidParenchymaSentences.push("s přiměřeným vzhledem parenchymu");
 } else if (UZThyroidParenchyma === "hypoechogenní") {
     POPUZThyroidParenchymaSentences.push("hypoechogenní");
-	RESUZThyroidParenchymaSentences.push("s nehomogenním parenchymem");
+	RESUZThyroidParenchymaSentences.push("s abnormálním vzhledem parenchymu při thyreopatii");
 } else if (UZThyroidParenchyma === "nehomogenní") {
     POPUZThyroidParenchymaSentences.push("hrubé echotextury");
-	RESUZThyroidParenchymaSentences.push("s nehomogenním parenchymem");
+	RESUZThyroidParenchymaSentences.push("s nehomogenním parenchymem při thyreopatii");
 } 
 
 if (UZThyroidNodules === "0") {
@@ -398,10 +418,10 @@ RESUZThyroidLesion1 = "";
 
 if (UZThyroidLesion1Side === "vpravo") {
     POPUZThyroidLesion1Sentences.push("Vpravo uzel " + UZThyroidLesion1formattedSize);
-	RESUZThyroidLesion1 = "Uzel v pravém laloku ";
+	RESUZThyroidLesion1 = "Nejvýraznější uzel v pravém laloku ";
 } else if (UZThyroidLesion1Side === "vlevo") {
     POPUZThyroidLesion1Sentences.push("Vlevo uzel " + UZThyroidLesion1formattedSize);
-	RESUZThyroidLesion1 = "Uzel v levém laloku ";
+	RESUZThyroidLesion1 = "Nejvýraznější uzel v levém laloku ";
 } 
 
 if (UZThyroidLesion1Comp === "cystická") {

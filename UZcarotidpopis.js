@@ -59,15 +59,16 @@ if (UZCarotRASno !== "0") {
 
     if (UZCarotRASmaterText === "kalcif.") {
         POPUSCarotRSentences.push("kalcifikované");
-		RESUSCarotRmater =  "kalcifikované";
+		RESUSCarotRmater =  "kalcifikovaných plátů. ";
     } else if (UZCarotRASmaterText === "smíšené") {
-        POPUSCarotRSentences.push("smíšené hladké");
-		RESUSCarotRmater =  "smíšené hladké";
+        POPUSCarotRSentences.push("smíšené");
+		RESUSCarotRmater =  "smíšených plátů. ";
     } else if (UZCarotRASmaterText === "měkké") {
-        POPUSCarotRSentences.push("měkké hladké");
-		RESUSCarotRmater =  "měkké hladké";
+        POPUSCarotRSentences.push("měkké");
+		RESUSCarotRmater =  "měkkých plátů. ";
     } else if (UZCarotRASmaterText === "exulc.") {
         POPUSCarotRSentences.push("přítomen i exulcerovaný plát");
+		RESUSCarotRmater =  "exulcerovaného plátu"; RESUSCarotRno = "";
     }
 }
 
@@ -117,16 +118,16 @@ if (UZCarotRICA === "" && UZCarotRASno ==="") {
     RESCarotR = "";
 }
 else if (UZCarotRASno === "okluze") {
-    RESCarotR = "Okluze (či téměř okluze) prox. ICA na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater + " plátů.";
+    RESCarotR = "Okluze (či téměř okluze) prox. ICA na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater;
 }
 else if (UZCarotRASno !== "0" && UZCarotRICA >= 230) {
-    RESCarotR = "Vpravo významná stenóza ICA nad 70% na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater + " plátů.";
+    RESCarotR = "Vpravo významná stenóza ICA nad 70% na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater;
 }
 else if (UZCarotRASno !== "0" && UZCarotRICA >= 125 && UZCarotRICA < 230) {
-    RESCarotR = "Vpravo stenóza ICA 50-69% na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater + " plátů.";
+    RESCarotR = "Vpravo stenóza ICA 50-69% na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater;
 }
 else if (UZCarotRASno !== "0" && UZCarotRASno !== "+" && UZCarotRICA < 125) {
-    RESCarotR = "Vpravo nevýznamná stenóza do 50% na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater + " plátů. ";
+    RESCarotR = "Vpravo nevýznamná stenóza do 50% na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater;
 }
 else if (UZCarotRASno === "+" && UZCarotRICA < 125) {
     RESCarotR = "Vpravo věku přiměřený nález s minimálními AS změnami bez stenóz. ";
@@ -144,6 +145,8 @@ else if (UZCarotRASno === "0" && UZCarotRICA >= 125) {
 let codeforL = codeforR.replace(/CarotR/g, 'CarotL').replace(/VertR/g, 'VertL').replace(/prav/g, 'lev').replace(/Prav/g, 'Lev');;
 eval(codeforR);
 eval(codeforL);
+
+
 
 if (UZCarotRCCA !== 0 && UZCarotRCCA !== "") {POPUZCarotRCCAPSV = "R-CCA: PSV " + UZCarotRCCA + " cm/s.";} else {POPUZCarotRCCAPSV = "";}
 if (UZCarotRRI !== 0 && UZCarotRRI !== "") {POPUZCarotRICARI = "RI: PSV " + UZCarotRRI + ". ";} else {POPUZCarotRICARI = "";}
