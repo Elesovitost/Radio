@@ -53,6 +53,10 @@ function processSentence(sentence) {
     return sentence;
 }
 
+//DISABLE CONTEXT MENU
+document.addEventListener("contextmenu", function(event) {
+    event.preventDefault();
+});
 
 //button cycling
 

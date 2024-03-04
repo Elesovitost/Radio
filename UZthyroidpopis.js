@@ -1,3 +1,63 @@
+// highlight
+document.addEventListener("DOMContentLoaded", function() {
+    var cells = document.querySelectorAll("#UZThyroidLesion1long td");
+
+    cells.forEach(function(cell) {
+        cell.addEventListener("mousedown", function(event) {
+            if (event.button === 2) { // Right-click
+                event.preventDefault();
+            }
+
+            if (event.button === 0 || event.button === 2) { // Check if left-click or right-click
+                var columnCells = getColumnCells(cell);
+
+                if (this.style.border === "1px solid red") {
+                    this.style.border = "";
+                    updateButtonBasedOnImage(""); // Clear button text when deselecting
+                } else {
+                    columnCells.forEach(function(c) {
+                        c.style.border = "";
+                    });
+                    this.style.border = "1px solid red";
+                    updateButtonBasedOnImage(this.querySelector('img').src); // Update button text based on image
+                }
+            }
+        });
+
+        cell.addEventListener("mouseleave", function() {
+            if(this.style.border != "1px solid red") {
+                this.style.border = "";
+            }
+        });
+    });
+
+    function getColumnCells(clickedCell) {
+        var column = clickedCell.cellIndex; // Get the index of the cell's column
+        var table = clickedCell.closest("table");
+        return table.querySelectorAll(`td:nth-child(${column + 1})`);
+    }
+    
+    function updateButtonBasedOnImage(imgSrc) {
+        var compbuttonText = "";
+        if (imgSrc.includes("UZThyrCompCystic.png")) {
+            compbuttonText = "cystická";
+        } else if (imgSrc.includes("UZThyrCompSpongi.png")) {
+            compbuttonText = "spongiformní";
+        } else if (imgSrc.includes("UZThyrCompMixed.png")) {
+            compbuttonText = "cysticko-solidní";
+        } else if (imgSrc.includes("UZThyrCompSolid.png")) {
+            compbuttonText = "solidní";
+        }
+        
+        var compButton = document.getElementById("UZThyroidLesion1Comp");
+        if (compButton) {
+            compButton.innerText = compbuttonText;
+        }
+		updateTexts();
+    }
+});
+
+
 
 
 // new LESIONS
@@ -101,6 +161,21 @@ function updateTexts() {
 var indikace = document.getElementById("indikace").value;
 document.getElementById("indikace").addEventListener("input", updateTexts);
 
+
+//tooltip
+
+    var ChbLesionExt = document.getElementById("ChbLesionExt");
+	if (ChbLesionExt) {         ChbLesionExt.addEventListener('change', updateTexts);    }
+    var UZThyroidLesion1short = document.getElementById("UZThyroidLesion1short");
+    var UZThyroidLesion1long = document.getElementById("UZThyroidLesion1long");
+
+    if (ChbLesionExt.checked) {
+        UZThyroidLesion1short.classList.add("hidden");
+        UZThyroidLesion1long.classList.remove("hidden");
+    } else {
+        UZThyroidLesion1short.classList.remove("hidden");
+        UZThyroidLesion1long.classList.add("hidden");
+    }
 
 //ThyroidVol
 

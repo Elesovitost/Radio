@@ -504,4 +504,9 @@ body.TNM td:first-child, body.TNM td:nth-child(2), body.TNM .main-row {
     box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 }
 
-/* Initial animation effects */
+/* UZThyroid table */
+
+#UZThyroidLesion1long {    border-collapse: collapse; background-color: black; color: white;  }
+#UZThyroidLesion1long td {    padding: 3;    width: 100px; 	vertical-align: top;  }
+#UZThyroidLesion1long img {    width: 100%;     height: auto;   }
+#UZThyroidLesion1long td:hover {    border: 1px solid blue;}
