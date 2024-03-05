@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to handle button highlight
     function highlightButton(button) {
-        button.style.border = '2px solid red';
+        button.style.border = '1px solid red';
         if (!highlightedButtons.includes(button)) {
             highlightedButtons.push(button);
         }

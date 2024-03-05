@@ -403,12 +403,15 @@ input {  border: 1px solid #000000; text-align: left; padding-left: 5px; border-
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 .blinking { animation: blink 0.2s linear 1; /* Blink for 0.5 seconds, 1 times */ }
 
+@keyframes partiallyDisappear {  from { opacity: 1; }  to { opacity: 0.8; } /* 70% disappear effect */}
+.partiallyDisappear {  animation: none; /* Remove any previous animations */  opacity: 0.8; /* Set opacity to 70% visibility */}
+
 
 .background-image {
     position: absolute;
     top: 0; /* Adjust as necessary */
     left: 0; /* Adjust as necessary */
-    z-index: -1; /* Puts the image behind the content */
+    z-index: -10; /* Puts the image behind the content */
 }
 
 

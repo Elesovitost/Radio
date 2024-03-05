@@ -407,18 +407,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 showPopup();
             } else {
                 navigator.clipboard.writeText(text)
-                .then(() => {
-                    this.classList.add('blinking');
-
-                    setTimeout(() => {
-                        this.classList.remove('blinking');
-                    }, 1000); // Change to 1 second to match the CSS animation
-                })
-                .catch(err => {
-                    console.error('Error copying text: ', err);
-                });
+				.then(() => {
+					// Transition to "clicked" state happens through mousedown event
+				})
+				.catch(err => {
+					console.error('Error copying text: ', err);
+				});
             }
         });
+		    // Mousedown event for partial disappearance effect
+			button.addEventListener('mousedown', function() {
+				this.style.opacity = '0.3'; // 70% disappear effect
+			});
+
+			// Mouseup event to return to normal state
+			button.addEventListener('mouseup', function() {
+				this.style.opacity = '1'; // Return to full opacity
+			});
+		
     }
 
     setupCopyButton('copyCOMP', 'FINALCOMPLETEText');
