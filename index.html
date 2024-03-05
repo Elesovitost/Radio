@@ -100,18 +100,18 @@
 <div class="TextsDIV mydiv0">
 <button id="copyPOP" class="buttonTEXT">POPIS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
 </div>
-<textarea id="FINALPOPText" class="FINALXXL" readonly></textarea>
+<textarea id="FINALPOPText" class="FINALXXL" ></textarea>
 
 <div class="TextsDIV mydiv0">
 <button id="copyRES" class="buttonTEXT">ZÁVĚR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
 </div>
-<textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
+<textarea id="FINALRESText" class="FINALXXL" ></textarea>
 
 <button id="copyCOMP" class="buttonTEXT">KOMPLET&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button>
 </div>
 
-<div id="texty2" class="TextsDIV mydiv0" style="display: none;"> 
-<textarea id="FINALCOMPLETEText" class="FINALXXL" readonly></textarea>
+<div id="texty2" class="standardwidthFinalText" style="display: ;"> 
+<textarea id="FINALCOMPLETEText" class="FINALXXL" ></textarea>
 </div>
 
 
@@ -241,24 +241,34 @@ function bindEventsToIframe(iframe) {
 }
 
 function setupRefreshOnAction(doc) {
-    function delayedUpdate() {
-    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    function delayedUpdate(event) {
+        // Add the IDs of the buttons to the condition
+        if (event.target.id === 'FINALPOPText' || event.target.id === 'FINALRESText' || event.target.id === 'FINALCOMPLETEText' ||
+            event.target.id === 'copyPOP' || event.target.id === 'copyRES' || event.target.id === 'copyCOMP') {
+            // If the event target is one of the specified elements, skip the rest of the function
+            return;
+        }
 
-    setTimeout(function() {
-        updateFinalTextAreas();
-        checkAndUpdateDivVisibility();
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
-        // Restore the scroll position
-        window.scrollTo(scrollLeft, scrollTop);
-    }, 1);
-}
+        setTimeout(function() {
+            updateFinalTextAreas();
+            checkAndUpdateDivVisibility();
 
+            // Restore the scroll position
+            window.scrollTo(scrollLeft, scrollTop);
+        }, 1);
+    }
+
+    // Attach the event listeners to the document or passed document-like object (e.g., iframe's document)
     doc.addEventListener('keydown', delayedUpdate);
     doc.addEventListener('mouseup', delayedUpdate);
     doc.addEventListener('input', delayedUpdate);
-	doc.addEventListener('wheel', delayedUpdate);
+    doc.addEventListener('wheel', delayedUpdate);
 }
+
+
 
 //Příprava textů s názvy apod.
 
@@ -355,13 +365,14 @@ function checkAndUpdateDivVisibility() {
     var resText = document.getElementById("FINALRESText").value.trim();
 	var compText = document.getElementById("FINALCOMPLETEText").value.trim();
     var div = document.getElementById("texty1");
+	var div2 = document.getElementById("texty2");
 
     if (popText === '' && resText === '') {
-        div.classList.add('invisible');
-		div.classList.remove('visible');
+        div.classList.add('invisible'); div2.classList.add('invisible');
+		div.classList.remove('visible'); div2.classList.remove('visible');
     } else {
-        div.classList.add('visible');
-		div.classList.remove('invisible');
+        div.classList.add('visible'); div2.classList.add('visible')
+		div.classList.remove('invisible'); div2.classList.remove('invisible')
     }
 	
 	adjustTextareaHeight(document.getElementById("FINALPOPText"));
