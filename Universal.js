@@ -184,6 +184,8 @@ function changeText(buttonId, forward) {
 // Chb clickable by right mouse
 
 const checkboxes = document.querySelectorAll('.CHB input[type="checkbox"]');
+
+
 const Chb1 = document.querySelector('#Chb1');
 const allChbes = [...checkboxes];
 
@@ -192,6 +194,9 @@ if (Chb1) {
 }
 
 allChbes.forEach(function(Chb) {
+	Chb.parentElement.addEventListener('change', function() {
+        updateTexts();
+    });
     Chb.parentElement.addEventListener('contextmenu', function(e) {
         e.preventDefault(); // Prevent the default context menu
         Chb.checked = !Chb.checked;
@@ -463,6 +468,8 @@ function addEventListenersForButtons() {
     });
 }
 addEventListenersForButtons();
+
+
 
 // tooltip (only when chbTooltip is checked)
  
