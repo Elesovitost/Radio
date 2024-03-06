@@ -1,0 +1,80 @@
+<head>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="RTGchest" class="standardwidth mydiv0">RTG hrudníku</div>
+
+<div id="imageContainer" style="position: relative; display: inline-block;">
+    <img src="RTGChest.jpg" alt="X-ray" style="width:600px;" class="background-image">
+</div>
+
+<style>
+.grid-cell {
+    position: absolute;
+    border: 1px solid #000;
+    font-size: 8px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var imageContainer = document.getElementById('imageContainer');
+    var img = imageContainer.querySelector('img');
+
+    // Wait for the image to load to get its dimensions
+    img.onload = function() {
+        var imgWidth = img.offsetWidth;
+        var imgHeight = img.offsetHeight;
+
+        // Calculate the number of cells in each dimension
+        var cellsX = Math.floor(imgWidth / 10);
+        var cellsY = Math.floor(imgHeight / 10);
+
+        for (let i = 0; i < cellsY; i++) {
+            for (let j = 0; j < cellsX; j++) {
+                var cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                cell.style.width = '10px';
+                cell.style.height = '10px';
+                cell.style.left = (j * 10) + 'px';
+                cell.style.top = (i * 10) + 'px';
+                cell.textContent = `${j*10},${i*10}`;
+                imageContainer.appendChild(cell);
+            }
+        }
+    };
+
+    // In case the image is cached and the load event has already fired
+    if (img.complete) {
+        img.onload();
+    }
+});
+</script>
+
+
+<div id="chest" class=" standardwidth ">
+
+<input type="number" class="numbers" id="PleuralR" placeholder="0 cm" min="0" max="10" step="0.5" style="width: 50px;" oninput="updateTexts()">
+
+
+<button id="XR-R-UZ" class="ButtonCycleText button120"  style="position: absolute; top: 105; left: 150px;">horní pole</button>
+<button id="XR-R-MZ" class="ButtonCycleText button120"  style="position: absolute; top: 205; left: 150px;">střední pole</button>
+<button id="XR-R-LZ" class="ButtonCycleText button120"  style="position: absolute; top: 305; left: 150px;">dolní pole</button>
+
+</div><button id="XR-L-UZ" class="ButtonCycleText button120"  style="position: absolute; top: 105; left: 380px;">horní pole</button>
+<button id="XR-L-MZ" class="ButtonCycleText button120"  style="position: absolute; top: 205; left: 380px;">střední pole</button>
+<button id="XR-L-LZ" class="ButtonCycleText button120"  style="position: absolute; top: 305; left: 380px;">dolní pole</button>
+
+<script src="Universal.js"></script>  
+<script src="RTGchestpopis.js"></script> 
+
+</body>
+
+  
