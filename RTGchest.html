@@ -4,51 +4,52 @@
 
 <body>
 
-<div id="RTGchest" class="standardwidth mydiv0">RTG hrudníku</div>
+<div id="RTGchest" class="standardwidth mydiv0">RTG plic</div>
+<div id="INDLINE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
 
 <div id="imageContainer" style="position: relative; display: inline-block;">
 <img src="RTGChest.jpg" alt="X-ray" style="width:600px;" class="background-image">
 	
-<input type="number" class="numbers" id="PleuralR" placeholder="0 cm" min="0" max="10" step="0.5" style="width: 50px;" oninput="updateTexts()">
 
+<button id="XR_R_UZ" class="ButtonCycleText button100"  style="position: absolute; top: 200px; left: 100px;">horní pole</button>
+<button id="XR_R_MZ" class="ButtonCycleText button100"  style="position: absolute; top: 340px; left: 80px;">střední pole</button>
+<button id="XR_R_LZ" class="ButtonCycleText button100"  style="position: absolute; top: 480px; left: 60px;">dolní pole</button>
 
-<button id="XR-R-UZ" class="ButtonCycleText button120"  style="position: absolute; top: 200px; left: 100px;">horní pole</button>
-<button id="XR-R-MZ" class="ButtonCycleText button120"  style="position: absolute; top: 340px; left: 80px;">střední pole</button>
-<button id="XR-R-LZ" class="ButtonCycleText button120"  style="position: absolute; top: 480px; left: 80px;">dolní pole</button>
+<button id="XR_R_UZDev" class="ButtonCycleText button100 hidden"  style="position: absolute; top: 220px; left: 100px;">vývoj</button>
+<button id="XR_R_MZDev" class="ButtonCycleText button100 hidden"  style="position: absolute; top: 360px; left: 80px;">vývoj</button>
+<button id="XR_R_LZDev" class="ButtonCycleText button100 hidden"  style="position: absolute; top: 500px; left: 60px;">vývoj</button>
 
-<button id="XR-R-UZDev" class="ButtonCycleText button60"  style="position: absolute; top: 220px; left: 100px;">vývoj</button>
-<button id="XR-R-MZDev" class="ButtonCycleText button60"  style="position: absolute; top: 360px; left: 80px;">vývoj</button>
-<button id="XR-R-LZDev" class="ButtonCycleText button60"  style="position: absolute; top: 500px; left: 80px;">vývoj</button>
+<button id="XR_L_UZ" class="ButtonCycleText button100"  style="position: absolute; top: 200px; left: 400px;">horní pole</button>
+<button id="XR_L_MZ" class="ButtonCycleText button100"  style="position: absolute; top: 340px; left: 420px;">střední pole</button>
+<button id="XR_L_LZ" class="ButtonCycleText button100"  style="position: absolute; top: 480px; left: 440px;">dolní pole</button>
 
-<button id="XR-L-UZ" class="ButtonCycleText button120"  style="position: absolute; top: 200px; left: 360px;">horní pole</button>
-<button id="XR-L-MZ" class="ButtonCycleText button120"  style="position: absolute; top: 340px; left: 400px;">střední pole</button>
-<button id="XR-L-LZ" class="ButtonCycleText button120"  style="position: absolute; top: 480px; left: 400px;">dolní pole</button>
+<button id="XR_L_UZDev" class="ButtonCycleText button100 hidden"  style="position: absolute; top: 220px; left: 400px;">vývoj</button>
+<button id="XR_L_MZDev" class="ButtonCycleText button100 hidden"  style="position: absolute; top: 360px; left: 420px;">vývoj</button>
+<button id="XR_L_LZDev" class="ButtonCycleText button100 hidden"  style="position: absolute; top: 500px; left: 440px;">vývoj</button>
 
-<button id="XR-L-UZDev" class="ButtonCycleText button120"  style="position: absolute; top: 220px; left: 360px;">vývoj</button>
-<button id="XR-L-MZDev" class="ButtonCycleText button120"  style="position: absolute; top: 360px; left: 400px;">vývoj</button>
-<button id="XR-L-LZDev" class="ButtonCycleText button120"  style="position: absolute; top: 500px; left: 400px;">vývoj</button>
+<button id="XR_R_Fluid" class="ButtonCycleText button100"  style="position: absolute; top: 560px; left: 60px;">tekutina</button>
+<button id="XR_L_Fluid" class="ButtonCycleText button100"  style="position: absolute; top: 560px; left: 440px;">tekutina</button>
 
-<button id="XR-R-Fluid" class="ButtonCycleText button120"  style="position: absolute; top: 560px; left: 60px;">tekutina</button>
-<button id="XR-L-Fluid" class="ButtonCycleText button120"  style="position: absolute; top: 560px; left: 440px;">tekutina</button>
+<button id="XR_R_Hilus" class="ButtonCycleText button60"  style="position: absolute; top: 300px; left: 200px;">hilus</button>
+<button id="XR_L_Hilus" class="ButtonCycleText button60"  style="position: absolute; top: 300px; left: 360px;">hilus</button>
 
-<button id="XR-R-Hilus" class="ButtonCycleText button60"  style="position: absolute; top: 300px; left: 200px;">hilus</button>
-<button id="XR-L-Hilus" class="ButtonCycleText button60"  style="position: absolute; top: 300px; left: 340px;">hilus</button>
+<button id="XR_0_Mest" class="ButtonCycleText button80"  style="position: absolute; top: 400px; left: 380px;">městnání</button>
 
-<button id="XR-0-Mest" class="ButtonCycleText button60"  style="position: absolute; top: 260px; left: 420px;">městnání</button>
+<button id="XR_R_PNOup" class="ButtonCycleText button60"  style="position: absolute; top: 80px; left: 180px;">PNO</button>
+<button id="XR_L_PNOup" class="ButtonCycleText button60"  style="position: absolute; top: 80px; left: 380px;">PNO</button>
 
-<button id="XR-R-PNOup" class="ButtonCycleText button60"  style="position: absolute; top: 80px; left: 180px;">PNO</button>
-<button id="XR-L-PNOup" class="ButtonCycleText button60"  style="position: absolute; top: 80px; left: 360px;">PNO</button>
+<button id="XR_R_PNObot" class="ButtonCycleText button60"  style="position: absolute; top: 600px; left: 40px;">PNO</button>
+<button id="XR_L_PNObot" class="ButtonCycleText button60"  style="position: absolute; top: 600px; left: 500px;">PNO</button>
 
-<button id="XR-R-PNObot" class="ButtonCycleText button60"  style="position: absolute; top: 600px; left: 40px;">PNO</button>
-<button id="XR-L-PNObot" class="ButtonCycleText button60"  style="position: absolute; top: 600px; left: 500px;">PNO</button>
+<button id="XR_0_Heart" class="ButtonCycleText button100"  style="position: absolute; top: 440px; left: 260px;">srdce</button>
 
-<button id="XR-0-Heart" class="ButtonCycleText button120"  style="position: absolute; top: 440px; left: 260px;">srdeční stín</button>
+<button id="XR_0_Mediast" class="ButtonCycleText button100"  style="position: absolute; top: 260px; left: 260px;">mediastinum</button>
 
-<button id="XR-R-DEVjug" class="ButtonCycleText button60"  style="position: absolute; top: 20px; left: 180px;">device</button>
-<button id="XR-L-DEVjug" class="ButtonCycleText button60"  style="position: absolute; top: 20px; left: 360px;">device</button>
+<button id="XR_R_DEVjug" class="ButtonCycleText button60"  style="position: absolute; top: 20px; left: 180px;">device</button>
+<button id="XR_L_DEVjug" class="ButtonCycleText button60"  style="position: absolute; top: 20px; left: 380px;">device</button>
 
-<button id="XR-R-DEVsub" class="ButtonCycleText button60"  style="position: absolute; top: 100px; left: 40px;">device</button>
-<button id="XR-L-DEVsub" class="ButtonCycleText button60"  style="position: absolute; top: 100px; left: 500px;">device</button>	
+<button id="XR_R_DEVsub" class="ButtonCycleText button60"  style="position: absolute; top: 100px; left: 40px;">device</button>
+<button id="XR_L_DEVsub" class="ButtonCycleText button60"  style="position: absolute; top: 100px; left: 500px;">device</button>	
 	
 </div>
 
@@ -59,9 +60,10 @@
     font-size: 8px;
     color: #fff;
     background: rgba(0, 0, 0, 0.1);
-    display: flex;
+    display: none; /* normally flex */
     align-items: center;
     justify-content: center;
+	z-index: -1;
 }
 </style>
 
@@ -118,8 +120,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <div id="chest" class=" standardwidth ">
+</div>
 
-
+<div id="texty1" class=" standardwidth hidden">
+NÁZEV<textarea id="RTGchestNAMEText" class="medium"></textarea>
+INDIKACE<textarea id="RTGchestINDText" class="medium"></textarea>
+POPIS<textarea id="RTGchestPOPText" class="superlarge"></textarea>
+ZÁVĚR<textarea id="RTGchestRESText" class="superlarge"></textarea>
 </div>
 
 <script src="Universal.js"></script>  
