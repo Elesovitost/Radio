@@ -7,7 +7,49 @@
 <div id="RTGchest" class="standardwidth mydiv0">RTG hrudníku</div>
 
 <div id="imageContainer" style="position: relative; display: inline-block;">
-    <img src="RTGChest.jpg" alt="X-ray" style="width:600px;" class="background-image">
+<img src="RTGChest.jpg" alt="X-ray" style="width:600px;" class="background-image">
+	
+<input type="number" class="numbers" id="PleuralR" placeholder="0 cm" min="0" max="10" step="0.5" style="width: 50px;" oninput="updateTexts()">
+
+
+<button id="XR-R-UZ" class="ButtonCycleText button120"  style="position: absolute; top: 200px; left: 100px;">horní pole</button>
+<button id="XR-R-MZ" class="ButtonCycleText button120"  style="position: absolute; top: 340px; left: 80px;">střední pole</button>
+<button id="XR-R-LZ" class="ButtonCycleText button120"  style="position: absolute; top: 480px; left: 80px;">dolní pole</button>
+
+<button id="XR-R-UZDev" class="ButtonCycleText button60"  style="position: absolute; top: 220px; left: 100px;">vývoj</button>
+<button id="XR-R-MZDev" class="ButtonCycleText button60"  style="position: absolute; top: 360px; left: 80px;">vývoj</button>
+<button id="XR-R-LZDev" class="ButtonCycleText button60"  style="position: absolute; top: 500px; left: 80px;">vývoj</button>
+
+<button id="XR-L-UZ" class="ButtonCycleText button120"  style="position: absolute; top: 200px; left: 360px;">horní pole</button>
+<button id="XR-L-MZ" class="ButtonCycleText button120"  style="position: absolute; top: 340px; left: 400px;">střední pole</button>
+<button id="XR-L-LZ" class="ButtonCycleText button120"  style="position: absolute; top: 480px; left: 400px;">dolní pole</button>
+
+<button id="XR-L-UZDev" class="ButtonCycleText button120"  style="position: absolute; top: 220px; left: 360px;">vývoj</button>
+<button id="XR-L-MZDev" class="ButtonCycleText button120"  style="position: absolute; top: 360px; left: 400px;">vývoj</button>
+<button id="XR-L-LZDev" class="ButtonCycleText button120"  style="position: absolute; top: 500px; left: 400px;">vývoj</button>
+
+<button id="XR-R-Fluid" class="ButtonCycleText button120"  style="position: absolute; top: 560px; left: 60px;">tekutina</button>
+<button id="XR-L-Fluid" class="ButtonCycleText button120"  style="position: absolute; top: 560px; left: 440px;">tekutina</button>
+
+<button id="XR-R-Hilus" class="ButtonCycleText button60"  style="position: absolute; top: 300px; left: 200px;">hilus</button>
+<button id="XR-L-Hilus" class="ButtonCycleText button60"  style="position: absolute; top: 300px; left: 340px;">hilus</button>
+
+<button id="XR-0-Mest" class="ButtonCycleText button60"  style="position: absolute; top: 260px; left: 420px;">městnání</button>
+
+<button id="XR-R-PNOup" class="ButtonCycleText button60"  style="position: absolute; top: 80px; left: 180px;">PNO</button>
+<button id="XR-L-PNOup" class="ButtonCycleText button60"  style="position: absolute; top: 80px; left: 360px;">PNO</button>
+
+<button id="XR-R-PNObot" class="ButtonCycleText button60"  style="position: absolute; top: 600px; left: 40px;">PNO</button>
+<button id="XR-L-PNObot" class="ButtonCycleText button60"  style="position: absolute; top: 600px; left: 500px;">PNO</button>
+
+<button id="XR-0-Heart" class="ButtonCycleText button120"  style="position: absolute; top: 440px; left: 260px;">srdeční stín</button>
+
+<button id="XR-R-DEVjug" class="ButtonCycleText button60"  style="position: absolute; top: 20px; left: 180px;">device</button>
+<button id="XR-L-DEVjug" class="ButtonCycleText button60"  style="position: absolute; top: 20px; left: 360px;">device</button>
+
+<button id="XR-R-DEVsub" class="ButtonCycleText button60"  style="position: absolute; top: 100px; left: 40px;">device</button>
+<button id="XR-L-DEVsub" class="ButtonCycleText button60"  style="position: absolute; top: 100px; left: 500px;">device</button>	
+	
 </div>
 
 <style>
@@ -16,7 +58,7 @@
     border: 1px solid #000;
     font-size: 8px;
     color: #fff;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,30 +70,44 @@ document.addEventListener('DOMContentLoaded', function() {
     var imageContainer = document.getElementById('imageContainer');
     var img = imageContainer.querySelector('img');
 
-    // Wait for the image to load to get its dimensions
     img.onload = function() {
         var imgWidth = img.offsetWidth;
         var imgHeight = img.offsetHeight;
 
-        // Calculate the number of cells in each dimension
-        var cellsX = Math.floor(imgWidth / 10);
-        var cellsY = Math.floor(imgHeight / 10);
+        var cellSize = 20;
+        var cellsX = Math.floor(imgWidth / cellSize);
+        var cellsY = Math.floor(imgHeight / cellSize);
+        var middleX = Math.floor(cellsX / 2);
+        var middleY = Math.floor(cellsY / 2);
 
         for (let i = 0; i < cellsY; i++) {
             for (let j = 0; j < cellsX; j++) {
                 var cell = document.createElement('div');
                 cell.className = 'grid-cell';
-                cell.style.width = '10px';
-                cell.style.height = '10px';
-                cell.style.left = (j * 10) + 'px';
-                cell.style.top = (i * 10) + 'px';
-                cell.textContent = `${j*10},${i*10}`;
+                cell.style.width = `${cellSize}px`;
+                cell.style.height = `${cellSize}px`;
+                cell.style.left = `${j * cellSize}px`;
+                cell.style.top = `${i * cellSize}px`;
+
+                // Determine when to write horizontal (x) and vertical (y) counts
+                if (i == 0 || i == cellsY - 1 || i == middleY) {
+                    // For top, bottom, and middle horizontal lines, write x-coordinate
+                    cell.textContent = `${j * cellSize}`;
+                }
+                
+                if (j == 0 || j == cellsX - 1 || j == middleX) {
+                    // For left, right, and middle vertical lines, write y-coordinate
+                    // Prevent overwriting of horizontal line texts with vertical texts
+                    if (cell.textContent == "") {
+                        cell.textContent = `${i * cellSize}`;
+                    }
+                }
+
                 imageContainer.appendChild(cell);
             }
         }
     };
 
-    // In case the image is cached and the load event has already fired
     if (img.complete) {
         img.onload();
     }
@@ -59,18 +115,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 
+
+
 <div id="chest" class=" standardwidth ">
 
-<input type="number" class="numbers" id="PleuralR" placeholder="0 cm" min="0" max="10" step="0.5" style="width: 50px;" oninput="updateTexts()">
 
-
-<button id="XR-R-UZ" class="ButtonCycleText button120"  style="position: absolute; top: 105; left: 150px;">horní pole</button>
-<button id="XR-R-MZ" class="ButtonCycleText button120"  style="position: absolute; top: 205; left: 150px;">střední pole</button>
-<button id="XR-R-LZ" class="ButtonCycleText button120"  style="position: absolute; top: 305; left: 150px;">dolní pole</button>
-
-</div><button id="XR-L-UZ" class="ButtonCycleText button120"  style="position: absolute; top: 105; left: 380px;">horní pole</button>
-<button id="XR-L-MZ" class="ButtonCycleText button120"  style="position: absolute; top: 205; left: 380px;">střední pole</button>
-<button id="XR-L-LZ" class="ButtonCycleText button120"  style="position: absolute; top: 305; left: 380px;">dolní pole</button>
+</div>
 
 <script src="Universal.js"></script>  
 <script src="RTGchestpopis.js"></script> 

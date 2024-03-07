@@ -149,10 +149,10 @@ eval(codeforL);
 
 
 if (UZCarotRCCA !== 0 && UZCarotRCCA !== "") {POPUZCarotRCCAPSV = "R-CCA: PSV " + UZCarotRCCA + " cm/s.";} else {POPUZCarotRCCAPSV = "";}
-if (UZCarotRRI !== 0 && UZCarotRRI !== "") {POPUZCarotRICARI = "RI: PSV " + UZCarotRRI + ". ";} else {POPUZCarotRICARI = "";}
+if (UZCarotRRI !== 0 && UZCarotRRI !== "") {POPUZCarotRICARI = "RI: " + UZCarotRRI + ". ";} else {POPUZCarotRICARI = "";}
 
 if (UZCarotLCCA !== 0 && UZCarotLCCA !== "") {POPUZCarotLCCAPSV = "L-CCA: PSV " + UZCarotLCCA + " cm/s.";} else {POPUZCarotLCCAPSV = "";}
-if (UZCarotLRI !== 0 && UZCarotLRI !== "") {POPUZCarotLICARI = "RI: PSV " + UZCarotLRI + ". ";} else {POPUZCarotLICARI = "";}
+if (UZCarotLRI !== 0 && UZCarotLRI !== "") {POPUZCarotLICARI = "RI: " + UZCarotLRI + ". ";} else {POPUZCarotLICARI = "";}
 
 // POPIS
 
@@ -168,8 +168,9 @@ POPUZCarotRCCAPSV + "\n" +
 POPUZCarotLCCAPSV + "\n" +
 "L-ICA: PSV " + UZCarotLICA + " cm/s. " + POPUZCarotLICARI + "\n" + 
 "Aterosklerotické pláty " + POPUSCarotL + "\n" +
-"L-VA: " + POPUSVertL
+"L-VA: " + POPUSVertL + "\n"
 ;
+
 
 UZCarotidRESText.value = 
 RESCarotR + RESCarotL + "\n" +
