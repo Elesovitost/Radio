@@ -405,6 +405,14 @@ if (POPXR_R_UZ + POPXR_R_MZ + POPXR_R_LZ + POPXR_L_UZ + POPXR_L_MZ + POPXR_L_LZ 
     POPXR_Zones_Normal = "Parenchym přiměřené transparence, bez ložisek či stínů. ";
 }  
 
+//vstoje-vleže
+
+if (XR_Position === "vstoje") {
+   XR_Name = "RTG plic vstoje";
+} else {
+    XR_Name = "RTG plic vleže";
+}
+
 //oproti
 
 if (document.getElementById('XR_Comparison').checked) {
@@ -416,7 +424,7 @@ if (document.getElementById('XR_Comparison').checked) {
 
 // POPIS
 
-RTGchestNAMEText.value = "RTG plic";
+RTGchestNAMEText.value = XR_Name;
 
 RTGchestINDText.value = indikace; document.getElementById("indikace").addEventListener("input", updateTexts);
 
