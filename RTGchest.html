@@ -4,8 +4,11 @@
 
 <body>
 
-<div id="RTGchest" class="standardwidth mydiv0">RTG plic</div>
-<div id="INDLINE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
+<div id="RTGchest" class="standardwidth mydiv0">RTG plic <button id="XR_Position" class="ButtonCycleText button60 buttonSELECT" style="background-color: transparent" >vstoje</button></div>
+<div id="IND" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off">
+<div class="nowrap">&nbsp;&nbsp;srovnat s minule: <label class="CHB"> <input type="checkbox" id="XR_Comparison" onChange="updateTexts()"><span>+</span></label></div>
+</div>
+<div style="font-size: 12px; padding: 5px" ><label class="CHB"> <input type="checkbox" id="ChbTooltip" onChange="updateTexts()"><span>+</span></label> Nápověda</div>
 
 <div id="imageContainer" style="position: relative; display: inline-block;">
 <img src="RTGChest.jpg" alt="X-ray" style="width:600px;" class="background-image">
@@ -40,6 +43,8 @@
 
 <button id="XR_R_PNObot" class="ButtonCycleText button60"  style="position: absolute; top: 600px; left: 40px;">PNO</button>
 <button id="XR_L_PNObot" class="ButtonCycleText button60"  style="position: absolute; top: 600px; left: 500px;">PNO</button>
+
+<button id="XR_0_Cannula" class="ButtonCycleText button60"  style="position: absolute; top: 60px; left: 280px;">kanyly</button>
 
 <button id="XR_0_Heart" class="ButtonCycleText button100"  style="position: absolute; top: 440px; left: 260px;">srdce</button>
 

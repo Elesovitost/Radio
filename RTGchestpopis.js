@@ -16,9 +16,14 @@ function updateTexts() {
 var indikace = document.getElementById("indikace").value;
 document.getElementById("indikace").addEventListener("input", updateTexts);
 
+ButtonCycleInnerTexts["XR_Position"] = ["vstoje", "vleže"];
+var XR_Position = document.getElementById("XR_Position").innerText;
+
 let codeforR = `
 
 //PNO
+
+
 
 POPXR_R_PNO = "";
 RESXR_R_PNO = "";
@@ -26,6 +31,13 @@ RESXR_R_PNO = "";
 var POPRTGChestExpSentences = [];
 var RESRTGChestExpSentences = [];
 
+if (XR_Position === "vstoje") {
+    document.getElementById("XR_R_PNOup").classList.remove("hidden");
+	document.getElementById("XR_R_PNObot").classList.add("hidden");
+} else {
+    document.getElementById("XR_R_PNObot").classList.remove("hidden");
+	document.getElementById("XR_R_PNOup").classList.add("hidden");
+}
 
 ButtonCycleInnerTexts["XR_R_PNOup"] = ["PNO", "plášťový", "malý", "střední", "velký"];
 var XR_R_PNOup = document.getElementById("XR_R_PNOup").innerText;
@@ -101,8 +113,10 @@ if (XR_R_UZ === "hypoventilace") {
     RESXR_R_UZText = RESXR_R_UZDevText + "ložisko v horním poli pravé plíce";
 } 
 
-if (XR_R_UZ !== "horní pole") {
+if (XR_R_UZ !== "horní pole" &&  (document.getElementById('XR_Comparison').checked)) {
     document.getElementById("XR_R_UZDev").classList.remove("hidden");
+} else {
+    document.getElementById("XR_R_UZDev").classList.add("hidden");
 }
 
 POPXR_R_UZ = POPXR_R_UZText;
@@ -142,9 +156,11 @@ if (XR_R_MZ === "hypoventilace") {
     RESXR_R_MZText = RESXR_R_MZDevText + "ložisko ve středním poli pravé plíce";
 } 
 
-if (XR_R_MZ !== "střední pole") {
+if (XR_R_MZ !== "střední pole" &&  (document.getElementById('XR_Comparison').checked)) {
     document.getElementById("XR_R_MZDev").classList.remove("hidden");
-}
+} else {
+    document.getElementById("XR_R_MZDev").classList.add("hidden");
+} 
 
 POPXR_R_MZ = POPXR_R_MZText;
 RESXR_R_MZ = RESXR_R_MZText ? RESXR_R_MZText.charAt(0).toUpperCase() + RESXR_R_MZText.slice(1) + (RESXR_R_MZText.endsWith(". ") ? "" : ". ") : "";
@@ -183,8 +199,10 @@ if (XR_R_LZ === "hypoventilace") {
     RESXR_R_LZText = RESXR_R_LZDevText + "ložisko v dolním poli pravé plíce";
 } 
 
-if (XR_R_LZ !== "dolní pole") {
+if (XR_R_LZ !== "dolní pole" &&  (document.getElementById('XR_Comparison').checked)) {
     document.getElementById("XR_R_LZDev").classList.remove("hidden");
+} else {
+    document.getElementById("XR_R_LZDev").classList.add("hidden");
 }
 
 POPXR_R_LZ = POPXR_R_LZText;
@@ -212,19 +230,32 @@ RESXR_R_Hilus = RESXR_R_HilusText;
 
 POPXR_R_FluidText = ""; RESXR_R_FluidText = "";
 
-ButtonCycleInnerTexts["XR_R_Fluid"] = ["tekutina", "jen KF úhel", "více", "hodně"];
+ButtonCycleInnerTexts["XR_R_Fluid"] = ["tekutina", "mírně", "středně", "hodně"];
 var XR_R_Fluid = document.getElementById("XR_R_Fluid").innerText;
 
-if (XR_R_Fluid === "jen KF úhel") {
-    POPXR_R_FluidText = "Otupení pravého KF úhlu. ";
-	RESXR_R_FluidText = "Drobný fluidothorax vpravo. ";
-} else if (XR_R_Fluid === "více") {
-    POPXR_R_FluidText = "Zastření siluety pravé poloviny bránice tekutinou. ";
-	RESXR_R_FluidText = "Fluidothorax vpravo. ";
-} else if (XR_R_Fluid === "hodně") {
-    POPXR_R_FluidText = "Výrazné zastření siluety pravé poloviny bránice tekutinou.  ";
-	RESXR_R_FluidText = "Výrazný fluidothorax vpravo. ";
-} 
+if (XR_Position === "vstoje") {
+    if (XR_R_Fluid === "mírně") {
+        POPXR_R_FluidText = "Otupení pravého KF úhlu. ";
+        RESXR_R_FluidText = "Drobný fluidothorax vpravo. ";
+    } else if (XR_R_Fluid === "středně") {
+        POPXR_R_FluidText = "Zastření siluety pravé poloviny bránice tekutinou. ";
+        RESXR_R_FluidText = "Fluidothorax vpravo. ";
+    } else if (XR_R_Fluid === "hodně") {
+        POPXR_R_FluidText = "Výrazné zastření siluety pravé poloviny bránice tekutinou. ";
+        RESXR_R_FluidText = "Výrazný fluidothorax vpravo. ";
+    } 
+} else if (XR_Position === "vleže") {
+    if (XR_R_Fluid === "mírně") {
+        POPXR_R_FluidText = "Nevýrazné homogenní snížení transparence pravého hemithoraxu bazálně. ";
+        RESXR_R_FluidText = "Susp. drobný fluidothorax vpravo. ";
+    } else if (XR_R_Fluid === "středně") {
+        POPXR_R_FluidText = "Homogenní snížení transparence pravého hemithoraxu. ";
+        RESXR_R_FluidText = "Fluidothorax vpravo. ";
+    } else if (XR_R_Fluid === "hodně") {
+        POPXR_R_FluidText = "Homogenní zastínění pravého hemithoraxu. ";
+        RESXR_R_FluidText = "Výrazný fluidothorax vpravo. ";
+    }
+}
 
 POPXR_R_Fluid = POPXR_R_FluidText;
 RESXR_R_Fluid = RESXR_R_FluidText;
@@ -233,15 +264,12 @@ RESXR_R_Fluid = RESXR_R_FluidText;
 
 POPXR_R_DEVjugText = ""; RESXR_R_DEVjugText = "";
 
-ButtonCycleInnerTexts["XR_R_DEVjug"] = ["device", "CŽK", "CŽK X","sheat"];
+ButtonCycleInnerTexts["XR_R_DEVjug"] = ["device", "CŽK", "sheat"];
 var XR_R_DEVjug = document.getElementById("XR_R_DEVjug").innerText;
 
 if (XR_R_DEVjug === "CŽK") {
     POPXR_R_DEVjugText = "CŽK zprava cestou v. jugularis interna. ";
 	RESXR_R_DEVjugText = "CŽK zprava. ";
-} else if (XR_R_DEVjug === "CŽK X") {
-    POPXR_R_DEVjugText = "CŽK zprava cestou v. jugularis interna s malpozicí katetru. ";
-	RESXR_R_DEVjugText = "CŽK zprava - malpozice. ";
 } else if (XR_R_DEVjug === "sheat") {
     POPXR_R_DEVjugText = "Sheat zprava cestou v. jugularis interna.. ";
 	RESXR_R_DEVjugText = "Sheat zprava. ";
@@ -253,22 +281,26 @@ RESXR_R_DEVjug = RESXR_R_DEVjugText;
 
 POPXR_R_DEVsubText = ""; RESXR_R_DEVsubText = "";
 
-ButtonCycleInnerTexts["XR_R_DEVsub"] = ["device", "CŽK", "CŽK X", "PICC", "PICC X"];
+ButtonCycleInnerTexts["XR_R_DEVsub"] = ["device", "CŽK", "PICC", "KS", "ICD", "portkatetr"];
 var XR_R_DEVsub = document.getElementById("XR_R_DEVsub").innerText;
 
 if (XR_R_DEVsub === "CŽK") {
     POPXR_R_DEVsubText = "CŽK zprava cestou v. sublacvia. ";
 	RESXR_R_DEVsubText = "CŽK zprava. ";
-} else if (XR_R_DEVsub === "CŽK X") {
-    POPXR_R_DEVsubText = "CŽK zprava cestou v. sublacvia s malpozicí katetru. ";
-	RESXR_R_DEVsubText = "CŽK zprava - malpozice. ";
 } else if (XR_R_DEVsub === "PICC") {
     POPXR_R_DEVsubText = "PICC zprava cestou v. sublacvia. ";
 	RESXR_R_DEVsubText = "PICC zprava. ";
-} else if (XR_R_DEVsub === "PICC X") {
-    POPXR_R_DEVsubText = "PICC zprava cestou v. sublacvia s malpozicí katetru. ";
-	RESXR_R_DEVsubText = "PICC zprava - malpozice. ";
+} else if (XR_R_DEVsub === "KS") {
+    POPXR_R_DEVsubText = "Kardiostimulátor zprava cestou v. sublacvia. ";
+	RESXR_R_DEVsubText = "KS zprava. ";
+} else if (XR_R_DEVsub === "ICD") {
+    POPXR_R_DEVsubText = "ICD zprava cestou v. sublacvia. ";
+	RESXR_R_DEVsubText = "ICD zprava. ";
+} else if (XR_R_DEVsub === "portkatetr") {
+    POPXR_R_DEVsubText = "Portkatetr zprava cestou v. sublacvia. ";
+	RESXR_R_DEVsubText = "Portkatetr zprava. ";
 } 
+
 
 POPXR_R_DEVsub = POPXR_R_DEVsubText;
 RESXR_R_DEVsub = RESXR_R_DEVsubText;
@@ -279,6 +311,24 @@ RESXR_R_DEVsub = RESXR_R_DEVsubText;
 let codeforL = codeforR.replace(/_R_/g, '_L_').replace(/prav/g, 'lev').replace(/Prav/g, 'Lev');;
 eval(codeforR);
 eval(codeforL);
+
+// kanyla
+
+POPXR_0_CannulaText = ""; RESXR_0_CannulaText = "";
+
+ButtonCycleInnerTexts["XR_0_Cannula"] = ["kanyla", "ETK", "TSK"];
+var XR_0_Cannula = document.getElementById("XR_0_Cannula").innerText;
+
+if (XR_0_Cannula === "ETK") {
+    POPXR_0_CannulaText = "ET kanyla v obvyklé poloze. ";
+	RESXR_0_CannulaText = "ETK. ";
+} else if (XR_0_Cannula === "TSK") {
+    POPXR_0_CannulaText = "Zavedena TS kanyla. ";
+	RESXR_0_CannulaText = "TSK. ";
+} 
+
+POPXR_0_Cannula = POPXR_0_CannulaText;
+RESXR_0_Cannula = RESXR_0_CannulaText;
 
 
 // srdce
@@ -312,7 +362,7 @@ var XR_0_Mediast = document.getElementById("XR_0_Mediast").innerText;
 
 if (XR_0_Mediast === "rozšířeno") {
     POPXR_0_MediastText = "Mediastinum je rozšířeno. ";
-	RESXR_0_MediastText = "Mediastinum je bůhvíproč rozšířeno. ";
+	RESXR_0_MediastText = "Mediastinum je abnormálně rozšířeno: v dif.dg. lymfadenopatie, ložisko  či jiné.  ";
 } 
 
 POPXR_0_Mediast = POPXR_0_MediastText;
@@ -352,8 +402,16 @@ if (POPXR_R_PNO === "" && POPXR_L_PNO === "" && POPXR_R_Fluid === "" && POPXR_L_
 }  
 
 if (POPXR_R_UZ + POPXR_R_MZ + POPXR_R_LZ + POPXR_L_UZ + POPXR_L_MZ + POPXR_L_LZ === "") {
-    POPXR_Zones_Normal = "Parenchym přiměřené transpanrence, bez ložisek či stínů. ";
+    POPXR_Zones_Normal = "Parenchym přiměřené transparence, bez ložisek či stínů. ";
 }  
+
+//oproti
+
+if (document.getElementById('XR_Comparison').checked) {
+    RESXR_Comparison = "Oproti minulému RTG snímku: ";
+} else {
+    RESXR_Comparison = "";
+}
 
 
 // POPIS
@@ -368,15 +426,17 @@ POPXR_R_UZ + POPXR_R_MZ + POPXR_R_LZ + POPXR_L_UZ + POPXR_L_MZ + POPXR_L_LZ + PO
 POPXR_R_Fluid + POPXR_L_Fluid + "\n" + 
 POPXR_0_Mediast + "\n" +  
 POPXR_0_Heart + POPXR_0_Mest + "\n" + 
-POPXR_R_DEVjug + POPXR_R_DEVsub + POPXR_L_DEVjug + POPXR_L_DEVsub 
+POPXR_R_DEVjug + POPXR_R_DEVsub + POPXR_L_DEVjug + POPXR_L_DEVsub  + "\n" +
+POPXR_0_Cannula
 ;
 
 RTGchestRESText.value = 
+RESXR_Comparison + "\n" + 
 RESXR_R_PNO + RESXR_L_PNO + "\n" + 
 RESXR_R_Fluid + RESXR_L_Fluid + "\n" + 
 RESXR_R_UZ + RESXR_R_MZ + RESXR_R_LZ + RESXR_L_UZ + RESXR_L_MZ + RESXR_L_LZ + "\n" + 
-RESXR_R_DEVjug + RESXR_R_DEVsub + RESXR_L_DEVjug + RESXR_L_DEVsub + "\n" + 
-RESXR_0_Mediast + RESXR_0_Heart + RESXR_0_Mest 
+RESXR_0_Mediast + RESXR_0_Heart + RESXR_0_Mest  + "\n" +
+RESXR_0_Cannula + RESXR_R_DEVjug + RESXR_R_DEVsub + RESXR_L_DEVjug + RESXR_L_DEVsub
 ;
 
 
