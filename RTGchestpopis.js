@@ -219,11 +219,13 @@ var XR_R_Hilus = document.getElementById("XR_R_Hilus").innerText;
 
 if (XR_R_Hilus === "expanze") {
     POPXR_R_HilusText = "Ložiskové zastínění v pravém hilu se ztrátou siluet. ";
-	RESXR_R_HilusText = "Susp. ložisko či lymfadenipatie v pravém hilu. ";
+	RESXR_R_HilusText = "Susp. ložisko či lymfadenopatie v pravém hilu. ";
 } 
 
 POPXR_R_Hilus = POPXR_R_HilusText;
 RESXR_R_Hilus = RESXR_R_HilusText;
+
+
 
 
 // tekutina
@@ -397,6 +399,11 @@ RESXR_0_Mest = RESXR_0_MestText;
 
 POPXR_PNONormal = "";
 
+
+if (XR_R_Hilus === "hilus" && XR_L_Hilus === "hilus")  {
+    POPXR_R_Hilus = "Hily nerozšířeny.  ";
+}  
+
 if (POPXR_R_PNO === "" && POPXR_L_PNO === "" && POPXR_R_Fluid === "" && POPXR_L_Fluid === "") {
     POPXR_PNONormal = "Plíce rozvinuty. ";
 }  
@@ -433,6 +440,7 @@ POPXR_R_PNO + POPXR_L_PNO + POPXR_PNONormal + "\n" +
 POPXR_R_UZ + POPXR_R_MZ + POPXR_R_LZ + POPXR_L_UZ + POPXR_L_MZ + POPXR_L_LZ + POPXR_Zones_Normal + "\n" + 
 POPXR_R_Fluid + POPXR_L_Fluid + "\n" + 
 POPXR_0_Mediast + "\n" +  
+POPXR_R_Hilus + POPXR_L_Hilus + "\n" +  
 POPXR_0_Heart + POPXR_0_Mest + "\n" + 
 POPXR_R_DEVjug + POPXR_R_DEVsub + POPXR_L_DEVjug + POPXR_L_DEVsub  + "\n" +
 POPXR_0_Cannula
@@ -444,6 +452,7 @@ RESXR_R_PNO + RESXR_L_PNO + "\n" +
 RESXR_R_Fluid + RESXR_L_Fluid + "\n" + 
 RESXR_R_UZ + RESXR_R_MZ + RESXR_R_LZ + RESXR_L_UZ + RESXR_L_MZ + RESXR_L_LZ + "\n" + 
 RESXR_0_Mediast + RESXR_0_Heart + RESXR_0_Mest  + "\n" +
+RESXR_R_Hilus + RESXR_L_Hilus + "\n" +  
 RESXR_0_Cannula + RESXR_R_DEVjug + RESXR_R_DEVsub + RESXR_L_DEVjug + RESXR_L_DEVsub
 ;
 
@@ -472,6 +481,7 @@ RTGchestPOPText.value = RTGchestPOPText.value.replace("Pravý KF úhel volný. L
 
 RTGchestRESText.value = RTGchestRESText.value.replace("Drobný fluidothorax vpravo. Drobný fluidothorax vlevo.", "Drobný fluidohotrax bilat. ")
                                              .replace("Fluidothorax vpravo. Fluidothorax vlevo.", "Fluidohotrax bilat. ")
+											  .replace("Susp. ložisko či lymfadenopatie v pravém hilu. Susp. ložisko či lymfadenopatie v levém hilu.", "V.s. hilová lymfadenopatie bilat. ")
                                              .replace("Výrazný fluidothorax vpravo. Výrazný fluidothorax vlevo.", "Výrazný fluidothorax bilat. ");
 
 
