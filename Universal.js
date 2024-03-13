@@ -28,6 +28,7 @@ function processSentence(sentence) {
 		containsExactWord("konsolidace") || 
 		containsExactWord("opacita") || 
 		containsExactWord("ložiska") || 
+		containsExactWord("cysta") || 
 		containsExactWord("struktura") ||
 		containsExactWord("uzlina")) {
         sentence = sentence.replace(/metabolické/g, "metabolická").replace(/četné /g, "četná ");
@@ -38,6 +39,7 @@ function processSentence(sentence) {
 		containsExactWord("infiltracePL") || 
 		containsExactWord("konsolidacePL") || 
 		containsExactWord("opacity") || 
+		containsExactWord("cysty") || 
 		containsExactWord("struktury") ||
 		containsExactWord("uzliny")) {
         sentence = sentence.replace(/expanzePL/g, "expanze").replace(/infiltracePL/g, "infiltrace").replace(/konsolidacePL/g, "konsolidace").replace(/dva/g, "dvě");
