@@ -402,6 +402,64 @@ var BreastLesion1CombinedResult = combineComparisonResults( BreastLesion1Compari
 //location
 
 
+  var BreastLesion1quadrantP = [];
+  var BreastLesion1quadrantL = [];
+
+  // Mapping for checkbox IDs to their descriptions
+  const quadrantMapping = {
+    'HZK': 'v horním zevním kvadrantu',
+    'HVK': 'v horním vnitřním kvadrantu',
+    'DZK': 'v dolním zevním kvadrantu',
+    'DVK': 'v dolním vnitřním kvadrantu',
+    'C': 'centrálně'
+  };
+
+  const checkboxes = document.querySelectorAll('.CHB input[type="checkbox"]:checked');
+
+  checkboxes.forEach((checkbox) => {
+    const idParts = checkbox.id.split('_');
+    const side = idParts[1];
+    const quadrant = idParts[2];
+    const quadrantText = quadrantMapping[quadrant];
+
+    if (side === 'R') {
+      BreastLesion1quadrantP.push(quadrantText);
+    } else if (side === 'L') {
+      BreastLesion1quadrantL.push(quadrantText);
+    }
+  });
+
+  function combineQuadrants(quadrants) {
+    if (quadrants.length > 3) {
+      return "ve všech kvadrantech";
+    } else if (quadrants.includes('v horním zevním kvadrantu') && quadrants.includes('v horním vnitřním kvadrantu')) {
+      quadrants = quadrants.filter(q => !['v horním zevním kvadrantu', 'v horním vnitřním kvadrantu'].includes(q));
+      quadrants.push("v horních kvadrantech");
+    } else if (quadrants.includes('v dolním zevním kvadrantu') && quadrants.includes('v dolním vnitřním kvadrantu')) {
+      quadrants = quadrants.filter(q => !['v dolním zevním kvadrantu', 'v dolním vnitřním kvadrantu'].includes(q));
+      quadrants.push("v dolních kvadrantech");
+    } else if (quadrants.includes('v horním zevním kvadrantu') && quadrants.includes('v dolním zevním kvadrantu')) {
+      quadrants = quadrants.filter(q => !['v horním zevním kvadrantu', 'v dolním zevním kvadrantu'].includes(q));
+      quadrants.push("v zevních kvadrantech");
+    } else if (quadrants.includes('v horním vnitřním kvadrantu') && quadrants.includes('v dolním vnitřním kvadrantu')) {
+      quadrants = quadrants.filter(q => !['v horním vnitřním kvadrantu', 'v dolním vnitřním kvadrantu'].includes(q));
+      quadrants.push("ve vnitřních kvadrantech");
+    }
+
+    return quadrants.join(", ").replace(/, ([^,]*)$/, ' a $1');
+  }
+
+  var BreastLesion1Location = '';
+
+  if (BreastLesion1quadrantP.length > 0 && BreastLesion1quadrantL.length > 0) {
+    BreastLesion1Location = "nelze v jednom ložisku míchat oba prsy";
+  } else if (BreastLesion1quadrantP.length > 0) {
+    BreastLesion1Location = "pravého prsu " + combineQuadrants(BreastLesion1quadrantP);
+  } else if (BreastLesion1quadrantL.length > 0) {
+    BreastLesion1Location = "levého prsu " + combineQuadrants(BreastLesion1quadrantL);
+  }
+
+  document.getElementById("BreastLesion1Location").value = BreastLesion1Location;
 
 //MR desc
 

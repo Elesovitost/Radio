@@ -3206,7 +3206,7 @@ let variablesToCheck = [
     window.RESSkeletonLesion1, window.RESSkeletonLesion2, window.RESSkeletonLesion3
 ];
 
-let bannedWords = ['suspektní', 'tumor',  'tumorózní',  'Tumorózní', 'meta', 'Meta', 'charakteru', 'nespecifický'];
+let bannedWords = ['suspektní', 'tumor',  'tumorózní',  'Tumorózní', 'meta', 'Meta', 'charakteru', 'neoplazií', 'neoplazie','nespecifický'];
 
 function containsBannedWord(str) {
     return bannedWords.some(bannedWord => str.includes(bannedWord));
