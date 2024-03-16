@@ -98,9 +98,8 @@
 <textarea id="FINALSEKVText" class="FINALXXL" readonly></textarea>
 </div>
 
+<div id="popupMessage" style="display:none; position:fixed; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold;"></div>
 <div id="texty1" class="standardwidthFinalText" style="display: none;" >
-
-<div id="popupMessage" style="display:none; position:fixed; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold;">Doplň stranu vyšetření</div>
 
 <div class="TextsDIV mydiv0">
 <button id="copyPOP" class="buttonTEXT">POPIS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
@@ -414,21 +413,15 @@ function adjustTextareaHeight(textarea) {
 
 document.addEventListener('DOMContentLoaded', (event) => {
 
-    function showPopup() {
+    function showPopup(message) {
         var popup = document.getElementById('popupMessage');
-        var copyButton = document.getElementById('copyCOMP');
-        
-        var buttonRect = copyButton.getBoundingClientRect();
-        var topPosition = buttonRect.top; // Position above the button
-        var leftPosition = buttonRect.left;
+        popup.textContent = message; // Set the popup message text
 
-        popup.style.top = topPosition - "30" + 'px';
-        popup.style.left = leftPosition + 'px';
         popup.style.display = 'block';
 
         setTimeout(() => {
             popup.style.display = 'none';
-        }, 1000); // Hide after 2 seconds
+        }, 1000); // Hide after 1 second
     }
 
     function setupCopyButton(buttonId, textAreaId) {
@@ -440,35 +433,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
             var firstLine = text.split('\n')[0]; // Get the first line
 
             if (firstLine.includes("MR kolene") || firstLine.includes("MR ramene") || firstLine.includes("MR hlezna")) {
-                showPopup();
+                showPopup("DOPLŇ STRANU");
             } else {
                 navigator.clipboard.writeText(text)
-				.then(() => {
-					// Transition to "clicked" state happens through mousedown event
-				})
-				.catch(err => {
-					console.error('Error copying text: ', err);
-				});
+                .then(() => {
+                    // Optional: success action
+                })
+                .catch(err => {
+                    console.error('Error copying text: ', err);
+                });
             }
         });
-		    // Mousedown event for partial disappearance effect
-			button.addEventListener('mousedown', function() {
-				this.style.opacity = '0.3'; // 70% disappear effect
-			});
+        // Mousedown event for partial disappearance effect
+        button.addEventListener('mousedown', function() {
+            this.style.opacity = '0.3'; // 70% disappear effect
+        });
 
-			// Mouseup event to return to normal state
-			button.addEventListener('mouseup', function() {
-				this.style.opacity = '1'; // Return to full opacity
-			});
-		
+        // Mouseup event to return to normal state
+        button.addEventListener('mouseup', function() {
+            this.style.opacity = '1'; // Return to full opacity
+        });
     }
 
     setupCopyButton('copyCOMP', 'FINALCOMPLETEText');
-    setupCopyButton('copyPOP', 'FINALPOPText');
-    setupCopyButton('copyRES', 'FINALRESText');
 });
-
-
 
 
 </script>
