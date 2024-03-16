@@ -12,10 +12,9 @@ var MRKneePOPText = document.getElementById("MRKneePOPText");
 var MRKneeRESText = document.getElementById("MRKneeRESText");
 var FINALText = document.getElementById("FINALText");
 
-
 function updateTexts() {
 	
-
+let Nadpis = "";
 var indikace = document.getElementById("indikace").value;
 
 var PkPlicaP = ""; var PkPlicaR = ""; var checkboxplica = document.getElementById('checkboxplica');
@@ -43,16 +42,39 @@ const LCLText = buttonElementLCL.innerText;
 const OstBakerText = buttonElementOstBaker.innerText;
 
 
-//strana
+//strana + výmeně kompartmentů a kolat vazů
 
-if (StranaText === "jakého?") {
- Nadpis = "MR kolene"; 
-} else if (StranaText === "PRAVÉHO") {
- Nadpis = "MR pravého kolene";
-} else if (StranaText === "LEVÉHO") {
- Nadpis = "MR levého kolene";
-} 
 
+    // Your existing code for switching divs
+    const flexContainer = document.querySelector('.flex-container');
+    const kommed = document.getElementById('kommed');
+    const komlat = document.getElementById('komlat');
+    
+    if (StranaText === "jakého?") {
+        Nadpis = "MR kolene";
+    } else if (StranaText === "PRAVÉHO") {
+        Nadpis = "MR pravého kolene";
+        flexContainer.insertBefore(komlat, kommed);
+    } else if (StranaText === "LEVÉHO") {
+        Nadpis = "MR levého kolene";
+        flexContainer.insertBefore(kommed, komlat);
+    }
+
+
+    const vazyContainer = document.getElementById('vazy'); // This div contains the tables
+    const lcmTable = document.getElementById('LCMtable');
+    const lclTable = document.getElementById('LCLtable');
+
+    // Ensuring LCMtable and LCLtable stay on the sides of other tables
+    if (StranaText === "PRAVÉHO") {
+        // Make LCMtable first and LCLtable last within the vazyContainer
+		vazyContainer.insertBefore(lclTable, vazyContainer.firstChild); // Move LCLtable to the beginning
+        vazyContainer.appendChild(lcmTable); // Move LCMtable to the end
+    } else if (StranaText === "LEVÉHO") {
+        // Reverse their positions
+		vazyContainer.insertBefore(lcmTable, vazyContainer.firstChild); // Move LCMtable to the beginning
+        vazyContainer.appendChild(lclTable); // Move LCLtable to the end
+    }
 
 // obecné
 
