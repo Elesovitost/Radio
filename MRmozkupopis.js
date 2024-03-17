@@ -774,7 +774,10 @@ var SinusR = combineStrings([FrontalR, MaxillarR, EthmoidR, SphenoidR]);
 
 // bez ložiskových změn
 POPNoLesions = "";
-if (POPBrainLesion1 === "" && POPBrainLesion2 === "" && LesionVP === "") {POPNoLesions = "Bez ložiskových změn. ";} else {POPNoLesions = "";}
+if (POPBrainLesion1 === "" && POPBrainLesion2 === "" && LesionVP === "" && WMLText === "0") {POPNoLesions = "Bez ložiskových změn. ";
+} else if (POPBrainLesion1 === "" && POPBrainLesion2 === "" && LesionVP === "" && WMLText !== "0") {POPNoLesions = "Jinak bez ložiskových změn. ";
+} else {POPNoLesions = "";
+}
 
 //bez restrikce
 
@@ -797,8 +800,8 @@ POPExamCompareText + "\n" +
 POPBrainLesion1 + "\n" +
 POPBrainLesion2 + "\n" +
 LesionVP + "\n" +
-POPNoLesions + "\n" +
 WMLP + WMLLocationP + RSP + "." + "\n" +
+POPNoLesions + "\n" +
 GCAP + " " + lobaratrophyP + "\n" +
 ventriclesP + "\n" +
 MMKP + "\n" +
