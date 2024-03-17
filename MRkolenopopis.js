@@ -42,10 +42,8 @@ const LCLText = buttonElementLCL.innerText;
 const OstBakerText = buttonElementOstBaker.innerText;
 
 
-//strana + výmeně kompartmentů a kolat vazů
+//STRANA + výměna kompartmentů a kolat vazů a chrupavek FP
 
-
-    // Your existing code for switching divs
     const flexContainer = document.querySelector('.flex-container');
     const kommed = document.getElementById('kommed');
     const komlat = document.getElementById('komlat');
@@ -61,20 +59,55 @@ const OstBakerText = buttonElementOstBaker.innerText;
     }
 
 
-    const vazyContainer = document.getElementById('vazy'); // This div contains the tables
+    const vazyContainer = document.getElementById('vazy'); 
     const lcmTable = document.getElementById('LCMtable');
     const lclTable = document.getElementById('LCLtable');
 
-    // Ensuring LCMtable and LCLtable stay on the sides of other tables
     if (StranaText === "PRAVÉHO") {
-        // Make LCMtable first and LCLtable last within the vazyContainer
-		vazyContainer.insertBefore(lclTable, vazyContainer.firstChild); // Move LCLtable to the beginning
-        vazyContainer.appendChild(lcmTable); // Move LCMtable to the end
+		vazyContainer.insertBefore(lclTable, vazyContainer.firstChild); 
+        vazyContainer.appendChild(lcmTable); 
     } else if (StranaText === "LEVÉHO") {
-        // Reverse their positions
-		vazyContainer.insertBefore(lcmTable, vazyContainer.firstChild); // Move LCMtable to the beginning
-        vazyContainer.appendChild(lclTable); // Move LCLtable to the end
+		vazyContainer.insertBefore(lcmTable, vazyContainer.firstChild); 
+        vazyContainer.appendChild(lclTable); 
     }
+
+
+
+function findLabelByText(parent, text) {
+    const labels = parent.querySelectorAll('label');
+    for (let i = 0; i < labels.length; i++) {
+        if (labels[i].innerText === text) {
+            return labels[i];
+        }
+    }
+    return null;
+}
+
+function switchMLPositions(isRightSide) {
+    const rows = document.querySelectorAll('#FPjointML tr');
+    
+    rows.forEach(row => {
+        const mCheckboxLabel = findLabelByText(row, "M");
+        const lCheckboxLabel = findLabelByText(row, "L");
+
+        if (mCheckboxLabel && lCheckboxLabel) {
+            if (isRightSide) {
+                lCheckboxLabel.parentNode.insertBefore(mCheckboxLabel, lCheckboxLabel.nextSibling);
+            } else {
+                mCheckboxLabel.parentNode.insertBefore(lCheckboxLabel, mCheckboxLabel.nextSibling);
+            }
+        }
+    });
+}
+
+if (StranaText === "PRAVÉHO") {
+    switchMLPositions(true); 
+} else if (StranaText === "LEVÉHO") {
+    switchMLPositions(false); 
+}
+
+
+
 
 // obecné
 
@@ -146,9 +179,6 @@ var PkCartDefectMore = document.getElementById("PkCartDefectMore").checked;
 var PkEdemaSub = document.getElementById("PkEdemaSub").checked;
 var PkEdemaCont = document.getElementById("PkEdemaCont").checked;
 var PkEdemaDif = document.getElementById("PkEdemaDif").checked;
-var PkCartCHPII = document.getElementById("PkCartCHPII").checked;
-var PkCartCHPIII = document.getElementById("PkCartCHPIII").checked;
-var PkCartCHPIV = document.getElementById("PkCartCHPIV").checked;
 
 var PkCartDescr = "";
 var PkCartLoc = "";
@@ -193,13 +223,20 @@ var checkedLesions = lesionChecks.filter(item => item.checked);
 PkCartLesion = checkedLesions.map(item => item.text).join(' a ');
 
 // Chondropathie determination
-if (PkCartCHPIV) {
+updateButtonTexts({
+	'PkCartCHP': ['0', 'II', 'III', 'IV'],
+});
+
+var buttonPkCartCHP = document.getElementById("PkCartCHP").innerText;
+
+// Chondropathie determination
+if (buttonPkCartCHP === "IV") {
 	PkCartDescr = "Prakticky chybějící chrupavka ";
 	PkCartCP = "Pokročilá chondropatie ";
-} else if (PkCartCHPIII) {
+} else if (buttonPkCartCHP === "III") {
 	PkCartDescr = "Snížení chrupavky ";
 	PkCartCP = "Chondropatie ";
-} else if (PkCartCHPII) {
+} else if (buttonPkCartCHP === "II") {
 	PkCartDescr = "Nepravidelné mírné snížení chrupavky ";
 	PkCartCP = "Mírná chondropatie ";
 } else if (PkCartFissureOne || PkCartFissureMore || PkCartDefectOne || PkCartDefectMore) {

@@ -57,7 +57,7 @@
 	</tr>
 	<tr id="PkCartilagestable" class="hidden">
 		<td>
-		<table>
+		<table id="FPjointML">
 			<tr>
 				<td>Patella</td>
 				<td class="right"><label class="CHB"><input type="checkbox" id="PkPatelCartM" onChange="updateTexts()"><span>M</span></label><label class="CHB"><input type="checkbox" id="PkPatelCartL" onChange="updateTexts()"><span>L</span></label></td>
@@ -68,7 +68,7 @@
 			</tr>
 			<tr>
 				<td>Chondropatie</td>
-				<td class="right"><label class="CHB"><input type="checkbox" id="PkCartCHPII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="PkCartCHPIII" onChange="updateTexts()"><span>III</span></label><label class="CHB"><input type="checkbox" id="PkCartCHPIV" onChange="updateTexts()"><span>IV</span></label></td>
+				<td class="right"><button id="PkCartCHP" class="buttonCheckbox">0</button></td>
 			</tr>
 			<tr>
 				<td>Fisura</td>
@@ -432,7 +432,7 @@ POPIS<textarea id="MRKneePOPText" class="superlarge"></textarea>
 ZÁVĚR<textarea id="MRKneeRESText" class="superlarge"></textarea>
 </div>
 
-
+<script src="Universal.js"></script>  
 <script src="MRkolenoscript.js"></script>  
 <script src="MRkolenopopis.js"></script>          
 
