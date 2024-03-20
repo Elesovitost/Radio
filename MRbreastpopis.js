@@ -461,37 +461,121 @@ var BreastLesion1CombinedResult = combineComparisonResults( BreastLesion1Compari
 
   document.getElementById("BreastLesion1Location").value = BreastLesion1Location;
 
+
+// shape, margin
+
+ButtonCycleInnerTexts["BreastLesion1_Shape"] = ["tvar", "kulatý", "oválný", "lobulární", "nepravidelný"];
+var BreastLesion1_Shape = document.getElementById("BreastLesion1_Shape").innerText;
+
+ButtonCycleInnerTexts["BreastLesion1_Margin"] = ["okraj", "hladký", "nepravidelný", "spikulace",];
+var BreastLesion1_Margin = document.getElementById("BreastLesion1_Margin").innerText;
+
+let BreastLesion1Appear = "";
+BreastLesion1Appeardescription = [];
+
+if (BreastLesion1_Shape === "tvar") {
+    BreastLesion1Appeardescription.push("");
+} else if (BreastLesion1_Shape === "kulatý") {
+    BreastLesion1Appeardescription.push("kulatého tvaru");
+} else if (BreastLesion1_Shape === "oválný") {
+    BreastLesion1Appeardescription.push("oválného tvaru");
+} else if (BreastLesion1_Shape === "lobulární") {
+    BreastLesion1Appeardescription.push("lobulárního tvaru");
+} else if (BreastLesion1_Shape === "nepravidelný") {
+    BreastLesion1Appeardescription.push("nepravidelného tvaru");
+}
+
+if (BreastLesion1_Margin === "okraj") {
+    BreastLesion1Appeardescription.push("");
+} else if (BreastLesion1_Margin === "hladký") {
+    BreastLesion1Appeardescription.push("hladkého okraje");
+} else if (BreastLesion1_Margin === "nepravidelný") {
+    BreastLesion1Appeardescription.push("nepravidelného okraje");
+} else if (BreastLesion1_Margin === "spikulace") {
+    BreastLesion1Appeardescription.push("se spukulacemi okraje");
+}
+
+BreastLesion1Appear = BreastLesion1Appeardescription.join(", "); BreastLesion1Appear += ", ";
+
+
 //MR desc
 
 var BreastLesion1descriptions = [];
 
 // T1
-if (document.getElementById('Chb1SignalT1hyper').checked) BreastLesion1descriptions.push("T1+");
-if (document.getElementById('Chb1SignalT1iso').checked) BreastLesion1descriptions.push("T1izo");
-if (document.getElementById('Chb1SignalT1hypo').checked) BreastLesion1descriptions.push("T1-");
+ButtonCycleInnerTexts["BreastLesion1_T1"] = ["-", "0", "+"];
+var BreastLesion1_T1 = document.getElementById("BreastLesion1_T1").innerText;
 
-// T2
-if (document.getElementById('Chb1SignalT2hyper').checked) BreastLesion1descriptions.push("T2+");
-if (document.getElementById('Chb1SignalT2iso').checked) BreastLesion1descriptions.push("T2izo");
-if (document.getElementById('Chb1SignalT2hypo').checked) BreastLesion1descriptions.push("T2-");
+if (BreastLesion1_T1 === "0") {
+    BreastLesion1descriptions.push("T1izo");
+} else if (BreastLesion1_T1 === "-") {
+    BreastLesion1descriptions.push("T1-");
+} else if (BreastLesion1_T1 === "+") {
+    BreastLesion1descriptions.push("T1+");
+}
 
-// FLAIR
-if (document.getElementById('Chb1SignalFLAIRhyper').checked) BreastLesion1descriptions.push("FLAIR+");
-if (document.getElementById('Chb1SignalFLAIRiso').checked) BreastLesion1descriptions.push("FLAIRizo");
-if (document.getElementById('Chb1SignalFLAIRhypo').checked) BreastLesion1descriptions.push("FLAIR-");
+// T2 FS
+ButtonCycleInnerTexts["BreastLesion1_T2FS"] = ["-", "0", "+"];
+var BreastLesion1_T2FS = document.getElementById("BreastLesion1_T2FS").innerText;
 
-// DWI
-if (document.getElementById('Chb1SignalDWIhyper').checked) BreastLesion1descriptions.push("DWI+");
-if (document.getElementById('Chb1SignalDWIhypo').checked) BreastLesion1descriptions.push("DWI-");
+if (BreastLesion1_T2FS === "0") {
+    BreastLesion1descriptions.push("T2FSizo");
+} else if (BreastLesion1_T2FS === "-") {
+    BreastLesion1descriptions.push("T2FS-");
+} else if (BreastLesion1_T2FS === "+") {
+    BreastLesion1descriptions.push("T2FS+");
+}
 
-// SWI
-if (document.getElementById('Chb1SignalSWIhyper').checked) BreastLesion1descriptions.push("se suscept. artefakty");
+// T1 C+
+ButtonCycleInnerTexts["BreastLesion1_T1C"] = ["0", "+", "++",];
+var BreastLesion1_T1C = document.getElementById("BreastLesion1_T1C").innerText;
 
-// T1C+
-if (document.getElementById('Chb1SignalT1Chyper').checked) BreastLesion1descriptions.push("T1C++");
-if (document.getElementById('Chb1SignalT1Ciso').checked) BreastLesion1descriptions.push("T1C+");
-if (document.getElementById('Chb1SignalT1Chypo').checked) BreastLesion1descriptions.push("T1C0");
+if (BreastLesion1_T1C === "+") {
+    BreastLesion1descriptions.push("T1C+");
+} else if (BreastLesion1_T1C === "++") {
+    BreastLesion1descriptions.push("T1C++");
+} 
 
+// T1 C+ character
+ButtonCycleInnerTexts["BreastLesion1_T1Cchar"] = ["homogenní", "heterogenní", "okrajové", "bez sycení sept", "sycení sept", "centrální"];
+var BreastLesion1_T1Cchar = document.getElementById("BreastLesion1_T1Cchar").innerText;
+
+// T1 C+ kinetics
+ButtonCycleInnerTexts["BreastLesion1_T1Ckin"] = ["typ 1", "typ 2", "typ 3"];
+var BreastLesion1_T1Ckin = document.getElementById("BreastLesion1_T1Ckin").innerText;
+
+if (BreastLesion1_T1C !== "0") {
+    if (BreastLesion1_T1Cchar === "homogenní") {
+        BreastLesion1descriptions.push("homogenním");
+    } else if (BreastLesion1_T1Cchar === "heterogenní") {
+        BreastLesion1descriptions.push("heterogenním");
+    } else if (BreastLesion1_T1Cchar === "okrajové") {
+        BreastLesion1descriptions.push("okrajovým");
+    } else if (BreastLesion1_T1Cchar === "bez sycení sept") {
+        BreastLesion1descriptions.push("bez sycení sept");
+    } else if (BreastLesion1_T1Cchar === "sycení sept") {
+        BreastLesion1descriptions.push("se sycením sept");
+    } else if (BreastLesion1_T1Cchar === "centrální") {
+        BreastLesion1descriptions.push("centrálním");
+    }
+
+    if (BreastLesion1_T1Ckin === "typ 1") {
+        BreastLesion1descriptions.push("s křivkou typu 1 - kontinuální růst");
+    } else if (BreastLesion1_T1Ckin === "typ 2") {
+        BreastLesion1descriptions.push("s křivkou typu 2 - plató");
+    } else if (BreastLesion1_T1Ckin === "typ 3") {
+        BreastLesion1descriptions.push("s křivkou typu 3 - washout");
+    }
+}
+
+
+if (BreastLesion1_T1C !== "0") {
+    document.getElementById("BreastLesion1_idtr1").classList.remove("hidden");
+	document.getElementById("BreastLesion1_idtr2").classList.remove("hidden");
+} else {
+    document.getElementById("BreastLesion1_idtr1").classList.add("hidden");
+	document.getElementById("BreastLesion1_idtr2").classList.add("hidden");
+}
 
 
 // Remove empty strings
@@ -508,7 +592,6 @@ if (BreastLesion1descriptions.length > 1) {
 
 BreastLesion1Signal.value = BreastLesion1descriptions.length > 0 ? descriptionText.trim() : "";
 BreastLesion1POPSignal = BreastLesion1Signal.value;
-BreastLesion1POPSignal = BreastLesion1POPSignal.replace("DWI+", "se zvýšenou restrikcí difuze"); BreastLesion1POPSignal = BreastLesion1POPSignal.replace("DWI-", "bez zvýšené restrikce difuze");
 BreastLesion1POPSignal = BreastLesion1POPSignal.replace("T1C++", "s výrazným postkontrastním sycením"); BreastLesion1POPSignal = BreastLesion1POPSignal.replace("T1C+", "s mírným postkontrastním sycením"); BreastLesion1POPSignal = BreastLesion1POPSignal.replace("T1C0", "bez sycení postkontrastně");
 
 var POPBreastLesion1 = "";
@@ -533,13 +616,10 @@ if (BreastLesion1number === "") {
 } 	
 
 let processedSentencePOPBreastLesion1 = processSentence(BreastLesion1number + " " + BreastLesion1type);	
-POPBreastLesion1 = processedSentencePOPBreastLesion1 + " " + BreastLesion1AllLocations + " " + BreastLesion1POPSignal + " " + BreastLesion1Loclargest + " " + BreastLesion1Size + " " + BreastLesion1SignalIntensity + " " + BreastLesion1Activity + " " + BreastLesion1ComparisonText + ".";
+POPBreastLesion1 = processedSentencePOPBreastLesion1 + " " + BreastLesion1AllLocations + " " + BreastLesion1Appear + " " + BreastLesion1POPSignal + " " + BreastLesion1Loclargest + " " + BreastLesion1Size + " " + BreastLesion1SignalIntensity + " " + BreastLesion1Activity + " " + BreastLesion1ComparisonText + ".";
 
 let processedSentenceRESBreastLesionFDG = processSentence(BreastLesion1number + " " + BreastLesion1RESActivityFDG + " " + BreastLesion1type);
-
 RESBreastLesion1 = processedSentenceRESBreastLesionFDG + " " + BreastLesion1AllLocations + " " + BreastLesion1CombinedResult + " " + BreastLesion1RESDecision + ".";
-
-if (BreastLesion1RESDecision.includes("meta") && BreastLesion1type.includes("ožisk")) {RESBreastLesion1 = RESBreastLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 
 if (BreastLesion1.classList.contains('hidden')) {POPBreastLesion1 = ""; RESBreastLesion1 = "";}
 
@@ -559,10 +639,12 @@ MRBreastNAMEText.value = "MR prsů";
 MRBreastSEKVText.value = "";
 
 MRBreastPOPText.value = 
-POPBreastLesion1;
+POPBreastLesion1 + "\n" + 
+POPBreastLesion2 + "\n" + 
+POPBreastLesion3 ;
 
 MRBreastRESText.value = 
-RESBreastLesion1;;
+RESBreastLesion1;
 
 }
 updateTexts();	

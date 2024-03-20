@@ -61,6 +61,8 @@ ZÁVĚR<textarea id="MRBreastRESText" class="superlarge"></textarea>
 		<td style="width: 100%;"><input id="BreastLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" style="width: 100%;" oninput="updateTexts()"></td>
 		</td>
 		<td><input id="BreastLesion1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
+		<td><button id="BreastLesion1_Shape" class="ButtonCycleText button80">tvar</button></td>
+		<td><button id="BreastLesion1_Margin" class="ButtonCycleText button80">okraj</button></td>
 		<td><input id="BreastLesion1Signal" type="text" placeholder="signál..." autocomplete="off" class="input140"></td>
 		<td><select id="BreastLesion1Activity" class="select60" onchange="updateTexts()">
 			<option value="" selected>aktivita...</option>
@@ -122,40 +124,34 @@ ZÁVĚR<textarea id="MRBreastRESText" class="superlarge"></textarea>
 <table id="BreastLesion1selectSignal" class="options hidden">
     <tr>
         <td>T1</td>
-        <td class="right">
-			<label class="CHB"><input type="checkbox" id="Chb1SignalT1hyper" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1iso" onChange="updateTexts()"><span>0</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1hypo" onChange="updateTexts()"><span>-</span></label>
+        <td class="left">
+			<button id="BreastLesion1_T1" class="ButtonCycleText button20">0</button>
 		</td>
     </tr>
     <tr>
-        <td>T2</td>
-        <td class="right">
-			<label class="CHB"><input type="checkbox" id="Chb1SignalT2hyper" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT2iso" onChange="updateTexts()"><span>0</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT2hypo" onChange="updateTexts()"><span>-</span></label>
+        <td>T2 FS</td>
+        <td class="left">
+			<button id="BreastLesion1_T2FS" class="ButtonCycleText button20">0</button>
 		</td>
     </tr>
-	<tr>
-		<td>FLAIR</td>
-		<td class="right">
-			<label class="CHB"><input type="checkbox" id="Chb1SignalFLAIRhyper" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalFLAIRiso" onChange="updateTexts()"><span>0</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalFLAIRhypo" onChange="updateTexts()"><span>-</span></label>
+    <tr>
+        <td>T1 kontrast</td>
+        <td class="left">
+			<button id="BreastLesion1_T1C" class="ButtonCycleText button20">0</button>
 		</td>
-	</tr>
-	<tr>
-		<td>DWI</td>
-		<td class="right">
-			<label class="CHB"><input type="checkbox" id="Chb1SignalDWIhyper" onChange="updateTexts()"><span>+</span></label><span style="display: inline-block; width: 0px; height: 0px; margin-right: 21px;"></span><label class="CHB"><input type="checkbox" id="Chb1SignalDWIhypo" onChange="updateTexts()"><span>-</span></label>
+    </tr>
+    <tr id="BreastLesion1_idtr1" class="hidden">
+        <td>sycení</td>
+        <td class="left">
+			<button id="BreastLesion1_T1Cchar" class="ButtonCycleText button80">homogenní</button>
 		</td>
-	</tr>
-	<tr>
-		<td>SWI</td>
-		<td class="right">
-			<label class="CHB"><input type="checkbox" id="Chb1SignalSWIhyper" onChange="updateTexts()"><span>+</span></label><span style="display: inline-block; width: 0px; height: 0px; margin-right: 42px;"></span>
+    </tr>
+    <tr id="BreastLesion1_idtr2" class="hidden">
+        <td>kinetika</td>
+        <td class="left">
+			<button id="BreastLesion1_T1Ckin" class="ButtonCycleText button60">typ 1</button>
 		</td>
-	</tr>
-	<tr>
-		<td>T1C+</td>
-		<td class="right">
-			<label class="CHB"><input type="checkbox" id="Chb1SignalT1Chyper" onChange="updateTexts()"><span>++</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1Ciso" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="Chb1SignalT1Chypo" onChange="updateTexts()"><span>0</span></label>
-		</td>
-	</tr>
+    </tr>
 </table>
 </div>
 

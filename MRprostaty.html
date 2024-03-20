@@ -12,14 +12,14 @@
 MR prostaty <label class="CHB"><input type="checkbox" id="ChbProstatePSMA" onChange="updateTexts()"><span>+</span></label> PSMA PET
 </div>
 
-<div id="IND" class="mydiv1 standardwidth hidden">
+<div id="IND" class="mydiv1 standardwidth">
 <input id="indikace" type="text" placeholder="indikace..." autocomplete="off" >
 </div>
 
 <div id="GeneralDIV" class="standardwidth DIV">
 
 <div id="rozsah" class="DIVLesions"><button class="title">OBECNÉ</button>
-Velikost: <input id="ProstateSize" class="select140 num" placeholder="rozměr (AP x LL x CC) ..." oninput="updateTexts()">&nbsp;&nbsp;&nbsp;
+Velikost: <input id="ProstateSize" class="select140 num" placeholder="rozměr (LL x AP x CC) ..." oninput="updateTexts()">&nbsp;&nbsp;&nbsp;
 Hyperplázie <button id="ProstateHyperplasiaButton" class="Button80" onmousedown="cycleProstateHyperplasiaText(event)">není</button>&nbsp;&nbsp;&nbsp;
 Semenné váčky <button id="ProstateSemVesButton" class="Button80" onmousedown="cycleProstateSemVesText(event)">normální</button>
 </div>
