@@ -116,11 +116,12 @@ populateAktivitaOptions();
 // Lesion hodnoceni
 
 var hodnoceniOptions = [
-    { text: "---", value: ": benigního vzhledu", valuez1: ": benigního vzhledu"},
-    { text: "-", value: ": spíše benigního vzhledu", valuez1: ": v.s. zánětlivá aktivace"},
-    { text: "+/-", value: ": nespecifický nález", valuez1: ": nespecifický nález"},
-    { text: "+", value: ": suspektní z viabilní neoplázie", valuez1: ": suspektní z infiltrace neoplazií"},
-    { text: "+++", value:": charakteru viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"}
+    { text: "benigní", value: ": benigního vzhledu", valuez1: ": benigního vzhledu"},
+    { text: "spíše ben.", value: ": nemá charakter viabilní neoplázie", valuez1: ": v.s. zánětlivá aktivace"},
+    { text: "nerozhodný", value: ": nespecifický nález", valuez1: ": nespecifický nález"},
+    { text: "spíše mal.", value: ": suspektní z viabilní neoplázie", valuez1: ": suspektní z infiltrace neoplazií"},
+    { text: "maligní", value:": charakteru viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"},
+	{ text: "tumor", value:": charakteru tumoru", valuez1: ": infiltrace neoplazií"},
 ];
 
 function populateHodnoceniOptions() {
@@ -733,6 +734,7 @@ RESBreastLesion1 = processedSentenceRESBreastLesion1 + " " + BreastLesion1AllLoc
 
 if (BreastLesion1.classList.contains('hidden')) {POPBreastLesion1 = ""; RESBreastLesion1 = "";}
 
+if (BreastLesion1RESDecision.includes("tumor") && BreastLesion1type.includes("ožisk")) {RESBreastLesion1 = RESBreastLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
 `;
 
 let codeForBreastLesion2 = codeForBreastLesion1.replace(/Lesion1/g, 'Lesion2').replace(/Chb1/g, 'Chb2');
@@ -742,6 +744,11 @@ eval(codeForBreastLesion2);
 eval(codeForBreastLesion3);
 
 
+// bez ložiskových změn
+POPBreastNoLesions = "";
+if (POPBreastLesion1 === "" && POPBreastLesion2 === "" && POPBreastLesion3 === "" && BreastLesionVP === "") {POPBreastNoLesions = "Bilat. bez ložiskového patologického sycení. Bez ložisek zvýšené metabolické atktivity. ";
+} else {POPBreastNoLesions = "";
+}
 
 
 //POPIS
@@ -754,6 +761,7 @@ MRBreastPOPText.value =
 POPBreastLesion1 + "\n" + 
 POPBreastLesion2 + "\n" + 
 POPBreastLesion3 + "\n" +
+POPBreastNoLesions + "\n" +
 BreastLesionVP ;
 
 MRBreastPOPText.value = MRBreastPOPText.value.trim(); 
@@ -769,6 +777,12 @@ RESBreastLesion1 + "\n" +
 RESBreastLesion2 + "\n" + 
 RESBreastLesion3 + "\n" +
 BreastLesionVR ;
+
+MRBreastRESText.value = MRBreastRESText.value.trim(); 
+MRBreastRESText.value = MRBreastRESText.value.replace(/  +/g, ' '); // dvojmezery
+MRBreastRESText.value = MRBreastRESText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
+MRBreastRESText.value = MRBreastRESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
+
 
 document.getElementById("indikace").addEventListener("input", updateTexts);
 
