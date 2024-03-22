@@ -5,16 +5,15 @@ function cloneAndUpdateIds(sourceId, destId) {
     let clonedElement = sourceElement.cloneNode(true);
     clonedElement.id = destId;
 
-    let sourceNumber = sourceId.match(/\d+/); // Extracts number from sourceId (e.g., "1" from "Lesion1")
-    let destNumber = destId.match(/\d+/); // Extracts number from destId (e.g., "2" from "Lesion2")
+    let sourceNumber = sourceId.match(/\d+/)[0]; // Ensure the number is correctly extracted
+    let destNumber = destId.match(/\d+/)[0];
 
     let elements = clonedElement.querySelectorAll("*");
-    
     elements.forEach(element => {
         if (element.id) {
             element.id = element.id.replace(`Lesion${sourceNumber}`, `Lesion${destNumber}`);
-            element.id = element.id.replace(`Chb${sourceNumber}`, `Chb${destNumber}`);
-            if (element.id.endsWith(`${destNumber}no`)) {
+			element.id = element.id.replace(`Chb${sourceNumber}`, `Chb${destNumber}`);
+			if (element.id.endsWith(`${destNumber}no`)) {
                 element.textContent = `${destNumber}`;
             }
         }
@@ -70,6 +69,77 @@ document.getElementById('DateCompare').addEventListener('change', function() {
 
 
 
+// universal size
+
+function formatLesionSize(variableName) {
+  var elementValue = document.getElementById(variableName).value;
+  if (elementValue !== "") {
+    if (/^\d+$/.test(elementValue)) { 
+      return "diametru " + elementValue + " mm";
+    } else { 
+      return "rozměru " + elementValue + " mm";
+    }
+  }
+  return "";
+}
+
+
+// Lesion aktivita   
+  
+var aktivitaOptions = [
+    { text: "není", value: "bez akumulace RF", valuez1: "bez PSMA exprese", valuez2: "ametabolické"},
+    { text: "nízká", value: "s nízkou akumulací RF", valuez1: "s nízkou PSMA expresí", valuez2: "nízce metabolicky aktivní "},
+    { text: "intermed.", value: "se střední akumulací RF", valuez1: "se střední PSMA expresí", valuez2: "středně metabolicky aktivní "},
+    { text: "zvýšená", value: "se zvýšenou akumulací RF", valuez1: "se zvýšenou PSMA expresí", valuez2: "mírně hypermetabolické "},
+    { text: "vysoká", value: "s vysokou akumulací RF", valuez1: "s vysokou PSMA expresí", valuez2: "hypermetabolické "},
+	{ text: "enormní", value: "s velmi vysokou akumulací RF", valuez1: "s vysokou PSMA expresí", valuez2: "výrazně hypermetabolické "}
+];
+
+function populateAktivitaOptions() {
+    var selectElements = document.querySelectorAll("select[id$='Activity']");
+
+    selectElements.forEach(function (selectElement) {
+        aktivitaOptions.forEach(function (option) {
+            var optionElement = document.createElement("option");
+            optionElement.value = option.value;
+            optionElement.textContent = option.text;
+            optionElement.dataset.valuez1 = option.valuez1;
+			optionElement.dataset.valuez2 = option.valuez2;
+            selectElement.appendChild(optionElement);
+        });
+    });
+}
+
+populateAktivitaOptions();
+
+
+// Lesion hodnoceni
+
+var hodnoceniOptions = [
+    { text: "---", value: ": benigního vzhledu", valuez1: ": benigního vzhledu"},
+    { text: "-", value: ": spíše benigního vzhledu", valuez1: ": v.s. zánětlivá aktivace"},
+    { text: "+/-", value: ": nespecifický nález", valuez1: ": nespecifický nález"},
+    { text: "+", value: ": suspektní z viabilní neoplázie", valuez1: ": suspektní z infiltrace neoplazií"},
+    { text: "+++", value:": charakteru viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"}
+];
+
+function populateHodnoceniOptions() {
+    var selectElements = document.querySelectorAll("select[id$='Decision']");
+
+    selectElements.forEach(function (selectElement) {
+        hodnoceniOptions.forEach(function (option) {
+            var optionElement = document.createElement("option");
+            optionElement.value = option.value;
+            optionElement.textContent = option.text;
+            optionElement.dataset.valuez1 = option.valuez1;
+            selectElement.appendChild(optionElement);
+        });
+    });
+}
+populateHodnoceniOptions();
+
+
+
 // universal comparison
 
 function generateComparisonText(prevSize, date) {
@@ -79,6 +149,8 @@ function generateComparisonText(prevSize, date) {
         return "";
     }
 }
+
+
 
 // RES Size Comparison
 
@@ -250,7 +322,15 @@ document.addEventListener('click', function(e) {
   }
 });
 
-
+//new
+document.getElementById('BreastLesion1type').addEventListener('change', function() {
+  var selectedValue = this.value;   var shapeButton = document.getElementById('BreastLesion1_Shape');  var marginButton = document.getElementById('BreastLesion1_Margin'); var charButton = document.getElementById('BreastLesion1_Character');
+  if (selectedValue === 'ložisko| ložiska') {	shapeButton.classList.remove('hidden');	marginButton.classList.remove('hidden');   charButton.classList.add('hidden'); charButton.innerText = "vzhled";
+  }  else if (selectedValue === 'neložiskové sycení| neložisková sycení') { shapeButton.classList.add('hidden'); marginButton.classList.add('hidden'); charButton.classList.remove('hidden');   shapeButton.innerText = "tvar"; marginButton.innerText = "okraj";
+  }  else { shapeButton.classList.add('hidden'); marginButton.classList.add('hidden'); charButton.classList.add('hidden'); shapeButton.innerText = "tvar"; marginButton.innerText = "okraj"; charButton.innerText = "vzhled";
+  }
+  updateTexts();
+});
 
 
 //LESION2
@@ -298,6 +378,14 @@ document.addEventListener('click', function(e) {
   }
 });
 
+document.getElementById('BreastLesion2type').addEventListener('change', function() {
+  var selectedValue = this.value;   var shapeButton = document.getElementById('BreastLesion2_Shape');  var marginButton = document.getElementById('BreastLesion2_Margin'); var charButton = document.getElementById('BreastLesion2_Character');
+  if (selectedValue === 'ložisko| ložiska') {	shapeButton.classList.remove('hidden');	marginButton.classList.remove('hidden');   charButton.classList.add('hidden'); charButton.innerText = "vzhled";
+  }  else if (selectedValue === 'neložiskové sycení| neložisková sycení') { shapeButton.classList.add('hidden'); marginButton.classList.add('hidden'); charButton.classList.remove('hidden');   shapeButton.innerText = "tvar"; marginButton.innerText = "okraj";
+  }  else { shapeButton.classList.add('hidden'); marginButton.classList.add('hidden'); charButton.classList.add('hidden'); shapeButton.innerText = "tvar"; marginButton.innerText = "okraj"; charButton.innerText = "vzhled";
+  }
+  updateTexts();
+});
 
 //LESION3
 
@@ -377,9 +465,11 @@ function updateTexts() {
 
 var indikace = document.getElementById("indikace").value;
 
+var BreastLesionVP = document.getElementById("BreastLesionVP").value;
+var BreastLesionVR = document.getElementById("BreastLesionVR").value;
 
-// LESION1
 let codeForBreastLesion1 = `
+// LESION1
 
 var BreastLesion1Button = document.getElementById("BreastLesion1");
 var BreastLesion1number = document.getElementById("BreastLesion1number").value;
@@ -401,12 +491,15 @@ var BreastLesion1CombinedResult = combineComparisonResults( BreastLesion1Compari
 
 //location
 
+document.querySelectorAll('#BreastLesion1selectLocation .CHB input[type="checkbox"]').forEach(function(chb) {
+    chb.addEventListener('change', updateTexts);
+});
 
   var BreastLesion1quadrantP = [];
   var BreastLesion1quadrantL = [];
 
   // Mapping for checkbox IDs to their descriptions
-  const quadrantMapping = {
+  const quadrantMappingLesion1 = {
     'HZK': 'v horním zevním kvadrantu',
     'HVK': 'v horním vnitřním kvadrantu',
     'DZK': 'v dolním zevním kvadrantu',
@@ -414,13 +507,13 @@ var BreastLesion1CombinedResult = combineComparisonResults( BreastLesion1Compari
     'C': 'centrálně'
   };
 
-  const checkboxes = document.querySelectorAll('.CHB input[type="checkbox"]:checked');
+  const checkboxesLesion1 = document.querySelectorAll('#BreastLesion1selectLocation .CHB input[type="checkbox"]:checked');
 
-  checkboxes.forEach((checkbox) => {
+  checkboxesLesion1.forEach((checkbox) => {
     const idParts = checkbox.id.split('_');
     const side = idParts[1];
     const quadrant = idParts[2];
-    const quadrantText = quadrantMapping[quadrant];
+    const quadrantText = quadrantMappingLesion1[quadrant];
 
     if (side === 'R') {
       BreastLesion1quadrantP.push(quadrantText);
@@ -461,14 +554,16 @@ var BreastLesion1CombinedResult = combineComparisonResults( BreastLesion1Compari
 
   document.getElementById("BreastLesion1Location").value = BreastLesion1Location;
 
-
-// shape, margin
+// shape, margin, character
 
 ButtonCycleInnerTexts["BreastLesion1_Shape"] = ["tvar", "kulatý", "oválný", "lobulární", "nepravidelný"];
 var BreastLesion1_Shape = document.getElementById("BreastLesion1_Shape").innerText;
 
 ButtonCycleInnerTexts["BreastLesion1_Margin"] = ["okraj", "hladký", "nepravidelný", "spikulace",];
 var BreastLesion1_Margin = document.getElementById("BreastLesion1_Margin").innerText;
+
+ButtonCycleInnerTexts["BreastLesion1_Character"] = ["vzhled", "lineární", "duktální", "segmentální", "nahloučený"];
+var BreastLesion1_Character = document.getElementById("BreastLesion1_Character").innerText;
 
 let BreastLesion1Appear = "";
 BreastLesion1Appeardescription = [];
@@ -495,7 +590,23 @@ if (BreastLesion1_Margin === "okraj") {
     BreastLesion1Appeardescription.push("se spukulacemi okraje");
 }
 
-BreastLesion1Appear = BreastLesion1Appeardescription.join(", "); BreastLesion1Appear += ", ";
+if (BreastLesion1_Character === "lineární") {
+    BreastLesion1Appeardescription.push("lineární distribuce");
+} else if (BreastLesion1_Character === "duktální") {
+    BreastLesion1Appeardescription.push("duktální distribuce");
+} else if (BreastLesion1_Character === "segmentální") {
+    BreastLesion1Appeardescription.push("segmentálního charakteru");
+} else if (BreastLesion1_Character === "nahloučený") {
+    BreastLesion1Appeardescription.push("vzhledu nahloučení");
+}
+
+if (BreastLesion1Appeardescription.length === 0) {
+    BreastLesion1Appear = "";
+} else if (BreastLesion1Appeardescription.length === 1) {
+    BreastLesion1Appear = BreastLesion1Appeardescription[0] + ", ";
+} else {
+    BreastLesion1Appear = BreastLesion1Appeardescription.join(", ") + ", ";
+}
 
 
 //MR desc
@@ -503,25 +614,25 @@ BreastLesion1Appear = BreastLesion1Appeardescription.join(", "); BreastLesion1Ap
 var BreastLesion1descriptions = [];
 
 // T1
-ButtonCycleInnerTexts["BreastLesion1_T1"] = ["-", "0", "+"];
+ButtonCycleInnerTexts["BreastLesion1_T1"] = ["0", "-", "+/-", "+"];
 var BreastLesion1_T1 = document.getElementById("BreastLesion1_T1").innerText;
 
-if (BreastLesion1_T1 === "0") {
-    BreastLesion1descriptions.push("T1izo");
-} else if (BreastLesion1_T1 === "-") {
+if (BreastLesion1_T1 === "-") {
     BreastLesion1descriptions.push("T1-");
+} else if (BreastLesion1_T1 === "+/-") {
+    BreastLesion1descriptions.push("T1izo");
 } else if (BreastLesion1_T1 === "+") {
     BreastLesion1descriptions.push("T1+");
 }
 
 // T2 FS
-ButtonCycleInnerTexts["BreastLesion1_T2FS"] = ["-", "0", "+"];
+ButtonCycleInnerTexts["BreastLesion1_T2FS"] = ["0", "-", "+/-", "+"];
 var BreastLesion1_T2FS = document.getElementById("BreastLesion1_T2FS").innerText;
 
-if (BreastLesion1_T2FS === "0") {
-    BreastLesion1descriptions.push("T2FSizo");
-} else if (BreastLesion1_T2FS === "-") {
+if (BreastLesion1_T2FS === "-") {
     BreastLesion1descriptions.push("T2FS-");
+} else if (BreastLesion1_T2FS === "+/-") {
+    BreastLesion1descriptions.push("T2FSizo");
 } else if (BreastLesion1_T2FS === "+") {
     BreastLesion1descriptions.push("T2FS+");
 }
@@ -581,7 +692,6 @@ if (BreastLesion1_T1C !== "0") {
 // Remove empty strings
 BreastLesion1descriptions = BreastLesion1descriptions.filter(Boolean);
 
-// Joining BreastLesion1descriptions with proper grammar
 var descriptionText;
 if (BreastLesion1descriptions.length > 1) {
 	var lastDescription = BreastLesion1descriptions.pop();
@@ -618,8 +728,8 @@ if (BreastLesion1number === "") {
 let processedSentencePOPBreastLesion1 = processSentence(BreastLesion1number + " " + BreastLesion1type);	
 POPBreastLesion1 = processedSentencePOPBreastLesion1 + " " + BreastLesion1AllLocations + " " + BreastLesion1Appear + " " + BreastLesion1POPSignal + " " + BreastLesion1Loclargest + " " + BreastLesion1Size + " " + BreastLesion1SignalIntensity + " " + BreastLesion1Activity + " " + BreastLesion1ComparisonText + ".";
 
-let processedSentenceRESBreastLesionFDG = processSentence(BreastLesion1number + " " + BreastLesion1RESActivityFDG + " " + BreastLesion1type);
-RESBreastLesion1 = processedSentenceRESBreastLesionFDG + " " + BreastLesion1AllLocations + " " + BreastLesion1CombinedResult + " " + BreastLesion1RESDecision + ".";
+let processedSentenceRESBreastLesion1 = processSentence(BreastLesion1number + " " + BreastLesion1RESActivityFDG + " " + BreastLesion1type);
+RESBreastLesion1 = processedSentenceRESBreastLesion1 + " " + BreastLesion1AllLocations + " " + BreastLesion1CombinedResult + " " + BreastLesion1RESDecision + ".";
 
 if (BreastLesion1.classList.contains('hidden')) {POPBreastLesion1 = ""; RESBreastLesion1 = "";}
 
@@ -632,6 +742,8 @@ eval(codeForBreastLesion2);
 eval(codeForBreastLesion3);
 
 
+
+
 //POPIS
 	
 MRBreastNAMEText.value = "MR prsů";
@@ -641,10 +753,27 @@ MRBreastSEKVText.value = "";
 MRBreastPOPText.value = 
 POPBreastLesion1 + "\n" + 
 POPBreastLesion2 + "\n" + 
-POPBreastLesion3 ;
+POPBreastLesion3 + "\n" +
+BreastLesionVP ;
+
+MRBreastPOPText.value = MRBreastPOPText.value.trim(); 
+MRBreastPOPText.value = MRBreastPOPText.value.replace(/  +/g, ' '); // dvojmezery
+MRBreastPOPText.value = MRBreastPOPText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
+MRBreastPOPText.value = MRBreastPOPText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
+MRBreastPOPText.value = MRBreastPOPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
+MRBreastPOPText.value = MRBreastPOPText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
+
 
 MRBreastRESText.value = 
-RESBreastLesion1;
+RESBreastLesion1 + "\n" + 
+RESBreastLesion2 + "\n" + 
+RESBreastLesion3 + "\n" +
+BreastLesionVR ;
+
+document.getElementById("indikace").addEventListener("input", updateTexts);
+
+document.getElementById("BreastLesionVP").addEventListener("input", updateTexts);
+document.getElementById("BreastLesionVR").addEventListener("input", updateTexts);
 
 }
 updateTexts();	

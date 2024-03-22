@@ -30,6 +30,7 @@ function processSentence(sentence) {
 		containsExactWord("ložiska") || 
 		containsExactWord("cysta") || 
 		containsExactWord("struktura") ||
+		containsExactWord("sycení") ||
 		containsExactWord("uzlina")) {
         sentence = sentence.replace(/metabolické/g, "metabolická").replace(/četné /g, "četná ");
     }
@@ -45,7 +46,7 @@ function processSentence(sentence) {
         sentence = sentence.replace(/expanzePL/g, "expanze").replace(/infiltracePL/g, "infiltrace").replace(/konsolidacePL/g, "konsolidace").replace(/dva/g, "dvě");
     }
 	
-	if (containsExactWord("ložiska")) 
+	if (containsExactWord("ložiska") || containsExactWord("sycení")) 
 		{
         sentence = sentence.replace(/dva/g, "dvě");
     }
@@ -426,50 +427,36 @@ document.querySelectorAll('.ButtonCycleText').forEach(button => {
 
 function updateButtonText(button, direction) {
     const texts = ButtonCycleInnerTexts[button.id];
-    let BCTcurrentIndex = texts.indexOf(button.innerText);
+    let currentIndex = texts.indexOf(button.innerText);
 
     if (direction === 'forward') {
-        if (BCTcurrentIndex < texts.length - 1) {
-            BCTcurrentIndex++;
+        if (currentIndex < texts.length - 1) {
+            currentIndex++;
         }
     } else {
-        if (BCTcurrentIndex > 0) {
-            BCTcurrentIndex--;
+        if (currentIndex > 0) {
+            currentIndex--;
         }
     }
 
-    button.innerText = texts[BCTcurrentIndex];
-
+    button.innerText = texts[currentIndex];
     button.classList.toggle('red-background', button.innerText !== originalButtonTexts[button.id]);
+	updateTexts(); 
 }
 
-document.querySelectorAll('.ButtonCycleText').forEach(button => {
-    button.addEventListener('click', (event) => {
-        if (event.button === 0) { 
-            updateButtonText(button, 'forward');
+
+    document.body.addEventListener('click', function(e) {
+        if (e.target.classList.contains('ButtonCycleText') && e.button === 0) {
+            updateButtonText(e.target, 'forward');
         }
     });
 
-    button.addEventListener('contextmenu', (event) => {
-        event.preventDefault(); 
-        updateButtonText(button, 'backward');
+    document.body.addEventListener('contextmenu', function(e) {
+        if (e.target.classList.contains('ButtonCycleText')) {
+            e.preventDefault();
+            updateButtonText(e.target, 'backward');
+        }
     });
-	
-});
-
-
-function addEventListenersForButtons() {
-    document.querySelectorAll('.ButtonCycleText').forEach(button => {
-        button.addEventListener('click', function() {
-            updateTexts();
-        });
-        button.addEventListener('contextmenu', function(event) {
-            event.preventDefault();
-            updateTexts();
-        });
-    });
-}
-addEventListenersForButtons();
 
 
 

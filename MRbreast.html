@@ -44,10 +44,8 @@ ZÁVĚR<textarea id="MRBreastRESText" class="superlarge"></textarea>
 		<td><button id="BreastLesion1no" class="myButtonLesionS">1</button></td>
 		<td><select id="BreastLesion1type" class="selectLESION" onchange="updateTexts()">
 			<option value="ložisko| ložiska"selected>ložisko</option>
-			<option value="tumor| tumory">tumor</option>
-			<option value="cysta| cysty">cysta</option>
-			<option value="expanze| expanzePL">expanze</option>
-			<option value="infiltrace| infiltracePL">infiltrace</option>
+			<option value="fokus| fokusy">fokus</option>
+			<option value="neložiskové sycení| neložisková sycení">neložisko</option>
 		</select>
 		</td>
 		<td><select id="BreastLesion1number" class="select35" onchange="updateTexts()">
@@ -61,8 +59,9 @@ ZÁVĚR<textarea id="MRBreastRESText" class="superlarge"></textarea>
 		<td style="width: 100%;"><input id="BreastLesion1AddLocation" type="text" placeholder="doplnění..." autocomplete="off" class="inputAddLocation" style="width: 100%;" oninput="updateTexts()"></td>
 		</td>
 		<td><input id="BreastLesion1Loclargest" type="text" placeholder="největší kde..." autocomplete="off" class="input140 hidden" oninput="updateTexts()"></td>
-		<td><button id="BreastLesion1_Shape" class="ButtonCycleText button80">tvar</button></td>
-		<td><button id="BreastLesion1_Margin" class="ButtonCycleText button80">okraj</button></td>
+		<td><button id="BreastLesion1_Shape" class="ButtonCycleText button80 ">tvar</button></td>
+		<td><button id="BreastLesion1_Margin" class="ButtonCycleText button80 ">okraj</button></td>
+		<td><button id="BreastLesion1_Character" class="ButtonCycleText button80 hidden">vzhled</button></td>
 		<td><input id="BreastLesion1Signal" type="text" placeholder="signál..." autocomplete="off" class="input140"></td>
 		<td><select id="BreastLesion1Activity" class="select60" onchange="updateTexts()">
 			<option value="" selected>aktivita...</option>
@@ -90,33 +89,33 @@ ZÁVĚR<textarea id="MRBreastRESText" class="superlarge"></textarea>
     <td colspan="3" style="font-weight: bold; text-align: center; vertical-align: middle;">L prs</td>
   </tr>
   <tr>
-	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb_R_HZK"><span>HZK</span></label></td>
+	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb1_R_HZK"><span>HZK</span></label></td>
     <td></td>
-	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb_R_HVK"><span>HVK</span></label></td>
+	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb1_R_HVK"><span>HVK</span></label></td>
     <td></td>
-	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb_L_HVK"><span>HVK</span></label></td>
+	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb1_L_HVK"><span>HVK</span></label></td>
     <td></td>
-	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb_L_HZK"><span>HZK</span></label></td>
+	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb1_L_HZK"><span>HZK</span></label></td>
   </tr>
   
   <tr>
     <td></td>
-	<td class="right"><label class="CHB"><input type="checkbox" id="Chb_R_C"><span>C</span></label></td>
+	<td class="right"><label class="CHB"><input type="checkbox" id="Chb1_R_C"><span>C</span></label></td>
     <td></td>
     <td></td>
 	<td></td>
-	<td class="right"><label class="CHB"><input type="checkbox" id="Chb_L_C"><span>C</span></label></td>
+	<td class="right"><label class="CHB"><input type="checkbox" id="Chb1_L_C"><span>C</span></label></td>
     <td></td>
   </tr>
   
   <tr>
-	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb_R_DZK"><span>DZK</span></label></td>
+	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb1_R_DZK"><span>DZK</span></label></td>
     <td></td>
-	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb_R_DVK"><span>DVK</span></label></td>
+	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb1_R_DVK"><span>DVK</span></label></td>
     <td></td>
-	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb_L_DVK"><span>DVK</span></label></td>
+	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb1_L_DVK"><span>DVK</span></label></td>
     <td></td>
-	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb_L_DZK"><span>DZK</span></label></td>
+	<td class="right"><label class="CHB wider"><input type="checkbox" id="Chb1_L_DZK"><span>DZK</span></label></td>
   </tr>
 </table>
 
@@ -159,8 +158,8 @@ ZÁVĚR<textarea id="MRBreastRESText" class="superlarge"></textarea>
 <table id="BreastOther1" class="hidden" style="width: 100%;">
   <tr>
     <td style="width: 1%; white-space: nowrap;"><button id="BreastOther1no" class="myButtonLesionS">V</button></td>
-    <td><input id="LesionVP" type="text" placeholder="vlastní popis..." autocomplete="off" style="width: 100%;"></td>
-    <td><input id="LesionVR" type="text" placeholder="vlastní závěr..." autocomplete="off" style="width: 100%;"></td>
+    <td><input id="BreastLesionVP" type="text" placeholder="vlastní popis..." autocomplete="off" style="width: 100%;"></td>
+    <td><input id="BreastLesionVR" type="text" placeholder="vlastní závěr..." autocomplete="off" style="width: 100%;"></td>
   </tr>
 </table>
 
