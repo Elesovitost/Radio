@@ -84,12 +84,15 @@ document.getElementById('DateCompare').addEventListener('change', function() {
 // universal comparison
 
 function generateComparisonText(prevSize, date) {
-    if (prevSize.trim() !== "") {
-		return " (minule " + prevSize + ")";   
+    if (prevSize.includes(" 0 ")) {
+        return " (nově)";
+    } else if (prevSize.trim() !== "") {
+        return " (minule " + prevSize + ")";
     } else {
         return "";
     }
 }
+
 
 
 // RES Size Comparison
@@ -107,18 +110,17 @@ function compareSizes(currentSize, prevSize) {
     var currentMax = getMaxDimension(currentSize);
     var prevMax = getMaxDimension(prevSize);
 
-    if (prevMax === 0) { // To avoid division by zero
-        return "Cannot calculate percentage change due to zero previous size.";
-    }
-
     var change = ((currentMax - prevMax) / prevMax) * 100;
     var roundedChange = Math.round(change / 5) * 5;  // Round to nearest five
 
     // Check the checkbox state
-    var percentageString =  " (cca o " + roundedChange + "%)" ;
+	var showPercentage = document.getElementById('ChbRECIST').checked;
+    var percentageString = showPercentage ? " (cca o " + roundedChange + "%)" : "";
 
     var result = "";
-    if (change <= -50) {
+    if (prevMax === 0) { 
+        result = "nově";
+    } else if (change <= -50) {
         result = "ve výrazné rozměrové regresi";
     } else if (change > -50 && change <= -20) {
         result = "v parciální rozměrové regresi";
@@ -146,6 +148,7 @@ function combineComparisonResults(sizeRes, number) {
     // No need for separate handling for stationary results
     return prefix + sizeRes;
 }
+
 
 
 //nadpis
@@ -589,6 +592,9 @@ let processedSentenceRESBrainLesionFDG = processSentence(BrainLesion1number + " 
 RESBrainLesion1 = processedSentenceRESBrainLesionFDG + " " + BrainLesion1AllLocations + " " + BrainLesion1CombinedResult + " " + BrainLesion1RESDecision + ".";
 
 if (BrainLesion1RESDecision.includes("meta") && BrainLesion1type.includes("ožisk")) {RESBrainLesion1 = RESBrainLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
+if (BrainLesion1RESDecision.includes("tumor") && BrainLesion1type.includes("ožisk")) {RESBrainLesion1 = RESBrainLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (BrainLesion1CombinedResult.includes("je nově") || BrainLesion1CombinedResult.includes("jsou nově")) { RESBrainLesion1 = "Nově " + RESBrainLesion1.charAt(0).toLowerCase() + RESBrainLesion1.substring(1) ; RESBrainLesion1 = RESBrainLesion1.replace(" je nově", "").replace(" jsou nově", "");}
+
 
 if (BrainLesion1.classList.contains('hidden')) {POPBrainLesion1 = ""; RESBrainLesion1 = "";}
 

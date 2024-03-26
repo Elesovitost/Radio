@@ -144,8 +144,10 @@ populateHodnoceniOptions();
 // universal comparison
 
 function generateComparisonText(prevSize, date) {
-    if (prevSize.trim() !== "") {
-		return " (minule " + prevSize + ")";   
+    if (prevSize.includes(" 0 ")) {
+        return " (nově)";
+    } else if (prevSize.trim() !== "") {
+        return " (minule " + prevSize + ")";
     } else {
         return "";
     }
@@ -168,18 +170,17 @@ function compareSizes(currentSize, prevSize) {
     var currentMax = getMaxDimension(currentSize);
     var prevMax = getMaxDimension(prevSize);
 
-    if (prevMax === 0) { // To avoid division by zero
-        return "Cannot calculate percentage change due to zero previous size.";
-    }
-
     var change = ((currentMax - prevMax) / prevMax) * 100;
     var roundedChange = Math.round(change / 5) * 5;  // Round to nearest five
 
     // Check the checkbox state
-    var percentageString =  " (cca o " + roundedChange + "%)" ;
+	var showPercentage = document.getElementById('ChbRECIST').checked;
+    var percentageString = showPercentage ? " (cca o " + roundedChange + "%)" : "";
 
     var result = "";
-    if (change <= -50) {
+	 if (prevMax === 0) { 
+        result = "nově";
+    } else if (change <= -50) {
         result = "ve výrazné rozměrové regresi";
     } else if (change > -50 && change <= -20) {
         result = "v parciální rozměrové regresi";
@@ -433,6 +434,19 @@ document.addEventListener('click', function(e) {
   }
 });
 
+
+// compare older
+
+function toggleElements() {
+    var dateInput = document.getElementById('DateCompare');
+	var BreastLesion1Previous = document.getElementById('BreastLesion1Previous'); var BreastLesion2Previous = document.getElementById('BreastLesion2Previous'); var BreastLesion3Previous = document.getElementById('BreastLesion3Previous'); 
+
+    if (dateInput.value !== '') {
+	  BreastLesion1Previous.classList.remove('hidden'); BreastLesion2Previous.classList.remove('hidden'); BreastLesion3Previous.classList.remove('hidden');
+ } else {
+	  BreastLesion1Previous.classList.add('hidden'); BreastLesion2Previous.classList.add('hidden'); BreastLesion3Previous.classList.add('hidden');
+	 }
+  }
 
 //LesionV unhiding
 
@@ -734,7 +748,10 @@ RESBreastLesion1 = processedSentenceRESBreastLesion1 + " " + BreastLesion1AllLoc
 
 if (BreastLesion1.classList.contains('hidden')) {POPBreastLesion1 = ""; RESBreastLesion1 = "";}
 
+if (BreastLesion1RESDecision.includes("meta") && BreastLesion1type.includes("ožisk")) {RESBreastLesion1 = RESBreastLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 if (BreastLesion1RESDecision.includes("tumor") && BreastLesion1type.includes("ožisk")) {RESBreastLesion1 = RESBreastLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (BreastLesion1CombinedResult.includes("je nově") || BreastLesion1CombinedResult.includes("jsou nově")) { RESBreastLesion1 = "Nově " + RESBreastLesion1.charAt(0).toLowerCase() + RESBreastLesion1.substring(1) ; RESBreastLesion1 = RESBreastLesion1.replace(" je nově", "").replace(" jsou nově", "");}
+
 `;
 
 let codeForBreastLesion2 = codeForBreastLesion1.replace(/Lesion1/g, 'Lesion2').replace(/Chb1/g, 'Chb2');

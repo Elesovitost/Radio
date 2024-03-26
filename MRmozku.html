@@ -13,6 +13,13 @@
 <div id="popupMessageDate" style="display:none; position:fixed; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold;"></div>
 </div>
 
+
+<div id="obecne" class="standardwidth hidden">
+<label class="CHB"> RECIST <input type="checkbox" id="ChbRECIST" onChange="updateTexts()"><span>+</span></label>
+</div>
+
+
+
 <div id="WM" class="standardwidth"><button class="titleBrain float">BÍLÁ HMOTA</button>
 <table>
 <tr>
@@ -379,6 +386,11 @@ ZÁVĚR<textarea id="MRbrainRESText" class="superlarge"></textarea>
 <script src="Universal.js"></script>  
 <script src="MRmozkuscript.js"></script>  
 <script src="MRmozkupopis.js"></script>          
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Code that depends on the DOM being fully loaded
+    });
+</script>
 
 </body>
 

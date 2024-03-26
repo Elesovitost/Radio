@@ -59,7 +59,9 @@ document.getElementById('DateCompare').addEventListener('change', function() {
 // universal comparison
 
 function generateComparisonText(prevSUV, prevSize, date) {
-    if (prevSUV.trim() !== "" || prevSize.trim() !== "") {
+    if (prevSize.includes(" 0 ")) {
+        return " (nově)";
+    } else if (prevSUV.trim() !== "" || prevSize.trim() !== "") {
 		return " (minule " + prevSize + " " + prevSUV + ")";   
     } else {
         return "";
@@ -78,9 +80,6 @@ function compareSUVs(currentSUV, previousSUV) {
     var current = parseFloat(currentSUV.replace('s SUVmax=', '').replace(',', '.').trim());
     var prev = parseFloat(previousSUV.replace('s SUVmax=', '').replace(',', '.').trim());
 
-    if (prev === 0) { 
-        return "Cannot calculate percentage change due to zero previous value.";
-    }
 // this part checks current and last SUVLiver and corrects the result
 	var SUVLiver = document.getElementById("SUVLiver").value;
 	var SUVLiverPrevious = document.getElementById("SUVLiverPrevious").value;
@@ -120,10 +119,6 @@ function compareSizes(currentSize, prevSize) {
     var currentMax = getMaxDimension(currentSize);
     var prevMax = getMaxDimension(prevSize);
 
-    if (prevMax === 0) { // To avoid division by zero
-        return "Cannot calculate percentage change due to zero previous size.";
-    }
-
     var change = ((currentMax - prevMax) / prevMax) * 100;
     var roundedChange = Math.round(change / 5) * 5;  // Round to nearest five
 
@@ -132,7 +127,9 @@ function compareSizes(currentSize, prevSize) {
     var percentageString = showPercentage ? " (cca o " + roundedChange + "%)" : "";
 
     var result = "";
-    if (change <= -50) {
+	if (prevMax === 0) { 
+        result = "nově";
+    } else if (change <= -50) {
         result = "ve výrazné rozměrové regresi";
     } else if (change > -50 && change <= -20) {
         result = "v parciální rozměrové regresi";
@@ -313,8 +310,8 @@ if (buttonElementPETType.value === "FDG") {
 }
 
 if (NeckLesion1RESDecision.includes("meta") && NeckLesion1type.includes("ožisk")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
-
 if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("ožisk")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (NeckLesion1CombinedResult.includes("je nově") || NeckLesion1CombinedResult.includes("jsou nově")) { window.RESNeckLesion1 = "Nově " + window.RESNeckLesion1.charAt(0).toLowerCase() + window.RESNeckLesion1.substring(1) ; window.RESNeckLesion1 = window.RESNeckLesion1.replace(" je nově", "").replace(" jsou nově", "");}
 
 `;
 
@@ -486,6 +483,8 @@ if (buttonElementPETType.value === "FDG") {
 }
     
 if (NeckLymphNode1Button.classList.contains('hidden')) {POPNeckLymphNode1 = ""; RESNeckLymphNode1 = "";}
+
+if (NeckLymphNode1CombinedResult.includes("je nově") || NeckLymphNode1CombinedResult.includes("jsou nově")) { RESNeckLymphNode1 = "Nově " + RESNeckLymphNode1.charAt(0).toLowerCase() + RESNeckLymphNode1.substring(1) ; RESNeckLymphNode1 = RESNeckLymphNode1.replace(" je nově", "").replace(" jsou nově", "");}
 
 
 // neck native or not
@@ -970,8 +969,8 @@ if (buttonElementPETType.value === "FDG") {
 }
 
 if (ThoraxLesion1RESDecision.includes("meta") && ThoraxLesion1type.includes("ožisk")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
-
 if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("ožisk")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (ThoraxLesion1CombinedResult.includes("je nově") || ThoraxLesion1CombinedResult.includes("jsou nově")) { window.RESThoraxLesion1 = "Nově " + window.RESThoraxLesion1.charAt(0).toLowerCase() + window.RESThoraxLesion1.substring(1) ; window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(" je nově", "").replace(" jsou nově", "");}
 
 `;
 
@@ -1135,6 +1134,8 @@ if (buttonElementPETType.value === "FDG") {
 }
 
 if (ThoraxLymphNode1Button.classList.contains('hidden')) {POPThoraxLymphNode1 = ""; RESThoraxLymphNode1 = "";}
+
+if (ThoraxLymphNode1CombinedResult.includes("je nově") || ThoraxLymphNode1CombinedResult.includes("jsou nově")) { RESThoraxLymphNode1 = "Nově " + RESThoraxLymphNode1.charAt(0).toLowerCase() + RESThoraxLymphNode1.substring(1) ; RESThoraxLymphNode1 = RESThoraxLymphNode1.replace(" je nově", "").replace(" jsou nově", "");}
 
 
 // THORAX OTHERS
@@ -1958,8 +1959,8 @@ if (buttonElementPETType.value === "FDG") {
 }
 
 if (AbdomenLesion1RESDecision.includes("meta") && AbdomenLesion1type.includes("ožisk")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
-
 if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("ožisk")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (AbdomenLesion1CombinedResult.includes("je nově") || AbdomenLesion1CombinedResult.includes("jsou nově")) { window.RESAbdomenLesion1 = "Nově " + window.RESAbdomenLesion1.charAt(0).toLowerCase() + window.RESAbdomenLesion1.substring(1) ; window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(" je nově", "").replace(" jsou nově", "");}
 
 `;
 
@@ -2117,6 +2118,8 @@ if (buttonElementPETType.value === "FDG") {
 }
 
 if (AbdomenLymphNode1Button.classList.contains('hidden')) {POPAbdomenLymphNode1 = ""; RESAbdomenLymphNode1 = "";}
+
+if (AbdomenLymphNode1CombinedResult.includes("je nově") || AbdomenLymphNode1CombinedResult.includes("jsou nově")) { RESAbdomenLymphNode1 = "Nově " + RESAbdomenLymphNode1.charAt(0).toLowerCase() + RESAbdomenLymphNode1.substring(1) ; RESAbdomenLymphNode1 = RESAbdomenLymphNode1.replace(" je nově", "").replace(" jsou nově", "");}
 
 
 // ABDOMEN OTHERS
@@ -2925,6 +2928,8 @@ if (buttonElementPETType.value === "FDG") {
 }
 
 if (SkeletonLesion1RESDecision.includes("meta") && SkeletonLesion1type.includes("ožisk")) {window.RESSkeletonLesion1 = window.RESSkeletonLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
+if (SkeletonLesion1RESDecision.includes("tumor") && SkeletonLesion1type.includes("ožisk")) {window.RESSkeletonLesion1 = window.RESSkeletonLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (SkeletonLesion1CombinedResult.includes("je nově") || SkeletonLesion1CombinedResult.includes("jsou nově")) { window.RESSkeletonLesion1 = "Nově " + window.RESSkeletonLesion1.charAt(0).toLowerCase() + window.RESSkeletonLesion1.substring(1) ; window.RESSkeletonLesion1 = window.RESSkeletonLesion1.replace(" je nově", "").replace(" jsou nově", "");}
 
 `;
 

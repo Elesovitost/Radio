@@ -15,14 +15,9 @@
 <div id="popupMessageDate" style="display:none; position:fixed; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold;"></div>
 </div>
 
-<div id="texty1" class=" standardwidth hidden">
-NÁZEV<textarea id="MRBreastNAMEText" class="medium"></textarea>
-INDIKACE<textarea id="MRBreastINDText" class="medium"></textarea>
-SEKVENCE<textarea id="MRBreastSEKVText" class="medium"></textarea>
-POPIS<textarea id="MRBreastPOPText" class="superlarge"></textarea>
-ZÁVĚR<textarea id="MRBreastRESText" class="superlarge"></textarea>
+<div id="obecne" class="standardwidth hidden">
+<label class="CHB"> RECIST <input type="checkbox" id="ChbRECIST" onChange="updateTexts()"><span>+</span></label>
 </div>
-
 
 <div id="Loziska"  class="standardwidth"><button class="titleBreast float">LÉZE</button> 
 <table>
@@ -74,7 +69,7 @@ ZÁVĚR<textarea id="MRBreastRESText" class="superlarge"></textarea>
 		</td>
     </tr>
     <tr id="BreastLesion1Previous" class="hidden">
-		<td colspan="7"></td>
+		<td colspan="10"></td>
 		<td>&nbsp;minule:</td>
 		<td><input id="BreastLesion1PrevSize" class="select80 num" placeholder="rozměr..." oninput="updateTexts()"></td>
 		<td></td>
@@ -163,7 +158,13 @@ ZÁVĚR<textarea id="MRBreastRESText" class="superlarge"></textarea>
   </tr>
 </table>
 
-
+<div id="texty1" class=" standardwidth hidden">
+NÁZEV<textarea id="MRBreastNAMEText" class="medium"></textarea>
+INDIKACE<textarea id="MRBreastINDText" class="medium"></textarea>
+SEKVENCE<textarea id="MRBreastSEKVText" class="medium"></textarea>
+POPIS<textarea id="MRBreastPOPText" class="superlarge"></textarea>
+ZÁVĚR<textarea id="MRBreastRESText" class="superlarge"></textarea>
+</div>
 
 </div>
 
