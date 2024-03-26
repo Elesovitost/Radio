@@ -166,6 +166,14 @@ function combineComparisonResults(sizeRes, suvRes, number) {
     return prefix + sizeRes + " a " + suvRes;
 }
 
+function checkViability(text) {
+  const keywords = ['střední', 'zvýšenou', 'vysokou'];
+  const hasKeyword = keywords.some(keyword => text.includes(keyword));
+  const suvMatch = text.match(/SUVmax=([\d.]+)/);
+  const hasHighSUV = suvMatch && parseFloat(suvMatch[1]) > 1;
+
+  return hasKeyword || hasHighSUV;
+}
 
 
 // obecne texts
@@ -298,7 +306,7 @@ let codeForNeckLesion1 = `
 	} 	
 
 let processedSentencePOPNeckLesion1 = processSentence(NeckLesion1number + " " + NeckLesion1type);	
-window.POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + NeckLesion1Activity + " " + NeckLesion1SUV + " " + NeckLesion1ComparisonText + ".";
+window.POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + (NeckLesion1SUV === "" ? NeckLesion1Activity : "") + " " + NeckLesion1SUV + " " + NeckLesion1ComparisonText + ".";
  
 let processedSentenceRESNeckLesionFDG = processSentence(NeckLesion1number + " " + NeckLesion1RESActivityFDG + " " + NeckLesion1type);
 let processedSentenceRESNeckLesionPSMA = processSentence(NeckLesion1number + " " + NeckLesion1type);
@@ -471,7 +479,7 @@ document.getElementById('NeckLymphNode1Location').value = NeckLymphNode1selectLo
 	} 	
 
 let processedSentencePOPNeckLymphNode1 = processSentence(NeckLymphNode1number + " " + NeckLymphNode1type);	
-POPNeckLymphNode1 = processedSentencePOPNeckLymphNode1 + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1Loclargest + " " + NeckLymphNode1Size + " " + NeckLymphNode1Activity + " " + NeckLymphNode1SUV + " " + NeckLymphNode1ComparisonText + ".";
+POPNeckLymphNode1 = processedSentencePOPNeckLymphNode1 + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1Loclargest + " " + NeckLymphNode1Size + " " + (NeckLymphNode1SUV === "" ? NeckLymphNode1Activity : "") + " " + NeckLymphNode1SUV + " " + NeckLymphNode1ComparisonText + ".";
 
 let processedSentenceRESNeckLymphNodeFDG = processSentence(NeckLymphNode1number + " " + NeckLymphNode1RESActivityFDG + " " + NeckLymphNode1type);
 let processedSentenceRESNeckLymphNodePSMA = processSentence(NeckLymphNode1number + " " + NeckLymphNode1type);
@@ -489,16 +497,12 @@ if (NeckLymphNode1CombinedResult.includes("je nově") || NeckLymphNode1CombinedR
 
 // neck native or not
 
-if (
-  POPNeckLymphNode1.includes('střední') || POPNeckLymphNode1.includes('zvýšenou') || POPNeckLymphNode1.includes('vysokou') || 
-  window.POPNeckLesion1.includes('střední') || window.POPNeckLesion1.includes('zvýšenou') || window.POPNeckLesion1.includes('vysokou') || 
-  window.POPNeckLesion2.includes('střední') || window.POPNeckLesion2.includes('zvýšenou') || window.POPNeckLesion2.includes('vysokou') || 
-  window.POPNeckLesion3.includes('střední') || window.POPNeckLesion3.includes('zvýšenou') || window.POPNeckLesion3.includes('vysokou')
-) {
+if (checkViability(POPNeckLymphNode1) || checkViability(window.POPNeckLesion1) || checkViability(window.POPNeckLesion2) || checkViability(window.POPNeckLesion3)) {
   POPNeckNative = "";
 } else {
   POPNeckNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
 }
+
 
 
 // neck others 
@@ -957,8 +961,8 @@ document.getElementById('ThoraxLesion1Location').value = ThoraxLesion1Locationte
 	} 	
 
 let processedSentencePOPThoraxLesion1 = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);	
-window.POPThoraxLesion1 = processedSentencePOPThoraxLesion1 + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1Loclargest + " " + ThoraxLesion1Size + " " + ThoraxLesion1Activity + " " + ThoraxLesion1SUV + " " + ThoraxLesion1ComparisonText + ".";
- 
+window.POPThoraxLesion1 = processedSentencePOPThoraxLesion1 + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1Loclargest + " " + ThoraxLesion1Size + " " + (ThoraxLesion1SUV === "" ? ThoraxLesion1Activity : "") + " " + ThoraxLesion1SUV + " " + ThoraxLesion1ComparisonText + ".";
+
 let processedSentenceRESThoraxLesionFDG = processSentence(ThoraxLesion1number + " " + ThoraxLesion1RESActivityFDG + " " + ThoraxLesion1type);
 let processedSentenceRESThoraxLesionPSMA = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);
 
@@ -1122,7 +1126,7 @@ if (segments.length === 2) {
 	} 	
 
 let processedSentencePOPThoraxLymphNode1 = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1type);	
-POPThoraxLymphNode1 = processedSentencePOPThoraxLymphNode1 + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1Loclargest + " " + ThoraxLymphNode1Size + " " + ThoraxLymphNode1Activity + " " + ThoraxLymphNode1SUV + " " + ThoraxLymphNode1ComparisonText + ".";
+POPThoraxLymphNode1 = processedSentencePOPThoraxLymphNode1 + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1Loclargest + " " + ThoraxLymphNode1Size + " " + (ThoraxLymphNode1SUV === "" ? ThoraxLymphNode1Activity : "") + " " + ThoraxLymphNode1SUV + " " + ThoraxLymphNode1ComparisonText + ".";
 
 let processedSentenceRESThoraxLymphNodeFDG = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1RESActivityFDG + " " + ThoraxLymphNode1type);
 let processedSentenceRESThoraxLymphNodePSMA = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1type);
@@ -1538,14 +1542,12 @@ if (ThoraxFluidFTR === "" && ThoraxFluidFTL === "" && ThoraxFluidFP === "") {
 
 // Thorax native or not
 
-if (POPThoraxLymphNode1.includes('střední') || POPThoraxLymphNode1.includes('zvýšenou') || POPThoraxLymphNode1.includes('vysokou') || 
-	window.POPThoraxLesion1.includes('střední') || window.POPThoraxLesion1.includes('zvýšenou') || window.POPThoraxLesion1.includes('vysokou') || 
-	window.POPThoraxLesion2.includes('střední') || window.POPThoraxLesion2.includes('zvýšenou') || window.POPThoraxLesion2.includes('vysokou') || 
-	window.POPThoraxLesion3.includes('střední') || window.POPThoraxLesion3.includes('zvýšenou') || window.POPThoraxLesion3.includes('vysokou')
-	)  
-	{ POPThoraxNative = "";
-	} else {POPThoraxNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
+if (checkViability(POPThoraxLymphNode1) || checkViability(window.POPThoraxLesion1) || checkViability(window.POPThoraxLesion2) || checkViability(window.POPThoraxLesion3)) {
+  POPThoraxNative = "";
+} else {
+  POPThoraxNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
 }
+
 
 // Thorax Adekvatní vlevo...vpravo apod. + OTHERS
 
@@ -1947,8 +1949,8 @@ document.getElementById('AbdomenLesion1Location').value = AbdomenLesion1Location
 	} 	
 
 let processedSentencePOPAbdomenLesion1 = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);	
-window.POPAbdomenLesion1 = processedSentencePOPAbdomenLesion1 + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1Loclargest + " " + AbdomenLesion1Size + " " + AbdomenLesion1Activity + " " + AbdomenLesion1SUV + " " + AbdomenLesion1ComparisonText + ".";
- 
+window.POPAbdomenLesion1 = processedSentencePOPAbdomenLesion1 + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1Loclargest + " " + AbdomenLesion1Size + " " + (AbdomenLesion1SUV === "" ? AbdomenLesion1Activity : "") + " " + AbdomenLesion1SUV + " " + AbdomenLesion1ComparisonText + ".";
+
 let processedSentenceRESAbdomenLesionFDG = processSentence(AbdomenLesion1number + " " + AbdomenLesion1RESActivityFDG + " " + AbdomenLesion1type);
 let processedSentenceRESAbdomenLesionPSMA = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);
 
@@ -2106,7 +2108,7 @@ document.getElementById('AbdomenLymphNode1Location').value = AbdomenLymphNode1Lo
 	} 	
 
 let processedSentencePOPAbdomenLymphNode1 = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1type);	
-POPAbdomenLymphNode1 = processedSentencePOPAbdomenLymphNode1 + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1Loclargest + " " + AbdomenLymphNode1Size + " " + AbdomenLymphNode1Activity + " " + AbdomenLymphNode1SUV + " " + AbdomenLymphNode1ComparisonText + ".";
+POPAbdomenLymphNode1 = processedSentencePOPAbdomenLymphNode1 + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1Loclargest + " " + AbdomenLymphNode1Size + " " + (AbdomenLymphNode1SUV === "" ? AbdomenLymphNode1Activity : "") + " " + AbdomenLymphNode1SUV + " " + AbdomenLymphNode1ComparisonText + ".";
 
 let processedSentenceRESAbdomenLymphNodeFDG = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1RESActivityFDG + " " + AbdomenLymphNode1type);
 let processedSentenceRESAbdomenLymphNodePSMA = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1type);
@@ -2733,14 +2735,12 @@ AbdomenOrgansText = AbdomenLiverText + " " + AbodomenGallbladderText + " " + Abd
 
 // Abdomen native or not
 
-if (POPAbdomenLymphNode1.includes('střední') || POPAbdomenLymphNode1.includes('zvýšenou') || POPAbdomenLymphNode1.includes('vysokou') || 
-	window.POPAbdomenLesion1.includes('střední') || window.POPAbdomenLesion1.includes('zvýšenou') || window.POPAbdomenLesion1.includes('vysokou') || 
-	window.POPAbdomenLesion2.includes('střední') || window.POPAbdomenLesion2.includes('zvýšenou') || window.POPAbdomenLesion2.includes('vysokou') || 
-	window.POPAbdomenLesion3.includes('střední') || window.POPAbdomenLesion3.includes('zvýšenou') || window.POPAbdomenLesion3.includes('vysokou')
-	)  
-	{ POPAbdomenNative = "";
-	} else {POPAbdomenNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
+if (checkViability(POPAbdomenLymphNode1) || checkViability(window.POPAbdomenLesion1) || checkViability(window.POPAbdomenLesion2) || checkViability(window.POPAbdomenLesion3)) {
+  POPAbdomenNative = "";
+} else {
+  POPAbdomenNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
 }
+
 
 // Abdomen Other Organs Ok or Not
 
@@ -2916,8 +2916,8 @@ var arr = SkeletonLesion1Locationtext.split(", ");
 	} 	
 
 let processedSentencePOPSkeletonLesion1 = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);	
-window.POPSkeletonLesion1 = processedSentencePOPSkeletonLesion1 + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1Loclargest + " " + SkeletonLesion1Size + " " + SkeletonLesion1Activity + " " + SkeletonLesion1SUV + " " + SkeletonLesion1ComparisonText + ".";
- 
+window.POPSkeletonLesion1 = processedSentencePOPSkeletonLesion1 + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1Loclargest + " " + SkeletonLesion1Size + " " + (SkeletonLesion1SUV === "" ? SkeletonLesion1Activity : "") + " " + SkeletonLesion1SUV + " " + SkeletonLesion1ComparisonText + ".";
+
 let processedSentenceRESSkeletonLesionFDG = processSentence(SkeletonLesion1number + " " + SkeletonLesion1RESActivityFDG + " " + SkeletonLesion1type);
 let processedSentenceRESSkeletonLesionPSMA = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);
 
@@ -3126,12 +3126,10 @@ if (ChbSkeletJointsPolyMyaR) {SkeletonJointsText = "Zvýšená akumulace RF v ob
 
 // Skeleton native or not
 
-if (window.POPSkeletonLesion1.includes('střední') || window.POPSkeletonLesion1.includes('zvýšenou') || window.POPSkeletonLesion1.includes('vysokou') || 
-	window.POPSkeletonLesion2.includes('střední') || window.POPSkeletonLesion2.includes('zvýšenou') || window.POPSkeletonLesion2.includes('vysokou') || 
-	window.POPSkeletonLesion3.includes('střední') || window.POPSkeletonLesion3.includes('zvýšenou') || window.POPSkeletonLesion3.includes('vysokou')
-	)  
-	{ POPSkeletonNative = "";
-	} else {POPSkeletonNative = "Není přítomen patologický hyperakumulující fokus či ložisko. ";
+if (checkViability(window.POPSkeletonLesion1) || checkViability(window.POPSkeletonLesion2) || checkViability(window.POPSkeletonLesion3)) {
+  POPSkeletonNative = "";
+} else {
+  POPSkeletonNative = "Není přítomen patologický hyperakumulující fokus nebo ložisko. ";
 }
 
 //Others by priority
