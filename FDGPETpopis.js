@@ -1,3 +1,5 @@
+// degener kyčel, dodělat I, II, III artróza
+
 function updateTexts() {
 
 var indikace = document.getElementById("indikace").value;
@@ -166,8 +168,10 @@ function combineComparisonResults(sizeRes, suvRes, number) {
     return prefix + sizeRes + " a " + suvRes;
 }
 
+// viability check
+
 function checkViability(text) {
-  const keywords = ['střední', 'zvýšenou', 'vysokou'];
+  const keywords = ['střední', 'zvýšen', 'vysok', 'ložisk'];
   const hasKeyword = keywords.some(keyword => text.includes(keyword));
   const suvMatch = text.match(/SUVmax=([\d.]+)/);
   const hasHighSUV = suvMatch && parseFloat(suvMatch[1]) > 1;
@@ -495,16 +499,6 @@ if (NeckLymphNode1Button.classList.contains('hidden')) {POPNeckLymphNode1 = ""; 
 if (NeckLymphNode1CombinedResult.includes("je nově") || NeckLymphNode1CombinedResult.includes("jsou nově")) { RESNeckLymphNode1 = "Nově " + RESNeckLymphNode1.charAt(0).toLowerCase() + RESNeckLymphNode1.substring(1) ; RESNeckLymphNode1 = RESNeckLymphNode1.replace(" je nově", "").replace(" jsou nově", "");}
 
 
-// neck native or not
-
-if (checkViability(POPNeckLymphNode1) || checkViability(window.POPNeckLesion1) || checkViability(window.POPNeckLesion2) || checkViability(window.POPNeckLesion3)) {
-  POPNeckNative = "";
-} else {
-  POPNeckNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
-}
-
-
-
 // neck others 
 
 // siny
@@ -760,6 +754,15 @@ var NeckOther1Pop = document.getElementById("NeckOther1Pop").value;
 var NeckOther1Res = document.getElementById("NeckOther1Res").value;
 if (NeckOther1Pop !== "" && NeckOther1Res ==="") {NeckOther1Priority = ""; NeckOther1NoPriority = NeckOther1Pop + ". "; NeckOther1ResPriority = "";
 	} else if (NeckOther1Pop !== "" && NeckOther1Res !=="") {NeckOther1Priority = NeckOther1Pop  + ". "; NeckOther1NoPriority = ""; NeckOther1ResPriority = NeckOther1Res  + ". ";}
+
+
+// neck native or not
+
+if ((POPNeckLymphNode1 !== "") || (window.POPNeckLesion1 !== "") || (window.POPNeckLesion2 !== "") ||  (window.POPNeckLesion1 !== "") || checkViability(NeckOther1Pop)) {
+  POPNeckNative = "";
+} else {
+  POPNeckNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
+}
 
 
 
@@ -1540,14 +1543,6 @@ if (ThoraxFluidFTR === "" && ThoraxFluidFTL === "" && ThoraxFluidFP === "") {
     ThoraxFluidText = ThoraxFluidFTRText + ThoraxFluidFTLText + ThoraxFluidFPText;
 } 
 
-// Thorax native or not
-
-if (checkViability(POPThoraxLymphNode1) || checkViability(window.POPThoraxLesion1) || checkViability(window.POPThoraxLesion2) || checkViability(window.POPThoraxLesion3)) {
-  POPThoraxNative = "";
-} else {
-  POPThoraxNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
-}
-
 
 // Thorax Adekvatní vlevo...vpravo apod. + OTHERS
 
@@ -1575,6 +1570,14 @@ if (ThoraxParenchymaText.includes('fibróz') || ThoraxParenchymaText.includes('e
     POPThoraxLungOk = "Adekvátní plicní objem a vzdušnost. ";
 } else {
     POPThoraxLungOk = "Jinak adekvátní plicní objem a vzdušnost. ";
+}
+
+// Thorax native or not
+
+if ((POPThoraxLymphNode1 !== "") || (window.POPThoraxLesion1 !== "") || (window.POPThoraxLesion2 !== "") ||  (window.POPThoraxLesion1 !== "") || checkViability(ThoraxOther1Pop)) {
+  POPThoraxNative = "";
+} else {
+  POPThoraxNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
 }
 
 
@@ -2733,14 +2736,6 @@ AbdomenOrgansText = AbdomenLiverText + " " + AbodomenGallbladderText + " " + Abd
 					AbdomenUterusText + " " + AbdomenOvariesText + " " + AbdomenProstateText;
 
 
-// Abdomen native or not
-
-if (checkViability(POPAbdomenLymphNode1) || checkViability(window.POPAbdomenLesion1) || checkViability(window.POPAbdomenLesion2) || checkViability(window.POPAbdomenLesion3)) {
-  POPAbdomenNative = "";
-} else {
-  POPAbdomenNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
-}
-
 
 // Abdomen Other Organs Ok or Not
 
@@ -2759,6 +2754,15 @@ if (AbdomenOrgansText.trim() === "" && AbdomenOther1Priority === "") {
 } else {
 	POPAbdomenOrgansOk = "";
 }
+
+// Abdomen native or not
+
+if ((POPAbdomenLymphNode1 !== "") || (window.POPAbdomenLesion1 !== "") || (window.POPAbdomenLesion2 !== "") ||  (window.POPAbdomenLesion1 !== "") || checkViability(AbdomenOther1Pop)) {
+  POPAbdomenNative = "";
+} else {
+  POPAbdomenNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
+}
+
 
 
 
@@ -3039,7 +3043,7 @@ if (ChbSkeletDegenerHipR && ChbSkeletDegenerHipL) {
 if (SkeletDegenerOther) descriptionsSkeleton.push(SkeletDegenerOther);
 
 if (descriptionsSkeleton.length > 1) {
-  SkeletonDegenerText = "Degenerativní změny " + descriptionsSkeleton.slice(0, -1).join(", ") + " a " + descriptionsSkeleton.slice(-1) + ". ";
+  SkeletonDegenerText = "Degenerativní změny " + descriptionsSkeleton.slice(0, -1).join(", ") + ", " + descriptionsSkeleton.slice(-1) + ". ";
 } else {
   SkeletonDegenerText = descriptionsSkeleton.length ? "Degenerativní změny " + descriptionsSkeleton[0] + ". " : "";
 }
@@ -3124,13 +3128,6 @@ if (ChbSkeletJointsPolyMyaR) {SkeletonJointsText = "Zvýšená akumulace RF v ob
 								SkeletonJointsRes = "Zvýšená metabolická aktivita v mnohočetných kloubních lokalizacích a při šlachových úponech v rámci burzitis, entezitis a synovitis: v.s. v rámci polymyalgia rheumatica.";}
 
 
-// Skeleton native or not
-
-if (checkViability(window.POPSkeletonLesion1) || checkViability(window.POPSkeletonLesion2) || checkViability(window.POPSkeletonLesion3)) {
-  POPSkeletonNative = "";
-} else {
-  POPSkeletonNative = "Není přítomen patologický hyperakumulující fokus nebo ložisko. ";
-}
 
 //Others by priority
 var SkeletonOther1Priority = ""; var SkeletonOther1NoPriority = ""; var SkeletonOther1ResPriority = "";
@@ -3139,6 +3136,14 @@ var SkeletonOther1Res = document.getElementById("SkeletonOther1Res").value;
 if (SkeletonOther1Pop !== "" && SkeletonOther1Res ==="") {SkeletonOther1Priority = ""; SkeletonOther1NoPriority = SkeletonOther1Pop + ". "; SkeletonOther1ResPriority = "";
 	} else if (SkeletonOther1Pop !== "" && SkeletonOther1Res !=="") {SkeletonOther1Priority = SkeletonOther1Pop  + ". "; SkeletonOther1NoPriority = ""; SkeletonOther1ResPriority = SkeletonOther1Res  + ". ";}
 
+
+// Skeleton native or not
+
+if ((window.POPSkeletonLesion1 !== "") || (window.POPSkeletonLesion2 !== "") ||  (window.POPSkeletonLesion1 !== "") || checkViability(SkeletonOther1Pop)) {
+  POPSkeletonNative = "";
+} else {
+  POPSkeletonNative = "Není přítomen patologický hyperakumulující fokus nebo ložisko. ";
+}
 
 //Latest examination comparison
 if (DateCompare === "") {ExamCompareText = ""; POPExamCompareText = "";} else {ExamCompareText = "Oproti vyšetření z " + DateComparison + ":"; POPExamCompareText = "Srovnáno s vyšetřením z " + DateComparison + ". ";}
