@@ -1,5 +1,7 @@
 function updateTexts() {
 
+var indikace = document.getElementById("indikace").value;
+
 var RectTuRESText = document.getElementById("RectTuRESText");
 var FINALText = document.getElementById("FINALText");
 
@@ -219,7 +221,7 @@ if (document.getElementById('ChbRectTuPerit').checked) {
 
 RectTuNAMEText.value = "MR rekta"; 
 
-RectTuINDText.value = document.getElementById("indikace").addEventListener("input", updateTexts);
+RectTuINDText.value  = indikace; document.getElementById("indikace").addEventListener("input", updateTexts);
 
 if (RectTuTypeText !== "není") {
 	TumorDescription = "V T2W je přítomno " + RectTuTypeP + " zvýšení signálu stěny rekta " + RectTuSpread + ". " + RectTuStartP + RectTuTotDistanceP + ". " + "\n" +

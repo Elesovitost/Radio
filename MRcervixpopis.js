@@ -1,5 +1,7 @@
 function updateTexts() {
 
+var indikace = document.getElementById("indikace").value;
+
 var CervixTuRESText = document.getElementById("CervixTuRESText");
 var FINALText = document.getElementById("FINALText");
 
@@ -310,8 +312,7 @@ CervixTuFIGOR = "FIGO klasifikace stage " + CervixTuFIGO + ", TNM klasifikace st
 // POPIS
 CervixTuNAMEText.value = "MR dělohy"; 
 
-CervixTuINDText.value = document.getElementById("indikace").addEventListener("input", updateTexts);
-
+CervixTuINDText.value  = indikace; document.getElementById("indikace").addEventListener("input", updateTexts);
 
 CervixTuPOPText.value = 
 CervixTuInvasionP + CervixTuSizeP + CervixVagInvasionP + CervixParamRInvasionP + CervixWallInvasionP + CervixBladderInvasionP + CervixRectumInvasionP + CervixHydronephroP + "\n" +

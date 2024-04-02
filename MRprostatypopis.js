@@ -1,6 +1,8 @@
 
 function updateTexts() {
 
+var indikace = document.getElementById("indikace").value;
+
 // LESION1
 
 // Prostate segments
@@ -1184,7 +1186,7 @@ if (document.getElementById('ChbProstatePSMA').checked) {
 // POPIS
 ProstateTuNAMEText.value = "MR prostaty"; if (document.getElementById('ChbProstatePSMA').checked) {ProstateTuNAMEText.value = "PSMA-PET/MR prostaty";}
 
-ProstateTuINDText.value = document.getElementById("indikace").addEventListener("input", updateTexts);
+ProstateTuINDText.value  = indikace; document.getElementById("indikace").addEventListener("input", updateTexts);
 
 ProstateTuPOPText.value = 
 ProstateOkP + "\n" +
@@ -1233,8 +1235,6 @@ ProstateFinalText.value =
 ProstateTuPOPText.value + "\n" +
 "Závěr:" + "\n" +
 ProstateTuRESText.value;
-
-
 
 }
 updateTexts();	
