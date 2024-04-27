@@ -239,9 +239,12 @@ if (buttonPkCartCHP === "IV") {
 } else if (buttonPkCartCHP === "II") {
 	PkCartDescr = "Nepravidelné mírné snížení chrupavky ";
 	PkCartCP = "Mírná chondropatie ";
+} else if (buttonPkCartCHP === "0") {
+	PkCartDescr = "";
+	PkCartCP = "Chrupavka ";
 } else if (PkCartFissureOne || PkCartFissureMore || PkCartDefectOne || PkCartDefectMore) {
 	PkCartDescr = "Chrupavka ";
-	PkCartCP = "Mírná chondropatie ";
+	PkCartCP = "Chrupavka ";
 } else {
 	PkCartDescr = "";
 	PkCartCP = "";
@@ -387,7 +390,7 @@ if (MkFemCondCHPIV) {
 	descriptionsMkFemCondRES.push("s pokročilou chondropatií");
 }
 if (MkFemCondCHPIII) {
-	descriptionsMkFemCondText.push("se snížením chrupavky");
+	descriptionsMkFemCondText.push("s výrazným snížením chrupavky");
 	descriptionsMkFemCondRES.push("s chondropatií");
 }
 if (MkFemCondCHPII) {
