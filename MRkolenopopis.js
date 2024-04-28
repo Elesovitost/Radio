@@ -240,7 +240,7 @@ if (buttonPkCartCHP === "IV") {
 	PkCartDescr = "Nepravidelné mírné snížení chrupavky ";
 	PkCartCP = "Mírná chondropatie ";
 } else if (buttonPkCartCHP === "0") {
-	PkCartDescr = "";
+	PkCartDescr = "Chrupavka ";
 	PkCartCP = "Chrupavka ";
 } else if (PkCartFissureOne || PkCartFissureMore || PkCartDefectOne || PkCartDefectMore) {
 	PkCartDescr = "Chrupavka ";
@@ -517,7 +517,7 @@ if ((isLkFemChpChecked && isLkFemOtherConditionsNotChecked) && (isLkTibChpChecke
         LkFemCondRES += " a subchondrálním edémem";
     } else if (LkFemCondEdemaSub) {
 		LkFemCondRES += " a subchondrálním edémem kondylu femuru";
-	} else if (MkTibCondEdemaSub) {
+	} else if (LkTibCondEdemaSub) {
 		LkFemCondRES += " a subchondrálním edémem plata tibie";	
 	}
 
