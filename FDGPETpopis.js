@@ -1999,8 +1999,6 @@ var ChbAbdomenParaAIER = document.getElementById("ChbAbdomenParaAIER").checked;
 var ChbAbdomenParaAIEL = document.getElementById("ChbAbdomenParaAIEL").checked;
 var ChbAbdomenParaAIIR = document.getElementById("ChbAbdomenParaAIIR").checked;
 var ChbAbdomenParaAIIL = document.getElementById("ChbAbdomenParaAIIL").checked;
-var ChbAbdomenObtR = document.getElementById("ChbAbdomenObtR").checked;
-var ChbAbdomenObtL = document.getElementById("ChbAbdomenObtL").checked;
 var ChbAbdomenInguinsR = document.getElementById("ChbAbdomenInguinsR").checked;
 var ChbAbdomenInguinsL = document.getElementById("ChbAbdomenInguinsL").checked;
 
@@ -2008,22 +2006,22 @@ var descriptions = [];
 
 if (ChbAbdomenSubphrenic) descriptions.push("subfrenicky");
 if (ChbAbdomenPeriportal) descriptions.push("periportálně");
-if (ChbAbdomenMesenterial) descriptions.push("v mesenteriu");
-if (ChbAbdomenRetroperit) descriptions.push("v retroperitoneu");
-if (ChbAbdomenPelvic) descriptions.push("v pánvi");
+if (ChbAbdomenMesenterial) descriptions.push("mesenteria");
+if (ChbAbdomenRetroperit) descriptions.push("retroperitonea");
+if (ChbAbdomenPelvic) descriptions.push("pánve");
 
 if (ChbAbdomenParaaortalR && ChbAbdomenParaaortalL) {
     descriptions.push("paraortálně bilat.");
 } else {
-    if (ChbAbdomenParaaortalR) descriptions.push("paraaortální vpravo");
-    if (ChbAbdomenParaaortalL) descriptions.push("paraaortální vlevo");
+    if (ChbAbdomenParaaortalR) descriptions.push("paraaortálně vpravo");
+    if (ChbAbdomenParaaortalL) descriptions.push("paraaortálně vlevo");
 }
 
 if (ChbAbdomenRetrocruralR && ChbAbdomenRetrocruralL) {
     descriptions.push("retrokrurálně bilat.");
 } else {
-    if (ChbAbdomenRetrocruralR) descriptions.push("retrokrurální vpravo");
-    if (ChbAbdomenRetrocruralL) descriptions.push("retrokrurální vlevo");
+    if (ChbAbdomenRetrocruralR) descriptions.push("retrokrurálně vpravo");
+    if (ChbAbdomenRetrocruralL) descriptions.push("retrokrurálně vlevo");
 }
 
 if (ChbAbdomenParaAICR && ChbAbdomenParaAICL) {
@@ -2045,13 +2043,6 @@ if (ChbAbdomenParaAIIR && ChbAbdomenParaAIIL) {
 } else {
     if (ChbAbdomenParaAIIR) descriptions.push("při vnitřní ilice vpravo");
     if (ChbAbdomenParaAIIL) descriptions.push("při vnitřní ilice vlevo");
-}
-
-if (ChbAbdomenObtR && ChbAbdomenObtL) {
-    descriptions.push("obturátorové bilat.");
-} else {
-    if (ChbAbdomenObtR) descriptions.push("obturátorová vpravo");
-    if (ChbAbdomenObtL) descriptions.push("obturátorová vlevo");
 }
 
 if (ChbAbdomenInguinsR && ChbAbdomenInguinsL) {
@@ -2142,59 +2133,44 @@ if (AbdomenLymphNode1CombinedResult.includes("je nově") || AbdomenLymphNode1Com
 var AbdomenLiverText = "";
 
 var ChbLiverSteatosis = document.getElementById("ChbLiverSteatosis").checked;
+var ChbLiverCyst = document.getElementById("ChbLiverCyst").checked;
+var ChbLiverCysts = document.getElementById("ChbLiverCysts").checked;
+var ChbLiverHemangioma = document.getElementById("ChbLiverHemangioma").checked;
+var ChbLiverHemangiomas = document.getElementById("ChbLiverHemangiomas").checked;
 var ChbLiverResectionR = document.getElementById("ChbLiverResectionR").checked;
 var ChbLiverResectionL = document.getElementById("ChbLiverResectionL").checked;
 var ChbLiverRFAR = document.getElementById("ChbLiverRFAR").checked;
 var ChbLiverRFAL = document.getElementById("ChbLiverRFAL").checked;
 var ChbLiverBileductDilation = document.getElementById("ChbLiverBileductDilation").checked;
-var buttonLiverCystsText = document.getElementById("ChbLiverCysts").innerText;
-var buttonLiverHemangiomasText = document.getElementById("ChbLiverHemangiomas").innerText;
 var AbdomenLiverOther = document.getElementById("AbdomenLiverOther").value.trim();
 
+var descriptions = [];
 
-updateButtonTexts({
-            'ChbLiverCysts': ['0', '+', '++'],
-			'ChbLiverHemangiomas': ['0', '+', '++'],
-        });
-
-var descriptionsLiver = [];
-
-if (ChbLiverSteatosis) descriptionsLiver.push("steatotická");
-
+if (ChbLiverSteatosis) descriptions.push("steatotická");
+if (ChbLiverCyst) descriptions.push("s fotopenickou cystou");
+if (ChbLiverCysts) descriptions.push("s vícečetnými fotopenickými cystami");
+if (ChbLiverHemangioma) descriptions.push("s ložiskem bez zvýšené metabolické aktivity charakteru hemangiomu");
+if (ChbLiverHemangiomas) descriptions.push("s ložisky bez zvýšené metabolické aktivity charakteru hemangiomů");
 
 if (ChbLiverResectionR && ChbLiverResectionL) {
-    descriptionsLiver.push("po resekci v obou lalocích");
+    descriptions.push("po resekci v obou lalocích");
 } else {
-    if (ChbLiverResectionR) descriptionsLiver.push("po resekci v pravém laloku");
-    if (ChbLiverResectionL) descriptionsLiver.push("po resekci v levém laloku");
+    if (ChbLiverResectionR) descriptions.push("po resekci v pravém laloku");
+    if (ChbLiverResectionL) descriptions.push("po resekci v levém laloku");
 }
 
 if (ChbLiverRFAR && ChbLiverRFAL) {
-    descriptionsLiver.push("po RFA v obou lalocích");
+    descriptions.push("po RFA v obou lalocích");
 } else {
-    if (ChbLiverRFAR) descriptionsLiver.push("po RFA v pravém laloku");
-    if (ChbLiverRFAL) descriptionsLiver.push("po RFA v levém laloku");
+    if (ChbLiverRFAR) descriptions.push("po RFA v pravém laloku");
+    if (ChbLiverRFAL) descriptions.push("po RFA v levém laloku");
 }
 
-if (ChbLiverBileductDilation) descriptionsLiver.push("s dilatací žlučových cest");
-if (AbdomenLiverOther) descriptionsLiver.push(AbdomenLiverOther);
+if (ChbLiverBileductDilation) descriptions.push("s dilatací žlučových cest");
+if (AbdomenLiverOther) descriptions.push(AbdomenLiverOther);
 
-
-if (buttonLiverHemangiomasText === "+") {
-	descriptionsLiver.push("s ložiskem benigního obrazu bez zvýšené akumulace RF");
-} else if (buttonLiverHemangiomasText === "++") {
-		descriptionsLiver.push("s ložiskem benigního obrazu bez zvýšené akumulace RF");
-}
-
-
-if (buttonLiverCystsText === "+") {
-	descriptionsLiver.push("s neakumulující hypodenzní cystou");
-} else if (buttonLiverCystsText === "++") {
-		descriptionsLiver.push("s neakumulujícími hypodenzními cystami");
-}
-
-if (descriptionsLiver.length) {
-  AbdomenLiverText = "Játra: " + descriptionsLiver.join(", ") + ". ";
+if (descriptions.length) {
+  AbdomenLiverText = "Játra " + descriptions.join(", ") + ". ";
 }
 
 // Gallbladder
@@ -2210,7 +2186,7 @@ var GallbladderOther = document.getElementById("GallbladderOther").value.trim();
 
 var descriptionsGallbladder = [];
 
-if (ChbGallbladderEctomy) descriptionsGallbladder.push("chybí po cholecystektomii");
+if (ChbGallbladderEctomy) descriptionsGallbladder.push("chybí po CHCE");
 if (ChbGallbladderStone) descriptionsGallbladder.push("s konkrementem");
 if (ChbGallbladderStones) descriptionsGallbladder.push("s vícečetnými konkrementy");
 if (ChbGallbladderSludge) descriptionsGallbladder.push("s drobnými konkrementy či sludge");
@@ -2259,8 +2235,8 @@ var AbdomenStomachOther = document.getElementById("AbdomenStomachOther").value.t
 
 var stomachDescriptions = [];
 
-if (ChbStomachGastrectomyTot) stomachDescriptions.push("chybí po totální gastrektomii, anastomóza klidná");
-if (ChbStomachGastrectomyPart) stomachDescriptions.push("po parciální gastrektomii, anastomóza klidná");
+if (ChbStomachGastrectomyTot) stomachDescriptions.push("chybí po totální gastrectomii, anastomóza klidná");
+if (ChbStomachGastrectomyPart) stomachDescriptions.push("po parciální gastrectomii, anastomóza klidná");
 if (ChbStomachActivity) stomachDescriptions.push("s nespecificky difuzně vysokou akumulací RF");
 if (ChbStomachPEG) stomachDescriptions.push("s PEG");
 if (AbdomenStomachOther) stomachDescriptions.push(AbdomenStomachOther);
@@ -2288,7 +2264,7 @@ if (ChbPancreasActivity) pancreasDescriptions.push("s dilatovaným Wirsungem");
 if (ChbPancreasCyst) pancreasDescriptions.push("s fotopenickou (pseudo)cystou");
 if (ChbPancreasCystS) pancreasDescriptions.push("s fotopenickými (pseudo)cystami");
 if (ChbPancreasEctomy) pancreasDescriptions.push("chybí po totální pankreatektomii");
-if (ChbSpleenHemiEctomyR) pancreasDescriptions.push("redukován po hemipankreatoduodenektomii");
+if (ChbSpleenHemiEctomyR) pancreasDescriptions.push("redukován po hemiduodenopankreatektomii");
 if (ChbSpleenHemiEctomyL) pancreasDescriptions.push("redukován po hemipankreatektomii těla a kaudy");
 if (AbdomenPancreasOther) pancreasDescriptions.push(AbdomenPancreasOther);
 
@@ -2524,7 +2500,6 @@ var ChbUterusEctomy = document.getElementById("ChbUterusEctomy").checked;
 var ChbUterusMyoma = document.getElementById("ChbUterusMyoma").checked;
 var ChbUterusMyomas = document.getElementById("ChbUterusMyomas").checked;
 var ChbUterusActivity = document.getElementById("ChbUterusActivity").checked;
-var ChbUterusIUD = document.getElementById("ChbUterusIUD").checked;
 var AbdomenUterusOther = document.getElementById("AbdomenUterusOther").value.trim();
 
 var descriptionsUterus = [];
@@ -2533,7 +2508,6 @@ if (ChbUterusEctomy) {descriptionsUterus.push("chybí po hysterektomii");}
 if (ChbUterusMyoma) {descriptionsUterus.push("s ložiskem bez zvýšené akumulace RF obrazu myomu");}
 if (ChbUterusMyomas) {descriptionsUterus.push("s vícečetnými ložisky bez zvýšené akumulace RF obrazu myomů");}
 if (ChbUterusActivity) {descriptionsUterus.push("se zvýšenou aktivitou sliznice pravděp. v rámci cyklu");}
-if (ChbUterusIUD) {descriptionsUterus.push("s nitroděložním tělískem v dutině");}
 if (AbdomenUterusOther) descriptionsUterus.push(AbdomenUterusOther);
 
 if (descriptionsUterus.length) {AbdomenUterusText = "Děloha " + descriptionsUterus.join(", ") + ". ";}
