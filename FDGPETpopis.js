@@ -2264,7 +2264,7 @@ if (ChbPancreasActivity) pancreasDescriptions.push("s dilatovaným Wirsungem");
 if (ChbPancreasCyst) pancreasDescriptions.push("s fotopenickou (pseudo)cystou");
 if (ChbPancreasCystS) pancreasDescriptions.push("s fotopenickými (pseudo)cystami");
 if (ChbPancreasEctomy) pancreasDescriptions.push("chybí po totální pankreatektomii");
-if (ChbSpleenHemiEctomyR) pancreasDescriptions.push("redukován po hemiduodenopankreatektomii");
+if (ChbSpleenHemiEctomyR) pancreasDescriptions.push("redukován po hemipankreatoduodenektomii");
 if (ChbSpleenHemiEctomyL) pancreasDescriptions.push("redukován po hemipankreatektomii těla a kaudy");
 if (AbdomenPancreasOther) pancreasDescriptions.push(AbdomenPancreasOther);
 
