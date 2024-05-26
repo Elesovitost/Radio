@@ -1156,6 +1156,8 @@ var ThoraxDevicesRes = "";
   var ThoraxDevicesPortL = document.getElementById("ChbDevicesPortL").checked;
   var ThoraxDevicesPICCR = document.getElementById("ChbDevicesPICCR").checked;
   var ThoraxDevicesPICCL = document.getElementById("ChbDevicesPICCL").checked;
+  var ThoraxDevicesCVKR = document.getElementById("ChbDevicesCVKR").checked;
+  var ThoraxDevicesCVKL = document.getElementById("ChbDevicesCVKL").checked;
   var ThoraxDevicesCardiacStimR = document.getElementById("ChbDevicesCardiacStimR").checked;
   var ThoraxDevicesCardiacStimL = document.getElementById("ChbDevicesCardiacStimL").checked;
   var ThoraxDevicesMalposition = document.getElementById("ChbDevicesMalposition").checked;
@@ -1167,6 +1169,9 @@ var ThoraxDevicesRes = "";
 
     if (ThoraxDevicesPICCR) ThoraxDevicesText += "PICC zprava. ";
     if (ThoraxDevicesPICCL) ThoraxDevicesText += "PICC zleva. ";
+	
+    if (ThoraxDevicesCVKR) ThoraxDevicesText += "CVK zprava. ";
+    if (ThoraxDevicesCVKL) ThoraxDevicesText += "CVK zleva. ";
 	
 	if (ThoraxDevicesCardiacStimR) ThoraxDevicesText += "KS zprava. ";
     if (ThoraxDevicesCardiacStimL) ThoraxDevicesText += "KS zleva. ";
@@ -2133,10 +2138,8 @@ if (AbdomenLymphNode1CombinedResult.includes("je nově") || AbdomenLymphNode1Com
 var AbdomenLiverText = "";
 
 var ChbLiverSteatosis = document.getElementById("ChbLiverSteatosis").checked;
-var ChbLiverCyst = document.getElementById("ChbLiverCyst").checked;
-var ChbLiverCysts = document.getElementById("ChbLiverCysts").checked;
-var ChbLiverHemangioma = document.getElementById("ChbLiverHemangioma").checked;
-var ChbLiverHemangiomas = document.getElementById("ChbLiverHemangiomas").checked;
+var buttonLiverCystText = document.getElementById("ChbLiverCyst").innerText;
+var buttonLiverHemangiomaText = document.getElementById("ChbLiverHemangioma").innerText;
 var ChbLiverResectionR = document.getElementById("ChbLiverResectionR").checked;
 var ChbLiverResectionL = document.getElementById("ChbLiverResectionL").checked;
 var ChbLiverRFAR = document.getElementById("ChbLiverRFAR").checked;
@@ -2144,13 +2147,26 @@ var ChbLiverRFAL = document.getElementById("ChbLiverRFAL").checked;
 var ChbLiverBileductDilation = document.getElementById("ChbLiverBileductDilation").checked;
 var AbdomenLiverOther = document.getElementById("AbdomenLiverOther").value.trim();
 
+updateButtonTexts({
+            'ChbLiverCyst': ['0', '+', '++'],
+			'ChbLiverHemangioma': ['0', '+', '++']
+        });
+
 var descriptions = [];
 
 if (ChbLiverSteatosis) descriptions.push("steatotická");
-if (ChbLiverCyst) descriptions.push("s fotopenickou cystou");
-if (ChbLiverCysts) descriptions.push("s vícečetnými fotopenickými cystami");
-if (ChbLiverHemangioma) descriptions.push("s ložiskem bez zvýšené metabolické aktivity charakteru hemangiomu");
-if (ChbLiverHemangiomas) descriptions.push("s ložisky bez zvýšené metabolické aktivity charakteru hemangiomů");
+
+if (buttonLiverCystText === "+") {
+    descriptions.push("s fotopenickou cystou");
+} else if (buttonLiverCystText === "++") {
+    descriptions.push("s fotopenickými cystami");
+}
+
+if (buttonLiverHemangiomaText === "+") {
+    descriptions.push("s ložiskem bez zvýšené akumulace RF charakteru hemangiomu");
+} else if (buttonLiverHemangiomaText === "++") {
+    descriptions.push("s vícečetnými ložisky bez zvýšené akumulace RF charakteru hemangiomů");
+}
 
 if (ChbLiverResectionR && ChbLiverResectionL) {
     descriptions.push("po resekci v obou lalocích");
@@ -2178,17 +2194,23 @@ if (descriptions.length) {
 var AbodomenGallbladderText = "";
 
 var ChbGallbladderEctomy = document.getElementById("ChbGallbladderEctomy").checked;
-var ChbGallbladderStone = document.getElementById("ChbGallbladderStone").checked;
-var ChbGallbladderStones = document.getElementById("ChbGallbladderStones").checked;
+var buttonGallbladderStoneText = document.getElementById("ChbGallbladderStone").innerText;
 var ChbGallbladderSludge = document.getElementById("ChbGallbladderSludge").checked;
 var ChbGallbladderItis = document.getElementById("ChbGallbladderItis").checked;
 var GallbladderOther = document.getElementById("GallbladderOther").value.trim();
 
+updateButtonTexts({'ChbGallbladderStone': ['0', '+', '++']});
+
 var descriptionsGallbladder = [];
 
 if (ChbGallbladderEctomy) descriptionsGallbladder.push("chybí po CHCE");
-if (ChbGallbladderStone) descriptionsGallbladder.push("s konkrementem");
-if (ChbGallbladderStones) descriptionsGallbladder.push("s vícečetnými konkrementy");
+
+if (buttonGallbladderStoneText === "+") {
+    descriptionsGallbladder.push("s konkrementem");
+} else if (buttonGallbladderStoneText === "++") {
+    descriptionsGallbladder.push("s vícečetnými konkrementy");
+}
+
 if (ChbGallbladderSludge) descriptionsGallbladder.push("s drobnými konkrementy či sludge");
 if (ChbGallbladderItis) descriptionsGallbladder.push("s rozšířenou stěnou se zvýšenou akumulací RF");
 if (GallbladderOther) descriptionsGallbladder.push(GallbladderOther);

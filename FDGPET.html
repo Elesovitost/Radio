@@ -11,7 +11,6 @@ table {width: auto; white-space: nowrap;}
 
 .tumor-button {width: 25px; height: 25px; background-image: url('Atumor.png'); background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 0; margin: 0;}
 .lymphnode-button {width: 25px; height: 25px; background-image: url('Alymphnode.png'); background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 0; margin: 0;}
-.lymphnode-button {width: 25px; height: 25px; background-image: url('Alymphnode.png'); background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 0; margin: 0;}
 .others-button {width: 25px; height: 25px; background-image: url('Aothers.png'); background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 2; margin: 2;}
 
 #krknodImage, #mednodImage, #chestsegImage {
@@ -25,6 +24,7 @@ table {width: auto; white-space: nowrap;}
 }
 
 #obecne {font-size: 12px;}
+
 </style>
 </head>
 
@@ -266,9 +266,9 @@ table {width: auto; white-space: nowrap;}
 	
 	<div class="" id="hrudnik">
 	
-		<button id="ThoraxNewLesions" class="tumor-button"  style="position: absolute; top: 250px; left: 160px;">+</button>
-		<button id="ThoraxNewLymphNode1" class="lymphnode-button" style="position: absolute; top: 250px; left: 190px;">+</button> 
-		<button id="ThoraxNewOther1" class="others-button" style="position: absolute; top: 250px; left: 250px;">...</button>
+		<button id="ThoraxNewLesions" class="tumor-button"  style="position: absolute; top: 250px; left: 160px;"></button>
+		<button id="ThoraxNewLymphNode1" class="lymphnode-button" style="position: absolute; top: 250px; left: 190px;"></button> 
+		<button id="ThoraxNewOther1" class="others-button" style="position: absolute; top: 250px; left: 250px;"></button>
 	
 		<div>
 		<table id="ThoraxLesion1" class="LesionX hidden" >
@@ -519,9 +519,9 @@ table {width: auto; white-space: nowrap;}
 	
 	<div class="" id="bricho">
 	
-		<button id="AbdomenNewLesions" class="tumor-button"  style="position: absolute; top: 400px; left: 160px;">+</button>
-		<button id="AbdomenNewLymphNode1" class="lymphnode-button" style="position: absolute; top: 380px; left: 190px;">+</button> 
-		<button id="AbdomenNewOther1" class="others-button" style="position: absolute; top: 420px; left: 250px;">...</button>
+		<button id="AbdomenNewLesions" class="tumor-button"  style="position: absolute; top: 400px; left: 160px;"></button>
+		<button id="AbdomenNewLymphNode1" class="lymphnode-button" style="position: absolute; top: 380px; left: 190px;"></button> 
+		<button id="AbdomenNewOther1" class="others-button" style="position: absolute; top: 420px; left: 250px;"></button>
 	
 	<!-- ABDOMEN LESION1 -->
 		
@@ -963,8 +963,8 @@ table {width: auto; white-space: nowrap;}
 		
 	<div class="" id="skelet">
 	
-		<button id="SkeletonNewLesions" class="tumor-button"  style="position: absolute; top:550px; left: 135px;">+</button>
-		<button id="SkeletonNewOther1" class="others-button" style="position: absolute; top: 550px; left: 250px;">...</button>
+		<button id="SkeletonNewLesions" class="tumor-button"  style="position: absolute; top:550px; left: 135px;"></button>
+		<button id="SkeletonNewOther1" class="others-button" style="position: absolute; top: 550px; left: 250px;"></button>
 	
 	
 		<!-- SKELETON LESIONS -->	
@@ -1272,6 +1272,10 @@ table {width: auto; white-space: nowrap;}
 					<tr>
 						<td>PICC</td>
 						<td class="right"><label class="CHB"><input type="checkbox" id="ChbDevicesPICCR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbDevicesPICCL" onChange="updateTexts()"><span>L</span></label></td>
+					</tr>
+					<tr>
+						<td>CVK</td>
+						<td class="right"><label class="CHB"><input type="checkbox" id="ChbDevicesCVKR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbDevicesCVKL" onChange="updateTexts()"><span>L</span></label></td>
 					</tr>
 					<tr>
 						<td>Kardiostimulátor</td>
@@ -1592,11 +1596,11 @@ table {width: auto; white-space: nowrap;}
 					</tr>
 					<tr>
 						<td>Cysta</td>
-						<td class="right"><label class="CHB"><input type="checkbox" id="ChbLiverCyst" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbLiverCysts" onChange="updateTexts()"><span>++</span></label></td>
+						<td class="right"><button id="ChbLiverCyst" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td>Hemangiom</td>
-						<td class="right"><label class="CHB"><input type="checkbox" id="ChbLiverHemangioma" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbLiverHemangiomas" onChange="updateTexts()"><span>++</span></label></td>
+						<td class="right"><button id="ChbLiverHemangioma" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td>RFA</td>
@@ -1629,7 +1633,7 @@ table {width: auto; white-space: nowrap;}
 				<table>
 					<tr>
 						<td>Litiáza</td>
-						<td class="right"><label class="CHB"><input type="checkbox" id="ChbGallbladderStone" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbGallbladderStones" onChange="updateTexts()"><span>++</span></label></td>
+						<td class="right"><button id="ChbGallbladderStone" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td>Sludge</td>
