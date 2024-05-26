@@ -1269,14 +1269,14 @@ var ThoraxParenchymaRTR = document.getElementById("ChbThoraxParenchymaRTR").chec
 var ThoraxParenchymaRTL = document.getElementById("ChbThoraxParenchymaRTL").checked;
 var ThoraxParenchymaHypoventR = document.getElementById("ChbThoraxParenchymaHypoventR").checked;
 var ThoraxParenchymaHypoventL = document.getElementById("ChbThoraxParenchymaHypoventL").checked;
-var ThoraxParenchymaFibrSub = document.getElementById("ChbThoraxParenchymaFibrSub").checked;
-var ThoraxParenchymaFibr = document.getElementById("ChbThoraxParenchymaFibr").checked;
-var ThoraxParenchymaFibrAdv = document.getElementById("ChbThoraxParenchymaFibrAdv").checked;
-var ThoraxParenchymaEmphysMild = document.getElementById("ChbThoraxParenchymaEmphysMild").checked;
-var ThoraxParenchymaEmphysParasept = document.getElementById("ChbThoraxParenchymaEmphysParasept").checked;
-var ThoraxParenchymaEmphysPanlob = document.getElementById("ChbThoraxParenchymaEmphysPanlob").checked;
+var buttonThoraxParenchymaFibrText = document.getElementById("ChbThoraxParenchymaFibr").innerText;
+var buttonThoraxParenchymaEmphysText = document.getElementById("ChbThoraxParenchymaEmphys").innerText;
 var ThoraxParenchymaOther = document.getElementById("ThoraxParenchymaOther").value.trim();
 
+updateButtonTexts({
+            'ChbThoraxParenchymaFibr': ['0', 'I', 'II','III'],
+			'ChbThoraxParenchymaEmphys': ['0', 'I', 'II','III']
+        });
 
 if (ThoraxPulmonectomyR) ThoraxParenchymaText += "st.p. pravostranné pneumonektomii, ";
 if (ThoraxPulmonectomyL) ThoraxParenchymaText += "st.p. levostranné pneumonektomii, ";
@@ -1396,13 +1396,21 @@ if (ThoraxParenchymaHypoventR) ThoraxParenchymaText += "hypoventilační změny 
 if (ThoraxParenchymaHypoventL) ThoraxParenchymaText += "hypoventilační změny vlevo, ";
   }
   
-if (ThoraxParenchymaFibrSub) ThoraxParenchymaText += "fibrózní změny subpleurálně bilat, ";
-if (ThoraxParenchymaFibr) ThoraxParenchymaText += "fibrózní změny bilat, ";
-if (ThoraxParenchymaFibrAdv) ThoraxParenchymaText += "pokročilá fibróza s honeycombingem bilat, ";
+if (buttonThoraxParenchymaFibrText === "I") {
+    ThoraxParenchymaText +=("mírné fibrózní změny subpleurálně, ");
+} else if (buttonThoraxParenchymaFibrText === "II") {
+    ThoraxParenchymaText +=("výraznější fibrózní změny, ");
+} else if (buttonThoraxParenchymaFibrText === "III") {
+    ThoraxParenchymaText +=("pokročilá fibróza s honeycombingem, ");
+}
 
-if (ThoraxParenchymaEmphysMild) ThoraxParenchymaText += "mírný emfyzém bilat, ";
-if (ThoraxParenchymaEmphysParasept) ThoraxParenchymaText += "paraseptální emfyzém bilat, ";
-if (ThoraxParenchymaEmphysPanlob) ThoraxParenchymaText += "panlobulární pokročilý emfyzém bilat, ";
+if (buttonThoraxParenchymaEmphysText === "I") {
+    ThoraxParenchymaText +=("mírný emfyzém, ");
+} else if (buttonThoraxParenchymaEmphysText === "II") {
+    ThoraxParenchymaText +=("paraseptální emfyzém, ");
+} else if (buttonThoraxParenchymaEmphysText === "III") {
+    ThoraxParenchymaText +=("panlobulární pokročilý emfyzém, ");
+}
 
 if (ThoraxParenchymaOther) {
     ThoraxParenchymaText += ThoraxParenchymaOther + ", ";
@@ -2225,19 +2233,27 @@ var AbdomenSpleenText = "";
 var ChbSpleenEnlarged = document.getElementById("ChbSpleenEnlarged").checked;
 var ChbSpleenActivity = document.getElementById("ChbSpleenActivity").checked;
 var ChbSpleenEctomy = document.getElementById("ChbSpleenEctomy").checked;
-var ChbSpleenCyst = document.getElementById("ChbSpleenCyst").checked;
-var ChbSpleenCysts = document.getElementById("ChbSpleenCysts").checked;
+var buttonSpleenCystText = document.getElementById("ChbSpleenCyst").innerText;
 var ChbSpleenInfarct = document.getElementById("ChbSpleenInfarct").checked;
 var ChbSpleenRegenerate = document.getElementById("ChbSpleenRegenerate").checked;
 var AbdomenSpleenOther = document.getElementById("AbdomenSpleenOther").value.trim();
+
+updateButtonTexts({
+            'ChbSpleenCyst': ['0', '+', '++']
+        });
 
 var spleenDescriptions = [];
 
 if (ChbSpleenEnlarged) spleenDescriptions.push("zvětšena");
 if (ChbSpleenActivity) spleenDescriptions.push("s difuzně vysokou akumulací RF");
 if (ChbSpleenEctomy) spleenDescriptions.push("chybí po splenektomii");
-if (ChbSpleenCyst) spleenDescriptions.push("s fotopenickou cystou");
-if (ChbSpleenCysts) spleenDescriptions.push("s fotopenickými cystami");
+
+if (buttonSpleenCystText === "+") {
+    spleenDescriptions.push("s fotopenickou cystou");
+} else if (buttonSpleenCystText === "++") {
+    spleenDescriptions.push("s fotopenickými cystami");
+}
+
 if (ChbSpleenInfarct) spleenDescriptions.push("s klínovitým defektem po infarktu");
 if (ChbSpleenRegenerate) spleenDescriptions.push("přítomny regeneráty");
 if (AbdomenSpleenOther) spleenDescriptions.push(AbdomenSpleenOther);
@@ -2272,19 +2288,27 @@ var AbdomenPancreasText = "";
 
 var ChbSPancreasEnlarged = document.getElementById("ChbSPancreasEnlarged").checked;
 var ChbPancreasActivity = document.getElementById("ChbPancreasActivity").checked;
-var ChbPancreasCyst = document.getElementById("ChbPancreasCyst").checked;
-var ChbPancreasCystS = document.getElementById("ChbPancreasCystS").checked;
+var buttonPancreasCystText = document.getElementById("ChbPancreasCyst").innerText;
 var ChbPancreasEctomy = document.getElementById("ChbPancreasEctomy").checked;
 var ChbSpleenHemiEctomyR = document.getElementById("ChbSpleenHemiEctomyR").checked;
 var ChbSpleenHemiEctomyL = document.getElementById("ChbSpleenHemiEctomyL").checked;
 var AbdomenPancreasOther = document.getElementById("AbdomenPancreasOther").value.trim();
 
+updateButtonTexts({
+            'ChbPancreasCyst': ['0', '+', '++']
+        });
+
 var pancreasDescriptions = [];
 
 if (ChbSPancreasEnlarged) pancreasDescriptions.push("atrofický");
 if (ChbPancreasActivity) pancreasDescriptions.push("s dilatovaným Wirsungem");
-if (ChbPancreasCyst) pancreasDescriptions.push("s fotopenickou (pseudo)cystou");
-if (ChbPancreasCystS) pancreasDescriptions.push("s fotopenickými (pseudo)cystami");
+
+if (buttonPancreasCystText === "+") {
+    descriptions.push("s fotopenickou (pseudo)cystou");
+} else if (buttonPancreasCystText === "++") {
+    descriptions.push("s fotopenickými (pseudo)cystami");
+}
+
 if (ChbPancreasEctomy) pancreasDescriptions.push("chybí po totální pankreatektomii");
 if (ChbSpleenHemiEctomyR) pancreasDescriptions.push("redukován po hemipankreatoduodenektomii");
 if (ChbSpleenHemiEctomyL) pancreasDescriptions.push("redukován po hemipankreatektomii těla a kaudy");
@@ -2519,16 +2543,24 @@ if (descriptionsBladder.length) {AbdomenBladderText = "Močový měchýř " + de
 var AbdomenUterusText = "";
 
 var ChbUterusEctomy = document.getElementById("ChbUterusEctomy").checked;
-var ChbUterusMyoma = document.getElementById("ChbUterusMyoma").checked;
-var ChbUterusMyomas = document.getElementById("ChbUterusMyomas").checked;
+var buttonUterusMyomaText = document.getElementById("ChbUterusMyoma").innerText;
 var ChbUterusActivity = document.getElementById("ChbUterusActivity").checked;
 var AbdomenUterusOther = document.getElementById("AbdomenUterusOther").value.trim();
+
+updateButtonTexts({
+            'ChbUterusMyoma': ['0', '+', '++']
+        });
 
 var descriptionsUterus = [];
 
 if (ChbUterusEctomy) {descriptionsUterus.push("chybí po hysterektomii");}
-if (ChbUterusMyoma) {descriptionsUterus.push("s ložiskem bez zvýšené akumulace RF obrazu myomu");}
-if (ChbUterusMyomas) {descriptionsUterus.push("s vícečetnými ložisky bez zvýšené akumulace RF obrazu myomů");}
+
+if (buttonUterusMyomaText === "+") {
+    descriptionsUterus.push("s ložiskem bez zvýšené akumulace RF obrazu myomu");
+} else if (buttonUterusMyomaText === "++") {
+    descriptionsUterus.push("s vícečetnými ložisky bez zvýšené akumulace RF obrazu myomů");
+}
+
 if (ChbUterusActivity) {descriptionsUterus.push("se zvýšenou aktivitou sliznice pravděp. v rámci cyklu");}
 if (AbdomenUterusOther) descriptionsUterus.push(AbdomenUterusOther);
 
@@ -2622,32 +2654,65 @@ if (descriptionsTestes.length) {AbdomenTestesText = "Testes: " + descriptionsTes
 // Abd. wall
 var AbdomenWallText = "";
 
-var ChbAbdomenWallPlus = document.getElementById("ChbAbdomenWallPlus").checked;
-var ChbAbdomenWallMinus = document.getElementById("ChbAbdomenWallMinus").checked;
-var ChbAbdomenWallHerniaS = document.getElementById("ChbAbdomenWallHerniaS").checked;
-var ChbAbdomenWallHerniaL = document.getElementById("ChbAbdomenWallHerniaL").checked;
-var ChbAbdomenWallHerniaSupraS = document.getElementById("ChbAbdomenWallHerniaSupraS").checked;
-var ChbAbdomenWallHerniaSupraL = document.getElementById("ChbAbdomenWallHerniaSupraL").checked;
-var ChbAbdomenWallHerniaUmbS = document.getElementById("ChbAbdomenWallHerniaUmbS").checked;
-var ChbAbdomenWallHerniaUmbL = document.getElementById("ChbAbdomenWallHerniaUmbL").checked;
-var ChbAbdomenWallHerniaIngR = document.getElementById("ChbAbdomenWallHerniaIngR").checked;
-var ChbAbdomenWallHerniaIngL = document.getElementById("ChbAbdomenWallHerniaIngL").checked;
+var buttonAbdomenWallPlusText = document.getElementById("ChbAbdomenWallPlus").innerText;
+var buttonAbdomenWallHerniaSText = document.getElementById("ChbAbdomenWallHerniaS").innerText;
+var buttonAbdomenWallHerniaSupraSText = document.getElementById("ChbAbdomenWallHerniaSupraS").innerText;
+var buttonAbdomenWallHerniaUmbSText = document.getElementById("ChbAbdomenWallHerniaUmbS").innerText;
+var buttonAbdomenWallHerniaIngRSText = document.getElementById("ChbAbdomenWallHerniaIngR").innerText;
+var buttonAbdomenWallHerniaIngLSText = document.getElementById("ChbAbdomenWallHerniaIngL").innerText;
 var AbdomenWallOther = document.getElementById("AbdomenWallOther").value.trim();
+
+updateButtonTexts({
+            'ChbAbdomenWallPlus': ['0', '-', '+'],
+			'ChbAbdomenWallHerniaS': ['0', '+', '++'],
+			'ChbAbdomenWallHerniaSupraS': ['0', '+', '++'],
+			'ChbAbdomenWallHerniaUmbS': ['0', '+', '++'],
+			'ChbAbdomenWallHerniaIngR': ['R', '+', '++'],
+			'ChbAbdomenWallHerniaIngL': ['L', '+', '++']
+        });
 
 var descriptionsWall = [];
 
-if (ChbAbdomenWallPlus) {descriptionsWall.push("s přetrvávající zvýšenou akumulací RF v jizvě");}
-if (ChbAbdomenWallMinus) {descriptionsWall.push("s jizvou bez zvýšené akumulace RF");}
-if (ChbAbdomenWallHerniaS) {descriptionsWall.push("s drobnou herniací v jizvě");}
-if (ChbAbdomenWallHerniaL) {descriptionsWall.push("s herniací v jizvě s obsahem střevních kliček");}
-if (ChbAbdomenWallHerniaSupraS) {descriptionsWall.push("s drobná herniací supraumbilikálně");}
-if (ChbAbdomenWallHerniaSupraL) {descriptionsWall.push("s herniací supraumbilikálně s obsahem střevních kliček");}
-if (ChbAbdomenWallHerniaUmbS) {descriptionsWall.push("s drobnou umbilikální hernií");}
-if (ChbAbdomenWallHerniaUmbL) {descriptionsWall.push("s umbilikální hernií s obsahem střevní kličky");}
-if (ChbAbdomenWallHerniaIngR && ChbAbdomenWallHerniaIngL) {descriptionsWall.push("s inguinální herniací bilat.");}
-else {
-    if (ChbAbdomenWallHerniaIngR) {descriptionsWall.push("s inguinální herniací vpravo");}
-    if (ChbAbdomenWallHerniaIngL) {descriptionsWall.push("s inguinální herniací vlevo");}
+if (buttonAbdomenWallPlusText === "+") {
+    descriptionsWall.push("s přetrvávající zvýšenou akumulací RF v jizvě");
+} else if (buttonAbdomenWallPlusText === "-") {
+    descriptionsWall.push("s jizvou bez zvýšené akumulace RF");
+}
+
+if (buttonAbdomenWallHerniaSText === "+") {
+    descriptionsWall.push("s drobnou herniací v jizvě");
+} else if (buttonAbdomenWallHerniaSText === "++") {
+    descriptionsWall.push("s herniací v jizvě s obsahem střevních kliček");
+}
+
+if (buttonAbdomenWallHerniaSupraSText === "+") {
+    descriptionsWall.push("s drobnou herniací supraumbilikálně");
+} else if (buttonAbdomenWallHerniaSupraSText === "++") {
+    descriptionsWall.push("s herniací supraumbilikálně s obsahem střevních kliček");
+}
+
+if (buttonAbdomenWallHerniaUmbSText === "+") {
+    descriptionsWall.push("s drobnou umbilikální hernií");
+} else if (buttonAbdomenWallHerniaUmbSText === "++") {
+    descriptionsWall.push("s umbilikální hernií s obsahem střevní kličky");
+}
+
+if (buttonAbdomenWallHerniaIngRSText === "+" && buttonAbdomenWallHerniaIngLSText === "+") {
+    descriptionsWall.push("s bilaterální inguinální herniací");
+} else if (buttonAbdomenWallHerniaIngRSText === "++" && buttonAbdomenWallHerniaIngLSText === "++") {
+    descriptionsWall.push("s bilaterální skrotální herniací");
+} else {
+    if (buttonAbdomenWallHerniaIngRSText === "+") {
+        descriptionsWall.push("s inguinální herniací vpravo");
+    } else if (buttonAbdomenWallHerniaIngRSText === "++") {
+        descriptionsWall.push("se skrotální herniací vpravo");
+    }
+
+    if (buttonAbdomenWallHerniaIngLSText === "+") {
+        descriptionsWall.push("s inguinální herniací vlevo");
+    } else if (buttonAbdomenWallHerniaIngLSText === "++") {
+        descriptionsWall.push("se skrotální herniací vlevo");
+    }
 }
 
 if (AbdomenWallOther) descriptionsWall.push(AbdomenWallOther);
@@ -2994,21 +3059,32 @@ if (ChbSkeletSurgTEPR && ChbSkeletSurgTEPL) {SkeletonSurgeryText += "TEP obou ky
 if (SkeletSurgOther) SkeletonSurgeryText += SkeletSurgOther + ". ";
 
 // activity
+
 var SkeletonActivityText = ""; var SkeletonActivityRes = "";
 
 var ChbSkeletonActivityPlus = document.getElementById("ChbSkeletonActivityPlus").checked;
 var ChbSkeletonActivityMinus = document.getElementById("ChbSkeletonActivityMinus").checked;
-var ChbSkeletonEnostosis = document.getElementById("ChbSkeletonEnostosis").checked;
-var ChbSkeletonEnostosisM = document.getElementById("ChbSkeletonEnostosisM").checked;
+var buttonSkeletonEnostosisText = document.getElementById("ChbSkeletonEnostosis").innerText;
 var SkeletonActivityOther = document.getElementById("SkeletonActivityOther").value.trim();
+
+updateButtonTexts({
+            'ChbSkeletonEnostosis': ['0', '+', '++']
+        });
 
 if (ChbSkeletonActivityPlus) SkeletonActivityText += "Difuzně zvýšená metabolická aktivita v kostní dřeni. ";
 if (ChbSkeletonActivityMinus) SkeletonActivityText += "Lokální absence akumulace RF v kostní dřeni ozářené oblasti. ";  
-if (ChbSkeletonEnostosis) SkeletonActivityText += "Drobná enostóza bez zvýšené akumulace RF. ";  
-if (ChbSkeletonEnostosisM) SkeletonActivityText += "Drobné enostózy bez zvýšené akumulace RF. ";
+
+if (buttonSkeletonEnostosisText === "+") {
+    SkeletonActivityText +=("Drobná enostóza bez zvýšené akumulace RF.");
+} else if (buttonSkeletonEnostosisText === "++") {
+    SkeletonActivityText +=("Drobné enostózy bez zvýšené akumulace RF.");
+}
+
 if (SkeletonActivityOther) SkeletonActivityText += SkeletonActivityOther + ". ";
 
+
 // trauma
+
 var SkeletonTraumaText = ""; var SkeletonTraumaRecentText = ""; var SkeletonTraumaOlderText = ""; var SkeletonTraumaRecentRes = "";
 
 var ChbSkeletTraumaRecent = document.getElementById("ChbSkeletTraumaRecent").checked;

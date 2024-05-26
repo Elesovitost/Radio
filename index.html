@@ -100,21 +100,14 @@
 </div>
 
 <div id="popupMessage" style="display:none; position:fixed; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold;"></div>
+
 <div id="texty1" class="standardwidthFinalText" style="display: none;" >
-
-<div class="TextsDIV mydiv0">
-<button id="copyPOP" class="buttonTEXT">POPIS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
-</div>
 <textarea id="FINALPOPText" class="FINALXXL" readonly></textarea>
-
-<div class="TextsDIV mydiv0">
-<button id="copyRES" class="buttonTEXT">ZÁVĚR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
-</div>
 <textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
 </div>
 
 <div id="texty2" class="standardwidthFinalText" style="display: ;"> 
-<button id="copyCOMP" class="buttonTEXT">KOMPLET&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button>
+<button id="copyCOMP" class="buttonTEXT">KOMPLET&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button> <button id="copyPOP" class="buttonTEXT" style="font-Size: 11px">jen popis<img src="icon_copy.png" alt="Icon" class="button-icon"></button> <button id="copyRES" class="buttonTEXT" style="font-Size: 11px">jen závěr<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
 <textarea id="FINALCOMPLETEText" class="FINALXXL" ></textarea>
 </div>
 
@@ -335,7 +328,7 @@ function updateFinalTextAreas() {
 	
     // Prepend NAMEText to corresponding POPText if more than one NAMEText
     if (nameTexts.length > 1) {
-        finalPOPText = nameTexts.map((name, index) => name + ":\n" + (popTexts[index] || "")).join("\n+\n");
+        finalPOPText = nameTexts.map((name, index) => name + ":\n" + (popTexts[index] || "")).join("\n \n");
     } else {
         finalPOPText = popTexts.join("\n\n"); // Use as is if only one POPText
     }
@@ -457,6 +450,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     setupCopyButton('copyCOMP', 'FINALCOMPLETEText');
+	setupCopyButton('copyPOP', 'FINALPOPText');
+	setupCopyButton('copyRES', 'FINALRESText');
 });
 
 

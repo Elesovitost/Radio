@@ -1426,11 +1426,11 @@ table {width: auto; white-space: nowrap;}
 					</tr>
 					<tr>
 						<td>Fibróza</td>
-						<td class="right"><label class="CHB"><input type="checkbox" id="ChbThoraxParenchymaFibrSub" onChange="updateTexts()"><span>I</span></label><label class="CHB"><input type="checkbox" id="ChbThoraxParenchymaFibr" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="ChbThoraxParenchymaFibrAdv" onChange="updateTexts()"><span>III</span></label></td>
+						<td class="right"><button id="ChbThoraxParenchymaFibr" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td>Emfyzém</td>
-						<td class="right"><label class="CHB"><input type="checkbox" id="ChbThoraxParenchymaEmphysMild" onChange="updateTexts()"><span>I</span></label><label class="CHB"><input type="checkbox" id="ChbThoraxParenchymaEmphysParasept" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="ChbThoraxParenchymaEmphysPanlob" onChange="updateTexts()"><span>III</span></label></td>
+						<td class="right"><button id="ChbThoraxParenchymaEmphys" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 					<td colspan="2" ><textarea id="ThoraxParenchymaOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
@@ -1674,7 +1674,7 @@ table {width: auto; white-space: nowrap;}
 					</tr>
 					<tr>
 						<td>Cysta</td>
-						<td class="right"><label class="CHB"><input type="checkbox" id="ChbSpleenCyst" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbSpleenCysts" onChange="updateTexts()"><span>++</span></label></td>
+						<td class="right"><button id="ChbSpleenCyst" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td>Infarkt</td>
@@ -1750,7 +1750,7 @@ table {width: auto; white-space: nowrap;}
 					</tr>
 					<tr>
 						<td>Cysta</td>
-						<td class="right"><label class="CHB"><input type="checkbox" id="ChbPancreasCyst" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbPancreasCystS" onChange="updateTexts()"><span>++</span></label></td>
+						<td class="right"><button id="ChbPancreasCyst" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td>Hemi-ektomie</td>
@@ -1917,34 +1917,24 @@ table {width: auto; white-space: nowrap;}
 				<td>
 				<table>
 					<tr>
-						<td>Jizva aktivita+</td>
-						<td class="right">
-							<label class="CHB"><input type="checkbox" id="ChbAbdomenWallPlus" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbAbdomenWallMinus" onChange="updateTexts()"><span>-</span></label>
-						</td>
+						<td>Jizva aktivita</td>
+						<td class="right"><button id="ChbAbdomenWallPlus" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td>Kýla v jizvě</td>
-						<td class="right">
-							<label class="CHB"><input type="checkbox" id="ChbAbdomenWallHerniaS" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbAbdomenWallHerniaL" onChange="updateTexts()"><span>++</span></label>
-						</td>
+						<td class="right"><button id="ChbAbdomenWallHerniaS" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td>Kýla supraumbil.</td>
-						<td class="right">
-							<label class="CHB"><input type="checkbox" id="ChbAbdomenWallHerniaSupraS" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbAbdomenWallHerniaSupraL" onChange="updateTexts()"><span>++</span></label>
-						</td>
+						<td class="right"><button id="ChbAbdomenWallHerniaSupraS" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td>Kýla umbil.</td>
-						<td class="right">
-							<label class="CHB"><input type="checkbox" id="ChbAbdomenWallHerniaUmbS" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbAbdomenWallHerniaUmbL" onChange="updateTexts()"><span>++</span></label>
-						</td>
+						<td class="right"><button id="ChbAbdomenWallHerniaUmbS" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td>Kýla inguinální</td>
-						<td class="right">
-							<label class="CHB"><input type="checkbox" id="ChbAbdomenWallHerniaIngR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbAbdomenWallHerniaIngL" onChange="updateTexts()"><span>L</span></label>
-						</td>
+						<td class="right"><button id="ChbAbdomenWallHerniaIngR" class="buttonCheckbox">R</button><button id="ChbAbdomenWallHerniaIngL" class="buttonCheckbox">L</button></td>
 					</tr>
 					<tr>
 						<td colspan="2"><textarea id="AbdomenWallOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
@@ -2027,7 +2017,7 @@ table {width: auto; white-space: nowrap;}
 					</tr>
 					<tr>	
 						<td>Myom</td>
-						<td class="right"><label class="CHB"><input type="checkbox" id="ChbUterusMyoma" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbUterusMyomas" onChange="updateTexts()"><span>++</span></label></td>
+						<td class="right"><button id="ChbUterusMyoma" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td>HYE</td>
@@ -2185,7 +2175,7 @@ table {width: auto; white-space: nowrap;}
 					</tr>
 					<tr>
 						<td>Enostózy</td>
-						<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletonEnostosis" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="ChbSkeletonEnostosisM" onChange="updateTexts()"><span>++</span></label></td>
+						<td class="right"><button id="ChbSkeletonEnostosis" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
 						<td colspan="2" ><textarea id="SkeletonActivityOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
