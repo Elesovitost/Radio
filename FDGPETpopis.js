@@ -100,7 +100,7 @@ function compareSUVs(currentSUV, previousSUV) {
     } else if (change > -20 && change < 20) {
         return "metabolicky přibližně stacionární";
     } else if (change >= 20 && change < 50) {
-        return "v parciální metabolické progresi";
+        return "v metabolické progresi";
     } else if (change >= 50) {
         return "ve výrazné metabolické progresi";
     }
@@ -138,7 +138,7 @@ function compareSizes(currentSize, prevSize) {
     } else if (change > -20 && change < 20) {
         result = "rozměrově přibližně stacionární";
     } else if (change >= 20 && change < 50) {
-        result = "v parciální rozměrové progresi";
+        result = "v rozměrové progresi";
     } else if (change >= 50) {
         result = "ve výrazné rozměrové progresi";
     }
@@ -210,13 +210,11 @@ var elementParotid = document.getElementById('suvmax-parotid-container');
 if (PETTypeText === "FDG") {
     nazev = "FDG-PET/CT trupu"; 
     elementParotid.classList.add('hidden');
-}
-else if (PETTypeText === "PSMA") {
+}  else if (PETTypeText === "PSMA") {
     ObecneNativeText = "Neložisková akumulace radiofarmaka ve slinných a slzných žlazách, v jaterním parenchymu, slezině, v gastrointestinální traktu a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález."; 
     nazev = "PSMA-PET/CT trupu"; 
     elementParotid.classList.remove('hidden');
-}
-else if (PETTypeText === "DOTATOC") {
+}  else if (PETTypeText === "DOTATOC") {
     ObecneNativeText = "Neložisková akumulace radiofarmaka v hypofýze, štítné žláze, nadledvinách a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález."; 
     nazev = "DOTATOC-PET/CT trupu"; 
     elementParotid.classList.add('hidden');
@@ -317,7 +315,7 @@ let processedSentenceRESNeckLesionPSMA = processSentence(NeckLesion1number + " "
 
 if (buttonElementPETType.value === "FDG") {
 	window.RESNeckLesion1 = processedSentenceRESNeckLesionFDG + " " + NeckLesion1AllLocations + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA") {
+} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
 	window.RESNeckLesion1 = processedSentenceRESNeckLesionPSMA + " " + NeckLesion1AllLocations + " " + NeckLesion1RESActivityPSMA + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + ".";
 }
 
@@ -490,7 +488,7 @@ let processedSentenceRESNeckLymphNodePSMA = processSentence(NeckLymphNode1number
 
 if (buttonElementPETType.value === "FDG") {
 	RESNeckLymphNode1 = processedSentenceRESNeckLymphNodeFDG + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1CombinedResult + " " + NeckLymphNode1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA") {
+} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
 	RESNeckLymphNode1 = processedSentenceRESNeckLymphNodePSMA + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1RESActivityPSMA + " " + NeckLymphNode1CombinedResult + " " + NeckLymphNode1RESDecision + ".";
 }
     
@@ -971,7 +969,7 @@ let processedSentenceRESThoraxLesionPSMA = processSentence(ThoraxLesion1number +
 
 if (buttonElementPETType.value === "FDG") {
 	window.RESThoraxLesion1 = processedSentenceRESThoraxLesionFDG + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA") {
+} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
 	window.RESThoraxLesion1 = processedSentenceRESThoraxLesionPSMA + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1RESActivityPSMA + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + ".";
 }
 
@@ -1136,7 +1134,7 @@ let processedSentenceRESThoraxLymphNodePSMA = processSentence(ThoraxLymphNode1nu
 
 if (buttonElementPETType.value === "FDG") {
 	RESThoraxLymphNode1 = processedSentenceRESThoraxLymphNodeFDG + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1CombinedResult + " " + ThoraxLymphNode1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA") {
+} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
 	RESThoraxLymphNode1 = processedSentenceRESThoraxLymphNodePSMA + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1RESActivityPSMA + " " + ThoraxLymphNode1CombinedResult + " " + ThoraxLymphNode1RESDecision + ".";
 }
 
@@ -1972,7 +1970,7 @@ let processedSentenceRESAbdomenLesionPSMA = processSentence(AbdomenLesion1number
 
 if (buttonElementPETType.value === "FDG") {
 	window.RESAbdomenLesion1 = processedSentenceRESAbdomenLesionFDG + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA") {
+} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
 	window.RESAbdomenLesion1 = processedSentenceRESAbdomenLesionPSMA + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1RESActivityPSMA + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + ".";
 }
 
@@ -2131,7 +2129,7 @@ let processedSentenceRESAbdomenLymphNodePSMA = processSentence(AbdomenLymphNode1
 
 if (buttonElementPETType.value === "FDG") {
 	RESAbdomenLymphNode1 = processedSentenceRESAbdomenLymphNodeFDG + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1CombinedResult + " " + AbdomenLymphNode1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA") {
+} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
 	RESAbdomenLymphNode1 = processedSentenceRESAbdomenLymphNodePSMA + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1RESActivityPSMA + " " + AbdomenLymphNode1CombinedResult + " " + AbdomenLymphNode1RESDecision + ".";
 }
 
@@ -3014,7 +3012,7 @@ let processedSentenceRESSkeletonLesionPSMA = processSentence(SkeletonLesion1numb
 
 if (buttonElementPETType.value === "FDG") {
 	window.RESSkeletonLesion1 = processedSentenceRESSkeletonLesionFDG + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA") {
+} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
 	window.RESSkeletonLesion1 = processedSentenceRESSkeletonLesionPSMA + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1RESActivityPSMA + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + ".";
 }
 
@@ -3326,7 +3324,9 @@ if (containsBanned) {
         RESTextNative = "Bez známek přítomnosti FDG-avidní neoplázie. ";
     } else if (buttonElementPETType.value === "PSMA") {
         RESTextNative = "Bez známek přítomnosti ložisek zvýšené exprese PSMA. ";
-    } else {
+    } else if (buttonElementPETType.value === "DOTATOC") {
+        RESTextNative = "Bez známek přítomnosti ložisek se zvýšeným nakupením somatostatinových receptorů. ";
+    } else  {
         RESTextNative = ""; 
     }
 }
@@ -3372,6 +3372,11 @@ RESTextNoNew
 	RESText.value = RESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
 	RESText.value = RESText.value.replace(/ :/g, ':');  // odstraní mezeru před dvojtečkou
 	
+	//když je vybrán DODATOC zněma závěru
+	 if (buttonElementPETType.value === "DOTATOC") {
+        RESText.value = RESText.value.replace(/bez PSMA exprese/g, 'bez zvýšené koncentrace somatostatinových receptorů');
+		RESText.value = RESText.value.replace(/PSMA expresí/g, 'koncentrací somatostatinových receptorů');
+    }
 
 
 }
