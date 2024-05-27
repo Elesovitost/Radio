@@ -1208,11 +1208,11 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
       } else if (ratio >= 5) {
         aktSelect.value = 's velmi vysokou akumulací RF';
       }
-	} else if (buttonElementPETType.value === "PSMA" && !isNaN(suv) && !isNaN(Liver) && Liver != "") {
+	} else if ((buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") && !isNaN(suv) && !isNaN(Liver) && Liver != "") {
 		if (suv >= Parotid) {
 			aktSelect.value = 's vysokou akumulací RF';
-		} else if (suv >= Liver) {
-			aktSelect.value = 'se střední akumulací RF';
+		} else if (suv >= Liver && suv < Parotid) {
+			aktSelect.value = 'se zvýšenou akumulací RF';
 		} else {
 			aktSelect.value = 's nízkou akumulací RF';
 		}

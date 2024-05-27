@@ -213,11 +213,13 @@ if (PETTypeText === "FDG") {
 }  else if (PETTypeText === "PSMA") {
     ObecneNativeText = "Neložisková akumulace radiofarmaka ve slinných a slzných žlazách, v jaterním parenchymu, slezině, v gastrointestinální traktu a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález."; 
     nazev = "PSMA-PET/CT trupu"; 
+	document.getElementById('suvmax-parotid-container').childNodes[0].nodeValue = "SUVmax parotid ";
     elementParotid.classList.remove('hidden');
 }  else if (PETTypeText === "DOTATOC") {
     ObecneNativeText = "Neložisková akumulace radiofarmaka v hypofýze, štítné žláze, nadledvinách a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález."; 
     nazev = "DOTATOC-PET/CT trupu"; 
-    elementParotid.classList.add('hidden');
+	document.getElementById('suvmax-parotid-container').childNodes[0].nodeValue = "SUVmax sleziny ";
+    elementParotid.classList.remove('hidden');
 }
 
 
@@ -321,6 +323,8 @@ if (buttonElementPETType.value === "FDG") {
 
 if (NeckLesion1RESDecision.includes("meta") && NeckLesion1type.includes("ožisk")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("ožisk")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("as")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/mas/g, "tumorózní mas").replace(/Mas/g, "Tumorózní mas").replace(": charakteru tumoru", ".");}
+if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("nfiltrac")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/infiltrace/g, "tumorózní infiltrace").replace(/Infiltrace/g, "Tumorózní infiltrace").replace(": charakteru tumoru", ".");}
 if (NeckLesion1CombinedResult.includes("je nově") || NeckLesion1CombinedResult.includes("jsou nově")) { window.RESNeckLesion1 = "Nově " + window.RESNeckLesion1.charAt(0).toLowerCase() + window.RESNeckLesion1.substring(1) ; window.RESNeckLesion1 = window.RESNeckLesion1.replace(" je nově", "").replace(" jsou nově", "");}
 
 `;
@@ -975,6 +979,10 @@ if (buttonElementPETType.value === "FDG") {
 
 if (ThoraxLesion1RESDecision.includes("meta") && ThoraxLesion1type.includes("ožisk")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("ožisk")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("as")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/mas/g, "tumorózní mas").replace(/Mas/g, "Tumorózní mas").replace(": charakteru tumoru", ".");}
+if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("nfiltrac")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/infiltrace/g, "tumorózní infiltrace").replace(/Infiltrace/g, "Tumorózní infiltrace").replace(": charakteru tumoru", ".");}
+if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("xpanz")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/expanze/g, "tumorózní expanze").replace(/Expanze/g, "Tumorózní expanze").replace(": charakteru tumoru", ".");}
+if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("onsolidac")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/konsolidace/g, "tumorózní konsolidace").replace(/Konsolidace/g, "Tumorózní konsolidace").replace(": charakteru tumoru", ".");}
 if (ThoraxLesion1CombinedResult.includes("je nově") || ThoraxLesion1CombinedResult.includes("jsou nově")) { window.RESThoraxLesion1 = "Nově " + window.RESThoraxLesion1.charAt(0).toLowerCase() + window.RESThoraxLesion1.substring(1) ; window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(" je nově", "").replace(" jsou nově", "");}
 
 `;
@@ -1976,6 +1984,9 @@ if (buttonElementPETType.value === "FDG") {
 
 if (AbdomenLesion1RESDecision.includes("meta") && AbdomenLesion1type.includes("ožisk")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("ožisk")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("as")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/mas/g, "tumorózní mas").replace(/Mas/g, "Tumorózní mas").replace(": charakteru tumoru", ".");}
+if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("nfiltrac")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/infiltrace/g, "tumorózní infiltrace").replace(/Infiltrace/g, "Tumorózní infiltrace").replace(": charakteru tumoru", ".");}
+if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("xpanz")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/expanze/g, "tumorózní expanze").replace(/Expanze/g, "Tumorózní expanze").replace(": charakteru tumoru", ".");}
 if (AbdomenLesion1CombinedResult.includes("je nově") || AbdomenLesion1CombinedResult.includes("jsou nově")) { window.RESAbdomenLesion1 = "Nově " + window.RESAbdomenLesion1.charAt(0).toLowerCase() + window.RESAbdomenLesion1.substring(1) ; window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(" je nově", "").replace(" jsou nově", "");}
 
 `;
@@ -3257,15 +3268,17 @@ if (SUVLiver === "" && SUVLiverPrevious === "") {
     SUVLiverText = "Jaterní parenchym s SUVmax=" + SUVLiver + " (minule " + DateComparison + " byla hodnota " + SUVLiverPrevious + "), tedy v závěru bude zohledněna korekce.";
 }
 
-//SUVParotid
+//SUVParotid or Splenic
 var SUVParotid = document.getElementById('SUVParotid').value;
 SUVParotid = SUVParotid.trim().replace('.', ',');
 var SUVParotidText = "";
 
 if (SUVParotid === "") {
     SUVParotidText = "";
-} else {
+} else if (PETTypeText === "PSMA") {
     SUVParotidText = "Parotické žlázy s SUVmax=" + SUVParotid + ". ";
+} else if (PETTypeText === "DOTATOC") {
+    SUVParotidText = "Slezina s SUVmax=" + SUVParotid + ". ";
 }
 
 	
