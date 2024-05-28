@@ -1,10 +1,77 @@
 <head>
 <link rel="stylesheet" href="styles.css">
+
+<style>
+.section {position: absolute; width: auto;}
+
+.others {min-width: 90px; height: 18px;}
+
+table {width: auto; white-space: nowrap;}
+
+</style>
+
 </head>
 
 <body>
+
+<div class="MainDIV">   
+
 <div id="MRAnkle" class="standardwidth mydiv0">MR <button id="StranaButton" class="ButtonStrana" onmousedown="cycleStranaText(event)">jakého?</button> HLEZNA</div>
 <div id="IND" class="mydivIND standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
+
+<img id="MRankleimage" src="MRankle.jpg" style="transform: rotate(180deg); margin-left: 200px; display: none;">
+
+<!-- VAZY -->
+
+	<div class="section" style="top: 300px; left: 100px;">
+		<table>
+			<tr>
+				<td><button id="AnkleLL" class="others">Later. vazy</button></td>
+			</tr>
+			<tr id="AnkleLLtable" class="hidden">
+				<td>
+				<table>
+					<tr>
+						<td>LFTA</td>
+						<td class="right"><button id="ChbAnkleLFTA" class="buttonCheckbox">OK</button></td>
+					</tr>
+					<tr>
+						<td>LFC</td>
+						<td class="right"><button id="ChbAnkleLFC" class="buttonCheckbox">OK</button></td>
+					</tr>
+					<tr>
+						<td>LFTP</td>
+						<td class="right"><button id="ChbAnkleLFTP" class="buttonCheckbox">OK</button></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="section" style="top: 300px; left: 300px;">
+		<table>
+			<tr>
+				<td><button id="AnkleML" class="others">Med. vazy</button></td>
+			</tr>
+			<tr id="AnkleMLtable" class="hidden">
+				<td>
+				<table>
+					<tr>
+						<td>Deltoid sup.</td>
+						<td class="right"><button id="ChbAnkleLDsup" class="buttonCheckbox">OK</button></td>
+					</tr>
+					<tr>
+						<td>Deltoid hlub.</td>
+						<td class="right"><button id="ChbAnkleLDdeep" class="buttonCheckbox">OK</button></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+</div>
 
 <div id="texty1" class=" standardwidth hidden">
 NÁZEV<textarea id="MRAnkleNAMEText" class="medium"></textarea>
@@ -13,6 +80,7 @@ SEKVENCE<textarea id="MRAnkleSEKVText" class="medium"></textarea>
 POPIS<textarea id="MRAnklePOPText" class="superlarge"></textarea>
 ZÁVĚR<textarea id="MRAnkleRESText" class="superlarge"></textarea>
 </div>
+
 
 <script src="Universal.js"></script>  
 <script src="MRanklescript.js"></script> 

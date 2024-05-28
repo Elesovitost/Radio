@@ -22,11 +22,15 @@ MR prostaty <label class="CHB"><input type="checkbox" id="ChbProstatePSMA" onCha
 Velikost: <input id="ProstateSize" class="select140 num" placeholder="rozměr (LL x AP x CC) ..." oninput="updateTexts()">&nbsp;&nbsp;&nbsp;
 Hyperplázie <button id="ProstateHyperplasiaButton" class="Button80" onmousedown="cycleProstateHyperplasiaText(event)">není</button>&nbsp;&nbsp;&nbsp;
 Semenné váčky <button id="ProstateSemVesButton" class="Button80" onmousedown="cycleProstateSemVesText(event)">normální</button>
+RAPE <label class="CHB"><input type="checkbox" id="ChbProstateRAPE" onChange="updateTexts()"><span>+</span></label>
 </div>
 
 
 <div id="Tstage" class="DIVLesions"><button class="title">T STAGE</button> LOŽISKA <button id="ProstateNewLesions" class="myButtonLesion">+</button> 
-&nbsp;&nbsp;&nbsp; nebo recidiva v lůžku <td class="right"><label class="CHB"><input type="checkbox" id="ChbProstateRecidR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbProstateRecidL" onChange="updateTexts()"><span>L</span></label>
+	<div id="ProstateRec" style="display: inline-flex; align-items: center; margin-left: 20px;" class="hidden">
+		<label class="CHB">recidiva v lůžku<input type="checkbox" id="ChbProstateRecidR" onChange="updateTexts()"><span>R</span></label>
+		<label class="CHB"><input type="checkbox" id="ChbProstateRecidL" onChange="updateTexts()"><span>L</span></label>
+	</div>
 </div >
 <div class="DIVLesions">
 <table style="border:0px" id="ProstateLesion1" class="LesionX hidden">

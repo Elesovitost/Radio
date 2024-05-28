@@ -1046,22 +1046,16 @@ var ChbProstateRecidL = document.getElementById("ChbProstateRecidL").checked;
 if (ChbProstateRecidR && ChbProstateRecidL) {
   ProstateRecidP = "Ložiska v lůžku prostaty bilat. ";
   ProstateRecidR = "Ložiska recidivy v lůžku prostaty bilat. ";
-  ProstateOkP = "Prostata po radikálním odstranění. ";
-  ProstateOkR = "St.p. RAPE. "
   ProstateSemVesP = "";
 } else {
   if (ChbProstateRecidR) {
     ProstateRecidP = "Ložisko v lůžku prostaty vpravo. ";
     ProstateRecidR = "Ložisko recidivy v lůžku prostaty vpravo. ";
-	ProstateOkP = "Prostata po radikálním odstranění. ";
-	ProstateOkR = "St.p. RAPE. "
 	ProstateSemVesP = "";
   }
   if (ChbProstateRecidL) {
     ProstateRecidP = "Ložisko v lůžku prostaty vlevo. ";
     ProstateRecidR = "Ložisko recidivy v lůžku prostaty vlevo. ";
-	ProstateOkP = "Prostata po radikálním odstranění. ";
-	ProstateOkR = "St.p. RAPE. "
 	ProstateSemVesP = "";
   }
 }
@@ -1181,7 +1175,19 @@ if (document.getElementById('ChbProstatePSMA').checked) {
 	ProstatemiTMN = "";
 }
 	
-	
+// RAPE ?
+const prostateRAPE = document.getElementById('ChbProstateRAPE');
+const prostateRec = document.getElementById('ProstateRec');
+
+if (prostateRAPE.checked) {
+        prostateRec.classList.remove('hidden');
+		ProstateOkP = "Prostata po radikálním odstranění. ";
+		ProstateSemVesP = "";
+        ProstateOkR = "St.p. RAPE. ";
+    } else {
+        prostateRec.classList.add('hidden');
+    }
+
 	
 // POPIS
 ProstateTuNAMEText.value = "MR prostaty"; if (document.getElementById('ChbProstatePSMA').checked) {ProstateTuNAMEText.value = "PSMA-PET/MR prostaty";}

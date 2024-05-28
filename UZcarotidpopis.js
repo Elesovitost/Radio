@@ -23,6 +23,7 @@ let codeforR = `
 var UZCarotRCCA = document.getElementById('UZCarotRCCA').value;
 var UZCarotRICA = document.getElementById('UZCarotRICA').value;
 var UZCarotRRI = document.getElementById('UZCarotRRI').value;
+var UZCarotRASmm = document.getElementById('UZCarotRASmm').value; var UZCarotRASmmhide = document.getElementById('UZCarotRASmm');
 
 var POPUSCarotRSentences = [];
 var RESUSCarotRSentences = [];
@@ -32,11 +33,11 @@ var UZCarotRASno = document.getElementById("UZCarotRASno").innerText;
 var UZCarotRASmater = document.getElementById('UZCarotRASmater');
 
 if (UZCarotRASno === "0") {
-	UZCarotRASmater.classList.add('hidden');
+	UZCarotRASmater.classList.add('hidden');  UZCarotRASmmhide.classList.add('hidden'); 
     POPUSCarotRSentences.push("nejsou přítomny");
 	RESUSCarotRno =  "";
 } else if (UZCarotRASno === "+") {
-	UZCarotRASmater.classList.remove('hidden');
+	UZCarotRASmater.classList.remove('hidden');  UZCarotRASmmhide.classList.remove('hidden'); 
     POPUSCarotRSentences.push("ojedinělé drobné");
 	RESUSCarotRno =  "ojedinělých drobných";
 } else if (UZCarotRASno === "++") {
@@ -71,6 +72,11 @@ if (UZCarotRASno !== "0") {
 		RESUSCarotRmater =  "exulcerovaného plátu"; RESUSCarotRno = "";
     }
 }
+
+	if (UZCarotRASmm !== "")  {
+		POPUSCarotRSentences.push("výšky do " + UZCarotRASmm + " mm");
+		} 
+			
 
 POPUSCarotR = POPUSCarotRSentences.join(", ") + ".";
 RESUSCarotR = RESUSCarotRSentences.length > 0 ? RESUSCarotRSentences.join(". ") + "." : "";
@@ -126,7 +132,10 @@ else if (UZCarotRASno !== "0" && UZCarotRICA >= 230) {
 else if (UZCarotRASno !== "0" && UZCarotRICA >= 125 && UZCarotRICA < 230) {
     RESCarotR = "Vpravo stenóza ICA 50-69% na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater;
 }
-else if (UZCarotRASno !== "0" && UZCarotRASno !== "+" && UZCarotRICA < 125) {
+else if (UZCarotRASno !== "0" && UZCarotRASno !== "+" && UZCarotRICA < 125 && UZCarotRASmm <3) {
+    RESCarotR = "Vpravo nevýznamná a nevýrazná stenóza na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater;
+}
+else if (UZCarotRASno !== "0" && UZCarotRASno !== "+" && UZCarotRICA < 125 && UZCarotRASmm >= 3) {
     RESCarotR = "Vpravo nevýznamná stenóza do 50% na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater;
 }
 else if (UZCarotRASno === "+" && UZCarotRICA < 125) {
@@ -154,6 +163,7 @@ if (UZCarotRRI !== 0 && UZCarotRRI !== "") {POPUZCarotRICARI = "RI: " + UZCarotR
 if (UZCarotLCCA !== 0 && UZCarotLCCA !== "") {POPUZCarotLCCAPSV = "L-CCA: PSV " + UZCarotLCCA + " cm/s.";} else {POPUZCarotLCCAPSV = "";}
 if (UZCarotLRI !== 0 && UZCarotLRI !== "") {POPUZCarotLICARI = "RI: " + UZCarotLRI + ". ";} else {POPUZCarotLICARI = "";}
 
+
 // POPIS
 
 UZCarotidNAMEText.value = "UZ karotid";
@@ -164,7 +174,8 @@ UZCarotidPOPText.value =
 POPUZCarotRCCAPSV + "\n" +
 "R-ICA: PSV " + UZCarotRICA + " cm/s. " + POPUZCarotRICARI + "\n" + 
 "Aterosklerotické pláty " + POPUSCarotR + "\n" +
-"R-VA: " + POPUSVertR + "\n\n" +
+"R-VA: " + POPUSVertR + "\n" +
+"<empty_row>" +  "\n" +
 POPUZCarotLCCAPSV + "\n" +
 "L-ICA: PSV " + UZCarotLICA + " cm/s. " + POPUZCarotLICARI + "\n" + 
 "Aterosklerotické pláty " + POPUSCarotL + "\n" +
@@ -179,6 +190,7 @@ RESUSVertR + RESUSVertL
 
 
 UZCarotidPOPText.value = UZCarotidPOPText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
+UZCarotidPOPText.value = UZCarotidPOPText.value.replace(/<empty_row>/g, ''); //nahradní <empty_row> prázdnem
 
 UZCarotidRESText.value = UZCarotidRESText.value.replace(/^\./gm, ''); // odstraní tečku na začátku řádek
 UZCarotidRESText.value = UZCarotidRESText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
