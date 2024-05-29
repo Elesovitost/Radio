@@ -70,6 +70,28 @@ if (AnkleLLDescRes.length) {
   AnkleLLRes = AnkleLLDescRes.join(". ") + ". ";
 }
 
+// Šlachy
+
+updateButtonTexts({
+			'ChbAnkleTP': ['OK', 'synovitis', 'tendinóza', 'parc. ruptura', 'ruptura'],
+			'ChbAnkleFDL': ['OK', 'synovitis', 'tendinóza', 'parc. ruptura', 'ruptura'],
+			'ChbAnkleFHL': ['OK', 'synovitis', 'tendinóza', 'parc. ruptura', 'ruptura']
+        });
+
+var AnkleMCText = ""; var AnkleMCRes = "";
+var AnkleMCDescText = []; var AnkleMCDescRes = [];
+
+if (ChbAnkleTP === "synovitis") {
+    AnkleMCDescText.push("Šlacha musc. tib. post. se tekutinou v okolí"); AnkleMCDescRes.push("Tenosynovitis m. tibialis posterior");
+} else if (ChbAnkleTP === "tendinóza") {
+    AnkleMCDescText.push("Šlacha musc. tib. post. s vyšší SI"); AnkleMCDescRes.push("Tendinóza m. tibialis posterior");
+}  else if (ChbAnkleTP === "parc. ruptura") {
+    AnkleMCDescText.push("Šlacha musc. tib. post. s porušenou kontinuitou"); AnkleMCDescRes.push("Šlacha m. tibialis posterior s parciální rupturou");
+}  else if (ChbAnkleTP === "ruptura") {
+    AnkleMCDescText.push("Šlacha musc. tib. post. s výrazně až totálně porušenou kontinuitou"); AnkleMCDescRes.push("Šlacha m. tibialis posterior s totální rupturou");
+}
+
+
 
 // POPIS
 	

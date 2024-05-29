@@ -62,7 +62,7 @@ document.getElementById('DateCompare').addEventListener('change', function() {
 
 function generateComparisonText(prevSUV, prevSize, date) {
     if (prevSize.includes(" 0 ")) {
-        return " (nově)";
+        return " (oproti minule nově)";
     } else if (prevSUV.trim() !== "" || prevSize.trim() !== "") {
 		return " (minule " + prevSize + " " + prevSUV + ")";   
     } else {
@@ -3310,6 +3310,32 @@ ObecneTexts + " " + ObecneNativeText + " " + SUVLiverText + " " + SUVParotidText
 	POPText.value = POPText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
 	POPText.value = POPText.value.replace(/\s\)/g, ')');   // mezera závorka = jen závorka
 
+
+//  Modifikátor: nastaví "minule shodného obrazu", když má ložisko teď a minule stejná měření
+    let originalPOPText = POPText.value;
+    let regex = /\((minule[^)]+)\)/g;
+    let correctedPOPText = originalPOPText;
+    let matches;
+    let replacements = [];
+
+    while ((matches = regex.exec(originalPOPText)) !== null) {
+        let fullMinuleText = matches[0];
+        let minuleContent = matches[1].trim().substring(6).trim();
+        let textBeforeMinule = originalPOPText.substring(0, matches.index).trim();
+
+        if (textBeforeMinule.endsWith(minuleContent)) {
+            replacements.push({
+                oldText: fullMinuleText,
+                newText: "(minule shodného obrazu)"
+            });
+        }
+    }
+
+    replacements.forEach(replacement => {
+        correctedPOPText = correctedPOPText.replace(replacement.oldText, replacement.newText);
+    });
+
+    POPText.value = correctedPOPText;
 
 
 

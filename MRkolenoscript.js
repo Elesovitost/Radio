@@ -100,35 +100,6 @@ buttonElementLkMen.addEventListener("mousedown", function() {
 
 // TABLES others OVERLAY
 
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('others100')) {
-        var tableId = event.target.id + 'table';
-        var table = document.getElementById(tableId);
-        
-        var overlayTables = document.querySelectorAll('.overlay');
-        overlayTables.forEach(function(otherTable) {
-            if (otherTable.id !== tableId) {
-                otherTable.classList.add('hidden');
-                otherTable.classList.remove('overlay');
-            }
-        });
-        
-        table.classList.toggle('overlay');
-        table.classList.toggle('hidden');
-    }
-});
-
-document.addEventListener('click', function(event) {
-    var overlayTables = document.querySelectorAll('.overlay');
-    overlayTables.forEach(function(table) {
-        if (!table.contains(event.target) && !event.target.classList.contains('others100')) {
-            table.classList.add('hidden');
-            table.classList.remove('overlay');
-        }
-    });
-});
-
-
 
 function updateTextAndCycleText(event, texts, index, buttonElement, cycleFunc) {  cycleFunc(event);  updateTexts();}
 

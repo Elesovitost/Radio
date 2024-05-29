@@ -105,10 +105,10 @@ for (var i = 0; i < buttons.length; i++) {
 
 
 
-// TABLES others OVERLAY
+// TABLES others OVERLAY (když se klikne na něco s "others" otevře se table)
 
 document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('others')) {
+    if (event.target.classList.value.includes('others')) {
         var tableId = event.target.id + 'table';
         var table = document.getElementById(tableId);
         
@@ -122,13 +122,14 @@ document.addEventListener('click', function(event) {
         
         table.classList.toggle('overlay');
         table.classList.toggle('hidden');
+		event.target.classList.add('button-active');
     }
 });
 
 document.addEventListener('click', function(event) {
     var overlayTables = document.querySelectorAll('.overlay');
     overlayTables.forEach(function(table) {
-        if (!table.contains(event.target) && !event.target.classList.contains('others')) {
+        if (!table.contains(event.target) && !event.target.classList.value.includes('others')) {
             table.classList.add('hidden');
             table.classList.remove('overlay');
         }
@@ -136,7 +137,35 @@ document.addEventListener('click', function(event) {
 });
 
 
-//Button checkboxes
+// TABLES others doplnění -  tento kód zvýrazňuje aktivní button 
+
+document.addEventListener('click', function(event) {
+    if (event.target.classList.value.includes('others')) {
+        document.querySelectorAll('[class*="others"]').forEach(function(btn) {
+            btn.classList.remove('button-active');
+        });
+        event.target.classList.add('button-active');
+    }
+});
+
+document.addEventListener('click', function(event) {
+    var clickedInside = false;
+
+    document.querySelectorAll('.overlay').forEach(function(table) {
+        if (table.contains(event.target) || event.target.classList.value.includes('others')) {
+            clickedInside = true;
+        }
+    });
+
+    if (!clickedInside) {
+        document.querySelectorAll('[class*="others"].button-active').forEach(function(button) {
+            button.classList.remove('button-active');
+        });
+    }
+});
+
+
+//Button checkboxes (NEW)
 
 let buttonTexts = {}; // Initialize empty object
 
@@ -404,7 +433,7 @@ document.querySelectorAll('.myButtonLesion').forEach(button => {
 
 //input textareas resizable
 
-var InputTextAreas = document.querySelectorAll('.inputothers, .inputOtherFinding');
+var InputTextAreas = document.querySelectorAll('.inputother, .inputOtherFinding');
 InputTextAreas.forEach(function(InputTextArea) {
     InputTextArea.addEventListener('input', function() {
         // Reset the height to ensure correct calculation
@@ -416,7 +445,7 @@ InputTextAreas.forEach(function(InputTextArea) {
 
 
 
-// ButtonCycleText
+// ButtonCycleText  (NEW)
 
 const ButtonCycleInnerTexts = {};
 
