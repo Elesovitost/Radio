@@ -1568,28 +1568,32 @@ if (ThoraxFluidFTR === "" && ThoraxFluidFTL === "" && ThoraxFluidFP === "") {
 var ThoraxOther1Priority = ""; var ThoraxOther1NoPriority = ""; var ThoraxOther1ResPriority = "";
 var ThoraxOther1Pop = document.getElementById("ThoraxOther1Pop").value;
 var ThoraxOther1Res = document.getElementById("ThoraxOther1Res").value;
+
 if (ThoraxOther1Pop !== "" && ThoraxOther1Res ==="") {ThoraxOther1Priority = ""; ThoraxOther1NoPriority = ThoraxOther1Pop + ". "; ThoraxOther1ResPriority = "";
 	} else if (ThoraxOther1Pop !== "" && ThoraxOther1Res !=="") {ThoraxOther1Priority = ThoraxOther1Pop  + ". "; ThoraxOther1NoPriority = ""; ThoraxOther1ResPriority = ThoraxOther1Res  + ". ";}
 
 
+// Define an array containing window.POPThoraxLesion1, window.POPThoraxLesion2, and window.POPThoraxLesion3
+const POPThoraxLesions = [window.POPThoraxLesion1, window.POPThoraxLesion2, window.POPThoraxLesion3];
+
 if (ThoraxParenchymaText.includes('fibróz') || ThoraxParenchymaText.includes('emfyz') || ((ThoraxFluidFTR > 0 && ThoraxFluidFTL > 0))) {
     POPThoraxLungOk = "";
-} else if ((window.POPThoraxLesion1.includes('bilat') || window.POPThoraxLesion2.includes('bilat') || window.POPThoraxLesion3.includes('bilat') || ThoraxOther1Priority.includes('bilat')) || 
-		   (window.POPThoraxLesion1.includes('obou') || window.POPThoraxLesion2.includes('obou') || window.POPThoraxLesion3.includes('obou') || ThoraxOther1Priority.includes('obou')) || 
-		   (window.POPThoraxLesion1.includes('prav') || window.POPThoraxLesion2.includes('prav') || window.POPThoraxLesion3.includes('prav')) && 
-		   (window.POPThoraxLesion1.includes('lev') || window.POPThoraxLesion2.includes('lev') || window.POPThoraxLesion3.includes('lev'))) {
+} else if ((POPThoraxLesions.some(lesion => lesion.includes('bilat')) || ThoraxOther1Priority.includes('bilat')) || 
+           (POPThoraxLesions.some(lesion => lesion.includes('obou')) || ThoraxOther1Priority.includes('obou')) || 
+           (POPThoraxLesions.includes('prav') && POPThoraxLesions.includes('lev'))) {
     POPThoraxLungOk = "";
-} else if ((ThoraxParenchymaText.includes('prav') && !ThoraxParenchymaText.includes('lev')) || ThoraxFluidFTR > 0 || 
-			window.POPThoraxLesion1.includes('prav') || window.POPThoraxLesion2.includes('prav') || window.POPThoraxLesion3.includes('prav') || ThoraxOther1Priority.includes('prav')) {
+} else if (((ThoraxParenchymaText.includes('prav') && !ThoraxParenchymaText.includes('lev')) || ThoraxFluidFTR > 0 || 
+           POPThoraxLesions.some(lesion => lesion.includes('prav')) || ThoraxOther1Priority.includes('prav')) && !POPThoraxLesions.some(lesion => lesion.includes('prs')) ) {
     POPThoraxLungOk = "Vlevo adekvátní plicní objem a vzdušnost. ";
-} else if ((ThoraxParenchymaText.includes('lev') && !ThoraxParenchymaText.includes('prav')) || ThoraxFluidFTL > 0 || 
-			window.POPThoraxLesion1.includes('lev') || window.POPThoraxLesion2.includes('lev') || window.POPThoraxLesion3.includes('lev') || ThoraxOther1Priority.includes('lev')) {
+} else if (((ThoraxParenchymaText.includes('lev') && !ThoraxParenchymaText.includes('prav')) || ThoraxFluidFTL > 0 || 
+           POPThoraxLesions.some(lesion => lesion.includes('lev')) || ThoraxOther1Priority.includes('lev')) && !POPThoraxLesions.some(lesion => lesion.includes('prs')) ) {
     POPThoraxLungOk = "Vpravo adekvátní plicní objem a vzdušnost. ";
 } else if (ThoraxParenchymaText === "" && ThoraxFluidFTR === "" && ThoraxFluidFTL === "" && ThoraxOther1Priority === "") {
     POPThoraxLungOk = "Adekvátní plicní objem a vzdušnost. ";
 } else {
     POPThoraxLungOk = "Jinak adekvátní plicní objem a vzdušnost. ";
 }
+
 
 // Thorax native or not
 
@@ -3349,7 +3353,7 @@ let variablesToCheck = [
     window.RESSkeletonLesion1, window.RESSkeletonLesion2, window.RESSkeletonLesion3
 ];
 
-let bannedWords = ['suspektní', 'tumor',  'tumorózní',  'Tumorózní', 'meta', 'Meta', 'charakteru', 'neoplazií', 'neoplazie','nespecifický'];
+let bannedWords = ['suspektní', 'tumor',  'tumorózní',  'Tumorózní', 'meta ', 'meta.', 'Meta', 'charakteru', 'neoplazií', 'neoplazie','nespecifický'];
 
 function containsBannedWord(str) {
     return bannedWords.some(bannedWord => str.includes(bannedWord));
