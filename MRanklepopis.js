@@ -40,7 +40,7 @@ if (ChbAnkleLFTA === "I") {
 } else if (ChbAnkleLFTA === "II") {
     AnkleLLDescText.push("LFTA s parc. porušením kontinuity, rozšířen, s vyšší SI"); AnkleLLDescRes.push("LFTA s low-grade parciální rupturou");
 }  else if (ChbAnkleLFTA === "III") {
-    AnkleLLDescText.push("LFTA s porušenou kontinuitou"); AnkleLLDescRes.push("LFTA s hight-grade rupturou");
+    AnkleLLDescText.push("LFTA s porušenou kontinuitou"); AnkleLLDescRes.push("LFTA s high-grade rupturou");
 }
 
 if (ChbAnkleLFC === "I") {
@@ -223,23 +223,23 @@ var ChbAnklePB = document.getElementById('ChbAnklePB').innerText;
 var AnkleLCText = ""; var AnkleLCRes = "";
 var AnkleLCDescText = []; var AnkleLCDescRes = [];
 
-if (ChbAnkleET === "synovitis") {
+if (ChbAnklePL === "synovitis") {
     AnkleLCDescText.push("Šlacha musc. peron. longus  se tekutinou v okolí"); AnkleLCDescRes.push("Tenosynovitis m. peroneus longus");
-} else if (ChbAnkleET === "tendinóza") {
+} else if (ChbAnklePL === "tendinóza") {
     AnkleLCDescText.push("Šlacha musc. peron. longus  s vyšší SI"); AnkleLCDescRes.push("Tendinóza m. peroneus longus");
-}  else if (ChbAnkleET === "parc. rpt") {
+}  else if (ChbAnklePL === "parc. rpt") {
     AnkleLCDescText.push("Šlacha musc. peron. longus  s porušenou kontinuitou"); AnkleLCDescRes.push("Šlacha m. peroneus longus s parciální rupturou");
-}  else if (ChbAnkleET === "ruptura") {
+}  else if (ChbAnklePL === "ruptura") {
     AnkleLCDescText.push("Šlacha musc. peron. longus  s výrazně až totálně porušenou kontinuitou"); AnkleLCDescRes.push("Šlacha m. peroneus longus s totální rupturou");
 }
 
-if (ChbAnkleEDL === "synovitis") {
+if (ChbAnklePB === "synovitis") {
     AnkleLCDescText.push("Šlacha musc. peron. brevis  se tekutinou v okolí"); AnkleLCDescRes.push("Tenosynovitis m. peroneus brevis");
-} else if (ChbAnkleEDL === "tendinóza") {
+} else if (ChbAnklePB === "tendinóza") {
     AnkleLCDescText.push("Šlacha musc. peron. brevis  s vyšší SI"); AnkleLCDescRes.push("Tendinóza m. peroneus brevis");
-}  else if (ChbAnkleEDL === "parc. rpt") {
+}  else if (ChbAnklePB === "parc. rpt") {
     AnkleLCDescText.push("Šlacha musc. peron. brevis  s porušenou kontinuitou"); AnkleLCDescRes.push("Šlacha m. peroneus brevis s parciální rupturou");
-}  else if (ChbAnkleEDL === "ruptura") {
+}  else if (ChbAnklePB === "ruptura") {
     AnkleLCDescText.push("Šlacha musc. peron. brevis  s výrazně až totálně porušenou kontinuitou"); AnkleLCDescRes.push("Šlacha m. peroneus brevis s totální rupturou");
 }
 
