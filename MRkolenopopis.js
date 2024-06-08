@@ -804,7 +804,7 @@ if (LigLCAI) {
 }
 if (LigLCAEdema) {
 	LigLCAText += "Vysoká SI v PD FS v kostní dřeni laterálního kondylu femuru a dorzálních aspektů tibie. ";
-	LigLCARes += "a s odpovídajím postkontuzním edémem femuru a tibie. ";
+	LigLCARes += "a s odpovídajícím postkontuzním edémem femuru a tibie. ";
 }
 if (LigLCAPlasticOk) {
 	LigLCAText = "Náhrada předního zkříženého vazu je nízké SI, bez porušení kontinuity. ";
