@@ -376,6 +376,7 @@ document.getElementById('ThoraxNewLesions').addEventListener('click', function()
       break; 
     }
   }
+  updateTexts();
   updateThoraxButtonColor();
 });
 
@@ -390,6 +391,7 @@ document.getElementById('ThoraxNewLesions').addEventListener('contextmenu', func
       break; 
     }
   }
+  updateTexts();
   updateThoraxButtonColor();
 });
 
@@ -630,6 +632,7 @@ document.getElementById('AbdomenNewLesions').addEventListener('click', function(
       break; 
     }
   }
+  updateTexts();
   updateAbdomenButtonColor();
 });
 
@@ -644,6 +647,7 @@ document.getElementById('AbdomenNewLesions').addEventListener('contextmenu', fun
       break; 
     }
   }
+  updateTexts();
   updateAbdomenButtonColor();
 });
 
@@ -942,6 +946,7 @@ document.getElementById('SkeletonNewLesions').addEventListener('click', function
       break; 
     }
   }
+  updateTexts();
   updateSkeletonButtonColor();
 });
 
@@ -956,6 +961,7 @@ document.getElementById('SkeletonNewLesions').addEventListener('contextmenu', fu
       break; 
     }
   }
+  updateTexts();
   updateSkeletonButtonColor();
 });
 
@@ -1127,12 +1133,11 @@ document.getElementById('SkeletonOther1no').addEventListener('contextmenu', func
 // Lesion aktivita   
   
 var aktivitaOptions = [
-    { text: "není", value: "bez akumulace RF", valuez1: "bez PSMA exprese", valuez2: "ametabolické"},
-    { text: "nízká", value: "s nízkou akumulací RF", valuez1: "s nízkou PSMA expresí", valuez2: "nízce metabolicky aktivní "},
-    { text: "intermed.", value: "se střední akumulací RF", valuez1: "se střední PSMA expresí", valuez2: "středně metabolicky aktivní "},
-    { text: "zvýšená", value: "se zvýšenou akumulací RF", valuez1: "se zvýšenou PSMA expresí", valuez2: "mírně hypermetabolické "},
-    { text: "vysoká", value: "s vysokou akumulací RF", valuez1: "s vysokou PSMA expresí", valuez2: "hypermetabolické "},
-	{ text: "enormní", value: "s velmi vysokou akumulací RF", valuez1: "s vysokou PSMA expresí", valuez2: "výrazně hypermetabolické "}
+    { text: "není", value: "s akumulací RF < ref. blood pool", valuePSMA: "téměř bez PSMA exprese", valueFDG: "ametabolické"},
+    { text: "nízká", value: "s akumulací RF < ref. játra", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
+    { text: "intermed.", value: "s akumulací RF blízkou ref. játrům", valuePSMA: "se střední PSMA expresí", valueFDG: "středně metabolicky aktivní "},
+    { text: "vysoká", value: "s akumulací RF > ref. játra", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
+    { text: "enormní", value: "s akumulací RF >> ref. játra", valuePSMA: "s vysokou PSMA expresí", valueFDG: "výrazně hypermetabolické "}
 ];
 
 function populateAktivitaOptions() {
@@ -1143,8 +1148,8 @@ function populateAktivitaOptions() {
             var optionElement = document.createElement("option");
             optionElement.value = option.value;
             optionElement.textContent = option.text;
-            optionElement.dataset.valuez1 = option.valuez1;
-			optionElement.dataset.valuez2 = option.valuez2;
+            optionElement.dataset.valuePSMA = option.valuePSMA;
+			optionElement.dataset.valueFDG = option.valueFDG;
             selectElement.appendChild(optionElement);
         });
     });
@@ -1157,13 +1162,13 @@ populateAktivitaOptions();
 // Lesion hodnoceni
 
 var hodnoceniOptions = [
-    { text: "benigní", value: ": benigního vzhledu", valuez1: ": benigního vzhledu"},
-    { text: "spíše ben.", value: ": nemá charakter viabilní neoplázie", valuez1: ": v.s. zánětlivá aktivace"},
-    { text: "nerozhodný", value: ": nespecifický nález", valuez1: ": nespecifický nález"},
-    { text: "spíše mal.", value: ": suspektní z viabilní neoplázie", valuez1: ": suspektní z infiltrace neoplazií"},
-    { text: "maligní", value:": charakteru viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"},
-	{ text: "tumor", value:": charakteru tumoru", valuez1: ": infiltrace neoplazií"},
-	{ text: "meta", value:": charakteru meta", valuez1: ": infiltrace neoplazií"}
+    { text: "benigní", value: ": benigního vzhledu", valuePSMA: ": benigního vzhledu"},
+    { text: "spíše ben.", value: ": nemá charakter viabilní neoplázie", valuePSMA: ": v.s. zánětlivá aktivace"},
+    { text: "nerozhodný", value: ": nespecifický nález", valuePSMA: ": nespecifický nález"},
+    { text: "spíše mal.", value: ": suspektní z viabilní neoplázie", valuePSMA: ": suspektní z infiltrace neoplazií"},
+    { text: "maligní", value:": charakteru viabilní neoplázie", valuePSMA: ": charakteru infiltrace neoplazií"},
+	{ text: "tumor", value:": charakteru tumoru", valuePSMA: ": infiltrace neoplazií"},
+	{ text: "meta", value:": charakteru meta", valuePSMA: ": infiltrace neoplazií"}
 ];
 
 function populateHodnoceniOptions() {
@@ -1174,7 +1179,7 @@ function populateHodnoceniOptions() {
             var optionElement = document.createElement("option");
             optionElement.value = option.value;
             optionElement.textContent = option.text;
-            optionElement.dataset.valuez1 = option.valuez1;
+            optionElement.dataset.valuePSMA = option.valuePSMA;
             selectElement.appendChild(optionElement);
         });
     });
@@ -1190,37 +1195,41 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
     let suv = parseFloat(document.getElementById(`${name}SUV`).value);
     let Liver = parseFloat(document.getElementById('SUVLiver').value);
     let Parotid = parseFloat(document.getElementById('SUVParotid').value);
-    let aktSelect = document.getElementById(`${name}Activity`);
+    let aktSelect = document.getElementById(`${name}Activity`);;
+    let ratio = suv / Liver;
 
-    if (buttonElementPETType.value === "FDG" && !isNaN(suv) && !isNaN(Liver) && Liver != "") {
-      let ratio = suv / Liver;
-
-      if (ratio >= 0 && ratio < 0.2) {
-        aktSelect.value = 'bez akumulace RF';
-      } else if (ratio >= 0.2 && ratio < 0.8) {
-        aktSelect.value = 's nízkou akumulací RF';
+    if (buttonElementPETType.value === "FDG") {
+      if (ratio >= 0 && ratio < 0.3) {
+        aktSelect.value = 's akumulací RF < ref. blood pool';
+      } else if (ratio >= 0.3 && ratio < 0.8) {
+        aktSelect.value = 's akumulací RF < ref. játra';
       } else if (ratio >= 0.8 && ratio < 1.2) {
-        aktSelect.value = 'se střední akumulací RF';
-      } else if (ratio >= 1.2 && ratio < 1.5) {
-        aktSelect.value = 'se zvýšenou akumulací RF';
-      } else if (ratio >= 1.5 && ratio < 5) {
-        aktSelect.value = 's vysokou akumulací RF';
-      } else if (ratio >= 5) {
-        aktSelect.value = 's velmi vysokou akumulací RF';
+        aktSelect.value = 's akumulací RF blízkou ref. játrům';
+      } else if (ratio >= 1.2 && ratio < 2) {
+        aktSelect.value = 's akumulací RF > ref. játra';
+      } else if (ratio >= 2) {
+        aktSelect.value = 's akumulací RF >> ref. játra';
+      } 
+    } else if ((buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC")) {
+      if (suv >= Parotid) {
+        aktSelect.value = 's akumulací RF >> ref. játra';
+      } else if (suv >= Liver && suv < Parotid) {
+        aktSelect.value = 's akumulací RF > ref. játra';
+      } else if (suv >= Liver) {
+        aktSelect.value = 's akumulací RF > ref. játra';
+      } else if (suv < Liver && suv > Liver/4) {
+        aktSelect.value = 's akumulací RF < ref. játra';
+      } else if (suv < Liver/4) {
+        aktSelect.value = 's akumulací RF < ref. blood pool';
       }
-	} else if ((buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") && !isNaN(suv) && !isNaN(Liver) && Liver != "") {
-		if (suv >= Parotid) {
-			aktSelect.value = 's vysokou akumulací RF';
-		} else if (suv >= Liver && suv < Parotid) {
-			aktSelect.value = 'se zvýšenou akumulací RF';
-		} else {
-			aktSelect.value = 's nízkou akumulací RF';
-		}
-	} 
+    } 
+
     updateTexts();
   });
 });  
-	  
+
+	 
+	 
 
 document.getElementById('SUVLiver').addEventListener('input', () => {
   let event = new Event('input');

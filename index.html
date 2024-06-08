@@ -415,39 +415,46 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         setTimeout(() => {
             popup.style.display = 'none';
-        }, 1000); // Hide after 1 second
+        }, 2000); // Hide after 2 second
     }
 
-    function setupCopyButton(buttonId, textAreaId) {
-        var button = document.getElementById(buttonId);
-        var textArea = document.getElementById(textAreaId);
+	function setupCopyButton(buttonId, textAreaId) {
+		var button = document.getElementById(buttonId);
+		var textArea = document.getElementById(textAreaId);
 
-        button.addEventListener('click', function() {
-            var text = textArea.value;
-            var firstLine = text.split('\n')[0]; // Get the first line
+		button.addEventListener('click', function() {
+			var text = textArea.value;
+			var firstLine = text.split('\n')[0]; // Get the first line
 
-            if (firstLine.includes("MR kolene") || firstLine.includes("MR ramene") || firstLine.includes("MR hlezna")) {
-                showPopup("DOPLŇ STRANU");
-            } else {
-                navigator.clipboard.writeText(text)
-                .then(() => {
-                    // Optional: success action
-                })
-                .catch(err => {
-                    console.error('Error copying text: ', err);
-                });
-            }
-        });
-        // Mousedown event for partial disappearance effect
-        button.addEventListener('mousedown', function() {
-            this.style.opacity = '0.3'; // 70% disappear effect
-        });
+			if (firstLine.includes("MR kolene") || firstLine.includes("MR ramene") || firstLine.includes("MR hlezna")) {
+				showPopup("DOPLŇ STRANU");
+			} else if (firstLine.includes("PET/CT") && 
+                   !text.includes("vztažena k referenčním") && 
+                   (!text.includes("Bez známek přítomnosti") ||
+					text.includes("ypermetabol") || 
+                    text.includes("metabolicky aktivní") || 
+                    text.includes("expresí") || 
+                    text.includes("koncentrací"))) {
+				showPopup("CHYBÍ REFERENČNÍ HODNOTY PRO AKUMULACI");
+			} else {
+				navigator.clipboard.writeText(text)
+				.then(() => {
+					// Optional: success action
+				})
+			}
+		});
 
-        // Mouseup event to return to normal state
-        button.addEventListener('mouseup', function() {
-            this.style.opacity = '1'; // Return to full opacity
-        });
-    }
+		// Mousedown event for partial disappearance effect
+		button.addEventListener('mousedown', function() {
+			this.style.opacity = '0.3'; // 70% disappear effect
+		});
+
+		// Mouseup event to return to normal state
+		button.addEventListener('mouseup', function() {
+			this.style.opacity = '1'; // Return to full opacity
+		});
+	}
+
 
     setupCopyButton('copyCOMP', 'FINALCOMPLETEText');
 	setupCopyButton('copyPOP', 'FINALPOPText');

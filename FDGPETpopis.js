@@ -58,13 +58,17 @@ document.getElementById('DateCompare').addEventListener('change', function() {
 
 
 
-// universal comparison
+// universal comparison POP
 
-function generateComparisonText(prevSUV, prevSize, date) {
+function generateComparisonText(prevSUV, prevSize, date, currentSUV, currentSize) {
+    var comparisonText = compareActPOP(currentSUV, prevSUV);
+
     if (prevSize.includes(" 0 ")) {
         return " (oproti minule nově)";
-    } else if (prevSUV.trim() !== "" || prevSize.trim() !== "") {
-		return " (minule " + prevSize + " " + prevSUV + ")";   
+    } else if (currentSize !== "" && prevSize !== "" && currentSize === prevSize) {
+        return " (minule " + "obdobné velikosti" + " " + comparisonText + ")"; 
+    } else if (comparisonText !== "" || prevSize.trim() !== "") {
+        return " (minule " + prevSize + " " + comparisonText + ")"; 
     } else {
         return "";
     }
@@ -72,9 +76,8 @@ function generateComparisonText(prevSUV, prevSize, date) {
 
 
 
-// RES SUVmax Comparison
-
-function compareSUVs(currentSUV, previousSUV) {
+// SUVmax Comparison POP
+function compareActPOP(currentSUV, previousSUV) {
     if (!currentSUV || !previousSUV || currentSUV.trim() === "" || previousSUV.trim() === "") {
         return "";
     }
@@ -82,27 +85,84 @@ function compareSUVs(currentSUV, previousSUV) {
     var current = parseFloat(currentSUV.replace('s SUVmax=', '').replace(',', '.').trim());
     var prev = parseFloat(previousSUV.replace('s SUVmax=', '').replace(',', '.').trim());
 
-// this part checks current and last SUVLiver and corrects the result
-	var SUVLiver = document.getElementById("SUVLiver").value;
-	var SUVLiverPrevious = document.getElementById("SUVLiverPrevious").value;
-	if (SUVLiverPrevious && SUVLiverPrevious.trim() !== "") {
-    var liverCorrectionFactor = parseFloat(SUVLiver) / parseFloat(SUVLiverPrevious);
-    prev = prev * liverCorrectionFactor;
-	}
-//	-------------------
+    var SUVLiver = parseFloat(document.getElementById("SUVLiver").value);
+    var SUVLiverPrevious = document.getElementById("SUVLiverPrevious").value;
 
-    var change = ((current - prev) / prev) * 100;
+    if (SUVLiverPrevious.trim() === "" || isNaN(parseFloat(SUVLiverPrevious))) {
+        SUVLiverPrevious = SUVLiver;
+    } else {
+        SUVLiverPrevious = parseFloat(SUVLiverPrevious);
+    }
 
-    if (change <= -50) {
-        return "ve výrazné metabolické regresi";
-    } else if (change > -50 && change <= -20) {
-        return "v parciální metabolické regresi";
-    } else if (change > -20 && change < 20) {
+    if (isNaN(SUVLiver) || isNaN(SUVLiverPrevious)) {
+        SUVLiver = 3; SUVLiverPrevious = 3;
+    }
+
+    var currentRatio = current / SUVLiver;
+    var prevRatio = prev / SUVLiverPrevious;
+
+    var change = Math.log(currentRatio / prevRatio) * 100;
+
+    if (Math.abs(change) < 20) {
+        return "s obdobnou akumulací RF";
+    } else if (change >= 20 && change < 50) {
+        return "s mírně nižší akumulací RF";
+	} else if (change >= 50 && change < 100) {
+        return "se zřetelně nižší akumulací RF";
+    } else if (change >= 100) {
+        return "s výrazně nižší akumulací RF";
+    } else if (change <= -20 && change > -50) {
+        return "s mírně vyšší akumulací RF";
+	} else if (change <= -50 && change > -100) {
+        return "se zřetelně vyšší akumulací RF";
+    } else if (change <= -100) {
+        return "s výrazně vyšší akumulací RF";
+    }
+}
+
+
+// SUVmax Comparison RES
+
+function compareActRES(currentSUV, previousSUV) {
+    if (!currentSUV || !previousSUV || currentSUV.trim() === "" || previousSUV.trim() === "") {
+        return "";
+    }
+
+    var current = parseFloat(currentSUV.replace('s SUVmax=', '').replace(',', '.').trim());
+    var prev = parseFloat(previousSUV.replace('s SUVmax=', '').replace(',', '.').trim());
+
+    var SUVLiver = parseFloat(document.getElementById("SUVLiver").value);
+    var SUVLiverPrevious = document.getElementById("SUVLiverPrevious").value;
+
+    if (SUVLiverPrevious.trim() === "" || isNaN(parseFloat(SUVLiverPrevious))) {
+        SUVLiverPrevious = SUVLiver;
+    } else {
+        SUVLiverPrevious = parseFloat(SUVLiverPrevious);
+    }
+
+    if (isNaN(SUVLiver) || isNaN(SUVLiverPrevious)) {
+        SUVLiver = 3; SUVLiverPrevious = 3;
+    }
+
+    var currentRatio = current / SUVLiver;
+    var prevRatio = prev / SUVLiverPrevious;
+
+    var change = Math.log(currentRatio / prevRatio) * 100;
+
+    if (Math.abs(change) < 20) {
         return "metabolicky přibližně stacionární";
     } else if (change >= 20 && change < 50) {
+        return "v mírné metabolické progresi";
+	} else if (change >= 50 && change < 100) {
         return "v metabolické progresi";
-    } else if (change >= 50) {
+    } else if (change >= 100) {
         return "ve výrazné metabolické progresi";
+    } else if (change <= -20 && change > -50) {
+        return "v mírné metabolické regresi";
+	} else if (change <= -50 && change > -100) {
+        return "v metabolické regresi";
+    } else if (change <= -100) {
+        return "ve výrazné metabolické regresi";
     }
 }
 
@@ -131,13 +191,17 @@ function compareSizes(currentSize, prevSize) {
     var result = "";
 	if (prevMax === 0) { 
         result = "nově";
-    } else if (change <= -50) {
+    } else if (change <= -60) {
         result = "ve výrazné rozměrové regresi";
-    } else if (change > -50 && change <= -20) {
-        result = "v parciální rozměrové regresi";
-    } else if (change > -20 && change < 20) {
+    } else if (change > -60 && change <= -30) {
+        result = "v rozměrové regresi";
+	} else if (change > -30 && change <= -10) {
+        result = "v mírné rozměrové regresi";
+    } else if (change > -10 && change < 10) {
         result = "rozměrově přibližně stacionární";
-    } else if (change >= 20 && change < 50) {
+    } else if (change >= 10 && change < 20) {
+        result = "v mírné rozměrové progresi";
+	} else if (change >= 20 && change < 50) {
         result = "v rozměrové progresi";
     } else if (change >= 50) {
         result = "ve výrazné rozměrové progresi";
@@ -164,7 +228,23 @@ function combineComparisonResults(sizeRes, suvRes, number) {
         return prefix + sizeRes;
     }
 
-    // No need for separate handling for stationary results
+    if (sizeRes.includes("ve výrazné rozměrové regresi") && suvRes.includes("ve výrazné metabolické regresi")) {
+        return prefix + "ve výrazné rozměrové i metabolické regresi";
+    } else if (sizeRes.includes("v rozměrové regresi") && suvRes.includes("v metabolické regresi")) {
+        return prefix + "v rozměrové i metabolické regresi";
+    } else if (sizeRes.includes("v mírné rozměrové regresi") && suvRes.includes("v mírné metabolické regresi")) {
+        return prefix + "v mírné rozměrové i metabolické regresi";
+    } else if (sizeRes.includes("ve výrazné rozměrové progresi") && suvRes.includes("ve výrazné metabolické progresi")) {
+        return prefix + "ve výrazné rozměrové i metabolické progresi";
+    } else if (sizeRes.includes("v rozměrové progresi") && suvRes.includes("v metabolické progresi")) {
+        return prefix + "v rozměrové i metabolické progresi";
+    } else if (sizeRes.includes("v mírné rozměrové progresi") && suvRes.includes("v mírné metabolické progresi")) {
+        return prefix + "v mírné rozměrové i metabolické progresi";
+    } else if (sizeRes.includes("rozměrově přibližně stacionární") && suvRes.includes("metabolicky přibližně stacionární")) {
+        return prefix + "rozměrově i metabolicky přibližně stacionární";
+    }
+
+
     return prefix + sizeRes + " a " + suvRes;
 }
 
@@ -272,8 +352,8 @@ let codeForNeckLesion1 = `
 	var NeckLesion1AddLocation = document.getElementById("NeckLesion1AddLocation").value;
     var NeckLesion1Loclargest = document.getElementById("NeckLesion1Loclargest").value;
     var NeckLesion1Activity = document.getElementById("NeckLesion1Activity").value; var NeckLesion1ActivityCopy = document.getElementById("NeckLesion1Activity").value;
-	var NeckLesion1RESActivityPSMA = document.getElementById("NeckLesion1Activity"); var selectedOption = NeckLesion1RESActivityPSMA.options[NeckLesion1RESActivityPSMA.selectedIndex]; var NeckLesion1RESActivityPSMA = selectedOption.dataset.valuez1 ? selectedOption.dataset.valuez1 : '';
-    var NeckLesion1RESActivityFDG = document.getElementById("NeckLesion1Activity"); var selectedOption = NeckLesion1RESActivityFDG.options[NeckLesion1RESActivityFDG.selectedIndex]; var NeckLesion1RESActivityFDG = selectedOption.dataset.valuez2 ? selectedOption.dataset.valuez2 : '';
+	var NeckLesion1RESActivityPSMA = document.getElementById("NeckLesion1Activity"); var selectedOption = NeckLesion1RESActivityPSMA.options[NeckLesion1RESActivityPSMA.selectedIndex]; var NeckLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+    var NeckLesion1RESActivityFDG = document.getElementById("NeckLesion1Activity"); var selectedOption = NeckLesion1RESActivityFDG.options[NeckLesion1RESActivityFDG.selectedIndex]; var NeckLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
 	var NeckLesion1SUV = formatSUV("NeckLesion1SUV");
     var NeckLesion1Size = formatLesionSize("NeckLesion1Size");
 	var NeckLesion1RESDecision = document.getElementById("NeckLesion1Decision").value; 
@@ -281,8 +361,8 @@ let codeForNeckLesion1 = `
 	var NeckLesion1SUVPrev = formatSUV("NeckLesion1SUVPrev");  
 	var NeckLesion1PrevSize = formatLesionSize("NeckLesion1PrevSize");
 	
-	var NeckLesion1ComparisonText = generateComparisonText(NeckLesion1SUVPrev, NeckLesion1PrevSize, DateComparison);
-	var NeckLesion1ComparisonSUVRes = compareSUVs(NeckLesion1SUV, NeckLesion1SUVPrev);
+	var NeckLesion1ComparisonText = generateComparisonText(NeckLesion1SUVPrev, NeckLesion1PrevSize, DateComparison, NeckLesion1SUV, NeckLesion1Size);
+	var NeckLesion1ComparisonSUVRes = compareActRES(NeckLesion1SUV, NeckLesion1SUVPrev);
 	var NeckLesion1ComparisonSizeRes = compareSizes(NeckLesion1Size, NeckLesion1PrevSize);
 	var NeckLesion1CombinedResult = combineComparisonResults(NeckLesion1ComparisonSizeRes, NeckLesion1ComparisonSUVRes, NeckLesion1number);
     
@@ -310,7 +390,8 @@ let codeForNeckLesion1 = `
 	} 	
 
 let processedSentencePOPNeckLesion1 = processSentence(NeckLesion1number + " " + NeckLesion1type);	
-window.POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + (NeckLesion1SUV === "" ? NeckLesion1Activity : "") + " " + NeckLesion1SUV + " " + NeckLesion1ComparisonText + ".";
+window.POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + NeckLesion1Activity + " " + NeckLesion1ComparisonText + ".";
+// OLD SUV version: window.POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + (NeckLesion1SUV === "" ? NeckLesion1Activity : "") + " " + NeckLesion1SUV + " " + NeckLesion1ComparisonText + ".";
  
 let processedSentenceRESNeckLesionFDG = processSentence(NeckLesion1number + " " + NeckLesion1RESActivityFDG + " " + NeckLesion1type);
 let processedSentenceRESNeckLesionPSMA = processSentence(NeckLesion1number + " " + NeckLesion1type);
@@ -449,16 +530,16 @@ document.getElementById('NeckLymphNode1Location').value = NeckLymphNode1selectLo
 	var NeckLymphNode1AddLocation = document.getElementById("NeckLymphNode1AddLocation").value;
     var NeckLymphNode1Loclargest = document.getElementById("NeckLymphNode1Loclargest").value;
     var NeckLymphNode1Activity = document.getElementById("NeckLymphNode1Activity").value; var NeckLymphNode1ActivityCopy = document.getElementById("NeckLymphNode1Activity").value;
-	var NeckLymphNode1RESActivityPSMA = document.getElementById("NeckLymphNode1Activity"); var selectedOption = NeckLymphNode1RESActivityPSMA.options[NeckLymphNode1RESActivityPSMA.selectedIndex]; var NeckLymphNode1RESActivityPSMA = selectedOption.dataset.valuez1 ? selectedOption.dataset.valuez1 : '';
-	var NeckLymphNode1RESActivityFDG = document.getElementById("NeckLymphNode1Activity"); var selectedOption = NeckLymphNode1RESActivityFDG.options[NeckLymphNode1RESActivityFDG.selectedIndex]; var NeckLymphNode1RESActivityFDG = selectedOption.dataset.valuez2 ? selectedOption.dataset.valuez2 : '';
+	var NeckLymphNode1RESActivityPSMA = document.getElementById("NeckLymphNode1Activity"); var selectedOption = NeckLymphNode1RESActivityPSMA.options[NeckLymphNode1RESActivityPSMA.selectedIndex]; var NeckLymphNode1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var NeckLymphNode1RESActivityFDG = document.getElementById("NeckLymphNode1Activity"); var selectedOption = NeckLymphNode1RESActivityFDG.options[NeckLymphNode1RESActivityFDG.selectedIndex]; var NeckLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
     var NeckLymphNode1SUV = formatSUV("NeckLymphNode1SUV");
     var NeckLymphNode1Size = formatLymphNodeSize("NeckLymphNode1Size");
-	var NeckLymphNode1RESDecision = document.getElementById("NeckLymphNode1Decision"); var selectedOption = NeckLymphNode1RESDecision.options[NeckLymphNode1RESDecision.selectedIndex]; var NeckLymphNode1RESDecision = selectedOption.dataset.valuez1 ? selectedOption.dataset.valuez1 : '';
+	var NeckLymphNode1RESDecision = document.getElementById("NeckLymphNode1Decision"); var selectedOption = NeckLymphNode1RESDecision.options[NeckLymphNode1RESDecision.selectedIndex]; var NeckLymphNode1RESDecision = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
 	var NeckLymphNode1AllLocations = "";
 	var NeckLymphNode1SUVPrev = formatSUV("NeckLymphNode1SUVPrev");  
 	var NeckLymphNode1PrevSize = formatLymphNodeSize("NeckLymphNode1PrevSize");
-	var NeckLymphNode1ComparisonText = generateComparisonText(NeckLymphNode1SUVPrev, NeckLymphNode1PrevSize, DateComparison);
-	var NeckLymphNode1ComparisonSUVRes = compareSUVs(NeckLymphNode1SUV, NeckLymphNode1SUVPrev);
+	var NeckLymphNode1ComparisonText = generateComparisonText(NeckLymphNode1SUVPrev, NeckLymphNode1PrevSize, DateComparison, NeckLymphNode1SUV, NeckLymphNode1Size);
+	var NeckLymphNode1ComparisonSUVRes = compareActRES(NeckLymphNode1SUV, NeckLymphNode1SUVPrev);
 	var NeckLymphNode1ComparisonSizeRes = compareSizes(NeckLymphNode1Size, NeckLymphNode1PrevSize);
 	var NeckLymphNode1CombinedResult = combineComparisonResults(NeckLymphNode1ComparisonSizeRes, NeckLymphNode1ComparisonSUVRes, NeckLymphNode1number);
 
@@ -485,7 +566,8 @@ document.getElementById('NeckLymphNode1Location').value = NeckLymphNode1selectLo
 	} 	
 
 let processedSentencePOPNeckLymphNode1 = processSentence(NeckLymphNode1number + " " + NeckLymphNode1type);	
-POPNeckLymphNode1 = processedSentencePOPNeckLymphNode1 + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1Loclargest + " " + NeckLymphNode1Size + " " + (NeckLymphNode1SUV === "" ? NeckLymphNode1Activity : "") + " " + NeckLymphNode1SUV + " " + NeckLymphNode1ComparisonText + ".";
+POPNeckLymphNode1 = processedSentencePOPNeckLymphNode1 + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1Loclargest + " " + NeckLymphNode1Size + " " + NeckLymphNode1Activity + " " + NeckLymphNode1ComparisonText + ".";
+
 
 let processedSentenceRESNeckLymphNodeFDG = processSentence(NeckLymphNode1number + " " + NeckLymphNode1RESActivityFDG + " " + NeckLymphNode1type);
 let processedSentenceRESNeckLymphNodePSMA = processSentence(NeckLymphNode1number + " " + NeckLymphNode1type);
@@ -928,8 +1010,8 @@ document.getElementById('ThoraxLesion1Location').value = ThoraxLesion1Locationte
 	var ThoraxLesion1AddLocation = document.getElementById("ThoraxLesion1AddLocation").value;
     var ThoraxLesion1Loclargest = document.getElementById("ThoraxLesion1Loclargest").value;
     var ThoraxLesion1Activity = document.getElementById("ThoraxLesion1Activity").value; var ThoraxLesion1ActivityCopy = document.getElementById("ThoraxLesion1Activity").value;
-	var ThoraxLesion1RESActivityPSMA = document.getElementById("ThoraxLesion1Activity"); var selectedOption = ThoraxLesion1RESActivityPSMA.options[ThoraxLesion1RESActivityPSMA.selectedIndex]; var ThoraxLesion1RESActivityPSMA = selectedOption.dataset.valuez1 ? selectedOption.dataset.valuez1 : '';
-    var ThoraxLesion1RESActivityFDG = document.getElementById("ThoraxLesion1Activity"); var selectedOption = ThoraxLesion1RESActivityFDG.options[ThoraxLesion1RESActivityFDG.selectedIndex]; var ThoraxLesion1RESActivityFDG = selectedOption.dataset.valuez2 ? selectedOption.dataset.valuez2 : '';
+	var ThoraxLesion1RESActivityPSMA = document.getElementById("ThoraxLesion1Activity"); var selectedOption = ThoraxLesion1RESActivityPSMA.options[ThoraxLesion1RESActivityPSMA.selectedIndex]; var ThoraxLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+    var ThoraxLesion1RESActivityFDG = document.getElementById("ThoraxLesion1Activity"); var selectedOption = ThoraxLesion1RESActivityFDG.options[ThoraxLesion1RESActivityFDG.selectedIndex]; var ThoraxLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
 	var ThoraxLesion1SUV = formatSUV("ThoraxLesion1SUV");
     var ThoraxLesion1Size = formatLesionSize("ThoraxLesion1Size");
 	var ThoraxLesion1RESDecision = document.getElementById("ThoraxLesion1Decision").value; 
@@ -937,8 +1019,8 @@ document.getElementById('ThoraxLesion1Location').value = ThoraxLesion1Locationte
 	var ThoraxLesion1SUVPrev = formatSUV("ThoraxLesion1SUVPrev");  
 	var ThoraxLesion1PrevSize = formatLesionSize("ThoraxLesion1PrevSize");
 	
-	var ThoraxLesion1ComparisonText = generateComparisonText(ThoraxLesion1SUVPrev, ThoraxLesion1PrevSize, DateComparison);
-	var ThoraxLesion1ComparisonSUVRes = compareSUVs(ThoraxLesion1SUV, ThoraxLesion1SUVPrev);
+	var ThoraxLesion1ComparisonText = generateComparisonText(ThoraxLesion1SUVPrev, ThoraxLesion1PrevSize, DateComparison, ThoraxLesion1SUV, ThoraxLesion1Size);
+	var ThoraxLesion1ComparisonSUVRes = compareActRES(ThoraxLesion1SUV, ThoraxLesion1SUVPrev);
 	var ThoraxLesion1ComparisonSizeRes = compareSizes(ThoraxLesion1Size, ThoraxLesion1PrevSize);
 	var ThoraxLesion1CombinedResult = combineComparisonResults(ThoraxLesion1ComparisonSizeRes, ThoraxLesion1ComparisonSUVRes, ThoraxLesion1number);
     
@@ -966,7 +1048,7 @@ document.getElementById('ThoraxLesion1Location').value = ThoraxLesion1Locationte
 	} 	
 
 let processedSentencePOPThoraxLesion1 = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);	
-window.POPThoraxLesion1 = processedSentencePOPThoraxLesion1 + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1Loclargest + " " + ThoraxLesion1Size + " " + (ThoraxLesion1SUV === "" ? ThoraxLesion1Activity : "") + " " + ThoraxLesion1SUV + " " + ThoraxLesion1ComparisonText + ".";
+window.POPThoraxLesion1 = processedSentencePOPThoraxLesion1 + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1Loclargest + " " + ThoraxLesion1Size + " " + ThoraxLesion1Activity + " " + ThoraxLesion1ComparisonText + ".";
 
 let processedSentenceRESThoraxLesionFDG = processSentence(ThoraxLesion1number + " " + ThoraxLesion1RESActivityFDG + " " + ThoraxLesion1type);
 let processedSentenceRESThoraxLesionPSMA = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);
@@ -1099,16 +1181,16 @@ if (segments.length === 2) {
 	var ThoraxLymphNode1AddLocation = document.getElementById("ThoraxLymphNode1AddLocation").value;
     var ThoraxLymphNode1Loclargest = document.getElementById("ThoraxLymphNode1Loclargest").value;
     var ThoraxLymphNode1Activity = document.getElementById("ThoraxLymphNode1Activity").value; var ThoraxLymphNode1ActivityCopy = document.getElementById("ThoraxLymphNode1Activity").value;
-	var ThoraxLymphNode1RESActivityPSMA = document.getElementById("ThoraxLymphNode1Activity"); var selectedOption = ThoraxLymphNode1RESActivityPSMA.options[ThoraxLymphNode1RESActivityPSMA.selectedIndex]; var ThoraxLymphNode1RESActivityPSMA = selectedOption.dataset.valuez1 ? selectedOption.dataset.valuez1 : '';
-	var ThoraxLymphNode1RESActivityFDG = document.getElementById("ThoraxLymphNode1Activity"); var selectedOption = ThoraxLymphNode1RESActivityFDG.options[ThoraxLymphNode1RESActivityFDG.selectedIndex]; var ThoraxLymphNode1RESActivityFDG = selectedOption.dataset.valuez2 ? selectedOption.dataset.valuez2 : '';
+	var ThoraxLymphNode1RESActivityPSMA = document.getElementById("ThoraxLymphNode1Activity"); var selectedOption = ThoraxLymphNode1RESActivityPSMA.options[ThoraxLymphNode1RESActivityPSMA.selectedIndex]; var ThoraxLymphNode1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var ThoraxLymphNode1RESActivityFDG = document.getElementById("ThoraxLymphNode1Activity"); var selectedOption = ThoraxLymphNode1RESActivityFDG.options[ThoraxLymphNode1RESActivityFDG.selectedIndex]; var ThoraxLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
     var ThoraxLymphNode1SUV = formatSUV("ThoraxLymphNode1SUV");
     var ThoraxLymphNode1Size = formatLymphNodeSize("ThoraxLymphNode1Size");
-	var ThoraxLymphNode1RESDecision = document.getElementById("ThoraxLymphNode1Decision"); var selectedOption = ThoraxLymphNode1RESDecision.options[ThoraxLymphNode1RESDecision.selectedIndex]; var ThoraxLymphNode1RESDecision = selectedOption.dataset.valuez1 ? selectedOption.dataset.valuez1 : '';
+	var ThoraxLymphNode1RESDecision = document.getElementById("ThoraxLymphNode1Decision"); var selectedOption = ThoraxLymphNode1RESDecision.options[ThoraxLymphNode1RESDecision.selectedIndex]; var ThoraxLymphNode1RESDecision = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
 	var ThoraxLymphNode1AllLocations = "";
 	var ThoraxLymphNode1SUVPrev = formatSUV("ThoraxLymphNode1SUVPrev");  
 	var ThoraxLymphNode1PrevSize = formatLymphNodeSize("ThoraxLymphNode1PrevSize");
-	var ThoraxLymphNode1ComparisonText = generateComparisonText(ThoraxLymphNode1SUVPrev, ThoraxLymphNode1PrevSize, DateComparison);
-	var ThoraxLymphNode1ComparisonSUVRes = compareSUVs(ThoraxLymphNode1SUV, ThoraxLymphNode1SUVPrev);
+	var ThoraxLymphNode1ComparisonText = generateComparisonText(ThoraxLymphNode1SUVPrev, ThoraxLymphNode1PrevSize, DateComparison, ThoraxLymphNode1SUV, ThoraxLymphNode1Size);
+	var ThoraxLymphNode1ComparisonSUVRes = compareActRES(ThoraxLymphNode1SUV, ThoraxLymphNode1SUVPrev);
 	var ThoraxLymphNode1ComparisonSizeRes = compareSizes(ThoraxLymphNode1Size, ThoraxLymphNode1PrevSize);
 	var ThoraxLymphNode1CombinedResult = combineComparisonResults(ThoraxLymphNode1ComparisonSizeRes, ThoraxLymphNode1ComparisonSUVRes, ThoraxLymphNode1number);
 
@@ -1135,7 +1217,7 @@ if (segments.length === 2) {
 	} 	
 
 let processedSentencePOPThoraxLymphNode1 = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1type);	
-POPThoraxLymphNode1 = processedSentencePOPThoraxLymphNode1 + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1Loclargest + " " + ThoraxLymphNode1Size + " " + (ThoraxLymphNode1SUV === "" ? ThoraxLymphNode1Activity : "") + " " + ThoraxLymphNode1SUV + " " + ThoraxLymphNode1ComparisonText + ".";
+POPThoraxLymphNode1 = processedSentencePOPThoraxLymphNode1 + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1Loclargest + " " + ThoraxLymphNode1Size + " " + ThoraxLymphNode1Activity + " " + ThoraxLymphNode1ComparisonText + ".";
 
 let processedSentenceRESThoraxLymphNodeFDG = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1RESActivityFDG + " " + ThoraxLymphNode1type);
 let processedSentenceRESThoraxLymphNodePSMA = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1type);
@@ -1937,8 +2019,8 @@ document.getElementById('AbdomenLesion1Location').value = AbdomenLesion1Location
 	var AbdomenLesion1AddLocation = document.getElementById("AbdomenLesion1AddLocation").value;
     var AbdomenLesion1Loclargest = document.getElementById("AbdomenLesion1Loclargest").value;
     var AbdomenLesion1Activity = document.getElementById("AbdomenLesion1Activity").value; var AbdomenLesion1ActivityCopy = document.getElementById("AbdomenLesion1Activity").value;
-	var AbdomenLesion1RESActivityPSMA = document.getElementById("AbdomenLesion1Activity"); var selectedOption = AbdomenLesion1RESActivityPSMA.options[AbdomenLesion1RESActivityPSMA.selectedIndex]; var AbdomenLesion1RESActivityPSMA = selectedOption.dataset.valuez1 ? selectedOption.dataset.valuez1 : '';
-    var AbdomenLesion1RESActivityFDG = document.getElementById("AbdomenLesion1Activity"); var selectedOption = AbdomenLesion1RESActivityFDG.options[AbdomenLesion1RESActivityFDG.selectedIndex]; var AbdomenLesion1RESActivityFDG = selectedOption.dataset.valuez2 ? selectedOption.dataset.valuez2 : '';
+	var AbdomenLesion1RESActivityPSMA = document.getElementById("AbdomenLesion1Activity"); var selectedOption = AbdomenLesion1RESActivityPSMA.options[AbdomenLesion1RESActivityPSMA.selectedIndex]; var AbdomenLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+    var AbdomenLesion1RESActivityFDG = document.getElementById("AbdomenLesion1Activity"); var selectedOption = AbdomenLesion1RESActivityFDG.options[AbdomenLesion1RESActivityFDG.selectedIndex]; var AbdomenLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
 	var AbdomenLesion1SUV = formatSUV("AbdomenLesion1SUV");
     var AbdomenLesion1Size = formatLesionSize("AbdomenLesion1Size");
 	var AbdomenLesion1RESDecision = document.getElementById("AbdomenLesion1Decision").value; 
@@ -1946,8 +2028,8 @@ document.getElementById('AbdomenLesion1Location').value = AbdomenLesion1Location
 	var AbdomenLesion1SUVPrev = formatSUV("AbdomenLesion1SUVPrev");  
 	var AbdomenLesion1PrevSize = formatLesionSize("AbdomenLesion1PrevSize");
 	
-	var AbdomenLesion1ComparisonText = generateComparisonText(AbdomenLesion1SUVPrev, AbdomenLesion1PrevSize, DateComparison);
-	var AbdomenLesion1ComparisonSUVRes = compareSUVs(AbdomenLesion1SUV, AbdomenLesion1SUVPrev);
+	var AbdomenLesion1ComparisonText = generateComparisonText(AbdomenLesion1SUVPrev, AbdomenLesion1PrevSize, DateComparison, AbdomenLesion1SUV, AbdomenLesion1Size);
+	var AbdomenLesion1ComparisonSUVRes = compareActRES(AbdomenLesion1SUV, AbdomenLesion1SUVPrev);
 	var AbdomenLesion1ComparisonSizeRes = compareSizes(AbdomenLesion1Size, AbdomenLesion1PrevSize);
 	var AbdomenLesion1CombinedResult = combineComparisonResults(AbdomenLesion1ComparisonSizeRes, AbdomenLesion1ComparisonSUVRes, AbdomenLesion1number);
     
@@ -1975,7 +2057,7 @@ document.getElementById('AbdomenLesion1Location').value = AbdomenLesion1Location
 	} 	
 
 let processedSentencePOPAbdomenLesion1 = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);	
-window.POPAbdomenLesion1 = processedSentencePOPAbdomenLesion1 + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1Loclargest + " " + AbdomenLesion1Size + " " + (AbdomenLesion1SUV === "" ? AbdomenLesion1Activity : "") + " " + AbdomenLesion1SUV + " " + AbdomenLesion1ComparisonText + ".";
+window.POPAbdomenLesion1 = processedSentencePOPAbdomenLesion1 + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1Loclargest + " " + AbdomenLesion1Size + " " + AbdomenLesion1Activity + " " + AbdomenLesion1ComparisonText + ".";
 
 let processedSentenceRESAbdomenLesionFDG = processSentence(AbdomenLesion1number + " " + AbdomenLesion1RESActivityFDG + " " + AbdomenLesion1type);
 let processedSentenceRESAbdomenLesionPSMA = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);
@@ -2101,16 +2183,16 @@ document.getElementById('AbdomenLymphNode1Location').value = AbdomenLymphNode1Lo
 	var AbdomenLymphNode1AddLocation = document.getElementById("AbdomenLymphNode1AddLocation").value;
     var AbdomenLymphNode1Loclargest = document.getElementById("AbdomenLymphNode1Loclargest").value;
     var AbdomenLymphNode1Activity = document.getElementById("AbdomenLymphNode1Activity").value; var AbdomenLymphNode1ActivityCopy = document.getElementById("AbdomenLymphNode1Activity").value;
-	var AbdomenLymphNode1RESActivityPSMA = document.getElementById("AbdomenLymphNode1Activity"); var selectedOption = AbdomenLymphNode1RESActivityPSMA.options[AbdomenLymphNode1RESActivityPSMA.selectedIndex]; var AbdomenLymphNode1RESActivityPSMA = selectedOption.dataset.valuez1 ? selectedOption.dataset.valuez1 : '';
-	var AbdomenLymphNode1RESActivityFDG = document.getElementById("AbdomenLymphNode1Activity"); var selectedOption = AbdomenLymphNode1RESActivityFDG.options[AbdomenLymphNode1RESActivityFDG.selectedIndex]; var AbdomenLymphNode1RESActivityFDG = selectedOption.dataset.valuez2 ? selectedOption.dataset.valuez2 : '';
+	var AbdomenLymphNode1RESActivityPSMA = document.getElementById("AbdomenLymphNode1Activity"); var selectedOption = AbdomenLymphNode1RESActivityPSMA.options[AbdomenLymphNode1RESActivityPSMA.selectedIndex]; var AbdomenLymphNode1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var AbdomenLymphNode1RESActivityFDG = document.getElementById("AbdomenLymphNode1Activity"); var selectedOption = AbdomenLymphNode1RESActivityFDG.options[AbdomenLymphNode1RESActivityFDG.selectedIndex]; var AbdomenLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
     var AbdomenLymphNode1SUV = formatSUV("AbdomenLymphNode1SUV");
     var AbdomenLymphNode1Size = formatLymphNodeSize("AbdomenLymphNode1Size");
-	var AbdomenLymphNode1RESDecision = document.getElementById("AbdomenLymphNode1Decision"); var selectedOption = AbdomenLymphNode1RESDecision.options[AbdomenLymphNode1RESDecision.selectedIndex]; var AbdomenLymphNode1RESDecision = selectedOption.dataset.valuez1 ? selectedOption.dataset.valuez1 : '';
+	var AbdomenLymphNode1RESDecision = document.getElementById("AbdomenLymphNode1Decision"); var selectedOption = AbdomenLymphNode1RESDecision.options[AbdomenLymphNode1RESDecision.selectedIndex]; var AbdomenLymphNode1RESDecision = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
 	var AbdomenLymphNode1AllLocations = "";
 	var AbdomenLymphNode1SUVPrev = formatSUV("AbdomenLymphNode1SUVPrev");  
 	var AbdomenLymphNode1PrevSize = formatLymphNodeSize("AbdomenLymphNode1PrevSize");
-	var AbdomenLymphNode1ComparisonText = generateComparisonText(AbdomenLymphNode1SUVPrev, AbdomenLymphNode1PrevSize, DateComparison);
-	var AbdomenLymphNode1ComparisonSUVRes = compareSUVs(AbdomenLymphNode1SUV, AbdomenLymphNode1SUVPrev);
+	var AbdomenLymphNode1ComparisonText = generateComparisonText(AbdomenLymphNode1SUVPrev, AbdomenLymphNode1PrevSize, DateComparison, AbdomenLymphNode1SUV, AbdomenLymphNode1Size);
+	var AbdomenLymphNode1ComparisonSUVRes = compareActRES(AbdomenLymphNode1SUV, AbdomenLymphNode1SUVPrev);
 	var AbdomenLymphNode1ComparisonSizeRes = compareSizes(AbdomenLymphNode1Size, AbdomenLymphNode1PrevSize);
 	var AbdomenLymphNode1CombinedResult = combineComparisonResults(AbdomenLymphNode1ComparisonSizeRes, AbdomenLymphNode1ComparisonSUVRes, AbdomenLymphNode1number);
 
@@ -2137,7 +2219,7 @@ document.getElementById('AbdomenLymphNode1Location').value = AbdomenLymphNode1Lo
 	} 	
 
 let processedSentencePOPAbdomenLymphNode1 = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1type);	
-POPAbdomenLymphNode1 = processedSentencePOPAbdomenLymphNode1 + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1Loclargest + " " + AbdomenLymphNode1Size + " " + (AbdomenLymphNode1SUV === "" ? AbdomenLymphNode1Activity : "") + " " + AbdomenLymphNode1SUV + " " + AbdomenLymphNode1ComparisonText + ".";
+POPAbdomenLymphNode1 = processedSentencePOPAbdomenLymphNode1 + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1Loclargest + " " + AbdomenLymphNode1Size + " " + AbdomenLymphNode1Activity + " " + AbdomenLymphNode1ComparisonText + ".";
 
 let processedSentenceRESAbdomenLymphNodeFDG = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1RESActivityFDG + " " + AbdomenLymphNode1type);
 let processedSentenceRESAbdomenLymphNodePSMA = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1type);
@@ -2982,8 +3064,8 @@ var arr = SkeletonLesion1Locationtext.split(", ");
 	var SkeletonLesion1AddLocation = document.getElementById("SkeletonLesion1AddLocation").value;
     var SkeletonLesion1Loclargest = document.getElementById("SkeletonLesion1Loclargest").value;
     var SkeletonLesion1Activity = document.getElementById("SkeletonLesion1Activity").value; var SkeletonLesion1ActivityCopy = document.getElementById("SkeletonLesion1Activity").value;
-	var SkeletonLesion1RESActivityPSMA = document.getElementById("SkeletonLesion1Activity"); var selectedOption = SkeletonLesion1RESActivityPSMA.options[SkeletonLesion1RESActivityPSMA.selectedIndex]; var SkeletonLesion1RESActivityPSMA = selectedOption.dataset.valuez1 ? selectedOption.dataset.valuez1 : '';
-    var SkeletonLesion1RESActivityFDG = document.getElementById("SkeletonLesion1Activity"); var selectedOption = SkeletonLesion1RESActivityFDG.options[SkeletonLesion1RESActivityFDG.selectedIndex]; var SkeletonLesion1RESActivityFDG = selectedOption.dataset.valuez2 ? selectedOption.dataset.valuez2 : '';
+	var SkeletonLesion1RESActivityPSMA = document.getElementById("SkeletonLesion1Activity"); var selectedOption = SkeletonLesion1RESActivityPSMA.options[SkeletonLesion1RESActivityPSMA.selectedIndex]; var SkeletonLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+    var SkeletonLesion1RESActivityFDG = document.getElementById("SkeletonLesion1Activity"); var selectedOption = SkeletonLesion1RESActivityFDG.options[SkeletonLesion1RESActivityFDG.selectedIndex]; var SkeletonLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
 	var SkeletonLesion1SUV = formatSUV("SkeletonLesion1SUV");
     var SkeletonLesion1Size = formatLesionSize("SkeletonLesion1Size");
 	var SkeletonLesion1RESDecision = document.getElementById("SkeletonLesion1Decision").value; 
@@ -2991,8 +3073,8 @@ var arr = SkeletonLesion1Locationtext.split(", ");
 	var SkeletonLesion1SUVPrev = formatSUV("SkeletonLesion1SUVPrev");  
 	var SkeletonLesion1PrevSize = formatLesionSize("SkeletonLesion1PrevSize");
 	
-	var SkeletonLesion1ComparisonText = generateComparisonText(SkeletonLesion1SUVPrev, SkeletonLesion1PrevSize, DateComparison);
-	var SkeletonLesion1ComparisonSUVRes = compareSUVs(SkeletonLesion1SUV, SkeletonLesion1SUVPrev);
+	var SkeletonLesion1ComparisonText = generateComparisonText(SkeletonLesion1SUVPrev, SkeletonLesion1PrevSize, DateComparison, SkeletonLesion1SUV, SkeletonLesion1Size);
+	var SkeletonLesion1ComparisonSUVRes = compareActRES(SkeletonLesion1SUV, SkeletonLesion1SUVPrev);
 	var SkeletonLesion1ComparisonSizeRes = compareSizes(SkeletonLesion1Size, SkeletonLesion1PrevSize);
 	var SkeletonLesion1CombinedResult = combineComparisonResults(SkeletonLesion1ComparisonSizeRes, SkeletonLesion1ComparisonSUVRes, SkeletonLesion1number);
     
@@ -3020,7 +3102,7 @@ var arr = SkeletonLesion1Locationtext.split(", ");
 	} 	
 
 let processedSentencePOPSkeletonLesion1 = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);	
-window.POPSkeletonLesion1 = processedSentencePOPSkeletonLesion1 + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1Loclargest + " " + SkeletonLesion1Size + " " + (SkeletonLesion1SUV === "" ? SkeletonLesion1Activity : "") + " " + SkeletonLesion1SUV + " " + SkeletonLesion1ComparisonText + ".";
+window.POPSkeletonLesion1 = processedSentencePOPSkeletonLesion1 + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1Loclargest + " " + SkeletonLesion1Size + " " + SkeletonLesion1Activity + " " + SkeletonLesion1ComparisonText + ".";
 
 let processedSentenceRESSkeletonLesionFDG = processSentence(SkeletonLesion1number + " " + SkeletonLesion1RESActivityFDG + " " + SkeletonLesion1type);
 let processedSentenceRESSkeletonLesionPSMA = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);
@@ -3259,32 +3341,21 @@ if ((window.POPSkeletonLesion1 !== "") || (window.POPSkeletonLesion2 !== "") || 
 //Latest examination comparison
 if (DateCompare === "") {ExamCompareText = ""; POPExamCompareText = "";} else {ExamCompareText = "Oproti vyšetření z " + DateComparison + ":"; POPExamCompareText = "Srovnáno s vyšetřením z " + DateComparison + ". ";}
 
+//ReferenceText
 
-//SUVLiver
-var SUVLiver = document.getElementById('SUVLiver').value; SUVLiver = SUVLiver.trim().replace('.', ',');
-var SUVLiverPrevious = document.getElementById("SUVLiverPrevious").value; SUVLiverPrevious = SUVLiverPrevious.trim().replace('.', ',');
-var SUVLiverText = "";
-if (SUVLiver === "" && SUVLiverPrevious === "") {
-    SUVLiverText = "";
-} else if (SUVLiver !== "" && SUVLiverPrevious === "") {
-    SUVLiverText = "Jaterní parenchym s SUVmax=" + SUVLiver + ". ";
-} else if (SUVLiver !== "" && SUVLiverPrevious !== "") {
-    SUVLiverText = "Jaterní parenchym s SUVmax=" + SUVLiver + " (minule " + DateComparison + " byla hodnota " + SUVLiverPrevious + "), tedy v závěru bude zohledněna korekce.";
-}
-
-//SUVParotid or Splenic
+var ReferenceText = "";
+var SUVLiver = document.getElementById("SUVLiver").value;
 var SUVParotid = document.getElementById('SUVParotid').value;
-SUVParotid = SUVParotid.trim().replace('.', ',');
-var SUVParotidText = "";
 
-if (SUVParotid === "") {
-    SUVParotidText = "";
-} else if (PETTypeText === "PSMA") {
-    SUVParotidText = "Parotické žlázy s SUVmax=" + SUVParotid + ". ";
-} else if (PETTypeText === "DOTATOC") {
-    SUVParotidText = "Slezina s SUVmax=" + SUVParotid + ". ";
-}
-
+if (buttonElementPETType.value === "FDG" && SUVLiver !== "") {
+    ReferenceText = "Akumulace RF vztažena k referenčním játrům.";
+  }
+if (buttonElementPETType.value === "PSMA" && SUVLiver !== "" && SUVParotid !== "") {
+    ReferenceText = "Akumulace RF vztažena k referenčním játrům a parotidám.";
+  }
+if (buttonElementPETType.value === "DOTATOC" && SUVLiver !== "" && SUVParotid !== "") {
+    ReferenceText = "Akumulace RF vztažena k referenčním játrům a slezině.";
+  }
 	
 // POPIS
 
@@ -3304,7 +3375,7 @@ POPExamCompareText + "\n" +
 	AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + " " + AbdomenVesselsText + "\n" +
 "Skelet a měkké tkáně: " + POPSkeletonNative + " " + window.POPSkeletonLesion1 + " " + window.POPSkeletonLesion2 + " " + window.POPSkeletonLesion3 + " " + SkeletonOther1Priority + " " + 
 	SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + "\n" +			
-ObecneTexts + " " + ObecneNativeText + " " + SUVLiverText + " " + SUVParotidText;
+ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 
 
 	POPText.value = POPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
@@ -3315,7 +3386,7 @@ ObecneTexts + " " + ObecneNativeText + " " + SUVLiverText + " " + SUVParotidText
 	POPText.value = POPText.value.replace(/\s\)/g, ')');   // mezera závorka = jen závorka
 
 
-//  Modifikátor: nastaví "minule shodného obrazu", když má ložisko teď a minule stejná měření
+	//  Modifikátor: nastaví "minule shodného obrazu", když má ložisko teď a minule stejná měření - nyní nefunkční
     let originalPOPText = POPText.value;
     let regex = /\((minule[^)]+)\)/g;
     let correctedPOPText = originalPOPText;
@@ -3341,6 +3412,14 @@ ObecneTexts + " " + ObecneNativeText + " " + SUVLiverText + " " + SUVParotidText
 
     POPText.value = correctedPOPText;
 
+	// když DOTATOC nebo PSMA, změna popisu akumulace Parotid nebo sleziny
+	if (buttonElementPETType.value === "PSMA") {
+        POPText.value = POPText.value.replace(/>> ref. játra/g, '> ref. parotidy');
+    }
+	
+	if (buttonElementPETType.value === "DOTATOC") {
+        POPText.value = POPText.value.replace(/>> ref. játra/g, '> ref. slezina');
+    }
 
 
 // ZÁVĚR
@@ -3416,11 +3495,15 @@ RESTextNoNew
 	RESText.value = RESText.value.replace(/ :/g, ':');  // odstraní mezeru před dvojtečkou
 	
 	//když je vybrán DODATOC zněma závěru
-	 if (buttonElementPETType.value === "DOTATOC") {
+	if (buttonElementPETType.value === "DOTATOC") {
         RESText.value = RESText.value.replace(/bez PSMA exprese/g, 'bez zvýšené koncentrace somatostatinových receptorů');
 		RESText.value = RESText.value.replace(/PSMA expresí/g, 'koncentrací somatostatinových receptorů');
+		RESText.value = RESText.value.replace(/metabolické/g, 'akumulační').replace(/metabolicky/g, 'akumulačně');
     }
-
+	
+	if (buttonElementPETType.value === "PSMA") {
+        RESText.value = RESText.value.replace(/metabolické/g, 'akumulační').replace(/metabolicky/g, 'akumulačně');
+    }
 
 }
 updateTexts();
