@@ -248,6 +248,33 @@ function combineComparisonResults(sizeRes, suvRes, number) {
     return prefix + sizeRes + " a " + suvRes;
 }
 
+// smallSize
+
+function checkSmallSize(LesionSize, LesionSUV) {
+    var SUVLiver = parseFloat(document.getElementById("SUVLiver").value);
+    var LesionSUVValue = LesionSUV ? parseFloat(LesionSUV.replace('s SUVmax=', '').replace(',', '.').trim()) : null;
+    var LesionSizeValue = LesionSize ? getMaxDimension(LesionSize) : null;
+    var SUVLiverRatio = LesionSUVValue !== null ? LesionSUVValue / SUVLiver : null;
+    var SizeSUVRatio = LesionSizeValue !== null ? LesionSizeValue / SUVLiverRatio : null;
+
+    // Debug values
+    console.log('LesionSize:', LesionSizeValue);
+    console.log('LesionSUV:', LesionSUVValue);
+    console.log('SUVLiver:', SUVLiver);
+    console.log('SUVLiverRatio:', SUVLiverRatio);
+    console.log('SizeSUVRatio:', SizeSUVRatio);
+
+    if (LesionSizeValue !== null && SUVLiverRatio !== null && SizeSUVRatio !== null) {
+        if (SUVLiverRatio < 0.8 && LesionSizeValue < 9 &&SizeSUVRatio < 9) {
+            return "(vzhledem k malým rozměrům je i tato metabolická aktivita signifikantní)";
+        }
+    }
+    return "";
+}
+
+	
+
+
 // viability check
 
 function checkViability(text) {
@@ -365,6 +392,7 @@ let codeForNeckLesion1 = `
 	var NeckLesion1ComparisonSUVRes = compareActRES(NeckLesion1SUV, NeckLesion1SUVPrev);
 	var NeckLesion1ComparisonSizeRes = compareSizes(NeckLesion1Size, NeckLesion1PrevSize);
 	var NeckLesion1CombinedResult = combineComparisonResults(NeckLesion1ComparisonSizeRes, NeckLesion1ComparisonSUVRes, NeckLesion1number);
+	var NeckLesion1ActivityAdd = checkSmallSize(NeckLesion1Size, NeckLesion1SUV);
     
     var POPNeckLesion1 = "";
 	var RESNeckLesion1 = "";
@@ -397,9 +425,9 @@ let processedSentenceRESNeckLesionFDG = processSentence(NeckLesion1number + " " 
 let processedSentenceRESNeckLesionPSMA = processSentence(NeckLesion1number + " " + NeckLesion1type);
 
 if (buttonElementPETType.value === "FDG") {
-	window.RESNeckLesion1 = processedSentenceRESNeckLesionFDG + " " + NeckLesion1AllLocations + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + ".";
+	window.RESNeckLesion1 = processedSentenceRESNeckLesionFDG + " " + NeckLesion1AllLocations + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
 } else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	window.RESNeckLesion1 = processedSentenceRESNeckLesionPSMA + " " + NeckLesion1AllLocations + " " + NeckLesion1RESActivityPSMA + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + ".";
+	window.RESNeckLesion1 = processedSentenceRESNeckLesionPSMA + " " + NeckLesion1AllLocations + " " + NeckLesion1RESActivityPSMA + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
 }
 
 if (NeckLesion1RESDecision.includes("meta") && NeckLesion1type.includes("ožisk")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}

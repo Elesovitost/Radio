@@ -1195,7 +1195,7 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
     let suv = parseFloat(document.getElementById(`${name}SUV`).value);
     let Liver = parseFloat(document.getElementById('SUVLiver').value);
     let Parotid = parseFloat(document.getElementById('SUVParotid').value);
-    let aktSelect = document.getElementById(`${name}Activity`);;
+    let aktSelect = document.getElementById(`${name}Activity`);
     let ratio = suv / Liver;
 
     if (buttonElementPETType.value === "FDG") {
@@ -1228,8 +1228,10 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
   });
 });  
 
+
 	 
-	 
+
+// ostatní
 
 document.getElementById('SUVLiver').addEventListener('input', () => {
   let event = new Event('input');

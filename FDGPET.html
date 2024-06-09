@@ -9,9 +9,13 @@
 
 table {width: auto; white-space: nowrap;}
 
-.tumor-button {width: 25px; height: 25px; background-image: url('Atumor.png'); background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 0; margin: 0;}
-.lymphnode-button {width: 25px; height: 25px; background-image: url('Alymphnode.png'); background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 0; margin: 0;}
-.other-button {width: 25px; height: 25px; background-image: url('Aothers.png'); background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 2; margin: 2;}
+.tumor_button {width: 25px; height: 25px; background-image: url('Atumor.png'); background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 0; margin: 0;}
+.tumor_button_XS {width: 20px; height: 20px; background-image: url('Atumor.png'); background-color: #FFADAD; background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 0; margin: 0; display: inline-block; vertical-align: middle;}
+.button_text {display: inline-block; vertical-align: middle; width: 55px; line-height: 12px; margin-left: 5px;}
+.lymphnode_button {width: 25px; height: 25px; background-image: url('Alymphnode.png'); background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 0; margin: 0;}
+.lymphnode_button_XS {width: 20px; height: 20px; background-image: url('Alymphnode.png'); background-color: #FFADAD; background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 0; margin: 0; display: inline-block; vertical-align: middle;}
+.other_button {width: 25px; height: 25px; background-image: url('Aothers.png'); background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 2; margin: 2;}
+.other_button_XS {width: 20px; height: 20px; background-image: url('Aothers.png'); background-color: #FFADAD; background-size: cover; background-repeat: no-repeat; border-radius: 50%; cursor: pointer; padding: 0; margin: 0; display: inline-block; vertical-align: middle;}
 
 #krknodImage, #mednodImage, #chestsegImage {
   position: fixed;
@@ -74,15 +78,15 @@ table {width: auto; white-space: nowrap;}
 
 	<div class="" id="hlava-krk">
 	
-		<button id="NeckNewLesions" class="tumor-button"  style="position: absolute; top: 160px; left: 180px;"></button>
-		<button id="NeckNewLymphNode1" class="lymphnode-button" style="position: absolute; top: 180px; left: 200px;"></button> 
-		<button id="NeckNewOther1" class="other-button" style="position: absolute; top: 160px; left: 250px;"></button>
+		<button id="NeckNewLesions" class="tumor_button"  style="position: absolute; top: 160px; left: 180px;"></button>
+		<button id="NeckNewLymphNode1" class="lymphnode_button" style="position: absolute; top: 180px; left: 200px;"></button> 
+		<button id="NeckNewOther1" class="other_button" style="position: absolute; top: 160px; left: 250px;"></button>
 	
 		<!-- NECK LESION1 -->
 		<div>
 		<table id="NeckLesion1" class="LesionX hidden">
 			<tr>
-				<td><button id="NeckLesion1no" class="myButtonLesionS">KRK L1</button></td>
+				<td><button id="NeckLesion1no" class="tumor_button_XS"></button><span class="button_text">KRK </span></td>
 				<td><select id="NeckLesion1type" class="selectLESION" onchange="updateTexts()">
 					<option value="ložisko| ložiska"selected>ložisko</option>
 					<option value="masa| masy">masa</option>
@@ -177,7 +181,7 @@ table {width: auto; white-space: nowrap;}
 
 		<table id="NeckLymphNode1" class="LymphNodeX hidden" >
 			<tr>
-				<td><button id="NeckLymphNode1no" class="myButtonLesionS">KRK LN</button></td>
+				<td><button id="NeckLymphNode1no" class="lymphnode_button_XS"></button><span class="button_text">KRK </span></td>
 				<td><select id="NeckLymphNode1type" class="selectLESION" onchange="updateTexts()">
 					<option value="uzlina| uzliny"selected>uzlina</option>
 					<option value="paket| pakety">paket</option>
@@ -253,7 +257,7 @@ table {width: auto; white-space: nowrap;}
 
 		<table id="NeckOther1" class="LymphNodeX hidden" >
 			<tr>
-				 <td style="width: 1%; white-space: nowrap;"><button id="NeckOther1no" class="myButtonLesionS">KRK</button></td>
+				 <td style="width: 0.1%; white-space: nowrap;"><button id="NeckOther1no" class="other_button_XS"></button><span class="button_text">KRK </span></td>
 				<td><textarea id="NeckOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"  style="width: 100%;"></textarea></td>
 				<td><textarea id="NeckOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"  style="width: 100%;"></textarea></td>
 			</tr>
@@ -266,14 +270,14 @@ table {width: auto; white-space: nowrap;}
 	
 	<div class="" id="hrudnik">
 	
-		<button id="ThoraxNewLesions" class="tumor-button"  style="position: absolute; top: 250px; left: 160px;"></button>
-		<button id="ThoraxNewLymphNode1" class="lymphnode-button" style="position: absolute; top: 250px; left: 190px;"></button> 
-		<button id="ThoraxNewOther1" class="other-button" style="position: absolute; top: 250px; left: 250px;"></button>
+		<button id="ThoraxNewLesions" class="tumor_button"  style="position: absolute; top: 250px; left: 160px;"></button>
+		<button id="ThoraxNewLymphNode1" class="lymphnode_button" style="position: absolute; top: 250px; left: 190px;"></button> 
+		<button id="ThoraxNewOther1" class="other_button" style="position: absolute; top: 250px; left: 250px;"></button>
 	
 		<div>
 		<table id="ThoraxLesion1" class="LesionX hidden" >
 			<tr>
-				<td><button id="ThoraxLesion1no" class="myButtonLesionS">HRUDNÍK L1</button></td>
+				<td><button id="ThoraxLesion1no" class="tumor_button_XS"></button><span class="button_text">HRUDNÍK </span></td>
 				<td><select id="ThoraxLesion1type" class="selectLESION" onchange="updateTexts()">
 					<option value="ložisko| ložiska"selected>ložisko</option>
 					<option value="nodul| noduly">nodul</option>
@@ -402,7 +406,7 @@ table {width: auto; white-space: nowrap;}
 
 		<table id="ThoraxLymphNode1" class="LymphNodeX hidden" >
 			<tr>
-				<td><button id="ThoraxLymphNode1no" class="myButtonLesionS">HRUDNÍK LN</button></td>
+				<td><button id="ThoraxLymphNode1no" class="lymphnode_button_XS"></button><span class="button_text">HRUDNÍK </span></td>
 				<td><select id="ThoraxLymphNode1type" class="selectLESION" onchange="updateTexts()">
 					<option value="uzlina| uzliny"selected>uzlina</option>
 					<option value="paket| pakety">paket</option>
@@ -506,7 +510,7 @@ table {width: auto; white-space: nowrap;}
 
 		<table id="ThoraxOther1" class="LymphNodeX hidden" >
 			<tr>
-				 <td style="width: 1%; white-space: nowrap;"><button id="ThoraxOther1no" class="myButtonLesionS">HRUDNÍK</button></td>
+				 <td style="width: 1%; white-space: nowrap;"><button id="ThoraxOther1no" class="other_button_XS"></button></button><span class="button_text">HRUDNÍK </span></td>
 				<td><textarea id="ThoraxOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
 				<td><textarea id="ThoraxOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
 			</tr>
@@ -519,16 +523,16 @@ table {width: auto; white-space: nowrap;}
 	
 	<div class="" id="bricho">
 	
-		<button id="AbdomenNewLesions" class="tumor-button"  style="position: absolute; top: 400px; left: 160px;"></button>
-		<button id="AbdomenNewLymphNode1" class="lymphnode-button" style="position: absolute; top: 380px; left: 190px;"></button> 
-		<button id="AbdomenNewOther1" class="other-button" style="position: absolute; top: 365px; left: 250px;"></button>
+		<button id="AbdomenNewLesions" class="tumor_button"  style="position: absolute; top: 400px; left: 160px;"></button>
+		<button id="AbdomenNewLymphNode1" class="lymphnode_button" style="position: absolute; top: 380px; left: 190px;"></button> 
+		<button id="AbdomenNewOther1" class="other_button" style="position: absolute; top: 365px; left: 250px;"></button>
 	
 	<!-- ABDOMEN LESION1 -->
 		
 		<div>
 		<table id="AbdomenLesion1" class="LesionX hidden">
 			<tr>
-				<td><button id="AbdomenLesion1no" class="myButtonLesionS">BŘICHO L1</button></td>
+				<td><button id="AbdomenLesion1no" class="tumor_button_XS"></button><span class="button_text">BŘICHO </span></td>
 				<td><select id="AbdomenLesion1type" class="selectLESION" onchange="updateTexts()">
 					<option value="ložisko| ložiska"selected>ložisko</option>
 					<option value="masa| masy">masa</option>
@@ -864,7 +868,7 @@ table {width: auto; white-space: nowrap;}
 
 		<table id="AbdomenLymphNode1" class="LymphNodeX hidden" >
 			<tr>
-				<td><button id="AbdomenLymphNode1no" class="myButtonLesionS">BŘICHO LN</button></td>
+				<td><button id="AbdomenLymphNode1no" class="lymphnode_button_XS"></button><span class="button_text">BŘICHO </span></td>
 				<td><select id="AbdomenLymphNode1type" class="selectLESION" onchange="updateTexts()">
 					<option value="uzlina| uzliny"selected>uzlina</option>
 					<option value="paket| pakety">paket</option>
@@ -950,7 +954,7 @@ table {width: auto; white-space: nowrap;}
 		<!-- ABODMEN OTHERS -->
 		<table id="AbdomenOther1" class="LymphNodeX hidden" >
 			<tr>
-				<td style="width: 1%; white-space: nowrap;"><button id="AbdomenOther1no" class="myButtonLesionS">BŘICHO</button></td>
+				<td style="width: 1%; white-space: nowrap;"><button id="AbdomenOther1no" class="other_button_XS"></button><span class="button_text">BŘICHO </span></td>
 				<td><textarea id="AbdomenOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
 				<td><textarea id="AbdomenOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
 			</tr>
@@ -963,8 +967,8 @@ table {width: auto; white-space: nowrap;}
 		
 	<div class="" id="skelet">
 	
-		<button id="SkeletonNewLesions" class="tumor-button"  style="position: absolute; top:550px; left: 135px;"></button>
-		<button id="SkeletonNewOther1" class="other-button" style="position: absolute; top: 550px; left: 250px;"></button>
+		<button id="SkeletonNewLesions" class="tumor_button"  style="position: absolute; top:550px; left: 135px;"></button>
+		<button id="SkeletonNewOther1" class="other_button" style="position: absolute; top: 550px; left: 250px;"></button>
 	
 	
 		<!-- SKELETON LESIONS -->	
@@ -972,7 +976,7 @@ table {width: auto; white-space: nowrap;}
 		<div>
 		<table id="SkeletonLesion1" class="LesionX hidden">
 			<tr>
-				<td><button id="SkeletonLesion1no" class="myButtonLesionS">SKELET L1</button></td>
+				<td><button id="SkeletonLesion1no" class="tumor_button_XS"></button><span class="button_text">SKELET </span></td>
 				<td><select id="SkeletonLesion1type" class="selectLESION" onchange="updateTexts()">
 					<option value="ložisko| ložiska" selected>ložisko</option>
 					<option value="ložisko kostní dřeně| ložiska kostní dřeně">- dřeně</option>
@@ -1076,7 +1080,7 @@ table {width: auto; white-space: nowrap;}
 
 		<table id="SkeletonOther1" class="LymphNodeX hidden" >
 			<tr>
-				<td style="width: 1%; white-space: nowrap;"><button id="SkeletonOther1no" class="myButtonLesionS">SKELET</button></td>
+				<td style="width: 1%; white-space: nowrap;"><button id="SkeletonOther1no" class="other_button_XS"></button><span class="button_text">SKELET </span></td>
 				<td><textarea id="SkeletonOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
 				<td><textarea id="SkeletonOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 100%;"></textarea></td>
 			</tr>
