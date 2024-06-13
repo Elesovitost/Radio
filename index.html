@@ -31,7 +31,6 @@
 		<button class="dropbtn">PET/CT</button>
 		<div class="dropdown-content">
 			<a href="#" onclick="changePage('FDGPET.html')">PET/CT/MR trupu</a>
-			<a href="#" onclick="changePage('FDGPETold.html')">PET/CT/MR trupu OLD</a>
 			<a href="#" onclick="changePage('NaFskelet.html')">PET/CT NaF skeletu</a>
 		</div>
 	</div>
@@ -431,7 +430,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			} else if (firstLine.includes("PET/CT") && 
                    !text.includes("vztažena k referenčním") && 
                    (!text.includes("Bez známek přítomnosti") ||
-					text.includes("ypermetabol") || 
+					text.includes("> ref. játra") || 
                     text.includes("metabolicky aktivní") || 
                     text.includes("expresí") || 
                     text.includes("koncentrací"))) {

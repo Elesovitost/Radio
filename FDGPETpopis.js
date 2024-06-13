@@ -2142,9 +2142,9 @@ var descriptions = [];
 
 if (ChbAbdomenSubphrenic) descriptions.push("subfrenicky");
 if (ChbAbdomenPeriportal) descriptions.push("periportálně");
-if (ChbAbdomenMesenterial) descriptions.push("mesenteria");
-if (ChbAbdomenRetroperit) descriptions.push("retroperitonea");
-if (ChbAbdomenPelvic) descriptions.push("pánve");
+if (ChbAbdomenMesenterial) descriptions.push("v mesenteriu");
+if (ChbAbdomenRetroperit) descriptions.push("v retroperitoneu");
+if (ChbAbdomenPelvic) descriptions.push("v pánvi");
 
 if (ChbAbdomenParaaortalR && ChbAbdomenParaaortalL) {
     descriptions.push("paraortálně bilat.");

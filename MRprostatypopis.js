@@ -79,11 +79,11 @@ document.getElementById('ProstateLesion1Location').value = segmentsLesion1.join(
 
 // Number
 
-let buttonIDLesion1 = document.getElementById('ProstateLesion1No').id;
-let matchLesion1 = buttonIDLesion1.match(/(\d)[^\d]{2}$/);
-if (matchLesion1) {
-	var ProstateLesion1Number = "Ložisko č. " + matchLesion1[1] + ": ";  
-}
+// let buttonIDLesion1 = document.getElementById('ProstateLesion1No').id;
+// let matchLesion1 = buttonIDLesion1.match(/(\d)[^\d]{2}$/);
+// if (matchLesion1) {
+//	var ProstateLesion1Number = "Ložisko č. " + matchLesion1[1] + ": ";  
+// }
 
 // T2
 const ProstateLesion1T2Text = buttonElementProstateLesion1T2.innerText;
@@ -280,8 +280,8 @@ const prostateTableLesion1 = document.querySelector('#ProstateLesion1');
 var ProstateLesion1P = ""; var ProstateLesion1R = "";
 if (!prostateTableLesion1.classList.contains('hidden') && prostateSegmentLesion1 !== "") {
     const isPeripheral = segmentsLesion1.length > 0 && segmentsLesion1[0].charAt(0) === 'P';
-    ProstateLesion1P = ProstateLesion1Number + " " + prostateSegmentLesion1 + " " + ProstateLesion1SizeP + " " + (isPeripheral ? "" : ProstateLesion1T2P) + " " + ProstateLesion1DWIP + " " + ProstateLesion1CP + " " + ProstateLesion1InvasionP + " " + ProstateLesion1PSMAP + ".";
-    ProstateLesion1R = ProstateLesion1Number + ProstateLesion1PIRADSText + " - " + prostateSegmentLesion1 + " " + ProstateLesion1InvasionR + " " + ProstateLesion1PSMAR + ".";
+    ProstateLesion1P = "Ložisko " + " " + prostateSegmentLesion1 + " " + ProstateLesion1SizeP + " " + (isPeripheral ? "" : ProstateLesion1T2P) + " " + ProstateLesion1DWIP + " " + ProstateLesion1CP + " " + ProstateLesion1InvasionP + " " + ProstateLesion1PSMAP + ".";
+    ProstateLesion1R = "Ložisko " + ProstateLesion1PIRADSText + " - " + prostateSegmentLesion1 + " " + ProstateLesion1InvasionR + " " + ProstateLesion1PSMAR + ".";
 }
 
 //LESION2
@@ -562,8 +562,8 @@ const prostateTableLesion2 = document.querySelector('#ProstateLesion2');
 var ProstateLesion2P = ""; var ProstateLesion2R = "";
 if (!prostateTableLesion2.classList.contains('hidden') && prostateSegmentLesion2 !== "") {
     const isPeripheral = segmentsLesion2.length > 0 && segmentsLesion2[0].charAt(0) === 'P';
-    ProstateLesion2P = ProstateLesion2Number + " " + prostateSegmentLesion2 + " " + ProstateLesion2SizeP + " " + (isPeripheral ? "" : ProstateLesion2T2P) + " " + ProstateLesion2DWIP + " " + ProstateLesion2CP + " " + ProstateLesion2InvasionP + " " + ProstateLesion2PSMAP + ".";
-    ProstateLesion2R = ProstateLesion2Number + ProstateLesion2PIRADSText + " - " + prostateSegmentLesion2 + " " + ProstateLesion2InvasionR + " " + ProstateLesion2PSMAR + ".";
+    ProstateLesion2P = "Ložisko " + " " + prostateSegmentLesion2 + " " + ProstateLesion2SizeP + " " + (isPeripheral ? "" : ProstateLesion2T2P) + " " + ProstateLesion2DWIP + " " + ProstateLesion2CP + " " + ProstateLesion2InvasionP + " " + ProstateLesion2PSMAP + ".";
+    ProstateLesion2R = "Ložisko " + ProstateLesion2PIRADSText + " - " + prostateSegmentLesion2 + " " + ProstateLesion2InvasionR + " " + ProstateLesion2PSMAR + ".";
 }
 
 
@@ -846,8 +846,8 @@ const prostateTableLesion3 = document.querySelector('#ProstateLesion3');
 var ProstateLesion3P = ""; var ProstateLesion3R = "";
 if (!prostateTableLesion3.classList.contains('hidden') && prostateSegmentLesion3 !== "") {
     const isPeripheral = segmentsLesion3.length > 0 && segmentsLesion3[0].charAt(0) === 'P';
-    ProstateLesion3P = ProstateLesion3Number + " " + prostateSegmentLesion3 + " " + ProstateLesion3SizeP + " " + (isPeripheral ? "" : ProstateLesion3T2P) + " " + ProstateLesion3DWIP + " " + ProstateLesion3CP + " " + ProstateLesion3InvasionP + " " + ProstateLesion3PSMAP + ".";
-    ProstateLesion3R = ProstateLesion3Number + ProstateLesion3PIRADSText + " - " + prostateSegmentLesion3 + " " + ProstateLesion3InvasionR + " " + ProstateLesion3PSMAR + ".";
+    ProstateLesion3P = "Ložisko " + " " + prostateSegmentLesion3 + " " + ProstateLesion3SizeP + " " + (isPeripheral ? "" : ProstateLesion3T2P) + " " + ProstateLesion3DWIP + " " + ProstateLesion3CP + " " + ProstateLesion3InvasionP + " " + ProstateLesion3PSMAP + ".";
+    ProstateLesion3R = "Ložisko " + ProstateLesion3PIRADSText + " - " + prostateSegmentLesion3 + " " + ProstateLesion3InvasionR + " " + ProstateLesion3PSMAR + ".";
 }
 
 
@@ -1035,30 +1035,6 @@ const lesionsR = [ProstateLesion1R, ProstateLesion2R, ProstateLesion3R];
 ProstateOkP = lesionsP.every(lesion => lesion === "") ? "Bez patrných ložisek abnormálního SI. " : "";
 ProstateOkR = lesionsR.every(lesion => lesion === "") ? "Bez známek přítomnosti patologických ložisek prostaty. PI-RADS 1." : "";
 
-// RECID
-
-var ProstateRecidP = "";
-var ProstateRecidR = "";
-
-var ChbProstateRecidR = document.getElementById("ChbProstateRecidR").checked;
-var ChbProstateRecidL = document.getElementById("ChbProstateRecidL").checked;
-
-if (ChbProstateRecidR && ChbProstateRecidL) {
-  ProstateRecidP = "Ložiska v lůžku prostaty bilat. ";
-  ProstateRecidR = "Ložiska recidivy v lůžku prostaty bilat. ";
-  ProstateSemVesP = "";
-} else {
-  if (ChbProstateRecidR) {
-    ProstateRecidP = "Ložisko v lůžku prostaty vpravo. ";
-    ProstateRecidR = "Ložisko recidivy v lůžku prostaty vpravo. ";
-	ProstateSemVesP = "";
-  }
-  if (ChbProstateRecidL) {
-    ProstateRecidP = "Ložisko v lůžku prostaty vlevo. ";
-    ProstateRecidR = "Ložisko recidivy v lůžku prostaty vlevo. ";
-	ProstateSemVesP = "";
-  }
-}
 
 //Meta
 
@@ -1188,6 +1164,34 @@ if (prostateRAPE.checked) {
         prostateRec.classList.add('hidden');
     }
 
+// RECID
+
+var ProstateRecidP = "";
+var ProstateRecidR = "";
+
+var ChbProstateRecidR = document.getElementById("ChbProstateRecidR").checked;
+var ChbProstateRecidL = document.getElementById("ChbProstateRecidL").checked;
+
+if (ChbProstateRecidR && ChbProstateRecidL) {
+  ProstateRecidP = "Ložiska v lůžku prostaty bilat. ";
+  ProstateRecidR = "Ložiska recidivy v lůžku prostaty bilat. ";
+  ProstateSemVesP = "";
+} else {
+  if (ChbProstateRecidR) {
+    ProstateRecidP = "Ložisko v lůžku prostaty vpravo. ";
+    ProstateRecidR = "Ložisko recidivy v lůžku prostaty vpravo. ";
+	ProstateSemVesP = "";
+  }   if (ChbProstateRecidL) {
+    ProstateRecidP = "Ložisko v lůžku prostaty vlevo. ";
+    ProstateRecidR = "Ložisko recidivy v lůžku prostaty vlevo. ";
+	ProstateSemVesP = "";
+  } 
+}
+
+if (prostateRAPE.checked && !ChbProstateRecidR && !ChbProstateRecidL ) {
+	ProstateRecidP = "Bez patrných ložisek zvýšené akumulace RF v lůžku prostaty. " ;
+	ProstateRecidR = "Bez patrné recidivy v lůžku. ";
+}
 	
 // POPIS
 ProstateTuNAMEText.value = "MR prostaty"; if (document.getElementById('ChbProstatePSMA').checked) {ProstateTuNAMEText.value = "PSMA-PET/MR prostaty";}
@@ -1216,8 +1220,7 @@ ProstateSkeletonMetaP
 
 //RESUME
 ProstateTuRESText.value = 
-ProstateOkR + "\n" +
-ProstateRecidR + "\n" +
+ProstateOkR + ProstateRecidR + "\n" +
 ProstateLesion1R + "\n" +
 ProstateLesion2R + "\n" +
 ProstateLesion3R + "\n" +
