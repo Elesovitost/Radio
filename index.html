@@ -332,6 +332,18 @@ function updateFinalTextAreas() {
         finalPOPText = popTexts.join("\n\n"); // Use as is if only one POPText
     }
 
+	// Check if compText contains "PSMA-PET/CT" and replace "MR" with "PSMA-PET/MR, same for FDG-PET"
+	if (finalPOPText.includes("FDG-PET/CT")) {
+		finalPOPText = finalPOPText.replace(/(?:^|, )MR/gm, function(match) {
+			return match === 'MR' ? "FDG-PET/MR" : ", FDG-PET/MR";
+		});
+	}
+	else if (finalPOPText.includes("PSMA-PET/CT")) {
+		finalPOPText = finalPOPText.replace(/(?:^|, )MR/gm, function(match) {
+			return match === 'MR' ? "PSMA-PET/MR" : ", PSMA-PET/MR";
+		});
+	}
+
     // Update final text areas
     document.getElementById("FINALNAMEText").value = finalNAMEText.slice(0, -2).trim();
     document.getElementById("FINALINDText").value = finalINDText.trim();
@@ -352,24 +364,7 @@ function updateFinalTextAreas() {
 
     finalCompleteText += "\n\n" + finalPOPText.trim() + "\n\n" + "Závěr: " + "\n" + finalRESText.trim();
 
-
-// Check if compText contains "PSMA-PET/CT" and replace "MR" with "PSMA-PET/MR, same for FDG-PET"
-	
-if (finalCompleteText.includes("FDG-PET/CT")) {
-    finalCompleteText = finalCompleteText.replace(/(?:^|, )MR/gm, function(match) {
-        return match === 'MR' ? "FDG-PET/MR" : ", FDG-PET/MR";
-    });
-}
-else if (finalCompleteText.includes("PSMA-PET/CT")) {
-    finalCompleteText = finalCompleteText.replace(/(?:^|, )MR/gm, function(match) {
-        return match === 'MR' ? "PSMA-PET/MR" : ", PSMA-PET/MR";
-    });
-}
-
-
-	
     document.getElementById("FINALCOMPLETEText").value = finalCompleteText.trim();
-
 }	
 
 
