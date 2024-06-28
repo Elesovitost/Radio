@@ -75,6 +75,12 @@ function generateComparisonText(prevSUV, prevSize, date, currentSUV, currentSize
 }
 
 
+// SUVLiver native
+var suvLiverInput = document.getElementById('SUVLiver');
+            if (suvLiverInput.value === '') {
+                suvLiverInput.value = 3;
+            }
+
 
 // SUVmax Comparison POP
 function compareActPOP(currentSUV, previousSUV) {
@@ -1312,7 +1318,7 @@ var ThoraxOesophOther = document.getElementById("ThoraxOesophOther").value.trim(
 
 if (ThoraxOesophHernia) ThoraxOesophText += "Hiátová hernie. ";
 if (ThoraxOesophActDist) ThoraxOesophText += "Zvýšená akumulace RF v dist. jícnu pravděpodobně při refluxu. ";
-if (ThoraxOesophActDiff) ThoraxOesophText += "Difuzně zvýšená akumulace RF v jícnu v rámci zánětlivých změn. ";
+if (ThoraxOesophActDiff) ThoraxOesophText += "Difuzně zvýšená akumulace RF v jícnu funkčně či v rámci zánětlivých změn. ";
 if (ThoraxOesophAnastomosis) ThoraxOesophText += "St.p. resekci dist. jícnu s anastomózou v hrudníku. ";
 
 if (ThoraxOesophOther) {
@@ -2427,9 +2433,9 @@ if (ChbSPancreasEnlarged) pancreasDescriptions.push("atrofický");
 if (ChbPancreasActivity) pancreasDescriptions.push("s dilatovaným Wirsungem");
 
 if (buttonPancreasCystText === "+") {
-    descriptions.push("s fotopenickou (pseudo)cystou");
+    pancreasDescriptions.push("s fotopenickým cystickým ložiskem");
 } else if (buttonPancreasCystText === "++") {
-    descriptions.push("s fotopenickými (pseudo)cystami");
+    pancreasDescriptions.push("s fotopenickými cystickými ložisky");
 }
 
 if (ChbPancreasEctomy) pancreasDescriptions.push("chybí po totální pankreatektomii");
