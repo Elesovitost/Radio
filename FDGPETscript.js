@@ -1205,9 +1205,9 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
         aktSelect.value = 's akumulací RF < ref. játra';
       } else if (ratio >= 0.8 && ratio < 1.2) {
         aktSelect.value = 's akumulací RF blízkou ref. játrům';
-      } else if (ratio >= 1.2 && ratio < 2) {
+      } else if (ratio >= 1.2 && ratio < 5) {
         aktSelect.value = 's akumulací RF > ref. játra';
-      } else if (ratio >= 2) {
+      } else if (ratio >= 5) {
         aktSelect.value = 's akumulací RF >> ref. játra';
       } 
     } else if ((buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC")) {
@@ -1356,13 +1356,13 @@ imageConfigs.forEach(config => {
 
     const diffY = event.clientY - startY;
     if (Math.abs(diffY) > 5) { // Add a threshold to reduce sensitivity
-      if (diffY > 0) {
-        // Moved down
-        if (config.imageIndex > 1) config.imageIndex--;
-      } else {
-        // Moved up
-        if (config.imageIndex < config.maxIndex) config.imageIndex++;
-      }
+		if (diffY > 0) {
+		  // Moved down
+		  if (config.imageIndex < config.maxIndex) config.imageIndex++;
+		} else {
+		  // Moved up
+		  if (config.imageIndex > 1) config.imageIndex--;
+		}
       updateImageSrc();
       startY = event.clientY; // Reset start position
     }
