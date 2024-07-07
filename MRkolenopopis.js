@@ -563,8 +563,8 @@ MkMenLokaceR = "";
  MkMenLokaceP = "zadního úponu";
  MkMenLokaceR = "zadního úponu";
 } else if (MkMenLokace === "ZR") {
- MkMenLokaceP = "zadního rohu";
- MkMenLokaceR = "zadního rohu";
+ MkMenLokaceP = "v zadním rohu";
+ MkMenLokaceR = "v zadním rohu";
 } else if (MkMenLokace === "ZP") {
  MkMenLokaceP = "zadní poloviny";
  MkMenLokaceR = "v zadní polovině";
@@ -575,8 +575,8 @@ MkMenLokaceR = "";
  MkMenLokaceP = "přední poloviny";
  MkMenLokaceR = "v přední polovině";
 } else if (MkMenLokace === "PR") {
- MkMenLokaceP = "předního rohu";
- MkMenLokaceR = "předního rohu";
+ MkMenLokaceP = "v předním rohu";
+ MkMenLokaceR = "v předním rohu";
 } else if (MkMenLokace === "PU") {
  MkMenLokaceP = "předního úponu";
  MkMenLokaceR = "předního úponu";

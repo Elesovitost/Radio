@@ -101,7 +101,7 @@ if (ChbAnkleLDdeep === "I") {
 if (AnkleMLDescText.length) {
   AnkleMLText = "Vazy mediálního kotníku: " + AnkleMLDescText.join(". ") + ". ";
 } else {
-  AnkleLLText = "Vazy mediálního kotníku bez patrné patologie. ";
+  AnkleMLText = "Vazy mediálního kotníku bez patrné patologie. ";
 }
 
 if (AnkleMLDescRes.length) {
@@ -125,7 +125,7 @@ var AnkleMCText = ""; var AnkleMCRes = "";
 var AnkleMCDescText = []; var AnkleMCDescRes = [];
 
 if (ChbAnkleTP === "synovitis") {
-    AnkleMCDescText.push("Šlacha musc. tib. post. se tekutinou v okolí"); AnkleMCDescRes.push("Tenosynovitis m. tibialis posterior");
+    AnkleMCDescText.push("Šlacha musc. tib. post. s tekutinou v okolí"); AnkleMCDescRes.push("Tenosynovitis m. tibialis posterior");
 } else if (ChbAnkleTP === "tendinóza") {
     AnkleMCDescText.push("Šlacha musc. tib. post. s vyšší SI"); AnkleMCDescRes.push("Tendinóza m. tibialis posterior");
 }  else if (ChbAnkleTP === "parc. rpt") {
@@ -135,7 +135,7 @@ if (ChbAnkleTP === "synovitis") {
 }
 
 if (ChbAnkleFDL === "synovitis") {
-    AnkleMCDescText.push("Šlacha musc. flex.digit. long.  se tekutinou v okolí"); AnkleMCDescRes.push("Tenosynovitis m. flexor digitorum longus");
+    AnkleMCDescText.push("Šlacha musc. flex.digit. long.  s tekutinou v okolí"); AnkleMCDescRes.push("Tenosynovitis m. flexor digitorum longus");
 } else if (ChbAnkleFDL === "tendinóza") {
     AnkleMCDescText.push("Šlacha musc. flex.digit. long.  s vyšší SI"); AnkleMCDescRes.push("Tendinóza m. flexor digitorum longus");
 }  else if (ChbAnkleFDL === "parc. rpt") {
@@ -145,7 +145,7 @@ if (ChbAnkleFDL === "synovitis") {
 }
 
 if (ChbAnkleFHL === "synovitis") {
-    AnkleMCDescText.push("Šlacha musc. flex. hal. long.  se tekutinou v okolí"); AnkleMCDescRes.push("Tenosynovitis m. flexor hallucis longus");
+    AnkleMCDescText.push("Šlacha musc. flex. hal. long.  s tekutinou v okolí"); AnkleMCDescRes.push("Tenosynovitis m. flexor hallucis longus");
 } else if (ChbAnkleFHL === "tendinóza") {
     AnkleMCDescText.push("Šlacha musc. flex. hal. long.  s vyšší SI"); AnkleMCDescRes.push("Tendinóza m. flexor hallucis longus");
 }  else if (ChbAnkleFHL === "parc. rpt") {
@@ -161,6 +161,7 @@ if (AnkleMCDescRes.length) {
   AnkleMCRes = AnkleMCDescRes.join(". ") + ". ";
 }
 
+// ANT šlachy
 
 updateButtonTexts({
 			'ChbAnkleET': ['OK', 'synovitis', 'tendinóza', 'parc. rpt', 'ruptura'],
@@ -176,7 +177,7 @@ var AnkleACText = ""; var AnkleACRes = "";
 var AnkleACDescText = []; var AnkleACDescRes = [];
 
 if (ChbAnkleET === "synovitis") {
-    AnkleACDescText.push("Šlacha musc. ext. tibialis  se tekutinou v okolí"); AnkleACDescRes.push("Tenosynovitis m. extensor tibialis");
+    AnkleACDescText.push("Šlacha musc. ext. tibialis  s tekutinou v okolí"); AnkleACDescRes.push("Tenosynovitis m. extensor tibialis");
 } else if (ChbAnkleET === "tendinóza") {
     AnkleACDescText.push("Šlacha musc. ext. tibialis  s vyšší SI"); AnkleACDescRes.push("Tendinóza m. extensor tibialis");
 }  else if (ChbAnkleET === "parc. rpt") {
@@ -186,7 +187,7 @@ if (ChbAnkleET === "synovitis") {
 }
 
 if (ChbAnkleEHL === "synovitis") {
-    AnkleACDescText.push("Šlacha musc. ext. hal. long.  se tekutinou v okolí"); AnkleACDescRes.push("Tenosynovitis m. extensor hallucis longus");
+    AnkleACDescText.push("Šlacha musc. ext. hal. long.  s tekutinou v okolí"); AnkleACDescRes.push("Tenosynovitis m. extensor hallucis longus");
 } else if (ChbAnkleEHL === "tendinóza") {
     AnkleACDescText.push("Šlacha musc. ext. hal. long.  s vyšší SI"); AnkleACDescRes.push("Tendinóza m. extensor hallucis longus");
 }  else if (ChbAnkleEHL === "parc. rpt") {
@@ -196,7 +197,7 @@ if (ChbAnkleEHL === "synovitis") {
 }
 
 if (ChbAnkleEDL === "synovitis") {
-    AnkleACDescText.push("Šlacha musc. ext. dig. long.  se tekutinou v okolí"); AnkleACDescRes.push("Tenosynovitis m. extensor digitorum longus");
+    AnkleACDescText.push("Šlacha musc. ext. dig. long.  s tekutinou v okolí"); AnkleACDescRes.push("Tenosynovitis m. extensor digitorum longus");
 } else if (ChbAnkleEDL === "tendinóza") {
     AnkleACDescText.push("Šlacha musc. ext. dig. long.  s vyšší SI"); AnkleACDescRes.push("Tendinóza m. extensor digitorum longus");
 }  else if (ChbAnkleEDL === "parc. rpt") {
@@ -212,6 +213,8 @@ if (AnkleACDescRes.length) {
   AnkleACRes = AnkleACDescRes.join(". ") + ". ";
 }
 
+// LAT šlachy
+
 updateButtonTexts({
 			'ChbAnklePL': ['OK', 'synovitis', 'tendinóza', 'parc. rpt', 'ruptura'],
 			'ChbAnklePB': ['OK', 'synovitis', 'tendinóza', 'parc. rpt', 'ruptura']
@@ -224,7 +227,7 @@ var AnkleLCText = ""; var AnkleLCRes = "";
 var AnkleLCDescText = []; var AnkleLCDescRes = [];
 
 if (ChbAnklePL === "synovitis") {
-    AnkleLCDescText.push("Šlacha musc. peron. longus  se tekutinou v okolí"); AnkleLCDescRes.push("Tenosynovitis m. peroneus longus");
+    AnkleLCDescText.push("Šlacha musc. peron. longus  s tekutinou v okolí"); AnkleLCDescRes.push("Tenosynovitis m. peroneus longus");
 } else if (ChbAnklePL === "tendinóza") {
     AnkleLCDescText.push("Šlacha musc. peron. longus  s vyšší SI"); AnkleLCDescRes.push("Tendinóza m. peroneus longus");
 }  else if (ChbAnklePL === "parc. rpt") {
@@ -248,13 +251,16 @@ if (AnkleLCDescText.length) {
 }
 if (AnkleLCDescRes.length) {
   AnkleLCRes = AnkleLCDescRes.join(". ") + ". ";
-}
+} 
 
 // šlachy ok?
 AnkleTendonsText = AnkleMCText + AnkleLCText + AnkleACText;
 AnkleTendonsRes = AnkleMCRes + AnkleLCRes + AnkleACRes;
 
-// doplň jestli v žádný šlaše nic neni !AnkleLCDescRes.length nebo ...., tak AnkleTendonsText = normální
+
+if (AnkleTendonsText.trim() === "") {
+  AnkleTendonsText = "Šlachy bez patrné patologie.";
+}
 
 // POPIS
 	
