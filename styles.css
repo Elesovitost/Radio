@@ -40,6 +40,7 @@ body, button, input, textarea {
 
 #IND {display: flex; justify-content: space-between; /* This spaces out the children */}
 #indikace {width: 100%; box-sizing: border-box;}
+#REMINDER {width: 99%; box-sizing: border-box; margin: 5px;}
 .nowrap {white-space: nowrap;}
 
 

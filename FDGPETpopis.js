@@ -263,13 +263,6 @@ function checkSmallSize(LesionSize, LesionSUV) {
     var SUVLiverRatio = LesionSUVValue !== null ? LesionSUVValue / SUVLiver : null;
     var SizeSUVRatio = LesionSizeValue !== null ? LesionSizeValue / SUVLiverRatio : null;
 
-    // Debug values
-    console.log('LesionSize:', LesionSizeValue);
-    console.log('LesionSUV:', LesionSUVValue);
-    console.log('SUVLiver:', SUVLiver);
-    console.log('SUVLiverRatio:', SUVLiverRatio);
-    console.log('SizeSUVRatio:', SizeSUVRatio);
-
     if (LesionSizeValue !== null && SUVLiverRatio !== null && SizeSUVRatio !== null) {
         if (SUVLiverRatio < 0.8 && LesionSizeValue < 9 &&SizeSUVRatio < 9) {
             return "(vzhledem k malým rozměrům je i tato metabolická aktivita signifikantní)";
@@ -3397,6 +3390,11 @@ PETCTNAMEText.value = nazev;
 
 PETCTINDText.value = indikace; document.getElementById("indikace").addEventListener("input", updateTexts);
 
+var POPREMINDER = document.getElementById("REMINDER").value; document.getElementById("REMINDER").addEventListener("input", updateTexts);
+    if (POPREMINDER.trim() !== "") {
+        POPREMINDER = "DOPLNIT: " + POPREMINDER;
+    } 
+
 var POPText = document.getElementById("POPText"); 
 	
 POPText.value = 
@@ -3409,7 +3407,8 @@ POPExamCompareText + "\n" +
 	AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + " " + AbdomenVesselsText + "\n" +
 "Skelet a měkké tkáně: " + POPSkeletonNative + " " + window.POPSkeletonLesion1 + " " + window.POPSkeletonLesion2 + " " + window.POPSkeletonLesion3 + " " + SkeletonOther1Priority + " " + 
 	SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + "\n" +			
-ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
+ObecneTexts + " " + ObecneNativeText + " " + ReferenceText  + "\n" +
+POPREMINDER;
 
 
 	POPText.value = POPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
