@@ -1310,8 +1310,8 @@ var ThoraxOesophAnastomosis = document.getElementById("ChbOesophAnastomosis").ch
 var ThoraxOesophOther = document.getElementById("ThoraxOesophOther").value.trim();
 
 if (ThoraxOesophHernia) ThoraxOesophText += "Hiátová hernie. ";
-if (ThoraxOesophActDist) ThoraxOesophText += "Zvýšená akumulace RF v dist. jícnu pravděpodobně při refluxu. ";
-if (ThoraxOesophActDiff) ThoraxOesophText += "Difuzně zvýšená akumulace RF v jícnu funkčně či v rámci zánětlivých změn. ";
+if (ThoraxOesophActDist) ThoraxOesophText += "Zvýšená akumulace RF v dist. jícnu funkčně či při refluxu. ";
+if (ThoraxOesophActDiff) ThoraxOesophText += "Difuzně zvýšená akumulace RF v jícnu funkčně či při zánětu. ";
 if (ThoraxOesophAnastomosis) ThoraxOesophText += "St.p. resekci dist. jícnu s anastomózou v hrudníku. ";
 
 if (ThoraxOesophOther) {
@@ -2909,8 +2909,6 @@ if (isSupra || isSub || isBif) {
 AbdomenVesselsText = aneurysmText;
 AbdomenVesselsRes = aneurysmText;
 
-
-
 var arteries = [];
 var BilateralArteries = {
     "a. iliaca communis": [ChbAbdomenVesselsASIliacComR, ChbAbdomenVesselsASIliacComL],
@@ -3341,7 +3339,7 @@ if (SkeletJointsOther) descriptionsJoints.push(SkeletJointsOther);
 if (descriptionsJoints.length > 1) {
   SkeletonJointsText = "Zvýšená akumulace RF v oblastech " + descriptionsJoints.slice(0, -1).join(", ") + " a " + descriptionsJoints.slice(-1) + " v rámci zánětlivých změn. ";
 } else {
-  SkeletonJointsText = descriptionsJoints.length ? "Zvýšená akumulace RF v oblasti " + descriptionsJoints[0] + " v rámci zánětlivých změn. " : "";
+  SkeletonJointsText = descriptionsJoints.length ? "Zvýšená akumulace RF v oblasti " + descriptionsJoints[0] + " v rámci zánětlivých či degener. změn. " : "";
 }
 
 if (ChbSkeletJointsPolyMyaR) {SkeletonJointsText = "Zvýšená akumulace RF v oblastech, ramenních, SC, AC, kyčelních kloubech, při symfýze, velkých trochanterech, interpsinózně."; 
