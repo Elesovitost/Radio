@@ -3407,8 +3407,7 @@ POPExamCompareText + "\n" +
 	AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + " " + AbdomenVesselsText + "\n" +
 "Skelet a měkké tkáně: " + POPSkeletonNative + " " + window.POPSkeletonLesion1 + " " + window.POPSkeletonLesion2 + " " + window.POPSkeletonLesion3 + " " + SkeletonOther1Priority + " " + 
 	SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + "\n" +			
-ObecneTexts + " " + ObecneNativeText + " " + ReferenceText  + "\n" +
-POPREMINDER;
+ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 
 
 	POPText.value = POPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
@@ -3516,7 +3515,8 @@ SkeletonTraumaRecentRes + "\n" +
 SkeletonOther1ResPriority + "\n" +
 SkeletonJointsRes + "\n" +
 NeckThyroidRes + HeadTonsilsRes + "\n" +
-RESTextNoNew
+RESTextNoNew + "\n" +
+POPREMINDER
 ;
 
 
