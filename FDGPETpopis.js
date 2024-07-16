@@ -1303,13 +1303,20 @@ var ThoraxDevicesRes = "";
 var ThoraxOesophText = "";
 var ThoraxOesophRes = "";
 
-var ThoraxOesophHernia = document.getElementById("ChbOesophHernia").checked;
+var ThoraxOesophHernia = document.getElementById("ChbOesophHernia").innerText;
 var ThoraxOesophActDist = document.getElementById("ChbOesophActDist").checked;
 var ThoraxOesophActDiff = document.getElementById("ChbOesophActDiff").checked;
 var ThoraxOesophAnastomosis = document.getElementById("ChbOesophAnastomosis").checked;
 var ThoraxOesophOther = document.getElementById("ThoraxOesophOther").value.trim();
 
-if (ThoraxOesophHernia) ThoraxOesophText += "Hiátová hernie. ";
+updateButtonTexts({
+            'ChbOesophHernia': ['0', '+', '++', '↕']
+        });
+
+if (ThoraxOesophHernia === "+") ThoraxOesophText += "Drobná hiátová hernie. ";
+if (ThoraxOesophHernia === "++") ThoraxOesophText += "Hiátová hernie. ";
+if (ThoraxOesophHernia === "↕") ThoraxOesophText += "Objemná upside-down hiátová hernie. ";
+
 if (ThoraxOesophActDist) ThoraxOesophText += "Zvýšená akumulace RF v dist. jícnu funkčně či při refluxu. ";
 if (ThoraxOesophActDiff) ThoraxOesophText += "Difuzně zvýšená akumulace RF v jícnu funkčně či při zánětu. ";
 if (ThoraxOesophAnastomosis) ThoraxOesophText += "St.p. resekci dist. jícnu s anastomózou v hrudníku. ";
