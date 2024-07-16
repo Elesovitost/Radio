@@ -2235,15 +2235,15 @@ table {width: auto; white-space: nowrap;}
 						<td>Recentní (FDG+)</td>
 						<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletTraumaRecent" onChange="updateTexts()"><span>+</span></label></td>
 					</tr>
-					<tr>
-						<td colspan="2" ><textarea id="SkeletTraumaRecentOther" type="text" placeholder="kde..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
+					<tr id="SkeletTraumaNew" class="hidden">
+						<td colspan="2" ><textarea id="SkeletTraumaRecentOther" type="text" placeholder="čeho..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 					</tr>
 					<tr>
 						<td>Starší (FDG-)</td>
 						<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletTraumaOlder" onChange="updateTexts()"><span>+</span></label></td>
 					</tr>
-					<tr>
-						<td colspan="2" ><textarea id="SkeletTraumaOlderOther" type="text" placeholder="kde..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
+					<tr id="SkeletTraumaOld" class="hidden">
+						<td colspan="2" ><textarea id="SkeletTraumaOlderOther" type="text" placeholder="čeho..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 					</tr>
 				</table>
 				</td>

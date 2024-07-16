@@ -2892,8 +2892,7 @@ var ChbAbdomenVesselsASIliacExtL = document.getElementById("ChbAbdomenVesselsASI
 var ChbAbdomenVesselsASFemR = document.getElementById("ChbAbdomenVesselsASFemR").checked;
 var ChbAbdomenVesselsASFemL = document.getElementById("ChbAbdomenVesselsASFemL").checked;
 var AbdomenVesselsOther = document.getElementById("AbdomenVesselsOther").value.trim();
-var AneurysmDiameter = document.getElementById("AneurysmDiameter").value.trim();
-document.getElementById("AneurysmDiameter").addEventListener("input", updateTexts);
+var AneurysmDiameter = document.getElementById("AneurysmDiameter").value.trim(); document.getElementById("AneurysmDiameter").addEventListener("input", updateTexts);
 
 var aneurysmText = "";
 var isSupra = ChbAbdomenVesselsAoAneurysmSupra;
@@ -3222,12 +3221,23 @@ var ChbSkeletTraumaRecent = document.getElementById("ChbSkeletTraumaRecent").che
 var SkeletTraumaRecentOther = document.getElementById("SkeletTraumaRecentOther").value.trim();
 var ChbSkeletTraumaOlder = document.getElementById("ChbSkeletTraumaOlder").checked;
 var SkeletTraumaOlderOther = document.getElementById("SkeletTraumaOlderOther").value.trim();
+var SkeletTraumaNew = document.getElementById("SkeletTraumaNew");
+var SkeletTraumaOld = document.getElementById("SkeletTraumaOld");
 
-if (ChbSkeletTraumaRecent) SkeletonTraumaRecentText += "Zvýšená akumulace RF je přítomna v oblasti recentních traumatických změn: "; 
-if (SkeletTraumaRecentOther) SkeletonTraumaRecentText += SkeletTraumaRecentOther + ". ";
+if (ChbSkeletTraumaRecent) {
+    SkeletTraumaNew.classList.remove("hidden");
+} else {
+    SkeletTraumaNew.classList.add("hidden");
+}
 
-if (ChbSkeletTraumaOlder) SkeletonTraumaOlderText += "Starší potraumatické změny: ";
-if (SkeletTraumaOlderOther) SkeletonTraumaOlderText += SkeletTraumaOlderOther + ". ";
+if (ChbSkeletTraumaOlder) {
+    SkeletTraumaOld.classList.remove("hidden");
+} else {
+    SkeletTraumaOld.classList.add("hidden");
+}
+
+if (SkeletTraumaRecentOther) SkeletonTraumaRecentText = "Potraumatické změny " + SkeletTraumaRecentOther + " se zvýšenou akumulací RF (recentní). ";
+if (SkeletTraumaOlderOther) SkeletonTraumaOlderText = "Potraumatické změny " + SkeletTraumaOlderOther + " bez zvýšené akumulace RF (staršího data). ";
 
 if (ChbSkeletTraumaRecent && SkeletTraumaRecentOther !== "") {SkeletonTraumaRecentRes = "Zvýšená metabolická aktivita " + SkeletTraumaRecentOther + " na podkladu recentních traumatických změn. ";}
 
@@ -3272,9 +3282,9 @@ if (ChbSkeletDegenerHipR && ChbSkeletDegenerHipL) {
 if (SkeletDegenerOther) descriptionsSkeleton.push(SkeletDegenerOther);
 
 if (descriptionsSkeleton.length > 1) {
-  SkeletonDegenerText = "Degenerativní změny " + descriptionsSkeleton.slice(0, -1).join(", ") + ", " + descriptionsSkeleton.slice(-1) + ". ";
+  SkeletonDegenerText = "Pokročilé degenerativní změny " + descriptionsSkeleton.slice(0, -1).join(", ") + ", " + descriptionsSkeleton.slice(-1) + ". ";
 } else {
-  SkeletonDegenerText = descriptionsSkeleton.length ? "Degenerativní změny " + descriptionsSkeleton[0] + ". " : "";
+  SkeletonDegenerText = descriptionsSkeleton.length ? "Pokročilé degenerativní změny " + descriptionsSkeleton[0] + ". " : "";
 }
 
 // Joints activity
@@ -3348,9 +3358,9 @@ if (ChbSkeletJointsSymR) descriptionsJoints.push("symfýzy");
 if (SkeletJointsOther) descriptionsJoints.push(SkeletJointsOther);
 
 if (descriptionsJoints.length > 1) {
-  SkeletonJointsText = "Zvýšená akumulace RF v oblastech " + descriptionsJoints.slice(0, -1).join(", ") + " a " + descriptionsJoints.slice(-1) + " v rámci zánětlivých změn. ";
+  SkeletonJointsText = "Zvýšená akumulace RF v oblastech " + descriptionsJoints.slice(0, -1).join(", ") + " a " + descriptionsJoints.slice(-1) + " v rámci degenerativních / zánětlivých změn. ";
 } else {
-  SkeletonJointsText = descriptionsJoints.length ? "Zvýšená akumulace RF v oblasti " + descriptionsJoints[0] + " v rámci zánětlivých či degener. změn. " : "";
+  SkeletonJointsText = descriptionsJoints.length ? "Zvýšená akumulace RF v oblasti " + descriptionsJoints[0] + " v rámci degenerativních / zánětlivých změn. " : "";
 }
 
 if (ChbSkeletJointsPolyMyaR) {SkeletonJointsText = "Zvýšená akumulace RF v oblastech, ramenních, SC, AC, kyčelních kloubech, při symfýze, velkých trochanterech, interpsinózně."; 

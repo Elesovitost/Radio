@@ -1133,11 +1133,13 @@ document.getElementById('SkeletonOther1no').addEventListener('contextmenu', func
 // Lesion aktivita   
   
 var aktivitaOptions = [
-    { text: "není", value: "s akumulací RF < ref. blood pool", valuePSMA: "téměř bez PSMA exprese", valueFDG: "ametabolické"},
-    { text: "nízká", value: "s akumulací RF < ref. játra", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
-    { text: "intermed.", value: "s akumulací RF blízkou ref. játrům", valuePSMA: "se střední PSMA expresí", valueFDG: "středně metabolicky aktivní "},
-    { text: "vysoká", value: "s akumulací RF > ref. játra", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
-    { text: "enormní", value: "s akumulací RF >> ref. játra", valuePSMA: "s vysokou PSMA expresí", valueFDG: "výrazně hypermetabolické "}
+    { text: "není", value: "bez akumulace RF", valuePSMA: "téměř bez PSMA exprese", valueFDG: "ametabolické"},
+	{ text: "nízká", value: "s akumulací RF nižší než ref. játra", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
+    { text: "nižší", value: "s akumulací RF mírně nižší než ref. játra", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
+    { text: "intermed.", value: "s akumulací RF na úrovni ref. jater", valuePSMA: "se střední PSMA expresí", valueFDG: "středně metabolicky aktivní "},
+    { text: "vyšší", value: "s akumulací RF mírně vyšší než ref. játra", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
+	{ text: "vysoká", value: "s akumulací RF vyšší než ref. játra", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
+    { text: "enormní", value: "s akumulací RF výrazně vyšší než ref. játra", valuePSMA: "s vysokou PSMA expresí", valueFDG: "výrazně hypermetabolické "}
 ];
 
 function populateAktivitaOptions() {
@@ -1190,44 +1192,55 @@ populateHodnoceniOptions();
 // SUV = aktivita automaticky
 
 document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
-  input.addEventListener('input', (event) => {
-    let name = event.target.id.replace('SUV', '');
-    let suv = parseFloat(document.getElementById(`${name}SUV`).value);
-    let Liver = parseFloat(document.getElementById('SUVLiver').value);
-    let Parotid = parseFloat(document.getElementById('SUVParotid').value);
-    let aktSelect = document.getElementById(`${name}Activity`);
-    let ratio = suv / Liver;
+    input.addEventListener('input', (event) => {
+        let name = event.target.id.replace('SUV', '');
+        let suv = parseFloat(document.getElementById(`${name}SUV`).value);
+        let Liver = parseFloat(document.getElementById('SUVLiver').value);
+        let Parotid = parseFloat(document.getElementById('SUVParotid').value);
+        let aktSelect = document.getElementById(`${name}Activity`);
+        let ratio = suv / Liver;
 
-    if (buttonElementPETType.value === "FDG") {
-      if (ratio >= 0 && ratio < 0.3) {
-        aktSelect.value = 's akumulací RF < ref. blood pool';
-      } else if (ratio >= 0.3 && ratio < 0.8) {
-        aktSelect.value = 's akumulací RF < ref. játra';
-      } else if (ratio >= 0.8 && ratio < 1.2) {
-        aktSelect.value = 's akumulací RF blízkou ref. játrům';
-      } else if (ratio >= 1.2 && ratio < 5) {
-        aktSelect.value = 's akumulací RF > ref. játra';
-      } else if (ratio >= 5) {
-        aktSelect.value = 's akumulací RF >> ref. játra';
-      } 
-    } else if ((buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC")) {
-      if (suv >= Parotid) {
-        aktSelect.value = 's akumulací RF >> ref. játra';
-      } else if (suv >= Liver && suv < Parotid) {
-        aktSelect.value = 's akumulací RF > ref. játra';
-      } else if (suv >= Liver) {
-        aktSelect.value = 's akumulací RF > ref. játra';
-      } else if (suv < Liver && suv > Liver/4) {
-        aktSelect.value = 's akumulací RF < ref. játra';
-      } else if (suv < Liver/4) {
-        aktSelect.value = 's akumulací RF < ref. blood pool';
-      }
-    } 
+        if (buttonElementPETType.value === "FDG") {
+            if (ratio >= 0 && ratio < 0.3) {
+                selectOptionByText(aktSelect, 'není');
+            } else if (ratio >= 0.3 && ratio < 0.6) {
+                selectOptionByText(aktSelect, 'nízká');
+            } else if (ratio >= 0.6 && ratio < 0.9) {
+                selectOptionByText(aktSelect, 'nižší');
+            } else if (ratio >= 0.9 && ratio < 1.1) {
+                selectOptionByText(aktSelect, 'intermed.');
+            } else if (ratio >= 1.1 && ratio < 1.4) {
+                selectOptionByText(aktSelect, 'vyšší');
+            } else if (ratio >= 1.4 && ratio < 4) {
+                selectOptionByText(aktSelect, 'vysoká');
+            } else if (ratio >= 4) {
+                selectOptionByText(aktSelect, 'enormní');
+            }
+        } else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
+            if (suv >= Parotid) {
+                selectOptionByText(aktSelect, 'enormní');
+            } else if (suv >= Liver && suv < Parotid) {
+                selectOptionByText(aktSelect, 'vysoká');
+            } else if (suv >= Liver) {
+                selectOptionByText(aktSelect, 'vysoká');
+            } else if (suv < Liver && suv > Liver / 4) {
+                selectOptionByText(aktSelect, 'nízká');
+            } else if (suv < Liver / 4) {
+                selectOptionByText(aktSelect, 'není');
+            }
+        }
 
-    updateTexts();
-  });
-});  
+        updateTexts();
+    });
+});
 
+function selectOptionByText(selectElement, text) {
+    Array.from(selectElement.options).forEach(option => {
+        if (option.textContent === text) {
+            selectElement.value = option.value;
+        }
+    });
+}
 
 	 
 
