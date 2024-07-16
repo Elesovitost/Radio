@@ -2892,18 +2892,29 @@ var ChbAbdomenVesselsASIliacExtL = document.getElementById("ChbAbdomenVesselsASI
 var ChbAbdomenVesselsASFemR = document.getElementById("ChbAbdomenVesselsASFemR").checked;
 var ChbAbdomenVesselsASFemL = document.getElementById("ChbAbdomenVesselsASFemL").checked;
 var AbdomenVesselsOther = document.getElementById("AbdomenVesselsOther").value.trim();
+var AneurysmDiameter = document.getElementById("AneurysmDiameter").value.trim();
+document.getElementById("AneurysmDiameter").addEventListener("input", updateTexts);
 
 var aneurysmText = "";
 var isSupra = ChbAbdomenVesselsAoAneurysmSupra;
 var isSub = ChbAbdomenVesselsAoAneurysmSub;
 var isBif = ChbAbdomenVesselsAoAneurysmBif;
+var AbdomenVesselAnDia = document.getElementById("AbdomenVesselAnDia");
 
 if (isSupra || isSub || isBif) {
     aneurysmText += "Aneurysma ";
     if (isSupra) aneurysmText += "suprarenální aorty";
     if (isSub) aneurysmText += (isSupra ? " a " : "") + "subrenální aorty";
     if (isBif) aneurysmText += ((isSupra || isSub) ? " a " : "") + "bifurkace přecházející na ilické tepny";
-    aneurysmText += ". ";
+
+    if (AneurysmDiameter !== "") {
+        aneurysmText += " diametru " + AneurysmDiameter + " mm. ";
+    } else {
+        aneurysmText += ". ";
+    }
+    AbdomenVesselAnDia.classList.remove("hidden");
+} else {
+    AbdomenVesselAnDia.classList.add("hidden");
 }
 
 AbdomenVesselsText = aneurysmText;
@@ -2927,8 +2938,8 @@ for (var artery in BilateralArteries) {
 
 if (arteries.length > 0) {
     var arteryText = arteries.length > 2 ? arteries.slice(0, -2).join(", ") + ", " + arteries.slice(-2).join(" a ") : arteries.join(" a ");
-    AbdomenVesselsText += "Pokročilá AS " + arteryText + " zužující lumen. ";
-	AbdomenVesselsRes += "Stenóza lumen " + arteryText + " na podkladě pokročilé aterosklerózy. ";
+    AbdomenVesselsText += "Pokročilá AS " + arteryText + ". ";
+	AbdomenVesselsRes += "Pokročilá ateroskleróza " + arteryText + ". ";
 }
 
 if (AbdomenVesselsOther.length > 0) {
