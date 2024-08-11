@@ -1679,7 +1679,7 @@ if (ThoraxFluidFTR === "" && ThoraxFluidFTL === "" && ThoraxFluidFP === "") {
 } 
 
 
-// Thorax Adekvatní vlevo...vpravo apod. + OTHERS
+// Thorax Adekvatní nebo nic nebo Jinak. + OTHERS
 
 var ThoraxOther1Priority = ""; var ThoraxOther1NoPriority = ""; var ThoraxOther1ResPriority = "";
 var ThoraxOther1Pop = document.getElementById("ThoraxOther1Pop").value;
@@ -1694,16 +1694,8 @@ const POPThoraxLesions = [window.POPThoraxLesion1, window.POPThoraxLesion2, wind
 
 if (ThoraxParenchymaText.includes('fibróz') || ThoraxParenchymaText.includes('emfyz') || ((ThoraxFluidFTR > 0 && ThoraxFluidFTL > 0))) {
     POPThoraxLungOk = "";
-} else if ((POPThoraxLesions.some(lesion => lesion.includes('bilat')) || ThoraxOther1Priority.includes('bilat')) || 
-           (POPThoraxLesions.some(lesion => lesion.includes('obou')) || ThoraxOther1Priority.includes('obou')) || 
-           (POPThoraxLesions.includes('prav') && POPThoraxLesions.includes('lev'))) {
+} else if (POPThoraxLesions.some(lesion => lesion.trim() !== '')) {
     POPThoraxLungOk = "";
-} else if (((ThoraxParenchymaText.includes('prav') && !ThoraxParenchymaText.includes('lev')) || ThoraxFluidFTR > 0 || 
-           POPThoraxLesions.some(lesion => lesion.includes('prav')) || ThoraxOther1Priority.includes('prav')) && !POPThoraxLesions.some(lesion => lesion.includes('prs')) ) {
-    POPThoraxLungOk = "Vlevo adekvátní plicní objem a vzdušnost. ";
-} else if (((ThoraxParenchymaText.includes('lev') && !ThoraxParenchymaText.includes('prav')) || ThoraxFluidFTL > 0 || 
-           POPThoraxLesions.some(lesion => lesion.includes('lev')) || ThoraxOther1Priority.includes('lev')) && !POPThoraxLesions.some(lesion => lesion.includes('prs')) ) {
-    POPThoraxLungOk = "Vpravo adekvátní plicní objem a vzdušnost. ";
 } else if (ThoraxParenchymaText === "" && ThoraxFluidFTR === "" && ThoraxFluidFTL === "" && ThoraxOther1Priority === "") {
     POPThoraxLungOk = "Adekvátní plicní objem a vzdušnost. ";
 } else {
@@ -3195,6 +3187,21 @@ if (ChbSkeletSurgTEPR && ChbSkeletSurgTEPL) {SkeletonSurgeryText += "TEP obou ky
 
 if (SkeletSurgOther) SkeletonSurgeryText += SkeletSurgOther + ". ";
 
+// softtissues
+var SkeletonSoftTissueText = "";
+
+var ChbSkeletInjGlut = document.getElementById("ChbSkeletInjGlut").checked;
+var ChbSkeletInjAbd = document.getElementById("ChbSkeletInjAbd").checked;
+var SkeletSoftTissueOther = document.getElementById("SkeletSoftTissueOther").value.trim();
+
+if (ChbSkeletInjGlut && ChbSkeletInjAbd) {SkeletonSoftTissueText += "V podkoží hýžďové i břišní krajiny infiltráty s mírně zvýšenou akumulací RF v.s. postinjekční.  ";
+} else {
+    if (ChbSkeletInjGlut) SkeletonSoftTissueText += "V podkoží hýžďové krajiny infiltráty s mírně zvýšenou akumulací RF v.s. postinjekční. ";
+    if (ChbSkeletInjAbd) SkeletonSoftTissueText += "V podkoží krajiny břišní infiltráty s mírně zvýšenou akumulací RF v.s. postinjekční. ";
+}
+
+if (SkeletSoftTissueOther) SkeletonSoftTissueText += SkeletSoftTissueOther + ". ";
+
 // activity
 
 var SkeletonActivityText = ""; var SkeletonActivityRes = "";
@@ -3432,7 +3439,7 @@ POPExamCompareText + "\n" +
 "Břicho: " + POPAbdomenNative + " " + window.POPAbdomenLesion1 + " " + window.POPAbdomenLesion2 + " " + window.POPAbdomenLesion3 + " " + POPAbdomenLymphNode1 + " " + AbdomenOther1Priority + " " + 
 	AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + " " + AbdomenVesselsText + "\n" +
 "Skelet a měkké tkáně: " + POPSkeletonNative + " " + window.POPSkeletonLesion1 + " " + window.POPSkeletonLesion2 + " " + window.POPSkeletonLesion3 + " " + SkeletonOther1Priority + " " + 
-	SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + "\n" +			
+	SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + " " + SkeletonSoftTissueText + "\n" +			
 ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 
 

@@ -185,7 +185,6 @@ table {width: auto; white-space: nowrap;}
 				<td><select id="NeckLymphNode1type" class="selectLESION" onchange="updateTexts()">
 					<option value="uzlina| uzliny"selected>uzlina</option>
 					<option value="paket| pakety">paket</option>
-					<option value="fokus| fokusy">fokus</option>
 				</select>
 				</td>
 				<td><select id="NeckLymphNode1number" class="select35" onchange="updateTexts()">
@@ -284,6 +283,7 @@ table {width: auto; white-space: nowrap;}
 					<option value="opacita| opacity">opacita</option>
 					<option value="expanze| expanzePL">expanze</option>
 					<option value="konsolidace| konsolidacePL">konsolidace</option>
+					<option value="infiltrace| infiltracePL">infiltrace</option>
 					<option value="fokus| fokusy">fokus</option>
 				</select>
 				</td>
@@ -410,7 +410,6 @@ table {width: auto; white-space: nowrap;}
 				<td><select id="ThoraxLymphNode1type" class="selectLESION" onchange="updateTexts()">
 					<option value="uzlina| uzliny"selected>uzlina</option>
 					<option value="paket| pakety">paket</option>
-					<option value="fokus| fokusy">fokus</option>
 				</select>
 				</td>
 				<td><select id="ThoraxLymphNode1number" class="select35" onchange="updateTexts()">
@@ -872,7 +871,6 @@ table {width: auto; white-space: nowrap;}
 				<td><select id="AbdomenLymphNode1type" class="selectLESION" onchange="updateTexts()">
 					<option value="uzlina| uzliny"selected>uzlina</option>
 					<option value="paket| pakety">paket</option>
-					<option value="fokus| fokusy">fokus</option>
 				</select>
 				</td>
 				<td><select id="AbdomenLymphNode1number" class="select35" onchange="updateTexts()">
@@ -985,7 +983,7 @@ table {width: auto; white-space: nowrap;}
 					<option value="smíšené ložisko| smíšená ložiska">- smíšené</option>
 					<option value="kožní ložisko| kožní ložiska">- kůže</option>
 					<option value="ložisko podkoží| ložiska podkoží">- podkoží</option>
-					<option value="fokus| fokusy">fokus</option>
+					<option value="fokus kostní dřeně| fokusy v kostní dřeni">fokus</option>
 				</select>
 				</td>
 				<td><select id="SkeletonLesion1number" class="select35" onchange="updateTexts()">
@@ -2216,6 +2214,31 @@ table {width: auto; white-space: nowrap;}
 					</tr>
 					<tr>
 						<td colspan="2" ><textarea id="SkeletSurgOther" type="text" placeholder="Jiná..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="section" style="top: 570px; left: 5px;">
+		<table>
+			<tr>
+				<td><button id="SkeletonSoftTissue" class="others">Měkké tkáně</button></td>
+			</tr>
+			<tr id="SkeletonSoftTissuetable" class="hidden">
+				<td>
+				<table>
+					<tr>	
+						<td>Inj. hýždě</td>
+						<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletInjGlut" onChange="updateTexts()"><span>+</span></label></td>
+					</tr>
+					<tr>	
+						<td>Inj. břicho</td>
+						<td class="right"><label class="CHB"><input type="checkbox" id="ChbSkeletInjAbd" onChange="updateTexts()"><span>+</span></label></td>
+					</tr>
+					<tr>
+						<td colspan="2" ><textarea id="SkeletSoftTissueOther" type="text" placeholder="Jiná..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 					</tr>
 				</table>
 				</td>
