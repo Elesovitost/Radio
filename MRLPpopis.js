@@ -366,12 +366,12 @@ if (L12BHText === "není") {
  L12herniacePodklad = "bulgingu disku ";
 } else if (L12BHText === "osteofyty" && L12HDdiameter >= 4) {
  L12herniace = "Spondylofyty obratl. těl " + "o " + L12HDText;
- L12herniaceR = "Bulging disku"; 
- L12herniacePodklad = "bulgingu disku ";
+ L12herniaceR = "Výrazné spondylofyty "; 
+ L12herniacePodklad = "spondylofytů obratl. těl ";
 } else if (L12BHText === "osteofyty" && L12HDdiameter < 4) {
- L12herniace = "Nevýrazný bulging disku " + "o " + L12HDText;
- L12herniaceR = "Nevýrazný bulging disku"; 
- L12herniacePodklad = "bulgingu disku ";
+ L12herniace = "Spondylofyty " + "o " + L12HDText;
+ L12herniaceR = "Spondylofyty"; 
+ L12herniacePodklad = "spondylofytů ";
 } else if (L12BHText === "herniace" && L12HDdiameter < 4) {
  L12herniace = "Herniace disku " + "o " + L12HDText;
  L12herniaceR = "Drobná herniace disku"; 
