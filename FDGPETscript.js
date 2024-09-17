@@ -1133,13 +1133,13 @@ document.getElementById('SkeletonOther1no').addEventListener('contextmenu', func
 // Lesion aktivita   
   
 var aktivitaOptions = [
-    { text: "není", value: "bez akumulace RF", valuePSMA: "téměř bez PSMA exprese", valueFDG: "ametabolické"},
-	{ text: "nízká", value: "s akumulací RF nižší než ref. játra", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
-    { text: "nižší", value: "s akumulací RF mírně nižší než ref. játra", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
+    { text: "není", value: "bez patrné akumulace RF", valuePSMA: "téměř bez PSMA exprese", valueFDG: "ametabolické"},
+	{ text: "nízká", value: "s akumulací RF pod úrovní ref. jater", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
+    { text: "nižší", value: "s akumulací RF mírně pod úrovní ref. jater", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
     { text: "intermed.", value: "s akumulací RF na úrovni ref. jater", valuePSMA: "se střední PSMA expresí", valueFDG: "středně metabolicky aktivní "},
-    { text: "vyšší", value: "s akumulací RF mírně vyšší než ref. játra", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
-	{ text: "vysoká", value: "s akumulací RF vyšší než ref. játra", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
-    { text: "enormní", value: "s akumulací RF výrazně vyšší než ref. játra", valuePSMA: "s vysokou PSMA expresí", valueFDG: "výrazně hypermetabolické "}
+    { text: "vyšší", value: "s akumulací RF mírně nad úrovní ref. jater", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
+	{ text: "vysoká", value: "s akumulací RF nad úrovní ref. jater", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
+    { text: "enormní", value: "s akumulací RF výrazně nad úrovní ref. jater", valuePSMA: "s vysokou PSMA expresí", valueFDG: "výrazně hypermetabolické "}
 ];
 
 function populateAktivitaOptions() {
