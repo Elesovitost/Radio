@@ -1474,6 +1474,70 @@ if (ChbThoraxParenchymaNodulesR === "++" && ChbThoraxParenchymaNodulesL === "++"
 	}
 }
 
+
+updateButtonTexts({
+    'ChbThoraxParenchymaMicroR': ['R', '+', '++'],
+    'ChbThoraxParenchymaMicroL': ['L', '+', '++']
+});
+
+var ChbThoraxParenchymaMicroR = document.getElementById("ChbThoraxParenchymaMicroR").innerText;
+var ChbThoraxParenchymaMicroL = document.getElementById("ChbThoraxParenchymaMicroL").innerText;
+
+if (ChbThoraxParenchymaMicroR === "+" && ChbThoraxParenchymaMicroL === "+") {
+    ThoraxParenchymaText += "drobný mikronodul bez zvýšené akumulace RF bilat., ";
+} else {
+    if (ChbThoraxParenchymaMicroR === "+") {
+        ThoraxParenchymaText += "drobný mikronodul bez zvýšené akumulace RF vpravo, ";
+    }
+    if (ChbThoraxParenchymaMicroL === "+") {
+        ThoraxParenchymaText += "drobný mikronodul bez zvýšené akumulace RF vlevo, ";
+    }
+}
+
+if (ChbThoraxParenchymaMicroR === "++" && ChbThoraxParenchymaMicroL === "++") {
+    ThoraxParenchymaText += "drobné mikronoduly bez zvýšené akumulace RF bilat., ";
+} else {
+    if (ChbThoraxParenchymaMicroR === "++") {
+        ThoraxParenchymaText += "drobné mikronoduly bez zvýšené akumulace RF vpravo, ";
+    }
+    if (ChbThoraxParenchymaMicroL === "++") {
+        ThoraxParenchymaText += "drobné mikronoduly bez zvýšené akumulace RF vlevo, ";
+    }
+}
+
+
+updateButtonTexts({
+    'ChbThoraxParenchymaOpacR': ['R', '+', '++'],
+    'ChbThoraxParenchymaOpacL': ['L', '+', '++']
+});
+
+var ChbThoraxParenchymaOpacR = document.getElementById("ChbThoraxParenchymaOpacR").innerText;
+var ChbThoraxParenchymaOpacL = document.getElementById("ChbThoraxParenchymaOpacL").innerText;
+
+if (ChbThoraxParenchymaOpacR === "+" && ChbThoraxParenchymaOpacL === "+") {
+    ThoraxParenchymaText += "drobná opacita bez zvýšené akumulace RF bilat., ";
+} else {
+    if (ChbThoraxParenchymaOpacR === "+") {
+        ThoraxParenchymaText += "drobná opacita bez zvýšené akumulace RF vpravo, ";
+    }
+    if (ChbThoraxParenchymaOpacL === "+") {
+        ThoraxParenchymaText += "drobná opacita bez zvýšené akumulace RF vlevo, ";
+    }
+}
+
+if (ChbThoraxParenchymaOpacR === "++" && ChbThoraxParenchymaOpacL === "++") {
+    ThoraxParenchymaText += "drobné opacity bez zvýšené akumulace RF bilat., ";
+} else {
+    if (ChbThoraxParenchymaOpacR === "++") {
+        ThoraxParenchymaText += "drobné opacity bez zvýšené akumulace RF vpravo, ";
+    }
+    if (ChbThoraxParenchymaOpacL === "++") {
+        ThoraxParenchymaText += "drobné opacity bez zvýšené akumulace RF vlevo, ";
+    }
+}
+
+
+
 updateButtonTexts({
 	'ChbThoraxParenchymaConsolR': ['R', '+', '++'],
 	'ChbThoraxParenchymaConsolL': ['L', '+', '++']
@@ -1503,7 +1567,6 @@ if (ChbThoraxParenchymaConsolR === "++" && ChbThoraxParenchymaConsolL === "++") 
 		ThoraxParenchymaText += "drobné infiltráty / konsolidace s nízkou až střední akumulací RF vlevo, ";
 	}
 }
-
 
 
 if (ThoraxParenchymaRTR && ThoraxParenchymaRTL) ThoraxParenchymaText += "poradiační změny v parenchymu bilat, ";
@@ -2145,7 +2208,7 @@ if (ChbAbdomenRetroperit) descriptions.push("v retroperitoneu");
 if (ChbAbdomenPelvic) descriptions.push("v pánvi");
 
 if (ChbAbdomenParaaortalR && ChbAbdomenParaaortalL) {
-    descriptions.push("paraortálně bilat.");
+    descriptions.push("paraaortálně bilat.");
 } else {
     if (ChbAbdomenParaaortalR) descriptions.push("paraaortálně vpravo");
     if (ChbAbdomenParaaortalL) descriptions.push("paraaortálně vlevo");
