@@ -570,7 +570,7 @@ MkMenLokaceR = "";
  MkMenLokaceR = "v zadní polovině";
 } else if (MkMenLokace === "TE") {
  MkMenLokaceP = "střední části";
- MkMenLokaceR = "střední části";
+ MkMenLokaceR = "ve střední části";
 } else if (MkMenLokace === "PP") {
  MkMenLokaceP = "přední poloviny";
  MkMenLokaceR = "v přední polovině";
@@ -661,23 +661,23 @@ LkMenLokaceR = "";
  LkMenLokaceP = "zadního úponu";
  LkMenLokaceR = "zadního úponu";
 } else if (LkMenLokace === "ZR") {
- LkMenLokaceP = "zadního rohu";
- LkMenLokaceR = "zadního rohu";
+ LkMenLokaceP = "v zadním rohu";
+ LkMenLokaceR = "v zadním rohu";
 } else if (LkMenLokace === "ZP") {
  LkMenLokaceP = "zadní poloviny";
  LkMenLokaceR = "v zadní polovině";
 } else if (LkMenLokace === "TE") {
  LkMenLokaceP = "střední části";
- LkMenLokaceR = "střední části";
+ LkMenLokaceR = "ve střední části";
 } else if (LkMenLokace === "PP") {
  LkMenLokaceP = "přední poloviny";
  LkMenLokaceR = "v přední polovině";
 } else if (LkMenLokace === "PR") {
- LkMenLokaceP = "předního rohu";
- LkMenLokaceR = "předního rohu";
+ LkMenLokaceP = "v předním rohu";
+ LkMenLokaceR = "v předním rohu";
 } else if (LkMenLokace === "PU") {
  LkMenLokaceP = "předního úponu";
- LkMenLokaceR = "předního úponu";
+ LkMenLokaceR = "v předním úponu";
 }
 
 if (checkboxLkMenCyst.checked) {

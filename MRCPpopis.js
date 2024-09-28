@@ -402,11 +402,11 @@ const C34herniaDirections = [
     C34herniacePodklad += "";
   } else if (C34activeDirections.length === 1) {
     C34herniace += " " + C34activeDirections[0].text;
-	C34herniaceR += " " + C34activeDirections[0].text;
+	C34herniaceR += " " + C34activeDirections[0].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
     C34herniacePodklad += " " + C34activeDirections[0].text; 
   } else if (C34activeDirections.length > 1) {
     C34herniace += " " + C34activeDirections[0].text + " až " + C34activeDirections[C34activeDirections.length - 1].text;
-	C34herniaceR += " " + C34activeDirections[0].text + " až " + C34activeDirections[C34activeDirections.length - 1].text;
+	C34herniaceR += " " + C34activeDirections[0].text + " až " + C34activeDirections[C34activeDirections.length - 1].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
     C34herniacePodklad += " " + C34activeDirections[0].text + " až " + C34activeDirections[C34activeDirections.length - 1].text;
   } else {
     C34herniace += ""; 
