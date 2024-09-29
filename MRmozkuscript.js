@@ -462,12 +462,12 @@ populateAktivitaOptions();
 // Lesion hodnoceni
 
 var hodnoceniOptions = [
-    { text: "---", value: ": benigního vzhledu", valuez1: ": benigního vzhledu"},
-    { text: "-", value: ": nemá charakter viabilní neoplázie", valuez1: ": v.s. zánětlivá aktivace"},
-    { text: "+/-", value: ": nespecifický nález", valuez1: ": nespecifický nález"},
-    { text: "+", value: ": suspektní z viabilní neoplázie", valuez1: ": suspektní z infiltrace neoplazií"},
-    { text: "+++", value:": charakteru viabilní neoplázie", valuez1: ": charakteru infiltrace neoplazií"},
-	{ text: "M1", value:": charakteru meta", valuez1: ": infiltrace neoplazií"}
+    { text: "tumor", value: ": charakteru tumoru", valuez1: ": benigního vzhledu"},
+    { text: "meta", value: ": charakteru meta", valuez1: ": v.s. zánětlivá aktivace"},
+    { text: "arach.cysta", value: ": charakteru arach.c.", valuez1: ": nespecifický nález"},
+    { text: "pseudocysta", value: ": charakteru pseudoc.", valuez1: ": suspektní z infiltrace neoplazií"},
+    { text: "meningeom", value:": charakteru meningeomu", valuez1: ": charakteru infiltrace neoplazií"},
+	{ text: "ischemie", value:": charakteru ischemie", valuez1: ": infiltrace neoplazií"}
 ];
 
 function populateHodnoceniOptions() {
