@@ -824,6 +824,7 @@ MRbrainPOPText.value =
 POPExamCompareText + "\n" +
 POPBrainLesion1 + "\n" +
 POPBrainLesion2 + "\n" +
+POPBrainLesion3 + "\n" +
 LesionVP + "\n" +
 WMLP + WMLLocationP + RSP + "." + "\n" +
 POPNoLesions + "\n" +
@@ -852,6 +853,7 @@ MRbrainRESText.value =
 ExamCompareText + "\n" +
 RESBrainLesion1 + "\n" +
 RESBrainLesion2 + "\n" +
+RESBrainLesion3 + "\n" +
 LesionVR + "\n" +
 WMLR + WMLLocationR + RSR + "\n" + 
 GCAR + lobaratrophyR + "\n" +

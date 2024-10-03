@@ -60,9 +60,9 @@ table {width: auto; white-space: nowrap;}
 
 	<div id="obecne" class="standardwidth">
 		<button class="title">OBECNÉ</button>
-		SUVmax jater <input type="number" class="numbers" id="SUVLiver" min="0" max="10" step="0.1" style="width: 50px;" onchange="updateTexts()">&nbsp;&nbsp;
-		<span id="suvmax-parotid-container" class="hidden">SUVmax parotid <input type="number" class="numbers" id="SUVParotid" min="0" max="10" step="0.1" style="width: 50px;" onchange="updateTexts()"></span>
-		<input type="number" class="hidden numbers floatR" id="SUVLiverPrevious" min="0" max="10" step="0.1" style="width: 50px;" onchange="updateTexts()"> <text id="SUVLiverTextCompare" class="hidden floatR">event. SUVmax jater &nbsp;&nbsp;</text>
+		SUVmax jater <input type="number" class="numbers" id="SUVLiver" min="0" max="100" step="0.1" style="width: 50px;" onchange="updateTexts()">&nbsp;&nbsp;
+		<span id="suvmax-parotid-container" class="hidden">SUVmax parotid <input type="number" class="numbers" id="SUVParotid" min="0" max="100" step="0.1" style="width: 50px;" onchange="updateTexts()"></span>
+		<input type="number" class="hidden numbers floatR" id="SUVLiverPrevious" min="0" max="100" step="0.1" style="width: 50px;" onchange="updateTexts()"> <text id="SUVLiverTextCompare" class="hidden floatR">event. SUVmax jater &nbsp;&nbsp;</text>
 		   
 		aktivace tuku <label class="CHB"><input type="checkbox" id="ChbFat" value="Zvýšená akumulace RF v oblasti metabolicky aktivního tuku krku a trupu symetricky bilat. " onChange="updateTexts()"><span>+</span></label>&nbsp;&nbsp;
 		paravazace <label class="CHB"><input type="checkbox" id="ChbParavasR" value="Zvýšená akumulace RF v průběhu lymfatik PHK po parc. extravazaci RF při aplikaci. " onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbParavasL" value="Zvýšená akumulace RF v průběhu lymfatik LHK po parc. extravazaci RF při aplikaci. "onChange="updateTexts()"><span>L</span></label>&nbsp;&nbsp;&nbsp;

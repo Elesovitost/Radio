@@ -75,11 +75,24 @@ function generateComparisonText(prevSUV, prevSize, date, currentSUV, currentSize
 }
 
 
-// SUVLiver native
+// SUVLiver value native preset
 var suvLiverInput = document.getElementById('SUVLiver');
-            if (suvLiverInput.value === '') {
-                suvLiverInput.value = 3;
-            }
+var suvParotidInput = document.getElementById('SUVParotid');
+
+if (buttonElementPETType.value === "FDG" && suvLiverInput.value === '' || suvLiverInput.value == 7) {
+    suvLiverInput.value = 3;
+	suvParotidInput.value =  "";
+}
+
+if (buttonElementPETType.value === "PSMA" && suvLiverInput.value == 3  && suvParotidInput.value  === '"') {
+    suvLiverInput.value = 7;
+    suvParotidInput.value = 20;
+}
+
+if (buttonElementPETType.value === "DOTATOC" && suvLiverInput.value == 3) {
+    suvLiverInput.value = 7;
+    suvParotidInput.value = 20;
+}
 
 
 // SUVmax Comparison POP
