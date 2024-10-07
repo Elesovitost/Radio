@@ -232,10 +232,10 @@ var buttonPkCartCHP = document.getElementById("PkCartCHP").innerText;
 // Chondropathie determination
 if (buttonPkCartCHP === "IV") {
 	PkCartDescr = "Prakticky chybějící chrupavka ";
-	PkCartCP = "Pokročilá chondropatie ";
+	PkCartCP = "Destrukce chrupavek ";
 } else if (buttonPkCartCHP === "III") {
-	PkCartDescr = "Snížení chrupavky ";
-	PkCartCP = "Chondropatie ";
+	PkCartDescr = "Nepravidelné zřetelné snížení chrupavky ";
+	PkCartCP = "Výrazná chondropatie ";
 } else if (buttonPkCartCHP === "II") {
 	PkCartDescr = "Nepravidelné mírné snížení chrupavky ";
 	PkCartCP = "Mírná chondropatie ";
@@ -387,11 +387,11 @@ if (MkFemCondOCDIV) {
 
 if (MkFemCondCHPIV) {
 	descriptionsMkFemCondText.push("s prakticky chybějící chrupavkou");
-	descriptionsMkFemCondRES.push("s pokročilou chondropatií");
+	descriptionsMkFemCondRES.push("s destrukcí chrupavky");
 }
 if (MkFemCondCHPIII) {
 	descriptionsMkFemCondText.push("s výrazným snížením chrupavky");
-	descriptionsMkFemCondRES.push("s chondropatií");
+	descriptionsMkFemCondRES.push("s pokročilou chondropatií");
 }
 if (MkFemCondCHPII) {
 	descriptionsMkFemCondText.push("s mírným snížením chrupavky");
@@ -469,9 +469,9 @@ var isMkFissureDefect = MkFemCondFisOne || MkFemCondFisMore || MkFemCondDefOne |
 
 if ((isMkFemChpChecked && isMkFemOtherConditionsNotChecked) && (isMkTibChpChecked && isMkTibOtherConditionsNotChecked)) {
     if (MkFemCondCHPIV || MkTibCondCHPIV) {
-        MkFemCondRES = "Mediální kompartment s pokročilou chondropatií"; MkTibCondRES = "";
+        MkFemCondRES = "Mediální kompartment s destrukcí chrupavek"; MkTibCondRES = "";
     } else if (MkFemCondCHPIII || MkTibCondCHPIII) {
-        MkFemCondRES = "Mediální kompartment s chondropatií"; MkTibCondRES = "";
+        MkFemCondRES = "Mediální kompartment s pokročilou chondropatií"; MkTibCondRES = "";
     } else if (MkFemCondCHPII || MkTibCondCHPII) {
         MkFemCondRES = "Mediální kompartment s mírnou chondropatií"; MkTibCondRES = "";
     }
@@ -506,9 +506,9 @@ var isLkFissureDefect = LkFemCondFisOne || LkFemCondFisMore || LkFemCondDefOne |
 
 if ((isLkFemChpChecked && isLkFemOtherConditionsNotChecked) && (isLkTibChpChecked && isLkTibOtherConditionsNotChecked)) {
     if (LkFemCondCHPIV || LkTibCondCHPIV) {
-        LkFemCondRES = "Laterální kompartment s pokročilou chondropatií"; LkTibCondRES = "";
+        LkFemCondRES = "Laterální kompartment s destrukcí chrupavek"; LkTibCondRES = "";
     } else if (LkFemCondCHPIII || LkTibCondCHPIII) {
-        LkFemCondRES = "Laterální kompartment s chondropatií"; LkTibCondRES = "";
+        LkFemCondRES = "Laterální kompartment s pokročilou chondropatií"; LkTibCondRES = "";
     } else if (LkFemCondCHPII || LkTibCondCHPII) {
         LkFemCondRES = "Laterální kompartment s mírnou chondropatií"; LkTibCondRES = "";
     }
@@ -543,7 +543,7 @@ MkMenLezeR = "s rupturou";
  MkMenLezeP = "s longitudinální linií vysoké SI ";
  MkMenLezeR = "s longitudinální rupturou ";
 } else if (MkMenLeze === "koml") {
- MkMenLezeP = "s tvarovou defigurací a liniemi vysoké SI ";
+ MkMenLezeP = "s tvarovou defigurací a okrsky vysoké SI ";
  MkMenLezeR = "s komplexní rupturou ";
 } else if (MkMenLeze === "BH") {
  MkMenLezeP = "s odtržením vnitřní části a dislokací protilehle ";
@@ -560,26 +560,26 @@ if (MkMenLokace === "") {
 MkMenLokaceP = ""; 
 MkMenLokaceR = ""; 
 } else if (MkMenLokace === "ZU") {
- MkMenLokaceP = "zadního úponu";
- MkMenLokaceR = "zadního úponu";
+ MkMenLokaceP = "v zadním úponu";
+ MkMenLokaceR = "v zadním úponu";
 } else if (MkMenLokace === "ZR") {
  MkMenLokaceP = "v zadním rohu";
  MkMenLokaceR = "v zadním rohu";
 } else if (MkMenLokace === "ZP") {
- MkMenLokaceP = "zadní poloviny";
+ MkMenLokaceP = "v zadní polovině";
  MkMenLokaceR = "v zadní polovině";
 } else if (MkMenLokace === "TE") {
- MkMenLokaceP = "střední části";
+ MkMenLokaceP = "ve střední části";
  MkMenLokaceR = "ve střední části";
 } else if (MkMenLokace === "PP") {
- MkMenLokaceP = "přední poloviny";
+ MkMenLokaceP = "v přední polovině";
  MkMenLokaceR = "v přední polovině";
 } else if (MkMenLokace === "PR") {
  MkMenLokaceP = "v předním rohu";
  MkMenLokaceR = "v předním rohu";
 } else if (MkMenLokace === "PU") {
- MkMenLokaceP = "předního úponu";
- MkMenLokaceR = "předního úponu";
+ MkMenLokaceP = "v předním úponu";
+ MkMenLokaceR = "v předním úponu";
 }
 
 if (checkboxMkMenCyst.checked) {
@@ -641,7 +641,7 @@ LkMenLezeR = "s rupturou";
  LkMenLezeP = "s longitudinální linií vysoké SI ";
  LkMenLezeR = "s longitudinální rupturou ";
 } else if (LkMenLeze === "koml") {
- LkMenLezeP = "s tvarovou defigurací a liniemi vysoké SI  ";
+ LkMenLezeP = "s tvarovou defigurací a okrsky vysoké SI  ";
  LkMenLezeR = "s komplexní rupturou ";
 } else if (LkMenLeze === "BH") {
  LkMenLezeP = "s odtržením vnitřní části a dislokací protilehle ";
@@ -658,25 +658,25 @@ if (LkMenLokace === "") {
 LkMenLokaceP = ""; 
 LkMenLokaceR = ""; 
 } else if (LkMenLokace === "ZU") {
- LkMenLokaceP = "zadního úponu";
- LkMenLokaceR = "zadního úponu";
+ LkMenLokaceP = "v zadním úponu";
+ LkMenLokaceR = "v zadním úponu";
 } else if (LkMenLokace === "ZR") {
  LkMenLokaceP = "v zadním rohu";
  LkMenLokaceR = "v zadním rohu";
 } else if (LkMenLokace === "ZP") {
- LkMenLokaceP = "zadní poloviny";
+ LkMenLokaceP = "v zadní polovině";
  LkMenLokaceR = "v zadní polovině";
 } else if (LkMenLokace === "TE") {
- LkMenLokaceP = "střední části";
+ LkMenLokaceP = "ve střední části";
  LkMenLokaceR = "ve střední části";
 } else if (LkMenLokace === "PP") {
- LkMenLokaceP = "přední poloviny";
+ LkMenLokaceP = "v přední polovině";
  LkMenLokaceR = "v přední polovině";
 } else if (LkMenLokace === "PR") {
  LkMenLokaceP = "v předním rohu";
  LkMenLokaceR = "v předním rohu";
 } else if (LkMenLokace === "PU") {
- LkMenLokaceP = "předního úponu";
+ LkMenLokaceP = "v předním úponu";
  LkMenLokaceR = "v předním úponu";
 }
 
