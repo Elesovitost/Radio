@@ -92,7 +92,7 @@ if (ProstateLesion1T2Text === "T2 score 1") {
  ProstateLesion1T2P = "bez snížení SI na T2, "; 
  ProstateLesion1T2R = ""; 
 } else if (ProstateLesion1T2Text === "T2 score 2") {
- ProstateLesion1T2P = "dobře ohraničený uzel homogenně nízké SI na T2, ";
+ ProstateLesion1T2P = "dobře ohraničený okrsek homogenně nízké SI na T2, ";
  ProstateLesion1T2R = "";
 } else if (ProstateLesion1T2Text === "T2 score 3") {
  ProstateLesion1T2P = "místy neohraničený okrsek nehomogenně nízké SI na T2, ";
@@ -115,13 +115,13 @@ if (ProstateLesion1DWIText === "DWI score 1") {
     ProstateLesion1DWIP = "mírně vyšší SI na DWI bez výraznějšího snížení SI na ADC, "; 
     ProstateLesion1DWIR = ""; 
 } else if (ProstateLesion1DWIText === "DWI score 3") {
-    ProstateLesion1DWIP = "nápadně vyšší SI na DWI nebo nápadně nižší SI na ADC, ";
+    ProstateLesion1DWIP = "vyšší SI na DWI nebo nižší SI na ADC, ";
     ProstateLesion1DWIR = "";
 } else if (ProstateLesion1DWIText === "DWI score 4") {
-    ProstateLesion1DWIP = "nápadně vyšší SI na DWI a současně nápadně nižší SI na ADC, ";
+    ProstateLesion1DWIP = "vysoké SI na DWI a současně nízké SI na ADC, ";
     ProstateLesion1DWIR = "";
 } else if (ProstateLesion1DWIText === "DWI score 5") {
-    ProstateLesion1DWIP = "nápadně vyšší SI na DWI a současně nápadně nižší SI na ADC, ";
+    ProstateLesion1DWIP = "vysoké SI na DWI a současně nízké SI na ADC, ";
     ProstateLesion1DWIR = "";
 }
 
@@ -141,17 +141,17 @@ var ProstateLesion1PSMAText = buttonElementProstateLesion1PSMA.innerText;
 
 if (document.getElementById('ChbProstatePSMA').checked) {
         if (ProstateLesion1PSMAText === "PSMA 0") {
-            ProstateLesion1PSMAP = "s akumulací RF pod úrovní krevního poolu, "; 
-            ProstateLesion1PSMAR = ", bez zvýšené PSMA exprese (score 0)"; 
+            ProstateLesion1PSMAP = "s akumulací RF pod úrovní krevního poolu (score 0), "; 
+            ProstateLesion1PSMAR = ", bez zvýšené PSMA exprese"; 
         } else if (ProstateLesion1PSMAText === "PSMA 1") {
-            ProstateLesion1PSMAP = "s akumulací RF nad úrovní krevního poolu, ale nižší než játra, "; 
-            ProstateLesion1PSMAR = ", s mírně zvýšenou PSMA expresí (score 1)"; 
+            ProstateLesion1PSMAP = "s akumulací RF nad úrovní krevního poolu, ale nižší než játra (score 1), "; 
+            ProstateLesion1PSMAR = ", s mírně zvýšenou PSMA expresí"; 
         } else if (ProstateLesion1PSMAText === "PSMA 2") {
-            ProstateLesion1PSMAP = "s akumulací RF nad úrovní jater, ale nižší než parotid, ";
-            ProstateLesion1PSMAR = ", se středně vysokou PSMA expresí (score 2)";
+            ProstateLesion1PSMAP = "s akumulací RF nad úrovní jater, ale nižší než parotid (score 2), ";
+            ProstateLesion1PSMAR = ", se středně vysokou PSMA expresí";
         } else if (ProstateLesion1PSMAText === "PSMA 3") {
-            ProstateLesion1PSMAP = "s akumulací RF nad úrovní parotid, ";
-            ProstateLesion1PSMAR = ", s vysokou PSMA expresí (score 3)";
+            ProstateLesion1PSMAP = "s akumulací RF nad úrovní parotid (score 3), ";
+            ProstateLesion1PSMAR = ", s vysokou PSMA expresí";
         } 
     } else {
         ProstateLesion1PSMAP = "";
@@ -166,7 +166,7 @@ var ProstateLesion1SizeP = "";
 if (ProstateLesion1SizeValue === "") {
     ProstateLesion1SizeP = "";
 } else if (ProstateLesion1SizeValue !== "") {
-    ProstateLesion1SizeP = "diametru " + ProstateLesion1SizeValue + " mm,";
+    ProstateLesion1SizeP = "diametru cca " + ProstateLesion1SizeValue + " mm,";
 }
 
 // invaze
@@ -280,7 +280,7 @@ const prostateTableLesion1 = document.querySelector('#ProstateLesion1');
 var ProstateLesion1P = ""; var ProstateLesion1R = "";
 if (!prostateTableLesion1.classList.contains('hidden') && prostateSegmentLesion1 !== "") {
     const isPeripheral = segmentsLesion1.length > 0 && segmentsLesion1[0].charAt(0) === 'P';
-    ProstateLesion1P = "Ložisko " + " " + prostateSegmentLesion1 + " " + ProstateLesion1SizeP + " " + (isPeripheral ? "" : ProstateLesion1T2P) + " " + ProstateLesion1DWIP + " " + ProstateLesion1CP + " " + ProstateLesion1InvasionP + " " + ProstateLesion1PSMAP + ".";
+    ProstateLesion1P = "Ložisko " + " " + prostateSegmentLesion1 + ": " + ProstateLesion1T2P + " " + ProstateLesion1DWIP + " " + ProstateLesion1SizeP + " " + ProstateLesion1CP + " " + ProstateLesion1InvasionP + " " + ProstateLesion1PSMAP + ".";
     ProstateLesion1R = "Ložisko " + ProstateLesion1PIRADSText + " - " + prostateSegmentLesion1 + " " + ProstateLesion1InvasionR + " " + ProstateLesion1PSMAR + ".";
 }
 
@@ -425,7 +425,7 @@ var ProstateLesion2SizeP = "";
 if (ProstateLesion2SizeValue === "") {
     ProstateLesion2SizeP = "";
 } else if (ProstateLesion2SizeValue !== "") {
-    ProstateLesion2SizeP = "diametru " + ProstateLesion2SizeValue + " mm,";
+    ProstateLesion2SizeP = "diametru cca " + ProstateLesion2SizeValue + " mm,";
 }
 
 // invaze
@@ -453,17 +453,17 @@ var ProstateLesion2PSMAText = buttonElementProstateLesion2PSMA.innerText;
 
 if (document.getElementById('ChbProstatePSMA').checked) {
         if (ProstateLesion2PSMAText === "PSMA 0") {
-            ProstateLesion2PSMAP = "s akumulací RF pod úrovní krevního poolu, "; 
-            ProstateLesion2PSMAR = ", bez zvýšené PSMA exprese (score 0)"; 
+            ProstateLesion2PSMAP = "s akumulací RF pod úrovní krevního poolu (score 0), "; 
+            ProstateLesion2PSMAR = ", bez zvýšené PSMA exprese"; 
         } else if (ProstateLesion2PSMAText === "PSMA 1") {
-            ProstateLesion2PSMAP = "s akumulací RF nad úrovní krevního poolu, ale nižší než játra, "; 
-            ProstateLesion2PSMAR = ", s mírně zvýšenou PSMA expresí (score 1)"; 
+            ProstateLesion2PSMAP = "s akumulací RF nad úrovní krevního poolu, ale nižší než játra (score 1), "; 
+            ProstateLesion2PSMAR = ", s mírně zvýšenou PSMA expresí"; 
         } else if (ProstateLesion2PSMAText === "PSMA 2") {
-            ProstateLesion2PSMAP = "s akumulací RF nad úrovní jater, ale nižší než parotid, ";
-            ProstateLesion2PSMAR = ", se středně vysokou PSMA expresí (score 2)";
+            ProstateLesion2PSMAP = "s akumulací RF nad úrovní jater, ale nižší než parotid (score 2), ";
+            ProstateLesion2PSMAR = ", se středně vysokou PSMA expresí";
         } else if (ProstateLesion2PSMAText === "PSMA 3") {
-            ProstateLesion2PSMAP = "s akumulací RF nad úrovní parotid, ";
-            ProstateLesion2PSMAR = ", s vysokou PSMA expresí (score 3)";
+            ProstateLesion2PSMAP = "s akumulací RF nad úrovní parotid (score 3), ";
+            ProstateLesion2PSMAR = ", s vysokou PSMA expresí";
         } 
     } else {
         ProstateLesion2PSMAP = "";
@@ -709,7 +709,7 @@ var ProstateLesion3SizeP = "";
 if (ProstateLesion3SizeValue === "") {
     ProstateLesion3SizeP = "";
 } else if (ProstateLesion3SizeValue !== "") {
-    ProstateLesion3SizeP = "diametru " + ProstateLesion3SizeValue + " mm,";
+    ProstateLesion3SizeP = "diametru cca " + ProstateLesion3SizeValue + " mm,";
 }
 
 // invaze
@@ -737,17 +737,17 @@ var ProstateLesion3PSMAText = buttonElementProstateLesion3PSMA.innerText;
 
 if (document.getElementById('ChbProstatePSMA').checked) {
         if (ProstateLesion3PSMAText === "PSMA 0") {
-            ProstateLesion3PSMAP = "s akumulací RF pod úrovní krevního poolu, "; 
-            ProstateLesion3PSMAR = ", bez zvýšené PSMA exprese (score 0)"; 
+            ProstateLesion3PSMAP = "s akumulací RF pod úrovní krevního poolu (score 0), "; 
+            ProstateLesion3PSMAR = ", bez zvýšené PSMA exprese"; 
         } else if (ProstateLesion3PSMAText === "PSMA 1") {
-            ProstateLesion3PSMAP = "s akumulací RF nad úrovní krevního poolu, ale nižší než játra, "; 
-            ProstateLesion3PSMAR = ", s mírně zvýšenou PSMA expresí (score 1)"; 
+            ProstateLesion3PSMAP = "s akumulací RF nad úrovní krevního poolu, ale nižší než játra (score 1), "; 
+            ProstateLesion3PSMAR = ", s mírně zvýšenou PSMA expresí"; 
         } else if (ProstateLesion3PSMAText === "PSMA 2") {
-            ProstateLesion3PSMAP = "s akumulací RF nad úrovní jater, ale nižší než parotid, ";
-            ProstateLesion3PSMAR = ", se středně vysokou PSMA expresí (score 2)";
+            ProstateLesion3PSMAP = "s akumulací RF nad úrovní jater, ale nižší než parotid (score 2), ";
+            ProstateLesion3PSMAR = ", se středně vysokou PSMA expresí";
         } else if (ProstateLesion3PSMAText === "PSMA 3") {
-            ProstateLesion3PSMAP = "s akumulací RF nad úrovní parotid, ";
-            ProstateLesion3PSMAR = ", s vysokou PSMA expresí (score 3)";
+            ProstateLesion3PSMAP = "s akumulací RF nad úrovní parotid (score 3), ";
+            ProstateLesion3PSMAR = ", s vysokou PSMA expresí";
         } 
     } else {
         ProstateLesion3PSMAP = "";

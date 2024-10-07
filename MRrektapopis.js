@@ -94,7 +94,7 @@ if (RectTuInvasionFrom !== "" && RectTuInvasionTo !== "") {RectTuInvasionSegment
 
 //MRF
  if (document.getElementById('ChbRectTuMRFInvasion').checked) {
-    RectTuMRF = "Pravědpodobná nádorová infiltrace mezorektální fascie. ";
+    RectTuMRF = "Tumor či patol. uzlina (depozitum) zasahuje do vzdálenosti <= 1 mm od mezorektální fascie. ";
 	TNMMRF = "MRF+";
   } else {
     RectTuMRF = "Bez známek invaze mezorektální fascie. ";
@@ -103,9 +103,11 @@ if (RectTuInvasionFrom !== "" && RectTuInvasionTo !== "") {RectTuInvasionSegment
 
 //vaskularní invaze
  if (document.getElementById('ChbRectTuAngioInvasion').checked) {
-    RectTuAngioInvasion = "(Je možná i vaskulární invaze). ";
+    RectTuAngioInvasion = "Je patrný susp. průnik nádorové hmoty do cévy. ";
+	TNMENVI = "";
   } else {
-    RectTuAngioInvasion = "";
+    RectTuAngioInvasion = "Není patrna zřetelná vaskulární invaze. ";
+	TNMENVI = "ENVI+";
   }
 
 
@@ -198,10 +200,14 @@ var RectTuMstageR = "M0";
 
 if (totalNodesReg === 0) {
     RectTuLNRegNSTAGE = "N0";
-} else if (totalNodesReg >= 1 && totalNodesReg <= 3) {
-    RectTuLNRegNSTAGE = "N1";
-} else {
-    RectTuLNRegNSTAGE = "N2";
+} else if (totalNodesReg === 1) {
+    RectTuLNRegNSTAGE = "N1a";
+} else if (totalNodesReg >= 2 && totalNodesReg <= 3) {
+    RectTuLNRegNSTAGE = "N1b";
+} else if (totalNodesReg >= 4 && totalNodesReg <= 6) {
+    RectTuLNRegNSTAGE = "N2a";
+} else if (totalNodesReg > 6) {
+    RectTuLNRegNSTAGE = "N2b";
 }
 
 if (RectTuLNNonRegText === "suspektní") {
@@ -243,7 +249,7 @@ RectTuLNRegP + " " + RectTuLNNonRegP
 RectTuRESText.value = TMNLoc + TNMLength + ". " + "\n" + 
 RectTuLNRegR + "\n" + 
 RectTuLNNonRegP + "\n" + 
-"TNM stage: " + RectTuInvasionTSTAGE + " " + TNMMRF + " " + RectTuLNRegNSTAGE + " " + RectTuMstageR + ".";
+"TNM stage: " + RectTuInvasionTSTAGE + " " + TNMMRF + " " + TNMENVI + " " + RectTuLNRegNSTAGE + " " + RectTuMstageR + ".";
 
 ;
 
