@@ -580,10 +580,13 @@ if (document.getElementById('Chb1Intraaxial').checked && !document.getElementByI
 }
 
 if (document.getElementById('Chb1edema').checked && !document.getElementById('Chb1gliosis').checked) {
-    BrainLesion1additional += " s perifokálním edémem";
+    BrainLesion1additional += " s perifokální vysokou SI v T2W (vazogenní dém)";
 } else if (document.getElementById('Chb1gliosis').checked && !document.getElementById('Chb1edema').checked) {
-    BrainLesion1additional += " s perifokální gliózou";
+    BrainLesion1additional += " s perifokální vysokou SI v T2W (glióza)";
+} else if (document.getElementById('Chb1edema').checked && document.getElementById('Chb1gliosis').checked) {
+    BrainLesion1additional += " s perifokální vysokou SI v T2W (vazogenní edém / glióza)";
 }
+
 
 
 BrainLesion1AllLocations = BrainLesion1Location + " " + BrainLesion1AddLocation;
@@ -612,8 +615,11 @@ if (BrainLesion1RESDecision.includes("ischemie") && BrainLesion1type.includes("o
 if (BrainLesion1RESDecision.includes("tumor") && BrainLesion1type.includes("xpanze")) {RESBrainLesion1 = RESBrainLesion1.replace(/expanze/g, "tumorózní expanze").replace(/Expanze/g, "Tumorózní expanze").replace(": charakteru tumoru", ".");}
 if (BrainLesion1RESDecision.includes("arach") && BrainLesion1type.includes("cyst")) {RESBrainLesion1 = RESBrainLesion1.replace(/cyst/g, "arachnoidální cyst").replace(/Cyst/g, "Arachnoidální cyst").replace(": charakteru arach.c.", ".");}
 if (BrainLesion1RESDecision.includes("pseudo") && BrainLesion1type.includes("cyst")) {RESBrainLesion1 = RESBrainLesion1.replace(/cyst/g, "postmalat. pseudocyst").replace(/Cyst/g, "Postmalat. pseudocyst").replace(": charakteru pseudoc.", ".");}
-if (BrainLesion1CombinedResult.includes("je nově") || BrainLesion1CombinedResult.includes("jsou nově")) { RESBrainLesion1 = "Nově " + RESBrainLesion1.charAt(0).toLowerCase() + RESBrainLesion1.substring(1) ; RESBrainLesion1 = RESBrainLesion1.replace(" je nově", "").replace(" jsou nově", "");}
 
+if (BrainLesion1RESDecision.includes("resekc") && BrainLesion1type.includes("efekt")) {RESBrainLesion1 = RESBrainLesion1.replace(/Defekt/g, "Pooperační defekt").replace(/defekty/g, "pooperační defekty").replace(": po resekci", ".");}
+if (BrainLesion1RESDecision.includes("ischemie") && BrainLesion1type.includes("efekt")) {RESBrainLesion1 = RESBrainLesion1.replace(/Defekt/g, "Postischemický kortikosubkortikální defekt").replace(/defekty/g, "postischemické kortikosubkortikální defekty").replace(": charakteru ischemie", ".");}
+
+if (BrainLesion1CombinedResult.includes("je nově") || BrainLesion1CombinedResult.includes("jsou nově")) { RESBrainLesion1 = "Nově " + RESBrainLesion1.charAt(0).toLowerCase() + RESBrainLesion1.substring(1) ; RESBrainLesion1 = RESBrainLesion1.replace(" je nově", "").replace(" jsou nově", "");}
 
 if (BrainLesion1.classList.contains('hidden')) {POPBrainLesion1 = ""; RESBrainLesion1 = "";}
 

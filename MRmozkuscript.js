@@ -466,8 +466,9 @@ var hodnoceniOptions = [
     { text: "meta", value: ": charakteru meta", valuez1: ": v.s. zánětlivá aktivace"},
     { text: "arach.cysta", value: ": charakteru arach.c.", valuez1: ": nespecifický nález"},
     { text: "pseudocysta", value: ": charakteru pseudoc.", valuez1: ": suspektní z infiltrace neoplazií"},
+	{ text: "resekce", value: ": po resekci", valuez1: ": po resekci"},
     { text: "meningeom", value:": charakteru meningeomu", valuez1: ": charakteru infiltrace neoplazií"},
-	{ text: "ischemie", value:": charakteru ischemie", valuez1: ": infiltrace neoplazií"}
+	{ text: "ischemie", value:": charakteru ischemie", valuez1: ": charakteru ischemie"}
 ];
 
 function populateHodnoceniOptions() {
