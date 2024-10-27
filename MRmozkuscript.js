@@ -280,9 +280,28 @@ document.addEventListener('click', function(e) {
   }
 });
 
+document.getElementById('BrainLesion1Decision').addEventListener('change', function() {
+  var BrainLesion1RESDecision = document.getElementById('BrainLesion1Decision').value;
+  if (BrainLesion1RESDecision.includes("meta") || BrainLesion1RESDecision.includes("tumor")) {
+    document.getElementById('BrainLesion1BTRADS').classList.remove('hidden');
+  } else {
+    document.getElementById('BrainLesion1BTRADS').classList.add('hidden');
+  }
+});
 
 
+document.getElementById('BrainLesion1BTGRADE').addEventListener('focus', function() {
+  var dropdown = document.getElementById('BrainLesion1selectBTGRADE');
+  var rect = this.getBoundingClientRect();
+  dropdown.style.left = rect.left + 'px'; dropdown.style.top = rect.bottom + 2 + 'px'; dropdown.classList.remove('hidden');
+});
 
+document.addEventListener('click', function(e) {
+  var dropdown = document.getElementById(BrainLesion1selectBTGRADE);
+  if (!document.getElementById('BrainLesion1BTGRADE').contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
+  }
+});
 //LESION2
 
 document.getElementById('BrainLesion2no').addEventListener('click', function() {
@@ -506,4 +525,92 @@ copyfinal.addEventListener('click', function() {
 });
 
 
+//BTRADS
 
+    const inputField = document.getElementById('BrainLesion1BTGRADE');
+
+    inputField.addEventListener('click', resetBrainLesion1DecisionTree);
+
+    function resetBrainLesion1DecisionTree() {
+        inputField.value = '';
+        document.querySelectorAll('#BrainLesion1selectBTGRADE tr').forEach(row => {
+            row.style.display = 'none';
+        });
+        document.getElementById('step1').style.display = 'table-row';
+    }
+
+    function step1Handler(value) {
+        document.getElementById('step1').style.display = 'none';
+        if (value === 'No') {
+            inputField.value = 'BT-RADS 0: Baseline, no significant findings';
+        } else {
+            document.getElementById('step2').style.display = 'table-row';
+        }
+    }
+
+    function step2Handler(value) {
+        document.getElementById('step2').style.display = 'none';
+        if (value === 'Improved') {
+            document.getElementById('step3').style.display = 'table-row';
+        } else if (value === 'Unchanged') {
+            inputField.value = 'BT-RADS 2: Stable';
+        } else if (value === 'Worse') {
+            document.getElementById('step5').style.display = 'table-row';
+        }
+    }
+
+    function step3Handler(value) {
+        document.getElementById('step3').style.display = 'none';
+        if (value === 'None') {
+            inputField.value = 'BT-RADS 1a: Improved';
+        } else if (value === 'Avastin') {
+            document.getElementById('step4').style.display = 'table-row';
+        } else if (value === 'Increasing steroids') {
+            inputField.value = 'BT-RADS 1b: Possible medication effect';
+        }
+    }
+
+    function step4Handler(value) {
+        document.getElementById('step4').style.display = 'none';
+        if (value === 'Sustained improvement') {
+            inputField.value = 'BT-RADS 1a: Improved';
+        } else if (value === 'First study on Avastin') {
+            inputField.value = 'BT-RADS 1b: Possible medication effect';
+        }
+    }
+
+    function step5Handler(value) {
+        document.getElementById('step5').style.display = 'none';
+        if (value === '< 90 days') {
+            inputField.value = 'BT-RADS 3a: Favor treatment (early post-XRT)';
+        } else {
+            document.getElementById('step6').style.display = 'table-row';
+        }
+    }
+
+    function step6Handler(value) {
+        document.getElementById('step6').style.display = 'none';
+        if (value === 'FLAIR and ENH') {
+            document.getElementById('step7').style.display = 'table-row';
+        } else if (value === 'FLAIR or ENH') {
+            inputField.value = 'BT-RADS 3b: Indeterminate';
+        }
+    }
+
+    function step7Handler(value) {
+        document.getElementById('step7').style.display = 'none';
+        if (value === '> 25% increase') {
+            inputField.value = 'BT-RADS 4: Highly suspicious';
+        } else if (value === '< 25% increase') {
+            document.getElementById('step8').style.display = 'table-row';
+        }
+    }
+
+    function step8Handler(value) {
+        document.getElementById('step8').style.display = 'none';
+        if (value === 'Yes') {
+            inputField.value = 'BT-RADS 4: Highly suspicious';
+        } else if (value === 'No') {
+            inputField.value = 'BT-RADS 3c: Favor tumor';
+        }
+    }

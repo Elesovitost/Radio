@@ -623,6 +623,7 @@ if (BrainLesion1CombinedResult.includes("je nově") || BrainLesion1CombinedResul
 
 if (BrainLesion1.classList.contains('hidden')) {POPBrainLesion1 = ""; RESBrainLesion1 = "";}
 
+
 `;
 
 let codeForBrainLesion2 = codeForBrainLesion1.replace(/Lesion1/g, 'Lesion2').replace(/Chb1/g, 'Chb2');
