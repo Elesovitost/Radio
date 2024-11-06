@@ -92,16 +92,16 @@ if (ProstateLesion1T2Text === "T2 score 1") {
  ProstateLesion1T2P = "bez snížení SI na T2, "; 
  ProstateLesion1T2R = ""; 
 } else if (ProstateLesion1T2Text === "T2 score 2") {
- ProstateLesion1T2P = "dobře ohraničený okrsek homogenně nízké SI na T2, ";
+ ProstateLesion1T2P = "dobře ohraničené homogenně nízké SI na T2, ";
  ProstateLesion1T2R = "";
 } else if (ProstateLesion1T2Text === "T2 score 3") {
- ProstateLesion1T2P = "místy neohraničený okrsek nehomogenně nízké SI na T2, ";
+ ProstateLesion1T2P = "hůře ohraničené nehomogenně nízké SI na T2, ";
  ProstateLesion1T2R = "";
 } else if (ProstateLesion1T2Text === "T2 score 4") {
- ProstateLesion1T2P = "neohraničený okrsek nehomogenně nízké SI na T2, ";
+ ProstateLesion1T2P = "neohraničené nehomogenně nízké SI na T2, ";
  ProstateLesion1T2R = "";
 } else if (ProstateLesion1T2Text === "T2 score 5") {
- ProstateLesion1T2P = "neohraničený okrsek nehomogenně nízké SI na T2, ";
+ ProstateLesion1T2P = "neohraničené nehomogenně nízké SI na T2, ";
  ProstateLesion1T2R = "";
 }
 
@@ -280,9 +280,8 @@ const prostateTableLesion1 = document.querySelector('#ProstateLesion1');
 var ProstateLesion1P = ""; var ProstateLesion1R = "";
 if (!prostateTableLesion1.classList.contains('hidden') && prostateSegmentLesion1 !== "") {
     const isPeripheral = segmentsLesion1.length > 0 && segmentsLesion1[0].charAt(0) === 'P';
-    ProstateLesion1P = "Ložisko " + " " + prostateSegmentLesion1 + ": " + ProstateLesion1T2P + " " + ProstateLesion1DWIP + " " + ProstateLesion1SizeP + " " + ProstateLesion1CP + " " + ProstateLesion1InvasionP + " " + ProstateLesion1PSMAP + ".";
-    ProstateLesion1R = "Ložisko " + ProstateLesion1PIRADSText + " - " + prostateSegmentLesion1 + " " + ProstateLesion1InvasionR + " " + ProstateLesion1PSMAR + ".";
-}
+	ProstateLesion1P = "Ložisko " + " " + prostateSegmentLesion1 + " " + ProstateLesion1SizeP + " " + (isPeripheral ? "" : ProstateLesion1T2P) + " " + ProstateLesion1DWIP + " " + ProstateLesion1CP + " " + ProstateLesion1InvasionP + " " + ProstateLesion1PSMAP + ".";
+    ProstateLesion1R = "Ložisko " + ProstateLesion1PIRADSText + " - " + prostateSegmentLesion1 + " " + ProstateLesion1InvasionR + " " + ProstateLesion1PSMAR + ".";}
 
 //LESION2
 
@@ -373,16 +372,16 @@ if (ProstateLesion2T2Text === "T2 score 1") {
  ProstateLesion2T2P = "bez snížení SI na T2, "; 
  ProstateLesion2T2R = ""; 
 } else if (ProstateLesion2T2Text === "T2 score 2") {
- ProstateLesion2T2P = "dobře ohraničený uzel homogenně nízké SI na T2, ";
+ ProstateLesion2T2P = "dobře ohraničené homogenně nízké SI na T2, ";
  ProstateLesion2T2R = "";
 } else if (ProstateLesion2T2Text === "T2 score 3") {
- ProstateLesion2T2P = "místy neohraničený okrsek nehomogenně nízké SI na T2, ";
+ ProstateLesion2T2P = "hůře ohraničené nehomogenně nízké SI na T2, ";
  ProstateLesion2T2R = "";
 } else if (ProstateLesion2T2Text === "T2 score 4") {
- ProstateLesion2T2P = "neohraničený okrsek nehomogenně nízké SI na T2, ";
+ ProstateLesion2T2P = "neohraničené nehomogenně nízké SI na T2, ";
  ProstateLesion2T2R = "";
 } else if (ProstateLesion2T2Text === "T2 score 5") {
- ProstateLesion2T2P = "neohraničený okrsek nehomogenně nízké SI na T2, ";
+ ProstateLesion2T2P = "neohraničené nehomogenně nízké SI na T2, ";
  ProstateLesion2T2R = "";
 }
 
@@ -396,16 +395,15 @@ if (ProstateLesion2DWIText === "DWI score 1") {
     ProstateLesion2DWIP = "mírně vyšší SI na DWI bez výraznějšího snížení SI na ADC, "; 
     ProstateLesion2DWIR = ""; 
 } else if (ProstateLesion2DWIText === "DWI score 3") {
-    ProstateLesion2DWIP = "nápadně vyšší SI na DWI nebo nápadně nižší SI na ADC, ";
+    ProstateLesion2DWIP = "vyšší SI na DWI nebo nižší SI na ADC, ";
     ProstateLesion2DWIR = "";
 } else if (ProstateLesion2DWIText === "DWI score 4") {
-    ProstateLesion2DWIP = "nápadně vyšší SI na DWI a současně nápadně nižší SI na ADC, ";
+    ProstateLesion2DWIP = "vysoké SI na DWI a současně nízké SI na ADC, ";
     ProstateLesion2DWIR = "";
 } else if (ProstateLesion2DWIText === "DWI score 5") {
-    ProstateLesion2DWIP = "nápadně vyšší SI na DWI a současně nápadně nižší SI na ADC, ";
+    ProstateLesion2DWIP = "vysoké SI na DWI a současně nízké SI na ADC, ";
     ProstateLesion2DWIR = "";
 }
-
 // C+
 var ProstateLesion2CText = buttonElementProstateLesion2C.innerText;
 
@@ -656,16 +654,16 @@ if (ProstateLesion3T2Text === "T2 score 1") {
  ProstateLesion3T2P = "bez snížení SI na T2, "; 
  ProstateLesion3T2R = ""; 
 } else if (ProstateLesion3T2Text === "T2 score 2") {
- ProstateLesion3T2P = "dobře ohraničený uzel homogenně nízké SI na T2, ";
+ ProstateLesion3T2P = "dobře ohraničené homogenně nízké SI na T2, ";
  ProstateLesion3T2R = "";
 } else if (ProstateLesion3T2Text === "T2 score 3") {
- ProstateLesion3T2P = "místy neohraničený okrsek nehomogenně nízké SI na T2, ";
+ ProstateLesion3T2P = "hůře ohraničené nehomogenně nízké SI na T2, ";
  ProstateLesion3T2R = "";
 } else if (ProstateLesion3T2Text === "T2 score 4") {
- ProstateLesion3T2P = "neohraničený okrsek nehomogenně nízké SI na T2, ";
+ ProstateLesion3T2P = "neohraničené nehomogenně nízké SI na T2, ";
  ProstateLesion3T2R = "";
 } else if (ProstateLesion3T2Text === "T2 score 5") {
- ProstateLesion3T2P = "neohraničený okrsek nehomogenně nízké SI na T2, ";
+ ProstateLesion3T2P = "neohraničené nehomogenně nízké SI na T2, ";
  ProstateLesion3T2R = "";
 }
 
@@ -679,13 +677,13 @@ if (ProstateLesion3DWIText === "DWI score 1") {
     ProstateLesion3DWIP = "mírně vyšší SI na DWI bez výraznějšího snížení SI na ADC, "; 
     ProstateLesion3DWIR = ""; 
 } else if (ProstateLesion3DWIText === "DWI score 3") {
-    ProstateLesion3DWIP = "nápadně vyšší SI na DWI nebo nápadně nižší SI na ADC, ";
+    ProstateLesion3DWIP = "vyšší SI na DWI nebo nižší SI na ADC, ";
     ProstateLesion3DWIR = "";
 } else if (ProstateLesion3DWIText === "DWI score 4") {
-    ProstateLesion3DWIP = "nápadně vyšší SI na DWI a současně nápadně nižší SI na ADC, ";
+    ProstateLesion3DWIP = "vysoké SI na DWI a současně nízké SI na ADC, ";
     ProstateLesion3DWIR = "";
 } else if (ProstateLesion3DWIText === "DWI score 5") {
-    ProstateLesion3DWIP = "nápadně vyšší SI na DWI a současně nápadně nižší SI na ADC, ";
+    ProstateLesion3DWIP = "vysoké SI na DWI a současně nízké SI na ADC, ";
     ProstateLesion3DWIR = "";
 }
 
