@@ -423,9 +423,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			if (firstLine.includes("MR kolene") || firstLine.includes("MR ramene") || firstLine.includes("MR hlezna")) {
 				showPopup("DOPLŇ STRANU");
 			} else if (
-				(firstLine.includes("FDG") && firstLine.includes("PSMA")) ||
-				(firstLine.includes("FDG") && firstLine.includes("DOTATOC")) ||
-				(firstLine.includes("PSMA") && firstLine.includes("DOTATOC"))
+				(text.includes("FDG") && text.includes("PSMA")) ||
+				(text.includes("FDG") && text.includes("DOTATOC")) ||
+				(text.includes("PSMA") && text.includes("DOTATOC"))
 			) {
         showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
 			} else {
