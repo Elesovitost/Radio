@@ -84,7 +84,7 @@ if (buttonElementPETType.value === "FDG" && suvLiverInput.value === '' || suvLiv
 	suvParotidInput.value =  "";
 }
 
-if (buttonElementPETType.value === "PSMA" && suvLiverInput.value == 3  && suvParotidInput.value  === '"') {
+if (buttonElementPETType.value === "PSMA" && suvLiverInput.value == 3 ) {
     suvLiverInput.value = 7;
     suvParotidInput.value = 20;
 }
@@ -2960,6 +2960,9 @@ var AbdomenVesselsRes = "";
 var ChbAbdomenVesselsAoAneurysmSupra = document.getElementById("ChbAbdomenVesselsAoAneurysmSupra").checked;
 var ChbAbdomenVesselsAoAneurysmSub = document.getElementById("ChbAbdomenVesselsAoAneurysmSub").checked;
 var ChbAbdomenVesselsAoAneurysmBif = document.getElementById("ChbAbdomenVesselsAoAneurysmBif").checked;
+
+var ChbAbdomenVesselsASAortaCH = document.getElementById("ChbAbdomenVesselsASAortaCH").checked;
+var ChbAbdomenVesselsASAortaA = document.getElementById("ChbAbdomenVesselsASAortaA").checked;
 var ChbAbdomenVesselsASIliacComR = document.getElementById("ChbAbdomenVesselsASIliacComR").checked;
 var ChbAbdomenVesselsASIliacComL = document.getElementById("ChbAbdomenVesselsASIliacComL").checked;
 var ChbAbdomenVesselsASIliacExtR = document.getElementById("ChbAbdomenVesselsASIliacExtR").checked;
@@ -2995,31 +2998,43 @@ AbdomenVesselsText = aneurysmText;
 AbdomenVesselsRes = aneurysmText;
 
 var arteries = [];
-var BilateralArteries = {
-    "a. iliaca communis": [ChbAbdomenVesselsASIliacComR, ChbAbdomenVesselsASIliacComL],
-    "a. iliaca externa": [ChbAbdomenVesselsASIliacExtR, ChbAbdomenVesselsASIliacExtL],
-    "a. femoralis": [ChbAbdomenVesselsASFemR, ChbAbdomenVesselsASFemL]
-};
 
-for (var artery in BilateralArteries) {
-    if (BilateralArteries[artery][0] && BilateralArteries[artery][1]) {
-        arteries.push(artery + " bilat.");
-    } else {
-        if (BilateralArteries[artery][0]) arteries.push(artery + " vpravo");
-        if (BilateralArteries[artery][1]) arteries.push(artery + " vlevo");
-    }
+if (ChbAbdomenVesselsASAortaCH && ChbAbdomenVesselsASAortaA) {
+    arteries.push("hrudní i břišní aorty");
+} else {
+    if (ChbAbdomenVesselsASAortaCH) arteries.push("hrudní aorty");
+    if (ChbAbdomenVesselsASAortaA) arteries.push("břišní aorty");
+}
+
+if (ChbAbdomenVesselsASIliacComR && ChbAbdomenVesselsASIliacComL) {
+    arteries.push("společných ilik");
+} else {
+    if (ChbAbdomenVesselsASIliacComR) arteries.push("společné iliky vpravo");
+    if (ChbAbdomenVesselsASIliacComL) arteries.push("společné iliky vlevo");
+}
+
+if (ChbAbdomenVesselsASIliacExtR && ChbAbdomenVesselsASIliacExtL) {
+    arteries.push("zevních ilik");
+} else {
+    if (ChbAbdomenVesselsASIliacExtR) arteries.push("zevní iliky vpravo");
+    if (ChbAbdomenVesselsASIliacExtL) arteries.push("zevní iliky vlevo");
+}
+
+if (ChbAbdomenVesselsASFemR && ChbAbdomenVesselsASFemL) {
+    arteries.push("femorálních tepen");
+} else {
+    if (ChbAbdomenVesselsASFemR) arteries.push("femorální tepny vpravo");
+    if (ChbAbdomenVesselsASFemL) arteries.push("femorální tepny vlevo");
 }
 
 if (arteries.length > 0) {
     var arteryText = arteries.length > 2 ? arteries.slice(0, -2).join(", ") + ", " + arteries.slice(-2).join(" a ") : arteries.join(" a ");
-    AbdomenVesselsText += "Pokročilá AS " + arteryText + ". ";
-	AbdomenVesselsRes += "Pokročilá ateroskleróza " + arteryText + ". ";
+    AbdomenVesselsText += "Aterosklerotické změny " + arteryText + ". ";
 }
 
 if (AbdomenVesselsOther.length > 0) {
     AbdomenVesselsText += AbdomenVesselsOther;
 }
-
 
 
 //Abdomen Organs Combine
