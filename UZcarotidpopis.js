@@ -40,12 +40,15 @@ if (UZCarotRASno === "0") {
 	UZCarotRASmater.classList.remove('hidden');  UZCarotRASmmhide.classList.remove('hidden'); 
     POPUSCarotRSentences.push("ojedinělé drobné");
 	RESUSCarotRno =  "ojedinělých drobných";
-} else if (UZCarotRASno === "++") {
+} else if (UZCarotRASno === "++" && UZCarotRASmm <3) {
+    POPUSCarotRSentences.push("vícečetné drobné");
+	RESUSCarotRno =  "vícečetných drobných";
+} else if (UZCarotRASno === "++" && UZCarotRASmm >= 3) {
     POPUSCarotRSentences.push("vícečetné");
 	RESUSCarotRno =  "vícečetných";
 } else if (UZCarotRASno === "+++") {
-    POPUSCarotRSentences.push("mnohočetné");
-	RESUSCarotRno =  "mnohočetných";
+    POPUSCarotRSentences.push("výraznější");
+	RESUSCarotRno =  "výraznějších";
 } else if (UZCarotRASno === "circ") {
     POPUSCarotRSentences.push("cirkulární");
 	RESUSCarotRno =  "cirkulárních";
@@ -133,7 +136,7 @@ else if (UZCarotRASno !== "0" && UZCarotRICA >= 125 && UZCarotRICA < 230) {
     RESCarotR = "Vpravo stenóza ICA 50-69% na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater;
 }
 else if (UZCarotRASno !== "0" && UZCarotRASno !== "+" && UZCarotRICA < 125 && UZCarotRASmm <3) {
-    RESCarotR = "Vpravo nevýznamná a nevýrazná stenóza na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater;
+    RESCarotR = "Vpravo bez signifikantních stenóz při přítomnosti " + RESUSCarotRno + " " + RESUSCarotRmater;
 }
 else if (UZCarotRASno !== "0" && UZCarotRASno !== "+" && UZCarotRICA < 125 && UZCarotRASmm >= 3) {
     RESCarotR = "Vpravo nevýznamná stenóza do 50% na podkladě " + RESUSCarotRno + " " + RESUSCarotRmater;
