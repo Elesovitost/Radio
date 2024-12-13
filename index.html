@@ -96,9 +96,9 @@
 
 &nbsp; SEKVENCE <button id="copySEKV" class="buttonTEXT">COPY</button>
 <textarea id="FINALSEKVText" class="FINALXXL" readonly></textarea>
+
 </div>
 
-<div id="popupMessage" style="display:none; position:fixed; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold;"></div>
 
 <div id="texty1" class="standardwidthFinalText" style="display: none;" >
 <textarea id="FINALPOPText" class="FINALXXL" readonly></textarea>
@@ -107,6 +107,7 @@
 
 <div id="texty2" class="standardwidthFinalText" style="display: ;"> 
 <button id="copyCOMP" class="buttonTEXT">KOMPLET&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button> <button id="copyPOP" class="buttonTEXT" style="font-Size: 11px">jen popis<img src="icon_copy.png" alt="Icon" class="button-icon"></button> <button id="copyRES" class="buttonTEXT" style="font-Size: 11px">jen závěr<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
+<div id="popupMessage" style="display:none; position:relative; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold; width:300px;"></div>
 <textarea id="FINALCOMPLETEText" class="FINALXXL" ></textarea>
 </div>
 
@@ -418,21 +419,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 		button.addEventListener('click', function() {
 			var text = textArea.value;
-			var firstLine = text.split('\n')[0]; // Get the first line
 
-			if (firstLine.includes("MR kolene") || firstLine.includes("MR ramene") || firstLine.includes("MR hlezna")) {
+			if (text.includes("MR kolene") || text.includes("MR ramene") || text.includes("MR hlezna")) {
+				console.log("Condition 1 triggered: Side.");
 				showPopup("DOPLŇ STRANU");
-			} else if (
-				(text.includes("FDG") && text.includes("PSMA")) ||
+			} else if ((text.includes("FDG") && text.includes("PSMA")) ||
 				(text.includes("FDG") && text.includes("DOTATOC")) ||
-				(text.includes("PSMA") && text.includes("DOTATOC"))
-			) {
-        showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
+				(text.includes("PSMA") && text.includes("DOTATOC"))) {
+        console.log("Condition 2 triggered: Invalid combination.");
+		showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
 			} else {
+				console.log("Condition 3 triggered: Copying text.");
 				navigator.clipboard.writeText(text)
 				.then(() => {
-					// Optional: success action
+					console.log("Text copied successfully!");
 				})
+				.catch((error) => {
+					console.error("Failed to copy text:", error);
+				});
 			}
 		});
 
