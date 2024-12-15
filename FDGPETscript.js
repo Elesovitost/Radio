@@ -1349,19 +1349,25 @@ imageConfigs.forEach(config => {
   const imageElement = document.getElementById(config.imageElementId);
   let isMouseDown = false; // Track if the mouse button is held down
   let startY = 0; // Starting Y position when the mouse button is pressed
+  let holdTimeout; // Timeout to track long press
 
   const updateImageSrc = () => {
     imageElement.src = `${config.imagePath}${String(config.imageIndex).padStart(2, '0')}${config.fileExtension}`;
   };
 
   const onMouseDown = (event) => {
-    if (event.button === 2) {
-      event.preventDefault();
-    }
-    isMouseDown = true;
+    if (event.button !== 0) return; // Only respond to the left mouse button
     startY = event.clientY;
+    isMouseDown = true;
+
+    // Set a timeout for the long press (2 seconds)
+    holdTimeout = setTimeout(() => {
+      if (isMouseDown) {
+        imageElement.style.display = 'block';
+      }
+    }, 500);
+
     document.addEventListener('mousemove', onMouseMove);
-    event.preventDefault();
   };
 
   const onMouseMove = (event) => {
@@ -1369,26 +1375,29 @@ imageConfigs.forEach(config => {
 
     const diffY = event.clientY - startY;
     if (Math.abs(diffY) > 5) { // Add a threshold to reduce sensitivity
-		if (diffY > 0) {
-		  // Moved down
-		  if (config.imageIndex < config.maxIndex) config.imageIndex++;
-		} else {
-		  // Moved up
-		  if (config.imageIndex > 1) config.imageIndex--;
-		}
+      if (diffY > 0) {
+        // Moved down
+        if (config.imageIndex < config.maxIndex) config.imageIndex++;
+      } else {
+        // Moved up
+        if (config.imageIndex > 1) config.imageIndex--;
+      }
       updateImageSrc();
       startY = event.clientY; // Reset start position
     }
   };
 
-  // Function to handle mouse up events
   const onMouseUp = () => {
     isMouseDown = false;
+    clearTimeout(holdTimeout); // Clear the timeout if mouse button is released early
     document.removeEventListener('mousemove', onMouseMove);
   };
 
   // Prevent context menu on the image
-  imageElement.addEventListener('contextmenu', event => event.preventDefault());
+  imageElement.addEventListener('contextmenu', event => {
+    event.preventDefault();
+    imageElement.style.display = 'none'; // Hide the image on right-click
+  });
 
   // Attach the event listeners to the image element
   imageElement.addEventListener('mousedown', onMouseDown);
@@ -1396,8 +1405,27 @@ imageConfigs.forEach(config => {
 
   const focusElementIds = config.focusElementsIds || [config.focusElementId];
   focusElementIds.forEach(id => {
-    document.getElementById(id).addEventListener('focus', () => {
-      imageElement.style.display = 'block';
+    const element = document.getElementById(id);
+    element.addEventListener('mousedown', (event) => {
+      if (event.button !== 0) return; // Allow normal clicks
+      startY = event.clientY;
+      isMouseDown = true;
+
+      // Set a timeout for the long press (2 seconds)
+      holdTimeout = setTimeout(() => {
+        if (isMouseDown) {
+          imageElement.style.display = 'block';
+        }
+      }, 500);
+    });
+
+    element.addEventListener('mouseup', () => {
+      isMouseDown = false;
+      clearTimeout(holdTimeout);
+    });
+
+    element.addEventListener('focus', () => {
+      // Allow normal focus behavior
     });
   });
 
