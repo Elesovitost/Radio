@@ -104,10 +104,10 @@ if (RectTuInvasionFrom !== "" && RectTuInvasionTo !== "") {RectTuInvasionSegment
 //vaskularní invaze
  if (document.getElementById('ChbRectTuAngioInvasion').checked) {
     RectTuAngioInvasion = "Je patrný susp. průnik nádorové hmoty do cévy. ";
-	TNMENVI = "";
+	TNMENVI = "ENVI+";
   } else {
     RectTuAngioInvasion = "Není patrna zřetelná vaskulární invaze. ";
-	TNMENVI = "ENVI+";
+	TNMENVI = "";
   }
 
 
