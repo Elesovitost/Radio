@@ -224,18 +224,21 @@ PkCartLesion = checkedLesions.map(item => item.text).join(' a ');
 
 // Chondropathie determination
 updateButtonTexts({
-	'PkCartCHP': ['0', 'II', 'III', 'IV'],
+	'PkCartCHP': ['0', 'II', 'III', 'IV', 'D'],
 });
 
 var buttonPkCartCHP = document.getElementById("PkCartCHP").innerText;
 
 // Chondropathie determination
-if (buttonPkCartCHP === "IV") {
-	PkCartDescr = "Prakticky chybějící chrupavka ";
+if (buttonPkCartCHP === "D") {
+	PkCartDescr = "Chybějící chrupavka ";
 	PkCartCP = "Destrukce chrupavek ";
+} else if (buttonPkCartCHP === "IV") {
+	PkCartDescr = "Výrazně snížená až chybějící chrupavka ";
+	PkCartCP = "Pokročilá chondropatie ";
 } else if (buttonPkCartCHP === "III") {
 	PkCartDescr = "Nepravidelné zřetelné snížení chrupavky ";
-	PkCartCP = "Výrazná chondropatie ";
+	PkCartCP = "Chondropatie ";
 } else if (buttonPkCartCHP === "II") {
 	PkCartDescr = "Nepravidelné mírné snížení chrupavky ";
 	PkCartCP = "Mírná chondropatie ";
@@ -346,9 +349,6 @@ let codeForMkFem = `
 
 var MkFemCondFrS = document.getElementById("MkFemCondFrS").checked;
 var MkFemCondFrL = document.getElementById("MkFemCondFrL").checked;
-var MkFemCondCHPIV = document.getElementById("MkFemCondCHPIV").checked;
-var MkFemCondCHPIII = document.getElementById("MkFemCondCHPIII").checked;
-var MkFemCondCHPII = document.getElementById("MkFemCondCHPII").checked;
 var MkFemCondFisOne = document.getElementById("MkFemCondFisOne").checked;
 var MkFemCondFisMore = document.getElementById("MkFemCondFisMore").checked;
 var MkFemCondDefOne = document.getElementById("MkFemCondDefOne").checked;
@@ -362,6 +362,26 @@ var MkFemCondOCDIV = document.getElementById("MkFemCondOCDIV").checked;
 
 var descriptionsMkFemCondText = [];
 var descriptionsMkFemCondRES = [];
+
+updateButtonTexts({
+	'MkFemCondCHP': ['0', 'II', 'III', 'IV', 'D'],
+});
+
+var buttonMkFemCondCHP = document.getElementById("MkFemCondCHP").innerText;
+
+if (buttonMkFemCondCHP === "D") {
+	descriptionsMkFemCondText.push("s chybějící chrupavkou");
+	descriptionsMkFemCondRES.push("s destrukcí chrupavky");
+} else if (buttonMkFemCondCHP === "IV") {
+	descriptionsMkFemCondText.push("s výrazně sníženou chrupavkou");
+	descriptionsMkFemCondRES.push("s pokročilou chondropatií");
+} else if (buttonMkFemCondCHP === "III") {
+	descriptionsMkFemCondText.push("s nepravidelným snížením chrupavky");
+	descriptionsMkFemCondRES.push("s chondropatií");
+} else if (buttonMkFemCondCHP === "II") {
+	descriptionsMkFemCondText.push("s mírným snížením chrupavky");
+	descriptionsMkFemCondRES.push("s mírnou chondropatií");
+}
 
 if (MkFemCondFrS) {
 	descriptionsMkFemCondText.push("s T2W hyposignální linií subchondrálně s perifokálním edémem");
@@ -383,19 +403,6 @@ if (MkFemCondOCDIII) {
 if (MkFemCondOCDIV) {
 	descriptionsMkFemCondText.push("s osteochondrálním defektem po uvolnění fragmentu");
 	descriptionsMkFemCondRES.push("s osteochondrálním defektem po uvolnění fragmentu");
-}
-
-if (MkFemCondCHPIV) {
-	descriptionsMkFemCondText.push("s prakticky chybějící chrupavkou");
-	descriptionsMkFemCondRES.push("s destrukcí chrupavky");
-}
-if (MkFemCondCHPIII) {
-	descriptionsMkFemCondText.push("s výrazným snížením chrupavky");
-	descriptionsMkFemCondRES.push("s pokročilou chondropatií");
-}
-if (MkFemCondCHPII) {
-	descriptionsMkFemCondText.push("s mírným snížením chrupavky");
-	descriptionsMkFemCondRES.push("s mírnou chondropatií");
 }
 
 if (MkFemCondFisOne) {
@@ -460,19 +467,21 @@ eval(codeForLkTib);
 
 // Mk chondropatie
 
-var isMkFemChpChecked = MkFemCondCHPII || MkFemCondCHPIII || MkFemCondCHPIV; // any chondropathy checked
+var isMkFemChpChecked = buttonMkFemCondCHP !== "0"; // any chondropathy checked
 var isMkFemOtherConditionsNotChecked = !MkFemCondFrS && !MkFemCondFrL && !MkFemCondOCDII && !MkFemCondOCDIII && !MkFemCondOCDIV && !MkFemCondEdemaCont && !MkFemCondEdemaDif; // fracture / OCD not checked
-var isMkTibChpChecked = MkTibCondCHPII || MkTibCondCHPIII || MkTibCondCHPIV;
+var isMkTibChpChecked = buttonMkTibCondCHP !== "0";
 var isMkTibOtherConditionsNotChecked = !MkTibCondFrS && !MkTibCondFrL && !MkTibCondOCDII && !MkTibCondOCDIII && !MkTibCondOCDIV && !MkTibCondEdemaCont && !MkTibCondEdemaDif;
 var isMkAnySubEdema = MkFemCondEdemaSub && MkTibCondEdemaSub;
 var isMkFissureDefect = MkFemCondFisOne || MkFemCondFisMore || MkFemCondDefOne || MkFemCondDefMore || MkTibCondFisOne || MkTibCondFisMore || MkTibCondDefOne || MkTibCondDefMore;
 
 if ((isMkFemChpChecked && isMkFemOtherConditionsNotChecked) && (isMkTibChpChecked && isMkTibOtherConditionsNotChecked)) {
-    if (MkFemCondCHPIV || MkTibCondCHPIV) {
+    if (buttonMkFemCondCHP === "D" || buttonMkTibCondCHP === "D") {
         MkFemCondRES = "Mediální kompartment s destrukcí chrupavek"; MkTibCondRES = "";
-    } else if (MkFemCondCHPIII || MkTibCondCHPIII) {
+    } else if (buttonMkFemCondCHP === "IV" || buttonMkTibCondCHP === "IV") {
         MkFemCondRES = "Mediální kompartment s pokročilou chondropatií"; MkTibCondRES = "";
-    } else if (MkFemCondCHPII || MkTibCondCHPII) {
+    } else if (buttonMkFemCondCHP === "III" || buttonMkTibCondCHP === "III") {
+        MkFemCondRES = "Mediální kompartment s chondropatií"; MkTibCondRES = "";
+    } else if (buttonMkFemCondCHP === "II" || buttonMkTibCondCHP === "II") {
         MkFemCondRES = "Mediální kompartment s mírnou chondropatií"; MkTibCondRES = "";
     }
     
@@ -497,19 +506,21 @@ if (!isMkFemChpChecked && isMkFemOtherConditionsNotChecked && !isMkTibChpChecked
 
 // Lk chondropatie
 
-var isLkFemChpChecked = LkFemCondCHPII || LkFemCondCHPIII || LkFemCondCHPIV;
-var isLkFemOtherConditionsNotChecked = !LkFemCondFrS && !LkFemCondFrL && !LkFemCondOCDII && !LkFemCondOCDIII && !LkFemCondOCDIV && !LkFemCondEdemaCont && !LkFemCondEdemaDif;
-var isLkTibChpChecked = LkTibCondCHPII || LkTibCondCHPIII || LkTibCondCHPIV;
+var isLkFemChpChecked = buttonLkFemCondCHP !== "0"; // any chondropathy checked
+var isLkFemOtherConditionsNotChecked = !LkFemCondFrS && !LkFemCondFrL && !LkFemCondOCDII && !LkFemCondOCDIII && !LkFemCondOCDIV && !LkFemCondEdemaCont && !LkFemCondEdemaDif; // fracture / OCD not checked
+var isLkTibChpChecked = buttonLkTibCondCHP !== "0";
 var isLkTibOtherConditionsNotChecked = !LkTibCondFrS && !LkTibCondFrL && !LkTibCondOCDII && !LkTibCondOCDIII && !LkTibCondOCDIV && !LkTibCondEdemaCont && !LkTibCondEdemaDif;
-var isLkAnySubEdema = LkFemCondEdemaSub || LkTibCondEdemaSub;
+var isLkAnySubEdema = LkFemCondEdemaSub && LkTibCondEdemaSub;
 var isLkFissureDefect = LkFemCondFisOne || LkFemCondFisMore || LkFemCondDefOne || LkFemCondDefMore || LkTibCondFisOne || LkTibCondFisMore || LkTibCondDefOne || LkTibCondDefMore;
 
 if ((isLkFemChpChecked && isLkFemOtherConditionsNotChecked) && (isLkTibChpChecked && isLkTibOtherConditionsNotChecked)) {
-    if (LkFemCondCHPIV || LkTibCondCHPIV) {
+    if (buttonLkFemCondCHP === "D" || buttonLkTibCondCHP === "D") {
         LkFemCondRES = "Laterální kompartment s destrukcí chrupavek"; LkTibCondRES = "";
-    } else if (LkFemCondCHPIII || LkTibCondCHPIII) {
+    } else if (buttonLkFemCondCHP === "IV" || buttonLkTibCondCHP === "IV") {
         LkFemCondRES = "Laterální kompartment s pokročilou chondropatií"; LkTibCondRES = "";
-    } else if (LkFemCondCHPII || LkTibCondCHPII) {
+    } else if (buttonLkFemCondCHP === "III" || buttonLkTibCondCHP === "III") {
+        LkFemCondRES = "Laterální kompartment s chondropatií"; LkTibCondRES = "";
+    } else if (buttonLkFemCondCHP === "II" || buttonLkTibCondCHP === "II") {
         LkFemCondRES = "Laterální kompartment s mírnou chondropatií"; LkTibCondRES = "";
     }
 	
@@ -543,7 +554,7 @@ MkMenLezeR = "s rupturou";
  MkMenLezeP = "s longitudinální linií vysoké SI ";
  MkMenLezeR = "s longitudinální rupturou ";
 } else if (MkMenLeze === "koml") {
- MkMenLezeP = "s tvarovou defigurací a okrsky vysoké SI ";
+ MkMenLezeP = "s tvarovou defigurací, porušením kontinuity, vícečetnými liniemi či okrsky tekutiny ";
  MkMenLezeR = "s komplexní rupturou ";
 } else if (MkMenLeze === "BH") {
  MkMenLezeP = "s odtržením vnitřní části a dislokací protilehle ";
@@ -552,7 +563,7 @@ MkMenLezeR = "s rupturou";
  MkMenLezeP = "s odtržením a dislokací své části ";
  MkMenLezeR = "s komplexní rupturou typu papouščí zobák ";
 } else if (MkMenLeze === "destr") {
- MkMenLezeP = "s výraznou defigurací / destrukcí";
+ MkMenLezeP = "s výraznou defigurací a destrukcí";
  MkMenLezeR = "je z větší části destruován";
 }
 
@@ -641,7 +652,7 @@ LkMenLezeR = "s rupturou";
  LkMenLezeP = "s longitudinální linií vysoké SI ";
  LkMenLezeR = "s longitudinální rupturou ";
 } else if (LkMenLeze === "koml") {
- LkMenLezeP = "s tvarovou defigurací a okrsky vysoké SI  ";
+ LkMenLezeP = "s tvarovou defigurací, porušením kontinuity, vícečetnými liniemi či okrsky tekutiny ";
  LkMenLezeR = "s komplexní rupturou ";
 } else if (LkMenLeze === "BH") {
  LkMenLezeP = "s odtržením vnitřní části a dislokací protilehle ";
@@ -924,6 +935,20 @@ MRKneePOPText.value = MRKneePOPText.value.replace(/\.{2,}/g, '.'); // více teč
 MRKneePOPText.value = MRKneePOPText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
 MRKneePOPText.value = MRKneePOPText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
 MRKneePOPText.value = MRKneePOPText.value.replace(/  +/g, ' '); // dvojmezery
+
+function mergeMedialSentences() {
+    const pattern = /Mediální kondyl femuru ([^.]+)\. Mediální plato tibie \1\./g;
+    const replacement = "Mediální kondyl femuru i plato tibie $1.";
+    MRKneePOPText.value = MRKneePOPText.value.replace(pattern, replacement);
+}
+mergeMedialSentences();
+
+function mergeLateralSentences() {
+    const pattern = /Laterální kondyl femuru ([^.]+)\. Laterální plato tibie \1\./g;
+    const replacement = "Laterální kondyl femuru i plato tibie $1.";
+    MRKneePOPText.value = MRKneePOPText.value.replace(pattern, replacement);
+}
+mergeLateralSentences();
 
 MRKneeRESText.value = 
 MkMenR + " " + MkFemCondRES + MkTibCondRES + "\n" +

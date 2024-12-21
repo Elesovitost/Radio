@@ -1,4 +1,354 @@
-// degener kyčel, dodělat I, II, III artróza
+const sections = document.querySelectorAll('.Lsection'); // Select all .Lsection elements
+
+sections.forEach((section, index) => {
+
+    for (let i = 2; i <= 3; i++) {
+        const clone = section.cloneNode(true); // Clone the current section
+
+        // Update IDs and names dynamically
+        clone.innerHTML = clone.innerHTML
+            .replace(/Lesion1/g, `Lesion${i}`) // Update IDs for Lesion
+            .replace(/Chb1/g, `Chb${i}`);      // Update IDs for Chb
+
+        // Append the cloned section to the body
+        document.body.appendChild(clone);
+    }
+});
+
+
+
+
+//buttons
+
+var textsPETType = ["FDG", "PSMA", "DOTATOC"];
+var buttonElementPETType = document.getElementById("PETTypeButton");
+buttonElementPETType.value = "FDG";
+var indexPETType = 0;function cyclePETTypeText(event) {  indexPETType = cycleText(event, textsPETType, indexPETType, buttonElementPETType, updateBackgroundColor);}
+
+function cyclePETTypeText(event) {  indexPETType = cycleText(event, textsPETType, indexPETType, buttonElementPETType, updateBackgroundColor);  updateTexts();}
+
+
+// Lesion aktivita   
+  
+var aktivitaOptions = [
+    { text: "není", value: "bez patrné akumulace RF", valuePSMA: "téměř bez PSMA exprese", valueFDG: "ametabolické"},
+	{ text: "nízká", value: "s akumulací RF pod úrovní ref. jater", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
+    { text: "nižší", value: "s akumulací RF mírně pod úrovní ref. jater", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
+    { text: "intermed.", value: "s akumulací RF na úrovni ref. jater", valuePSMA: "se střední PSMA expresí", valueFDG: "středně metabolicky aktivní "},
+    { text: "vyšší", value: "s akumulací RF mírně nad úrovní ref. jater", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
+	{ text: "vysoká", value: "s akumulací RF nad úrovní ref. jater", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
+    { text: "enormní", value: "s akumulací RF výrazně nad úrovní ref. jater", valuePSMA: "s vysokou PSMA expresí", valueFDG: "výrazně hypermetabolické "}
+];
+
+function populateAktivitaOptions() {
+    var selectElements = document.querySelectorAll("select[id$='Activity']");
+
+    selectElements.forEach(function (selectElement) {
+        aktivitaOptions.forEach(function (option) {
+            var optionElement = document.createElement("option");
+            optionElement.value = option.value;
+            optionElement.textContent = option.text;
+            optionElement.dataset.valuePSMA = option.valuePSMA;
+			optionElement.dataset.valueFDG = option.valueFDG;
+            selectElement.appendChild(optionElement);
+        });
+    });
+}
+
+populateAktivitaOptions();
+
+
+
+// Lesion hodnoceni
+
+var hodnoceniOptions = [
+    { text: "benigní", value: ": benigního vzhledu", valuePSMA: ": benigního vzhledu"},
+    { text: "spíše ben.", value: ": nemá charakter viabilní neoplázie", valuePSMA: ": v.s. zánětlivá aktivace"},
+    { text: "nerozhodný", value: ": nespecifický nález", valuePSMA: ": nespecifický nález"},
+    { text: "spíše mal.", value: ": suspektní z viabilní neoplázie", valuePSMA: ": suspektní z infiltrace neoplazií"},
+    { text: "maligní", value:": charakteru viabilní neoplázie", valuePSMA: ": charakteru infiltrace neoplazií"},
+	{ text: "tumor", value:": charakteru tumoru", valuePSMA: ": infiltrace neoplazií"},
+	{ text: "meta", value:": charakteru meta", valuePSMA: ": infiltrace neoplazií"}
+];
+
+function populateHodnoceniOptions() {
+    var selectElements = document.querySelectorAll("select[id$='Decision']");
+
+    selectElements.forEach(function (selectElement) {
+        hodnoceniOptions.forEach(function (option) {
+            var optionElement = document.createElement("option");
+            optionElement.value = option.value;
+            optionElement.textContent = option.text;
+            optionElement.dataset.valuePSMA = option.valuePSMA;
+            selectElement.appendChild(optionElement);
+        });
+    });
+}
+populateHodnoceniOptions();
+
+
+// SUV = aktivita automaticky
+
+document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
+    input.addEventListener('input', (event) => {
+        let name = event.target.id.replace('SUV', '');
+        let suv = parseFloat(document.getElementById(`${name}SUV`).value);
+        let Liver = parseFloat(document.getElementById('SUVLiver').value);
+        let Parotid = parseFloat(document.getElementById('SUVParotid').value);
+        let aktSelect = document.getElementById(`${name}Activity`);
+        let ratio = suv / Liver;
+
+        if (buttonElementPETType.value === "FDG") {
+            if (ratio >= 0 && ratio < 0.3) {
+                selectOptionByText(aktSelect, 'není');
+            } else if (ratio >= 0.3 && ratio < 0.6) {
+                selectOptionByText(aktSelect, 'nízká');
+            } else if (ratio >= 0.6 && ratio < 0.9) {
+                selectOptionByText(aktSelect, 'nižší');
+            } else if (ratio >= 0.9 && ratio < 1.1) {
+                selectOptionByText(aktSelect, 'intermed.');
+            } else if (ratio >= 1.1 && ratio < 1.4) {
+                selectOptionByText(aktSelect, 'vyšší');
+            } else if (ratio >= 1.4 && ratio < 4) {
+                selectOptionByText(aktSelect, 'vysoká');
+            } else if (ratio >= 4) {
+                selectOptionByText(aktSelect, 'enormní');
+            }
+        } else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
+            if (suv >= Parotid) {
+                selectOptionByText(aktSelect, 'enormní');
+            } else if (suv >= Liver && suv < Parotid) {
+                selectOptionByText(aktSelect, 'vysoká');
+            } else if (suv >= Liver) {
+                selectOptionByText(aktSelect, 'vysoká');
+            } else if (suv < Liver && suv > Liver / 4) {
+                selectOptionByText(aktSelect, 'nízká');
+            } else if (suv < Liver / 4) {
+                selectOptionByText(aktSelect, 'není');
+            }
+        }
+
+        updateTexts();
+    });
+});
+
+function selectOptionByText(selectElement, text) {
+    Array.from(selectElement.options).forEach(option => {
+        if (option.textContent === text) {
+            selectElement.value = option.value;
+        }
+    });
+}
+
+	 
+
+// ostatní SUV
+
+document.getElementById('SUVLiver').addEventListener('input', () => {
+  let event = new Event('input');
+  document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
+    input.dispatchEvent(event);
+  });
+});
+
+document.getElementById('SUVLiverPrevious').addEventListener('input', () => {
+  let event = new Event('input');
+  document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
+    input.dispatchEvent(event);
+  });
+});
+
+document.getElementById('SUVParotid').addEventListener('input', () => {
+  let event = new Event('input');
+  document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
+    input.dispatchEvent(event);
+  });
+});
+
+
+
+
+
+// COPY
+
+var copyPOP = document.getElementById('copyPOP');
+var POPText = document.getElementById('POPText');
+
+copyPOP.addEventListener('click', function() {
+    navigator.clipboard.writeText(POPText.value)
+    .then(() => {
+        POPText.classList.add('highlight');
+
+        setTimeout(function() {
+            POPText.classList.remove('highlight');
+        }, 100);
+    })
+    .catch(err => {
+    });
+});
+
+
+
+var copyRES = document.getElementById('copyRES');
+var RESText = document.getElementById('RESText');
+
+copyRES.addEventListener('click', function() {
+    navigator.clipboard.writeText(RESText.value)
+    .then(() => {
+        RESText.classList.add('highlight');
+
+        setTimeout(function() {
+            RESText.classList.remove('highlight');
+        }, 100);
+    })
+    .catch(err => {
+    });
+});
+
+
+
+
+// IMAGES
+
+
+// Define a general structure for managing images
+const imageConfigs = [
+  {
+    imageElementId: 'krknodImage',
+    imageIndex: 1,
+    imagePath: './pickrknod/krknod-',
+    maxIndex: 34,
+    focusElementId: 'NeckLymphNode1AddLocation',
+    selectElementId: 'NeckLymphNode1AddLocation',
+    fileExtension: '.jpg'
+  },
+  {
+    imageElementId: 'mednodImage',
+    imageIndex: 1,
+    imagePath: './picmednod/mednod-',
+    maxIndex: 28,
+    focusElementId: 'ThoraxLymphNode1AddLocation',
+    selectElementId: 'ThoraxLymphNode1AddLocation',
+    fileExtension: '.jpg'
+  },
+  {
+    imageElementId: 'chestsegImage',
+    imageIndex: 2,
+    imagePath: './picchestseg/chestseg-',
+    maxIndex: 28,
+    focusElementsIds: ['ThoraxLesion1AddLocation'],
+    selectElementsIds: ['ThoraxLesion1AddLocation'],
+    fileExtension: '.png'
+  }
+];
+
+// Initialize each image configuration
+imageConfigs.forEach(config => {
+  const imageElement = document.getElementById(config.imageElementId);
+  let isMouseDown = false; // Track if the mouse button is held down
+  let startY = 0; // Starting Y position when the mouse button is pressed
+  let holdTimeout; // Timeout to track long press
+
+  const updateImageSrc = () => {
+    imageElement.src = `${config.imagePath}${String(config.imageIndex).padStart(2, '0')}${config.fileExtension}`;
+  };
+
+  const onMouseDown = (event) => {
+    if (event.button !== 0) return; // Only respond to the left mouse button
+    startY = event.clientY;
+    isMouseDown = true;
+
+    // Set a timeout for the long press (2 seconds)
+    holdTimeout = setTimeout(() => {
+      if (isMouseDown) {
+        imageElement.style.display = 'block';
+      }
+    }, 500);
+
+    document.addEventListener('mousemove', onMouseMove);
+  };
+
+  const onMouseMove = (event) => {
+    if (!isMouseDown) return;
+
+    const diffY = event.clientY - startY;
+    if (Math.abs(diffY) > 5) { // Add a threshold to reduce sensitivity
+      if (diffY > 0) {
+        // Moved down
+        if (config.imageIndex < config.maxIndex) config.imageIndex++;
+      } else {
+        // Moved up
+        if (config.imageIndex > 1) config.imageIndex--;
+      }
+      updateImageSrc();
+      startY = event.clientY; // Reset start position
+    }
+  };
+
+  const onMouseUp = () => {
+    isMouseDown = false;
+    clearTimeout(holdTimeout); // Clear the timeout if mouse button is released early
+    document.removeEventListener('mousemove', onMouseMove);
+  };
+
+  // Prevent context menu on the image
+  imageElement.addEventListener('contextmenu', event => {
+    event.preventDefault();
+    imageElement.style.display = 'none'; // Hide the image on right-click
+  });
+
+  // Attach the event listeners to the image element
+  imageElement.addEventListener('mousedown', onMouseDown);
+  document.addEventListener('mouseup', onMouseUp);
+
+  const focusElementIds = config.focusElementsIds || [config.focusElementId];
+  focusElementIds.forEach(id => {
+    const element = document.getElementById(id);
+    element.addEventListener('mousedown', (event) => {
+      if (event.button !== 0) return; // Allow normal clicks
+      startY = event.clientY;
+      isMouseDown = true;
+
+      // Set a timeout for the long press (2 seconds)
+      holdTimeout = setTimeout(() => {
+        if (isMouseDown) {
+          imageElement.style.display = 'block';
+        }
+      }, 500);
+    });
+
+    element.addEventListener('mouseup', () => {
+      isMouseDown = false;
+      clearTimeout(holdTimeout);
+    });
+
+    element.addEventListener('focus', () => {
+      // Allow normal focus behavior
+    });
+  });
+
+  const selectElementIds = config.selectElementsIds || [config.selectElementId];
+  document.addEventListener('click', function(e) {
+    if (selectElementIds.concat(focusElementIds).every(id => !document.getElementById(id).contains(e.target)) && !imageElement.contains(e.target)) {
+      imageElement.style.display = 'none';
+    }
+  });
+
+  imageElement.addEventListener('wheel', (event) => {
+    if (event.deltaY > 0) {
+      if (config.imageIndex < config.maxIndex) config.imageIndex++;
+    } else {
+      if (config.imageIndex > 1) config.imageIndex--;
+    }
+    updateImageSrc();
+    event.preventDefault();
+  });
+});
+
+
+
+
+// CODE
 
 function updateTexts() {
 
@@ -30,8 +380,8 @@ function showDatePopup() {
     var dateInput = document.getElementById('DateCompare');
 
     var inputRect = dateInput.getBoundingClientRect();
-    var topPosition = inputRect.bottom + window.scrollY + 5; // Position below the input
-    var leftPosition = inputRect.left + window.scrollX;
+    var topPosition = inputRect.bottom + scrollY + 5; // Position below the input
+    var leftPosition = inputRect.left + scrollX;
 
     popup.textContent = "Pozor, datum současné"; 
     popup.style.top = topPosition + 'px';
@@ -345,7 +695,7 @@ if (PETTypeText === "FDG") {
 // NECK	
 // neck lesions (clones)
 
-let codeForNeckLesion1 = `
+
   var NeckLesionsLocationTexts = {
     "Nasopharynx": "nazofaryngu",
     "TongueApex": "apexu jazyka",
@@ -362,6 +712,8 @@ let codeForNeckLesion1 = `
     "LarynxGlot": "glotické části hrtanu",
     "LarynxInfra": "infraglotické části hrtanu",
   };
+
+let codeForNeckLesion1 = `
 
   var NeckLesion1Locationtext = "";
   for (var key in NeckLesionsLocationTexts) {
@@ -389,7 +741,9 @@ let codeForNeckLesion1 = `
     var NeckLesion1type = document.getElementById("NeckLesion1type").value.split("|");
     var NeckLesion1Location = document.getElementById("NeckLesion1Location").value;
 	var NeckLesion1AddLocation = document.getElementById("NeckLesion1AddLocation").value;
-    var NeckLesion1Loclargest = document.getElementById("NeckLesion1Loclargest").value;
+    var NeckLesion1Loclargest = document.getElementById("NeckLesion1Loclargest").value; 
+	var NeckLesion1Large = document.getElementById("NeckLesion1Large").value; 
+	document.getElementById('NeckLesion1number').addEventListener('change', function() {document.getElementById('NeckLesion1Large').classList.toggle('hidden', this.value === "");});
     var NeckLesion1Activity = document.getElementById("NeckLesion1Activity").value; var NeckLesion1ActivityCopy = document.getElementById("NeckLesion1Activity").value;
 	var NeckLesion1RESActivityPSMA = document.getElementById("NeckLesion1Activity"); var selectedOption = NeckLesion1RESActivityPSMA.options[NeckLesion1RESActivityPSMA.selectedIndex]; var NeckLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
     var NeckLesion1RESActivityFDG = document.getElementById("NeckLesion1Activity"); var selectedOption = NeckLesion1RESActivityFDG.options[NeckLesion1RESActivityFDG.selectedIndex]; var NeckLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
@@ -397,9 +751,10 @@ let codeForNeckLesion1 = `
     var NeckLesion1Size = formatLesionSize("NeckLesion1Size");
 	var NeckLesion1RESDecision = document.getElementById("NeckLesion1Decision").value; 
 	var NeckLesion1AllLocations = "";
+	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("NeckLesion1Previous").classList.toggle("hidden", !this.value);});
 	var NeckLesion1SUVPrev = formatSUV("NeckLesion1SUVPrev");  
 	var NeckLesion1PrevSize = formatLesionSize("NeckLesion1PrevSize");
-	
+	var NeckLesion1AllLocations = "";
 	var NeckLesion1ComparisonText = generateComparisonText(NeckLesion1SUVPrev, NeckLesion1PrevSize, DateComparison, NeckLesion1SUV, NeckLesion1Size);
 	var NeckLesion1ComparisonSUVRes = compareActRES(NeckLesion1SUV, NeckLesion1SUVPrev);
 	var NeckLesion1ComparisonSizeRes = compareSizes(NeckLesion1Size, NeckLesion1PrevSize);
@@ -410,7 +765,7 @@ let codeForNeckLesion1 = `
 	var RESNeckLesion1 = "";
 	
 	if (NeckLesion1Loclargest !== "") {
-		NeckLesion1Loclargest = NeckLesion1ActivityCopy + ". Největší " + NeckLesion1Loclargest + " ";
+		NeckLesion1Loclargest = NeckLesion1ActivityCopy + ", největší " + NeckLesion1Loclargest + " ";
 		NeckLesion1Activity = "";
 	}
 	
@@ -430,23 +785,25 @@ let codeForNeckLesion1 = `
 	} 	
 
 let processedSentencePOPNeckLesion1 = processSentence(NeckLesion1number + " " + NeckLesion1type);	
-window.POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + NeckLesion1Activity + " " + NeckLesion1ComparisonText + ".";
-// OLD SUV version: window.POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + (NeckLesion1SUV === "" ? NeckLesion1Activity : "") + " " + NeckLesion1SUV + " " + NeckLesion1ComparisonText + ".";
+POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + NeckLesion1Activity + " " + NeckLesion1ComparisonText + ".";
+// OLD SUV version: POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + (NeckLesion1SUV === "" ? NeckLesion1Activity : "") + " " + NeckLesion1SUV + " " + NeckLesion1ComparisonText + ".";
  
 let processedSentenceRESNeckLesionFDG = processSentence(NeckLesion1number + " " + NeckLesion1RESActivityFDG + " " + NeckLesion1type);
 let processedSentenceRESNeckLesionPSMA = processSentence(NeckLesion1number + " " + NeckLesion1type);
 
 if (buttonElementPETType.value === "FDG") {
-	window.RESNeckLesion1 = processedSentenceRESNeckLesionFDG + " " + NeckLesion1AllLocations + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
+	RESNeckLesion1 = processedSentenceRESNeckLesionFDG + " " + NeckLesion1AllLocations + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
 } else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	window.RESNeckLesion1 = processedSentenceRESNeckLesionPSMA + " " + NeckLesion1AllLocations + " " + NeckLesion1RESActivityPSMA + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
+	RESNeckLesion1 = processedSentenceRESNeckLesionPSMA + " " + NeckLesion1AllLocations + " " + NeckLesion1RESActivityPSMA + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
 }
 
-if (NeckLesion1RESDecision.includes("meta") && NeckLesion1type.includes("ožisk")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
-if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("ožisk")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
-if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("as")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/mas/g, "tumorózní mas").replace(/Mas/g, "Tumorózní mas").replace(": charakteru tumoru", ".");}
-if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("nfiltr")) {window.RESNeckLesion1 = window.RESNeckLesion1.replace(/infiltr/g, "tumorózní infiltr").replace(/Infiltr/g, "Tumorózní infiltr").replace(": charakteru tumoru", ".");}
-if (NeckLesion1CombinedResult.includes("je nově") || NeckLesion1CombinedResult.includes("jsou nově")) { window.RESNeckLesion1 = "Nově " + window.RESNeckLesion1.charAt(0).toLowerCase() + window.RESNeckLesion1.substring(1) ; window.RESNeckLesion1 = window.RESNeckLesion1.replace(" je nově", "").replace(" jsou nově", "");}
+if (NeckLesion1RESDecision.includes("meta") && NeckLesion1type.includes("ožisk")) {RESNeckLesion1 = RESNeckLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
+if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("ožisk")) {RESNeckLesion1 = RESNeckLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("as")) {RESNeckLesion1 = RESNeckLesion1.replace(/mas/g, "tumorózní mas").replace(/Mas/g, "Tumorózní mas").replace(": charakteru tumoru", ".");}
+if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("nfiltr")) {RESNeckLesion1 = RESNeckLesion1.replace(/infiltr/g, "tumorózní infiltr").replace(/Infiltr/g, "Tumorózní infiltr").replace(": charakteru tumoru", ".");}
+if (NeckLesion1CombinedResult.includes("je nově") || NeckLesion1CombinedResult.includes("jsou nově")) { RESNeckLesion1 = "Nově " + RESNeckLesion1.charAt(0).toLowerCase() + RESNeckLesion1.substring(1) ; RESNeckLesion1 = RESNeckLesion1.replace(" je nově", "").replace(" jsou nově", "");}
+
+if (NeckLesion1Location ==="" && NeckLesion1AddLocation ==="") {POPNeckLesion1 = ""; RESNeckLesion1 = "";}
 
 `;
 
@@ -456,11 +813,10 @@ eval(codeForNeckLesion1);
 eval(codeForNeckLesion2);
 eval(codeForNeckLesion3);
 
-if (NeckLesion1Button.classList.contains('hidden')) {window.POPNeckLesion1 = ""; window.RESNeckLesion1 = "";}
-if (NeckLesion2Button.classList.contains('hidden')) {window.POPNeckLesion2 = ""; window.RESNeckLesion2 = "";}
-if (NeckLesion3Button.classList.contains('hidden')) {window.POPNeckLesion3 = ""; window.RESNeckLesion3 = "";}
 
-// neck lymph nodes 
+
+
+// NECK LYMPH NODES 
 
 var NeckLymphNode1selectLocationtext = "";
 
@@ -569,6 +925,8 @@ document.getElementById('NeckLymphNode1Location').value = NeckLymphNode1selectLo
     var NeckLymphNode1Location = document.getElementById("NeckLymphNode1Location").value;
 	var NeckLymphNode1AddLocation = document.getElementById("NeckLymphNode1AddLocation").value;
     var NeckLymphNode1Loclargest = document.getElementById("NeckLymphNode1Loclargest").value;
+	var NeckLymphNode1Large = document.getElementById("NeckLymphNode1Large").value;
+	document.getElementById('NeckLymphNode1number').addEventListener('change', function() {document.getElementById('NeckLymphNode1Large').classList.toggle('hidden', this.value === "");});
     var NeckLymphNode1Activity = document.getElementById("NeckLymphNode1Activity").value; var NeckLymphNode1ActivityCopy = document.getElementById("NeckLymphNode1Activity").value;
 	var NeckLymphNode1RESActivityPSMA = document.getElementById("NeckLymphNode1Activity"); var selectedOption = NeckLymphNode1RESActivityPSMA.options[NeckLymphNode1RESActivityPSMA.selectedIndex]; var NeckLymphNode1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
 	var NeckLymphNode1RESActivityFDG = document.getElementById("NeckLymphNode1Activity"); var selectedOption = NeckLymphNode1RESActivityFDG.options[NeckLymphNode1RESActivityFDG.selectedIndex]; var NeckLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
@@ -576,6 +934,7 @@ document.getElementById('NeckLymphNode1Location').value = NeckLymphNode1selectLo
     var NeckLymphNode1Size = formatLymphNodeSize("NeckLymphNode1Size");
 	var NeckLymphNode1RESDecision = document.getElementById("NeckLymphNode1Decision"); var selectedOption = NeckLymphNode1RESDecision.options[NeckLymphNode1RESDecision.selectedIndex]; var NeckLymphNode1RESDecision = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
 	var NeckLymphNode1AllLocations = "";
+	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("NeckLymphNode1Previous").classList.toggle("hidden", !this.value);});
 	var NeckLymphNode1SUVPrev = formatSUV("NeckLymphNode1SUVPrev");  
 	var NeckLymphNode1PrevSize = formatLymphNodeSize("NeckLymphNode1PrevSize");
 	var NeckLymphNode1ComparisonText = generateComparisonText(NeckLymphNode1SUVPrev, NeckLymphNode1PrevSize, DateComparison, NeckLymphNode1SUV, NeckLymphNode1Size);
@@ -587,7 +946,7 @@ document.getElementById('NeckLymphNode1Location').value = NeckLymphNode1selectLo
 	var RESNeckLymphNode1 = "";
 	
 	if (NeckLymphNode1Loclargest !== "") {
-		NeckLymphNode1Loclargest = NeckLymphNode1ActivityCopy + ". Největší " + NeckLymphNode1Loclargest + " ";
+		NeckLymphNode1Loclargest = NeckLymphNode1ActivityCopy + ", největší " + NeckLymphNode1Loclargest + " ";
 		NeckLymphNode1Activity = "";
 	}
 	    
@@ -618,7 +977,7 @@ if (buttonElementPETType.value === "FDG") {
 	RESNeckLymphNode1 = processedSentenceRESNeckLymphNodePSMA + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1RESActivityPSMA + " " + NeckLymphNode1CombinedResult + " " + NeckLymphNode1RESDecision + ".";
 }
     
-if (NeckLymphNode1Button.classList.contains('hidden')) {POPNeckLymphNode1 = ""; RESNeckLymphNode1 = "";}
+if (NeckLymphNode1Location === "" && NeckLymphNode1AddLocation === "") { POPNeckLymphNode1 = ""; RESNeckLymphNode1 = ""; }
 
 if (NeckLymphNode1CombinedResult.includes("je nově") || NeckLymphNode1CombinedResult.includes("jsou nově")) { RESNeckLymphNode1 = "Nově " + RESNeckLymphNode1.charAt(0).toLowerCase() + RESNeckLymphNode1.substring(1) ; RESNeckLymphNode1 = RESNeckLymphNode1.replace(" je nově", "").replace(" jsou nově", "");}
 
@@ -873,28 +1232,30 @@ var NeckTreatmentText = "";
 
 
 //Neck Others by priority
+
 var NeckOther1Priority = ""; var NeckOther1NoPriority = ""; var NeckOther1ResPriority = "";
 var NeckOther1Pop = document.getElementById("NeckOther1Pop").value;
 var NeckOther1Res = document.getElementById("NeckOther1Res").value;
 if (NeckOther1Pop !== "" && NeckOther1Res ==="") {NeckOther1Priority = ""; NeckOther1NoPriority = NeckOther1Pop + ". "; NeckOther1ResPriority = "";
 	} else if (NeckOther1Pop !== "" && NeckOther1Res !=="") {NeckOther1Priority = NeckOther1Pop  + ". "; NeckOther1NoPriority = ""; NeckOther1ResPriority = NeckOther1Res  + ". ";}
 
+NeckOther1Priority = NeckOther1Priority.charAt(0).toUpperCase() + NeckOther1Priority.slice(1);
+NeckOther1NoPriority = NeckOther1NoPriority.charAt(0).toUpperCase() + NeckOther1NoPriority.slice(1);
+NeckOther1ResPriority = NeckOther1ResPriority.charAt(0).toUpperCase() + NeckOther1ResPriority.slice(1);
 
 // neck native or not
-
-if ((POPNeckLymphNode1 !== "") || (window.POPNeckLesion1 !== "") || (window.POPNeckLesion2 !== "") ||  (window.POPNeckLesion1 !== "") || checkViability(NeckOther1Pop)) {
+if ((POPNeckLymphNode1 !== "") || (POPNeckLesion1 !== "") || (POPNeckLesion2 !== "") ||  (POPNeckLesion1 !== "") || checkViability(NeckOther1Pop)) {
   POPNeckNative = "";
 } else {
   POPNeckNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
 }
 
 
-
 // THORAX
 
 // Thorax lesions
+let codeForThoraxLesion1 = `
 
-let codeForThoraxLesion1 = `	
 var ThoraxLesion1Locationtext = "";
 
   // Plíce
@@ -1048,7 +1409,9 @@ document.getElementById('ThoraxLesion1Location').value = ThoraxLesion1Locationte
     var ThoraxLesion1type = document.getElementById("ThoraxLesion1type").value.split("|");
     var ThoraxLesion1Location = document.getElementById("ThoraxLesion1Location").value;
 	var ThoraxLesion1AddLocation = document.getElementById("ThoraxLesion1AddLocation").value;
-    var ThoraxLesion1Loclargest = document.getElementById("ThoraxLesion1Loclargest").value;
+    var ThoraxLesion1Loclargest = document.getElementById("ThoraxLesion1Loclargest").value; 
+	var ThoraxLesion1Large = document.getElementById("ThoraxLesion1Large").value;
+	document.getElementById('ThoraxLesion1number').addEventListener('change', function() {document.getElementById('ThoraxLesion1Large').classList.toggle('hidden', this.value === "");});
     var ThoraxLesion1Activity = document.getElementById("ThoraxLesion1Activity").value; var ThoraxLesion1ActivityCopy = document.getElementById("ThoraxLesion1Activity").value;
 	var ThoraxLesion1RESActivityPSMA = document.getElementById("ThoraxLesion1Activity"); var selectedOption = ThoraxLesion1RESActivityPSMA.options[ThoraxLesion1RESActivityPSMA.selectedIndex]; var ThoraxLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
     var ThoraxLesion1RESActivityFDG = document.getElementById("ThoraxLesion1Activity"); var selectedOption = ThoraxLesion1RESActivityFDG.options[ThoraxLesion1RESActivityFDG.selectedIndex]; var ThoraxLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
@@ -1056,19 +1419,21 @@ document.getElementById('ThoraxLesion1Location').value = ThoraxLesion1Locationte
     var ThoraxLesion1Size = formatLesionSize("ThoraxLesion1Size");
 	var ThoraxLesion1RESDecision = document.getElementById("ThoraxLesion1Decision").value; 
 	var ThoraxLesion1AllLocations = "";
+	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("ThoraxLesion1Previous").classList.toggle("hidden", !this.value);});
 	var ThoraxLesion1SUVPrev = formatSUV("ThoraxLesion1SUVPrev");  
 	var ThoraxLesion1PrevSize = formatLesionSize("ThoraxLesion1PrevSize");
-	
+	var ThoraxLesion1AllLocations = "";
 	var ThoraxLesion1ComparisonText = generateComparisonText(ThoraxLesion1SUVPrev, ThoraxLesion1PrevSize, DateComparison, ThoraxLesion1SUV, ThoraxLesion1Size);
 	var ThoraxLesion1ComparisonSUVRes = compareActRES(ThoraxLesion1SUV, ThoraxLesion1SUVPrev);
 	var ThoraxLesion1ComparisonSizeRes = compareSizes(ThoraxLesion1Size, ThoraxLesion1PrevSize);
 	var ThoraxLesion1CombinedResult = combineComparisonResults(ThoraxLesion1ComparisonSizeRes, ThoraxLesion1ComparisonSUVRes, ThoraxLesion1number);
+	var ThoraxLesion1ActivityAdd = checkSmallSize(ThoraxLesion1Size, ThoraxLesion1SUV);
     
     var POPThoraxLesion1 = "";
 	var RESThoraxLesion1 = "";
 	
 	if (ThoraxLesion1Loclargest !== "") {
-		ThoraxLesion1Loclargest = ThoraxLesion1ActivityCopy + ". Největší " + ThoraxLesion1Loclargest + " ";
+		ThoraxLesion1Loclargest = ThoraxLesion1ActivityCopy + ", největší " + ThoraxLesion1Loclargest + " ";
 		ThoraxLesion1Activity = "";
 	}
 	
@@ -1088,24 +1453,26 @@ document.getElementById('ThoraxLesion1Location').value = ThoraxLesion1Locationte
 	} 	
 
 let processedSentencePOPThoraxLesion1 = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);	
-window.POPThoraxLesion1 = processedSentencePOPThoraxLesion1 + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1Loclargest + " " + ThoraxLesion1Size + " " + ThoraxLesion1Activity + " " + ThoraxLesion1ComparisonText + ".";
+POPThoraxLesion1 = processedSentencePOPThoraxLesion1 + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1Loclargest + " " + ThoraxLesion1Size + " " + ThoraxLesion1Activity + " " + ThoraxLesion1ComparisonText + ".";
 
 let processedSentenceRESThoraxLesionFDG = processSentence(ThoraxLesion1number + " " + ThoraxLesion1RESActivityFDG + " " + ThoraxLesion1type);
 let processedSentenceRESThoraxLesionPSMA = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);
 
 if (buttonElementPETType.value === "FDG") {
-	window.RESThoraxLesion1 = processedSentenceRESThoraxLesionFDG + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + ".";
+	RESThoraxLesion1 = processedSentenceRESThoraxLesionFDG + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + ".";
 } else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	window.RESThoraxLesion1 = processedSentenceRESThoraxLesionPSMA + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1RESActivityPSMA + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + ".";
+	RESThoraxLesion1 = processedSentenceRESThoraxLesionPSMA + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1RESActivityPSMA + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + ".";
 }
 
-if (ThoraxLesion1RESDecision.includes("meta") && ThoraxLesion1type.includes("ožisk")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
-if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("ožisk")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
-if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("as")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/mas/g, "tumorózní mas").replace(/Mas/g, "Tumorózní mas").replace(": charakteru tumoru", ".");}
-if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("nfiltr")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/infiltr/g, "tumorózní infiltr").replace(/Infiltrace/g, "Tumorózní infiltr").replace(": charakteru tumoru", ".");}
-if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("xpanz")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/expanze/g, "tumorózní expanze").replace(/Expanze/g, "Tumorózní expanze").replace(": charakteru tumoru", ".");}
-if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("onsolidac")) {window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(/konsolidace/g, "tumorózní konsolidace").replace(/Konsolidace/g, "Tumorózní konsolidace").replace(": charakteru tumoru", ".");}
-if (ThoraxLesion1CombinedResult.includes("je nově") || ThoraxLesion1CombinedResult.includes("jsou nově")) { window.RESThoraxLesion1 = "Nově " + window.RESThoraxLesion1.charAt(0).toLowerCase() + window.RESThoraxLesion1.substring(1) ; window.RESThoraxLesion1 = window.RESThoraxLesion1.replace(" je nově", "").replace(" jsou nově", "");}
+if (ThoraxLesion1RESDecision.includes("meta") && ThoraxLesion1type.includes("ožisk")) {RESThoraxLesion1 = RESThoraxLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
+if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("ožisk")) {RESThoraxLesion1 = RESThoraxLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("as")) {RESThoraxLesion1 = RESThoraxLesion1.replace(/mas/g, "tumorózní mas").replace(/Mas/g, "Tumorózní mas").replace(": charakteru tumoru", ".");}
+if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("nfiltr")) {RESThoraxLesion1 = RESThoraxLesion1.replace(/infiltr/g, "tumorózní infiltr").replace(/Infiltrace/g, "Tumorózní infiltr").replace(": charakteru tumoru", ".");}
+if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("xpanz")) {RESThoraxLesion1 = RESThoraxLesion1.replace(/expanze/g, "tumorózní expanze").replace(/Expanze/g, "Tumorózní expanze").replace(": charakteru tumoru", ".");}
+if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("onsolidac")) {RESThoraxLesion1 = RESThoraxLesion1.replace(/konsolidace/g, "tumorózní konsolidace").replace(/Konsolidace/g, "Tumorózní konsolidace").replace(": charakteru tumoru", ".");}
+if (ThoraxLesion1CombinedResult.includes("je nově") || ThoraxLesion1CombinedResult.includes("jsou nově")) { RESThoraxLesion1 = "Nově " + RESThoraxLesion1.charAt(0).toLowerCase() + RESThoraxLesion1.substring(1) ; RESThoraxLesion1 = RESThoraxLesion1.replace(" je nově", "").replace(" jsou nově", "");}
+
+if (ThoraxLesion1Location ==="" && ThoraxLesion1AddLocation ==="") {POPThoraxLesion1 = ""; RESThoraxLesion1 = "";}
 
 `;
 
@@ -1115,11 +1482,9 @@ eval(codeForThoraxLesion1);
 eval(codeForThoraxLesion2);
 eval(codeForThoraxLesion3);
 
-if (ThoraxLesion1Button.classList.contains('hidden')) {window.POPThoraxLesion1 = ""; window.RESThoraxLesion1 = "";}
-if (ThoraxLesion2Button.classList.contains('hidden')) {window.POPThoraxLesion2 = ""; window.RESThoraxLesion2 = "";}
-if (ThoraxLesion3Button.classList.contains('hidden')) {window.POPThoraxLesion3 = ""; window.RESThoraxLesion3 = "";}
 
-// Thorax lymph nodes
+
+// THORAX LYMPH NODES
 
 var ThoraxLymphNode1Locationtext = "";
 
@@ -1220,6 +1585,8 @@ if (segments.length === 2) {
     var ThoraxLymphNode1Location = document.getElementById("ThoraxLymphNode1Location").value;
 	var ThoraxLymphNode1AddLocation = document.getElementById("ThoraxLymphNode1AddLocation").value;
     var ThoraxLymphNode1Loclargest = document.getElementById("ThoraxLymphNode1Loclargest").value;
+	var ThoraxLymphNode1Large = document.getElementById("ThoraxLymphNode1Large").value;
+	document.getElementById('ThoraxLymphNode1number').addEventListener('change', function() {document.getElementById('ThoraxLymphNode1Large').classList.toggle('hidden', this.value === "");});
     var ThoraxLymphNode1Activity = document.getElementById("ThoraxLymphNode1Activity").value; var ThoraxLymphNode1ActivityCopy = document.getElementById("ThoraxLymphNode1Activity").value;
 	var ThoraxLymphNode1RESActivityPSMA = document.getElementById("ThoraxLymphNode1Activity"); var selectedOption = ThoraxLymphNode1RESActivityPSMA.options[ThoraxLymphNode1RESActivityPSMA.selectedIndex]; var ThoraxLymphNode1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
 	var ThoraxLymphNode1RESActivityFDG = document.getElementById("ThoraxLymphNode1Activity"); var selectedOption = ThoraxLymphNode1RESActivityFDG.options[ThoraxLymphNode1RESActivityFDG.selectedIndex]; var ThoraxLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
@@ -1227,6 +1594,7 @@ if (segments.length === 2) {
     var ThoraxLymphNode1Size = formatLymphNodeSize("ThoraxLymphNode1Size");
 	var ThoraxLymphNode1RESDecision = document.getElementById("ThoraxLymphNode1Decision"); var selectedOption = ThoraxLymphNode1RESDecision.options[ThoraxLymphNode1RESDecision.selectedIndex]; var ThoraxLymphNode1RESDecision = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
 	var ThoraxLymphNode1AllLocations = "";
+	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("ThoraxLymphNode1Previous").classList.toggle("hidden", !this.value);});
 	var ThoraxLymphNode1SUVPrev = formatSUV("ThoraxLymphNode1SUVPrev");  
 	var ThoraxLymphNode1PrevSize = formatLymphNodeSize("ThoraxLymphNode1PrevSize");
 	var ThoraxLymphNode1ComparisonText = generateComparisonText(ThoraxLymphNode1SUVPrev, ThoraxLymphNode1PrevSize, DateComparison, ThoraxLymphNode1SUV, ThoraxLymphNode1Size);
@@ -1238,7 +1606,7 @@ if (segments.length === 2) {
 	var RESThoraxLymphNode1 = "";
 	
 	if (ThoraxLymphNode1Loclargest !== "") {
-		ThoraxLymphNode1Loclargest = ThoraxLymphNode1ActivityCopy + ". Největší " + ThoraxLymphNode1Loclargest + " ";
+		ThoraxLymphNode1Loclargest = ThoraxLymphNode1ActivityCopy + ", největší " + ThoraxLymphNode1Loclargest + " ";
 		ThoraxLymphNode1Activity = "";
 	}
 	    
@@ -1268,7 +1636,7 @@ if (buttonElementPETType.value === "FDG") {
 	RESThoraxLymphNode1 = processedSentenceRESThoraxLymphNodePSMA + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1RESActivityPSMA + " " + ThoraxLymphNode1CombinedResult + " " + ThoraxLymphNode1RESDecision + ".";
 }
 
-if (ThoraxLymphNode1Button.classList.contains('hidden')) {POPThoraxLymphNode1 = ""; RESThoraxLymphNode1 = "";}
+if (ThoraxLymphNode1Location === "" && ThoraxLymphNode1AddLocation === "") { POPThoraxLymphNode1 = ""; RESThoraxLymphNode1 = ""; }
 
 if (ThoraxLymphNode1CombinedResult.includes("je nově") || ThoraxLymphNode1CombinedResult.includes("jsou nově")) { RESThoraxLymphNode1 = "Nově " + RESThoraxLymphNode1.charAt(0).toLowerCase() + RESThoraxLymphNode1.substring(1) ; RESThoraxLymphNode1 = RESThoraxLymphNode1.replace(" je nově", "").replace(" jsou nově", "");}
 
@@ -1377,7 +1745,7 @@ if (ThoraxMammaOther) {
 
 // thorax parenchyma and surgery
 
- if (window.POPThoraxLesion1 !== "" || window.POPThoraxLesion2 !== ""  || window.POPThoraxLesion3 !== "")  {
+ if (POPThoraxLesion1 !== "")  {
         PliceOrDale = "Dále ";
     }  else   {PliceOrDale = "Plíce: ";
 	}
@@ -1765,8 +2133,8 @@ if (ThoraxOther1Pop !== "" && ThoraxOther1Res ==="") {ThoraxOther1Priority = "";
 	} else if (ThoraxOther1Pop !== "" && ThoraxOther1Res !=="") {ThoraxOther1Priority = ThoraxOther1Pop  + ". "; ThoraxOther1NoPriority = ""; ThoraxOther1ResPriority = ThoraxOther1Res  + ". ";}
 
 
-// Define an array containing window.POPThoraxLesion1, window.POPThoraxLesion2, and window.POPThoraxLesion3
-const POPThoraxLesions = [window.POPThoraxLesion1, window.POPThoraxLesion2, window.POPThoraxLesion3];
+// Define an array containing POPThoraxLesion1, POPThoraxLesion2, and POPThoraxLesion3
+const POPThoraxLesions = [POPThoraxLesion1];
 
 if (ThoraxParenchymaText.includes('fibróz') || ThoraxParenchymaText.includes('emfyz') || ((ThoraxFluidFTR > 0 && ThoraxFluidFTL > 0))) {
     POPThoraxLungOk = "";
@@ -1781,7 +2149,7 @@ if (ThoraxParenchymaText.includes('fibróz') || ThoraxParenchymaText.includes('e
 
 // Thorax native or not
 
-if ((POPThoraxLymphNode1 !== "") || (window.POPThoraxLesion1 !== "") || (window.POPThoraxLesion2 !== "") ||  (window.POPThoraxLesion1 !== "") || checkViability(ThoraxOther1Pop)) {
+if ((POPThoraxLymphNode1 !== "") || (POPThoraxLesion1 !== "") || (POPThoraxLesion2 !== "") || (POPThoraxLesion3 !== "") || checkViability(ThoraxOther1Pop)) {
   POPThoraxNative = "";
 } else {
   POPThoraxNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
@@ -1792,20 +2160,22 @@ if ((POPThoraxLymphNode1 !== "") || (window.POPThoraxLesion1 !== "") || (window.
 
 // ABDOMEN
 
-// Abdomen Lesion1
 
 let codeForAbdomenLesion1 = `
+
 // Liver
-
 var AbdomenLesion1Locationtext = "";
-
 var LiverSegments = [];
 var LiverLobeR = document.getElementById('Chb1LiverLobeR').checked;
 var LiverLobeL = document.getElementById('Chb1LiverLobeL').checked;
-var LiverWhole = document.getElementById('Chb1AbdomenSelectLiver').checked;
 
-if (LiverLobeR) LiverSegments.push("pravého laloku");
-if (LiverLobeL) LiverSegments.push("levého laloku");
+if (LiverLobeR && LiverLobeL) {
+    LiverSegments.push("");
+} else if (LiverLobeR) {
+    LiverSegments.push("pravého laloku");
+} else if (LiverLobeL) {
+    LiverSegments.push("levého laloku");
+}
 
 // Check and add specific liver segments
 for (let i = 1; i <= 8; i++) {
@@ -1820,93 +2190,100 @@ var seg4B = document.getElementById('Chb1LiverSeg4B').checked;
 if (seg4A) LiverSegments.push("S4A");
 if (seg4B) LiverSegments.push("S4B");
 
-if (LiverWhole && LiverSegments.length === 0) {
-    AbdomenLesion1Locationtext = " jater";
-} else if (!LiverWhole || LiverSegments.length > 0) {
+if (LiverSegments.length > 0) {
     if (LiverSegments.length > 0) {
         AbdomenLesion1Locationtext += LiverSegments.join(", ") + " jater";
     }
 }
 
-	
+//Stomach
+	var Chb1Stomach = document.getElementById('Chb1Stomach').checked;
+	if (Chb1Stomach) {
+		AbdomenLesion1Locationtext += "stěny žaludku";
+	}
+
 	
 // Colon	
-	
-    let ColonParts = [
-        { id: "Chb1ColonTermIleum", name: "terminálního ilea" },
-        { id: "Chb1ColonCaecum", name: "céka" },
-        { id: "Chb1ColonAsc", name: "c. ascendens" },
-        { id: "Chb1ColonTrans", name: "c. transverzum" },
-        { id: "Chb1ColonDesc", name: "c. descendens" },
-        { id: "Chb1ColonSigmoid", name: "sigmoidea" },
-        { id: "Chb1ColonRectum", name: "rekta" },
-        { id: "Chb1ColonAnus", name: "anu" },
-        { id: "Chb1ColonAppendix", name: "appendixu" }
-    ];
+let ColonParts = [
+	{ id: "Chb1ColonTermIleum", name: "terminálního ilea" },
+	{ id: "Chb1ColonCaecum", name: "céka" },
+	{ id: "Chb1ColonAsc", name: "c. ascendens" },
+	{ id: "Chb1ColonTrans", name: "c. transverzum" },
+	{ id: "Chb1ColonDesc", name: "c. descendens" },
+	{ id: "Chb1ColonSigmoid", name: "sigmoidea" },
+	{ id: "Chb1ColonRectum", name: "rekta" },
+	{ id: "Chb1ColonAnus", name: "anu" },
+	{ id: "Chb1ColonAppendix", name: "appendixu" }
+];
 
-    let combinedParts = {
-        "terminálního ilea-céka": "ileocéka",
-        "céka-c. ascendens": "cékoascendens",
-        "c. ascendens-c. transverzum": "hepatální flexury tračníku",
-        "c. transverzum-c. descendens": "lienální flexury tračníku",
-        "sigmoidea-rekta": "rektosigmatu",
-        "rekta-anu": "anorekta"
-    };
+let combinedParts = {
+	"terminálního ilea-céka": "ileocéka",
+	"céka-c. ascendens": "cékoascendens",
+	"c. ascendens-c. transverzum": "hepatální flexury tračníku",
+	"c. transverzum-c. descendens": "lienální flexury tračníku",
+	"sigmoidea-rekta": "rektosigmatu",
+	"rekta-anu": "anorekta"
+};
 
-    let ColonSelected = [];
-    for (let part of ColonParts) {
-        let checkboxColonElem = document.getElementById(part.id);
-        if (checkboxColonElem && checkboxColonElem.checked) {
-            ColonSelected.push(part.name);
-        }
-    }
+let ColonSelected = [];
+for (let part of ColonParts) {
+	let checkboxColonElem = document.getElementById(part.id);
+	if (checkboxColonElem && checkboxColonElem.checked) {
+		ColonSelected.push(part.name);
+	}
+}
 
-    for (let i = 0; i < ColonSelected.length - 1; i++) {
-        let combinedName = combinedParts[ColonSelected[i] + "-" + ColonSelected[i + 1]];
-        if (combinedName) {
-            ColonSelected[i] = combinedName;
-            ColonSelected.splice(i + 1, 1);
-            i--;
-        }
-    }
+for (let i = 0; i < ColonSelected.length - 1; i++) {
+	let combinedName = combinedParts[ColonSelected[i] + "-" + ColonSelected[i + 1]];
+	if (combinedName) {
+		ColonSelected[i] = combinedName;
+		ColonSelected.splice(i + 1, 1);
+		i--;
+	}
+}
 
-	if (ColonSelected.length > 0) {
-        if (AbdomenLesion1Locationtext !== "") {
-            AbdomenLesion1Locationtext += ", ";
-		}
-    
-		AbdomenLesion1Locationtext += ColonSelected.join(", ");
+if (ColonSelected.length > 0) {
+	if (AbdomenLesion1Locationtext !== "") {
+		AbdomenLesion1Locationtext += ", ";
+	}
+
+	AbdomenLesion1Locationtext += ColonSelected.join(", ");
+}
+
+//Spleen
+	var Chb1Spleen = document.getElementById('Chb1Spleen').checked;
+	if (Chb1Spleen) {
+		AbdomenLesion1Locationtext += "sleziny";
 	}
 
 // Stomach
+let stomachParts = [
+	{ id: "Chb1StomachCardia", name: "kardie" },
+	{ id: "Chb1StomachFundus", name: "fundu" },
+	{ id: "Chb1StomachBody", name: "těla" },
+	{ id: "Chb1StomachPylorus", name: "pyloru" }
+];
 
-    let stomachParts = [
-        { id: "Chb1StomachCardia", name: "kardie" },
-        { id: "Chb1StomachFundus", name: "fundu" },
-        { id: "Chb1StomachBody", name: "těla" },
-        { id: "Chb1StomachPylorus", name: "pyloru" }
-    ];
+let selectedStomach = [];
+for (let part of stomachParts) {
+	let checkboxStomachElem = document.getElementById(part.id);
+	if (checkboxStomachElem && checkboxStomachElem.checked) {
+		selectedStomach.push(part.name);
+	}
+}
 
-    let selectedStomach = [];
-    for (let part of stomachParts) {
-        let checkboxStomachElem = document.getElementById(part.id);
-        if (checkboxStomachElem && checkboxStomachElem.checked) {
-            selectedStomach.push(part.name);
-        }
-    }
+if (selectedStomach.length > 0) {
+	if (AbdomenLesion1Locationtext !== "") {
+		AbdomenLesion1Locationtext += ", ";
+	}
 
-    if (selectedStomach.length > 0) {
-        if (AbdomenLesion1Locationtext !== "") {
-            AbdomenLesion1Locationtext += ", ";
-        }
-
-        if (selectedStomach.length >= 2) {
-            let last = selectedStomach.pop();
-            AbdomenLesion1Locationtext += selectedStomach.join(", ") + " a " + last + " žaludku";
-        } else {
-            AbdomenLesion1Locationtext += selectedStomach.join(", ") + " žaludku";
-        }
-    }
+	if (selectedStomach.length >= 2) {
+		let last = selectedStomach.pop();
+		AbdomenLesion1Locationtext += selectedStomach.join(", ") + " a " + last + " žaludku";
+	} else {
+		AbdomenLesion1Locationtext += selectedStomach.join(", ") + " žaludku";
+	}
+}
 
 // Pancreas
 let pancreasParts = [
@@ -1916,7 +2293,6 @@ let pancreasParts = [
 ];
 
 let selectedPancreas = [];
-let PancreasWhole = document.getElementById('Chb1AbdomenSelectPancreas').checked;
 
 for (let part of pancreasParts) {
     let checkboxPancreasElem = document.getElementById(part.id);
@@ -1925,24 +2301,17 @@ for (let part of pancreasParts) {
     }
 }
 
-if (PancreasWhole && selectedPancreas.length === 0) {
+if (selectedPancreas.length > 0) {
     if (AbdomenLesion1Locationtext !== "") {
         AbdomenLesion1Locationtext += ", ";
     }
-    AbdomenLesion1Locationtext += "pankreatu";
-} else if (selectedPancreas.length > 0) {
-    if (AbdomenLesion1Locationtext !== "") {
-        AbdomenLesion1Locationtext += ", ";
-    }
-    if (selectedPancreas.length >= 2) {
+    else if (selectedPancreas.length >= 2) {
         let last = selectedPancreas.pop();
         AbdomenLesion1Locationtext += selectedPancreas.join(", ") + " a " + last + " pankreatu";
     } else {
         AbdomenLesion1Locationtext += selectedPancreas.join(", ") + " pankreatu";
     }
 }
-
-
 
 // Adrenals
 	let adrenals = [];
@@ -1958,7 +2327,6 @@ if (PancreasWhole && selectedPancreas.length === 0) {
     } else {
         AbdomenLesion1Locationtext += adrenals.join(", ");
     }
-	
 	
 // Kidneys
 	let kidneys = [];
@@ -2018,6 +2386,12 @@ if (PancreasWhole && selectedPancreas.length === 0) {
         AbdomenLesion1Locationtext += ovaries.join(", ");
     }
 
+//močák
+	var Chb1UrinaryBladder = document.getElementById('Chb1UrinaryBladder').checked;
+	if (Chb1UrinaryBladder) {
+		AbdomenLesion1Locationtext += "močového měchýře";
+	}
+
 // prostata
 let prostate = [];
     if (document.getElementById('Chb1ProstateR').checked) {
@@ -2070,46 +2444,6 @@ if (PeritoneumWhole && selectedPeritoneum.length === 0) {
     }
 }
 
-
-// Others 
-    let otherParts = [
-        { id: "Chb1OthersSpleen", name: "sleziny" },
-        { id: "Chb1OthersGallbladder", name: "žlučníku" },
-        { id: "Chb1OthersDuodenum", name: "duodena" },
-        { id: "Chb1OthersJejunum", name: "jejuna" },
-        { id: "Chb1OthersIleum", name: "ilea" },
-		{ id: "Chb1OthersBladder", name: "močového měchýře" }
-    ];
-
-    let selectedOthers = [];
-    for (let part of otherParts) {
-        let checkboxOtherElem = document.getElementById(part.id);
-        if (checkboxOtherElem && checkboxOtherElem.checked) {
-            selectedOthers.push(part.name);
-        }
-    }
-
-    let testes = [];
-    if (document.getElementById('Chb1OthersTestesR').checked) {
-        testes.push("pravého varlete");
-    }
-    if (document.getElementById('Chb1OthersTestesL').checked) {
-        testes.push("levého varlete");
-    }
-
-    if (testes.length === 2) {
-        selectedOthers.push(testes.join(" a "));
-    } else {
-        selectedOthers = selectedOthers.concat(testes);
-    }
-
-    if (selectedOthers.length > 2) {
-        let last = selectedOthers.pop();
-        AbdomenLesion1Locationtext += selectedOthers.join(", ") + " a " + last;
-    } else {
-        AbdomenLesion1Locationtext += selectedOthers.join(", ");
-    }
-
 document.getElementById('AbdomenLesion1Location').value = AbdomenLesion1Locationtext;
 
 // Abdomen lesion1 popis
@@ -2120,6 +2454,8 @@ document.getElementById('AbdomenLesion1Location').value = AbdomenLesion1Location
     var AbdomenLesion1Location = document.getElementById("AbdomenLesion1Location").value;
 	var AbdomenLesion1AddLocation = document.getElementById("AbdomenLesion1AddLocation").value;
     var AbdomenLesion1Loclargest = document.getElementById("AbdomenLesion1Loclargest").value;
+	var AbdomenLesion1Large = document.getElementById("AbdomenLesion1Large").value;
+	document.getElementById('AbdomenLesion1number').addEventListener('change', function() {document.getElementById('AbdomenLesion1Large').classList.toggle('hidden', this.value === "");});
     var AbdomenLesion1Activity = document.getElementById("AbdomenLesion1Activity").value; var AbdomenLesion1ActivityCopy = document.getElementById("AbdomenLesion1Activity").value;
 	var AbdomenLesion1RESActivityPSMA = document.getElementById("AbdomenLesion1Activity"); var selectedOption = AbdomenLesion1RESActivityPSMA.options[AbdomenLesion1RESActivityPSMA.selectedIndex]; var AbdomenLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
     var AbdomenLesion1RESActivityFDG = document.getElementById("AbdomenLesion1Activity"); var selectedOption = AbdomenLesion1RESActivityFDG.options[AbdomenLesion1RESActivityFDG.selectedIndex]; var AbdomenLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
@@ -2127,9 +2463,9 @@ document.getElementById('AbdomenLesion1Location').value = AbdomenLesion1Location
     var AbdomenLesion1Size = formatLesionSize("AbdomenLesion1Size");
 	var AbdomenLesion1RESDecision = document.getElementById("AbdomenLesion1Decision").value; 
 	var AbdomenLesion1AllLocations = "";
+	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("AbdomenLesion1Previous").classList.toggle("hidden", !this.value);});
 	var AbdomenLesion1SUVPrev = formatSUV("AbdomenLesion1SUVPrev");  
 	var AbdomenLesion1PrevSize = formatLesionSize("AbdomenLesion1PrevSize");
-	
 	var AbdomenLesion1ComparisonText = generateComparisonText(AbdomenLesion1SUVPrev, AbdomenLesion1PrevSize, DateComparison, AbdomenLesion1SUV, AbdomenLesion1Size);
 	var AbdomenLesion1ComparisonSUVRes = compareActRES(AbdomenLesion1SUV, AbdomenLesion1SUVPrev);
 	var AbdomenLesion1ComparisonSizeRes = compareSizes(AbdomenLesion1Size, AbdomenLesion1PrevSize);
@@ -2139,7 +2475,7 @@ document.getElementById('AbdomenLesion1Location').value = AbdomenLesion1Location
 	var RESAbdomenLesion1 = "";
 	
 	if (AbdomenLesion1Loclargest !== "") {
-		AbdomenLesion1Loclargest = AbdomenLesion1ActivityCopy + ". Největší " + AbdomenLesion1Loclargest + " ";
+		AbdomenLesion1Loclargest = AbdomenLesion1ActivityCopy + ", největší " + AbdomenLesion1Loclargest + " ";
 		AbdomenLesion1Activity = "";
 	}
 	
@@ -2159,23 +2495,25 @@ document.getElementById('AbdomenLesion1Location').value = AbdomenLesion1Location
 	} 	
 
 let processedSentencePOPAbdomenLesion1 = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);	
-window.POPAbdomenLesion1 = processedSentencePOPAbdomenLesion1 + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1Loclargest + " " + AbdomenLesion1Size + " " + AbdomenLesion1Activity + " " + AbdomenLesion1ComparisonText + ".";
+POPAbdomenLesion1 = processedSentencePOPAbdomenLesion1 + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1Loclargest + " " + AbdomenLesion1Size + " " + AbdomenLesion1Activity + " " + AbdomenLesion1ComparisonText + ".";
 
 let processedSentenceRESAbdomenLesionFDG = processSentence(AbdomenLesion1number + " " + AbdomenLesion1RESActivityFDG + " " + AbdomenLesion1type);
 let processedSentenceRESAbdomenLesionPSMA = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);
 
 if (buttonElementPETType.value === "FDG") {
-	window.RESAbdomenLesion1 = processedSentenceRESAbdomenLesionFDG + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + ".";
+	RESAbdomenLesion1 = processedSentenceRESAbdomenLesionFDG + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + ".";
 } else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	window.RESAbdomenLesion1 = processedSentenceRESAbdomenLesionPSMA + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1RESActivityPSMA + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + ".";
+	RESAbdomenLesion1 = processedSentenceRESAbdomenLesionPSMA + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1RESActivityPSMA + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + ".";
 }
 
-if (AbdomenLesion1RESDecision.includes("meta") && AbdomenLesion1type.includes("ožisk")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
-if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("ožisk")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
-if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("as")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/mas/g, "tumorózní mas").replace(/Mas/g, "Tumorózní mas").replace(": charakteru tumoru", ".");}
-if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("nfiltr")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/infiltr/g, "tumorózní infiltr").replace(/Infiltr/g, "Tumorózní infiltr").replace(": charakteru tumoru", ".");}
-if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("xpanz")) {window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(/expanze/g, "tumorózní expanze").replace(/Expanze/g, "Tumorózní expanze").replace(": charakteru tumoru", ".");}
-if (AbdomenLesion1CombinedResult.includes("je nově") || AbdomenLesion1CombinedResult.includes("jsou nově")) { window.RESAbdomenLesion1 = "Nově " + window.RESAbdomenLesion1.charAt(0).toLowerCase() + window.RESAbdomenLesion1.substring(1) ; window.RESAbdomenLesion1 = window.RESAbdomenLesion1.replace(" je nově", "").replace(" jsou nově", "");}
+if (AbdomenLesion1RESDecision.includes("meta") && AbdomenLesion1type.includes("ožisk")) {RESAbdomenLesion1 = RESAbdomenLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
+if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("ožisk")) {RESAbdomenLesion1 = RESAbdomenLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("as")) {RESAbdomenLesion1 = RESAbdomenLesion1.replace(/mas/g, "tumorózní mas").replace(/Mas/g, "Tumorózní mas").replace(": charakteru tumoru", ".");}
+if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("nfiltr")) {RESAbdomenLesion1 = RESAbdomenLesion1.replace(/infiltr/g, "tumorózní infiltr").replace(/Infiltr/g, "Tumorózní infiltr").replace(": charakteru tumoru", ".");}
+if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("xpanz")) {RESAbdomenLesion1 = RESAbdomenLesion1.replace(/expanze/g, "tumorózní expanze").replace(/Expanze/g, "Tumorózní expanze").replace(": charakteru tumoru", ".");}
+if (AbdomenLesion1CombinedResult.includes("je nově") || AbdomenLesion1CombinedResult.includes("jsou nově")) { RESAbdomenLesion1 = "Nově " + RESAbdomenLesion1.charAt(0).toLowerCase() + RESAbdomenLesion1.substring(1) ; RESAbdomenLesion1 = RESAbdomenLesion1.replace(" je nově", "").replace(" jsou nově", "");}
+
+if (AbdomenLesion1Location ==="" && AbdomenLesion1AddLocation ==="") {POPAbdomenLesion1 = ""; RESAbdomenLesion1 = "";}
 
 `;
 
@@ -2184,11 +2522,6 @@ let codeForAbdomenLesion3 = codeForAbdomenLesion1.replace(/Lesion1/g, 'Lesion3')
 eval(codeForAbdomenLesion1);
 eval(codeForAbdomenLesion2);
 eval(codeForAbdomenLesion3);
-
-if (AbdomenLesion1Button.classList.contains('hidden')) {window.POPAbdomenLesion1 = ""; window.RESAbdomenLesion1 = "";}
-if (AbdomenLesion2Button.classList.contains('hidden')) {window.POPAbdomenLesion2 = ""; window.RESAbdomenLesion2 = "";}
-if (AbdomenLesion3Button.classList.contains('hidden')) {window.POPAbdomenLesion3 = ""; window.RESAbdomenLesion3 = "";}
-
 
 // ABDOMEN LN
 
@@ -2284,6 +2617,8 @@ document.getElementById('AbdomenLymphNode1Location').value = AbdomenLymphNode1Lo
     var AbdomenLymphNode1Location = document.getElementById("AbdomenLymphNode1Location").value;
 	var AbdomenLymphNode1AddLocation = document.getElementById("AbdomenLymphNode1AddLocation").value;
     var AbdomenLymphNode1Loclargest = document.getElementById("AbdomenLymphNode1Loclargest").value;
+	var AbdomenLymphNode1Large = document.getElementById("AbdomenLymphNode1Large").value;
+	document.getElementById('AbdomenLymphNode1number').addEventListener('change', function() {document.getElementById('AbdomenLymphNode1Large').classList.toggle('hidden', this.value === "");});
     var AbdomenLymphNode1Activity = document.getElementById("AbdomenLymphNode1Activity").value; var AbdomenLymphNode1ActivityCopy = document.getElementById("AbdomenLymphNode1Activity").value;
 	var AbdomenLymphNode1RESActivityPSMA = document.getElementById("AbdomenLymphNode1Activity"); var selectedOption = AbdomenLymphNode1RESActivityPSMA.options[AbdomenLymphNode1RESActivityPSMA.selectedIndex]; var AbdomenLymphNode1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
 	var AbdomenLymphNode1RESActivityFDG = document.getElementById("AbdomenLymphNode1Activity"); var selectedOption = AbdomenLymphNode1RESActivityFDG.options[AbdomenLymphNode1RESActivityFDG.selectedIndex]; var AbdomenLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
@@ -2291,6 +2626,7 @@ document.getElementById('AbdomenLymphNode1Location').value = AbdomenLymphNode1Lo
     var AbdomenLymphNode1Size = formatLymphNodeSize("AbdomenLymphNode1Size");
 	var AbdomenLymphNode1RESDecision = document.getElementById("AbdomenLymphNode1Decision"); var selectedOption = AbdomenLymphNode1RESDecision.options[AbdomenLymphNode1RESDecision.selectedIndex]; var AbdomenLymphNode1RESDecision = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
 	var AbdomenLymphNode1AllLocations = "";
+	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("AbdomenLymphNode1Previous").classList.toggle("hidden", !this.value);});
 	var AbdomenLymphNode1SUVPrev = formatSUV("AbdomenLymphNode1SUVPrev");  
 	var AbdomenLymphNode1PrevSize = formatLymphNodeSize("AbdomenLymphNode1PrevSize");
 	var AbdomenLymphNode1ComparisonText = generateComparisonText(AbdomenLymphNode1SUVPrev, AbdomenLymphNode1PrevSize, DateComparison, AbdomenLymphNode1SUV, AbdomenLymphNode1Size);
@@ -2302,7 +2638,7 @@ document.getElementById('AbdomenLymphNode1Location').value = AbdomenLymphNode1Lo
 	var RESAbdomenLymphNode1 = "";
 	
 	if (AbdomenLymphNode1Loclargest !== "") {
-		AbdomenLymphNode1Loclargest = AbdomenLymphNode1ActivityCopy + ". Největší " + AbdomenLymphNode1Loclargest + " ";
+		AbdomenLymphNode1Loclargest = AbdomenLymphNode1ActivityCopy + ", největší " + AbdomenLymphNode1Loclargest + " ";
 		AbdomenLymphNode1Activity = "";
 	}
 	    
@@ -2332,7 +2668,7 @@ if (buttonElementPETType.value === "FDG") {
 	RESAbdomenLymphNode1 = processedSentenceRESAbdomenLymphNodePSMA + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1RESActivityPSMA + " " + AbdomenLymphNode1CombinedResult + " " + AbdomenLymphNode1RESDecision + ".";
 }
 
-if (AbdomenLymphNode1Button.classList.contains('hidden')) {POPAbdomenLymphNode1 = ""; RESAbdomenLymphNode1 = "";}
+if (AbdomenLymphNode1Location === "" && AbdomenLymphNode1AddLocation === "") { POPAbdomenLymphNode1 = ""; RESAbdomenLymphNode1 = ""; }
 
 if (AbdomenLymphNode1CombinedResult.includes("je nově") || AbdomenLymphNode1CombinedResult.includes("jsou nově")) { RESAbdomenLymphNode1 = "Nově " + RESAbdomenLymphNode1.charAt(0).toLowerCase() + RESAbdomenLymphNode1.substring(1) ; RESAbdomenLymphNode1 = RESAbdomenLymphNode1.replace(" je nově", "").replace(" jsou nově", "");}
 
@@ -3064,7 +3400,7 @@ if (AbdomenOrgansText.trim() === "" && AbdomenOther1Priority === "") {
 
 // Abdomen native or not
 
-if ((POPAbdomenLymphNode1 !== "") || (window.POPAbdomenLesion1 !== "") || (window.POPAbdomenLesion2 !== "") ||  (window.POPAbdomenLesion1 !== "") || checkViability(AbdomenOther1Pop)) {
+if ((POPAbdomenLymphNode1 !== "") || (POPAbdomenLesion1 !== "") || (POPAbdomenLesion2 !== "") || (POPAbdomenLesion3 !== "") || checkViability(AbdomenOther1Pop)) {
   POPAbdomenNative = "";
 } else {
   POPAbdomenNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
@@ -3076,7 +3412,9 @@ if ((POPAbdomenLymphNode1 !== "") || (window.POPAbdomenLesion1 !== "") || (windo
 // SKELETON
 
 // Skeleton Lesion1
+
 let codeForSkeletonLesion1 = `
+
 var SkeletonLesion1Locationtext = "";
 
     if (document.getElementById('Chb1SkeletCalvaR').checked && document.getElementById('Chb1SkeletCalvaL').checked) {
@@ -3133,7 +3471,7 @@ var SkeletonLesion1Locationtext = "";
     }
 
     if (document.getElementById('Chb1SkeletSacrumR').checked && document.getElementById('Chb1SkeletSacrumL').checked) {
-        SkeletonLesion1Locationtext += (SkeletonLesion1Locationtext ? ", " : "") + "sakra bilat.";
+        SkeletonLesion1Locationtext += (SkeletonLesion1Locationtext ? ", " : "") + "sakra";
     } else if (document.getElementById('Chb1SkeletSacrumR').checked) {
         SkeletonLesion1Locationtext += (SkeletonLesion1Locationtext ? ", " : "") + "sakra vpravo";
     } else if (document.getElementById('Chb1SkeletSacrumL').checked) {
@@ -3188,6 +3526,8 @@ var arr = SkeletonLesion1Locationtext.split(", ");
     var SkeletonLesion1Location = document.getElementById("SkeletonLesion1Location").value;
 	var SkeletonLesion1AddLocation = document.getElementById("SkeletonLesion1AddLocation").value;
     var SkeletonLesion1Loclargest = document.getElementById("SkeletonLesion1Loclargest").value;
+	var SkeletonLesion1Large = document.getElementById("SkeletonLesion1Large").value;
+	document.getElementById('SkeletonLesion1number').addEventListener('change', function() {document.getElementById('SkeletonLesion1Large').classList.toggle('hidden', this.value === "");});
     var SkeletonLesion1Activity = document.getElementById("SkeletonLesion1Activity").value; var SkeletonLesion1ActivityCopy = document.getElementById("SkeletonLesion1Activity").value;
 	var SkeletonLesion1RESActivityPSMA = document.getElementById("SkeletonLesion1Activity"); var selectedOption = SkeletonLesion1RESActivityPSMA.options[SkeletonLesion1RESActivityPSMA.selectedIndex]; var SkeletonLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
     var SkeletonLesion1RESActivityFDG = document.getElementById("SkeletonLesion1Activity"); var selectedOption = SkeletonLesion1RESActivityFDG.options[SkeletonLesion1RESActivityFDG.selectedIndex]; var SkeletonLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
@@ -3195,19 +3535,21 @@ var arr = SkeletonLesion1Locationtext.split(", ");
     var SkeletonLesion1Size = formatLesionSize("SkeletonLesion1Size");
 	var SkeletonLesion1RESDecision = document.getElementById("SkeletonLesion1Decision").value; 
 	var SkeletonLesion1AllLocations = "";
+	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("SkeletonLesion1Previous").classList.toggle("hidden", !this.value);});
 	var SkeletonLesion1SUVPrev = formatSUV("SkeletonLesion1SUVPrev");  
 	var SkeletonLesion1PrevSize = formatLesionSize("SkeletonLesion1PrevSize");
-	
 	var SkeletonLesion1ComparisonText = generateComparisonText(SkeletonLesion1SUVPrev, SkeletonLesion1PrevSize, DateComparison, SkeletonLesion1SUV, SkeletonLesion1Size);
 	var SkeletonLesion1ComparisonSUVRes = compareActRES(SkeletonLesion1SUV, SkeletonLesion1SUVPrev);
 	var SkeletonLesion1ComparisonSizeRes = compareSizes(SkeletonLesion1Size, SkeletonLesion1PrevSize);
 	var SkeletonLesion1CombinedResult = combineComparisonResults(SkeletonLesion1ComparisonSizeRes, SkeletonLesion1ComparisonSUVRes, SkeletonLesion1number);
+	var SkeletonLesion1CombinedResult = combineComparisonResults(SkeletonLesion1ComparisonSizeRes, SkeletonLesion1ComparisonSUVRes, SkeletonLesion1number);
+	var SkeletonLesion1ActivityAdd = checkSmallSize(SkeletonLesion1Size, SkeletonLesion1SUV);
     
     var POPSkeletonLesion1 = "";
 	var RESSkeletonLesion1 = "";
 	
 	if (SkeletonLesion1Loclargest !== "") {
-		SkeletonLesion1Loclargest = SkeletonLesion1ActivityCopy + ". Největší " + SkeletonLesion1Loclargest + " ";
+		SkeletonLesion1Loclargest = SkeletonLesion1ActivityCopy + ", největší " + SkeletonLesion1Loclargest + " ";
 		SkeletonLesion1Activity = "";
 	}
 	
@@ -3227,20 +3569,22 @@ var arr = SkeletonLesion1Locationtext.split(", ");
 	} 	
 
 let processedSentencePOPSkeletonLesion1 = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);	
-window.POPSkeletonLesion1 = processedSentencePOPSkeletonLesion1 + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1Loclargest + " " + SkeletonLesion1Size + " " + SkeletonLesion1Activity + " " + SkeletonLesion1ComparisonText + ".";
+POPSkeletonLesion1 = processedSentencePOPSkeletonLesion1 + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1Loclargest + " " + SkeletonLesion1Size + " " + SkeletonLesion1Activity + " " + SkeletonLesion1ComparisonText + ".";
 
 let processedSentenceRESSkeletonLesionFDG = processSentence(SkeletonLesion1number + " " + SkeletonLesion1RESActivityFDG + " " + SkeletonLesion1type);
 let processedSentenceRESSkeletonLesionPSMA = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);
 
 if (buttonElementPETType.value === "FDG") {
-	window.RESSkeletonLesion1 = processedSentenceRESSkeletonLesionFDG + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + ".";
+	RESSkeletonLesion1 = processedSentenceRESSkeletonLesionFDG + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + ".";
 } else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	window.RESSkeletonLesion1 = processedSentenceRESSkeletonLesionPSMA + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1RESActivityPSMA + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + ".";
+	RESSkeletonLesion1 = processedSentenceRESSkeletonLesionPSMA + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1RESActivityPSMA + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + ".";
 }
 
-if (SkeletonLesion1RESDecision.includes("meta") && SkeletonLesion1type.includes("ožisk")) {window.RESSkeletonLesion1 = window.RESSkeletonLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
-if (SkeletonLesion1RESDecision.includes("tumor") && SkeletonLesion1type.includes("ožisk")) {window.RESSkeletonLesion1 = window.RESSkeletonLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
-if (SkeletonLesion1CombinedResult.includes("je nově") || SkeletonLesion1CombinedResult.includes("jsou nově")) { window.RESSkeletonLesion1 = "Nově " + window.RESSkeletonLesion1.charAt(0).toLowerCase() + window.RESSkeletonLesion1.substring(1) ; window.RESSkeletonLesion1 = window.RESSkeletonLesion1.replace(" je nově", "").replace(" jsou nově", "");}
+if (SkeletonLesion1RESDecision.includes("meta") && SkeletonLesion1type.includes("ožisk")) {RESSkeletonLesion1 = RESSkeletonLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
+if (SkeletonLesion1RESDecision.includes("tumor") && SkeletonLesion1type.includes("ožisk")) {RESSkeletonLesion1 = RESSkeletonLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
+if (SkeletonLesion1CombinedResult.includes("je nově") || SkeletonLesion1CombinedResult.includes("jsou nově")) { RESSkeletonLesion1 = "Nově " + RESSkeletonLesion1.charAt(0).toLowerCase() + RESSkeletonLesion1.substring(1) ; RESSkeletonLesion1 = RESSkeletonLesion1.replace(" je nově", "").replace(" jsou nově", "");}
+
+if (SkeletonLesion1Location ==="" && SkeletonLesion1AddLocation ==="") {POPSkeletonLesion1 = ""; RESSkeletonLesion1 = "";}
 
 `;
 
@@ -3249,10 +3593,6 @@ let codeForSkeletonLesion3 = codeForSkeletonLesion1.replace(/Lesion1/g, 'Lesion3
 eval(codeForSkeletonLesion1);
 eval(codeForSkeletonLesion2);
 eval(codeForSkeletonLesion3);
-
-if (SkeletonLesion1Button.classList.contains('hidden')) {window.POPSkeletonLesion1 = ""; window.RESSkeletonLesion1 = "";}
-if (SkeletonLesion2Button.classList.contains('hidden')) {window.POPSkeletonLesion2 = ""; window.RESSkeletonLesion2 = "";}
-if (SkeletonLesion3Button.classList.contains('hidden')) {window.POPSkeletonLesion3 = ""; window.RESSkeletonLesion3 = "";}
 
 // Skeleton OTHERS
 
@@ -3483,7 +3823,7 @@ if (SkeletonOther1Pop !== "" && SkeletonOther1Res ==="") {SkeletonOther1Priority
 
 // Skeleton native or not
 
-if ((window.POPSkeletonLesion1 !== "") || (window.POPSkeletonLesion2 !== "") ||  (window.POPSkeletonLesion1 !== "") || checkViability(SkeletonOther1Pop)) {
+if ((POPSkeletonLesion1 !== "") || checkViability(SkeletonOther1Pop)) {
   POPSkeletonNative = "";
 } else {
   POPSkeletonNative = "Není přítomen patologický hyperakumulující fokus nebo ložisko. ";
@@ -3523,13 +3863,13 @@ var POPText = document.getElementById("POPText");
 	
 POPText.value = 
 POPExamCompareText + "\n" +
-"Hlava/krk: " + POPNeckNative + " " + window.POPNeckLesion1 + " " + window.POPNeckLesion2 + " " + window.POPNeckLesion3 + " " + POPNeckLymphNode1 + " " + 
+"Hlava/krk: " + POPNeckNative + " " + POPNeckLesion1 + " " + POPNeckLesion2 + " " + POPNeckLesion3 + " " + POPNeckLymphNode1 + " " + 
 	NeckOther1Priority + " " + NeckVCordsText + " " + HeadTonsilsText + " " + NeckParotidText + " " + NeckThyroidText + " " + NeckTreatmentText + " " + HeadMaxSinusText + " " + NeckOther1NoPriority + "\n" +
-"Hrudník: " + POPThoraxNative + " " + window.POPThoraxLesion1 + " " + window.POPThoraxLesion2 + " " + window.POPThoraxLesion3 + " " + ThoraxLymphNodePlusText + " " + POPThoraxLymphNode1 + " " + ThoraxOther1Priority + " " + 
+"Hrudník: " + POPThoraxNative + " " + POPThoraxLesion1 + " " + POPThoraxLesion2 + " " + POPThoraxLesion3 + " " + ThoraxLymphNodePlusText + " " + POPThoraxLymphNode1 + " " + ThoraxOther1Priority + " " + 
 	ThoraxParenchymaText + " " + POPThoraxLungOk + " " + ThoraxFluidText + " " + ThoraxOesophText + " " + ThoraxMammaText + " " + ThoraxThymusText + " " + ThoraxHeartText + " " + ThoraxDevicesText + " " + ThoraxEmbolisationText + " " + ThoraxOther1NoPriority + "\n" +
-"Břicho: " + POPAbdomenNative + " " + window.POPAbdomenLesion1 + " " + window.POPAbdomenLesion2 + " " + window.POPAbdomenLesion3 + " " + POPAbdomenLymphNode1 + " " + AbdomenOther1Priority + " " + 
+"Břicho: " + POPAbdomenNative + " " + POPAbdomenLesion1 + " " + POPAbdomenLesion2 + " " + POPAbdomenLesion3 + " " + POPAbdomenLymphNode1 + " " + AbdomenOther1Priority + " " + 
 	AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + " " + AbdomenVesselsText + "\n" +
-"Skelet a měkké tkáně: " + POPSkeletonNative + " " + window.POPSkeletonLesion1 + " " + window.POPSkeletonLesion2 + " " + window.POPSkeletonLesion3 + " " + SkeletonOther1Priority + " " + 
+"Skelet a měkké tkáně: " + POPSkeletonNative + " " + POPSkeletonLesion1 + " " + SkeletonOther1Priority + " " + 
 	SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + " " + SkeletonSoftTissueText + "\n" +			
 ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 
@@ -3582,10 +3922,10 @@ ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 
 //checking jestli bez známek přítomnosti nebo ne
 let variablesToCheck = [
-    window.RESNeckLesion1, window.RESNeckLesion2, window.RESNeckLesion3, RESNeckLymphNode1,
-    window.RESThoraxLesion1, window.RESThoraxLesion2, window.RESThoraxLesion3, RESThoraxLymphNode1,
-    window.RESAbdomenLesion1, window.RESAbdomenLesion2, window.RESAbdomenLesion3, RESAbdomenLymphNode1,
-    window.RESSkeletonLesion1, window.RESSkeletonLesion2, window.RESSkeletonLesion3
+    RESNeckLesion1, RESNeckLymphNode1,
+    RESThoraxLesion1, RESThoraxLymphNode1,
+    RESAbdomenLesion1, RESAbdomenLymphNode1,
+    RESSkeletonLesion1
 ];
 
 let bannedWords = ['suspektní', 'tumor',  'tumorózní',  'Tumorózní', 'meta ', 'meta.', 'Meta', 'charakteru', 'neoplazií', 'neoplazie','nespecifický'];
@@ -3621,20 +3961,26 @@ var RESText = document.getElementById("RESText");
 RESText.value = 
 RESTextNative + "\n" + 
 ExamCompareText + "\n" + 
-window.RESNeckLesion1 + " " + window.RESNeckLesion2 + " " + window.RESNeckLesion3 + "\n" +
+RESNeckLesion1 + "\n" +
+RESNeckLesion2 + "\n" +
+RESNeckLesion3 + "\n" +
 RESNeckLymphNode1 + "\n" +
 NeckOther1ResPriority + " " + NeckVCordsRes + "\n" +
-window.RESThoraxLesion1 + " " + window.RESThoraxLesion2 + " " + window.RESThoraxLesion3 + "\n" +
+RESThoraxLesion1 + "\n" +
+RESThoraxLesion2 + "\n" +
+RESThoraxLesion3 + "\n" +
 RESThoraxLymphNode1 + "\n" +
 ThoraxOther1ResPriority + "\n" +
 ThoraxFluidFTRRes + ThoraxFluidFTLRes + ThoraxFluidFPRes + ThoraxEmbolisationRes + ThoraxThymusRes + "\n" +
-window.RESAbdomenLesion1 + " " + window.RESAbdomenLesion2 + " " + window.RESAbdomenLesion3 + " " + 
+RESAbdomenLesion1 + " " + 
+RESAbdomenLesion2 + " " +
+RESAbdomenLesion3 + " " +
 RESAbdomenLymphNode1 + "\n" +
 AbdomenOther1ResPriority + "\n" +
 AbdomenProstateRes + "\n" +
 AbdomenFluidRes + " " + 
 AbdomenVesselsRes + "\n" +
-window.RESSkeletonLesion1 + " " + window.RESSkeletonLesion2 + " " + window.RESSkeletonLesion3 + "\n" +
+RESSkeletonLesion1 + "\n" +
 SkeletonTraumaRecentRes + "\n" +
 SkeletonOther1ResPriority + "\n" +
 SkeletonJointsRes + "\n" +

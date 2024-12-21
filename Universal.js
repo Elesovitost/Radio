@@ -105,7 +105,7 @@ for (var i = 0; i < buttons.length; i++) {
 
 
 
-// TABLES others OVERLAY (když se klikne na něco s "others" otevře se table)
+// TABLES others OVERLAY (když se klikne na class "others" otevře se id s table)
 
 document.addEventListener('click', function(event) {
     if (event.target.classList.value.includes('others')) {
@@ -293,7 +293,11 @@ function updateButtonColor(buttonId, tableId) {
 }
 
 document.addEventListener('input', function(event) {
-    if (event.target.type === 'checkbox' || event.target.type === 'text' || event.target.tagName.toLowerCase() === 'textarea') {
+    if (
+        event.target.type === 'checkbox' ||
+        event.target.type === 'text' ||
+        event.target.tagName.toLowerCase() === 'textarea'
+    ) {
         var table = event.target.closest('[id$="table"]');
         if (table) {
             var buttonId = table.id.replace('table', '');
@@ -301,6 +305,18 @@ document.addEventListener('input', function(event) {
         }
     }
 });
+
+// Přidáme obsluhu pro checkboxy při změně jejich stavu
+document.addEventListener('change', function(event) {
+    if (event.target.type === 'checkbox') {
+        var table = event.target.closest('[id$="table"]');
+        if (table) {
+            var buttonId = table.id.replace('table', '');
+            updateButtonColor(buttonId, table.id);
+        }
+    }
+});
+
 
 
 // button tables overlay unchecked
