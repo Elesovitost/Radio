@@ -426,8 +426,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			} else if ((text.includes("FDG") && text.includes("PSMA")) ||
 				(text.includes("FDG") && text.includes("DOTATOC")) ||
 				(text.includes("PSMA") && text.includes("DOTATOC"))) {
-        console.log("Condition 2 triggered: Invalid combination.");
-		showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
+        		console.log("Condition 2 triggered: Invalid combination.");
+				showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
 			} else {
 				console.log("Condition 3 triggered: Copying text.");
 				navigator.clipboard.writeText(text)
@@ -437,6 +437,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 				.catch((error) => {
 					console.error("Failed to copy text:", error);
 				});
+
+                // Nová funkcionalita: Otevření ChatGPT s analyzovaným textem
+				if (buttonId === 'copyCOMP') {
+					openChatGPTWithText(text);
+				}
 			}
 		});
 
@@ -451,11 +456,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		});
 	}
 
+    // Funkce pro otevření ChatGPT s analyzovaným textem
+    function openChatGPTWithText(text) {
+        const query = `
+            Analyzuj tento popis vyšetření. Věty nemusí být rozvinuté, můžou chybět slovesa apod. (jedná se o popis). Zajímá mě: 
+            Zda neobsahuje zjevné gramatické chyby. 
+            Zda neobsahuje nesmyslné, nedokončené věty.
+            Zda není rozpor v části popisu a závěru t.j. zda něco "vlevo" není v závěru shrnuto jako "vpravo". 
+            Zda v závěru nechybí něco důležitého zmíněného v textu, tedy ne cysty apod., ale potenciálně závažné patologie.
+            Případně doplň návrh diferenciální diagnózy v závěru.
 
+            Text k analýze:
+            ${text}
+        `;
+        const chatGPTUrl = `https://chat.openai.com/chat?message=${encodeURIComponent(query)}`;
+        window.open(chatGPTUrl, '_blank');
+    }
+
+    // Nastavení tlačítek
     setupCopyButton('copyCOMP', 'FINALCOMPLETEText');
 	setupCopyButton('copyPOP', 'FINALPOPText');
 	setupCopyButton('copyRES', 'FINALRESText');
 });
+
 
 
 </script>

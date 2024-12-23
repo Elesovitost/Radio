@@ -260,14 +260,17 @@ function isAnyCheckboxChecked(tableId) {
 }
 
 function isTextInputFilled(tableId) {
-    var textInputs = document.querySelectorAll('#' + tableId + ' input[type="text"], #' + tableId + ' textarea');
-    for (var i = 0; i < textInputs.length; i++) {
-        if (textInputs[i].value.trim() !== '') {
+    var inputs = document.querySelectorAll(
+        '#' + tableId + ' input[type="text"], #' + tableId + ' input[type="number"], #' + tableId + ' .numberstext, #' + tableId + ' textarea'
+    );
+    for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].value.trim() !== '') {
             return true;
         }
     }
     return false;
 }
+
 
 function isAnyButtonTextChanged(tableId) {
     var buttonCheckboxes = document.querySelectorAll('#' + tableId + ' .buttonCheckbox');
@@ -292,10 +295,11 @@ function updateButtonColor(buttonId, tableId) {
     }
 }
 
-document.addEventListener('input', function(event) {
+document.addEventListener('input', function (event) {
     if (
         event.target.type === 'checkbox' ||
         event.target.type === 'text' ||
+        event.target.type === 'number' || // Přidána podpora pro čísla
         event.target.tagName.toLowerCase() === 'textarea'
     ) {
         var table = event.target.closest('[id$="table"]');
@@ -306,14 +310,39 @@ document.addEventListener('input', function(event) {
     }
 });
 
-// Přidáme obsluhu pro checkboxy při změně jejich stavu
-document.addEventListener('change', function(event) {
-    if (event.target.type === 'checkbox') {
+document.addEventListener('change', function (event) {
+    if (
+        event.target.type === 'checkbox' ||
+        event.target.type === 'number' // Přidána podpora pro čísla
+    ) {
         var table = event.target.closest('[id$="table"]');
         if (table) {
             var buttonId = table.id.replace('table', '');
             updateButtonColor(buttonId, table.id);
         }
+    }
+});
+
+// jen sledování změn hodnot u všech relevantních polí (numbers a numberstext) a mění barvu pozadí, když se vymaže nebude to fungovat u kolečka
+window.addEventListener('load', function () {
+    var monitoredInputs = document.querySelectorAll('.numbers, .numberstext');
+
+    for (var i = 0; i < monitoredInputs.length; i++) {
+        monitoredInputs[i].addEventListener('input', function () {
+            var table = this.closest('[id$="table"]');
+            if (table) {
+                var buttonId = table.id.replace('table', '');
+                updateButtonColor(buttonId, table.id);
+            }
+        });
+
+        monitoredInputs[i].addEventListener('wheel', function () {
+            var table = this.closest('[id$="table"]');
+            if (table) {
+                var buttonId = table.id.replace('table', '');
+                updateButtonColor(buttonId, table.id);
+            }
+        });
     }
 });
 
