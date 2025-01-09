@@ -1,3 +1,5 @@
+// LESIONS (cloning)
+
 const sections = document.querySelectorAll('.Lsection'); // Select all .Lsection elements
 
 sections.forEach((section, index) => {
@@ -3863,14 +3865,34 @@ var POPText = document.getElementById("POPText");
 	
 POPText.value = 
 POPExamCompareText + "\n" +
-"Hlava/krk: " + POPNeckNative + " " + POPNeckLesion1 + " " + POPNeckLesion2 + " " + POPNeckLesion3 + " " + POPNeckLymphNode1 + " " + 
-	NeckOther1Priority + " " + NeckVCordsText + " " + HeadTonsilsText + " " + NeckParotidText + " " + NeckThyroidText + " " + NeckTreatmentText + " " + HeadMaxSinusText + " " + NeckOther1NoPriority + "\n" +
-"Hrudník: " + POPThoraxNative + " " + POPThoraxLesion1 + " " + POPThoraxLesion2 + " " + POPThoraxLesion3 + " " + ThoraxLymphNodePlusText + " " + POPThoraxLymphNode1 + " " + ThoraxOther1Priority + " " + 
-	ThoraxParenchymaText + " " + POPThoraxLungOk + " " + ThoraxFluidText + " " + ThoraxOesophText + " " + ThoraxMammaText + " " + ThoraxThymusText + " " + ThoraxHeartText + " " + ThoraxDevicesText + " " + ThoraxEmbolisationText + " " + ThoraxOther1NoPriority + "\n" +
-"Břicho: " + POPAbdomenNative + " " + POPAbdomenLesion1 + " " + POPAbdomenLesion2 + " " + POPAbdomenLesion3 + " " + POPAbdomenLymphNode1 + " " + AbdomenOther1Priority + " " + 
-	AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + " " + AbdomenVesselsText + "\n" +
-"Skelet a měkké tkáně: " + POPSkeletonNative + " " + POPSkeletonLesion1 + " " + SkeletonOther1Priority + " " + 
-	SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + " " + SkeletonSoftTissueText + "\n" +			
+"Hlava/krk: " + 
+POPNeckNative + " " + 
+POPNeckLesion1 + " " + 
+POPNeckLesion2 + " " + 
+POPNeckLesion3 + " " + 
+POPNeckLymphNode1 + " " + 
+NeckOther1Priority + " " + NeckVCordsText + " " + HeadTonsilsText + " " + NeckParotidText + " " + NeckThyroidText + " " + NeckTreatmentText + " " + HeadMaxSinusText + " " + NeckOther1NoPriority + "\n" +
+"Hrudník: " + 
+POPThoraxNative + " " + 
+POPThoraxLesion1 + " " + 
+POPThoraxLesion2 + " " + 
+POPThoraxLesion3 + " " + 
+ThoraxLymphNodePlusText + " " + 
+POPThoraxLymphNode1 + " " + 
+ThoraxOther1Priority + " " +  ThoraxParenchymaText + " " + POPThoraxLungOk + " " + ThoraxFluidText + " " + ThoraxOesophText + " " + ThoraxMammaText + " " + ThoraxThymusText + " " + ThoraxHeartText + " " + ThoraxDevicesText + " " + ThoraxEmbolisationText + " " + ThoraxOther1NoPriority + "\n" +
+"Břicho: " + 
+POPAbdomenNative + " " + 
+POPAbdomenLesion1 + " " + 
+POPAbdomenLesion2 + " " + 
+POPAbdomenLesion3 + " " + 
+POPAbdomenLymphNode1 + " " + 
+AbdomenOther1Priority + " " + AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + " " + AbdomenVesselsText + "\n" +
+"Skelet a měkké tkáně: " + 
+POPSkeletonNative + " " + 
+POPSkeletonLesion1 + " " + 
+POPSkeletonLesion2 + " " + 
+POPSkeletonLesion3 + " " + 
+SkeletonOther1Priority + " " + SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + " " + SkeletonSoftTissueText + "\n" +			
 ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 
 
@@ -3981,6 +4003,8 @@ AbdomenProstateRes + "\n" +
 AbdomenFluidRes + " " + 
 AbdomenVesselsRes + "\n" +
 RESSkeletonLesion1 + "\n" +
+RESSkeletonLesion2 + "\n" +
+RESSkeletonLesion3 + "\n" +
 SkeletonTraumaRecentRes + "\n" +
 SkeletonOther1ResPriority + "\n" +
 SkeletonJointsRes + "\n" +
