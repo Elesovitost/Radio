@@ -169,8 +169,6 @@ document.getElementById('SUVParotid').addEventListener('input', () => {
 
 
 
-
-
 // COPY
 
 var copyPOP = document.getElementById('copyPOP');
@@ -408,6 +406,19 @@ document.getElementById('DateCompare').addEventListener('change', function() {
     }
 });
 
+
+var dateInput = document.getElementById('DateCompare');
+var SUVLiverTextCompare = document.getElementById('SUVLiverTextCompare');
+var SUVLiverPrevious = document.getElementById('SUVLiverPrevious');
+
+if (dateInput.value !== '') {
+  SUVLiverTextCompare.classList.remove('hidden');
+  SUVLiverPrevious.classList.remove('hidden');
+	 } else {
+  SUVLiverTextCompare.classList.add('hidden');
+  SUVLiverPrevious.classList.add('hidden');
+	  SkeletonLesion1Previous.classList.add('hidden'); SkeletonLesion2Previous.classList.add('hidden'); SkeletonLesion3Previous.classList.add('hidden');
+}
 
 
 // universal comparison POP
