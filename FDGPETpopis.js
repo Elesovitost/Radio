@@ -22,7 +22,7 @@ sections.forEach((section, index) => {
 
 //buttons
 
-var textsPETType = ["FDG", "PSMA", "DOTATOC"];
+var textsPETType = ["FDG", "PSMA", "DOTATOC", "DOPA"];
 var buttonElementPETType = document.getElementById("PETTypeButton");
 buttonElementPETType.value = "FDG";
 var indexPETType = 0;function cyclePETTypeText(event) {  indexPETType = cycleText(event, textsPETType, indexPETType, buttonElementPETType, updateBackgroundColor);}
@@ -33,13 +33,13 @@ function cyclePETTypeText(event) {  indexPETType = cycleText(event, textsPETType
 // Lesion aktivita   
   
 var aktivitaOptions = [
-    { text: "není", value: "bez patrné akumulace RF", valuePSMA: "téměř bez PSMA exprese", valueFDG: "ametabolické"},
-	{ text: "nízká", value: "s akumulací RF pod úrovní ref. jater", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
-    { text: "nižší", value: "s akumulací RF mírně pod úrovní ref. jater", valuePSMA: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
-    { text: "intermed.", value: "s akumulací RF na úrovni ref. jater", valuePSMA: "se střední PSMA expresí", valueFDG: "středně metabolicky aktivní "},
-    { text: "vyšší", value: "s akumulací RF mírně nad úrovní ref. jater", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
-	{ text: "vysoká", value: "s akumulací RF nad úrovní ref. jater", valuePSMA: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
-    { text: "enormní", value: "s akumulací RF výrazně nad úrovní ref. jater", valuePSMA: "s vysokou PSMA expresí", valueFDG: "výrazně hypermetabolické "}
+    { text: "není", value: "bez patrné akumulace RF", valueRPH: "téměř bez PSMA exprese", valueFDG: "ametabolické"},
+	{ text: "nízká", value: "s akumulací RF pod úrovní ref. jater", valueRPH: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
+    { text: "nižší", value: "s akumulací RF mírně pod úrovní ref. jater", valueRPH: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
+    { text: "intermed.", value: "s akumulací RF na úrovni ref. jater", valueRPH: "se střední PSMA expresí", valueFDG: "středně metabolicky aktivní "},
+    { text: "vyšší", value: "s akumulací RF mírně nad úrovní ref. jater", valueRPH: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
+	{ text: "vysoká", value: "s akumulací RF nad úrovní ref. jater", valueRPH: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
+    { text: "enormní", value: "s akumulací RF výrazně nad úrovní ref. jater", valueRPH: "s vysokou PSMA expresí", valueFDG: "výrazně hypermetabolické "}
 ];
 
 function populateAktivitaOptions() {
@@ -50,7 +50,7 @@ function populateAktivitaOptions() {
             var optionElement = document.createElement("option");
             optionElement.value = option.value;
             optionElement.textContent = option.text;
-            optionElement.dataset.valuePSMA = option.valuePSMA;
+            optionElement.dataset.valueRPH = option.valueRPH;
 			optionElement.dataset.valueFDG = option.valueFDG;
             selectElement.appendChild(optionElement);
         });
@@ -64,13 +64,13 @@ populateAktivitaOptions();
 // Lesion hodnoceni
 
 var hodnoceniOptions = [
-    { text: "benigní", value: ": benigního vzhledu", valuePSMA: ": benigního vzhledu"},
-    { text: "spíše ben.", value: ": nemá charakter viabilní neoplázie", valuePSMA: ": v.s. zánětlivá aktivace"},
-    { text: "nerozhodný", value: ": nespecifický nález", valuePSMA: ": nespecifický nález"},
-    { text: "spíše mal.", value: ": suspektní z viabilní neoplázie", valuePSMA: ": suspektní z infiltrace neoplazií"},
-    { text: "maligní", value:": charakteru viabilní neoplázie", valuePSMA: ": charakteru infiltrace neoplazií"},
-	{ text: "tumor", value:": charakteru tumoru", valuePSMA: ": infiltrace neoplazií"},
-	{ text: "meta", value:": charakteru meta", valuePSMA: ": infiltrace neoplazií"}
+    { text: "benigní", value: ": benigního vzhledu", valueRPH: ": benigního vzhledu"},
+    { text: "spíše ben.", value: ": nemá charakter viabilní neoplázie", valueRPH: ": v.s. zánětlivá aktivace"},
+    { text: "nerozhodný", value: ": nespecifický nález", valueRPH: ": nespecifický nález"},
+    { text: "spíše mal.", value: ": suspektní z viabilní neoplázie", valueRPH: ": suspektní z infiltrace neoplazií"},
+    { text: "maligní", value:": charakteru viabilní neoplázie", valueRPH: ": charakteru infiltrace neoplazií"},
+	{ text: "tumor", value:": charakteru tumoru", valueRPH: ": infiltrace neoplazií"},
+	{ text: "meta", value:": charakteru meta", valueRPH: ": infiltrace neoplazií"}
 ];
 
 function populateHodnoceniOptions() {
@@ -81,7 +81,7 @@ function populateHodnoceniOptions() {
             var optionElement = document.createElement("option");
             optionElement.value = option.value;
             optionElement.textContent = option.text;
-            optionElement.dataset.valuePSMA = option.valuePSMA;
+            optionElement.dataset.valueRPH = option.valueRPH;
             selectElement.appendChild(optionElement);
         });
     });
@@ -116,7 +116,7 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
             } else if (ratio >= 4) {
                 selectOptionByText(aktSelect, 'enormní');
             }
-        } else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
+        } else {
             if (suv >= Parotid) {
                 selectOptionByText(aktSelect, 'enormní');
             } else if (suv >= Liver && suv < Parotid) {
@@ -457,6 +457,11 @@ if (buttonElementPETType.value === "DOTATOC" && suvLiverInput.value == 3) {
     suvParotidInput.value = 20;
 }
 
+if (buttonElementPETType.value === "DOPA" && suvLiverInput.value == 3) {
+    suvLiverInput.value = 7;
+    suvParotidInput.value = 20;
+}
+
 
 // SUVmax Comparison POP
 function compareActPOP(currentSUV, previousSUV) {
@@ -694,12 +699,17 @@ if (PETTypeText === "FDG") {
     elementParotid.classList.add('hidden');
 }  else if (PETTypeText === "PSMA") {
     ObecneNativeText = "Neložisková akumulace radiofarmaka ve slinných a slzných žlazách, v jaterním parenchymu, slezině, v gastrointestinální traktu a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález."; 
-    nazev = "PSMA-PET/CT trupu"; 
+    nazev = "RPH-PET/CT trupu"; 
 	document.getElementById('suvmax-parotid-container').childNodes[0].nodeValue = "SUVmax parotid ";
     elementParotid.classList.remove('hidden');
 }  else if (PETTypeText === "DOTATOC") {
     ObecneNativeText = "Neložisková akumulace radiofarmaka v hypofýze, štítné žláze, nadledvinách a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález."; 
     nazev = "DOTATOC-PET/CT trupu"; 
+	document.getElementById('suvmax-parotid-container').childNodes[0].nodeValue = "SUVmax sleziny ";
+    elementParotid.classList.remove('hidden');
+}  else if (PETTypeText === "DOPA") {
+    ObecneNativeText = "ZDE DOPLNIT OBECNÝ NÁLEZ."; 
+    nazev = "DOPA-PET/CT trupu"; 
 	document.getElementById('suvmax-parotid-container').childNodes[0].nodeValue = "SUVmax sleziny ";
     elementParotid.classList.remove('hidden');
 }
@@ -758,7 +768,7 @@ let codeForNeckLesion1 = `
 	var NeckLesion1Large = document.getElementById("NeckLesion1Large").value; 
 	document.getElementById('NeckLesion1number').addEventListener('change', function() {document.getElementById('NeckLesion1Large').classList.toggle('hidden', this.value === "");});
     var NeckLesion1Activity = document.getElementById("NeckLesion1Activity").value; var NeckLesion1ActivityCopy = document.getElementById("NeckLesion1Activity").value;
-	var NeckLesion1RESActivityPSMA = document.getElementById("NeckLesion1Activity"); var selectedOption = NeckLesion1RESActivityPSMA.options[NeckLesion1RESActivityPSMA.selectedIndex]; var NeckLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var NeckLesion1RESActivityRPH = document.getElementById("NeckLesion1Activity"); var selectedOption = NeckLesion1RESActivityRPH.options[NeckLesion1RESActivityRPH.selectedIndex]; var NeckLesion1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
     var NeckLesion1RESActivityFDG = document.getElementById("NeckLesion1Activity"); var selectedOption = NeckLesion1RESActivityFDG.options[NeckLesion1RESActivityFDG.selectedIndex]; var NeckLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
 	var NeckLesion1SUV = formatSUV("NeckLesion1SUV");
     var NeckLesion1Size = formatLesionSize("NeckLesion1Size");
@@ -802,12 +812,12 @@ POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations
 // OLD SUV version: POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + (NeckLesion1SUV === "" ? NeckLesion1Activity : "") + " " + NeckLesion1SUV + " " + NeckLesion1ComparisonText + ".";
  
 let processedSentenceRESNeckLesionFDG = processSentence(NeckLesion1number + " " + NeckLesion1RESActivityFDG + " " + NeckLesion1type);
-let processedSentenceRESNeckLesionPSMA = processSentence(NeckLesion1number + " " + NeckLesion1type);
+let processedSentenceRESNeckLesionRPH = processSentence(NeckLesion1number + " " + NeckLesion1type);
 
 if (buttonElementPETType.value === "FDG") {
 	RESNeckLesion1 = processedSentenceRESNeckLesionFDG + " " + NeckLesion1AllLocations + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
-} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	RESNeckLesion1 = processedSentenceRESNeckLesionPSMA + " " + NeckLesion1AllLocations + " " + NeckLesion1RESActivityPSMA + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
+} else {
+	RESNeckLesion1 = processedSentenceRESNeckLesionRPH + " " + NeckLesion1AllLocations + " " + NeckLesion1RESActivityRPH + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
 }
 
 if (NeckLesion1RESDecision.includes("meta") && NeckLesion1type.includes("ožisk")) {RESNeckLesion1 = RESNeckLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
@@ -941,11 +951,11 @@ document.getElementById('NeckLymphNode1Location').value = NeckLymphNode1selectLo
 	var NeckLymphNode1Large = document.getElementById("NeckLymphNode1Large").value;
 	document.getElementById('NeckLymphNode1number').addEventListener('change', function() {document.getElementById('NeckLymphNode1Large').classList.toggle('hidden', this.value === "");});
     var NeckLymphNode1Activity = document.getElementById("NeckLymphNode1Activity").value; var NeckLymphNode1ActivityCopy = document.getElementById("NeckLymphNode1Activity").value;
-	var NeckLymphNode1RESActivityPSMA = document.getElementById("NeckLymphNode1Activity"); var selectedOption = NeckLymphNode1RESActivityPSMA.options[NeckLymphNode1RESActivityPSMA.selectedIndex]; var NeckLymphNode1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var NeckLymphNode1RESActivityRPH = document.getElementById("NeckLymphNode1Activity"); var selectedOption = NeckLymphNode1RESActivityRPH.options[NeckLymphNode1RESActivityRPH.selectedIndex]; var NeckLymphNode1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
 	var NeckLymphNode1RESActivityFDG = document.getElementById("NeckLymphNode1Activity"); var selectedOption = NeckLymphNode1RESActivityFDG.options[NeckLymphNode1RESActivityFDG.selectedIndex]; var NeckLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
     var NeckLymphNode1SUV = formatSUV("NeckLymphNode1SUV");
     var NeckLymphNode1Size = formatLymphNodeSize("NeckLymphNode1Size");
-	var NeckLymphNode1RESDecision = document.getElementById("NeckLymphNode1Decision"); var selectedOption = NeckLymphNode1RESDecision.options[NeckLymphNode1RESDecision.selectedIndex]; var NeckLymphNode1RESDecision = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var NeckLymphNode1RESDecision = document.getElementById("NeckLymphNode1Decision"); var selectedOption = NeckLymphNode1RESDecision.options[NeckLymphNode1RESDecision.selectedIndex]; var NeckLymphNode1RESDecision = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
 	var NeckLymphNode1AllLocations = "";
 	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("NeckLymphNode1Previous").classList.toggle("hidden", !this.value);});
 	var NeckLymphNode1SUVPrev = formatSUV("NeckLymphNode1SUVPrev");  
@@ -982,12 +992,12 @@ POPNeckLymphNode1 = processedSentencePOPNeckLymphNode1 + " " + NeckLymphNode1All
 
 
 let processedSentenceRESNeckLymphNodeFDG = processSentence(NeckLymphNode1number + " " + NeckLymphNode1RESActivityFDG + " " + NeckLymphNode1type);
-let processedSentenceRESNeckLymphNodePSMA = processSentence(NeckLymphNode1number + " " + NeckLymphNode1type);
+let processedSentenceRESNeckLymphNodeRPH = processSentence(NeckLymphNode1number + " " + NeckLymphNode1type);
 
 if (buttonElementPETType.value === "FDG") {
 	RESNeckLymphNode1 = processedSentenceRESNeckLymphNodeFDG + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1CombinedResult + " " + NeckLymphNode1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	RESNeckLymphNode1 = processedSentenceRESNeckLymphNodePSMA + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1RESActivityPSMA + " " + NeckLymphNode1CombinedResult + " " + NeckLymphNode1RESDecision + ".";
+} else {
+	RESNeckLymphNode1 = processedSentenceRESNeckLymphNodeRPH + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1RESActivityRPH + " " + NeckLymphNode1CombinedResult + " " + NeckLymphNode1RESDecision + ".";
 }
     
 if (NeckLymphNode1Location === "" && NeckLymphNode1AddLocation === "") { POPNeckLymphNode1 = ""; RESNeckLymphNode1 = ""; }
@@ -1426,7 +1436,7 @@ document.getElementById('ThoraxLesion1Location').value = ThoraxLesion1Locationte
 	var ThoraxLesion1Large = document.getElementById("ThoraxLesion1Large").value;
 	document.getElementById('ThoraxLesion1number').addEventListener('change', function() {document.getElementById('ThoraxLesion1Large').classList.toggle('hidden', this.value === "");});
     var ThoraxLesion1Activity = document.getElementById("ThoraxLesion1Activity").value; var ThoraxLesion1ActivityCopy = document.getElementById("ThoraxLesion1Activity").value;
-	var ThoraxLesion1RESActivityPSMA = document.getElementById("ThoraxLesion1Activity"); var selectedOption = ThoraxLesion1RESActivityPSMA.options[ThoraxLesion1RESActivityPSMA.selectedIndex]; var ThoraxLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var ThoraxLesion1RESActivityRPH = document.getElementById("ThoraxLesion1Activity"); var selectedOption = ThoraxLesion1RESActivityRPH.options[ThoraxLesion1RESActivityRPH.selectedIndex]; var ThoraxLesion1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
     var ThoraxLesion1RESActivityFDG = document.getElementById("ThoraxLesion1Activity"); var selectedOption = ThoraxLesion1RESActivityFDG.options[ThoraxLesion1RESActivityFDG.selectedIndex]; var ThoraxLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
 	var ThoraxLesion1SUV = formatSUV("ThoraxLesion1SUV");
     var ThoraxLesion1Size = formatLesionSize("ThoraxLesion1Size");
@@ -1469,12 +1479,12 @@ let processedSentencePOPThoraxLesion1 = processSentence(ThoraxLesion1number + " 
 POPThoraxLesion1 = processedSentencePOPThoraxLesion1 + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1Loclargest + " " + ThoraxLesion1Size + " " + ThoraxLesion1Activity + " " + ThoraxLesion1ComparisonText + ".";
 
 let processedSentenceRESThoraxLesionFDG = processSentence(ThoraxLesion1number + " " + ThoraxLesion1RESActivityFDG + " " + ThoraxLesion1type);
-let processedSentenceRESThoraxLesionPSMA = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);
+let processedSentenceRESThoraxLesionRPH = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);
 
 if (buttonElementPETType.value === "FDG") {
 	RESThoraxLesion1 = processedSentenceRESThoraxLesionFDG + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	RESThoraxLesion1 = processedSentenceRESThoraxLesionPSMA + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1RESActivityPSMA + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + ".";
+} else {
+	RESThoraxLesion1 = processedSentenceRESThoraxLesionRPH + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1RESActivityRPH + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + ".";
 }
 
 if (ThoraxLesion1RESDecision.includes("meta") && ThoraxLesion1type.includes("ožisk")) {RESThoraxLesion1 = RESThoraxLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
@@ -1601,11 +1611,11 @@ if (segments.length === 2) {
 	var ThoraxLymphNode1Large = document.getElementById("ThoraxLymphNode1Large").value;
 	document.getElementById('ThoraxLymphNode1number').addEventListener('change', function() {document.getElementById('ThoraxLymphNode1Large').classList.toggle('hidden', this.value === "");});
     var ThoraxLymphNode1Activity = document.getElementById("ThoraxLymphNode1Activity").value; var ThoraxLymphNode1ActivityCopy = document.getElementById("ThoraxLymphNode1Activity").value;
-	var ThoraxLymphNode1RESActivityPSMA = document.getElementById("ThoraxLymphNode1Activity"); var selectedOption = ThoraxLymphNode1RESActivityPSMA.options[ThoraxLymphNode1RESActivityPSMA.selectedIndex]; var ThoraxLymphNode1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var ThoraxLymphNode1RESActivityRPH = document.getElementById("ThoraxLymphNode1Activity"); var selectedOption = ThoraxLymphNode1RESActivityRPH.options[ThoraxLymphNode1RESActivityRPH.selectedIndex]; var ThoraxLymphNode1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
 	var ThoraxLymphNode1RESActivityFDG = document.getElementById("ThoraxLymphNode1Activity"); var selectedOption = ThoraxLymphNode1RESActivityFDG.options[ThoraxLymphNode1RESActivityFDG.selectedIndex]; var ThoraxLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
     var ThoraxLymphNode1SUV = formatSUV("ThoraxLymphNode1SUV");
     var ThoraxLymphNode1Size = formatLymphNodeSize("ThoraxLymphNode1Size");
-	var ThoraxLymphNode1RESDecision = document.getElementById("ThoraxLymphNode1Decision"); var selectedOption = ThoraxLymphNode1RESDecision.options[ThoraxLymphNode1RESDecision.selectedIndex]; var ThoraxLymphNode1RESDecision = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var ThoraxLymphNode1RESDecision = document.getElementById("ThoraxLymphNode1Decision"); var selectedOption = ThoraxLymphNode1RESDecision.options[ThoraxLymphNode1RESDecision.selectedIndex]; var ThoraxLymphNode1RESDecision = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
 	var ThoraxLymphNode1AllLocations = "";
 	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("ThoraxLymphNode1Previous").classList.toggle("hidden", !this.value);});
 	var ThoraxLymphNode1SUVPrev = formatSUV("ThoraxLymphNode1SUVPrev");  
@@ -1641,12 +1651,12 @@ let processedSentencePOPThoraxLymphNode1 = processSentence(ThoraxLymphNode1numbe
 POPThoraxLymphNode1 = processedSentencePOPThoraxLymphNode1 + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1Loclargest + " " + ThoraxLymphNode1Size + " " + ThoraxLymphNode1Activity + " " + ThoraxLymphNode1ComparisonText + ".";
 
 let processedSentenceRESThoraxLymphNodeFDG = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1RESActivityFDG + " " + ThoraxLymphNode1type);
-let processedSentenceRESThoraxLymphNodePSMA = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1type);
+let processedSentenceRESThoraxLymphNodeRPH = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1type);
 
 if (buttonElementPETType.value === "FDG") {
 	RESThoraxLymphNode1 = processedSentenceRESThoraxLymphNodeFDG + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1CombinedResult + " " + ThoraxLymphNode1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	RESThoraxLymphNode1 = processedSentenceRESThoraxLymphNodePSMA + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1RESActivityPSMA + " " + ThoraxLymphNode1CombinedResult + " " + ThoraxLymphNode1RESDecision + ".";
+} else {
+	RESThoraxLymphNode1 = processedSentenceRESThoraxLymphNodeRPH + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1RESActivityRPH + " " + ThoraxLymphNode1CombinedResult + " " + ThoraxLymphNode1RESDecision + ".";
 }
 
 if (ThoraxLymphNode1Location === "" && ThoraxLymphNode1AddLocation === "") { POPThoraxLymphNode1 = ""; RESThoraxLymphNode1 = ""; }
@@ -2470,7 +2480,7 @@ document.getElementById('AbdomenLesion1Location').value = AbdomenLesion1Location
 	var AbdomenLesion1Large = document.getElementById("AbdomenLesion1Large").value;
 	document.getElementById('AbdomenLesion1number').addEventListener('change', function() {document.getElementById('AbdomenLesion1Large').classList.toggle('hidden', this.value === "");});
     var AbdomenLesion1Activity = document.getElementById("AbdomenLesion1Activity").value; var AbdomenLesion1ActivityCopy = document.getElementById("AbdomenLesion1Activity").value;
-	var AbdomenLesion1RESActivityPSMA = document.getElementById("AbdomenLesion1Activity"); var selectedOption = AbdomenLesion1RESActivityPSMA.options[AbdomenLesion1RESActivityPSMA.selectedIndex]; var AbdomenLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var AbdomenLesion1RESActivityRPH = document.getElementById("AbdomenLesion1Activity"); var selectedOption = AbdomenLesion1RESActivityRPH.options[AbdomenLesion1RESActivityRPH.selectedIndex]; var AbdomenLesion1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
     var AbdomenLesion1RESActivityFDG = document.getElementById("AbdomenLesion1Activity"); var selectedOption = AbdomenLesion1RESActivityFDG.options[AbdomenLesion1RESActivityFDG.selectedIndex]; var AbdomenLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
 	var AbdomenLesion1SUV = formatSUV("AbdomenLesion1SUV");
     var AbdomenLesion1Size = formatLesionSize("AbdomenLesion1Size");
@@ -2511,12 +2521,12 @@ let processedSentencePOPAbdomenLesion1 = processSentence(AbdomenLesion1number + 
 POPAbdomenLesion1 = processedSentencePOPAbdomenLesion1 + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1Loclargest + " " + AbdomenLesion1Size + " " + AbdomenLesion1Activity + " " + AbdomenLesion1ComparisonText + ".";
 
 let processedSentenceRESAbdomenLesionFDG = processSentence(AbdomenLesion1number + " " + AbdomenLesion1RESActivityFDG + " " + AbdomenLesion1type);
-let processedSentenceRESAbdomenLesionPSMA = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);
+let processedSentenceRESAbdomenLesionRPH = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);
 
 if (buttonElementPETType.value === "FDG") {
 	RESAbdomenLesion1 = processedSentenceRESAbdomenLesionFDG + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	RESAbdomenLesion1 = processedSentenceRESAbdomenLesionPSMA + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1RESActivityPSMA + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + ".";
+} else {
+	RESAbdomenLesion1 = processedSentenceRESAbdomenLesionRPH + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1RESActivityRPH + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + ".";
 }
 
 if (AbdomenLesion1RESDecision.includes("meta") && AbdomenLesion1type.includes("ožisk")) {RESAbdomenLesion1 = RESAbdomenLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
@@ -2633,11 +2643,11 @@ document.getElementById('AbdomenLymphNode1Location').value = AbdomenLymphNode1Lo
 	var AbdomenLymphNode1Large = document.getElementById("AbdomenLymphNode1Large").value;
 	document.getElementById('AbdomenLymphNode1number').addEventListener('change', function() {document.getElementById('AbdomenLymphNode1Large').classList.toggle('hidden', this.value === "");});
     var AbdomenLymphNode1Activity = document.getElementById("AbdomenLymphNode1Activity").value; var AbdomenLymphNode1ActivityCopy = document.getElementById("AbdomenLymphNode1Activity").value;
-	var AbdomenLymphNode1RESActivityPSMA = document.getElementById("AbdomenLymphNode1Activity"); var selectedOption = AbdomenLymphNode1RESActivityPSMA.options[AbdomenLymphNode1RESActivityPSMA.selectedIndex]; var AbdomenLymphNode1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var AbdomenLymphNode1RESActivityRPH = document.getElementById("AbdomenLymphNode1Activity"); var selectedOption = AbdomenLymphNode1RESActivityRPH.options[AbdomenLymphNode1RESActivityRPH.selectedIndex]; var AbdomenLymphNode1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
 	var AbdomenLymphNode1RESActivityFDG = document.getElementById("AbdomenLymphNode1Activity"); var selectedOption = AbdomenLymphNode1RESActivityFDG.options[AbdomenLymphNode1RESActivityFDG.selectedIndex]; var AbdomenLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
     var AbdomenLymphNode1SUV = formatSUV("AbdomenLymphNode1SUV");
     var AbdomenLymphNode1Size = formatLymphNodeSize("AbdomenLymphNode1Size");
-	var AbdomenLymphNode1RESDecision = document.getElementById("AbdomenLymphNode1Decision"); var selectedOption = AbdomenLymphNode1RESDecision.options[AbdomenLymphNode1RESDecision.selectedIndex]; var AbdomenLymphNode1RESDecision = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var AbdomenLymphNode1RESDecision = document.getElementById("AbdomenLymphNode1Decision"); var selectedOption = AbdomenLymphNode1RESDecision.options[AbdomenLymphNode1RESDecision.selectedIndex]; var AbdomenLymphNode1RESDecision = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
 	var AbdomenLymphNode1AllLocations = "";
 	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("AbdomenLymphNode1Previous").classList.toggle("hidden", !this.value);});
 	var AbdomenLymphNode1SUVPrev = formatSUV("AbdomenLymphNode1SUVPrev");  
@@ -2673,12 +2683,12 @@ let processedSentencePOPAbdomenLymphNode1 = processSentence(AbdomenLymphNode1num
 POPAbdomenLymphNode1 = processedSentencePOPAbdomenLymphNode1 + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1Loclargest + " " + AbdomenLymphNode1Size + " " + AbdomenLymphNode1Activity + " " + AbdomenLymphNode1ComparisonText + ".";
 
 let processedSentenceRESAbdomenLymphNodeFDG = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1RESActivityFDG + " " + AbdomenLymphNode1type);
-let processedSentenceRESAbdomenLymphNodePSMA = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1type);
+let processedSentenceRESAbdomenLymphNodeRPH = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1type);
 
 if (buttonElementPETType.value === "FDG") {
 	RESAbdomenLymphNode1 = processedSentenceRESAbdomenLymphNodeFDG + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1CombinedResult + " " + AbdomenLymphNode1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	RESAbdomenLymphNode1 = processedSentenceRESAbdomenLymphNodePSMA + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1RESActivityPSMA + " " + AbdomenLymphNode1CombinedResult + " " + AbdomenLymphNode1RESDecision + ".";
+} else {
+	RESAbdomenLymphNode1 = processedSentenceRESAbdomenLymphNodeRPH + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1RESActivityRPH + " " + AbdomenLymphNode1CombinedResult + " " + AbdomenLymphNode1RESDecision + ".";
 }
 
 if (AbdomenLymphNode1Location === "" && AbdomenLymphNode1AddLocation === "") { POPAbdomenLymphNode1 = ""; RESAbdomenLymphNode1 = ""; }
@@ -3542,7 +3552,7 @@ var arr = SkeletonLesion1Locationtext.split(", ");
 	var SkeletonLesion1Large = document.getElementById("SkeletonLesion1Large").value;
 	document.getElementById('SkeletonLesion1number').addEventListener('change', function() {document.getElementById('SkeletonLesion1Large').classList.toggle('hidden', this.value === "");});
     var SkeletonLesion1Activity = document.getElementById("SkeletonLesion1Activity").value; var SkeletonLesion1ActivityCopy = document.getElementById("SkeletonLesion1Activity").value;
-	var SkeletonLesion1RESActivityPSMA = document.getElementById("SkeletonLesion1Activity"); var selectedOption = SkeletonLesion1RESActivityPSMA.options[SkeletonLesion1RESActivityPSMA.selectedIndex]; var SkeletonLesion1RESActivityPSMA = selectedOption.dataset.valuePSMA ? selectedOption.dataset.valuePSMA : '';
+	var SkeletonLesion1RESActivityRPH = document.getElementById("SkeletonLesion1Activity"); var selectedOption = SkeletonLesion1RESActivityRPH.options[SkeletonLesion1RESActivityRPH.selectedIndex]; var SkeletonLesion1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
     var SkeletonLesion1RESActivityFDG = document.getElementById("SkeletonLesion1Activity"); var selectedOption = SkeletonLesion1RESActivityFDG.options[SkeletonLesion1RESActivityFDG.selectedIndex]; var SkeletonLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
 	var SkeletonLesion1SUV = formatSUV("SkeletonLesion1SUV");
     var SkeletonLesion1Size = formatLesionSize("SkeletonLesion1Size");
@@ -3585,12 +3595,12 @@ let processedSentencePOPSkeletonLesion1 = processSentence(SkeletonLesion1number 
 POPSkeletonLesion1 = processedSentencePOPSkeletonLesion1 + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1Loclargest + " " + SkeletonLesion1Size + " " + SkeletonLesion1Activity + " " + SkeletonLesion1ComparisonText + ".";
 
 let processedSentenceRESSkeletonLesionFDG = processSentence(SkeletonLesion1number + " " + SkeletonLesion1RESActivityFDG + " " + SkeletonLesion1type);
-let processedSentenceRESSkeletonLesionPSMA = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);
+let processedSentenceRESSkeletonLesionRPH = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);
 
 if (buttonElementPETType.value === "FDG") {
 	RESSkeletonLesion1 = processedSentenceRESSkeletonLesionFDG + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + ".";
-} else if (buttonElementPETType.value === "PSMA" || buttonElementPETType.value === "DOTATOC") {
-	RESSkeletonLesion1 = processedSentenceRESSkeletonLesionPSMA + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1RESActivityPSMA + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + ".";
+} else {
+	RESSkeletonLesion1 = processedSentenceRESSkeletonLesionRPH + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1RESActivityRPH + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + ".";
 }
 
 if (SkeletonLesion1RESDecision.includes("meta") && SkeletonLesion1type.includes("ožisk")) {RESSkeletonLesion1 = RESSkeletonLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
@@ -3860,6 +3870,10 @@ if (buttonElementPETType.value === "PSMA" && SUVLiver !== "" && SUVParotid !== "
 if (buttonElementPETType.value === "DOTATOC" && SUVLiver !== "" && SUVParotid !== "") {
     ReferenceText = "Akumulace RF vztažena k referenčním játrům a slezině.";
   }
+if (buttonElementPETType.value === "DOPA" && SUVLiver !== "" && SUVParotid !== "") {
+    ReferenceText = "Akumulace RF vztažena k referenčním játrům a slezině.";
+  }  
+
 	
 // POPIS
 
@@ -3941,12 +3955,16 @@ ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 
     POPText.value = correctedPOPText;
 
-	// když DOTATOC nebo PSMA, změna popisu akumulace Parotid nebo sleziny
+	// když DOTATOC nebo RPH, změna popisu akumulace Parotid nebo sleziny
 	if (buttonElementPETType.value === "PSMA") {
         POPText.value = POPText.value.replace(/>> ref. játra/g, '> ref. parotidy');
     }
 	
 	if (buttonElementPETType.value === "DOTATOC") {
+        POPText.value = POPText.value.replace(/>> ref. játra/g, '> ref. slezina');
+    }
+	
+	if (buttonElementPETType.value === "DOPA") {
         POPText.value = POPText.value.replace(/>> ref. játra/g, '> ref. slezina');
     }
 
@@ -3974,9 +3992,11 @@ if (containsBanned) {
     if (buttonElementPETType.value === "FDG") {
         RESTextNative = "Bez známek přítomnosti FDG-avidní neoplázie. ";
     } else if (buttonElementPETType.value === "PSMA") {
-        RESTextNative = "Bez známek přítomnosti ložisek zvýšené exprese PSMA. ";
+        RESTextNative = "Bez známek přítomnosti ložisek zvýšené exprese RPH. ";
     } else if (buttonElementPETType.value === "DOTATOC") {
         RESTextNative = "Bez známek přítomnosti ložisek se zvýšeným nakupením somatostatinových receptorů. ";
+	} else if (buttonElementPETType.value === "DOPA") {
+        RESTextNative = "Bez známek přítomnosti ložisek se zvýšenou konzumpcí aminokyseliny. ";
     } else  {
         RESTextNative = ""; 
     }
@@ -4032,7 +4052,7 @@ POPREMINDER
 	RESText.value = RESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
 	RESText.value = RESText.value.replace(/ :/g, ':');  // odstraní mezeru před dvojtečkou
 	
-	//když je vybrán DODATOC zněma závěru
+	//když je vybrán jiný RPH zněma závěru
 	if (buttonElementPETType.value === "DOTATOC") {
         RESText.value = RESText.value.replace(/bez PSMA exprese/g, 'bez zvýšené koncentrace somatostatinových receptorů');
 		RESText.value = RESText.value.replace(/PSMA expresí/g, 'koncentrací somatostatinových receptorů');
@@ -4041,6 +4061,12 @@ POPREMINDER
 	
 	if (buttonElementPETType.value === "PSMA") {
         RESText.value = RESText.value.replace(/metabolické/g, 'akumulační').replace(/metabolicky/g, 'akumulačně');
+    }
+
+	if (buttonElementPETType.value === "DOPA") {
+        RESText.value = RESText.value.replace(/bez PSMA exprese/g, 'bez zvýšené konzumpce aminokysliny');
+		RESText.value = RESText.value.replace(/PSMA expresí/g, 'konzumpcí aminokyseliny');
+		RESText.value = RESText.value.replace(/metabolické/g, 'akumulační').replace(/metabolicky/g, 'akumulačně');
     }
 
 }
