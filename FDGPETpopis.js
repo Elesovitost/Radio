@@ -699,7 +699,7 @@ if (PETTypeText === "FDG") {
     elementParotid.classList.add('hidden');
 }  else if (PETTypeText === "PSMA") {
     ObecneNativeText = "Neložisková akumulace radiofarmaka ve slinných a slzných žlazách, v jaterním parenchymu, slezině, v gastrointestinální traktu a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález."; 
-    nazev = "RPH-PET/CT trupu"; 
+    nazev = "PSMA-PET/CT trupu"; 
 	document.getElementById('suvmax-parotid-container').childNodes[0].nodeValue = "SUVmax parotid ";
     elementParotid.classList.remove('hidden');
 }  else if (PETTypeText === "DOTATOC") {
@@ -3992,7 +3992,7 @@ if (containsBanned) {
     if (buttonElementPETType.value === "FDG") {
         RESTextNative = "Bez známek přítomnosti FDG-avidní neoplázie. ";
     } else if (buttonElementPETType.value === "PSMA") {
-        RESTextNative = "Bez známek přítomnosti ložisek zvýšené exprese RPH. ";
+        RESTextNative = "Bez známek přítomnosti ložisek zvýšené exprese PSMA. ";
     } else if (buttonElementPETType.value === "DOTATOC") {
         RESTextNative = "Bez známek přítomnosti ložisek se zvýšeným nakupením somatostatinových receptorů. ";
 	} else if (buttonElementPETType.value === "DOPA") {
