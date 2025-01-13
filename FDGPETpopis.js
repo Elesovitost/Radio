@@ -708,10 +708,9 @@ if (PETTypeText === "FDG") {
 	document.getElementById('suvmax-parotid-container').childNodes[0].nodeValue = "SUVmax sleziny ";
     elementParotid.classList.remove('hidden');
 }  else if (PETTypeText === "DOPA") {
-    ObecneNativeText = "ZDE DOPLNIT OBECNÝ NÁLEZ."; 
+    ObecneNativeText = "Neložisková akumulace radiofarmaka v BG bilat., játrech a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález.."; 
     nazev = "DOPA-PET/CT trupu"; 
-	document.getElementById('suvmax-parotid-container').childNodes[0].nodeValue = "SUVmax sleziny ";
-    elementParotid.classList.remove('hidden');
+	elementParotid.classList.add('hidden');
 }
 
 
@@ -3871,7 +3870,7 @@ if (buttonElementPETType.value === "DOTATOC" && SUVLiver !== "" && SUVParotid !=
     ReferenceText = "Akumulace RF vztažena k referenčním játrům a slezině.";
   }
 if (buttonElementPETType.value === "DOPA" && SUVLiver !== "" && SUVParotid !== "") {
-    ReferenceText = "Akumulace RF vztažena k referenčním játrům a slezině.";
+    ReferenceText = "Akumulace RF vztažena k referenčním játrům.";
   }  
 
 	
