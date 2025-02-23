@@ -148,7 +148,7 @@ if (OstBakerText === "0") {
  OstBakerR = ""; 
 } else if (OstBakerText === "↑") {
  OstBakerP = "Drobná pseudocysta mediodorzálně v typické lokalizaci.";
- OstBakerR = "";
+ OstBakerR = "Drobná Bakerova pseudocysta. ";
 } else if (OstBakerText === "↑↑") {
  OstBakerP = "Pseudocysta mediodorzálně v typické lokalizaci.";
  OstBakerR = "Bakerova pseudocysta.";
@@ -224,23 +224,23 @@ PkCartLesion = checkedLesions.map(item => item.text).join(' a ');
 
 // Chondropathie determination
 updateButtonTexts({
-	'PkCartCHP': ['0', 'II', 'III', 'IV', 'D'],
+	'PkCartCHP': ['0', 'I', 'II', 'III', 'IV'],
 });
 
 var buttonPkCartCHP = document.getElementById("PkCartCHP").innerText;
 
 // Chondropathie determination
-if (buttonPkCartCHP === "D") {
-	PkCartDescr = "Chybějící chrupavka ";
+if (buttonPkCartCHP === "IV") {
+	PkCartDescr = "Defektní / chybějící chrupavka ";
 	PkCartCP = "Destrukce chrupavek ";
-} else if (buttonPkCartCHP === "IV") {
-	PkCartDescr = "Výrazně snížená až chybějící chrupavka ";
-	PkCartCP = "Pokročilá chondropatie ";
 } else if (buttonPkCartCHP === "III") {
-	PkCartDescr = "Nepravidelné zřetelné snížení chrupavky ";
-	PkCartCP = "Chondropatie ";
+	PkCartDescr = "Výrazné snížení (více než 50%) chrupavky ";
+	PkCartCP = "Pokročilá chondropatie ";
 } else if (buttonPkCartCHP === "II") {
-	PkCartDescr = "Nepravidelné mírné snížení chrupavky ";
+	PkCartDescr = "Nepravidelné snížení (do 50%) chrupavky ";
+	PkCartCP = "Chondropatie ";
+} else if (buttonPkCartCHP === "I") {
+	PkCartDescr = "Nepravidelné lehké snížení chrupavky ";
 	PkCartCP = "Mírná chondropatie ";
 } else if (buttonPkCartCHP === "0" && (PkCartFissureOne || PkCartFissureMore || PkCartDefectOne || PkCartDefectMore)) {
 	PkCartDescr = "Chrupavka ";
@@ -364,22 +364,22 @@ var descriptionsMkFemCondText = [];
 var descriptionsMkFemCondRES = [];
 
 updateButtonTexts({
-	'MkFemCondCHP': ['0', 'II', 'III', 'IV', 'D'],
+	'MkFemCondCHP': ['0', 'I', 'II', 'III', 'IV'],
 });
 
 var buttonMkFemCondCHP = document.getElementById("MkFemCondCHP").innerText;
 
-if (buttonMkFemCondCHP === "D") {
-	descriptionsMkFemCondText.push("s chybějící chrupavkou");
+if (buttonMkFemCondCHP === "IV") {
+	descriptionsMkFemCondText.push("s defektní / chybějící chrupavkou");
 	descriptionsMkFemCondRES.push("s destrukcí chrupavky");
-} else if (buttonMkFemCondCHP === "IV") {
-	descriptionsMkFemCondText.push("s výrazně sníženou chrupavkou");
-	descriptionsMkFemCondRES.push("s pokročilou chondropatií");
 } else if (buttonMkFemCondCHP === "III") {
-	descriptionsMkFemCondText.push("s nepravidelným snížením chrupavky");
-	descriptionsMkFemCondRES.push("s chondropatií");
+	descriptionsMkFemCondText.push("s výrazně sníženou (více než 50%) chrupavkou");
+	descriptionsMkFemCondRES.push("s pokročilou chondropatií");
 } else if (buttonMkFemCondCHP === "II") {
-	descriptionsMkFemCondText.push("s mírným snížením chrupavky");
+	descriptionsMkFemCondText.push("s nepravidelným snížením (do 50%) chrupavky");
+	descriptionsMkFemCondRES.push("s chondropatií");
+} else if (buttonMkFemCondCHP === "I") {
+	descriptionsMkFemCondText.push("s lehkým snížením chrupavky");
 	descriptionsMkFemCondRES.push("s mírnou chondropatií");
 }
 
@@ -475,13 +475,13 @@ var isMkAnySubEdema = MkFemCondEdemaSub && MkTibCondEdemaSub;
 var isMkFissureDefect = MkFemCondFisOne || MkFemCondFisMore || MkFemCondDefOne || MkFemCondDefMore || MkTibCondFisOne || MkTibCondFisMore || MkTibCondDefOne || MkTibCondDefMore;
 
 if ((isMkFemChpChecked && isMkFemOtherConditionsNotChecked) && (isMkTibChpChecked && isMkTibOtherConditionsNotChecked)) {
-    if (buttonMkFemCondCHP === "D" || buttonMkTibCondCHP === "D") {
+    if (buttonMkFemCondCHP === "IV" || buttonMkTibCondCHP === "IV") {
         MkFemCondRES = "Mediální kompartment s destrukcí chrupavek"; MkTibCondRES = "";
-    } else if (buttonMkFemCondCHP === "IV" || buttonMkTibCondCHP === "IV") {
-        MkFemCondRES = "Mediální kompartment s pokročilou chondropatií"; MkTibCondRES = "";
     } else if (buttonMkFemCondCHP === "III" || buttonMkTibCondCHP === "III") {
-        MkFemCondRES = "Mediální kompartment s chondropatií"; MkTibCondRES = "";
+        MkFemCondRES = "Mediální kompartment s pokročilou chondropatií"; MkTibCondRES = "";
     } else if (buttonMkFemCondCHP === "II" || buttonMkTibCondCHP === "II") {
+        MkFemCondRES = "Mediální kompartment s chondropatií"; MkTibCondRES = "";
+    } else if (buttonMkFemCondCHP === "I" || buttonMkTibCondCHP === "I") {
         MkFemCondRES = "Mediální kompartment s mírnou chondropatií"; MkTibCondRES = "";
     }
     
@@ -514,13 +514,13 @@ var isLkAnySubEdema = LkFemCondEdemaSub && LkTibCondEdemaSub;
 var isLkFissureDefect = LkFemCondFisOne || LkFemCondFisMore || LkFemCondDefOne || LkFemCondDefMore || LkTibCondFisOne || LkTibCondFisMore || LkTibCondDefOne || LkTibCondDefMore;
 
 if ((isLkFemChpChecked && isLkFemOtherConditionsNotChecked) && (isLkTibChpChecked && isLkTibOtherConditionsNotChecked)) {
-    if (buttonLkFemCondCHP === "D" || buttonLkTibCondCHP === "D") {
+    if (buttonLkFemCondCHP === "IV" || buttonLkTibCondCHP === "IV") {
         LkFemCondRES = "Laterální kompartment s destrukcí chrupavek"; LkTibCondRES = "";
-    } else if (buttonLkFemCondCHP === "IV" || buttonLkTibCondCHP === "IV") {
-        LkFemCondRES = "Laterální kompartment s pokročilou chondropatií"; LkTibCondRES = "";
     } else if (buttonLkFemCondCHP === "III" || buttonLkTibCondCHP === "III") {
-        LkFemCondRES = "Laterální kompartment s chondropatií"; LkTibCondRES = "";
+        LkFemCondRES = "Laterální kompartment s pokročilou chondropatií"; LkTibCondRES = "";
     } else if (buttonLkFemCondCHP === "II" || buttonLkTibCondCHP === "II") {
+        LkFemCondRES = "Laterální kompartment s chondropatií"; LkTibCondRES = "";
+    } else if (buttonLkFemCondCHP === "I" || buttonLkTibCondCHP === "I") {
         LkFemCondRES = "Laterální kompartment s mírnou chondropatií"; LkTibCondRES = "";
     }
 	
@@ -802,15 +802,15 @@ const LigLCACyst = document.getElementById("LigLCACyst").checked;
 const LigLCAOther = document.getElementById("LigLCAOther").value;
 
 if (LigLCAIII) {
-	LigLCAText = "Přední zkřížený vaz má výrazně až totálně porušenou kontinuitu, rozvlákněn, s vysokou SI. ";
+	LigLCAText = "Přední zkřížený vaz má výrazně až totálně porušenou kontinuitu, rozvlákněn. ";
 	LigLCARes = "Přední zkřížený vaz s high-grade rupturou ";
 }
 if (LigLCAII) {
-	LigLCAText = "Přední zkřížený vaz má částečně zachovalou kontinuitu, vysokou SI, část vláken porušena. ";
+	LigLCAText = "Přední zkřížený vaz má částečně porušenou kontinuitu, vysokou SI, část zachována. ";
 	LigLCARes = "Přední zkřížený vaz s parciální rupturou ";
 }
 if (LigLCAI) {
-	LigLCAText = "Přední zkřížený vaz má zachovalou kontinuitu, vyšší SI, ne zcela strmý průběh. ";
+	LigLCAText = "Přední zkřížený vaz má zachovalou kontinuitu, ale rozšířen či s vyšší SI, event. nezachován strmý průběh. ";
 	LigLCARes = "Přední zkřížený vaz v.s. s distenzí / low-grade parc. lézí ";
 }
 if (LigLCAEdema) {
