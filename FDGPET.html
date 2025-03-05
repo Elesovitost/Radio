@@ -76,7 +76,6 @@ table {width: auto; white-space: nowrap;}
 	&nbsp;
 	&nbsp;
 
-
 	
 <!-- NECK -->
 	
@@ -100,8 +99,9 @@ table {width: auto; white-space: nowrap;}
 							<option value="masa| masy">masa</option>
 							<option value="infiltrace| infiltracePL">infiltrace</option>
 							<option value="fokus| fokusy">fokus</option>
-							<option value="x| xx">jiné</option>
+							<option value="kolekce| kolekce">kolekce</option>
 						</select>
+						<input type="text" class="customInput" placeholder="Zadejte vlastní text" style="display: none;" oninput="updateTexts()">
 						<select id="NeckLesion1number" class="select35" onchange="updateTexts()">
 							<option value="" selected>1</option>
 							<option value="dva">2</option>
@@ -307,7 +307,10 @@ table {width: auto; white-space: nowrap;}
 			<td>
 				<table>
 					<tr>
-						<td><textarea id="NeckOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 400px;"></textarea></td>
+						<td>krk - další nálezy: </td>
+					</tr>
+					<tr>
+						<td><textarea id="NeckOther1Pop" type="text" placeholder="do popisu..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 400px;"></textarea></td>
 					</tr>
 					<tr>					
 						<td><textarea id="NeckOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
@@ -344,6 +347,7 @@ table {width: auto; white-space: nowrap;}
 							<option value="konsolidace| konsolidacePL">konsolidace</option>
 							<option value="infiltrace| infiltracePL">infiltrace</option>
 							<option value="fokus| fokusy">fokus</option>
+							<option value="kolekce| kolekce">kolekce</option>
 						</select>
 						<select id="ThoraxLesion1number" class="select35" onchange="updateTexts()">
 							<option value="" selected>1</option>
@@ -611,7 +615,10 @@ table {width: auto; white-space: nowrap;}
 			<td>
 				<table>
 					<tr>
-						<td><textarea id="ThoraxOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 400px;"></textarea></td>
+						<td>hrudník - další nálezy: </td>
+					</tr>
+					<tr>
+						<td><textarea id="ThoraxOther1Pop" type="text" placeholder="do popisu..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 400px;"></textarea></td>
 					</tr>
 					<tr>					
 						<td><textarea id="ThoraxOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
@@ -646,6 +653,7 @@ table {width: auto; white-space: nowrap;}
 							<option value="infiltrát| infiltráty">infiltrace</option>
 							<option value="struktura| struktury">struktura</option>
 							<option value="fokus| fokusy">fokus</option>
+							<option value="kolekce v| kolekce v">kolekce</option>
 						</select>
 						<select id="AbdomenLesion1number" class="select35" onchange="updateTexts()">
 							<option value="" selected>1</option>
@@ -895,7 +903,10 @@ table {width: auto; white-space: nowrap;}
 			<td>
 				<table>
 					<tr>
-						<td><textarea id="AbdomenOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 400px;"></textarea></td>
+						<td>břicho - další nálezy: </td>
+					</tr>
+					<tr>
+						<td><textarea id="AbdomenOther1Pop" type="text" placeholder="do popisu..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 400px;"></textarea></td>
 					</tr>
 					<tr>					
 						<td><textarea id="AbdomenOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
@@ -1035,7 +1046,10 @@ table {width: auto; white-space: nowrap;}
 			<td>
 				<table>
 					<tr>
-						<td><textarea id="SkeletonOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 400px;"></textarea></td>
+						<td>skelet - další nálezy: </td>
+					</tr>
+					<tr>
+						<td><textarea id="SkeletonOther1Pop" type="text" placeholder="do popisu..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()" style="width: 400px;"></textarea></td>
 					</tr>
 					<tr>					
 						<td><textarea id="SkeletonOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
