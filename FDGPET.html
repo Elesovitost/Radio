@@ -88,7 +88,7 @@ table {width: auto; white-space: nowrap;}
 <button id="NeckLesion2" class="othersS tumor_button" style="position: absolute; top: 140px; left: 180px;"></button>	
 <button id="NeckLesion3" class="othersS tumor_button" style="position: absolute; top: 140px; left: 200px;"></button>		
 	
-<div class="Lsection" style="top: 140px; left: 0px;">
+<div class="Lsection" style="top: 140px; left: 2px;">
 	<table>
 		<tr id="NeckLesion1table" class="hidden">
 			<td>
@@ -100,6 +100,7 @@ table {width: auto; white-space: nowrap;}
 							<option value="masa| masy">masa</option>
 							<option value="infiltrace| infiltracePL">infiltrace</option>
 							<option value="fokus| fokusy">fokus</option>
+							<option value="x| xx">jiné</option>
 						</select>
 						<select id="NeckLesion1number" class="select35" onchange="updateTexts()">
 							<option value="" selected>1</option>
@@ -203,7 +204,7 @@ table {width: auto; white-space: nowrap;}
 
 <button id="NeckLymphNode1" class="othersS lymphnode_button" style="position: absolute; top: 140px; left: 130px;"></button>
 
-<div class="section" style="top: 140px; left: 0px;">
+<div class="section" style="top: 140px; left: 2px;">
 	<table>
 		<tr id="NeckLymphNode1table" class="hidden">
 			<td>
@@ -300,7 +301,7 @@ table {width: auto; white-space: nowrap;}
 
 <button id="NeckNewOther1" class="othersS other_button" style="position: absolute; top: 140px; left: 240px;"></button>
 
-<div class="section" style="top: 160px; left: 0px;">
+<div class="section" style="top: 160px; left: 2px;">
 	<table>
 		<tr id="NeckNewOther1table" class="hidden">
 			<td>
@@ -328,7 +329,7 @@ table {width: auto; white-space: nowrap;}
 <button id="ThoraxLesion2" class="othersS tumor_button" style="position: absolute; top: 260px; left: 180px;"></button>	
 <button id="ThoraxLesion3" class="othersS tumor_button" style="position: absolute; top: 260px; left: 200px;"></button>		
 	
-<div class="Lsection" style="top: 260px; left: 0px;">
+<div class="Lsection" style="top: 260px; left: 2px;">
 	<table>
 		<tr id="ThoraxLesion1table" class="hidden">
 			<td>
@@ -478,7 +479,7 @@ table {width: auto; white-space: nowrap;}
 
 <button id="ThoraxLymphNode1" class="othersS lymphnode_button" style="position: absolute; top: 260px; left: 130px;"></button>
 
-<div class="section" style="top: 260px; left: 0px;">
+<div class="section" style="top: 260px; left: 2px;">
 	<table>
 		<tr id="ThoraxLymphNode1table" class="hidden">
 			<td>
@@ -506,67 +507,68 @@ table {width: auto; white-space: nowrap;}
 					<tr>
 						<td>
 							<table>
-								  <tr>
-									<td>1</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed1R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMed1L" onChange="updateTexts()"><span>L</span></label></td>
-									<td>Mediastinum</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMediastinum" onChange="updateTexts()"><span>+</span></label></td>
-								  </tr>
-								  <tr>
-									<td>2</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed2R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMed2L" onChange="updateTexts()"><span>L</span></label></td>
-									<td>Hily</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMedHilaR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMedHilaL" onChange="updateTexts()"><span>L</span></label></td>
-								  </tr>
-								  <tr>
-									<td>3</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed3A" onChange="updateTexts()"><span>A</span></label><label class="CHB"><input type="checkbox" id="ChbMed3P" onChange="updateTexts()"><span>P</span></label></td>
-									<td></td>
-									<td></td>
-								  </tr>
-								  <tr>
-									<td>4</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed4R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMed4L" onChange="updateTexts()"><span>L</span></label></td>
-									<td>Axilly</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbAxilsR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbAxilsL" onChange="updateTexts()"><span>L</span></label></td>
-								  </tr>
-								  <tr>
-									<td>5</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed5" onChange="updateTexts()"><span>+</span></label></td>
-									<td></td>
-									<td></td>
-								  </tr>
-								  <tr>
-									<td>6</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed6" onChange="updateTexts()"><span>+</span></label></td>
-									<td>Parasternum</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbParasternalR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbParasternalL" onChange="updateTexts()"><span>L</span></label></td>
-								  </tr>
-								  <tr>
-									<td>7</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed7" onChange="updateTexts()"><span>+</span></label></td>
-									<td>Parakardium</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbParacardiumR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbParacardiumL" onChange="updateTexts()"><span>L</span></label></td>
-								  </tr>
-								  <tr>
-									<td>8</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed8" onChange="updateTexts()"><span>+</span></label></td>
-									<td></td>
-									<td></td>
-								  </tr>
-								  <tr>
-									<td>9</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed9" onChange="updateTexts()"><span>+</span></label></td>
-									<td></td>
-									<td></td>
-								  </tr>
-								  <tr>
-									<td>10</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed10R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMed10L" onChange="updateTexts()"><span>L</span></label></td>
-									<td></td>
-									<td></td>
-								  </tr>		
-							</table> 
+							  <tr>
+								<td>1</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed1R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMed1L" onChange="updateTexts()"><span>L</span></label></td>
+								<td>Supraklav.</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbSupraClavR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbSupraClavL" onChange="updateTexts()"><span>L</span></label></td>
+							  </tr>
+							  <tr>
+								<td>2</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed2R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMed2L" onChange="updateTexts()"><span>L</span></label></td>
+								<td>Mediastinum</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMediastinum" onChange="updateTexts()"><span>+</span></label></td>
+							  </tr>
+							  <tr>
+								<td>3</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed3A" onChange="updateTexts()"><span>A</span></label><label class="CHB"><input type="checkbox" id="ChbMed3P" onChange="updateTexts()"><span>P</span></label></td>
+								<td>Hily</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMedHilaR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMedHilaL" onChange="updateTexts()"><span>L</span></label></td>
+							  </tr>
+							  <tr>
+								<td>4</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed4R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMed4L" onChange="updateTexts()"><span>L</span></label></td>
+								<td></td>
+								<td></td>
+							  </tr>
+							  <tr>
+								<td>5</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed5" onChange="updateTexts()"><span>+</span></label></td>
+								<td>Axilly</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbAxilsR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbAxilsL" onChange="updateTexts()"><span>L</span></label></td>
+							  </tr>
+							  <tr>
+								<td>6</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed6" onChange="updateTexts()"><span>+</span></label></td>
+								<td></td>
+								<td></td>
+							  </tr>
+							  <tr>
+								<td>7</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed7" onChange="updateTexts()"><span>+</span></label></td>
+								<td>Parasternum</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbParasternalR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbParasternalL" onChange="updateTexts()"><span>L</span></label></td>
+							  </tr>
+							  <tr>
+								<td>8</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed8" onChange="updateTexts()"><span>+</span></label></td>
+								<td>Parakardium</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbParacardiumR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbParacardiumL" onChange="updateTexts()"><span>L</span></label></td>
+							  </tr>
+							  <tr>
+								<td>9</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed9" onChange="updateTexts()"><span>+</span></label></td>
+								<td></td>
+								<td></td>
+							  </tr>
+							  <tr>
+								<td>10</td>
+								<td class="right"><label class="CHB"><input type="checkbox" id="ChbMed10R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMed10L" onChange="updateTexts()"><span>L</span></label></td>
+								<td></td>
+								<td></td>
+							  </tr>
+							</table>
+
 						</td>
 					</tr>
 					<tr id="ThoraxLymphNode1Large" class="hidden">
@@ -603,7 +605,7 @@ table {width: auto; white-space: nowrap;}
 
 <button id="ThoraxNewOther1" class="othersS other_button" style="position: absolute; top: 260px; left: 240px;"></button>
 
-<div class="section" style="top: 280px; left: 0px;">
+<div class="section" style="top: 280px; left: 2px;">
 	<table>
 		<tr id="ThoraxNewOther1table" class="hidden">
 			<td>
@@ -631,7 +633,7 @@ table {width: auto; white-space: nowrap;}
 <button id="AbdomenLesion2" class="othersS tumor_button" style="position: absolute; top: 320px; left: 180px;"></button>	
 <button id="AbdomenLesion3" class="othersS tumor_button" style="position: absolute; top: 320px; left: 200px;"></button>		
 	
-<div class="Lsection" style="top: 320px; left: 0px;">
+<div class="Lsection" style="top: 320px; left: 2px;">
 	<table>
 		<tr id="AbdomenLesion1table" class="hidden">
 			<td>
@@ -778,7 +780,7 @@ table {width: auto; white-space: nowrap;}
 
 <button id="AbdomenLymphNode1" class="othersS lymphnode_button" style="position: absolute; top: 320px; left: 130px;"></button>
 
-<div class="section" style="top: 320px; left: 0px;">
+<div class="section" style="top: 320px; left: 2px;">
 	<table>
 		<tr id="AbdomenLymphNode1table" class="hidden">
 			<td>
@@ -887,7 +889,7 @@ table {width: auto; white-space: nowrap;}
 
 <button id="AbdomenNewOther1" class="othersS other_button" style="position: absolute; top: 320px; left: 240px;"></button>
 
-<div class="section" style="top: 340px; left: 0px;">
+<div class="section" style="top: 340px; left: 2px;">
 	<table>
 		<tr id="AbdomenNewOther1table" class="hidden">
 			<td>
@@ -915,7 +917,7 @@ table {width: auto; white-space: nowrap;}
 <button id="SkeletonLesion2" class="othersS tumor_button" style="position: absolute; top: 520px; left: 180px;"></button>	
 <button id="SkeletonLesion3" class="othersS tumor_button" style="position: absolute; top: 520px; left: 200px;"></button>		
 	
-<div class="Lsection" style="top: 280px; left: 0px;">
+<div class="Lsection" style="top: 270px; left: 2px;">
 	<table>
 		<tr id="SkeletonLesion1table" class="hidden">
 			<td>
@@ -1027,7 +1029,7 @@ table {width: auto; white-space: nowrap;}
 
 <button id="SkeletonNewOther1" class="othersS other_button" style="position: absolute; top: 520px; left: 240px;"></button>
 
-<div class="section" style="top: 470px; left: 0px;">
+<div class="section" style="top: 470px; left: 2px;">
 	<table>
 		<tr id="SkeletonNewOther1table" class="hidden">
 			<td>
@@ -1244,6 +1246,10 @@ table {width: auto; white-space: nowrap;}
 						<td class="right"><label class="CHB"><input type="checkbox" id="ChbDevicesCardiacStimR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbDevicesCardiacStimL" onChange="updateTexts()"><span>L</span></label></td>
 					</tr>
 					<tr>
+						<td>ICD</td>
+						<td class="right"><label class="CHB"><input type="checkbox" id="ChbDevicesCardiacICDR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbDevicesCardiacICDL" onChange="updateTexts()"><span>L</span></label></td>
+					</tr>
+					<tr>
 						<td>Malpozice</td>
 						<td class="right"><label class="CHB"><input type="checkbox" id="ChbDevicesMalposition" onChange="updateTexts()"><span>+</span></label></td>
 					</tr>
@@ -1428,7 +1434,7 @@ table {width: auto; white-space: nowrap;}
 						<td class="right"><label class="CHB"><input type="checkbox" id="ChbThoraxLymphNodePlusHila" onChange="updateTexts()"><span>+</span></label></td>
 					</tr>
 					<tr style="height: 1px">
-						<td colspan="2" style="height: 1px" class="others"></td>
+						<td colspan="2" style="height: 1px" class="others"><textarea id="ThoraxLNPlusOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 					</tr>
 				</table>
 				</td>

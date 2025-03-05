@@ -1513,6 +1513,17 @@ var ThoraxLymphNode1Locationtext = "";
 	var segments = [];
 	var ChbMed_segments = [];
 
+    var SupraCR = document.getElementById('ChbSupraClavR').checked;
+    varSupraCL = document.getElementById('ChbSupraClavL').checked;
+    if(SupraCR && varSupraCL) {
+        segments.push('supraklavikulárně bilat.');
+    } else if(SupraCR) {
+        segments.push('supraklavikulárně vpravo');
+    } else if(varSupraCL) {
+        segments.push('supraklavikulárně vlevo');
+    }
+
+
 for(var i = 1; i <= 10; i++) {
     if(i === 3) {
         if(document.getElementById('ChbMed3A') && document.getElementById('ChbMed3A').checked) {
@@ -1678,6 +1689,8 @@ var ThoraxDevicesRes = "";
   var ThoraxDevicesCVKL = document.getElementById("ChbDevicesCVKL").checked;
   var ThoraxDevicesCardiacStimR = document.getElementById("ChbDevicesCardiacStimR").checked;
   var ThoraxDevicesCardiacStimL = document.getElementById("ChbDevicesCardiacStimL").checked;
+   var ThoraxDevicesCardiacICDR = document.getElementById("ChbDevicesCardiacICDR").checked;
+  var ThoraxDevicesCardiacICDL = document.getElementById("ChbDevicesCardiacICDL").checked;
   var ThoraxDevicesMalposition = document.getElementById("ChbDevicesMalposition").checked;
   var ThoraxDevicesOther = document.getElementById("ThoraxDevicesOther").value.trim();
 
@@ -1693,6 +1706,9 @@ var ThoraxDevicesRes = "";
 	
 	if (ThoraxDevicesCardiacStimR) ThoraxDevicesText += "KS zprava. ";
     if (ThoraxDevicesCardiacStimL) ThoraxDevicesText += "KS zleva. ";
+
+	if (ThoraxDevicesCardiacICDR) ThoraxDevicesText += "ICD zprava. ";
+    if (ThoraxDevicesCardiacICDL) ThoraxDevicesText += "ICD zleva. ";
 	
 	if (ThoraxDevicesMalposition) ThoraxDevicesText += "Malpozice katetru. ";
 
@@ -1797,6 +1813,7 @@ var ThoraxParenchymaHypoventL = document.getElementById("ChbThoraxParenchymaHypo
 var buttonThoraxParenchymaFibrText = document.getElementById("ChbThoraxParenchymaFibr").innerText;
 var buttonThoraxParenchymaEmphysText = document.getElementById("ChbThoraxParenchymaEmphys").innerText;
 var ThoraxParenchymaOther = document.getElementById("ThoraxParenchymaOther").value.trim();
+var ThoraxLNPlusOther = document.getElementById("ThoraxLNPlusOther").value.trim();
 
 updateButtonTexts({
             'ChbThoraxParenchymaFibr': ['0', 'I', 'II','III'],
@@ -2070,7 +2087,14 @@ if (ThoraxLymphNodePlusHila && ThoraxLymphNodePlusMed) ThoraxLymphNodePlusText +
   else {
 if (ThoraxLymphNodePlusMed) ThoraxLymphNodePlusText += "Nespecificky zvýšená akumulace RF v nezvětšených mediastinálních uzlinách. ";
 if (ThoraxLymphNodePlusHila) ThoraxLymphNodePlusText += "Nespecificky zvýšená akumulace RF v nezvětšených hilových uzlinách. ";
-  }
+} 
+
+if (ThoraxLNPlusOther) {
+ThoraxLymphNodePlusText += ThoraxLNPlusOther + ". ";
+}
+if (ThoraxLymphNodePlusText.includes(". ")) {
+    ThoraxLymphNodePlusText = ThoraxLymphNodePlusText.replace(/\. (\S)/, ", $1");
+}
 
 
 //embolisation
