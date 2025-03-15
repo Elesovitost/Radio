@@ -17,6 +17,7 @@ var indikace = document.getElementById("indikace").value;
 const WMLText = buttonElementWML.innerText;
 var WMLLocationText = document.getElementById("WMLLocation").value;
 var RSP = ""; var RSR = ""; var checkboxRS = document.getElementById('checkboxRS');
+var checkboxNoEnh = document.getElementById('checkboxNoEnh');
 
 const GCAText = buttonElementGCA.innerText;
 var lobaratrophy = document.getElementById("lobaratrophy").value; 
@@ -808,13 +809,15 @@ var SinusR = combineStrings([FrontalR, MaxillarR, EthmoidR, SphenoidR]);
 POPNoLesions = "";
 
 if (POPBrainLesion1 === "" && POPBrainLesion2 === "" && LesionVP === "" && WMLText === "0") {
-    POPNoLesions = "Bez ložiskových změn. ";
+    POPNoLesions = "Bez patologických ložiskových změn. ";
 } else if (POPBrainLesion1 === "" && POPBrainLesion2 === "" && LesionVP === "" && WMLText !== "0") {
     POPNoLesions = "Jinak bez ložiskových změn. ";
 }
-if (!POPBrainLesion1.includes("sycením") && !POPBrainLesion2.includes("sycením") && !POPBrainLesion3.includes("sycením") && !LesionVP.includes("sycením")) {
-    POPNoLesions += "Bez ložiskového postkontrastního sycení. ";
+
+if (checkboxNoEnh.checked) {
+    POPNoLesions += "Bez ložiskového sycení. ";
 }
+
 if (!POPBrainLesion1.includes("restrikcí") && !POPBrainLesion2.includes("restrikcí") && !POPBrainLesion3.includes("restrikcí") && !LesionVP.includes("restrikcí")) {
     POPNoLesions += "Bez zvýšené restrikce difuze. ";
 }
