@@ -105,10 +105,19 @@
 <textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
 </div>
 
-<div id="texty2" class="standardwidthFinalText" style="display: ;"> 
-<button id="copyCOMP" class="buttonTEXT">KOMPLET&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button> <button id="copyPOP" class="buttonTEXT" style="font-Size: 11px">jen popis<img src="icon_copy.png" alt="Icon" class="button-icon"></button> <button id="copyRES" class="buttonTEXT" style="font-Size: 11px">jen závěr<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
-<div id="popupMessage" style="display:none; position:relative; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold; width:300px;"></div>
-<textarea id="FINALCOMPLETEText" class="FINALXXL" readonly></textarea>
+<div id="texty2" class="standardwidthFinalText" style="display: ; position: relative;"> 
+
+  <div style="display: flex; gap: 6px; align-items: center; padding-right: 70px;">
+    <button id="copyCOMP" class="buttonTEXT">KOMPLET&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
+    <button id="copyPOP" class="buttonTEXT">jen popis<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
+    <button id="copyRES" class="buttonTEXT">jen závěr<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
+  </div>
+
+  <button id="saveButton" class="buttonTEXT" style="position: absolute; right: 0; top: 0px;">do souboru</button>
+
+  <div id="popupMessage" style="display:none; position:relative; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold; width:300px;"></div>
+
+  <textarea id="FINALCOMPLETEText" class="FINALXXL" readonly></textarea>
 </div>
 
 
@@ -457,6 +466,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	setupCopyButton('copyRES', 'FINALRESText');
 });
 
+
+// SAVE button handler
+document.getElementById('saveButton').addEventListener('click', function () {
+    const text = document.getElementById('FINALCOMPLETEText').value;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const link = document.createElement('a');
+
+    link.href = URL.createObjectURL(blob);
+    link.download = 'radio.txt';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
 
 </script>
 

@@ -288,7 +288,7 @@ button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-
 .button160 {width: 160px;}
 .buttonStrana {width: 80px; height: 18px; border: 1px solid orange;}
 
-.buttonTEXT {font-Size: 12px; font-weight: bold; width: 86px; text-align: left; background-color: #E9E0D3; }
+.buttonTEXT {font-Size: 10px; font-weight: bold; width: 86px; text-align: left; background-color: #E9E0D3; }
 .others {width: 86px; height: 18px;}
 .othersS {width: 20px; height: 20px;}
 .others100 {width: 100px; height: 20px;}
