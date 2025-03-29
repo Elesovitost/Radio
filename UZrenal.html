@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="UZRenalShape" class="MainDIV">
+    <div id="UZRenal" class="mydiv0 standardwidth">UZ renálních tepen</div>
+    <div id="INDLINE" class="mydiv1 standardwidth">
+      <input id="indikace" type="text" placeholder="indikace..." autocomplete="off">
+    </div>
+    <div id="MAIN" class="standardwidth">
+      <table class="UZRenalTable">
+        <!-- Řádek pro PSV aorty -->
+        <tr>
+          <td>Abd. aorta PSV:</td>
+          <td>
+            <input type="number" class="numbers" id="UZRenalAortaPSV" placeholder="cm/s" min="0" max="200" step="10" style="width:60px;" oninput="updateTexts()">
+          </td>
+        </tr>
+      </table>
+      
+      <!-- Tabulka pro RA, ledviny a intrarenální arterie -->
+      <table class="UZRenalSubTable" style="width:100%; margin-top:10px;">
+        <!-- Hlavička se sloupci -->
+        <tr>
+          <th style="text-align: left;">Vpravo</th>
+          <th style="text-align: left;">Vlevo</th>
+        </tr>
+        <!-- Řádek RA: PSV -->
+        <tr>
+          <td>
+            Odstup RA PSV: <input type="number" class="numbers" id="UZRenalRAPSV_Pravo" placeholder="cm/s" min="0" max="200" step="10" style="width:60px;" oninput="updateTexts()">
+          </td>
+          <td>
+            Odstup RA PSV: <input type="number" class="numbers" id="UZRenalRAPSV_Vlevo" placeholder="cm/s" min="0" max="200" step="10" style="width:60px;" oninput="updateTexts()">
+          </td>
+        </tr>
+        <!-- Řádek Ledvina: velikost a parenchym -->
+        <tr>
+          <td>
+            Ledvina: <input type="number" class="numbers" id="UZRenalRSize" placeholder="cm" min="0" max="20" step="1" style="width:60px;" oninput="updateTexts()">
+            Parenchym: <button id="UZRenalRParenchym" class="ButtonCycleText button60" onclick="ButtonCycle(this)">normální</button>
+          </td>
+          <td>
+            Ledvina: <input type="number" class="numbers" id="UZRenalLSize" placeholder="cm" min="0" max="20" step="1" style="width:60px;" oninput="updateTexts()">
+            Parenchym: <button id="UZRenalLParenchym" class="ButtonCycleText button60" onclick="ButtonCycle(this)">normální</button>
+          </td>
+        </tr>
+        <!-- Řádek Intrarenální arterie: PSV, AT, RI -->
+        <tr>
+          <td>
+            Intrarenálně:<br>
+            PSV: <input type="number" class="numbers" id="UZRenalRIntraPSV" placeholder="cm/s" min="0" max="200" step="5" style="width:60px;" oninput="updateTexts()">
+            AT: <input type="number" class="numbers" id="UZRenalRIntraAT" placeholder="sec" min="0" max="1" step="0.01" style="width:60px;" oninput="updateTexts()"> 
+            RI: <input type="number" class="numbers" id="UZRenalRIntraRI" placeholder="0" min="0" max="1" step="0.05" style="width:60px;" oninput="updateTexts()">
+          </td>
+          <td>
+            Intrarenálně:<br>
+            PSV: <input type="number" class="numbers" id="UZRenalLIntraPSV" placeholder="cm/s" min="0" max="200" step="5" style="width:60px;" oninput="updateTexts()">  
+            AT: <input type="number" class="numbers" id="UZRenalLIntraAT" placeholder="sec" min="0" max="1" step="0.01" style="width:60px;" oninput="updateTexts()"> 
+            RI: <input type="number" class="numbers" id="UZRenalLIntraRI" placeholder="0" min="0" max="1" step="0.05" style="width:60px;" oninput="updateTexts()">
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  
+  <div id="texty1" class="standardwidth hidden">
+    NÁZEV<textarea id="UZRenalNAMEText" class="medium"></textarea>
+    INDIKACE<textarea id="UZRenalINDText" class="medium"></textarea>
+    POPIS<textarea id="UZRenalPOPText" class="superlarge"></textarea>
+    ZÁVĚR<textarea id="UZRenalRESText" class="superlarge"></textarea>
+  </div>
+  
+  <script src="Universal.js"></script>
+  <script src="UZrenalpopis.js"></script>
+</body>
+</html>
+
+
+
