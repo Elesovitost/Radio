@@ -495,30 +495,30 @@ if (C34PFText === C34LFText) {
   }
 } else {
   if (C34PFText === "1") {
-    C34stenozyP += "Mírné zúžení pravého foramina. ";
-    C34stenPF = "Mírná stenóza pravého foramina ";
+    C34stenozyP += "Mírné zúžení pravostranného foramina. ";
+    C34stenPF = "Mírná stenóza pravostranného foramina ";
     C34stenBF = "";
   } else if (C34PFText === "2") {
-    C34stenozyP += "Stenóza pravého foramina. ";
-    C34stenPF = "Stenóza pravého foramina ";
+    C34stenozyP += "Stenóza pravostranného foramina. ";
+    C34stenPF = "Stenóza pravostranného foramina ";
     C34stenBF = "";
   } else if (C34PFText === "3") {
-    C34stenozyP += "Výrazná stenóza pravého foramina s tvarovou defigurací kořene. ";
-    C34stenPF = "Výrazná stenóza pravého foramina s kompresí kořene C4 l.dx. ";
+    C34stenozyP += "Výrazná stenóza pravostranného foramina s tvarovou defigurací kořene. ";
+    C34stenPF = "Výrazná stenóza pravostranného foramina s kompresí kořene C4 l.dx. ";
     C34stenBF = "";
   }
 
   if (C34LFText === "1") {
-    C34stenozyP += "Mírné zúžení levého foramina. ";
-    C34stenLF = "Mírná stenóza levého foramina ";
+    C34stenozyP += "Mírné zúžení levostranného foramina. ";
+    C34stenLF = "Mírná stenóza levostranného foramina ";
     C34stenBF = "";
   } else if (C34LFText === "2") {
-    C34stenozyP += "Stenóza levého foramina. ";
-    C34stenLF = "Stenóza levého foramina ";
+    C34stenozyP += "Stenóza levostranného foramina. ";
+    C34stenLF = "Stenóza levostranného foramina ";
     C34stenBF = "";
   } else if (C34LFText === "3") {
-    C34stenozyP += "Výrazná stenóza levého foramina s tvarovou defigurací kořene. ";
-    C34stenLF = "Výrazná stenóza levého foramina s kompresí kořene C4 l.sin. ";
+    C34stenozyP += "Výrazná stenóza levostranného foramina s tvarovou defigurací kořene. ";
+    C34stenLF = "Výrazná stenóza levostranného foramina s kompresí kořene C4 l.sin. ";
     C34stenBF = "";
   }
 }

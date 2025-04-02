@@ -501,30 +501,30 @@ if (L12PFText === L12LFText) {
   }
 } else {
   if (L12PFText === "1") {
-    L12stenozyP += "Mírné zúžení pravého foramina. ";
-    L12stenPF = "Mírná stenóza pravého foramina ";
+    L12stenozyP += "Mírné zúžení pravostranného foramina. ";
+    L12stenPF = "Mírná stenóza pravostranného foramina ";
     L12stenBF = "";
   } else if (L12PFText === "2") {
-    L12stenozyP += "Stenóza pravého foramina. ";
-    L12stenPF = "Stenóza pravého foramina ";
+    L12stenozyP += "Stenóza pravostranného foramina. ";
+    L12stenPF = "Stenóza pravostranného foramina ";
     L12stenBF = "";
   } else if (L12PFText === "3") {
-    L12stenozyP += "Výrazná stenóza pravého foramina s tvarovou defigurací kořene. ";
-    L12stenPF = "Výrazná stenóza pravého foramina s kompresí kořene L1 l.dx. ";
+    L12stenozyP += "Výrazná stenóza pravostranného foramina s tvarovou defigurací kořene. ";
+    L12stenPF = "Výrazná stenóza pravostranného foramina s kompresí kořene L1 l.dx. ";
     L12stenBF = "";
   }
 
   if (L12LFText === "1") {
-    L12stenozyP += "Mírné zúžení levého foramina. ";
-    L12stenLF = "Mírná stenóza levého foramina ";
+    L12stenozyP += "Mírné zúžení levostranného foramina. ";
+    L12stenLF = "Mírná stenóza levostranného foramina ";
     L12stenBF = "";
   } else if (L12LFText === "2") {
-    L12stenozyP += "Stenóza levého foramina. ";
-    L12stenLF = "Stenóza levého foramina ";
+    L12stenozyP += "Stenóza levostranného foramina. ";
+    L12stenLF = "Stenóza levostranného foramina ";
     L12stenBF = "";
   } else if (L12LFText === "3") {
-    L12stenozyP += "Výrazná stenóza levého foramina s tvarovou defigurací kořene. ";
-    L12stenLF = "Výrazná stenóza levého foramina s kompresí kořene L1 l.sin. ";
+    L12stenozyP += "Výrazná stenóza levostranného foramina s tvarovou defigurací kořene. ";
+    L12stenLF = "Výrazná stenóza levostranného foramina s kompresí kořene L1 l.sin. ";
     L12stenBF = "";
   }
 }
