@@ -502,25 +502,22 @@ document.getElementById('saveButton').addEventListener('click', function () {
 const btn = document.getElementById('checkAI');
 if (btn) {
   btn.addEventListener('click', () => {
+    // Přečteme aktuální obsah z FINALCOMPLETEText (tedy upravený kód)
     const textareaCOMP = document.getElementById('FINALCOMPLETEText');
     const completeText = textareaCOMP ? textareaCOMP.value.trim() : "";
-
-    let [popis, zaver] = completeText.split("Závěr:");
-    popis = popis ? popis.trim() : "";
-    zaver = zaver ? zaver.trim() : "";
     
-    alert("📤 Text odeslaný do AI:\n\nPOPIS:\n" + popis + "\n\nZÁVĚR:\n" + zaver);
-    zkontrolujAI({ popis, zaver });
+    alert("📤 Text odeslaný do AI:\n\n" + completeText);
+    zkontrolujAI({ completeText });
   });
 }
 
 
 
-async function zkontrolujAI({ popis = "", zaver = "" }) {
+async function zkontrolujAI({ completeText = "" }) {
   const output = document.getElementById('aiOutput');
   const resultDiv = document.getElementById('aiResult');
 
-  if (!popis && !zaver) {
+  if (!completeText) {
     alert("Text je prázdný.");
     return;
   }
@@ -531,13 +528,11 @@ async function zkontrolujAI({ popis = "", zaver = "" }) {
   const prompt = `
 Analyzuj následující lékařský radiologický text:
 
-${popis ? `POPIS:\\n${popis}` : ""}
-${zaver ? `\\nZÁVĚR:\\n${zaver}` : ""}
+${completeText}
 
-1. Zkontroluj, zda závěr odpovídá popisu, není v rozporu a neobsahuje chyby nebo stranové záměny. Jsou informace v závěru konzistentní s popisem?
-2. Upozorni na nepochopitelné nebo neukončené věty, nesmyslná slova. (Věty v radiologickém popisu nemusí mít přísudky, jde o popis).
-3. Upozorni na gramatické chyby, překlepy, nesrovnalosti.
-4. Na závěr napiš hodnocení (cca 3 řádky), zda je popis a závěr konzistentní a srozumitelný, případně vyjmenuj problémy.
+1. Zkontroluj, zda závěr odpovídá popisu, není v rozporu a neobsahuje chyby nebo nesrovnalosti.
+2. Upozorni na nepochopitelné nebo neukončené věty, překlepy a gramatické chyby.
+3. Na závěr napiš krátké hodnocení (cca 3 řádky) ohledně konzistence a srozumitelnosti textu.
 
 Piš česky.
 `;
@@ -546,7 +541,7 @@ Piš česky.
     const response = await fetch("https://radio-ai-backend.onrender.com/api/check", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ popis, zaver })
+      body: JSON.stringify({ text: completeText, prompt })
     });
 
     const data = await response.json();
