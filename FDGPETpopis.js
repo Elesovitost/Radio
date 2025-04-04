@@ -3878,7 +3878,7 @@ if (checkViability(POPSkeletonLesion1 || POPSkeletonLesion2 || POPSkeletonLesion
   POPSkeletonNative = "";
   POPSkeletonElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
 } else {
-  POPSkeletonNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
+  POPSkeletonNative = "Není přítomen patologický hyperakumulující fokus či ložisko. ";
   POPSkeletonElse = "";
 }
 
