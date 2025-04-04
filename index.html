@@ -108,23 +108,27 @@
 <div id="texty2" class="standardwidthFinalText" style="display: ; position: relative;"> 
 
   <div style="display: flex; gap: 6px; align-items: center; padding-right: 70px;">
-    <button id="copyCOMP" class="buttonTEXT">KOMPLET&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
-    <button id="copyPOP" class="buttonTEXT">jen popis<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
-    <button id="copyRES" class="buttonTEXT">jen závěr<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
+    <button id="copyCOMP" class="buttonTEXT">KOMPLET 📑</button> 
+    <button id="copyPOP" class="buttonTEXT">jen popis 📑</button> 
+    <button id="copyRES" class="buttonTEXT">jen závěr 📑</button> 
   </div>
 
-<button id="toggleEdit" class="buttonTEXT" style="position: absolute; right: 160px; top: 0px;">EDIT</button>
-<button id="checkAI" class="buttonTEXT" style="position: absolute; right: 80px; top: 0px;">CHECK</button>
-<button id="saveButton" class="buttonTEXT" style="position: absolute; right: 0; top: 0px;">do souboru</button>
+	<button id="toggleEdit" class="buttonTEXT" style="position: absolute; right: 160px; top: 0px;">📝 EDIT</button>
+	<button id="checkAI" class="buttonTEXT" style="position: absolute; right: 80px; top: 0px;">🔍 CHECK</button>
+	<button id="saveButton" class="buttonTEXT" style="position: absolute; right: 0; top: 0px;">💾 SAVE</button>
 
-  <div id="popupMessage" style="display:none; position:relative; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold; width:300px;"></div>
+  <div id="popupMessage" style="display:none; position:relative; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold; width:300px;">
+  </div>
 
   <textarea id="FINALCOMPLETEText" class="FINALXXL" readonly></textarea>
   
-  <div id="aiResult" class="standardwidthFinalText" style="margin-top: 10px; display: none;">
-	  <h4>📋 Výstup AI:</h4>
-	  <pre id="aiOutput" style="white-space: pre-wrap; background: #f7f7f7; padding: 10px; border: 1px solid #ccc;"></pre>
+<div id="aiResult" class="standardwidthFinalText" style="margin-top: 10px; display: none;">
+  <div style="font-size: 14px; margin-bottom: 0px;">
+	<button id="AIresult" class="buttonTEXT">📋 AI CHECK</button>
+  <pre id="aiOutput" style="white-space: pre-wrap; background: #f7f7f7; padding: 4px; border: 1px solid #ccc; font-size: 12px; line-height: 1.0;"></pre>
   </div>
+</div>
+
 
 </div>
 
@@ -202,7 +206,9 @@ function changePage(url) {
     removeButton.className = "remove-button"; 
     removeButton.onclick = function() {
         container.removeChild(iframeContainer);
-		
+		// Skryj výstup AI po zavření okna
+		document.getElementById("aiResult").style.display = "none";
+
 		if (container.children.length === 0) {
             // Reset the background image opacity to 1 (fully opaque) if it is empty
             document.querySelector('.background-image').style.opacity = 1;
@@ -256,6 +262,7 @@ function bindEventsToIframe(iframe) {
 
 function setupRefreshOnAction(doc) {
     function delayedUpdate(event) {
+		if (editMode) return;
         // Add the IDs of the buttons to the condition
         if (event.target.id === 'FINALPOPText' || event.target.id === 'FINALRESText' || event.target.id === 'FINALCOMPLETEText' ||
             event.target.id === 'copyPOP' || event.target.id === 'copyRES' || event.target.id === 'copyCOMP') {
@@ -287,6 +294,7 @@ function setupRefreshOnAction(doc) {
 //Příprava textů s názvy apod.
 
 function updateFinalTextAreas() {
+	if (editMode) return;
     var container = document.getElementById("page-container");
     var iframes = container.getElementsByTagName("iframe");
     
@@ -542,6 +550,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+
 
 	// EDIT mód
 
