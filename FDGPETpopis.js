@@ -658,7 +658,7 @@ function checkSmallSize(LesionSize, LesionSUV) {
 // viability check
 
 function checkViability(text) {
-  const keywords = ['střední', 'zvýšen', 'vysok', 'ložisk'];
+  const keywords = ['na úrovni', 'nad úrovní', 'intermed', 'střední', 'zvýšen', 'vysok', 'hyper'];
   const hasKeyword = keywords.some(keyword => text.includes(keyword));
   const suvMatch = text.match(/SUVmax=([\d.]+)/);
   const hasHighSUV = suvMatch && parseFloat(suvMatch[1]) > 1;
@@ -1266,11 +1266,14 @@ NeckOther1NoPriority = NeckOther1NoPriority.charAt(0).toUpperCase() + NeckOther1
 NeckOther1ResPriority = NeckOther1ResPriority.charAt(0).toUpperCase() + NeckOther1ResPriority.slice(1);
 
 // neck native or not
-if ((POPNeckLymphNode1 !== "") || (POPNeckLesion1 !== "") || (POPNeckLesion2 !== "") ||  (POPNeckLesion1 !== "") || checkViability(NeckOther1Pop)) {
+if (checkViability(POPNeckLymphNode1 || POPNeckLesion1 || POPNeckLesion2 || POPNeckLesion3 || NeckOther1Pop)) {
   POPNeckNative = "";
+  POPNeckElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
 } else {
   POPNeckNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
+  POPNeckElse = "";
 }
+
 
 
 // THORAX
@@ -2195,10 +2198,12 @@ if (ThoraxParenchymaText.includes('fibróz') || ThoraxParenchymaText.includes('e
 
 // Thorax native or not
 
-if ((POPThoraxLymphNode1 !== "") || (POPThoraxLesion1 !== "") || (POPThoraxLesion2 !== "") || (POPThoraxLesion3 !== "") || checkViability(ThoraxOther1Pop)) {
+if (checkViability(POPThoraxLymphNode1 || POPThoraxLesion1 || POPThoraxLesion2 || POPThoraxLesion3 || ThoraxOther1Pop)) {
   POPThoraxNative = "";
+  POPThoraxElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
 } else {
   POPThoraxNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
+  POPThoraxElse = "";
 }
 
 
@@ -3446,13 +3451,13 @@ if (AbdomenOrgansText.trim() === "" && AbdomenOther1Priority === "") {
 
 // Abdomen native or not
 
-if ((POPAbdomenLymphNode1 !== "") || (POPAbdomenLesion1 !== "") || (POPAbdomenLesion2 !== "") || (POPAbdomenLesion3 !== "") || checkViability(AbdomenOther1Pop)) {
+if (checkViability(POPAbdomenLymphNode1 || POPAbdomenLesion1 || POPAbdomenLesion2 || POPAbdomenLesion3 || AbdomenOther1Pop)) {
   POPAbdomenNative = "";
+  POPAbdomenElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
 } else {
   POPAbdomenNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
+  POPAbdomenElse = "";
 }
-
-
 
 
 // SKELETON
@@ -3869,11 +3874,14 @@ if (SkeletonOther1Pop !== "" && SkeletonOther1Res ==="") {SkeletonOther1Priority
 
 // Skeleton native or not
 
-if ((POPSkeletonLesion1 !== "") || checkViability(SkeletonOther1Pop)) {
+if (checkViability(POPSkeletonLesion1 || POPSkeletonLesion2 || POPSkeletonLesion3 || SkeletonOther1Pop)) {
   POPSkeletonNative = "";
+  POPSkeletonElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
 } else {
-  POPSkeletonNative = "Není přítomen patologický hyperakumulující fokus nebo ložisko. ";
+  POPSkeletonNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
+  POPSkeletonElse = "";
 }
+
 
 //Latest examination comparison
 if (DateCompare === "") {ExamCompareText = ""; POPExamCompareText = "";} else {ExamCompareText = "Oproti vyšetření z " + DateComparison + ":"; POPExamCompareText = "Srovnáno s vyšetřením z " + DateComparison + ". ";}
@@ -3918,6 +3926,7 @@ POPNeckNative + " " +
 POPNeckLesion1 + " " + 
 POPNeckLesion2 + " " + 
 POPNeckLesion3 + " " + 
+POPNeckElse + " " + 
 POPNeckLymphNode1 + " " + 
 NeckOther1Priority + " " + NeckVCordsText + " " + HeadTonsilsText + " " + NeckParotidText + " " + NeckThyroidText + " " + NeckTreatmentText + " " + HeadMaxSinusText + " " + NeckOther1NoPriority + "\n" +
 "Hrudník: " + 
@@ -3925,6 +3934,7 @@ POPThoraxNative + " " +
 POPThoraxLesion1 + " " + 
 POPThoraxLesion2 + " " + 
 POPThoraxLesion3 + " " + 
+POPThoraxElse + " " + 
 ThoraxLymphNodePlusText + " " + 
 POPThoraxLymphNode1 + " " + 
 ThoraxOther1Priority + " " +  ThoraxParenchymaText + " " + POPThoraxLungOk + " " + ThoraxFluidText + " " + ThoraxOesophText + " " + ThoraxMammaText + " " + ThoraxThymusText + " " + ThoraxHeartText + " " + ThoraxDevicesText + " " + ThoraxEmbolisationText + " " + ThoraxOther1NoPriority + "\n" +
@@ -3933,6 +3943,7 @@ POPAbdomenNative + " " +
 POPAbdomenLesion1 + " " + 
 POPAbdomenLesion2 + " " + 
 POPAbdomenLesion3 + " " + 
+POPAbdomenElse + " " + 
 POPAbdomenLymphNode1 + " " + 
 AbdomenOther1Priority + " " + AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + " " + AbdomenVesselsText + "\n" +
 "Skelet a měkké tkáně: " + 
@@ -3940,6 +3951,7 @@ POPSkeletonNative + " " +
 POPSkeletonLesion1 + " " + 
 POPSkeletonLesion2 + " " + 
 POPSkeletonLesion3 + " " + 
+POPSkeletonElse + " " + 
 SkeletonOther1Priority + " " + SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + " " + SkeletonSoftTissueText + "\n" +			
 ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 
