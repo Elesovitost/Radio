@@ -499,6 +499,22 @@ document.getElementById('saveButton').addEventListener('click', function () {
 
 // check AI
 
+const btn = document.getElementById('checkAI');
+if (btn) {
+  btn.addEventListener('click', () => {
+    const textareaCOMP = document.getElementById('FINALCOMPLETEText');
+    const completeText = textareaCOMP ? textareaCOMP.value.trim() : "";
+
+    let [popis, zaver] = completeText.split("Závěr:");
+    popis = popis ? popis.trim() : "";
+    zaver = zaver ? zaver.trim() : "";
+    
+    //alert("📤 Text odeslaný do AI:\n\nPOPIS:\n" + popis + "\n\nZÁVĚR:\n" + zaver);
+    zkontrolujAI({ popis, zaver });
+  });
+}
+
+
 
 async function zkontrolujAI({ popis = "", zaver = "" }) {
   const output = document.getElementById('aiOutput');
@@ -539,18 +555,6 @@ Piš česky.
     output.innerText = "❌ Chyba připojení: " + error.message;
   }
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-  const btn = document.getElementById('checkAI');
-  if (btn) {
-    btn.addEventListener('click', () => {
-      const popis = document.getElementById("FINALPOPText").value.trim();
-      const zaver = document.getElementById("FINALRESText").value.trim();
-      zkontrolujAI({ popis, zaver });
-    });
-  }
-});
-
 
 
 	// EDIT mód
