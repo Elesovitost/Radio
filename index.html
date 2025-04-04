@@ -509,7 +509,7 @@ if (btn) {
     popis = popis ? popis.trim() : "";
     zaver = zaver ? zaver.trim() : "";
     
-    //alert("📤 Text odeslaný do AI:\n\nPOPIS:\n" + popis + "\n\nZÁVĚR:\n" + zaver);
+    alert("📤 Text odeslaný do AI:\n\nPOPIS:\n" + popis + "\n\nZÁVĚR:\n" + zaver);
     zkontrolujAI({ popis, zaver });
   });
 }
@@ -529,13 +529,13 @@ async function zkontrolujAI({ popis = "", zaver = "" }) {
   resultDiv.style.display = 'block';
 
   const prompt = `
-Analyzuj následující lékařský text:
+Analyzuj následující lékařský radiologický text:
 
 ${popis ? `POPIS:\\n${popis}` : ""}
 ${zaver ? `\\nZÁVĚR:\\n${zaver}` : ""}
 
-1. Zkontroluj, zda závěr odpovídá popisu, není v rozporu a neobsahuje chyby nebo stranové záměny.
-2. Upozorni na nepochopitelné nebo neukončené věty. (Věty v radiologickém popisu nemusí mít přísudky, jde o popis).
+1. Zkontroluj, zda závěr odpovídá popisu, není v rozporu a neobsahuje chyby nebo stranové záměny. Jsou informace v závěru konzistentní s popisem?
+2. Upozorni na nepochopitelné nebo neukončené věty, nesmyslná slova. (Věty v radiologickém popisu nemusí mít přísudky, jde o popis).
 3. Upozorni na gramatické chyby, překlepy, nesrovnalosti.
 4. Na závěr napiš hodnocení (cca 3 řádky), zda je popis a závěr konzistentní a srozumitelný, případně vyjmenuj problémy.
 
