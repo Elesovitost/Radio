@@ -558,6 +558,12 @@ document.getElementById('toggleEdit').addEventListener('click', () => {
   });
 
   document.getElementById('toggleEdit').textContent = editMode ? "Zrušit editaci" : "EDIT";
+
+  const page = document.getElementById('page-container');
+  if (page) {
+    page.style.pointerEvents = editMode ? "none" : "";
+    page.style.opacity = editMode ? "0.4" : "";
+  }
 });
 
 	
