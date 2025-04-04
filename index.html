@@ -65,7 +65,6 @@
 		<button class="dropbtn">UZ</button>
 		<div class="dropdown-content">
 			<a href="#" onclick="changePage('UZcarotid.html')">UZ karotid</a>
-			<a href="#" onclick="changePage('UZrenal.html')">UZ renálních tepen</a>
 			<a href="#" onclick="changePage('UZthyroid.html')">UZ štítné žlázy</a>
 			<a href="#" onclick="changePage('UZabdomen.html')">UZ břicha</a>
 		</div>
@@ -481,6 +480,38 @@ document.getElementById('saveButton').addEventListener('click', function () {
     link.click();
     document.body.removeChild(link);
 });
+
+// check AI
+
+document.getElementById('checkAI').addEventListener('click', async () => {
+  const popis = document.getElementById('FINALPOPText')?.value.trim();
+  const zaver = document.getElementById('FINALRESText')?.value.trim();
+  const output = document.getElementById('aiOutput');
+  const resultDiv = document.getElementById('aiResult');
+
+  if (!popis || !zaver) {
+    alert("Popis nebo závěr je prázdný.");
+    return;
+  }
+
+  output.innerText = "⏳ Zpracovávám AI výstup...";
+  resultDiv.style.display = 'block';
+
+  try {
+    const response = await fetch("https://radio-ai-check.onrender.com/api/check", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ popis, zaver })
+    });
+
+    const data = await response.json();
+    output.innerText = data.result || "⚠️ Žádná odpověď od AI.";
+  } catch (error) {
+    output.innerText = "❌ Chyba připojení: " + error.message;
+  }
+});
+
+
 
 </script>
 
