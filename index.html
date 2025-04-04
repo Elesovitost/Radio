@@ -113,6 +113,7 @@
     <button id="copyRES" class="buttonTEXT">jen závěr<img src="icon_copy.png" alt="Icon" class="button-icon"></button> 
   </div>
 
+<button id="toggleEdit" class="buttonTEXT" style="position: absolute; right: 160px; top: 0px;">EDIT</button>
 <button id="checkAI" class="buttonTEXT" style="position: absolute; right: 80px; top: 0px;">CHECK</button>
 <button id="saveButton" class="buttonTEXT" style="position: absolute; right: 0; top: 0px;">do souboru</button>
 
@@ -542,6 +543,24 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+	// EDIT mód
+
+let editMode = false;
+
+document.getElementById('toggleEdit').addEventListener('click', () => {
+  const textareaIDs = ["FINALPOPText", "FINALRESText", "FINALCOMPLETEText"];
+  editMode = !editMode;
+
+  textareaIDs.forEach(id => {
+    const el = document.getElementById(id);
+    el.readOnly = !editMode;
+    el.style.backgroundColor = editMode ? "#fff8c6" : "";
+  });
+
+  document.getElementById('toggleEdit').textContent = editMode ? "Zrušit editaci" : "EDIT";
+});
+
+	
 </script>
 
 
