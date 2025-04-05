@@ -129,10 +129,10 @@
   </div>
 </div>
 
-version: 1.113
+
 </div>
 
-
+version: 1.114
 
 
 
@@ -502,19 +502,17 @@ document.getElementById('saveButton').addEventListener('click', function () {
 const btn = document.getElementById('checkAI');
 if (btn) {
   btn.addEventListener('click', () => {
-    // Načte se vždy obsah viditelné textarea FINALCOMPLETEText
+    // Přečteme obsah viditelné textarea FINALCOMPLETEText
     const textareaCOMP = document.getElementById('FINALCOMPLETEText');
     const completeText = textareaCOMP ? textareaCOMP.value.trim() : "";
-    
+
     alert("📤 Text odeslaný do AI:\n\n" + completeText);
-    // Odešle se celý text bez jakéhokoliv dělení
-    zkontrolujAI({ completeText });
+
+    zkontrolujAI(completeText);
   });
 }
 
-
-
-async function zkontrolujAI({ completeText = "" }) {
+async function zkontrolujAI(completeText) {
   const output = document.getElementById('aiOutput');
   const resultDiv = document.getElementById('aiResult');
 
@@ -526,23 +524,11 @@ async function zkontrolujAI({ completeText = "" }) {
   output.innerText = "⏳ AI analyzuje...";
   resultDiv.style.display = 'block';
 
-  const prompt = `
-Analyzuj následující lékařský text:
-
-${completeText}
-
-1. Zkontroluj, zda závěr odpovídá popisu, není v rozporu a neobsahuje chyby či nesrovnalosti.
-2. Upozorni na nepochopitelné nebo neukončené věty, překlepy a gramatické chyby.
-3. Na závěr napiš krátké hodnocení (cca 3 řádky) ohledně konzistence a srozumitelnosti textu.
-
-Piš česky.
-`;
-
+  // Odešleme JSON s polem 'text'
   try {
     const response = await fetch("https://radio-ai-backend.onrender.com/api/check", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      // Posíláme celý text jako pole 'text'
       body: JSON.stringify({ text: completeText })
     });
 
