@@ -550,17 +550,20 @@ document.getElementById('toggleEdit').addEventListener('click', () => {
   textareaIDs.forEach(id => {
     const el = document.getElementById(id);
     el.readOnly = !editMode;
-    el.style.backgroundColor = editMode ? "#fff8c6" : "";
+    el.style.backgroundColor = editMode ? "#fffceb" : ""; // jemnější žlutá
   });
 
-  document.getElementById('toggleEdit').textContent = editMode ? "Zrušit editaci" : "EDIT";
+  const toggleBtn = document.getElementById('toggleEdit');
+  toggleBtn.textContent = editMode ? "Zrušit editaci" : "EDIT";
+  toggleBtn.style.backgroundColor = editMode ? "#ffe0b3" : ""; // jemná oranžová
 
   const page = document.getElementById('page-container');
   if (page) {
     page.style.pointerEvents = editMode ? "none" : "";
-    page.style.opacity = editMode ? "0.4" : "";
+    page.style.opacity = editMode ? "0.2" : "";
   }
 });
+
 
 	
 </script>
