@@ -436,48 +436,57 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }, 2000); // Hide after 2 second
     }
 
-	function setupCopyButton(buttonId, textAreaId) {
+	function setupCopyButton(buttonId, textAreaId, customExtractor = null) {
 		var button = document.getElementById(buttonId);
-		var textArea = document.getElementById(textAreaId);
+		var textArea = textAreaId ? document.getElementById(textAreaId) : null;
 
-		button.addEventListener('click', function() {
-			var text = textArea.value;
+		button.addEventListener('click', function () {
+			var text = customExtractor ? customExtractor() : textArea.value;
 
 			if (text.includes("MR kolene") || text.includes("MR ramene") || text.includes("MR hlezna")) {
 				console.log("Condition 1 triggered: Side.");
 				showPopup("DOPLŇ STRANU");
 			} else if ((text.includes("FDG") && text.includes("PSMA")) ||
-				(text.includes("FDG") && text.includes("DOTATOC")) ||
-				(text.includes("PSMA") && text.includes("DOTATOC"))) {
-        console.log("Condition 2 triggered: Invalid combination.");
-		showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
+					   (text.includes("FDG") && text.includes("DOTATOC")) ||
+					   (text.includes("PSMA") && text.includes("DOTATOC"))) {
+				console.log("Condition 2 triggered: Invalid combination.");
+				showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
 			} else {
 				console.log("Condition 3 triggered: Copying text.");
 				navigator.clipboard.writeText(text)
-				.then(() => {
-					console.log("Text copied successfully!");
-				})
-				.catch((error) => {
-					console.error("Failed to copy text:", error);
-				});
+					.then(() => {
+						console.log("Text copied successfully!");
+					})
+					.catch((error) => {
+						console.error("Failed to copy text:", error);
+					});
 			}
 		});
 
-		// Mousedown event for partial disappearance effect
-		button.addEventListener('mousedown', function() {
-			this.style.opacity = '0.3'; // 70% disappear effect
+		button.addEventListener('mousedown', function () {
+			this.style.opacity = '0.3';
 		});
 
-		// Mouseup event to return to normal state
-		button.addEventListener('mouseup', function() {
-			this.style.opacity = '1'; // Return to full opacity
+		button.addEventListener('mouseup', function () {
+			this.style.opacity = '1';
 		});
 	}
 
 
     setupCopyButton('copyCOMP', 'FINALCOMPLETEText');
-	setupCopyButton('copyPOP', 'FINALPOPText');
-	setupCopyButton('copyRES', 'FINALRESText');
+
+	setupCopyButton('copyPOP', null, function() {
+		const text = document.getElementById("FINALCOMPLETEText").value;
+		const match = text.match(/\n\n([\s\S]*?)\n\nZávěr:/);
+		return match ? match[1].trim() : "";
+	});
+
+	setupCopyButton('copyRES', null, function() {
+		const text = document.getElementById("FINALCOMPLETEText").value;
+		const match = text.match(/Závěr:\s*\n([\s\S]*)$/);
+		return match ? match[1].trim() : "";
+	});
+
 });
 
 
