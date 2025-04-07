@@ -193,7 +193,7 @@ var ProstateLesion1SizeValue = ProstateLesion1SizeRaw === "" ? "" : parseFloat(P
 
     var firstSegmentLesion1 = segmentsLesion1[0];
 
-    // Check the segments
+// Check the segments
 if (firstSegmentLesion1 && (firstSegmentLesion1.includes("TZa") || firstSegmentLesion1.includes("TZp"))) {
 	if (ProstateLesion1T2Text === "T2 score 1") {
 		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 1";
@@ -214,55 +214,51 @@ if (firstSegmentLesion1 && (firstSegmentLesion1.includes("TZa") || firstSegmentL
 	} else if ((ProstateLesion1T2Text === "T2 score 4" || ProstateLesion1T2Text === "T2 score 5") && ProstateLesion1SizeValue >= 15) {
 		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 5";
 	}
-} else if (firstSegmentLesion1 && (firstSegmentLesion1.includes("PZa") || firstSegmentLesion1.includes("PZpl") || firstSegmentLesion1.includes("PZpm"))) {
-	switch (ProstateLesion1DWIText) {
-		case "DWI score 1":
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 1";
-			break;
-		case "DWI score 2":
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 2";
-			break;
-		case "DWI score 3":
-			if (ProstateLesion1CText === "kontrast -") {
-				buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 3";
-			} else if (ProstateLesion1CText === "kontrast +") {
-				buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
-			}
-			break;
-		case "DWI score 4":
-		  if (ProstateLesion1SizeValue < 15) {
+} else if (firstSegmentLesion1 && (
+	firstSegmentLesion1.includes("PZa") || 
+	firstSegmentLesion1.includes("PZpl") || 
+	firstSegmentLesion1.includes("PZpm") ||
+	firstSegmentLesion1.includes("PZ") 
+)) {
+	if (ProstateLesion1DWIText === "DWI score 1") {
+		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 1";
+	} else if (ProstateLesion1DWIText === "DWI score 2") {
+		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 2";
+	} else if (ProstateLesion1DWIText === "DWI score 3") {
+		if (ProstateLesion1CText === "kontrast -") {
+			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 3";
+		} else if (ProstateLesion1CText === "kontrast +") {
 			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
-		  } else if (ProstateLesion1SizeValue >= 15) {
+		}
+	} else if (ProstateLesion1DWIText === "DWI score 4") {
+		if (ProstateLesion1SizeValue < 15) {
+			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
+		} else {
 			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 5";
-		  } 
-		  break;
+		}
+	} else if (ProstateLesion1DWIText === "DWI score 5") {
+		if (ProstateLesion1SizeValue < 15) {
+			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
+		} else {
+			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 5";
+		}
 	}
 } else if (firstSegmentLesion1 && (firstSegmentLesion1.includes("CZ") || firstSegmentLesion1.includes("AFS"))) {
-    const highestScore = Math.max(
-        parseInt(ProstateLesion1DWIText.replace('DWI score ', '')),
-        parseInt(ProstateLesion1T2Text.replace('T2 score ', ''))
-    );
-
-    switch (highestScore) {
-        case 1:
-            buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 1";
-            break;
-        case 2:
-            buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 2";
-            break;
-        case 3:
-            buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 3";
-            break;
-        case 4:
-            buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
-            break;
-        case 5:
-            buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 5";
-            break;
-        default:
-            console.error('Unexpected score for lesion in CZ or AFS');
-            break;
-    }
+	const highestScore = Math.max(
+		parseInt(ProstateLesion1DWIText.replace('DWI score ', '')),
+		parseInt(ProstateLesion1T2Text.replace('T2 score ', ''))
+	);
+	if (highestScore === 1) {
+		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 1";
+	} else if (highestScore === 2) {
+		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 2";
+	} else if (highestScore === 3) {
+		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 3";
+	} else if (highestScore === 4) {
+		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
+	} else if (highestScore === 5) {
+		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 5";
+	}
 }
 
 
@@ -474,7 +470,7 @@ var ProstateLesion2SizeValue = ProstateLesion2SizeRaw === "" ? "" : parseFloat(P
 
     var firstSegmentLesion2 = segmentsLesion2[0];
 
-    // Check the segments
+// Check the segments
 if (firstSegmentLesion2 && (firstSegmentLesion2.includes("TZa") || firstSegmentLesion2.includes("TZp"))) {
 	if (ProstateLesion2T2Text === "T2 score 1") {
 		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 1";
@@ -495,56 +491,54 @@ if (firstSegmentLesion2 && (firstSegmentLesion2.includes("TZa") || firstSegmentL
 	} else if ((ProstateLesion2T2Text === "T2 score 4" || ProstateLesion2T2Text === "T2 score 5") && ProstateLesion2SizeValue >= 15) {
 		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 5";
 	}
-} else if (firstSegmentLesion2 && (firstSegmentLesion2.includes("PZa") || firstSegmentLesion2.includes("PZpl") || firstSegmentLesion2.includes("PZpm"))) {
-	switch (ProstateLesion2DWIText) {
-		case "DWI score 1":
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 1";
-			break;
-		case "DWI score 2":
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 2";
-			break;
-		case "DWI score 3":
-			if (ProstateLesion2CText === "kontrast -") {
-				buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 3";
-			} else if (ProstateLesion2CText === "kontrast +") {
-				buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
-			}
-			break;
-		case "DWI score 4":
-		  if (ProstateLesion2SizeValue < 15) {
+} else if (firstSegmentLesion2 && (
+	firstSegmentLesion2.includes("PZa") || 
+	firstSegmentLesion2.includes("PZpl") || 
+	firstSegmentLesion2.includes("PZpm") ||
+	firstSegmentLesion2.includes("PZ") 
+)) {
+	if (ProstateLesion2DWIText === "DWI score 1") {
+		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 1";
+	} else if (ProstateLesion2DWIText === "DWI score 2") {
+		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 2";
+	} else if (ProstateLesion2DWIText === "DWI score 3") {
+		if (ProstateLesion2CText === "kontrast -") {
+			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 3";
+		} else if (ProstateLesion2CText === "kontrast +") {
 			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
-		  } else if (ProstateLesion2SizeValue >= 15) {
+		}
+	} else if (ProstateLesion2DWIText === "DWI score 4") {
+		if (ProstateLesion2SizeValue < 15) {
+			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
+		} else {
 			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 5";
-		  } 
-		  break;
+		}
+	} else if (ProstateLesion2DWIText === "DWI score 5") {
+		if (ProstateLesion2SizeValue < 15) {
+			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
+		} else {
+			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 5";
+		}
 	}
 } else if (firstSegmentLesion2 && (firstSegmentLesion2.includes("CZ") || firstSegmentLesion2.includes("AFS"))) {
-    const highestScore = Math.max(
-        parseInt(ProstateLesion2DWIText.replace('DWI score ', '')),
-        parseInt(ProstateLesion2T2Text.replace('T2 score ', ''))
-    );
-
-    switch (highestScore) {
-        case 1:
-            buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 1";
-            break;
-        case 2:
-            buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 2";
-            break;
-        case 3:
-            buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 3";
-            break;
-        case 4:
-            buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
-            break;
-        case 5:
-            buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 5";
-            break;
-        default:
-            console.error('Unexpected score for lesion in CZ or AFS');
-            break;
-    }
+	const highestScore = Math.max(
+		parseInt(ProstateLesion2DWIText.replace('DWI score ', '')),
+		parseInt(ProstateLesion2T2Text.replace('T2 score ', ''))
+	);
+	if (highestScore === 1) {
+		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 1";
+	} else if (highestScore === 2) {
+		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 2";
+	} else if (highestScore === 3) {
+		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 3";
+	} else if (highestScore === 4) {
+		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
+	} else if (highestScore === 5) {
+		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 5";
+	}
 }
+
+
 
 //PIRADS manual
 var ProstateLesion2PIRADSText = buttonElementProstateLesion2PIRADS.innerText;
@@ -758,7 +752,7 @@ var ProstateLesion3SizeValue = ProstateLesion3SizeRaw === "" ? "" : parseFloat(P
 
     var firstSegmentLesion3 = segmentsLesion3[0];
 
-    // Check the segments
+// Check the segments
 if (firstSegmentLesion3 && (firstSegmentLesion3.includes("TZa") || firstSegmentLesion3.includes("TZp"))) {
 	if (ProstateLesion3T2Text === "T2 score 1") {
 		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 1";
@@ -779,56 +773,53 @@ if (firstSegmentLesion3 && (firstSegmentLesion3.includes("TZa") || firstSegmentL
 	} else if ((ProstateLesion3T2Text === "T2 score 4" || ProstateLesion3T2Text === "T2 score 5") && ProstateLesion3SizeValue >= 15) {
 		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 5";
 	}
-} else if (firstSegmentLesion3 && (firstSegmentLesion3.includes("PZa") || firstSegmentLesion3.includes("PZpl") || firstSegmentLesion3.includes("PZpm"))) {
-	switch (ProstateLesion3DWIText) {
-		case "DWI score 1":
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 1";
-			break;
-		case "DWI score 2":
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 2";
-			break;
-		case "DWI score 3":
-			if (ProstateLesion3CText === "kontrast -") {
-				buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 3";
-			} else if (ProstateLesion3CText === "kontrast +") {
-				buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
-			}
-			break;
-		case "DWI score 4":
-		  if (ProstateLesion3SizeValue < 15) {
+} else if (firstSegmentLesion3 && (
+	firstSegmentLesion3.includes("PZa") || 
+	firstSegmentLesion3.includes("PZpl") || 
+	firstSegmentLesion3.includes("PZpm") ||
+	firstSegmentLesion3.includes("PZ") 
+)) {
+	if (ProstateLesion3DWIText === "DWI score 1") {
+		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 1";
+	} else if (ProstateLesion3DWIText === "DWI score 2") {
+		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 2";
+	} else if (ProstateLesion3DWIText === "DWI score 3") {
+		if (ProstateLesion3CText === "kontrast -") {
+			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 3";
+		} else if (ProstateLesion3CText === "kontrast +") {
 			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
-		  } else if (ProstateLesion3SizeValue >= 15) {
+		}
+	} else if (ProstateLesion3DWIText === "DWI score 4") {
+		if (ProstateLesion3SizeValue < 15) {
+			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
+		} else {
 			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 5";
-		  } 
-		  break;
+		}
+	} else if (ProstateLesion3DWIText === "DWI score 5") {
+		if (ProstateLesion3SizeValue < 15) {
+			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
+		} else {
+			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 5";
+		}
 	}
 } else if (firstSegmentLesion3 && (firstSegmentLesion3.includes("CZ") || firstSegmentLesion3.includes("AFS"))) {
-    const highestScore = Math.max(
-        parseInt(ProstateLesion3DWIText.replace('DWI score ', '')),
-        parseInt(ProstateLesion3T2Text.replace('T2 score ', ''))
-    );
-
-    switch (highestScore) {
-        case 1:
-            buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 1";
-            break;
-        case 2:
-            buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 2";
-            break;
-        case 3:
-            buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 3";
-            break;
-        case 4:
-            buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
-            break;
-        case 5:
-            buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 5";
-            break;
-        default:
-            console.error('Unexpected score for lesion in CZ or AFS');
-            break;
-    }
+	const highestScore = Math.max(
+		parseInt(ProstateLesion3DWIText.replace('DWI score ', '')),
+		parseInt(ProstateLesion3T2Text.replace('T2 score ', ''))
+	);
+	if (highestScore === 1) {
+		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 1";
+	} else if (highestScore === 2) {
+		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 2";
+	} else if (highestScore === 3) {
+		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 3";
+	} else if (highestScore === 4) {
+		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
+	} else if (highestScore === 5) {
+		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 5";
+	}
 }
+
 
 //PIRADS manual
 var ProstateLesion3PIRADSText = buttonElementProstateLesion3PIRADS.innerText;

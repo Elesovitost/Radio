@@ -87,7 +87,7 @@ RAPE <label class="CHB"><input type="checkbox" id="ChbProstateRAPE" onChange="up
     <td><button id="ProstateLesion1DWIButton" class="Button100" onmousedown="cycleProstateLesion1DWIText(event)">DWI score 1</td>
 	<td><button id="ProstateLesion1CButton" class="Button100" onmousedown="cycleProstateLesion1CText(event)">kontrast -</td>
     <td><button id="ProstateLesion1InvasionButton" class="Button120" onmousedown="cycleProstateLesion1InvasionText(event)">bez invaze</td>
-    <td><input type="number" class="numbers" placeholder="0 mm" id="ProstateLesion1Size" min="0" max="100" step="1" style="width: 60px;" onchange="updateTexts()"></td>
+    <td><input type="number" class="numbers" placeholder="0 mm" id="ProstateLesion1Size" min="0" max="100" step="1" style="width: 60px;" oninput="updateTexts()"></td>
     <td><button id="ProstateLesion1PSMAButton" class="Button100 hidden" onmousedown="cycleProstateLesion1PSMAText(event)">PSMA 0</td>
 	<td><button id="ProstateLesion1PIRADSButton" class="Button100" onmousedown="cycleProstateLesion1PIRADSText(event)">PI-RADS 1</td>
     <td></td>
