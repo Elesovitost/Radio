@@ -475,10 +475,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     setupCopyButton('copyCOMP', 'FINALCOMPLETEText');
 
-	setupCopyButton('copyPOP', null, function() {
+	setupCopyButton('copyPOP', null, function () {   //poměrně komplikovaný kód na odstínění názvu vyšetření, sekvencí a indikací
 		const text = document.getElementById("FINALCOMPLETEText").value;
-		const match = text.match(/\n\n([\s\S]*?)\n\nZávěr:/);
-		return match ? match[1].trim() : "";
+		let lines = text.split('\n');
+		lines.shift();
+		let sekvIndex = lines.findIndex(line => line.trim().startsWith("Sekvence:"));
+		if (sekvIndex !== -1) {
+			lines.splice(sekvIndex, 2); 
+		}
+		let indIndex = lines.findIndex(line => line.trim().startsWith("Indikace:"));
+		if (indIndex !== -1) {
+			lines.splice(indIndex, 2); 
+		}
+		let zavIndex = lines.findIndex(line => line.trim() === "Závěr:");
+		if (zavIndex !== -1) {
+			lines = lines.slice(0, zavIndex); 
+		}
+		return lines.join('\n').trim();
 	});
 
 	setupCopyButton('copyRES', null, function() {
