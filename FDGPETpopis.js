@@ -1102,10 +1102,10 @@ var NeckParotidText = "";
   }
 
 
-  if (ParotidavidLesionR && ParotidavidLesionL) NeckParotidText += "noduly se zvýšenou akumulací RF oboustranně, pravděpodobně benigní etiologie, ";
+  if (ParotidavidLesionR && ParotidavidLesionL) NeckParotidText += "drobné noduly se zvýšenou akumulací RF oboustranně, spíše benigní etiologie (Warthin), ";
   else {
-    if (ParotidavidLesionR) NeckParotidText += "nodul se zvýšenou akumulací RF vpravo, pravděpodobně benigní etiologie, ";
-    if (ParotidavidLesionL) NeckParotidText += "nodul se zvýšenou akumulací RF vlevo, pravděpodobně benigní etiologie, ";
+    if (ParotidavidLesionR) NeckParotidText += "drobný nodul se zvýšenou akumulací RF vpravo, spíše benigní etiologie (Warthin), ";
+    if (ParotidavidLesionL) NeckParotidText += "drobný nodul se zvýšenou akumulací RF vlevo, spíše benigní etiologie (Warthin), ";
   }
 
   if (ParotidresectionR && ParotidresectionL) NeckParotidText += "chybí po bilat. resekci, ";
@@ -1266,7 +1266,7 @@ NeckOther1NoPriority = NeckOther1NoPriority.charAt(0).toUpperCase() + NeckOther1
 NeckOther1ResPriority = NeckOther1ResPriority.charAt(0).toUpperCase() + NeckOther1ResPriority.slice(1);
 
 // neck native or not
-if (checkViability(POPNeckLymphNode1 || POPNeckLesion1 || POPNeckLesion2 || POPNeckLesion3 || NeckOther1Pop)) {
+if (checkViability(POPNeckLymphNode1 || POPNeckLesion1 || POPNeckLesion2 || POPNeckLesion3 )) {
   POPNeckNative = "";
   POPNeckElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
 } else {
@@ -2015,7 +2015,7 @@ if (buttonThoraxParenchymaFibrText === "I") {
 if (buttonThoraxParenchymaEmphysText === "I") {
     ThoraxParenchymaText +=("mírný emfyzém, ");
 } else if (buttonThoraxParenchymaEmphysText === "II") {
-    ThoraxParenchymaText +=("paraseptální emfyzém, ");
+    ThoraxParenchymaText +=("přítomen emfyzém, ");
 } else if (buttonThoraxParenchymaEmphysText === "III") {
     ThoraxParenchymaText +=("panlobulární pokročilý emfyzém, ");
 }
@@ -2198,7 +2198,7 @@ if (ThoraxParenchymaText.includes('fibróz') || ThoraxParenchymaText.includes('e
 
 // Thorax native or not
 
-if (checkViability(POPThoraxLymphNode1 || POPThoraxLesion1 || POPThoraxLesion2 || POPThoraxLesion3 || ThoraxOther1Pop)) {
+if (checkViability(POPThoraxLymphNode1 || POPThoraxLesion1 || POPThoraxLesion2 || POPThoraxLesion3)) {
   POPThoraxNative = "";
   POPThoraxElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
 } else {
@@ -3451,7 +3451,7 @@ if (AbdomenOrgansText.trim() === "" && AbdomenOther1Priority === "") {
 
 // Abdomen native or not
 
-if (checkViability(POPAbdomenLymphNode1 || POPAbdomenLesion1 || POPAbdomenLesion2 || POPAbdomenLesion3 || AbdomenOther1Pop)) {
+if (checkViability(POPAbdomenLymphNode1 || POPAbdomenLesion1 || POPAbdomenLesion2 || POPAbdomenLesion3)) {
   POPAbdomenNative = "";
   POPAbdomenElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
 } else {
@@ -3874,7 +3874,7 @@ if (SkeletonOther1Pop !== "" && SkeletonOther1Res ==="") {SkeletonOther1Priority
 
 // Skeleton native or not
 
-if (checkViability(POPSkeletonLesion1 || POPSkeletonLesion2 || POPSkeletonLesion3 || SkeletonOther1Pop)) {
+if (checkViability(POPSkeletonLesion1 || POPSkeletonLesion2 || POPSkeletonLesion3)) {
   POPSkeletonNative = "";
   POPSkeletonElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
 } else {
