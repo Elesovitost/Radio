@@ -887,8 +887,8 @@ if (ProstateHyperplasiaText === "není") {
  ProstateHyperplasiaP = "Zbytnění nodulárně prostavěné přechodové zóny a tak útlak periferní zóny prostaty. ";
  ProstateHyperplasiaR = "Středně pokročilá hyperplázie prostaty. ";
 } else if (ProstateHyperplasiaText === "pokročilá") {
- ProstateHyperplasiaP = "Pokročilé zbytnění nodulárně prostavěné přechodové zóny a proto výrazný útlak periferní zóny prostaty. ";
- ProstateHyperplasiaR = "Velmi pokročilá hyperplázie prostaty. ";
+ ProstateHyperplasiaP = "Pokročilé zbytnění nodulárně prostavěné přechodové zóny s útlakem periferní zóny prostaty. ";
+ ProstateHyperplasiaR = "Pokročilá hyperplázie prostaty. ";
 }
 
 // seminal vesicles
@@ -898,10 +898,10 @@ if (ProstateSemVesText === "normální") {
  ProstateSemVesP = "Normální náplň semenných váčků. ";
  ProstateSemVesR = "";
 } else if (ProstateSemVesText === "malá náplň") {
- ProstateSemVesP = "Chabá náplň semenných váčků, jejich hodnotitelnost je tak výrazně limitována. "; 
+ ProstateSemVesP = "Chabá náplň semenných váčků, jejich hodnotitelnost je limitována. "; 
  ProstateSemVesR = ""; 
 } else if (ProstateSemVesText === "bez náplně") {
- ProstateSemVesP = "Není náplň semenných váčků, které tak nejsou hodnotitelné. ";
+ ProstateSemVesP = "Není náplň semenných váčků, které jsou proto hodnotitelné. ";
  ProstateSemVesR = "";
 } 
 
@@ -945,8 +945,8 @@ var locationsLNReg = [
 const ProstateLNRegText = buttonElementProstateLNReg.innerText;
 
 if (nodesArrayReg.length === 0) {
-    ProstateLNRegP = "Nejsou patrné suspektní regionální lymfatické uzliny. ";
-    ProstateLNRegR = "Bez suspektních regionálních lymfatických uzlin. ";
+    ProstateLNRegP = "Nejsou zřetelné patologické regionální lymfatické uzliny. ";
+    ProstateLNRegR = "Bez patrných patologických regionálních lymfatických uzlin. ";
 } else {
     // Handling the comma and 'a' separators
     ProstateLNRegP += nodesArrayReg.slice(0, -2).join(", ") + 
@@ -997,8 +997,8 @@ var locationsLNNonReg = [
 const ProstateLNNonRegText = buttonElementProstateLNNonReg.innerText;
 
 if (nodesArrayNonReg.length === 0) {
-    ProstateLNNonRegP = "Nejsou patrné suspektní non-regionální lymfatické uzliny. ";
-    ProstateLNNonRegR = "Bez suspektních non-regionálních lymfatických uzlin. ";
+    ProstateLNNonRegP = "Nejsou zřetelné patologické non-regionální lymfatické uzliny. ";
+    ProstateLNNonRegR = "Bez patrných patologických non-regionálních lymfatických uzlin. ";
 } else {
     // Handling the comma and 'a' separators
     ProstateLNNonRegP += nodesArrayNonReg.slice(0, -2).join(", ") + 
@@ -1213,7 +1213,8 @@ ProstateOkR + ProstateRecidR + "\n" +
 ProstateLesion1R + "\n" +
 ProstateLesion2R + "\n" +
 ProstateLesion3R + "\n" +
-ProstateLNRegR + " " + ProstateLNNonRegR + " " + ProstateMetaR +  "\n" +
+ProstateLNRegR + " " + ProstateLNNonRegR +  "\n" +
+ProstateMetaR +  "\n" +
 ProstateTMN + ProstatemiTMN
 ;
 
@@ -1224,6 +1225,12 @@ ProstateTMN + ProstatemiTMN
 	ProstateTuRESText.value = ProstateTuRESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
 	ProstateTuRESText.value = ProstateTuRESText.value.replace(/ :/g, ':');  // odstraní mezeru před dvojtečkou
 	ProstateTuRESText.value = ProstateTuRESText.value.replace(/ \, /g, ', '); // mezera čárka na čárka
+	
+	ProstateTuRESText.value = ProstateTuRESText.value.replace(
+  /Bez patrných patologických regionálních lymfatických uzlin\. Bez patrných patologických non-regionálních lymfatických uzlin\./g,
+  "Bez patrných patologických regionálních i non-regionálních lymfatických uzlin."
+	);
+
 
 
 // FINAL
