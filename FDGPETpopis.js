@@ -3926,25 +3926,25 @@ POPNeckNative + " " +
 POPNeckLesion1 + " " + 
 POPNeckLesion2 + " " + 
 POPNeckLesion3 + " " + 
-POPNeckElse + " " + 
 POPNeckLymphNode1 + " " + 
+POPNeckElse + " " + 
 NeckOther1Priority + " " + NeckVCordsText + " " + HeadTonsilsText + " " + NeckParotidText + " " + NeckThyroidText + " " + NeckTreatmentText + " " + HeadMaxSinusText + " " + NeckOther1NoPriority + "\n" +
 "Hrudník: " + 
 POPThoraxNative + " " + 
 POPThoraxLesion1 + " " + 
 POPThoraxLesion2 + " " + 
 POPThoraxLesion3 + " " + 
-POPThoraxElse + " " + 
 ThoraxLymphNodePlusText + " " + 
 POPThoraxLymphNode1 + " " + 
+POPThoraxElse + " " + 
 ThoraxOther1Priority + " " +  ThoraxParenchymaText + " " + POPThoraxLungOk + " " + ThoraxFluidText + " " + ThoraxOesophText + " " + ThoraxMammaText + " " + ThoraxThymusText + " " + ThoraxHeartText + " " + ThoraxDevicesText + " " + ThoraxEmbolisationText + " " + ThoraxOther1NoPriority + "\n" +
 "Břicho: " + 
 POPAbdomenNative + " " + 
 POPAbdomenLesion1 + " " + 
 POPAbdomenLesion2 + " " + 
 POPAbdomenLesion3 + " " + 
-POPAbdomenElse + " " + 
 POPAbdomenLymphNode1 + " " + 
+POPAbdomenElse + " " + 
 AbdomenOther1Priority + " " + AbdomenOrgansText + " " + POPAbdomenOrgansOk + " " + AbdomenOther1NoPriority + " " + AbdomenFluidText + " " + AbdomenTestesText + " " + AbdomenWallText + " " + AbdomenVesselsText + "\n" +
 "Skelet a měkké tkáně: " + 
 POPSkeletonNative + " " + 
