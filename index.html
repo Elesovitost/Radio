@@ -16,11 +16,9 @@
 <body  class="bodyINDEX">
 
 
-<div id="SEG1">
+<div id="SEG1" class="headerBar">
 
-<button id="helpButton" class="button20" style="float: left;">?</button>
-
-	<div class="dropdown" style="float: left; margin-left: 8px;">
+	<div class="dropdown" style="float: left; margin-left: 4px;">
         <button class="button40 dropbtn">TNM</button>
         <div class="dropdown-content">
             <a href="#" onclick="changePage('TNMORL.html')">ORL</a>
@@ -30,7 +28,7 @@
         </div>
     </div>
 	
-	<div class="dropdown" style="float: left; margin-left: 8px;">
+	<div class="dropdown" style="float: left; margin-left: 4px;">
 		<button id="btnPDF" class="button40 dropbtn">PDF</button>
 	</div>
 
@@ -92,6 +90,7 @@
 	
 </div>
 
+<div id="promptSelectExam" class="noticeBar">VYBER TYP VYŠETŘENÍ...</div>
 
 <div id="page-container">
 </div>
@@ -119,14 +118,15 @@
 <div id="texty2" class="standardwidthFinalText" style="display: ; position: relative;"> 
 
   <div style="display: flex; gap: 6px; align-items: center; padding-right: 70px;">
-    <button id="copyCOMP" class="buttonTEXT">KOMPLET 📑</button> 
-    <button id="copyPOP" class="buttonTEXT">jen popis 📑</button> 
-    <button id="copyRES" class="buttonTEXT">jen závěr 📑</button> 
+    <button id="copyCOMP" class="buttonCLICK">KOMPLET 📑</button> 
+    <button id="copyPOP" class="buttonCLICK">jen popis 📑</button> 
+    <button id="copyRES" class="buttonCLICK">jen závěr 📑</button> 
   </div>
 
-	<button id="toggleEdit" class="buttonTEXT" style="position: absolute; right: 160px; top: 0px;">📝 EDIT</button>
-	<button id="checkAI" class="buttonTEXT" style="position: absolute; right: 80px; top: 0px;">🔍 CHECK</button>
-	<button id="saveButton" class="buttonTEXT" style="position: absolute; right: 0; top: 0px;">💾 SAVE</button>
+	<button id="toggleEdit" class="buttonCLICK" style="position: absolute; right: 240px; top: 0px;">📝 EDIT</button>
+	<button id="checkAI" class="buttonCLICK" style="position: absolute; right: 160px; top: 0px;">🔍 CHECK</button>
+	<button id="saveButton" class="buttonCLICK" style="position: absolute; right: 80px; top: 0px;">💾 SAVE</button>
+	<button id="loadButton" class="buttonCLICK" style="position: absolute; right: 0px; top: 0px;">📂 LOAD</button>
 
   <div id="popupMessage" style="display:none; position:relative; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold; width:300px;">
   </div>
@@ -142,6 +142,16 @@
 
 
 </div>
+
+
+<div id="helpOverlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9999;">
+  <div style="position:absolute;top:10%;left:10%;width:80%;height:80%;background:#fff;border:1px solid #000;padding:10px;box-sizing:border-box;">
+    <button class="remove-button" style="position:absolute;top:2px;left:2px;" onclick="document.getElementById('helpOverlay').style.display='none'">X</button>
+    <textarea id="backupViewer" readonly style="width:100%;height:100%;box-sizing:border-box;resize:none;overflow:auto;"></textarea>
+  </div>
+</div>
+
+
 
 
 <script>
@@ -422,6 +432,16 @@ function checkAndUpdateDivVisibility() {
 	adjustTextareaHeight(document.getElementById("FINALPOPText"));
     adjustTextareaHeight(document.getElementById("FINALRESText"));
 	adjustTextareaHeight(document.getElementById("FINALCOMPLETEText"));
+	
+	const promptBox = document.getElementById("promptSelectExam");
+	const pageContent = document.getElementById("page-container");
+
+	if (pageContent.children.length === 0) {
+	  promptBox.style.display = "block";
+	} else {
+	  promptBox.style.display = "none";
+	}
+
 }
 
 function adjustTextareaHeight(textarea) {
@@ -472,14 +492,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 					});
 			}
 		});
-
-		button.addEventListener('mousedown', function () {
-			this.style.opacity = '0.3';
-		});
-
-		button.addEventListener('mouseup', function () {
-			this.style.opacity = '1';
-		});
 	}
 
 
@@ -515,17 +527,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 // SAVE button handler
 document.getElementById('saveButton').addEventListener('click', function () {
-    const text = document.getElementById('FINALCOMPLETEText').value;
-    const blob = new Blob([text], { type: 'text/plain' });
-    const link = document.createElement('a');
+  const text = document.getElementById('FINALCOMPLETEText').value;
+  const trimmed = text.trim();
+  const blob = new Blob([trimmed], { type: 'text/plain' });
 
-    link.href = URL.createObjectURL(blob);
-    link.download = 'radio.txt';
+  // vytvoření timestampu
+  const now = new Date();
+  const datePart = now.toISOString().split("T")[0].replace(/-/g, '');       // YYYYMMDD
+  const timePart = now.toTimeString().split(" ")[0].replace(/:/g, '');      // HHMMSS
+  const filename = `${datePart}-${timePart}-radio-popis.txt`;
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  if (trimmed) {
+    appendToLocalStorageLog(trimmed, " (ručně)");
+  }
+
+  lastSavedText = trimmed;
 });
+
+
 
 // check AI
 
@@ -655,17 +682,12 @@ document.getElementById('pdfFileInput').addEventListener('change', function(even
 	
 // local storage backup
 
-// AUTOSAVE každých 10 minut do localStorage s razítkem a denní rotací
-setInterval(() => {
-  if (editMode) return;
-
+// PŘIDÁ NOVÝ ZÁZNAM A UDRŽÍ POUZE POSLEDNÍCH 10
+function appendToLocalStorageLog(text, prefix = "") {
   const key = "radioBackup";
   const now = new Date();
-  const today = now.toISOString().split("T")[0]; // yyyy-mm-dd
-  const time = now.toTimeString().split(" ")[0]; // hh:mm:ss
-  const text = document.getElementById("FINALCOMPLETEText").value.trim();
-
-  if (!text) return;
+  const today = now.toISOString().split("T")[0];
+  const time = now.toTimeString().split(" ")[0];
 
   let data = localStorage.getItem(key);
   let parsed = { date: today, logs: [] };
@@ -673,57 +695,53 @@ setInterval(() => {
   if (data) {
     try {
       parsed = JSON.parse(data);
-
-      // Pokud je nový den, začni novou zálohu
-      if (parsed.date !== today) {
-        parsed = { date: today, logs: [] };
-      }
+      if (parsed.date !== today) parsed = { date: today, logs: [] };
     } catch (e) {
-      console.warn("⚠️ Chyba při čtení záloh, resetuji.");
       parsed = { date: today, logs: [] };
     }
   }
 
-  parsed.logs.push(`[${time}]\n${text}\n\n---\n`);
+  // Přidání nového záznamu
+  parsed.logs.push(`[${time}]${prefix}\n${text}\n\n---\n`);
+
+  // Udržení max. 10 záznamů
+  if (parsed.logs.length > 10) {
+    parsed.logs = parsed.logs.slice(-10);
+  }
 
   localStorage.setItem(key, JSON.stringify(parsed));
-  console.log(`💾 Autosave @ ${time}`);
-}, 10 * 60 * 1000); // 10 minut
+}
+
+// AUTOSAVE každých 10 minut do localStorage s razítkem a denní rotací
+
+let lastSavedText = ""; // uchová poslední uložený text
+
+setInterval(() => {
+  if (editMode) return;
+
+  const text = document.getElementById("FINALCOMPLETEText").value.trim();
+  if (!text || text === lastSavedText) return;
+
+  appendToLocalStorageLog(text);
+  lastSavedText = text;
+}, 10 * 60 * 1000);
 
 
-//help
+//LOAD
 
-document.getElementById("helpButton").addEventListener("click", function() {
-  var overlay = document.createElement("div");
-  overlay.style = "position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9999";
+document.getElementById("loadButton").addEventListener("click", function () {
+  const overlay = document.getElementById("helpOverlay");
+  const viewer = document.getElementById("backupViewer");
 
-  var box = document.createElement("div");
-  box.style = "position:absolute;top:10%;left:10%;width:80%;height:80%;background:#fff;padding:20px;border:2px solid #333;overflow:auto";
+  try {
+    const backup = JSON.parse(localStorage.getItem("radioBackup") || "{}");
+    viewer.value = backup.logs ? backup.logs.join("\n") : "Žádná data.";
+  } catch (e) {
+    viewer.value = "Chyba při načítání zálohy.";
+  }
 
-  var close = document.createElement("button");
-  close.textContent = "Zavřít";
-  close.style = "position:absolute;top:10px;right:20px;padding:5px 10px";
-  close.onclick = function() { overlay.remove(); };
-
-  var title = document.createElement("h3");
-  title.innerText = "Nápověda – autosave zálohy";
-
-  var label = document.createElement("p");
-  label.innerText = "Zkopíruj tento kód a vlož do konzole (F12 → Console):";
-
-  var textarea = document.createElement("textarea");
-  textarea.readOnly = true;
-  textarea.style = "width:100%;height:100px;font-family:monospace;font-size:13px;padding:10px";
-  textarea.value = 'let backup = JSON.parse(localStorage.getItem("radioBackup") || "{}");\nconsole.log(backup.logs ? backup.logs.join("\\n") : "Žádná data.");';
-
-  box.appendChild(close);
-  box.appendChild(title);
-  box.appendChild(label);
-  box.appendChild(textarea);
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
+  overlay.style.display = "block";
 });
-
 
 	
 </script>

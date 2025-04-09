@@ -321,8 +321,8 @@ if (textsMild.length > 0) {
 // Normal 
 
 if (SegmentT12L1.trim() === "" && SegmentL1L2.trim() === "" && SegmentL2L3.trim() === "" && SegmentL3L4.trim() === "" && SegmentL4L5.trim() === "" && SegmentL5S1.trim() === "" && PelvisText.trim() === "") {
-    NativePOPText = "Bez patologicky zvýšené akumulace RF na zobrazením skeletu. ";
-	NativeRESText = "Bez patologicky zvýšené osteoblastické aktivity na zobrazením skeletu. ";
+    NativePOPText = "Bez patologicky zvýšené akumulace RF na zobrazeném skeletu. ";
+	NativeRESText = "Bez patologicky zvýšené osteoblastické aktivity na zobrazeném skeletu. ";
 } else {
     NativePOPText = "";
 	NativeRESText = "";
@@ -336,6 +336,8 @@ var NaFskeletOther1Res = document.getElementById("NaFskeletOther1Res").value;
 
 
 // POPIS
+
+NaFNAMEText.value = "PET NaF / CT skeletu";
 
 NaFPOPText.value = 
 NativePOPText + "\n" +
