@@ -27,6 +27,11 @@
 			<a href="#" onclick="changePage('TNMCervix.html')">cervix</a>
         </div>
     </div>
+	
+	<div class="dropdown" style="float: left; margin-left: 8px;">
+		<button id="btnPDF" class="button40 dropbtn">PDF</button>
+	</div>
+
 
 	<div class="dropdown">
 		<button class="dropbtn">PET/CT</button>
@@ -80,8 +85,11 @@
 	</div>
 	
 <img src="LOGO.png" alt="A beautiful landscape" class="background-image">
+
+<input type="file" id="pdfFileInput" accept=".pdf,.docx" style="display: none;">
 	
 </div>
+
 
 <div id="page-container">
 </div>
@@ -587,6 +595,59 @@ document.getElementById('toggleEdit').addEventListener('click', () => {
 });
 
 
+
+//PDF
+document.getElementById('btnPDF').addEventListener('click', function() {
+    document.getElementById('pdfFileInput').click();
+});
+
+document.getElementById('pdfFileInput').addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    if (!file) return;
+
+    // Vytvoření URL vybraného souboru
+    var fileURL = URL.createObjectURL(file);
+
+    // Vytvoření kontejneru pro zobrazení dokumentu
+    var docContainer = document.createElement('div');
+    docContainer.id = 'doc-viewer';
+    // Umístění: napravo od page-container – upravte podle potřebného layoutu
+    docContainer.style.position = 'absolute';
+    docContainer.style.top = document.getElementById('page-container').offsetTop + 'px';
+    docContainer.style.right = '0';
+    docContainer.style.width = '40%';
+    docContainer.style.height = '80%';
+    docContainer.style.border = '1px solid #ccc';
+    docContainer.style.overflow = 'auto';
+    docContainer.style.backgroundColor = '#fff';
+
+    // Vytvoření iframe pro zobrazení dokumentu
+    var iframe = document.createElement('iframe');
+    iframe.src = fileURL;
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+
+	var removeBtn = document.createElement('button');
+	removeBtn.textContent = 'X';
+	removeBtn.className = 'remove-button'; // použije se existující styl pro odebrání (červené tlačítko)
+	removeBtn.style.position = 'absolute';
+	removeBtn.style.top = '0';
+	removeBtn.style.left = '0';  // Upraveno na levý horní roh
+	removeBtn.style.zIndex = '10';
+
+	removeBtn.addEventListener('click', function() {
+		if (docContainer) {
+			docContainer.parentNode.removeChild(docContainer);
+		}
+	});
+
+    docContainer.appendChild(removeBtn);
+    docContainer.appendChild(iframe);
+
+    // Přidání kontejneru do dokumentu (můžete upravit umístění dle potřeby)
+    document.body.appendChild(docContainer);
+});
 	
 </script>
 
