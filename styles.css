@@ -53,7 +53,7 @@ body, button, input, textarea {
 
 /* BARS */
 .headerBar { background-color: rgba(157, 170, 162, 0.5); z-index: 3; max-width: 986px; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid #000000; }
-.noticeBar { background-color: rgba(157, 170, 162, 0.95); max-width: 400px; margin-top: 20px; margin-left: 500px; padding: 6px 12px; border: 1px solid #000; font-weight: bold; font-size: 12px; text-align: center; display: none; }
+.noticeBar { background-color: rgba(157, 170, 162, 0.95); max-width: 400px; margin-top: 20px; margin-left: 500px; padding: 6px 12px; border: 1px solid #000; font-weight: ; font-size: 12px; text-align: center; display: none; }
 
 .bouncingPointer { display: inline-block; font-size: 18px; animation: bounceHand 1s infinite; transform-origin: bottom center; }
 @keyframes bounceHand { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
