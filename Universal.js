@@ -39,6 +39,7 @@ function processSentence(sentence) {
 		containsExactWord("expanzePL") || 
 		containsExactWord("infiltracePL") || 
 		containsExactWord("konsolidacePL") || 
+		containsExactWord("kolekcePL") || 
 		containsExactWord("opacity") || 
 		containsExactWord("cysty") || 
 		containsExactWord("struktury") ||
@@ -68,10 +69,9 @@ const pluralForms = {
   "konsolidace": "konsolidacePL",
   "infiltrace": "infiltracePL",
   "fokus": "fokusy",
-  "kolekce": "kolekce",
+  "kolekce": "kolekcePL",
   "infiltrát": "infiltráty",
   "struktura": "struktury",
-  "kolekce v": "kolekce v",
   
   "ložisko kostní dřeně": "ložiska kostní dřeně",
   "lytické ložisko": "lytická ložiska",
