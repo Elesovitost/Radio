@@ -737,95 +737,57 @@ if (PETTypeText === "FDG") {
 
 let codeForNeckLesion1 = `
 
-  var NeckLesion1Locationtext = "";
-  for (var key in NeckLesionsLocationTexts) {
-    var right = document.getElementById('Chb1' + key + 'R').checked;
-    var left = document.getElementById('Chb1' + key + 'L').checked;
-    if (right && left) {
-      NeckLesion1Locationtext += NeckLesionsLocationTexts[key] + " bilat., ";
-    } else {
-      if (right) { NeckLesion1Locationtext += NeckLesionsLocationTexts[key] + " vpravo, "; }
-      if (left) { NeckLesion1Locationtext += NeckLesionsLocationTexts[key] + " vlevo, "; }
-    }
-  }
-  
-  NeckLesion1Locationtext = NeckLesion1Locationtext.trim();
-  if (NeckLesion1Locationtext.endsWith(',')) {
-    NeckLesion1Locationtext = NeckLesion1Locationtext.substring(0, NeckLesion1Locationtext.length - 1);
-  }
+var NeckLesion1Locationtext = ""; for (var key in NeckLesionsLocationTexts) { var right = document.getElementById('Chb1' + key + 'R').checked; var left = document.getElementById('Chb1' + key + 'L').checked; if (right && left) { NeckLesion1Locationtext += NeckLesionsLocationTexts[key] + " bilat., "; } else { if (right) NeckLesion1Locationtext += NeckLesionsLocationTexts[key] + " vpravo, "; if (left) NeckLesion1Locationtext += NeckLesionsLocationTexts[key] + " vlevo, "; } }
+NeckLesion1Locationtext = NeckLesion1Locationtext.trim(); if (NeckLesion1Locationtext.endsWith(',')) NeckLesion1Locationtext = NeckLesion1Locationtext.slice(0, -1);
+document.getElementById('NeckLesion1Location').value = NeckLesion1Locationtext;
 
-  document.getElementById('NeckLesion1Location').value = NeckLesion1Locationtext;
+var NeckLesion1Button = document.getElementById("NeckLesion1");
+var NeckLesion1typeRaw = document.getElementById("NeckLesion1type").value.trim();
+var NeckLesion1number = document.getElementById("NeckLesion1number").value;
+var NeckLesion1type = (NeckLesion1number && NeckLesion1number !== "") ? (pluralForms[NeckLesion1typeRaw] || NeckLesion1typeRaw) : NeckLesion1typeRaw;
+var NeckLesion1Location = document.getElementById("NeckLesion1Location").value;
+var NeckLesion1AddLocation = document.getElementById("NeckLesion1AddLocation").value;
+var NeckLesion1Loclargest = document.getElementById("NeckLesion1Loclargest").value;
+document.getElementById('NeckLesion1number').addEventListener('change', () => document.getElementById('NeckLesion1Large').classList.toggle('hidden', document.getElementById('NeckLesion1number').value === ""));
+var NeckLesion1Activity = document.getElementById("NeckLesion1Activity").value;
+var NeckLesion1ActivityCopy = NeckLesion1Activity;
+var NeckLesion1ActivityOption = document.getElementById("NeckLesion1Activity").selectedOptions[0];
+var NeckLesion1RESActivityRPH = NeckLesion1ActivityOption.dataset.valueRPH || '';
+var NeckLesion1RESActivityFDG = NeckLesion1ActivityOption.dataset.valueFDG || '';
+var NeckLesion1SUV = formatSUV("NeckLesion1SUV");
+var NeckLesion1Size = formatLesionSize("NeckLesion1Size");
+var NeckLesion1RESDecision = document.getElementById("NeckLesion1Decision").value;
+document.getElementById("DateCompare").addEventListener('change', () => document.getElementById("NeckLesion1Previous").classList.toggle("hidden", !document.getElementById("DateCompare").value));
+var NeckLesion1SUVPrev = formatSUV("NeckLesion1SUVPrev");
+var NeckLesion1PrevSize = formatLesionSize("NeckLesion1PrevSize");
+var NeckLesion1ComparisonText = generateComparisonText(NeckLesion1SUVPrev, NeckLesion1PrevSize, DateComparison, NeckLesion1SUV, NeckLesion1Size);
+var NeckLesion1ComparisonSUVRes = compareActRES(NeckLesion1SUV, NeckLesion1SUVPrev);
+var NeckLesion1ComparisonSizeRes = compareSizes(NeckLesion1Size, NeckLesion1PrevSize);
+var NeckLesion1CombinedResult = combineComparisonResults(NeckLesion1ComparisonSizeRes, NeckLesion1ComparisonSUVRes, NeckLesion1number);
+var NeckLesion1ActivityAdd = checkSmallSize(NeckLesion1Size, NeckLesion1SUV);
+var NeckLesion1AllLocations = (NeckLesion1Location + " " + NeckLesion1AddLocation).trim();
 
-// neck lesion1 popis
-
-	var NeckLesion1Button = document.getElementById("NeckLesion1");
-    var NeckLesion1number = document.getElementById("NeckLesion1number").value;
-    var NeckLesion1type = document.getElementById("NeckLesion1type").value.split("|");
-    var NeckLesion1Location = document.getElementById("NeckLesion1Location").value;
-	var NeckLesion1AddLocation = document.getElementById("NeckLesion1AddLocation").value;
-    var NeckLesion1Loclargest = document.getElementById("NeckLesion1Loclargest").value; 
-	var NeckLesion1Large = document.getElementById("NeckLesion1Large").value; 
-	document.getElementById('NeckLesion1number').addEventListener('change', function() {document.getElementById('NeckLesion1Large').classList.toggle('hidden', this.value === "");});
-    var NeckLesion1Activity = document.getElementById("NeckLesion1Activity").value; var NeckLesion1ActivityCopy = document.getElementById("NeckLesion1Activity").value;
-	var NeckLesion1RESActivityRPH = document.getElementById("NeckLesion1Activity"); var selectedOption = NeckLesion1RESActivityRPH.options[NeckLesion1RESActivityRPH.selectedIndex]; var NeckLesion1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
-    var NeckLesion1RESActivityFDG = document.getElementById("NeckLesion1Activity"); var selectedOption = NeckLesion1RESActivityFDG.options[NeckLesion1RESActivityFDG.selectedIndex]; var NeckLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
-	var NeckLesion1SUV = formatSUV("NeckLesion1SUV");
-    var NeckLesion1Size = formatLesionSize("NeckLesion1Size");
-	var NeckLesion1RESDecision = document.getElementById("NeckLesion1Decision").value; 
-	var NeckLesion1AllLocations = "";
-	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("NeckLesion1Previous").classList.toggle("hidden", !this.value);});
-	var NeckLesion1SUVPrev = formatSUV("NeckLesion1SUVPrev");  
-	var NeckLesion1PrevSize = formatLesionSize("NeckLesion1PrevSize");
-	var NeckLesion1AllLocations = "";
-	var NeckLesion1ComparisonText = generateComparisonText(NeckLesion1SUVPrev, NeckLesion1PrevSize, DateComparison, NeckLesion1SUV, NeckLesion1Size);
-	var NeckLesion1ComparisonSUVRes = compareActRES(NeckLesion1SUV, NeckLesion1SUVPrev);
-	var NeckLesion1ComparisonSizeRes = compareSizes(NeckLesion1Size, NeckLesion1PrevSize);
-	var NeckLesion1CombinedResult = combineComparisonResults(NeckLesion1ComparisonSizeRes, NeckLesion1ComparisonSUVRes, NeckLesion1number);
-	var NeckLesion1ActivityAdd = checkSmallSize(NeckLesion1Size, NeckLesion1SUV);
-    
-    var POPNeckLesion1 = "";
-	var RESNeckLesion1 = "";
-	
-	if (NeckLesion1Loclargest !== "") {
-		NeckLesion1Loclargest = NeckLesion1ActivityCopy + ", největší " + NeckLesion1Loclargest + " ";
-		NeckLesion1Activity = "";
-	}
-	
-	NeckLesion1AllLocations = NeckLesion1Location + " " + NeckLesion1AddLocation;
-	
-
-	if (NeckLesion1number === "") {
-		NeckLesion1type = NeckLesion1type[0];
-	} else if (NeckLesion1number !== "" && NeckLesion1Loclargest !== "") {
-		NeckLesion1type = NeckLesion1type[1];
-	} else if (NeckLesion1number !== "" && NeckLesion1Loclargest === "") {
-		NeckLesion1type = NeckLesion1type[1];
-		NeckLesion1Size = NeckLesion1Size.replace('diametru ', 'diametru až '); 
-		NeckLesion1Size = NeckLesion1Size.replace('rozměru ', 'rozměru až '); 
-		NeckLesion1ComparisonText = NeckLesion1ComparisonText.replace('diametru ', 'diametru až '); 
-		NeckLesion1ComparisonText = NeckLesion1ComparisonText.replace('rozměru ', 'rozměru až ');
-	} 	
-
-let processedSentencePOPNeckLesion1 = processSentence(NeckLesion1number + " " + NeckLesion1type);	
-POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + NeckLesion1Activity + " " + NeckLesion1ComparisonText + ".";
-// OLD SUV version: POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + (NeckLesion1SUV === "" ? NeckLesion1Activity : "") + " " + NeckLesion1SUV + " " + NeckLesion1ComparisonText + ".";
- 
-let processedSentenceRESNeckLesionFDG = processSentence(NeckLesion1number + " " + NeckLesion1RESActivityFDG + " " + NeckLesion1type);
-let processedSentenceRESNeckLesionRPH = processSentence(NeckLesion1number + " " + NeckLesion1type);
-
-if (buttonElementPETType.value === "FDG") {
-	RESNeckLesion1 = processedSentenceRESNeckLesionFDG + " " + NeckLesion1AllLocations + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
-} else {
-	RESNeckLesion1 = processedSentenceRESNeckLesionRPH + " " + NeckLesion1AllLocations + " " + NeckLesion1RESActivityRPH + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
+if (NeckLesion1Loclargest !== "") { NeckLesion1Loclargest = NeckLesion1ActivityCopy + ", největší " + NeckLesion1Loclargest + " "; NeckLesion1Activity = ""; }
+if (NeckLesion1number !== "" && NeckLesion1Loclargest === "") {
+  NeckLesion1Size = NeckLesion1Size.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
+  NeckLesion1ComparisonText = NeckLesion1ComparisonText.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
 }
 
-if (NeckLesion1RESDecision.includes("meta") && NeckLesion1type.includes("ožisk")) {RESNeckLesion1 = RESNeckLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
-if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("ožisk")) {RESNeckLesion1 = RESNeckLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
-if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("as")) {RESNeckLesion1 = RESNeckLesion1.replace(/mas/g, "tumorózní mas").replace(/Mas/g, "Tumorózní mas").replace(": charakteru tumoru", ".");}
-if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("nfiltr")) {RESNeckLesion1 = RESNeckLesion1.replace(/infiltr/g, "tumorózní infiltr").replace(/Infiltr/g, "Tumorózní infiltr").replace(": charakteru tumoru", ".");}
-if (NeckLesion1CombinedResult.includes("je nově") || NeckLesion1CombinedResult.includes("jsou nově")) { RESNeckLesion1 = "Nově " + RESNeckLesion1.charAt(0).toLowerCase() + RESNeckLesion1.substring(1) ; RESNeckLesion1 = RESNeckLesion1.replace(" je nově", "").replace(" jsou nově", "");}
+var processedSentencePOPNeckLesion1 = processSentence(NeckLesion1number + " " + NeckLesion1type);
+var POPNeckLesion1 = processedSentencePOPNeckLesion1 + " " + NeckLesion1AllLocations + " " + NeckLesion1Loclargest + " " + NeckLesion1Size + " " + NeckLesion1Activity + " " + NeckLesion1ComparisonText + ".";
+var processedSentenceRESNeckLesionFDG = processSentence(NeckLesion1number + " " + NeckLesion1RESActivityFDG + " " + NeckLesion1type);
+var processedSentenceRESNeckLesionRPH = processSentence(NeckLesion1number + " " + NeckLesion1type);
+var RESNeckLesion1 = (buttonElementPETType.value === "FDG")
+  ? processedSentenceRESNeckLesionFDG + " " + NeckLesion1AllLocations + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + "."
+  : processedSentenceRESNeckLesionRPH + " " + NeckLesion1AllLocations + " " + NeckLesion1RESActivityRPH + " " + NeckLesion1CombinedResult + " " + NeckLesion1RESDecision + " " + NeckLesion1ActivityAdd + ".";
 
-if (NeckLesion1Location ==="" && NeckLesion1AddLocation ==="") {POPNeckLesion1 = ""; RESNeckLesion1 = "";}
+if (NeckLesion1RESDecision.includes("meta") && NeckLesion1type.includes("ožisk")) RESNeckLesion1 = RESNeckLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");
+if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("ožisk")) RESNeckLesion1 = RESNeckLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");
+if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("as")) RESNeckLesion1 = RESNeckLesion1.replace(/mas/g, "tumorózní mas").replace(/Mas/g, "Tumorózní mas").replace(": charakteru tumoru", ".");
+if (NeckLesion1RESDecision.includes("tumor") && NeckLesion1type.includes("nfiltr")) RESNeckLesion1 = RESNeckLesion1.replace(/infiltr/g, "tumorózní infiltr").replace(/Infiltr/g, "Tumorózní infiltr").replace(": charakteru tumoru", ".");
+if (NeckLesion1CombinedResult.includes("je nově") || NeckLesion1CombinedResult.includes("jsou nově")) RESNeckLesion1 = "Nově " + RESNeckLesion1.charAt(0).toLowerCase() + RESNeckLesion1.substring(1).replace(" je nově", "").replace(" jsou nově", "");
+if (NeckLesion1Location === "" && NeckLesion1AddLocation === "") { POPNeckLesion1 = ""; RESNeckLesion1 = ""; }
+
 
 `;
 
@@ -941,67 +903,52 @@ document.getElementById('NeckLymphNode1Location').value = NeckLymphNode1selectLo
 
 // neck lymph node popis
 
-	var NeckLymphNode1Button = document.getElementById("NeckLymphNode1");
-    var NeckLymphNode1number = document.getElementById("NeckLymphNode1number").value;
-    var NeckLymphNode1type = document.getElementById("NeckLymphNode1type").value.split("|");
-    var NeckLymphNode1Location = document.getElementById("NeckLymphNode1Location").value;
-	var NeckLymphNode1AddLocation = document.getElementById("NeckLymphNode1AddLocation").value;
-    var NeckLymphNode1Loclargest = document.getElementById("NeckLymphNode1Loclargest").value;
-	var NeckLymphNode1Large = document.getElementById("NeckLymphNode1Large").value;
-	document.getElementById('NeckLymphNode1number').addEventListener('change', function() {document.getElementById('NeckLymphNode1Large').classList.toggle('hidden', this.value === "");});
-    var NeckLymphNode1Activity = document.getElementById("NeckLymphNode1Activity").value; var NeckLymphNode1ActivityCopy = document.getElementById("NeckLymphNode1Activity").value;
-	var NeckLymphNode1RESActivityRPH = document.getElementById("NeckLymphNode1Activity"); var selectedOption = NeckLymphNode1RESActivityRPH.options[NeckLymphNode1RESActivityRPH.selectedIndex]; var NeckLymphNode1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
-	var NeckLymphNode1RESActivityFDG = document.getElementById("NeckLymphNode1Activity"); var selectedOption = NeckLymphNode1RESActivityFDG.options[NeckLymphNode1RESActivityFDG.selectedIndex]; var NeckLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
-    var NeckLymphNode1SUV = formatSUV("NeckLymphNode1SUV");
-    var NeckLymphNode1Size = formatLymphNodeSize("NeckLymphNode1Size");
-	var NeckLymphNode1RESDecision = document.getElementById("NeckLymphNode1Decision"); var selectedOption = NeckLymphNode1RESDecision.options[NeckLymphNode1RESDecision.selectedIndex]; var NeckLymphNode1RESDecision = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
-	var NeckLymphNode1AllLocations = "";
-	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("NeckLymphNode1Previous").classList.toggle("hidden", !this.value);});
-	var NeckLymphNode1SUVPrev = formatSUV("NeckLymphNode1SUVPrev");  
-	var NeckLymphNode1PrevSize = formatLymphNodeSize("NeckLymphNode1PrevSize");
-	var NeckLymphNode1ComparisonText = generateComparisonText(NeckLymphNode1SUVPrev, NeckLymphNode1PrevSize, DateComparison, NeckLymphNode1SUV, NeckLymphNode1Size);
-	var NeckLymphNode1ComparisonSUVRes = compareActRES(NeckLymphNode1SUV, NeckLymphNode1SUVPrev);
-	var NeckLymphNode1ComparisonSizeRes = compareSizes(NeckLymphNode1Size, NeckLymphNode1PrevSize);
-	var NeckLymphNode1CombinedResult = combineComparisonResults(NeckLymphNode1ComparisonSizeRes, NeckLymphNode1ComparisonSUVRes, NeckLymphNode1number);
+var NeckLymphNode1Button = document.getElementById("NeckLymphNode1");
+var NeckLymphNode1number = document.getElementById("NeckLymphNode1number").value;
+var NeckLymphNode1typeRaw = document.getElementById("NeckLymphNode1type").value.trim();
+var NeckLymphNode1type = (NeckLymphNode1number && NeckLymphNode1number !== "") ? (pluralForms[NeckLymphNode1typeRaw] || NeckLymphNode1typeRaw) : NeckLymphNode1typeRaw;
+var NeckLymphNode1Location = document.getElementById("NeckLymphNode1Location").value;
+var NeckLymphNode1AddLocation = document.getElementById("NeckLymphNode1AddLocation").value;
+var NeckLymphNode1Loclargest = document.getElementById("NeckLymphNode1Loclargest").value;
+var NeckLymphNode1Large = document.getElementById("NeckLymphNode1Large").value;
+document.getElementById('NeckLymphNode1number').addEventListener('change', () => document.getElementById('NeckLymphNode1Large').classList.toggle('hidden', document.getElementById('NeckLymphNode1number').value === ""));
+var NeckLymphNode1Activity = document.getElementById("NeckLymphNode1Activity").value;
+var NeckLymphNode1ActivityCopy = NeckLymphNode1Activity;
+var selectedOption = document.getElementById("NeckLymphNode1Activity").selectedOptions[0];
+var NeckLymphNode1RESActivityRPH = selectedOption.dataset.valueRPH || '';
+var NeckLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG || '';
+var NeckLymphNode1SUV = formatSUV("NeckLymphNode1SUV");
+var NeckLymphNode1Size = formatLymphNodeSize("NeckLymphNode1Size");
+var selectedDecisionOption = document.getElementById("NeckLymphNode1Decision").selectedOptions[0];
+var NeckLymphNode1RESDecision = selectedDecisionOption.dataset.valueRPH || '';
+var NeckLymphNode1SUVPrev = formatSUV("NeckLymphNode1SUVPrev");
+var NeckLymphNode1PrevSize = formatLymphNodeSize("NeckLymphNode1PrevSize");
+var NeckLymphNode1ComparisonText = generateComparisonText(NeckLymphNode1SUVPrev, NeckLymphNode1PrevSize, DateComparison, NeckLymphNode1SUV, NeckLymphNode1Size);
+var NeckLymphNode1ComparisonSUVRes = compareActRES(NeckLymphNode1SUV, NeckLymphNode1SUVPrev);
+var NeckLymphNode1ComparisonSizeRes = compareSizes(NeckLymphNode1Size, NeckLymphNode1PrevSize);
+var NeckLymphNode1CombinedResult = combineComparisonResults(NeckLymphNode1ComparisonSizeRes, NeckLymphNode1ComparisonSUVRes, NeckLymphNode1number);
+document.getElementById("DateCompare").addEventListener('change', () => document.getElementById("NeckLymphNode1Previous").classList.toggle("hidden", !document.getElementById("DateCompare").value));
 
-    var POPNeckLymphNode1 = "";
-	var RESNeckLymphNode1 = "";
-	
-	if (NeckLymphNode1Loclargest !== "") {
-		NeckLymphNode1Loclargest = NeckLymphNode1ActivityCopy + ", největší " + NeckLymphNode1Loclargest + " ";
-		NeckLymphNode1Activity = "";
-	}
-	    
-	NeckLymphNode1AllLocations = NeckLymphNode1Location + " " + NeckLymphNode1AddLocation;
-	
-	if (NeckLymphNode1number === "") {
-		NeckLymphNode1type = NeckLymphNode1type[0];
-	} else if (NeckLymphNode1number !== "" && NeckLymphNode1Loclargest !== "") {
-		NeckLymphNode1type = NeckLymphNode1type[1];
-	} else if (NeckLymphNode1number !== "" && NeckLymphNode1Loclargest === "") {
-		NeckLymphNode1type = NeckLymphNode1type[1];
-		NeckLymphNode1Size = NeckLymphNode1Size.replace('diametru ', 'diametru až '); 
-		NeckLymphNode1Size = NeckLymphNode1Size.replace('rozměru ', 'rozměru až '); 
-		NeckLymphNode1ComparisonText = NeckLymphNode1ComparisonText.replace('diametru ', 'diametru až '); 
-		NeckLymphNode1ComparisonText = NeckLymphNode1ComparisonText.replace('rozměru ', 'rozměru až ');
-	} 	
-
-let processedSentencePOPNeckLymphNode1 = processSentence(NeckLymphNode1number + " " + NeckLymphNode1type);	
-POPNeckLymphNode1 = processedSentencePOPNeckLymphNode1 + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1Loclargest + " " + NeckLymphNode1Size + " " + NeckLymphNode1Activity + " " + NeckLymphNode1ComparisonText + ".";
-
-
-let processedSentenceRESNeckLymphNodeFDG = processSentence(NeckLymphNode1number + " " + NeckLymphNode1RESActivityFDG + " " + NeckLymphNode1type);
-let processedSentenceRESNeckLymphNodeRPH = processSentence(NeckLymphNode1number + " " + NeckLymphNode1type);
-
-if (buttonElementPETType.value === "FDG") {
-	RESNeckLymphNode1 = processedSentenceRESNeckLymphNodeFDG + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1CombinedResult + " " + NeckLymphNode1RESDecision + ".";
-} else {
-	RESNeckLymphNode1 = processedSentenceRESNeckLymphNodeRPH + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1RESActivityRPH + " " + NeckLymphNode1CombinedResult + " " + NeckLymphNode1RESDecision + ".";
+var NeckLymphNode1AllLocations = (NeckLymphNode1Location + " " + NeckLymphNode1AddLocation).trim();
+if (NeckLymphNode1Loclargest !== "") { NeckLymphNode1Loclargest = NeckLymphNode1ActivityCopy + ", největší " + NeckLymphNode1Loclargest + " "; NeckLymphNode1Activity = ""; }
+if (NeckLymphNode1number !== "" && NeckLymphNode1Loclargest === "") {
+  NeckLymphNode1Size = NeckLymphNode1Size.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
+  NeckLymphNode1ComparisonText = NeckLymphNode1ComparisonText.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
 }
-    
-if (NeckLymphNode1Location === "" && NeckLymphNode1AddLocation === "") { POPNeckLymphNode1 = ""; RESNeckLymphNode1 = ""; }
 
-if (NeckLymphNode1CombinedResult.includes("je nově") || NeckLymphNode1CombinedResult.includes("jsou nově")) { RESNeckLymphNode1 = "Nově " + RESNeckLymphNode1.charAt(0).toLowerCase() + RESNeckLymphNode1.substring(1) ; RESNeckLymphNode1 = RESNeckLymphNode1.replace(" je nově", "").replace(" jsou nově", "");}
+var processedSentencePOPNeckLymphNode1 = processSentence(NeckLymphNode1number + " " + NeckLymphNode1type);
+var POPNeckLymphNode1 = processedSentencePOPNeckLymphNode1 + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1Loclargest + " " + NeckLymphNode1Size + " " + NeckLymphNode1Activity + " " + NeckLymphNode1ComparisonText + ".";
+var processedSentenceRESNeckLymphNodeFDG = processSentence(NeckLymphNode1number + " " + NeckLymphNode1RESActivityFDG + " " + NeckLymphNode1type);
+var processedSentenceRESNeckLymphNodeRPH = processSentence(NeckLymphNode1number + " " + NeckLymphNode1type);
+var RESNeckLymphNode1 = (buttonElementPETType.value === "FDG")
+  ? processedSentenceRESNeckLymphNodeFDG + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1CombinedResult + " " + NeckLymphNode1RESDecision + "."
+  : processedSentenceRESNeckLymphNodeRPH + " " + NeckLymphNode1AllLocations + " " + NeckLymphNode1RESActivityRPH + " " + NeckLymphNode1CombinedResult + " " + NeckLymphNode1RESDecision + ".";
+
+if (NeckLymphNode1Location === "" && NeckLymphNode1AddLocation === "") { POPNeckLymphNode1 = ""; RESNeckLymphNode1 = ""; }
+if (NeckLymphNode1CombinedResult.includes("je nově") || NeckLymphNode1CombinedResult.includes("jsou nově")) {
+  RESNeckLymphNode1 = "Nově " + RESNeckLymphNode1.charAt(0).toLowerCase() + RESNeckLymphNode1.substring(1);
+  RESNeckLymphNode1 = RESNeckLymphNode1.replace(" je nově", "").replace(" jsou nově", "");
+}
 
 
 // neck others 
@@ -1429,65 +1376,46 @@ document.getElementById('ThoraxLesion1Location').value = ThoraxLesion1Locationte
 
 // Thorax lesion1 popis
 
-	var ThoraxLesion1Button = document.getElementById("ThoraxLesion1");
-    var ThoraxLesion1number = document.getElementById("ThoraxLesion1number").value;
-    var ThoraxLesion1type = document.getElementById("ThoraxLesion1type").value.split("|");
-    var ThoraxLesion1Location = document.getElementById("ThoraxLesion1Location").value;
-	var ThoraxLesion1AddLocation = document.getElementById("ThoraxLesion1AddLocation").value;
-    var ThoraxLesion1Loclargest = document.getElementById("ThoraxLesion1Loclargest").value; 
-	var ThoraxLesion1Large = document.getElementById("ThoraxLesion1Large").value;
-	document.getElementById('ThoraxLesion1number').addEventListener('change', function() {document.getElementById('ThoraxLesion1Large').classList.toggle('hidden', this.value === "");});
-    var ThoraxLesion1Activity = document.getElementById("ThoraxLesion1Activity").value; var ThoraxLesion1ActivityCopy = document.getElementById("ThoraxLesion1Activity").value;
-	var ThoraxLesion1RESActivityRPH = document.getElementById("ThoraxLesion1Activity"); var selectedOption = ThoraxLesion1RESActivityRPH.options[ThoraxLesion1RESActivityRPH.selectedIndex]; var ThoraxLesion1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
-    var ThoraxLesion1RESActivityFDG = document.getElementById("ThoraxLesion1Activity"); var selectedOption = ThoraxLesion1RESActivityFDG.options[ThoraxLesion1RESActivityFDG.selectedIndex]; var ThoraxLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
-	var ThoraxLesion1SUV = formatSUV("ThoraxLesion1SUV");
-    var ThoraxLesion1Size = formatLesionSize("ThoraxLesion1Size");
-	var ThoraxLesion1RESDecision = document.getElementById("ThoraxLesion1Decision").value; 
-	var ThoraxLesion1AllLocations = "";
-	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("ThoraxLesion1Previous").classList.toggle("hidden", !this.value);});
-	var ThoraxLesion1SUVPrev = formatSUV("ThoraxLesion1SUVPrev");  
-	var ThoraxLesion1PrevSize = formatLesionSize("ThoraxLesion1PrevSize");
-	var ThoraxLesion1AllLocations = "";
-	var ThoraxLesion1ComparisonText = generateComparisonText(ThoraxLesion1SUVPrev, ThoraxLesion1PrevSize, DateComparison, ThoraxLesion1SUV, ThoraxLesion1Size);
-	var ThoraxLesion1ComparisonSUVRes = compareActRES(ThoraxLesion1SUV, ThoraxLesion1SUVPrev);
-	var ThoraxLesion1ComparisonSizeRes = compareSizes(ThoraxLesion1Size, ThoraxLesion1PrevSize);
-	var ThoraxLesion1CombinedResult = combineComparisonResults(ThoraxLesion1ComparisonSizeRes, ThoraxLesion1ComparisonSUVRes, ThoraxLesion1number);
-	var ThoraxLesion1ActivityAdd = checkSmallSize(ThoraxLesion1Size, ThoraxLesion1SUV);
-    
-    var POPThoraxLesion1 = "";
-	var RESThoraxLesion1 = "";
-	
-	if (ThoraxLesion1Loclargest !== "") {
-		ThoraxLesion1Loclargest = ThoraxLesion1ActivityCopy + ", největší " + ThoraxLesion1Loclargest + " ";
-		ThoraxLesion1Activity = "";
-	}
-	
-	ThoraxLesion1AllLocations = ThoraxLesion1Location + " " + ThoraxLesion1AddLocation;
-	
+var ThoraxLesion1Button = document.getElementById("ThoraxLesion1");
+var ThoraxLesion1typeRaw = document.getElementById("ThoraxLesion1type").value.trim();
+var ThoraxLesion1number = document.getElementById("ThoraxLesion1number").value;
+var ThoraxLesion1type = (ThoraxLesion1number && ThoraxLesion1number !== "") ? (pluralForms[ThoraxLesion1typeRaw] || ThoraxLesion1typeRaw) : ThoraxLesion1typeRaw;
+var ThoraxLesion1Location = document.getElementById("ThoraxLesion1Location").value;
+var ThoraxLesion1AddLocation = document.getElementById("ThoraxLesion1AddLocation").value;
+var ThoraxLesion1Loclargest = document.getElementById("ThoraxLesion1Loclargest").value;
+document.getElementById('ThoraxLesion1number').addEventListener('change', () => document.getElementById('ThoraxLesion1Large').classList.toggle('hidden', document.getElementById('ThoraxLesion1number').value === ""));
+var ThoraxLesion1Activity = document.getElementById("ThoraxLesion1Activity").value;
+var ThoraxLesion1ActivityCopy = ThoraxLesion1Activity;
+var ThoraxLesion1ActivityOption = document.getElementById("ThoraxLesion1Activity").selectedOptions[0];
+var ThoraxLesion1RESActivityRPH = ThoraxLesion1ActivityOption.dataset.valueRPH || '';
+var ThoraxLesion1RESActivityFDG = ThoraxLesion1ActivityOption.dataset.valueFDG || '';
+var ThoraxLesion1SUV = formatSUV("ThoraxLesion1SUV");
+var ThoraxLesion1Size = formatLesionSize("ThoraxLesion1Size");
+var ThoraxLesion1RESDecision = document.getElementById("ThoraxLesion1Decision").value;
+document.getElementById("DateCompare").addEventListener('change', () => document.getElementById("ThoraxLesion1Previous").classList.toggle("hidden", !document.getElementById("DateCompare").value));
+var ThoraxLesion1SUVPrev = formatSUV("ThoraxLesion1SUVPrev");
+var ThoraxLesion1PrevSize = formatLesionSize("ThoraxLesion1PrevSize");
+var ThoraxLesion1ComparisonText = generateComparisonText(ThoraxLesion1SUVPrev, ThoraxLesion1PrevSize, DateComparison, ThoraxLesion1SUV, ThoraxLesion1Size);
+var ThoraxLesion1ComparisonSUVRes = compareActRES(ThoraxLesion1SUV, ThoraxLesion1SUVPrev);
+var ThoraxLesion1ComparisonSizeRes = compareSizes(ThoraxLesion1Size, ThoraxLesion1PrevSize);
+var ThoraxLesion1CombinedResult = combineComparisonResults(ThoraxLesion1ComparisonSizeRes, ThoraxLesion1ComparisonSUVRes, ThoraxLesion1number);
+var ThoraxLesion1ActivityAdd = checkSmallSize(ThoraxLesion1Size, ThoraxLesion1SUV);
+var ThoraxLesion1AllLocations = (ThoraxLesion1Location + " " + ThoraxLesion1AddLocation).trim();
 
-	if (ThoraxLesion1number === "") {
-		ThoraxLesion1type = ThoraxLesion1type[0];
-	} else if (ThoraxLesion1number !== "" && ThoraxLesion1Loclargest !== "") {
-		ThoraxLesion1type = ThoraxLesion1type[1];
-	} else if (ThoraxLesion1number !== "" && ThoraxLesion1Loclargest === "") {
-		ThoraxLesion1type = ThoraxLesion1type[1];
-		ThoraxLesion1Size = ThoraxLesion1Size.replace('diametru ', 'diametru až '); 
-		ThoraxLesion1Size = ThoraxLesion1Size.replace('rozměru ', 'rozměru až '); 
-		ThoraxLesion1ComparisonText = ThoraxLesion1ComparisonText.replace('diametru ', 'diametru až '); 
-		ThoraxLesion1ComparisonText = ThoraxLesion1ComparisonText.replace('rozměru ', 'rozměru až ');
-	} 	
-
-let processedSentencePOPThoraxLesion1 = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);	
-POPThoraxLesion1 = processedSentencePOPThoraxLesion1 + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1Loclargest + " " + ThoraxLesion1Size + " " + ThoraxLesion1Activity + " " + ThoraxLesion1ComparisonText + ".";
-
-let processedSentenceRESThoraxLesionFDG = processSentence(ThoraxLesion1number + " " + ThoraxLesion1RESActivityFDG + " " + ThoraxLesion1type);
-let processedSentenceRESThoraxLesionRPH = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);
-
-if (buttonElementPETType.value === "FDG") {
-	RESThoraxLesion1 = processedSentenceRESThoraxLesionFDG + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + ".";
-} else {
-	RESThoraxLesion1 = processedSentenceRESThoraxLesionRPH + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1RESActivityRPH + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + ".";
+if (ThoraxLesion1Loclargest !== "") { ThoraxLesion1Loclargest = ThoraxLesion1ActivityCopy + ", největší " + ThoraxLesion1Loclargest + " "; ThoraxLesion1Activity = ""; }
+if (ThoraxLesion1number !== "" && ThoraxLesion1Loclargest === "") {
+  ThoraxLesion1Size = ThoraxLesion1Size.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
+  ThoraxLesion1ComparisonText = ThoraxLesion1ComparisonText.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
 }
+
+var processedSentencePOPThoraxLesion1 = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);
+var POPThoraxLesion1 = processedSentencePOPThoraxLesion1 + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1Loclargest + " " + ThoraxLesion1Size + " " + ThoraxLesion1Activity + " " + ThoraxLesion1ComparisonText + ".";
+var processedSentenceRESThoraxLesionFDG = processSentence(ThoraxLesion1number + " " + ThoraxLesion1RESActivityFDG + " " + ThoraxLesion1type);
+var processedSentenceRESThoraxLesionRPH = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);
+var RESThoraxLesion1 = (buttonElementPETType.value === "FDG")
+  ? processedSentenceRESThoraxLesionFDG + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + " " + ThoraxLesion1ActivityAdd + "."
+  : processedSentenceRESThoraxLesionRPH + " " + ThoraxLesion1AllLocations + " " + ThoraxLesion1RESActivityRPH + " " + ThoraxLesion1CombinedResult + " " + ThoraxLesion1RESDecision + " " + ThoraxLesion1ActivityAdd + ".";
+
 
 if (ThoraxLesion1RESDecision.includes("meta") && ThoraxLesion1type.includes("ožisk")) {RESThoraxLesion1 = RESThoraxLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 if (ThoraxLesion1RESDecision.includes("tumor") && ThoraxLesion1type.includes("ožisk")) {RESThoraxLesion1 = RESThoraxLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
@@ -1615,66 +1543,52 @@ if (segments.length === 2) {
 
 // Thorax lymph node popis
 
-	var ThoraxLymphNode1Button = document.getElementById("ThoraxLymphNode1");
-    var ThoraxLymphNode1number = document.getElementById("ThoraxLymphNode1number").value;
-    var ThoraxLymphNode1type = document.getElementById("ThoraxLymphNode1type").value.split("|");
-    var ThoraxLymphNode1Location = document.getElementById("ThoraxLymphNode1Location").value;
-	var ThoraxLymphNode1AddLocation = document.getElementById("ThoraxLymphNode1AddLocation").value;
-    var ThoraxLymphNode1Loclargest = document.getElementById("ThoraxLymphNode1Loclargest").value;
-	var ThoraxLymphNode1Large = document.getElementById("ThoraxLymphNode1Large").value;
-	document.getElementById('ThoraxLymphNode1number').addEventListener('change', function() {document.getElementById('ThoraxLymphNode1Large').classList.toggle('hidden', this.value === "");});
-    var ThoraxLymphNode1Activity = document.getElementById("ThoraxLymphNode1Activity").value; var ThoraxLymphNode1ActivityCopy = document.getElementById("ThoraxLymphNode1Activity").value;
-	var ThoraxLymphNode1RESActivityRPH = document.getElementById("ThoraxLymphNode1Activity"); var selectedOption = ThoraxLymphNode1RESActivityRPH.options[ThoraxLymphNode1RESActivityRPH.selectedIndex]; var ThoraxLymphNode1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
-	var ThoraxLymphNode1RESActivityFDG = document.getElementById("ThoraxLymphNode1Activity"); var selectedOption = ThoraxLymphNode1RESActivityFDG.options[ThoraxLymphNode1RESActivityFDG.selectedIndex]; var ThoraxLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
-    var ThoraxLymphNode1SUV = formatSUV("ThoraxLymphNode1SUV");
-    var ThoraxLymphNode1Size = formatLymphNodeSize("ThoraxLymphNode1Size");
-	var ThoraxLymphNode1RESDecision = document.getElementById("ThoraxLymphNode1Decision"); var selectedOption = ThoraxLymphNode1RESDecision.options[ThoraxLymphNode1RESDecision.selectedIndex]; var ThoraxLymphNode1RESDecision = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
-	var ThoraxLymphNode1AllLocations = "";
-	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("ThoraxLymphNode1Previous").classList.toggle("hidden", !this.value);});
-	var ThoraxLymphNode1SUVPrev = formatSUV("ThoraxLymphNode1SUVPrev");  
-	var ThoraxLymphNode1PrevSize = formatLymphNodeSize("ThoraxLymphNode1PrevSize");
-	var ThoraxLymphNode1ComparisonText = generateComparisonText(ThoraxLymphNode1SUVPrev, ThoraxLymphNode1PrevSize, DateComparison, ThoraxLymphNode1SUV, ThoraxLymphNode1Size);
-	var ThoraxLymphNode1ComparisonSUVRes = compareActRES(ThoraxLymphNode1SUV, ThoraxLymphNode1SUVPrev);
-	var ThoraxLymphNode1ComparisonSizeRes = compareSizes(ThoraxLymphNode1Size, ThoraxLymphNode1PrevSize);
-	var ThoraxLymphNode1CombinedResult = combineComparisonResults(ThoraxLymphNode1ComparisonSizeRes, ThoraxLymphNode1ComparisonSUVRes, ThoraxLymphNode1number);
+var ThoraxLymphNode1Button = document.getElementById("ThoraxLymphNode1");
+var ThoraxLymphNode1number = document.getElementById("ThoraxLymphNode1number").value;
+var ThoraxLymphNode1typeRaw = document.getElementById("ThoraxLymphNode1type").value.trim();
+var ThoraxLymphNode1type = (ThoraxLymphNode1number && ThoraxLymphNode1number !== "") ? (pluralForms[ThoraxLymphNode1typeRaw] || ThoraxLymphNode1typeRaw) : ThoraxLymphNode1typeRaw;
+var ThoraxLymphNode1Location = document.getElementById("ThoraxLymphNode1Location").value;
+var ThoraxLymphNode1AddLocation = document.getElementById("ThoraxLymphNode1AddLocation").value;
+var ThoraxLymphNode1Loclargest = document.getElementById("ThoraxLymphNode1Loclargest").value;
+var ThoraxLymphNode1Large = document.getElementById("ThoraxLymphNode1Large").value;
+document.getElementById('ThoraxLymphNode1number').addEventListener('change', () => document.getElementById('ThoraxLymphNode1Large').classList.toggle('hidden', ThoraxLymphNode1number === ""));
+var ThoraxLymphNode1Activity = document.getElementById("ThoraxLymphNode1Activity").value;
+var ThoraxLymphNode1ActivityCopy = ThoraxLymphNode1Activity;
+var selectedOption = document.getElementById("ThoraxLymphNode1Activity").selectedOptions[0];
+var ThoraxLymphNode1RESActivityRPH = selectedOption.dataset.valueRPH || '';
+var ThoraxLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG || '';
+var ThoraxLymphNode1SUV = formatSUV("ThoraxLymphNode1SUV");
+var ThoraxLymphNode1Size = formatLymphNodeSize("ThoraxLymphNode1Size");
+var selectedDecisionOption = document.getElementById("ThoraxLymphNode1Decision").selectedOptions[0];
+var ThoraxLymphNode1RESDecision = selectedDecisionOption.dataset.valueRPH || '';
+var ThoraxLymphNode1SUVPrev = formatSUV("ThoraxLymphNode1SUVPrev");
+var ThoraxLymphNode1PrevSize = formatLymphNodeSize("ThoraxLymphNode1PrevSize");
+var ThoraxLymphNode1ComparisonText = generateComparisonText(ThoraxLymphNode1SUVPrev, ThoraxLymphNode1PrevSize, DateComparison, ThoraxLymphNode1SUV, ThoraxLymphNode1Size);
+var ThoraxLymphNode1ComparisonSUVRes = compareActRES(ThoraxLymphNode1SUV, ThoraxLymphNode1SUVPrev);
+var ThoraxLymphNode1ComparisonSizeRes = compareSizes(ThoraxLymphNode1Size, ThoraxLymphNode1PrevSize);
+var ThoraxLymphNode1CombinedResult = combineComparisonResults(ThoraxLymphNode1ComparisonSizeRes, ThoraxLymphNode1ComparisonSUVRes, ThoraxLymphNode1number);
+document.getElementById("DateCompare").addEventListener('change', () => document.getElementById("ThoraxLymphNode1Previous").classList.toggle("hidden", !document.getElementById("DateCompare").value));
 
-    var POPThoraxLymphNode1 = "";
-	var RESThoraxLymphNode1 = "";
-	
-	if (ThoraxLymphNode1Loclargest !== "") {
-		ThoraxLymphNode1Loclargest = ThoraxLymphNode1ActivityCopy + ", největší " + ThoraxLymphNode1Loclargest + " ";
-		ThoraxLymphNode1Activity = "";
-	}
-	    
-	ThoraxLymphNode1AllLocations = ThoraxLymphNode1Location + " " + ThoraxLymphNode1AddLocation;
-	
-	if (ThoraxLymphNode1number === "") {
-		ThoraxLymphNode1type = ThoraxLymphNode1type[0];
-	} else if (ThoraxLymphNode1number !== "" && ThoraxLymphNode1Loclargest !== "") {
-		ThoraxLymphNode1type = ThoraxLymphNode1type[1];
-	} else if (ThoraxLymphNode1number !== "" && ThoraxLymphNode1Loclargest === "") {
-		ThoraxLymphNode1type = ThoraxLymphNode1type[1];
-		ThoraxLymphNode1Size = ThoraxLymphNode1Size.replace('diametru ', 'diametru až '); 
-		ThoraxLymphNode1Size = ThoraxLymphNode1Size.replace('rozměru ', 'rozměru až '); 
-		ThoraxLymphNode1ComparisonText = ThoraxLymphNode1ComparisonText.replace('diametru ', 'diametru až '); 
-		ThoraxLymphNode1ComparisonText = ThoraxLymphNode1ComparisonText.replace('rozměru ', 'rozměru až ');
-	} 	
-
-let processedSentencePOPThoraxLymphNode1 = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1type);	
-POPThoraxLymphNode1 = processedSentencePOPThoraxLymphNode1 + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1Loclargest + " " + ThoraxLymphNode1Size + " " + ThoraxLymphNode1Activity + " " + ThoraxLymphNode1ComparisonText + ".";
-
-let processedSentenceRESThoraxLymphNodeFDG = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1RESActivityFDG + " " + ThoraxLymphNode1type);
-let processedSentenceRESThoraxLymphNodeRPH = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1type);
-
-if (buttonElementPETType.value === "FDG") {
-	RESThoraxLymphNode1 = processedSentenceRESThoraxLymphNodeFDG + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1CombinedResult + " " + ThoraxLymphNode1RESDecision + ".";
-} else {
-	RESThoraxLymphNode1 = processedSentenceRESThoraxLymphNodeRPH + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1RESActivityRPH + " " + ThoraxLymphNode1CombinedResult + " " + ThoraxLymphNode1RESDecision + ".";
+var ThoraxLymphNode1AllLocations = (ThoraxLymphNode1Location + " " + ThoraxLymphNode1AddLocation).trim();
+if (ThoraxLymphNode1Loclargest !== "") { ThoraxLymphNode1Loclargest = ThoraxLymphNode1ActivityCopy + ", největší " + ThoraxLymphNode1Loclargest + " "; ThoraxLymphNode1Activity = ""; }
+if (ThoraxLymphNode1number !== "" && ThoraxLymphNode1Loclargest === "") {
+  ThoraxLymphNode1Size = ThoraxLymphNode1Size.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
+  ThoraxLymphNode1ComparisonText = ThoraxLymphNode1ComparisonText.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
 }
 
-if (ThoraxLymphNode1Location === "" && ThoraxLymphNode1AddLocation === "") { POPThoraxLymphNode1 = ""; RESThoraxLymphNode1 = ""; }
+var processedSentencePOPThoraxLymphNode1 = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1type);
+var POPThoraxLymphNode1 = processedSentencePOPThoraxLymphNode1 + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1Loclargest + " " + ThoraxLymphNode1Size + " " + ThoraxLymphNode1Activity + " " + ThoraxLymphNode1ComparisonText + ".";
+var processedSentenceRESThoraxLymphNodeFDG = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1RESActivityFDG + " " + ThoraxLymphNode1type);
+var processedSentenceRESThoraxLymphNodeRPH = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1type);
+var RESThoraxLymphNode1 = (buttonElementPETType.value === "FDG")
+  ? processedSentenceRESThoraxLymphNodeFDG + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1CombinedResult + " " + ThoraxLymphNode1RESDecision + "."
+  : processedSentenceRESThoraxLymphNodeRPH + " " + ThoraxLymphNode1AllLocations + " " + ThoraxLymphNode1RESActivityRPH + " " + ThoraxLymphNode1CombinedResult + " " + ThoraxLymphNode1RESDecision + ".";
 
-if (ThoraxLymphNode1CombinedResult.includes("je nově") || ThoraxLymphNode1CombinedResult.includes("jsou nově")) { RESThoraxLymphNode1 = "Nově " + RESThoraxLymphNode1.charAt(0).toLowerCase() + RESThoraxLymphNode1.substring(1) ; RESThoraxLymphNode1 = RESThoraxLymphNode1.replace(" je nově", "").replace(" jsou nově", "");}
+if (ThoraxLymphNode1Location === "" && ThoraxLymphNode1AddLocation === "") { POPThoraxLymphNode1 = ""; RESThoraxLymphNode1 = ""; }
+if (ThoraxLymphNode1CombinedResult.includes("je nově") || ThoraxLymphNode1CombinedResult.includes("jsou nově")) {
+  RESThoraxLymphNode1 = "Nově " + RESThoraxLymphNode1.charAt(0).toLowerCase() + RESThoraxLymphNode1.substring(1);
+  RESThoraxLymphNode1 = RESThoraxLymphNode1.replace(" je nově", "").replace(" jsou nově", "");
+}
 
 
 // THORAX OTHERS
@@ -2499,63 +2413,45 @@ document.getElementById('AbdomenLesion1Location').value = AbdomenLesion1Location
 
 // Abdomen lesion1 popis
 
-	var AbdomenLesion1Button = document.getElementById("AbdomenLesion1");
-    var AbdomenLesion1number = document.getElementById("AbdomenLesion1number").value;
-    var AbdomenLesion1type = document.getElementById("AbdomenLesion1type").value.split("|");
-    var AbdomenLesion1Location = document.getElementById("AbdomenLesion1Location").value;
-	var AbdomenLesion1AddLocation = document.getElementById("AbdomenLesion1AddLocation").value;
-    var AbdomenLesion1Loclargest = document.getElementById("AbdomenLesion1Loclargest").value;
-	var AbdomenLesion1Large = document.getElementById("AbdomenLesion1Large").value;
-	document.getElementById('AbdomenLesion1number').addEventListener('change', function() {document.getElementById('AbdomenLesion1Large').classList.toggle('hidden', this.value === "");});
-    var AbdomenLesion1Activity = document.getElementById("AbdomenLesion1Activity").value; var AbdomenLesion1ActivityCopy = document.getElementById("AbdomenLesion1Activity").value;
-	var AbdomenLesion1RESActivityRPH = document.getElementById("AbdomenLesion1Activity"); var selectedOption = AbdomenLesion1RESActivityRPH.options[AbdomenLesion1RESActivityRPH.selectedIndex]; var AbdomenLesion1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
-    var AbdomenLesion1RESActivityFDG = document.getElementById("AbdomenLesion1Activity"); var selectedOption = AbdomenLesion1RESActivityFDG.options[AbdomenLesion1RESActivityFDG.selectedIndex]; var AbdomenLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
-	var AbdomenLesion1SUV = formatSUV("AbdomenLesion1SUV");
-    var AbdomenLesion1Size = formatLesionSize("AbdomenLesion1Size");
-	var AbdomenLesion1RESDecision = document.getElementById("AbdomenLesion1Decision").value; 
-	var AbdomenLesion1AllLocations = "";
-	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("AbdomenLesion1Previous").classList.toggle("hidden", !this.value);});
-	var AbdomenLesion1SUVPrev = formatSUV("AbdomenLesion1SUVPrev");  
-	var AbdomenLesion1PrevSize = formatLesionSize("AbdomenLesion1PrevSize");
-	var AbdomenLesion1ComparisonText = generateComparisonText(AbdomenLesion1SUVPrev, AbdomenLesion1PrevSize, DateComparison, AbdomenLesion1SUV, AbdomenLesion1Size);
-	var AbdomenLesion1ComparisonSUVRes = compareActRES(AbdomenLesion1SUV, AbdomenLesion1SUVPrev);
-	var AbdomenLesion1ComparisonSizeRes = compareSizes(AbdomenLesion1Size, AbdomenLesion1PrevSize);
-	var AbdomenLesion1CombinedResult = combineComparisonResults(AbdomenLesion1ComparisonSizeRes, AbdomenLesion1ComparisonSUVRes, AbdomenLesion1number);
-    
-    var POPAbdomenLesion1 = "";
-	var RESAbdomenLesion1 = "";
-	
-	if (AbdomenLesion1Loclargest !== "") {
-		AbdomenLesion1Loclargest = AbdomenLesion1ActivityCopy + ", největší " + AbdomenLesion1Loclargest + " ";
-		AbdomenLesion1Activity = "";
-	}
-	
-	AbdomenLesion1AllLocations = AbdomenLesion1Location + " " + AbdomenLesion1AddLocation;
-	
+var AbdomenLesion1Button = document.getElementById("AbdomenLesion1");
+var AbdomenLesion1typeRaw = document.getElementById("AbdomenLesion1type").value.trim();
+var AbdomenLesion1number = document.getElementById("AbdomenLesion1number").value;
+var AbdomenLesion1type = (AbdomenLesion1number && AbdomenLesion1number !== "") ? (pluralForms[AbdomenLesion1typeRaw] || AbdomenLesion1typeRaw) : AbdomenLesion1typeRaw;
+var AbdomenLesion1Location = document.getElementById("AbdomenLesion1Location").value;
+var AbdomenLesion1AddLocation = document.getElementById("AbdomenLesion1AddLocation").value;
+var AbdomenLesion1Loclargest = document.getElementById("AbdomenLesion1Loclargest").value;
+document.getElementById('AbdomenLesion1number').addEventListener('change', () => document.getElementById('AbdomenLesion1Large').classList.toggle('hidden', document.getElementById('AbdomenLesion1number').value === ""));
+var AbdomenLesion1Activity = document.getElementById("AbdomenLesion1Activity").value;
+var AbdomenLesion1ActivityCopy = AbdomenLesion1Activity;
+var selectedOption = document.getElementById("AbdomenLesion1Activity").selectedOptions[0];
+var AbdomenLesion1RESActivityRPH = selectedOption.dataset.valueRPH || '';
+var AbdomenLesion1RESActivityFDG = selectedOption.dataset.valueFDG || '';
+var AbdomenLesion1SUV = formatSUV("AbdomenLesion1SUV");
+var AbdomenLesion1Size = formatLesionSize("AbdomenLesion1Size");
+var AbdomenLesion1RESDecision = document.getElementById("AbdomenLesion1Decision").value;
+document.getElementById("DateCompare").addEventListener('change', () => document.getElementById("AbdomenLesion1Previous").classList.toggle("hidden", !document.getElementById("DateCompare").value));
+var AbdomenLesion1SUVPrev = formatSUV("AbdomenLesion1SUVPrev");
+var AbdomenLesion1PrevSize = formatLesionSize("AbdomenLesion1PrevSize");
+var AbdomenLesion1ComparisonText = generateComparisonText(AbdomenLesion1SUVPrev, AbdomenLesion1PrevSize, DateComparison, AbdomenLesion1SUV, AbdomenLesion1Size);
+var AbdomenLesion1ComparisonSUVRes = compareActRES(AbdomenLesion1SUV, AbdomenLesion1SUVPrev);
+var AbdomenLesion1ComparisonSizeRes = compareSizes(AbdomenLesion1Size, AbdomenLesion1PrevSize);
+var AbdomenLesion1CombinedResult = combineComparisonResults(AbdomenLesion1ComparisonSizeRes, AbdomenLesion1ComparisonSUVRes, AbdomenLesion1number);
+var AbdomenLesion1ActivityAdd = checkSmallSize(AbdomenLesion1Size, AbdomenLesion1SUV);
+var AbdomenLesion1AllLocations = (AbdomenLesion1Location + " " + AbdomenLesion1AddLocation).trim();
 
-	if (AbdomenLesion1number === "") {
-		AbdomenLesion1type = AbdomenLesion1type[0];
-	} else if (AbdomenLesion1number !== "" && AbdomenLesion1Loclargest !== "") {
-		AbdomenLesion1type = AbdomenLesion1type[1];
-	} else if (AbdomenLesion1number !== "" && AbdomenLesion1Loclargest === "") {
-		AbdomenLesion1type = AbdomenLesion1type[1];
-		AbdomenLesion1Size = AbdomenLesion1Size.replace('diametru ', 'diametru až '); 
-		AbdomenLesion1Size = AbdomenLesion1Size.replace('rozměru ', 'rozměru až '); 
-		AbdomenLesion1ComparisonText = AbdomenLesion1ComparisonText.replace('diametru ', 'diametru až '); 
-		AbdomenLesion1ComparisonText = AbdomenLesion1ComparisonText.replace('rozměru ', 'rozměru až ');
-	} 	
-
-let processedSentencePOPAbdomenLesion1 = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);	
-POPAbdomenLesion1 = processedSentencePOPAbdomenLesion1 + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1Loclargest + " " + AbdomenLesion1Size + " " + AbdomenLesion1Activity + " " + AbdomenLesion1ComparisonText + ".";
-
-let processedSentenceRESAbdomenLesionFDG = processSentence(AbdomenLesion1number + " " + AbdomenLesion1RESActivityFDG + " " + AbdomenLesion1type);
-let processedSentenceRESAbdomenLesionRPH = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);
-
-if (buttonElementPETType.value === "FDG") {
-	RESAbdomenLesion1 = processedSentenceRESAbdomenLesionFDG + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + ".";
-} else {
-	RESAbdomenLesion1 = processedSentenceRESAbdomenLesionRPH + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1RESActivityRPH + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + ".";
+if (AbdomenLesion1Loclargest !== "") { AbdomenLesion1Loclargest = AbdomenLesion1ActivityCopy + ", největší " + AbdomenLesion1Loclargest + " "; AbdomenLesion1Activity = ""; }
+if (AbdomenLesion1number !== "" && AbdomenLesion1Loclargest === "") {
+  AbdomenLesion1Size = AbdomenLesion1Size.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
+  AbdomenLesion1ComparisonText = AbdomenLesion1ComparisonText.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
 }
+
+var processedSentencePOPAbdomenLesion1 = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);
+var POPAbdomenLesion1 = processedSentencePOPAbdomenLesion1 + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1Loclargest + " " + AbdomenLesion1Size + " " + AbdomenLesion1Activity + " " + AbdomenLesion1ComparisonText + ".";
+var processedSentenceRESAbdomenLesionFDG = processSentence(AbdomenLesion1number + " " + AbdomenLesion1RESActivityFDG + " " + AbdomenLesion1type);
+var processedSentenceRESAbdomenLesionRPH = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);
+var RESAbdomenLesion1 = (buttonElementPETType.value === "FDG")
+  ? processedSentenceRESAbdomenLesionFDG + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + " " + AbdomenLesion1ActivityAdd + "."
+  : processedSentenceRESAbdomenLesionRPH + " " + AbdomenLesion1AllLocations + " " + AbdomenLesion1RESActivityRPH + " " + AbdomenLesion1CombinedResult + " " + AbdomenLesion1RESDecision + " " + AbdomenLesion1ActivityAdd + ".";
 
 if (AbdomenLesion1RESDecision.includes("meta") && AbdomenLesion1type.includes("ožisk")) {RESAbdomenLesion1 = RESAbdomenLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 if (AbdomenLesion1RESDecision.includes("tumor") && AbdomenLesion1type.includes("ožisk")) {RESAbdomenLesion1 = RESAbdomenLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
@@ -2662,66 +2558,52 @@ document.getElementById('AbdomenLymphNode1Location').value = AbdomenLymphNode1Lo
 
 // Abdomen lymph node popis
 
-	var AbdomenLymphNode1Button = document.getElementById("AbdomenLymphNode1");
-    var AbdomenLymphNode1number = document.getElementById("AbdomenLymphNode1number").value;
-    var AbdomenLymphNode1type = document.getElementById("AbdomenLymphNode1type").value.split("|");
-    var AbdomenLymphNode1Location = document.getElementById("AbdomenLymphNode1Location").value;
-	var AbdomenLymphNode1AddLocation = document.getElementById("AbdomenLymphNode1AddLocation").value;
-    var AbdomenLymphNode1Loclargest = document.getElementById("AbdomenLymphNode1Loclargest").value;
-	var AbdomenLymphNode1Large = document.getElementById("AbdomenLymphNode1Large").value;
-	document.getElementById('AbdomenLymphNode1number').addEventListener('change', function() {document.getElementById('AbdomenLymphNode1Large').classList.toggle('hidden', this.value === "");});
-    var AbdomenLymphNode1Activity = document.getElementById("AbdomenLymphNode1Activity").value; var AbdomenLymphNode1ActivityCopy = document.getElementById("AbdomenLymphNode1Activity").value;
-	var AbdomenLymphNode1RESActivityRPH = document.getElementById("AbdomenLymphNode1Activity"); var selectedOption = AbdomenLymphNode1RESActivityRPH.options[AbdomenLymphNode1RESActivityRPH.selectedIndex]; var AbdomenLymphNode1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
-	var AbdomenLymphNode1RESActivityFDG = document.getElementById("AbdomenLymphNode1Activity"); var selectedOption = AbdomenLymphNode1RESActivityFDG.options[AbdomenLymphNode1RESActivityFDG.selectedIndex]; var AbdomenLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
-    var AbdomenLymphNode1SUV = formatSUV("AbdomenLymphNode1SUV");
-    var AbdomenLymphNode1Size = formatLymphNodeSize("AbdomenLymphNode1Size");
-	var AbdomenLymphNode1RESDecision = document.getElementById("AbdomenLymphNode1Decision"); var selectedOption = AbdomenLymphNode1RESDecision.options[AbdomenLymphNode1RESDecision.selectedIndex]; var AbdomenLymphNode1RESDecision = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
-	var AbdomenLymphNode1AllLocations = "";
-	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("AbdomenLymphNode1Previous").classList.toggle("hidden", !this.value);});
-	var AbdomenLymphNode1SUVPrev = formatSUV("AbdomenLymphNode1SUVPrev");  
-	var AbdomenLymphNode1PrevSize = formatLymphNodeSize("AbdomenLymphNode1PrevSize");
-	var AbdomenLymphNode1ComparisonText = generateComparisonText(AbdomenLymphNode1SUVPrev, AbdomenLymphNode1PrevSize, DateComparison, AbdomenLymphNode1SUV, AbdomenLymphNode1Size);
-	var AbdomenLymphNode1ComparisonSUVRes = compareActRES(AbdomenLymphNode1SUV, AbdomenLymphNode1SUVPrev);
-	var AbdomenLymphNode1ComparisonSizeRes = compareSizes(AbdomenLymphNode1Size, AbdomenLymphNode1PrevSize);
-	var AbdomenLymphNode1CombinedResult = combineComparisonResults(AbdomenLymphNode1ComparisonSizeRes, AbdomenLymphNode1ComparisonSUVRes, AbdomenLymphNode1number);
+var AbdomenLymphNode1Button = document.getElementById("AbdomenLymphNode1");
+var AbdomenLymphNode1number = document.getElementById("AbdomenLymphNode1number").value;
+var AbdomenLymphNode1typeRaw = document.getElementById("AbdomenLymphNode1type").value.trim();
+var AbdomenLymphNode1type = (AbdomenLymphNode1number && AbdomenLymphNode1number !== "") ? (pluralForms[AbdomenLymphNode1typeRaw] || AbdomenLymphNode1typeRaw) : AbdomenLymphNode1typeRaw;
+var AbdomenLymphNode1Location = document.getElementById("AbdomenLymphNode1Location").value;
+var AbdomenLymphNode1AddLocation = document.getElementById("AbdomenLymphNode1AddLocation").value;
+var AbdomenLymphNode1Loclargest = document.getElementById("AbdomenLymphNode1Loclargest").value;
+var AbdomenLymphNode1Large = document.getElementById("AbdomenLymphNode1Large").value;
+document.getElementById('AbdomenLymphNode1number').addEventListener('change', () => document.getElementById('AbdomenLymphNode1Large').classList.toggle('hidden', AbdomenLymphNode1number === ""));
+var AbdomenLymphNode1Activity = document.getElementById("AbdomenLymphNode1Activity").value;
+var AbdomenLymphNode1ActivityCopy = AbdomenLymphNode1Activity;
+var selectedOption = document.getElementById("AbdomenLymphNode1Activity").selectedOptions[0];
+var AbdomenLymphNode1RESActivityRPH = selectedOption.dataset.valueRPH || '';
+var AbdomenLymphNode1RESActivityFDG = selectedOption.dataset.valueFDG || '';
+var AbdomenLymphNode1SUV = formatSUV("AbdomenLymphNode1SUV");
+var AbdomenLymphNode1Size = formatLymphNodeSize("AbdomenLymphNode1Size");
+var selectedDecisionOption = document.getElementById("AbdomenLymphNode1Decision").selectedOptions[0];
+var AbdomenLymphNode1RESDecision = selectedDecisionOption.dataset.valueRPH || '';
+var AbdomenLymphNode1SUVPrev = formatSUV("AbdomenLymphNode1SUVPrev");
+var AbdomenLymphNode1PrevSize = formatLymphNodeSize("AbdomenLymphNode1PrevSize");
+var AbdomenLymphNode1ComparisonText = generateComparisonText(AbdomenLymphNode1SUVPrev, AbdomenLymphNode1PrevSize, DateComparison, AbdomenLymphNode1SUV, AbdomenLymphNode1Size);
+var AbdomenLymphNode1ComparisonSUVRes = compareActRES(AbdomenLymphNode1SUV, AbdomenLymphNode1SUVPrev);
+var AbdomenLymphNode1ComparisonSizeRes = compareSizes(AbdomenLymphNode1Size, AbdomenLymphNode1PrevSize);
+var AbdomenLymphNode1CombinedResult = combineComparisonResults(AbdomenLymphNode1ComparisonSizeRes, AbdomenLymphNode1ComparisonSUVRes, AbdomenLymphNode1number);
+document.getElementById("DateCompare").addEventListener('change', () => document.getElementById("AbdomenLymphNode1Previous").classList.toggle("hidden", !document.getElementById("DateCompare").value));
 
-    var POPAbdomenLymphNode1 = "";
-	var RESAbdomenLymphNode1 = "";
-	
-	if (AbdomenLymphNode1Loclargest !== "") {
-		AbdomenLymphNode1Loclargest = AbdomenLymphNode1ActivityCopy + ", největší " + AbdomenLymphNode1Loclargest + " ";
-		AbdomenLymphNode1Activity = "";
-	}
-	    
-	AbdomenLymphNode1AllLocations = AbdomenLymphNode1Location + " " + AbdomenLymphNode1AddLocation;
-	
-	if (AbdomenLymphNode1number === "") {
-		AbdomenLymphNode1type = AbdomenLymphNode1type[0];
-	} else if (AbdomenLymphNode1number !== "" && AbdomenLymphNode1Loclargest !== "") {
-		AbdomenLymphNode1type = AbdomenLymphNode1type[1];
-	} else if (AbdomenLymphNode1number !== "" && AbdomenLymphNode1Loclargest === "") {
-		AbdomenLymphNode1type = AbdomenLymphNode1type[1];
-		AbdomenLymphNode1Size = AbdomenLymphNode1Size.replace('diametru ', 'diametru až '); 
-		AbdomenLymphNode1Size = AbdomenLymphNode1Size.replace('rozměru ', 'rozměru až '); 
-		AbdomenLymphNode1ComparisonText = AbdomenLymphNode1ComparisonText.replace('diametru ', 'diametru až '); 
-		AbdomenLymphNode1ComparisonText = AbdomenLymphNode1ComparisonText.replace('rozměru ', 'rozměru až ');
-	} 	
-
-let processedSentencePOPAbdomenLymphNode1 = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1type);	
-POPAbdomenLymphNode1 = processedSentencePOPAbdomenLymphNode1 + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1Loclargest + " " + AbdomenLymphNode1Size + " " + AbdomenLymphNode1Activity + " " + AbdomenLymphNode1ComparisonText + ".";
-
-let processedSentenceRESAbdomenLymphNodeFDG = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1RESActivityFDG + " " + AbdomenLymphNode1type);
-let processedSentenceRESAbdomenLymphNodeRPH = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1type);
-
-if (buttonElementPETType.value === "FDG") {
-	RESAbdomenLymphNode1 = processedSentenceRESAbdomenLymphNodeFDG + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1CombinedResult + " " + AbdomenLymphNode1RESDecision + ".";
-} else {
-	RESAbdomenLymphNode1 = processedSentenceRESAbdomenLymphNodeRPH + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1RESActivityRPH + " " + AbdomenLymphNode1CombinedResult + " " + AbdomenLymphNode1RESDecision + ".";
+var AbdomenLymphNode1AllLocations = (AbdomenLymphNode1Location + " " + AbdomenLymphNode1AddLocation).trim();
+if (AbdomenLymphNode1Loclargest !== "") { AbdomenLymphNode1Loclargest = AbdomenLymphNode1ActivityCopy + ", největší " + AbdomenLymphNode1Loclargest + " "; AbdomenLymphNode1Activity = ""; }
+if (AbdomenLymphNode1number !== "" && AbdomenLymphNode1Loclargest === "") {
+  AbdomenLymphNode1Size = AbdomenLymphNode1Size.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
+  AbdomenLymphNode1ComparisonText = AbdomenLymphNode1ComparisonText.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
 }
 
-if (AbdomenLymphNode1Location === "" && AbdomenLymphNode1AddLocation === "") { POPAbdomenLymphNode1 = ""; RESAbdomenLymphNode1 = ""; }
+var processedSentencePOPAbdomenLymphNode1 = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1type);
+var POPAbdomenLymphNode1 = processedSentencePOPAbdomenLymphNode1 + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1Loclargest + " " + AbdomenLymphNode1Size + " " + AbdomenLymphNode1Activity + " " + AbdomenLymphNode1ComparisonText + ".";
+var processedSentenceRESAbdomenLymphNodeFDG = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1RESActivityFDG + " " + AbdomenLymphNode1type);
+var processedSentenceRESAbdomenLymphNodeRPH = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1type);
+var RESAbdomenLymphNode1 = (buttonElementPETType.value === "FDG")
+  ? processedSentenceRESAbdomenLymphNodeFDG + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1CombinedResult + " " + AbdomenLymphNode1RESDecision + "."
+  : processedSentenceRESAbdomenLymphNodeRPH + " " + AbdomenLymphNode1AllLocations + " " + AbdomenLymphNode1RESActivityRPH + " " + AbdomenLymphNode1CombinedResult + " " + AbdomenLymphNode1RESDecision + ".";
 
-if (AbdomenLymphNode1CombinedResult.includes("je nově") || AbdomenLymphNode1CombinedResult.includes("jsou nově")) { RESAbdomenLymphNode1 = "Nově " + RESAbdomenLymphNode1.charAt(0).toLowerCase() + RESAbdomenLymphNode1.substring(1) ; RESAbdomenLymphNode1 = RESAbdomenLymphNode1.replace(" je nově", "").replace(" jsou nově", "");}
+if (AbdomenLymphNode1Location === "" && AbdomenLymphNode1AddLocation === "") { POPAbdomenLymphNode1 = ""; RESAbdomenLymphNode1 = ""; }
+if (AbdomenLymphNode1CombinedResult.includes("je nově") || AbdomenLymphNode1CombinedResult.includes("jsou nově")) {
+  RESAbdomenLymphNode1 = "Nově " + RESAbdomenLymphNode1.charAt(0).toLowerCase() + RESAbdomenLymphNode1.substring(1);
+  RESAbdomenLymphNode1 = RESAbdomenLymphNode1.replace(" je nově", "").replace(" jsou nově", "");
+}
 
 
 // ABDOMEN OTHERS
@@ -3571,65 +3453,46 @@ var arr = SkeletonLesion1Locationtext.split(", ");
 
 // Skeleton lesion1 popis
 
-	var SkeletonLesion1Button = document.getElementById("SkeletonLesion1");
-    var SkeletonLesion1number = document.getElementById("SkeletonLesion1number").value;
-    var SkeletonLesion1type = document.getElementById("SkeletonLesion1type").value.split("|");
-    var SkeletonLesion1Location = document.getElementById("SkeletonLesion1Location").value;
-	var SkeletonLesion1AddLocation = document.getElementById("SkeletonLesion1AddLocation").value;
-    var SkeletonLesion1Loclargest = document.getElementById("SkeletonLesion1Loclargest").value;
-	var SkeletonLesion1Large = document.getElementById("SkeletonLesion1Large").value;
-	document.getElementById('SkeletonLesion1number').addEventListener('change', function() {document.getElementById('SkeletonLesion1Large').classList.toggle('hidden', this.value === "");});
-    var SkeletonLesion1Activity = document.getElementById("SkeletonLesion1Activity").value; var SkeletonLesion1ActivityCopy = document.getElementById("SkeletonLesion1Activity").value;
-	var SkeletonLesion1RESActivityRPH = document.getElementById("SkeletonLesion1Activity"); var selectedOption = SkeletonLesion1RESActivityRPH.options[SkeletonLesion1RESActivityRPH.selectedIndex]; var SkeletonLesion1RESActivityRPH = selectedOption.dataset.valueRPH ? selectedOption.dataset.valueRPH : '';
-    var SkeletonLesion1RESActivityFDG = document.getElementById("SkeletonLesion1Activity"); var selectedOption = SkeletonLesion1RESActivityFDG.options[SkeletonLesion1RESActivityFDG.selectedIndex]; var SkeletonLesion1RESActivityFDG = selectedOption.dataset.valueFDG ? selectedOption.dataset.valueFDG : '';
-	var SkeletonLesion1SUV = formatSUV("SkeletonLesion1SUV");
-    var SkeletonLesion1Size = formatLesionSize("SkeletonLesion1Size");
-	var SkeletonLesion1RESDecision = document.getElementById("SkeletonLesion1Decision").value; 
-	var SkeletonLesion1AllLocations = "";
-	document.getElementById("DateCompare").addEventListener('change', function() {document.getElementById("SkeletonLesion1Previous").classList.toggle("hidden", !this.value);});
-	var SkeletonLesion1SUVPrev = formatSUV("SkeletonLesion1SUVPrev");  
-	var SkeletonLesion1PrevSize = formatLesionSize("SkeletonLesion1PrevSize");
-	var SkeletonLesion1ComparisonText = generateComparisonText(SkeletonLesion1SUVPrev, SkeletonLesion1PrevSize, DateComparison, SkeletonLesion1SUV, SkeletonLesion1Size);
-	var SkeletonLesion1ComparisonSUVRes = compareActRES(SkeletonLesion1SUV, SkeletonLesion1SUVPrev);
-	var SkeletonLesion1ComparisonSizeRes = compareSizes(SkeletonLesion1Size, SkeletonLesion1PrevSize);
-	var SkeletonLesion1CombinedResult = combineComparisonResults(SkeletonLesion1ComparisonSizeRes, SkeletonLesion1ComparisonSUVRes, SkeletonLesion1number);
-	var SkeletonLesion1CombinedResult = combineComparisonResults(SkeletonLesion1ComparisonSizeRes, SkeletonLesion1ComparisonSUVRes, SkeletonLesion1number);
-	var SkeletonLesion1ActivityAdd = checkSmallSize(SkeletonLesion1Size, SkeletonLesion1SUV);
-    
-    var POPSkeletonLesion1 = "";
-	var RESSkeletonLesion1 = "";
-	
-	if (SkeletonLesion1Loclargest !== "") {
-		SkeletonLesion1Loclargest = SkeletonLesion1ActivityCopy + ", největší " + SkeletonLesion1Loclargest + " ";
-		SkeletonLesion1Activity = "";
-	}
-	
-	SkeletonLesion1AllLocations = SkeletonLesion1Location + " " + SkeletonLesion1AddLocation;
-	
+var SkeletonLesion1Button = document.getElementById("SkeletonLesion1");
+var SkeletonLesion1typeRaw = document.getElementById("SkeletonLesion1type").value.trim();
+var SkeletonLesion1number = document.getElementById("SkeletonLesion1number").value;
+var SkeletonLesion1type = (SkeletonLesion1number && SkeletonLesion1number !== "") ? (pluralForms[SkeletonLesion1typeRaw] || SkeletonLesion1typeRaw) : SkeletonLesion1typeRaw;
+var SkeletonLesion1Location = document.getElementById("SkeletonLesion1Location").value;
+var SkeletonLesion1AddLocation = document.getElementById("SkeletonLesion1AddLocation").value;
+var SkeletonLesion1Loclargest = document.getElementById("SkeletonLesion1Loclargest").value;
+document.getElementById('SkeletonLesion1number').addEventListener('change', () => document.getElementById('SkeletonLesion1Large').classList.toggle('hidden', document.getElementById('SkeletonLesion1number').value === ""));
+var SkeletonLesion1Activity = document.getElementById("SkeletonLesion1Activity").value;
+var SkeletonLesion1ActivityCopy = SkeletonLesion1Activity;
+var selectedOption = document.getElementById("SkeletonLesion1Activity").selectedOptions[0];
+var SkeletonLesion1RESActivityRPH = selectedOption.dataset.valueRPH || '';
+var SkeletonLesion1RESActivityFDG = selectedOption.dataset.valueFDG || '';
+var SkeletonLesion1SUV = formatSUV("SkeletonLesion1SUV");
+var SkeletonLesion1Size = formatLesionSize("SkeletonLesion1Size");
+var SkeletonLesion1RESDecision = document.getElementById("SkeletonLesion1Decision").value;
+document.getElementById("DateCompare").addEventListener('change', () => document.getElementById("SkeletonLesion1Previous").classList.toggle("hidden", !document.getElementById("DateCompare").value));
+var SkeletonLesion1SUVPrev = formatSUV("SkeletonLesion1SUVPrev");
+var SkeletonLesion1PrevSize = formatLesionSize("SkeletonLesion1PrevSize");
+var SkeletonLesion1ComparisonText = generateComparisonText(SkeletonLesion1SUVPrev, SkeletonLesion1PrevSize, DateComparison, SkeletonLesion1SUV, SkeletonLesion1Size);
+var SkeletonLesion1ComparisonSUVRes = compareActRES(SkeletonLesion1SUV, SkeletonLesion1SUVPrev);
+var SkeletonLesion1ComparisonSizeRes = compareSizes(SkeletonLesion1Size, SkeletonLesion1PrevSize);
+var SkeletonLesion1CombinedResult = combineComparisonResults(SkeletonLesion1ComparisonSizeRes, SkeletonLesion1ComparisonSUVRes, SkeletonLesion1number);
+var SkeletonLesion1ActivityAdd = checkSmallSize(SkeletonLesion1Size, SkeletonLesion1SUV);
+var SkeletonLesion1AllLocations = (SkeletonLesion1Location + " " + SkeletonLesion1AddLocation).trim();
 
-	if (SkeletonLesion1number === "") {
-		SkeletonLesion1type = SkeletonLesion1type[0];
-	} else if (SkeletonLesion1number !== "" && SkeletonLesion1Loclargest !== "") {
-		SkeletonLesion1type = SkeletonLesion1type[1];
-	} else if (SkeletonLesion1number !== "" && SkeletonLesion1Loclargest === "") {
-		SkeletonLesion1type = SkeletonLesion1type[1];
-		SkeletonLesion1Size = SkeletonLesion1Size.replace('diametru ', 'diametru až '); 
-		SkeletonLesion1Size = SkeletonLesion1Size.replace('rozměru ', 'rozměru až '); 
-		SkeletonLesion1ComparisonText = SkeletonLesion1ComparisonText.replace('diametru ', 'diametru až '); 
-		SkeletonLesion1ComparisonText = SkeletonLesion1ComparisonText.replace('rozměru ', 'rozměru až ');
-	} 	
-
-let processedSentencePOPSkeletonLesion1 = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);	
-POPSkeletonLesion1 = processedSentencePOPSkeletonLesion1 + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1Loclargest + " " + SkeletonLesion1Size + " " + SkeletonLesion1Activity + " " + SkeletonLesion1ComparisonText + ".";
-
-let processedSentenceRESSkeletonLesionFDG = processSentence(SkeletonLesion1number + " " + SkeletonLesion1RESActivityFDG + " " + SkeletonLesion1type);
-let processedSentenceRESSkeletonLesionRPH = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);
-
-if (buttonElementPETType.value === "FDG") {
-	RESSkeletonLesion1 = processedSentenceRESSkeletonLesionFDG + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + ".";
-} else {
-	RESSkeletonLesion1 = processedSentenceRESSkeletonLesionRPH + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1RESActivityRPH + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + ".";
+if (SkeletonLesion1Loclargest !== "") { SkeletonLesion1Loclargest = SkeletonLesion1ActivityCopy + ", největší " + SkeletonLesion1Loclargest + " "; SkeletonLesion1Activity = ""; }
+if (SkeletonLesion1number !== "" && SkeletonLesion1Loclargest === "") {
+  SkeletonLesion1Size = SkeletonLesion1Size.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
+  SkeletonLesion1ComparisonText = SkeletonLesion1ComparisonText.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
 }
+
+var processedSentencePOPSkeletonLesion1 = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);
+var POPSkeletonLesion1 = processedSentencePOPSkeletonLesion1 + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1Loclargest + " " + SkeletonLesion1Size + " " + SkeletonLesion1Activity + " " + SkeletonLesion1ComparisonText + ".";
+var processedSentenceRESSkeletonLesionFDG = processSentence(SkeletonLesion1number + " " + SkeletonLesion1RESActivityFDG + " " + SkeletonLesion1type);
+var processedSentenceRESSkeletonLesionRPH = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);
+var RESSkeletonLesion1 = (buttonElementPETType.value === "FDG")
+  ? processedSentenceRESSkeletonLesionFDG + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + " " + SkeletonLesion1ActivityAdd + "."
+  : processedSentenceRESSkeletonLesionRPH + " " + SkeletonLesion1AllLocations + " " + SkeletonLesion1RESActivityRPH + " " + SkeletonLesion1CombinedResult + " " + SkeletonLesion1RESDecision + " " + SkeletonLesion1ActivityAdd + ".";
+
 
 if (SkeletonLesion1RESDecision.includes("meta") && SkeletonLesion1type.includes("ožisk")) {RESSkeletonLesion1 = RESSkeletonLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 if (SkeletonLesion1RESDecision.includes("tumor") && SkeletonLesion1type.includes("ožisk")) {RESSkeletonLesion1 = RESSkeletonLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}

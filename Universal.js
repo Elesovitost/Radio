@@ -57,6 +57,35 @@ function processSentence(sentence) {
     return sentence;
 }
 
+
+//PLURALIZAČNÍ MAPA
+
+const pluralForms = {
+  "ložisko": "ložiska",
+  "nodul": "noduly",
+  "opacita": "opacity",
+  "expanze": "expanzePL",
+  "konsolidace": "konsolidacePL",
+  "infiltrace": "infiltracePL",
+  "fokus": "fokusy",
+  "kolekce": "kolekce",
+  "infiltrát": "infiltráty",
+  "struktura": "struktury",
+  "kolekce v": "kolekce v",
+  
+  "ložisko kostní dřeně": "ložiska kostní dřeně",
+  "lytické ložisko": "lytická ložiska",
+  "sklerotické ložisko": "sklerotická ložiska",
+  "smíšené ložisko": "smíšená ložiska",
+  "kožní ložisko": "kožní ložiska",
+  "ložisko podkoží": "ložiska podkoží",
+  "fokus kostní dřeně": "fokusy v kostní dřeni",
+  
+  "uzlina": "uzliny",
+  "paket": "pakety"
+};
+
+
 //DISABLE CONTEXT MENU
 document.addEventListener("contextmenu", function(event) {
     event.preventDefault();
