@@ -53,7 +53,7 @@ body, button, input, textarea {
 
 /* BARS */
 .headerBar { background-color: rgba(157, 170, 162, 0.5); z-index: 3; max-width: 986px; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid #000000; }
-.noticeBar { background-color: rgba(0, 0, 0, 0.4); color:white; max-width: 400px; margin-top: 20px; margin-left: 500px; padding: 6px 12px; border: 0px solid #000; font-weight: ; font-size: 12px; text-align: center; display: none; }
+.noticeBar { color: white; background-color: transparent; padding: 4px 8px; font-size: 15px; display: flex; align-items: center; gap: 6px; font-weight: ; text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black; margin: 10px 0 0 600px; width: fit-content; }
 
 .bouncingPointer { display: inline-block; font-size: 18px; animation: bounceHand 1s infinite; transform-origin: bottom center; }
 @keyframes bounceHand { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
@@ -62,8 +62,8 @@ body, button, input, textarea {
 
 /* DROPDOWN MENU UPPER */
 .container {text-align: center; overflow: auto; }
-.dropdown {float: right; position: relative; display: inline-block; color: #000000; margin-right: 5px;}
-	.dropbtn {background-color: rgba(157, 170, 162, 0.5); width: 140px; height: 26px; color: #000000; padding: 3px; font-size: 12px; border: 1 px; cursor: pointer; margin-bottom: 2px;}
+.dropdown {float: right; position: relative; display: inline-block; color: #000000; margin-right: 4px;}
+	.dropbtn {background-color: rgba(157, 170, 162, 0.5); width: 140px; height: 26px; color: #000000; padding: 3px; font-size: 13px; border: 1 px; cursor: pointer; margin-bottom: 2px;}
 	.dropbtn::before {content: ''; position: absolute; top: -2px; right: -2px; bottom: -2px; left: -2px; z-index: 2;}
 	.dropdown-content {display: none; position: absolute; background-color: #FFFFFF; font-size: 13px; min-width: 138px; border: 1px solid #000000; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 3;}
 	.dropdown-content a {color: #000000; padding: 3px 3px; text-decoration: none; display: block;}
@@ -96,7 +96,7 @@ iframe, iframes {min-height: 10px; z-index: 2; background-color: #FFFFFF;}
 
 .TextsDIV {max-width: 1000px; border: 1px solid #000000; padding: 3px; border-bottom: none;} 
 
-.mydiv0 {background-color: #EDCC8B; font-Size: 13; font-weight: bold; }
+.mydiv0 {background-color: #EDCC8B; font-size: 13; font-weight: bold; }
 .mydivIND {background-color: #E9E0D3; font-Size: 12; }
 .mydiv1 {background-color: #DDD5D5; font-Size: 12;}
 .mydivTNM {background-color: none;}
@@ -291,9 +291,16 @@ button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-
 
 .buttonTEXT {font-Size: 10px; font-weight: bold; width: 86px; text-align: left; background-color: #E9E0D3; }
 
-.buttonCLICK {font-Size: 10px; font-weight: bold; width: 86px; text-align: left; background-color: #E9E0D3; cursor: pointer;}
-.buttonCLICK {transition: opacity 0.1s ease;}
-.buttonCLICK:active {opacity: 0.1;}
+.buttonCLICK {font-Size: 11px; font-weight: bold; width: 86px; text-align: left; background-color: #E9E0D3; cursor: pointer;}
+.buttonCLICK:hover { filter: brightness(80%);}
+.buttonCLICK { transition: transform 0.05s ease, box-shadow 0.05s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.3); } 
+.buttonCLICK:active { transform: scale(0.96); box-shadow: inset 0 1px 2px rgba(0,0,0,0.6); }
+
+
+
+.tumor_button:hover, .lymphnode_button:hover, .other_button:hover { filter: brightness(80%); }
+
+.menu_button:hover { filter: brightness(90%); cursor: pointer; }
 
 .others {width: 86px; height: 18px;}
 .othersS {width: 20px; height: 20px;}

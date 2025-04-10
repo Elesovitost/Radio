@@ -29,7 +29,7 @@
     </div>
 	
 	<div class="dropdown" style="float: left; margin-left: 4px;">
-		<button id="btnPDF" class="button40 dropbtn">PDF</button>
+		<button id="btnPDF" class="button60 dropbtn">📂PDF</button>
 	</div>
 
 
@@ -66,11 +66,12 @@
 	</div>
 	
 	<div></div>
-	
+
 	<div class="dropdown">
 		<button class="dropbtn">UZ</button>
 		<div class="dropdown-content">
 			<a href="#" onclick="changePage('UZcarotid.html')">UZ karotid</a>
+			<a href="#" onclick="changePage('UZrenal.html')">UZ renálních tepen</a>
 			<a href="#" onclick="changePage('UZthyroid.html')">UZ štítné žlázy</a>
 			<a href="#" onclick="changePage('UZabdomen.html')">UZ břicha</a>
 		</div>
@@ -124,7 +125,7 @@
   </div>
 
 	<button id="toggleEdit" class="buttonCLICK" style="position: absolute; right: 240px; top: 0px;">📝 EDIT</button>
-	<button id="checkAI" class="buttonCLICK" style="position: absolute; right: 160px; top: 0px;">🔍 CHECK</button>
+	<button id="checkAI" class="buttonCLICK" style="position: absolute; right: 160px; top: 0px;">🔍 AI</button>
 	<button id="saveButton" class="buttonCLICK" style="position: absolute; right: 80px; top: 0px;">💾 SAVE</button>
 	<button id="loadButton" class="buttonCLICK" style="position: absolute; right: 0px; top: 0px;">📂 LOAD</button>
 
@@ -228,10 +229,17 @@ function changePage(url) {
 		document.getElementById("aiResult").style.display = "none";
 
 		if (container.children.length === 0) {
-            // Reset the background image opacity to 1 (fully opaque) if it is empty
-            document.querySelector('.background-image').style.opacity = 1;
-            document.querySelector('.background-image').style.transition = 'opacity 2s';
-        }
+			// Reset the background image opacity
+			document.querySelector('.background-image').style.opacity = 1;
+			document.querySelector('.background-image').style.transition = 'opacity 2s';
+
+			// Zavřít PDF viewer, pokud je otevřený
+			const pdfViewer = document.getElementById('doc-viewer');
+			if (pdfViewer) {
+				pdfViewer.remove();
+			}
+		}
+
     };
 
     iframeContainer.appendChild(removeButton);
