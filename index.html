@@ -642,13 +642,12 @@ document.getElementById('pdfFileInput').addEventListener('change', function(even
     var docContainer = document.createElement('div');
     docContainer.id = 'doc-viewer';
     // Umístění: napravo od page-container – upravte podle potřebného layoutu
-    docContainer.style.position = 'absolute';
-    docContainer.style.top = document.getElementById('page-container').offsetTop + 'px';
-    docContainer.style.right = '0';
+    docContainer.style.position = 'fixed';
+    docContainer.style.top = '100px';
+    docContainer.style.right = '20px';
     docContainer.style.width = '40%';
     docContainer.style.height = '80%';
     docContainer.style.border = '1px solid #ccc';
-    docContainer.style.overflow = 'auto';
     docContainer.style.backgroundColor = '#fff';
 
     // Vytvoření iframe pro zobrazení dokumentu
