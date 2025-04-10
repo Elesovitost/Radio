@@ -536,6 +536,8 @@ body.TNM td:first-child, body.TNM td:nth-child(2), body.TNM .main-row {
 .myButtonLesion {cursor: pointer;transition: transform 0.3s ease;}
 .myButtonLesion.click-animation {animation: clickEffect 0.3s ease;}
 
+
+
 /* tooltip*/
 
 #tooltip {

@@ -118,16 +118,25 @@
 
 <div id="texty2" class="standardwidthFinalText" style="display: ; position: relative;"> 
 
-  <div style="display: flex; gap: 6px; align-items: center; padding-right: 70px;">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 0 12px;">
+  
+  <!-- Levá skupina -->
+  <div style="display: flex; gap: 4px;">
     <button id="copyCOMP" class="buttonCLICK">KOMPLET 📑</button> 
     <button id="copyPOP" class="buttonCLICK">jen popis 📑</button> 
     <button id="copyRES" class="buttonCLICK">jen závěr 📑</button> 
   </div>
 
-	<button id="toggleEdit" class="buttonCLICK" style="position: absolute; right: 240px; top: 0px;">📝 EDIT</button>
-	<button id="checkAI" class="buttonCLICK" style="position: absolute; right: 160px; top: 0px;">🔍 AI</button>
-	<button id="saveButton" class="buttonCLICK" style="position: absolute; right: 80px; top: 0px;">💾 SAVE</button>
-	<button id="loadButton" class="buttonCLICK" style="position: absolute; right: 0px; top: 0px;">📂 LOAD</button>
+  <!-- Pravá skupina -->
+  <div style="display: flex; gap: 4px;">
+    <button id="toggleEdit" class="buttonCLICK">📝 EDIT</button>
+    <button id="checkAI" class="buttonCLICK">🔍 AI</button>
+    <button id="saveButton" class="buttonCLICK">💾 SAVE</button>
+    <button id="loadButton" class="buttonCLICK">📂 LOAD</button>
+  </div>
+
+</div>
+
 
   <div id="popupMessage" style="display:none; position:relative; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold; width:300px;">
   </div>
@@ -461,76 +470,102 @@ function adjustTextareaHeight(textarea) {
 
 // COPY and blink
 
-document.addEventListener('DOMContentLoaded', (event) => {
+function highlightTextInTextarea(textareaId, textToHighlight) {
+    const textarea = document.getElementById(textareaId);
+    const fullText = textarea.value;
+
+    const startIndex = fullText.indexOf(textToHighlight);
+    if (startIndex === -1) return;
+
+    const endIndex = startIndex + textToHighlight.length;
+
+    textarea.focus();
+    textarea.setSelectionRange(startIndex, endIndex);
+
+    // Automaticky zruší výběr po 400 ms
+    setTimeout(() => {
+        textarea.setSelectionRange(0, 0);
+    }, 400);
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
 
     function showPopup(message) {
-        var popup = document.getElementById('popupMessage');
-        popup.textContent = message; // Set the popup message text
-
+        const popup = document.getElementById('popupMessage');
+        popup.textContent = message;
         popup.style.display = 'block';
-
-        setTimeout(() => {
-            popup.style.display = 'none';
-        }, 2000); // Hide after 2 second
+        setTimeout(() => popup.style.display = 'none', 2000);
     }
 
-	function setupCopyButton(buttonId, textAreaId, customExtractor = null) {
-		var button = document.getElementById(buttonId);
-		var textArea = textAreaId ? document.getElementById(textAreaId) : null;
+    function validateText(text) {
+        if (text.includes("MR kolene") || text.includes("MR ramene") || text.includes("MR hlezna")) {
+            showPopup("DOPLŇ STRANU");
+            return false;
+        }
 
-		button.addEventListener('click', function () {
-			var text = customExtractor ? customExtractor() : textArea.value;
+        const invalidCombo =
+            (text.includes("FDG") && text.includes("PSMA")) ||
+            (text.includes("FDG") && text.includes("DOTATOC")) ||
+            (text.includes("PSMA") && text.includes("DOTATOC"));
 
-			if (text.includes("MR kolene") || text.includes("MR ramene") || text.includes("MR hlezna")) {
-				console.log("Condition 1 triggered: Side.");
-				showPopup("DOPLŇ STRANU");
-			} else if ((text.includes("FDG") && text.includes("PSMA")) ||
-					   (text.includes("FDG") && text.includes("DOTATOC")) ||
-					   (text.includes("PSMA") && text.includes("DOTATOC"))) {
-				console.log("Condition 2 triggered: Invalid combination.");
-				showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
-			} else {
-				console.log("Condition 3 triggered: Copying text.");
-				navigator.clipboard.writeText(text)
-					.then(() => {
-						console.log("Text copied successfully!");
-					})
-					.catch((error) => {
-						console.error("Failed to copy text:", error);
-					});
-			}
-		});
+        if (invalidCombo) {
+            showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
+            return false;
+        }
+
+        return true;
+    }
+
+	  function copyTextAndBlink(text, targetTextareaId) {
+		if (!validateText(text)) return;
+
+		navigator.clipboard.writeText(text)
+			.then(() => {
+				console.log("Text copied:", text);
+				highlightTextInTextarea(targetTextareaId, text); // použijeme výběr, ne animaci
+			})
+			.catch(err => {
+				console.error("Copy failed:", err);
+			});
 	}
 
 
-    setupCopyButton('copyCOMP', 'FINALCOMPLETEText');
+    // Setup copy buttons
+    document.getElementById('copyCOMP').addEventListener('click', () => {
+        const text = document.getElementById("FINALCOMPLETEText").value;
+        copyTextAndBlink(text, "FINALCOMPLETEText");
+    });
 
-	setupCopyButton('copyPOP', null, function () {   //poměrně komplikovaný kód na odstínění názvu vyšetření, sekvencí a indikací
+    document.getElementById('copyPOP').addEventListener('click', () => {
 		const text = document.getElementById("FINALCOMPLETEText").value;
 		let lines = text.split('\n');
-		lines.shift();
-		let sekvIndex = lines.findIndex(line => line.trim().startsWith("Sekvence:"));
-		if (sekvIndex !== -1) {
-			lines.splice(sekvIndex, 2); 
-		}
-		let indIndex = lines.findIndex(line => line.trim().startsWith("Indikace:"));
-		if (indIndex !== -1) {
-			lines.splice(indIndex, 2); 
-		}
-		let zavIndex = lines.findIndex(line => line.trim() === "Závěr:");
-		if (zavIndex !== -1) {
-			lines = lines.slice(0, zavIndex); 
-		}
-		return lines.join('\n').trim();
-	});
+		lines.shift(); // remove name
 
-	setupCopyButton('copyRES', null, function() {
+		let sekvIndex = lines.findIndex(line => line.trim().startsWith("Sekvence:"));
+		if (sekvIndex !== -1) lines.splice(sekvIndex, 2);
+
+		let indIndex = lines.findIndex(line => line.trim().startsWith("Indikace:"));
+		if (indIndex !== -1) lines.splice(indIndex, 2);
+
+		let zavIndex = lines.findIndex(line => line.trim() === "Závěr:");
+		if (zavIndex !== -1) lines = lines.slice(0, zavIndex);
+
+		const finalPop = lines.join('\n').trim();
+		copyTextAndBlink(finalPop, "FINALCOMPLETEText");
+		highlightTextInTextarea("FINALCOMPLETEText", finalPop); // přidáno
+	});	
+
+	document.getElementById('copyRES').addEventListener('click', () => {
 		const text = document.getElementById("FINALCOMPLETEText").value;
 		const match = text.match(/Závěr:\s*\n([\s\S]*)$/);
-		return match ? match[1].trim() : "";
+		const finalRes = match ? match[1].trim() : "";
+		copyTextAndBlink(finalRes, "FINALCOMPLETEText");
+		highlightTextInTextarea("FINALCOMPLETEText", finalRes); // přidáno
 	});
-
+	
 });
+
 
 
 // SAVE button handler
@@ -621,7 +656,7 @@ document.getElementById('toggleEdit').addEventListener('click', () => {
   });
 
   const toggleBtn = document.getElementById('toggleEdit');
-  toggleBtn.textContent = editMode ? "Zrušit editaci" : "📝 EDIT";
+  toggleBtn.textContent = editMode ? "Zrušit EDIT" : "📝 EDIT";
   toggleBtn.style.backgroundColor = editMode ? "#ffe0b3" : ""; // jemná oranžová
 
   const page = document.getElementById('page-container');
