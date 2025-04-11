@@ -15,6 +15,7 @@
 
 <body  class="bodyINDEX">
 
+<div id="random-background" class="background-image"></div>
 
 <div id="SEG1" class="headerBar">
 
@@ -85,7 +86,6 @@
 		</div>
 	</div>
 	
-<img src="LOGO.png" alt="A beautiful landscape" class="background-image">
 
 <input type="file" id="pdfFileInput" accept=".pdf,.docx" style="display: none;">
 	
@@ -122,9 +122,9 @@
   
   <!-- Levá skupina -->
   <div style="display: flex; gap: 4px;">
-    <button id="copyCOMP" class="buttonCLICK">📋 KOMPLET</button> 
-    <button id="copyPOP" class="buttonCLICK">📋 POPIS</button> 
-    <button id="copyRES" class="buttonCLICK">📋 ZÁVĚR</button> 
+    <button id="copyCOMP" class="buttonCLICK">KOMPLET 📑</button> 
+    <button id="copyPOP" class="buttonCLICK">jen popis 📑</button> 
+    <button id="copyRES" class="buttonCLICK">jen závěr 📑</button> 
   </div>
 
   <!-- Pravá skupina -->
@@ -210,17 +210,18 @@ function changePage(url) {
             bindEventsToIframe(iframe);
             updateFinalTextAreas();
             checkAndUpdateDivVisibility();
-			
-			// Make the background image 80% transparent
-            document.querySelector('.background-image').style.opacity = 0.1;
-            document.querySelector('.background-image').style.transition = 'opacity 1s';
 
             // Delay the fade-in animation until the iframe is loaded
             setTimeout(() => {
                 iframe.style.opacity = 1; // Make the iframe visible
+				const bg = document.getElementById('random-background');
+				if (bg) {
+					bg.style.opacity = 0.3;
+					bg.style.filter = 'blur(4px)';
+				}
                 iframe.classList.add('iframe-fade-in');
             }, 100); // Short delay before fade-in starts
-
+			
             setTimeout(() => {
                 iframe.classList.remove('iframe-fade-in');
             }, 1100); // Duration of the animation plus initial delay
@@ -238,10 +239,9 @@ function changePage(url) {
 		document.getElementById("aiResult").style.display = "none";
 
 		if (container.children.length === 0) {
-			// Reset the background image opacity
-			document.querySelector('.background-image').style.opacity = 1;
-			document.querySelector('.background-image').style.transition = 'opacity 2s';
-
+			const bg = document.getElementById('random-background');
+			if (bg) bg.style.opacity = 1;
+			bg.style.filter = 'none';
 			// Zavřít PDF viewer, pokud je otevřený
 			const pdfViewer = document.getElementById('doc-viewer');
 			if (pdfViewer) {
@@ -784,6 +784,21 @@ document.getElementById("loadButton").addEventListener("click", function () {
 
   overlay.style.display = "block";
 });
+
+
+
+// background IMAGE
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const bgDiv = document.getElementById('random-background');
+    if (bgDiv) {
+        const randomIndex = Math.floor(Math.random() * 6) + 1;
+        bgDiv.style.backgroundImage = `url('background/${randomIndex}.webp')`;
+    }
+	console.log("Načten obrázek:", bgDiv.style.backgroundImage);
+});
+
 
 	
 </script>
