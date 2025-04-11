@@ -3871,13 +3871,13 @@ ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 
 //checking jestli bez známek přítomnosti nebo ne
 let variablesToCheck = [
-    RESNeckLesion1, RESNeckLymphNode1,
-    RESThoraxLesion1, RESThoraxLymphNode1,
-    RESAbdomenLesion1, RESAbdomenLymphNode1,
-    RESSkeletonLesion1
+    RESNeckLesion1, RESNeckLesion2, RESNeckLesion3, RESNeckLymphNode1,
+    RESThoraxLesion1, RESThoraxLesion2, RESThoraxLesion3, RESThoraxLymphNode1,
+    RESAbdomenLesion1, RESAbdomenLesion2, RESAbdomenLesion3, RESAbdomenLymphNode1,
+    RESSkeletonLesion1, RESSkeletonLesion2, RESSkeletonLesion3
 ];
 
-let bannedWords = ['suspektní', 'tumor',  'tumorózní',  'Tumorózní', 'meta ', 'meta.', 'Meta', 'charakteru', 'neoplazií', 'neoplazie','nespecifický'];
+let bannedWords = ['suspektní', 'tumor',  'Tumor', 'meta ', 'Meta', 'charakteru', 'neoplaz', 'nespecifický'];
 
 function containsBannedWord(str) {
     return bannedWords.some(bannedWord => str.includes(bannedWord));
