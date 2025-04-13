@@ -52,7 +52,7 @@ body, button, input, textarea {
 
 
 /* BARS */
-.headerBar { background-color: rgba(157, 170, 162, 0.5); z-index: 3; max-width: 986px; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid #000000; }
+.headerBar { box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6); background-color: rgba(157, 170, 162, 0.5); position: relative; z-index: 3; max-width: 986px; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid #000000; }
 .noticeBar { color: white; background-color: transparent; padding: 4px 8px; font-size: 15px; display: flex; align-items: center; gap: 6px; font-weight: ; text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black; margin: 10px 0 0 600px; width: fit-content; }
 
 .bouncingPointer { display: inline-block; font-size: 18px; animation: bounceHand 1s infinite; transform-origin: bottom center; }
