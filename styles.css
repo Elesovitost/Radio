@@ -53,7 +53,7 @@ body, button, input, textarea {
 
 /* BARS */
 .headerBar { box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6); background-color: rgba(157, 170, 162, 0.5); position: relative; z-index: 3; max-width: 986px; padding: 10px; height: 20px; flex-direction: column; align-items: left; justify-content: center; border: 1px solid #000000; }
-.noticeBar { color: white; background-color: transparent; padding: 4px 8px; font-size: 15px; display: flex; align-items: center; gap: 6px; font-weight: ; text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black; margin: 10px 0 0 600px; width: fit-content; }
+.noticeBar { color: white; background-color: transparent; padding: 4px 8px; font-size: 15px; display: flex; align-items: center; gap: 6px; font-weight: ; text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black; margin: 10px 0 0 100px; width: fit-content; }
 
 .bouncingPointer { display: inline-block; font-size: 18px; animation: bounceHand 1s infinite; transform-origin: bottom center; }
 @keyframes bounceHand { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
@@ -62,7 +62,7 @@ body, button, input, textarea {
 
 /* DROPDOWN MENU UPPER */
 .container {text-align: center; overflow: auto; }
-.dropdown {float: right; position: relative; display: inline-block; color: #000000; margin-right: 4px;}
+.dropdown {position: relative; display: inline-block; color: #000000; margin-right: 0px;}
 	.dropbtn {background-color: rgba(157, 170, 162, 0.5); width: 140px; height: 26px; color: #000000; padding: 3px; font-size: 13px; border: 1 px; cursor: pointer; margin-bottom: 2px;}
 	.dropbtn::before {content: ''; position: absolute; top: -2px; right: -2px; bottom: -2px; left: -2px; z-index: 2;}
 	.dropdown-content {display: none; position: absolute; background-color: #FFFFFF; font-size: 13px; min-width: 138px; border: 1px solid #000000; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 3;}
@@ -658,4 +658,46 @@ table.compact-tnm-table td {
     mask-composite: intersect;
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
+}
+
+
+/* Kontejner pro SVG ikonu – fixuje prostor pro ikonu */
+.gear-container {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  position: relative;
+  vertical-align: middle;
+}
+
+/* Styl samotné SVG ikony */
+.gear-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Vycentrování ikony */
+  transform: translate(-50%, -50%);
+  animation: spin 1s linear infinite;
+  animation-play-state: paused; /* Animace spuštěna pouze při hoveru */
+}
+
+/* Klíčové snímky pro čistou rotaci kolem středu */
+@keyframes spin {
+  0%   { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Spuštění animace při najetí myší na headerBar */
+.headerBar:hover .gear-icon {
+  animation-play-state: running;
+}
+
+
+#promptSelectExam {
+  transition: opacity 1s ease;
+  opacity: 1;
+}
+
+.headerBar:hover ~ #promptSelectExam {
+  opacity: 0;
 }

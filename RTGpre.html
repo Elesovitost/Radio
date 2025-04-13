@@ -3,11 +3,12 @@
 </head>
 
 <body>
-<img src="RTGpreImage.jpg" alt="X-ray" class="background-image">
 
 <div class="MainDIV">
 
 <div id="RTGpre" class="standardwidth mydiv0">RTG předdefinované texty</div>
+
+<img src="RTGpreImage.jpg" alt="X-ray" class="RTG-image">
 
 <div id="preddef" class=" standardwidth ">
 <button id="copyRTGChest" class="buttonRTG"  style="position: absolute; top: 150px; left: 115px;">RTG hrudníku&nbsp;<img src="icon_copy.png" alt="Icon" class="button-icon"></button>
@@ -18,6 +19,13 @@
 </div>
 
 </div>
+
+  <div id="texty1" class="standardwidth hidden">
+    NÁZEV<textarea id="RTGpreNAMEText" class="medium"></textarea>
+    INDIKACE<textarea id="RTGpreINDText" class="medium"></textarea>
+    POPIS<textarea id="RTGprePOPText" class="superlarge"></textarea>
+    ZÁVĚR<textarea id="RTGpreRESText" class="superlarge"></textarea>
+  </div>
 
 <script src="Universal.js"></script>  
 <script src="RTGprepopis.js"></script> 

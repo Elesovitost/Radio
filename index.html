@@ -16,88 +16,88 @@
 <body class="bodyINDEX">
 
 
-  <!-- Obalovací kontejner pro oddělení vrstev -->
-  <div id="background-wrapper">
-    <!-- Vrstva s náhodným obrázkem, filtr a maskování se aplikují jen zde -->
-    <div id="random-background" class="background-image"></div>
-    <!-- Chessboard overlay – zůstává "čistý" bez filtru a maskování -->
-    <div id="chessboard-overlay"></div>
-  </div>
+
+<div id="background-wrapper">
+	<div id="random-background" class="background-image"></div>
+	<div id="chessboard-overlay"></div>
+</div>
 
 
 <div id="SEG1" class="headerBar">
 
-	<div class="dropdown" style="float: left; margin-left: 4px;">
-        <button class="button40 dropbtn">TNM</button>
-        <div class="dropdown-content">
-            <a href="#" onclick="changePage('TNMORL.html')">ORL</a>
-			<a href="#" onclick="changePage('TNMRectum.html')">rektum</a>
-            <a href="#" onclick="changePage('TNMmiProstate.html')">prostata</a>
-			<a href="#" onclick="changePage('TNMCervix.html')">cervix</a>
+	
+        <div class="dropdown">
+            <button class="dropbtn">PET/CT</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="changePage('FDGPET.html')">PET/CT/MR trupu</a>
+                <a href="#" onclick="changePage('NaFskelet.html')">PET/CT NaF skeletu</a>
+            </div>
         </div>
-    </div>
-	
-	<div class="dropdown" style="float: left; margin-left: 4px;">
-		<button id="btnPDF" class="button60 dropbtn">📂PDF</button>
-	</div>
 
+        <div class="dropdown">
+            <button class="dropbtn">MR</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="changePage('MRmozku.html')">MR mozku</a>
+                <a href="#" onclick="changePage('MRBrainAngio.html')">MR angiografie</a>
+                <a href="#" onclick="changePage('MRORL.html')">MR ORL</a>
+                <div style="height: 10px;"></div>
+                <a href="#" onclick="changePage('MRrekta.html')">MR rekta</a>
+                <a href="#" onclick="changePage('MRprostaty.html')">MR prostaty</a>
+                <a href="#" onclick="changePage('MRcervix.html')">MR cervixu</a>
+                <a href="#" onclick="changePage('MRbreast.html')">MR prsu</a>
+                <div style="height: 10px;"></div>
+                <a href="#" onclick="changePage('MRCP.html')">MR C páteře</a>
+                <a href="#" onclick="changePage('MRTP.html')">MR T páteře</a>
+                <a href="#" onclick="changePage('MRLP.html')">MR L páteře</a>
+                <a href="#" onclick="changePage('MRSIS.html')">MR SIS</a>
+                <div style="height: 10px;"></div>
+                <a href="#" onclick="changePage('MRramene.html')">MR ramene</a>
+                <a href="#" onclick="changePage('MRhips.html')">MR kyčlí</a>
+                <a href="#" onclick="changePage('MRkolene.html')">MR kolene</a>
+                <a href="#" onclick="changePage('MRankle.html')">MR hlezna</a>
+            </div>
+        </div>
 
-	<div class="dropdown">
-		<button class="dropbtn">PET/CT</button>
-		<div class="dropdown-content">
-			<a href="#" onclick="changePage('FDGPET.html')">PET/CT/MR trupu</a>
-			<a href="#" onclick="changePage('NaFskelet.html')">PET/CT NaF skeletu</a>
+        <div class="dropdown">
+            <button class="dropbtn">UZ</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="changePage('UZcarotid.html')">UZ karotid</a>
+                <a href="#" onclick="changePage('UZrenal.html')">UZ renálních tepen</a>
+                <a href="#" onclick="changePage('UZthyroid.html')">UZ štítné žlázy</a>
+                <a href="#" onclick="changePage('UZabdomen.html')">UZ břicha</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">RTG</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="changePage('RTGpre.html')">RTG předdefinované</a>
+                <a href="#" onclick="changePage('RTGchest.html')">RTG plic</a>
+            </div>
+        </div>
+
+		<!-- Pravá skupina: TNM a PDF -->
+		<div style="float: right; margin-right: 0px;">
+			<div class="dropdown">
+				<button class="button40 dropbtn">TNM</button>
+				<div class="dropdown-content">
+					<a href="#" onclick="changePage('TNMORL.html')">ORL</a>
+					<a href="#" onclick="changePage('TNMRectum.html')">rektum</a>
+					<a href="#" onclick="changePage('TNMmiProstate.html')">prostata</a>
+					<a href="#" onclick="changePage('TNMCervix.html')">cervix</a>
+				</div>
+			</div>
+
+			<div class="dropdown" style="display: inline-block;">
+				<button id="btnPDF" class="button60 dropbtn">📂PDF</button>
+			</div>
 		</div>
-	</div>
 
-	<div class="dropdown">
-		<button class="dropbtn">MR</button>
-		<div class="dropdown-content">
-			<a href="#" onclick="changePage('MRmozku.html')">MR mozku</a>
-			<a href="#" onclick="changePage('MRBrainAngio.html')">MR angiografie</a>
-			<a href="#" onclick="changePage('MRORL.html')">MR ORL</a>
-			<div style="height: 10px;"></div>
-			<a href="#" onclick="changePage('MRrekta.html')">MR rekta</a>
-			<a href="#" onclick="changePage('MRprostaty.html')">MR prostaty</a>
-			<a href="#" onclick="changePage('MRcervix.html')">MR cervixu</a>
-			<a href="#" onclick="changePage('MRbreast.html')">MR prsu</a>
-			<div style="height: 10px;"></div>
-			<a href="#" onclick="changePage('MRCP.html')">MR C páteře</a>
-			<a href="#" onclick="changePage('MRTP.html')">MR T páteře</a>
-			<a href="#" onclick="changePage('MRLP.html')">MR L páteře</a>
-			<a href="#" onclick="changePage('MRSIS.html')">MR SIS</a>
-			<div style="height: 10px;"></div>
-			<a href="#" onclick="changePage('MRramene.html')">MR ramene</a>
-			<a href="#" onclick="changePage('MRhips.html')">MR kyčlí</a>
-			<a href="#" onclick="changePage('MRkolene.html')">MR kolene</a>
-			<a href="#" onclick="changePage('MRankle.html')">MR hlezna</a>
-		</div>
-	</div>
-	
-	<div></div>
+		<input type="file" id="pdfFileInput" accept=".pdf,.docx" style="display: none;">
 
-	<div class="dropdown">
-		<button class="dropbtn">UZ</button>
-		<div class="dropdown-content">
-			<a href="#" onclick="changePage('UZcarotid.html')">UZ karotid</a>
-			<a href="#" onclick="changePage('UZrenal.html')">UZ renálních tepen</a>
-			<a href="#" onclick="changePage('UZthyroid.html')">UZ štítné žlázy</a>
-			<a href="#" onclick="changePage('UZabdomen.html')">UZ břicha</a>
-		</div>
-	</div>
-	
-	<div class="dropdown">
-		<button class="dropbtn">RTG</button>
-		<div class="dropdown-content">
-			<a href="#" onclick="changePage('RTGpre.html')">RTG předdefinované</a>
-			<a href="#" onclick="changePage('RTGchest.html')">RTG plic</a>
-		</div>
-	</div>
-	
-
-<input type="file" id="pdfFileInput" accept=".pdf,.docx" style="display: none;">
 	
 </div>
+
 
 <div id="promptSelectExam" class="noticeBar">VYBER TYP VYŠETŘENÍ...   <span class="bouncingPointer">👆</span> </div>
 
@@ -124,7 +124,7 @@
 <textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
 </div>
 
-<div id="texty2" class="standardwidthFinalText" style="display: ; position: relative;"> 
+<div id="texty2" class="standardwidthFinalText" style="display: ; position: relative; "> 
 
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 12px;">
   
