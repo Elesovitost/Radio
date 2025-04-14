@@ -605,26 +605,27 @@ table.compact-tnm-table td {
     background-position: center;
     opacity: 1;
     z-index: -10;
-    transition: opacity 1s; filter 1s;
-	filter: url(#bubbleFilter);
+    transition: opacity 1s, filter 1s;
+    filter: url(#bubbleFilter);
 
-    /* maskování do transparentna na všech stranách */
+    /* Použití čtyř lineárních gradientů pro jednotlivé strany */
     -webkit-mask-image:
-        linear-gradient(to top, transparent 5px, black 120px),
-        linear-gradient(to bottom, transparent 5px, black 120px),
-        linear-gradient(to left, transparent 5px, black 120px),
-        linear-gradient(to right, transparent 5px, black 120px);
-    -webkit-mask-composite: intersect;
-    mask-composite: intersect;
+         linear-gradient(to top, black 80%, transparent 100%),
+         linear-gradient(to bottom, black 80%, transparent 100%),
+         linear-gradient(to left, black 80%, transparent 100%),
+         linear-gradient(to right, black 80%, transparent 100%);
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-composite: destination-in;
+
     mask-image:
-        linear-gradient(to top, transparent 5px, black 120px),
-        linear-gradient(to bottom, transparent 5px, black 120px),
-        linear-gradient(to left, transparent 5px, black 120px),
-        linear-gradient(to right, transparent 5px, black 120px);
-    mask-composite: intersect;
-    mask-repeat: no-repeat;
+         linear-gradient(to top, black 80%, transparent 100%),
+         linear-gradient(to bottom, black 80%, transparent 100%),
+         linear-gradient(to left, black 80%, transparent 100%),
+         linear-gradient(to right, black 80%, transparent 100%);
     mask-size: 100% 100%;
-	
+    mask-repeat: no-repeat;
+    mask-composite: intersect;
 }
 
 #chessboard-overlay {
@@ -642,62 +643,27 @@ table.compact-tnm-table td {
         repeating-conic-gradient(rgba(255,255,255,0) 0% 100%, rgba(0,0,0,0.1) 0% 0%);
     background-size: 60px 60px, 60px 60px, 80px 80px;
 
-    /* 🧙‍♀️ Stejná maska jako background-image */
+    /* Stejná maska jako background-image */
     -webkit-mask-image:
-        linear-gradient(to top, transparent 5px, black 120px),
-        linear-gradient(to bottom, transparent 5px, black 120px),
-        linear-gradient(to left, transparent 5px, black 120px),
-        linear-gradient(to right, transparent 5px, black 120px);
-    -webkit-mask-composite: intersect;
-    mask-composite: intersect;
+         linear-gradient(to top, black 80%, transparent 100%),
+         linear-gradient(to bottom, black 80%, transparent 100%),
+         linear-gradient(to left, black 80%, transparent 100%),
+         linear-gradient(to right, black 80%, transparent 100%);
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-composite: destination-in;
+
     mask-image:
-        linear-gradient(to top, transparent 5px, black 120px),
-        linear-gradient(to bottom, transparent 5px, black 120px),
-        linear-gradient(to left, transparent 5px, black 120px),
-        linear-gradient(to right, transparent 5px, black 120px);
+         linear-gradient(to top, black 80%, transparent 100%),
+         linear-gradient(to bottom, black 80%, transparent 100%),
+         linear-gradient(to left, black 80%, transparent 100%),
+         linear-gradient(to right, black 80%, transparent 100%);
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    mask-composite: intersect;
     mask-composite: intersect;
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
 }
 
 
-/* Kontejner pro SVG ikonu – fixuje prostor pro ikonu */
-.gear-container {
-  display: inline-block;
-  width: 28px;
-  height: 28px;
-  position: relative;
-  vertical-align: middle;
-}
-
-/* Styl samotné SVG ikony */
-.gear-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  /* Vycentrování ikony */
-  transform: translate(-50%, -50%);
-  animation: spin 1s linear infinite;
-  animation-play-state: paused; /* Animace spuštěna pouze při hoveru */
-}
-
-/* Klíčové snímky pro čistou rotaci kolem středu */
-@keyframes spin {
-  0%   { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* Spuštění animace při najetí myší na headerBar */
-.headerBar:hover .gear-icon {
-  animation-play-state: running;
-}
-
-
-#promptSelectExam {
-  transition: opacity 1s ease;
-  opacity: 1;
-}
-
-.headerBar:hover ~ #promptSelectExam {
-  opacity: 0;
-}
