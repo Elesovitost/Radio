@@ -687,7 +687,17 @@ document.getElementById('toggleEdit').addEventListener('click', () => {
     page.style.pointerEvents = editMode ? "none" : "";
     page.style.opacity = editMode ? "0.2" : "";
   }
+
+  // Pokud se právě ukončuje režim editace, ulož do LocalStorage
+  if (!editMode) {
+    const text = document.getElementById('FINALCOMPLETEText').value.trim();
+    if (text && text !== lastSavedText) {
+      appendToLocalStorageLog(text, " (po EDITACI)");
+      lastSavedText = text;
+    }
+  }
 });
+
 
 
 
@@ -769,15 +779,15 @@ function appendToLocalStorageLog(text, prefix = "") {
   // Přidání nového záznamu
   parsed.logs.push(`[${time}]${prefix}\n${text}\n\n---\n`);
 
-  // Udržení max. 10 záznamů
-  if (parsed.logs.length > 10) {
-    parsed.logs = parsed.logs.slice(-10);
+  // Udržení max. 20 záznamů
+  if (parsed.logs.length > 20) {
+    parsed.logs = parsed.logs.slice(-20);
   }
 
   localStorage.setItem(key, JSON.stringify(parsed));
 }
 
-// AUTOSAVE každých 10 minut do localStorage s razítkem a denní rotací
+// AUTOSAVE každých 5 minut do localStorage s razítkem a denní rotací
 
 let lastSavedText = ""; // uchová poslední uložený text
 
