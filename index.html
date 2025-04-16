@@ -174,7 +174,7 @@
 <svg width="0" height="0">
 <filter id="bubbleFilter">
   <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="1" result="turbulence">
-	<animate attributeName="baseFrequency" values="0.005;0.05;0.2" dur="2000s" repeatCount="indefinite"/>
+	<animate attributeName="baseFrequency" values="0.005;0.001;0.003;0.001;0.005" dur="60s" repeatCount="indefinite"/>
   </feTurbulence>
   <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="40" xChannelSelector="R" yChannelSelector="G"/>
 </filter>
@@ -836,13 +836,10 @@ document.addEventListener('DOMContentLoaded', function () {
 function resetBackgroundFilter() {
   const bg = document.getElementById('random-background');
   if (bg) {
-    bg.style.opacity = 1;
-    bg.style.filter = 'none';           // odstraníme filtr
-    void bg.offsetWidth;                // vynucený reflow (restart DOM layoutu)
-    bg.style.filter = 'url(#bubbleFilter)';  // znovu aplikujeme filtr
+	bg.style.opacity = 1;
+	bg.style.filter = 'url(#bubbleFilter)';
   }
 }
-
 
 	
 </script>
