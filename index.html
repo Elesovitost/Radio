@@ -249,7 +249,7 @@ function changePage(url) {
     };
 
     var removeButton = document.createElement("button");
-    removeButton.textContent = "X";
+    removeButton.textContent = "X";;
     removeButton.className = "remove-button"; 
 	
 		removeButton.onclick = function() {
@@ -836,10 +836,13 @@ document.addEventListener('DOMContentLoaded', function () {
 function resetBackgroundFilter() {
   const bg = document.getElementById('random-background');
   if (bg) {
-	bg.style.opacity = 1;
-	bg.style.filter = 'url(#bubbleFilter)';
+    bg.style.opacity = 1;
+    bg.style.filter = 'none';           // odstraníme filtr
+    void bg.offsetWidth;                // vynucený reflow (restart DOM layoutu)
+    bg.style.filter = 'url(#bubbleFilter)';  // znovu aplikujeme filtr
   }
 }
+
 
 	
 </script>
