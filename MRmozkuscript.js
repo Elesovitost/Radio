@@ -45,6 +45,7 @@ var textsStrana = ["jakého?", "PRAVÉHO", "LEVÉHO"];
 
 var textsWML = ["0", "ojedinělé", "sporadické", "vícečetné", "splývající"];
 var textsGCA = ["0", "1", "2", "3"];
+var textsMTA = ["0", "1", "2", "3", "4"];
 var textsventricles = ["0", "↑", "↑↑", "↑↑↑"];
 var newLesionV = document.getElementById("newLesionV");
 var textsLesion2enhancement = ["?", "0", "↑", "↑↑", "↑↑↑"];
@@ -71,6 +72,7 @@ var buttonElementStrana = document.getElementById("StranaButton");
 var buttonElementWML = document.getElementById("WMLButton");
 var selectElementWMLLocation = document.getElementById("WMLLocation");
 var buttonElementGCA = document.getElementById("GCAButton");
+var buttonElementMTA = document.getElementById("MTAButton");
 var buttonElementventricles = document.getElementById("ventriclesButton");
 var buttonElementLesion2enhancement = document.getElementById("Lesion2enhancementButton");
 var buttonElementMMKR = document.getElementById("MMKRButton");
@@ -94,6 +96,7 @@ var indexStrana = 0;function cycleStranaText(event) {  indexStrana = cycleText(e
 
 var indexWML = 0;function cycleWMLText(event) {  indexWML = cycleText(event, textsWML, indexWML, buttonElementWML, updateBackgroundColor);}
 var indexGCA = 0;function cycleGCAText(event) {  indexGCA = cycleText(event, textsGCA, indexGCA, buttonElementGCA, updateBackgroundColor);}
+var indexMTA = 0; function cycleMTAText(event) {  indexMTA = cycleText(event, textsMTA, indexMTA, buttonElementMTA, updateBackgroundColor);  updateTexts();}
 var indexventricles = 0;function cycleventriclesText(event) {  indexventricles = cycleText(event, textsventricles, indexventricles, buttonElementventricles, updateBackgroundColor);}
 var indexLesion2enhancement = 0;function cycleLesion2enhancementText(event) {  indexLesion2enhancement = cycleText(event, textsLesion2enhancement, indexLesion2enhancement, buttonElementLesion2enhancement, updateBackgroundColor);}
 var indexMMKR = 0;function cycleMMKRText(event) {  indexMMKR = cycleText(event, textsMMKR, indexMMKR, buttonElementMMKR, updateBackgroundColor);}
@@ -297,11 +300,14 @@ document.getElementById('BrainLesion1BTGRADE').addEventListener('focus', functio
 });
 
 document.addEventListener('click', function(e) {
-  var dropdown = document.getElementById(BrainLesion1selectBTGRADE);
-  if (!document.getElementById('BrainLesion1BTGRADE').contains(e.target) && !dropdown.contains(e.target)) {
-    dropdown.classList.add('hidden');
-  }
+	var dropdown = document.getElementById('BrainLesion1selectBTGRADE');
+	var input = document.getElementById('BrainLesion1BTGRADE');
+	if (input && !input.contains(e.target) && !dropdown.contains(e.target)) {
+	  dropdown.classList.add('hidden');
+	}
 });
+
+
 //LESION2
 
 document.getElementById('BrainLesion2no').addEventListener('click', function() {

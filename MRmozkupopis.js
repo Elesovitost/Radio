@@ -20,6 +20,7 @@ var RSP = ""; var RSR = ""; var checkboxRS = document.getElementById('checkboxRS
 var checkboxNoEnh = document.getElementById('checkboxNoEnh');
 
 const GCAText = buttonElementGCA.innerText;
+const MTAText = document.getElementById("MTAButton").innerText;
 var lobaratrophy = document.getElementById("lobaratrophy").value; 
 const ventriclesText = buttonElementventricles.innerText;
 
@@ -324,15 +325,43 @@ if (GCAText === "0") {
 GCAP = "Subarachnoidální prostory oboustranně šířkou přiměřené k věku. "; 
 GCAR = "";
 } else if (GCAText === "1") {
- GCAP = "Lehké povšechné zúžení gyrů a rozšíření sulků mozkových hemisfér. ";
- GCAR = "Mírná celková atrofie mozku (GCA grade 1). ";
+ GCAP = "Mírné rozšíření sulků mozkových hemisfér. ";
+ GCAR = "Mírná atrofie mozku (GCA grade 1). ";
 } else if (GCAText === "2") {
- GCAP = "Středně pokročilé povšechné zúžení gyrů a rozšíření sulků mozkových hemisfér. ";
- GCAR = "Středně pokročilá celková atrofie mozku (GCA grade 2). ";
+ GCAP = "Rozšíření sulků a ztenčení gyrů mozkových hemisfér. ";
+ GCAR = "Střední celková atrofie mozku (GCA grade 2). ";
 } else if (GCAText === "3") {
  GCAP = " Výrazné zúžení gyrů a rozšíření sulků mozkových hemisfér. ";
  GCAR = "Pokročilá celková atrofie mozku (GCA grade 3). ";
 }
+
+
+var MTAP = "";
+var MTAR = "";
+
+switch (MTAText) {
+  case "0":
+    MTAP = "";
+    MTAR = "";
+    break;
+  case "1":
+    MTAP = "Mírné rozšíření choroidální fisury, bez signifikantní atrofie hipokampu. ";
+    MTAR = "MTA skóre 1 – nález může odpovídat věku. ";
+    break;
+  case "2":
+    MTAP = "Rozšíření choroidální fisury a temporálního rohu, mírná atrofie hipokampu. ";
+    MTAR = "MTA skóre 2 – suspektní nález, zejména u mladších pacientů. ";
+    break;
+  case "3":
+    MTAP = "Zřetelná atrofie hipokampu s rozšířením temporálního rohu a fisury. ";
+    MTAR = "MTA skóre 3 – mediotemporální atrofie středního stupně. ";
+    break;
+  case "4":
+    MTAP = "Těžká atrofie hipokampu a mediotemporální struktury s výraznou dilatací. ";
+    MTAR = "MTA skóre 4 – těžká mediotemporální atrofie, typická pro Alzheimerovu chorobu. ";
+    break;
+}
+
 
 var lobaratrophyP = ""; 
 var lobaratrophyR = ""; 
@@ -847,7 +876,7 @@ POPBrainLesion3 + "\n" +
 LesionVP + "\n" +
 WMLP + WMLLocationP + RSP + "." + "\n" +
 POPNoLesions + "\n" +
-GCAP + " " + lobaratrophyP + "\n" +
+GCAP + " " + MTAP + " " + lobaratrophyP + "\n" +
 ventriclesP + "\n" +
 MMKP + "\n" +
 PituitaryP + PinealP + "\n" +
@@ -875,7 +904,7 @@ RESBrainLesion2 + "\n" +
 RESBrainLesion3 + "\n" +
 LesionVR + "\n" +
 WMLR + WMLLocationR + RSR + "\n" + 
-GCAR + lobaratrophyR + "\n" +
+GCAR + " " + MTAR + " " + lobaratrophyR + "\n" +
 ventriclesR + "\n" +
 MMKR + "\n" +
 PituitaryR + PinealR + "\n" +
