@@ -596,10 +596,10 @@ table.compact-tnm-table td {
 
 .background-image {
     position: absolute;
-    top: 5px;
+    top: 50px;
     left: 5px;
-    width: 1004px;
-    height: 1004px;
+    width: 500px;
+    height: 500px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -633,7 +633,7 @@ table.compact-tnm-table td {
     top: 5px;
     left: 5px;
     width: 1004px;
-    height: 1004px;
+    height: 600px;
     pointer-events: none;
     z-index: -9;
 
