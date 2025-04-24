@@ -78,14 +78,17 @@
 
 		<!-- Pravá skupina: TNM a PDF -->
 		<div style="float: right; margin-right: 0px;">
+
 			<div class="dropdown">
-				<button class="button40 dropbtn">TNM</button>
-				<div class="dropdown-content">
-					<a href="#" onclick="changePage('TNMORL.html')">ORL</a>
-					<a href="#" onclick="changePage('TNMRectum.html')">rektum</a>
-					<a href="#" onclick="changePage('TNMmiProstate.html')">prostata</a>
-					<a href="#" onclick="changePage('TNMCervix.html')">cervix</a>
-				</div>
+			  <button class="button60 dropbtn">HELPER</button>
+			  <div class="dropdown-content">
+				<a href="#" onclick="changePage('TNMORL.html')">ORL</a>
+				<a href="#" onclick="changePage('TNMRectum.html')">rektum</a>
+				<a href="#" onclick="changePage('TNMmiProstate.html')">prostata</a>
+				<a href="#" onclick="changePage('TNMCervix.html')">cervix</a>
+				<div style="height: 8px; border-top: 1px solid #aaa; margin: 6px 0;"></div>
+				<a href="#" onclick="changePage('BTIT.html')">BT-IT</a>
+			  </div>
 			</div>
 
 			<div class="dropdown" style="display: inline-block;">
@@ -173,25 +176,10 @@
 
 <svg width="0" height="0">
 <filter id="bubbleFilter">
-  <feTurbulence 
-    type="fractalNoise" 
-    baseFrequency="0.01" 
-    numOctaves="2" 
-    seed="7" 
-    result="turbulence">
-    <animate 
-      attributeName="baseFrequency" 
-      values="0.008;0.011;0.01;0.008" 
-      dur="20s" 
-      repeatCount="indefinite"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="1" result="turbulence">
+	<animate attributeName="baseFrequency" values="0.005;0.001;0.003;0.001;0.005" dur="60s" repeatCount="indefinite"/>
   </feTurbulence>
-
-  <feDisplacementMap 
-    in="SourceGraphic" 
-    in2="turbulence" 
-    scale="20" 
-    xChannelSelector="R" 
-    yChannelSelector="G"/>
+  <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="40" xChannelSelector="R" yChannelSelector="G"/>
 </filter>
 </svg>
 
