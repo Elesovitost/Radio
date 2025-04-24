@@ -42,22 +42,60 @@ var aktivitaOptions = [
     { text: "enormní", value: "s akumulací RF výrazně nad úrovní ref. jater", valueRPH: "s vysokou PSMA expresí", valueFDG: "výrazně hypermetabolické "}
 ];
 
+
+// text na základě aktivity
+
 function populateAktivitaOptions() {
     var selectElements = document.querySelectorAll("select[id$='Activity']");
 
     selectElements.forEach(function (selectElement) {
         aktivitaOptions.forEach(function (option) {
             var optionElement = document.createElement("option");
-            optionElement.value = option.value;
             optionElement.textContent = option.text;
             optionElement.dataset.valueRPH = option.valueRPH;
-			optionElement.dataset.valueFDG = option.valueFDG;
+            optionElement.dataset.valueFDG = option.valueFDG;
+            optionElement.value = option.value; // defaultně, přepíše se později
+
             selectElement.appendChild(optionElement);
+        });
+
+        selectElement.addEventListener('change', function () {
+            const selectedOption = this.selectedOptions[0];
+            const text = selectedOption.textContent;
+
+            if (["nízká", "nižší", "vyšší", "vysoká", "enormní", "intermed."].includes(text)) {
+                const lesionIdPrefix = this.id.replace("Activity", "SUV");
+                const suvInput = document.getElementById(lesionIdPrefix);
+                const liverInput = document.getElementById('SUVLiver');
+
+                if (!suvInput || !liverInput) return;
+
+                const suvValue = parseFloat(suvInput.value.replace(',', '.'));
+                const liverValue = parseFloat(liverInput.value.replace(',', '.'));
+
+                if (!isNaN(suvValue) && !isNaN(liverValue) && liverValue > 0) {
+                    const ratio = suvValue / liverValue;
+                    const percentDiff = Math.round(Math.abs((ratio - 1) * 100 / 10)) * 10;
+                    const direction = (ratio < 1) ? "nižší" : "vyšší";
+
+                    if (text === "intermed.") {
+                        selectedOption.value = "s akumulací RF na úrovni ref. hodnoty jater";
+                    } else if (percentDiff >= 100 && direction === "vyšší") {
+                        const multiplier = Math.round(ratio);
+                        selectedOption.value = `s akumulací RF ${multiplier}x vyšší než ref. hodnota jater`;
+                    } else {
+                        selectedOption.value = `s akumulací RF o ${percentDiff}% ${direction} než ref. hodnota jater`;
+                    }
+                }
+            }
         });
     });
 }
 
+
+
 populateAktivitaOptions();
+
 
 
 
@@ -137,10 +175,13 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
 function selectOptionByText(selectElement, text) {
     Array.from(selectElement.options).forEach(option => {
         if (option.textContent === text) {
-            selectElement.value = option.value;
+            selectElement.selectedIndex = option.index;
+            // Trigger change event to recalculate percentage value
+            selectElement.dispatchEvent(new Event('change'));
         }
     });
 }
+
 
 	 
 
@@ -429,13 +470,17 @@ function generateComparisonText(prevSUV, prevSize, date, currentSUV, currentSize
     if (prevSize.includes(" 0 ")) {
         return " (oproti minule nově)";
     } else if (currentSize !== "" && prevSize !== "" && currentSize === prevSize) {
-        return " (minule " + "obdobné velikosti" + " " + comparisonText + ")"; 
+        return " (minule obdobné velikosti" + (comparisonText ? ", " + comparisonText : "") + ")";
     } else if (comparisonText !== "" || prevSize.trim() !== "") {
-        return " (minule " + prevSize + " " + comparisonText + ")"; 
+        let result = " (minule";
+        if (prevSize.trim() !== "") result += " " + prevSize;
+        if (comparisonText !== "") result += (prevSize.trim() !== "" ? ", " : " ") + comparisonText;
+        return result + ")";
     } else {
         return "";
     }
 }
+
 
 
 // SUVLiver value native preset
@@ -491,19 +536,19 @@ function compareActPOP(currentSUV, previousSUV) {
     var change = Math.log(currentRatio / prevRatio) * 100;
 
     if (Math.abs(change) < 20) {
-        return "s obdobnou akumulací RF";
+        return "akumulace byla obdobná";
     } else if (change >= 20 && change < 50) {
-        return "s mírně nižší akumulací RF";
+        return "akumulace byla mírně nižší";
 	} else if (change >= 50 && change < 100) {
-        return "s významně nižší akumulací RF";
+        return "akumulace byla zřetelně nižší";
     } else if (change >= 100) {
-        return "s výrazně nižší akumulací RF";
+        return "akumulace byla výrazně nižší";
     } else if (change <= -20 && change > -50) {
-        return "s mírně vyšší akumulací RF";
+        return "akumulace byla mírně vyšší";
 	} else if (change <= -50 && change > -100) {
-        return "s významně vyšší akumulací RF";
+        return "akumulace byla zřetelně vyšší";
     } else if (change <= -100) {
-        return "s výrazně vyšší akumulací RF";
+        return "akumulace byla výrazně vyšší";
     }
 }
 
