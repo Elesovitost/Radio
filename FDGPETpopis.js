@@ -36,9 +36,9 @@ var aktivitaOptions = [
     { text: "není", value: "bez patrné akumulace RF", valueRPH: "téměř bez PSMA exprese", valueFDG: "ametabolické"},
 	{ text: "nízká", value: "s akumulací RF pod úrovní ref. jater", valueRPH: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
     { text: "nižší", value: "s akumulací RF mírně pod úrovní ref. jater", valueRPH: "s nízkou PSMA expresí", valueFDG: "nízce metabolicky aktivní "},
-    { text: "intermed.", value: "s akumulací RF na úrovni ref. jater", valueRPH: "se střední PSMA expresí", valueFDG: "středně metabolicky aktivní "},
-    { text: "vyšší", value: "s akumulací RF mírně nad úrovní ref. jater", valueRPH: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
-	{ text: "vysoká", value: "s akumulací RF nad úrovní ref. jater", valueRPH: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
+    { text: "intermed.", value: "s akumulací RF cca na úrovni ref. jater", valueRPH: "se střední PSMA expresí", valueFDG: "středně metabolicky aktivní "},
+    { text: "vyšší", value: "s akumulací RF mírně nad úrovní ref. jater", valueRPH: "se zvýšenou PSMA expresí", valueFDG: "mírně hypermetabolické "},
+	{ text: "vysoká", value: "s akumulací RF zřetelně nad úrovní ref. jater", valueRPH: "se zvýšenou PSMA expresí", valueFDG: "hypermetabolické "},
     { text: "enormní", value: "s akumulací RF výrazně nad úrovní ref. jater", valueRPH: "s vysokou PSMA expresí", valueFDG: "výrazně hypermetabolické "}
 ];
 
@@ -107,13 +107,13 @@ document.querySelectorAll('input[id$="SUV"]').forEach((input) => {
                 selectOptionByText(aktSelect, 'nízká');
             } else if (ratio >= 0.6 && ratio < 0.9) {
                 selectOptionByText(aktSelect, 'nižší');
-            } else if (ratio >= 0.9 && ratio < 1.1) {
+            } else if (ratio >= 0.9 && ratio < 1.2) {
                 selectOptionByText(aktSelect, 'intermed.');
-            } else if (ratio >= 1.1 && ratio < 1.4) {
+            } else if (ratio >= 1.2 && ratio < 1.6) {
                 selectOptionByText(aktSelect, 'vyšší');
-            } else if (ratio >= 1.4 && ratio < 4) {
+            } else if (ratio >= 1.6 && ratio < 8) {
                 selectOptionByText(aktSelect, 'vysoká');
-            } else if (ratio >= 4) {
+            } else if (ratio >= 8) {
                 selectOptionByText(aktSelect, 'enormní');
             }
         } else {
@@ -495,13 +495,13 @@ function compareActPOP(currentSUV, previousSUV) {
     } else if (change >= 20 && change < 50) {
         return "s mírně nižší akumulací RF";
 	} else if (change >= 50 && change < 100) {
-        return "se zřetelně nižší akumulací RF";
+        return "s významně nižší akumulací RF";
     } else if (change >= 100) {
         return "s výrazně nižší akumulací RF";
     } else if (change <= -20 && change > -50) {
         return "s mírně vyšší akumulací RF";
 	} else if (change <= -50 && change > -100) {
-        return "se zřetelně vyšší akumulací RF";
+        return "s významně vyšší akumulací RF";
     } else if (change <= -100) {
         return "s výrazně vyšší akumulací RF";
     }
@@ -1551,7 +1551,7 @@ var ThoraxLymphNode1Location = document.getElementById("ThoraxLymphNode1Location
 var ThoraxLymphNode1AddLocation = document.getElementById("ThoraxLymphNode1AddLocation").value;
 var ThoraxLymphNode1Loclargest = document.getElementById("ThoraxLymphNode1Loclargest").value;
 var ThoraxLymphNode1Large = document.getElementById("ThoraxLymphNode1Large").value;
-document.getElementById('ThoraxLymphNode1number').addEventListener('change', () => document.getElementById('ThoraxLymphNode1Large').classList.toggle('hidden', ThoraxLymphNode1number === ""));
+document.getElementById('ThoraxLymphNode1number').addEventListener('change', () => {document.getElementById('ThoraxLymphNode1Large').classList.toggle('hidden', document.getElementById('ThoraxLymphNode1number').value === "");});
 var ThoraxLymphNode1Activity = document.getElementById("ThoraxLymphNode1Activity").value;
 var ThoraxLymphNode1ActivityCopy = ThoraxLymphNode1Activity;
 var selectedOption = document.getElementById("ThoraxLymphNode1Activity").selectedOptions[0];
@@ -2566,7 +2566,7 @@ var AbdomenLymphNode1Location = document.getElementById("AbdomenLymphNode1Locati
 var AbdomenLymphNode1AddLocation = document.getElementById("AbdomenLymphNode1AddLocation").value;
 var AbdomenLymphNode1Loclargest = document.getElementById("AbdomenLymphNode1Loclargest").value;
 var AbdomenLymphNode1Large = document.getElementById("AbdomenLymphNode1Large").value;
-document.getElementById('AbdomenLymphNode1number').addEventListener('change', () => document.getElementById('AbdomenLymphNode1Large').classList.toggle('hidden', AbdomenLymphNode1number === ""));
+document.getElementById('AbdomenLymphNode1number').addEventListener('change', () => {document.getElementById('AbdomenLymphNode1Large').classList.toggle('hidden', document.getElementById('AbdomenLymphNode1number').value === "");});
 var AbdomenLymphNode1Activity = document.getElementById("AbdomenLymphNode1Activity").value;
 var AbdomenLymphNode1ActivityCopy = AbdomenLymphNode1Activity;
 var selectedOption = document.getElementById("AbdomenLymphNode1Activity").selectedOptions[0];
