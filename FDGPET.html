@@ -1094,7 +1094,7 @@ table {width: auto; white-space: nowrap;}
 <!-- POPIS ORGANOVY -->	
 
 
-	<div class="section" style="top: 130px; left: 300px;">
+	<div class="section" style="top: 110px; left: 300px;">
 		<table>
 			<tr>
 				<td><button id="HeadMaxSinus" class="others menu_button">Maxil. siny</button></td>
@@ -1122,6 +1122,34 @@ table {width: auto; white-space: nowrap;}
 			</tr>
 		</table>
 	</div>
+
+	<div class="section" style="top: 130px; left: 300px;">
+	  <table>
+		<tr>
+		  <td><button id="HeadTeeth" class="others menu_button">Zuby</button></td>
+		</tr>
+		<tr id="HeadTeethtable" class="hidden">
+		  <td>
+			<table>
+			  <tr>
+				<td>Horní čelist</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbHeadTeethUpperR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbHeadTeethUpperL" onChange="updateTexts()"><span>L</span></label></td>
+			  </tr>
+			  <tr>
+				<td>Dolní čelist</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="ChbHeadTeethLowerR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbHeadTeethLowerL" onChange="updateTexts()"><span>L</span></label></td>
+			  </tr>
+			  <tr>
+				<td colspan="2">
+				  <textarea id="HeadTeethText" type="text" placeholder="který konkrétně..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea>
+				</td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+	  </table>
+	</div>
+
 
 	<div class="section" style="top: 150px; left: 300px;">
 		<table>
