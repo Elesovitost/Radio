@@ -178,6 +178,11 @@ option {color: #000000; background-color: #FFFFFF;}
 #myL4LISDButton, #myL4SLButton, #myL45HDButton, #myL45HERPFButton, #myL45HERPPButton, #myL45HERCButton, #myL45HERLPButton, #myL45HERLFButton, #myL45MIGButton {display: none;}
 #myL5LISDButton, #myL5SLButton, #myL5S1HDButton, #myL5S1HERPFButton, #myL5S1HERPPButton, #myL5S1HERCButton, #myL5S1HERLPButton, #myL5S1HERLFButton, #myL5S1MIGButton {display: none;} 
 
+#TABULKA thead {background-color: #D3DCE9; /* světle modrá */}
+#L01, #L12, #L23, #L34, #L45, #L5S1 {background-color: #f5f5f5;}
+#L01 button, #L12 button, #L23 button, #L34 button, #L45 button, #L5S1 button {background-color: transparent;}
+
+
 #myC2LISDButton, #myC2SLButton, #myC23HDButton, #myC23HERPFButton, #myC23HERPPButton, #myC23HERCButton, #myC23HERLPButton, #myC23HERLFButton, #myC23MIGButton {display: none;}
 #myC3LISDButton, #myC3SLButton, #myC34HDButton, #myC34HERPFButton, #myC34HERPPButton, #myC34HERCButton, #myC34HERLPButton, #myC34HERLFButton, #myC34MIGButton {display: none;} 
 #myC4LISDButton, #myC4SLButton, #myC45HDButton, #myC45HERPFButton, #myC45HERPPButton, #myC45HERCButton, #myC45HERLPButton, #myC45HERLFButton, #myC45MIGButton {display: none;} 
@@ -187,7 +192,7 @@ option {color: #000000; background-color: #FFFFFF;}
 
 
 #MRLPshape body {font-family: "Arial", sans-serif; font-size: 12px; font-weight: bold; }
-#MRLPshape table {border-collapse: collapse;border: 0px solid #000000; font-weight: bold; background-color: ;}
+#MRLPshape table {border-collapse: collapse;border: 1px solid #000000; font-weight: bold; background-color: ;}
 #MRLPshape td {border: 1px #E8DF90;}
 
 #NADPISY0 {color:#000000;  text-align: center; font-weight: bold; border: 0px solid #000000; border-bottom: none;}
