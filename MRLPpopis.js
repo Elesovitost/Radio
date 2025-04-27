@@ -1,8 +1,203 @@
-// dodělat: změny textů dle zaškrtnutí. Např. disky vs ostatní disky. Nebo těla vs ostatní těla.
-// co s edémem při fraktuře těla.
-// (s útlakem kořene) přehodit
-// v ostatních etážích smazat když je vše vyplněno.
-// 
+function cycleText(event, texts, index, button) {
+  const currentText = button.innerText;
+  let currentIndex = texts.indexOf(currentText);
+
+  if (event.button === 0) { // levé tlačítko
+    if (currentIndex < texts.length - 1) {
+      currentIndex++;
+    }
+  } else if (event.button === 2) { // pravé tlačítko
+    if (currentIndex > 0) {
+      currentIndex--;
+    }
+  }
+
+  button.innerText = texts[currentIndex];
+  return currentIndex;
+}
+
+
+
+// OSY
+
+var textsOSA = ["((", "(", "|", ")", "))"];
+var textsLORD = ["((", "(", "|", ")"];
+
+var buttonElementOSA = document.getElementById("myOSAButton");
+var buttonElementLORD = document.getElementById("myLORDButton");
+
+// DEFINICE segmentů
+
+
+const segmentTemplates = {
+  vertebra: {
+    KOM: ["není", "schmorl", "horní", "klínovitá", "výrazná"],
+    LES: ["není", "hemangiom", "atyp hem", "lytické", "sklerotické"],
+    LL: ["není", "ventro", "dorzo"],
+    LISD: ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm", "9 mm", "10 mm"],
+    SL: ["nelýza", "lýza"]
+  },
+  disc: {
+    DD: ["není", "mírná", "střední", "těžká"],
+    MOD: ["není", "I", "II", "III"],
+    BH: ["není", "bulging", "herniace", "osteofyty", "kombinace"],
+    HD: ["1 mm", "2 mm", "3 mm", "4 mm", "5 mm", "6 mm", "7 mm", "8 mm", "9 mm", "10 mm"],
+    FA: ["není", "mírná", "střední", "těžká", "edém"],
+    HERPF: ["F", "+"],
+    HERPP: ["P", "+"],
+    HERC: ["C", "+"],
+    HERLP: ["P", "+"],
+    HERLF: ["F", "+"],
+    MIG: ["M0", "M▲", "M▼"],
+    PF: ["0", "1", "2", "3"],
+    PR: ["0", "1", "2", "3"],
+    PK: ["0", "1", "2", "3"],
+    LR: ["0", "1", "2", "3"],
+    LF: ["0", "1", "2", "3"]
+  },
+  S1: {
+    LES: ["není", "hemangiom", "atyp hem", "lytické", "sklerotické"]
+  }
+};
+
+const segmentMap = {
+  L1: "vertebra",
+  L12: "disc",
+  L2: "vertebra",
+  L23: "disc",
+  L3: "vertebra",
+  L34: "disc",
+  L4: "vertebra",
+  L45: "disc",
+  L5: "vertebra",
+  L5S1: "disc",
+  S1: "S1"
+};
+
+for (const [seg, type] of Object.entries(segmentMap)) {
+  const buttons = segmentTemplates[type];
+  for (const [btnType, texts] of Object.entries(buttons)) {
+    window[`texts${seg}${btnType}`] = texts;
+
+    const button = document.getElementById(`my${seg}${btnType}Button`);
+    if (button) {
+      window[`buttonElement${seg}${btnType}`] = button;
+    }
+  }
+}
+
+// HIDING BUTTONS
+
+
+// Funkce pro nastavení skrytí/zobrazení
+function setupShowHide(mainButton, dependentButtons, inline = false) {
+  if (!mainButton) return;
+  mainButton.addEventListener("mousedown", function() {
+    const displayType = inline ? "inline-block" : "block";
+    const show = mainButton.innerText !== "není";
+    dependentButtons.forEach(btn => {
+      if (btn) btn.style.display = show ? displayType : "none";
+    });
+  });
+}
+
+// Obratle LL ➔ LISD a SL (block)
+setupShowHide(buttonElementL1LL, [buttonElementL1LISD, buttonElementL1SL]);
+setupShowHide(buttonElementL2LL, [buttonElementL2LISD, buttonElementL2SL]);
+setupShowHide(buttonElementL3LL, [buttonElementL3LISD, buttonElementL3SL]);
+setupShowHide(buttonElementL4LL, [buttonElementL4LISD, buttonElementL4SL]);
+setupShowHide(buttonElementL5LL, [buttonElementL5LISD, buttonElementL5SL]);
+
+// Prostory BH ➔ HD a herniace (inline-block)
+setupShowHide(buttonElementL12BH, [buttonElementL12HD, buttonElementL12HERPF, buttonElementL12HERPP, buttonElementL12HERC, buttonElementL12HERLP, buttonElementL12HERLF, buttonElementL12MIG], true);
+setupShowHide(buttonElementL23BH, [buttonElementL23HD, buttonElementL23HERPF, buttonElementL23HERPP, buttonElementL23HERC, buttonElementL23HERLP, buttonElementL23HERLF, buttonElementL23MIG], true);
+setupShowHide(buttonElementL34BH, [buttonElementL34HD, buttonElementL34HERPF, buttonElementL34HERPP, buttonElementL34HERC, buttonElementL34HERLP, buttonElementL34HERLF, buttonElementL34MIG], true);
+setupShowHide(buttonElementL45BH, [buttonElementL45HD, buttonElementL45HERPF, buttonElementL45HERPP, buttonElementL45HERC, buttonElementL45HERLP, buttonElementL45HERLF, buttonElementL45MIG], true);
+setupShowHide(buttonElementL5S1BH, [buttonElementL5S1HD, buttonElementL5S1HERPF, buttonElementL5S1HERPP, buttonElementL5S1HERC, buttonElementL5S1HERLP, buttonElementL5S1HERLF, buttonElementL5S1MIG], true);
+
+
+//unhide operace
+
+function toggleLastCells() {
+  let operaceCheckbox = document.getElementById('operace');
+  let rows = document.querySelectorAll('#TABULKA tr');
+
+  rows.forEach(row => {
+    let cells = row.querySelectorAll('td:nth-last-child(-n+3), th:last-child');
+    cells.forEach(cell => {
+      cell.style.display = operaceCheckbox.checked ? 'table-cell' : 'none';
+    });
+  });
+}
+
+
+
+// USAGE:
+
+const buttonConfigs = [
+  { textName: "OSA", updateBackground: false },
+  { textName: "LORD", updateBackground: false },
+  
+  { textName: "L1KOM" }, { textName: "L1LES" }, { textName: "L1LL" }, { textName: "L1LISD", updateBackground: false }, { textName: "L1SL" },
+  { textName: "L12DD" }, { textName: "L12MOD" }, { textName: "L12BH" }, { textName: "L12HD", updateBackground: false }, { textName: "L12FA" },
+  { textName: "L12HERPF" }, { textName: "L12HERPP" }, { textName: "L12HERC" }, { textName: "L12HERLP" }, { textName: "L12HERLF" },
+  { textName: "L12MIG" }, { textName: "L12PF" }, { textName: "L12PR" }, { textName: "L12PK" }, { textName: "L12LR" }, { textName: "L12LF" },
+
+  { textName: "L2KOM" }, { textName: "L2LES" }, { textName: "L2LL" }, { textName: "L2LISD", updateBackground: false }, { textName: "L2SL" },
+  { textName: "L23DD" }, { textName: "L23MOD" }, { textName: "L23BH" }, { textName: "L23HD", updateBackground: false }, { textName: "L23FA" },
+  { textName: "L23HERPF" }, { textName: "L23HERPP" }, { textName: "L23HERC" }, { textName: "L23HERLP" }, { textName: "L23HERLF" },
+  { textName: "L23MIG" }, { textName: "L23PF" }, { textName: "L23PR" }, { textName: "L23PK" }, { textName: "L23LR" }, { textName: "L23LF" },
+
+  { textName: "L3KOM" }, { textName: "L3LES" }, { textName: "L3LL" }, { textName: "L3LISD", updateBackground: false }, { textName: "L3SL" },
+  { textName: "L34DD" }, { textName: "L34MOD" }, { textName: "L34BH" }, { textName: "L34HD", updateBackground: false }, { textName: "L34FA" },
+  { textName: "L34HERPF" }, { textName: "L34HERPP" }, { textName: "L34HERC" }, { textName: "L34HERLP" }, { textName: "L34HERLF" },
+  { textName: "L34MIG" }, { textName: "L34PF" }, { textName: "L34PR" }, { textName: "L34PK" }, { textName: "L34LR" }, { textName: "L34LF" },
+
+  { textName: "L4KOM" }, { textName: "L4LES" }, { textName: "L4LL" }, { textName: "L4LISD", updateBackground: false }, { textName: "L4SL" },
+  { textName: "L45DD" }, { textName: "L45MOD" }, { textName: "L45BH" }, { textName: "L45HD", updateBackground: false }, { textName: "L45FA" },
+  { textName: "L45HERPF" }, { textName: "L45HERPP" }, { textName: "L45HERC" }, { textName: "L45HERLP" }, { textName: "L45HERLF" },
+  { textName: "L45MIG" }, { textName: "L45PF" }, { textName: "L45PR" }, { textName: "L45PK" }, { textName: "L45LR" }, { textName: "L45LF" },
+
+  { textName: "L5KOM" }, { textName: "L5LES" }, { textName: "L5LL" }, { textName: "L5LISD", updateBackground: false }, { textName: "L5SL" },
+  { textName: "L5S1DD" }, { textName: "L5S1MOD" }, { textName: "L5S1BH" }, { textName: "L5S1HD", updateBackground: false }, { textName: "L5S1FA" },
+  { textName: "L5S1HERPF" }, { textName: "L5S1HERPP" }, { textName: "L5S1HERC" }, { textName: "L5S1HERLP" }, { textName: "L5S1HERLF" },
+  { textName: "L5S1MIG" }, { textName: "L5S1PF" }, { textName: "L5S1PR" }, { textName: "L5S1PK" }, { textName: "L5S1LR" }, { textName: "L5S1LF" },
+
+  { textName: "S1LES" }
+];
+
+
+
+const indexes = {};
+
+buttonConfigs.forEach(({ textName, defaultText, updateBackground = true }) => {
+  indexes[`index${textName}`] = 0;
+
+  window[`cycle${textName}Text`] = function(event) {
+    const texts = window[`texts${textName}`];
+    const button = window[`buttonElement${textName}`];
+
+    indexes[`index${textName}`] = cycleText(
+      event,
+      texts,
+      indexes[`index${textName}`],
+      button
+    );
+
+    if (button && updateBackground) {
+      const referenceText = defaultText ?? texts[0]; // defaultText pokud existuje, jinak texts[0]
+      button.style.backgroundColor = (button.innerText === referenceText) ? "white" : "#D4A29C";
+    }
+
+    updateTexts();
+  };
+});
+
+
+
+// POPIS
+
+
 
 
 var LLdiskynormal = ""; 
@@ -119,40 +314,47 @@ var LLoperace = "";
     var nahrCheckboxes = document.querySelectorAll('input[id$="nahr"]:checked');
     var lamCheckboxes = document.querySelectorAll('input[id$="lam"]:checked');
     
-    if(stabCheckboxes.length > 0) {
-        LLoperace += "Zadní stabilizace ";
-        stabCheckboxes.forEach(function(checkbox, index){
-            LLoperace += checkbox.value;
-            if(index < stabCheckboxes.length - 1) {
-                LLoperace += "-";
-            }
-        });
-        LLoperace += ". ";
-    }
+if(stabCheckboxes.length > 0) {
+    LLoperace += "Zadní stabilizace ";
+    stabCheckboxes.forEach(function(checkbox, index){
+        var segment = checkbox.id.replace("op", "").replace("stab", "");
+        LLoperace += segment;
+        if(index < stabCheckboxes.length - 1) {
+            LLoperace += "-";
+        }
+    });
+    LLoperace += ". ";
+}
 
-    if(nahrCheckboxes.length > 0) {
-        LLoperace += "Náhrada disku ";
-        nahrCheckboxes.forEach(function(checkbox, index){
-            LLoperace += checkbox.value;
-            if(index < nahrCheckboxes.length - 1) {
-                LLoperace += ", ";
-            }
-        });
-        LLoperace += ". ";
-    }
-
-    if(lamCheckboxes.length > 0) {
-        LLoperace += "Laminektomie ";
-        lamCheckboxes.forEach(function(checkbox, index){
-            LLoperace += checkbox.value;
-            if(index < lamCheckboxes.length - 1) {
-                LLoperace += ", ";
-            }
-        });
-        LLoperace += ". ";
-    }
+if(nahrCheckboxes.length > 0) {
+    LLoperace += "Náhrada disku ";
+    nahrCheckboxes.forEach(function(checkbox, index){
+        var segment = checkbox.id.replace("op", "").replace("nahr", "");
+        if (segment.length === 3) {
+            segment = segment[0] + segment[1] + "/" + segment[2];
+        } else if (segment.includes("S")) {
+            segment = segment.replace("S", "/S");
+        }
+        LLoperace += segment;
+        if(index < nahrCheckboxes.length - 1) {
+            LLoperace += ", ";
+        }
+    });
+    LLoperace += ". ";
+}
 
 
+if(lamCheckboxes.length > 0) {
+    LLoperace += "Laminektomie ";
+    lamCheckboxes.forEach(function(checkbox, index){
+        var segment = checkbox.id.replace("op", "").replace("lam", "");
+        LLoperace += segment;
+        if(index < lamCheckboxes.length - 1) {
+            LLoperace += ", ";
+        }
+    });
+    LLoperace += ". ";
+}
 
 
 
