@@ -481,12 +481,15 @@ if (schmorlList.length > 0) {
 }
 if (horniList.length > 0) {
   LLfraktura += "Prolomení krycí plotny obratl. těla " + horniList.join(", ") + ". ";
+  LLfrakturaR += "St.p. prolomení krycí plotny obratl. těla " + horniList.join(", ") + ". ";
 }
 if (klinovitaList.length > 0) {
   LLfraktura += "Klínovitá komprese obratl. těla " + klinovitaList.join(", ") + ". ";
+  LLfrakturaR += "St.p. kompresivní fraktuře obratl. těla " + klinovitaList.join(", ") + ". ";
 }
 if (vyraznaList.length > 0) {
   LLfraktura += "Výrazná komprese obratl. těla " + vyraznaList.join(", ") + ". ";
+  LLfrakturaR += "St.p. výrazné kompresi obratl. těla " + vyraznaList.join(", ") + ". ";
 }
 
 // MÍCHA
@@ -910,6 +913,22 @@ if (X01nativR === "" && X12nativR === "" && X23nativR === "" && X34nativR === ""
     LLnormalR = "";
 }
 
+// další
+
+function capitalizeAndDot(text) {
+  text = text.trim();
+  if (text.length === 0) return ""; // prázdný text nech tak
+  text = text[0].toUpperCase() + text.slice(1); // první písmeno velké
+  if (!/[.!?]$/.test(text)) {  // pokud text nekončí . ! nebo ?
+    text += ".";
+  }
+  return text;
+}
+
+const dalsiPopis = capitalizeAndDot(document.getElementById('dalsiPopis').value);
+const dalsiZaver = capitalizeAndDot(document.getElementById('dalsiZaver').value);
+
+
 	
 // FINÁLNÍ TEXTY
 
@@ -932,7 +951,9 @@ X56nativ + X5listezaP + " " + X56degenerdP + " " + X56edemP + " " + X56herniace 
 LLostatnidiskynormal + "\n" + 
 LLstenozakanalne + LLkanaljinak + "\n" + 
 LLstenozaforaminne + LLforaminjinak + "\n" + 
-LLmicha;
+LLmicha + "\n" +
+dalsiPopis
+;
 
 MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/^\s*[\r\n]/gm, '');  // smaže prázdné řádky
 MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
@@ -941,6 +962,7 @@ MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/  +/g, ' '); // dvojmezer
 
 
 MRLumbarRESText.value = 
+LLoperace + "\n" +
 LLmulti + "\n" +
 LLnormalR + "\n" +
 LLloziskoR + LLfrakturaR + "\n" +
@@ -950,7 +972,8 @@ X23nativR + X2listezaR + X23degenerdR + " " + X23herniaceR + X23stenozyR + X23ed
 X34nativR + X3listezaR + X34degenerdR + " " + X34herniaceR + X34stenozyR + X34edemR + "\n" +
 X45nativR + X4listezaR + X45degenerdR + " " + X45herniaceR + X45stenozyR + X45edemR + "\n" +
 X56nativR + X5listezaR + X56degenerdR + " " + X56herniaceR + X56stenozyR + X56edemR + "\n" +
-OsyR;
+OsyR + "\n" +
+dalsiZaver;
 
 //náhrady ostatní
 MRLumbarRESText.value = MRLumbarRESText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
@@ -961,7 +984,7 @@ MRLumbarRESText.value = MRLumbarRESText.value.replace(/\,{2,}/g, ','); // více 
 MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
 MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s*na\s+podkladě\s*,\s*|\s*,\s*na\s+podkladě\s*,|,\s*na\s+podkladě\s*|\s*,\s*na\s+podkladě/g, ' na podkladě ');   //odstraní čárku před podkladem
 MRLumbarRESText.value = MRLumbarRESText.value.replace(/  +/g, ' '); // dvojmezery
-MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s((?!L[1-5]|X6)[A-ZÚ])/g, function(fullMatch, groupMatch) {    return ', ' + groupMatch.toLowerCase();}); // po čárce malé písmeno, nevztahuje se na X1-5 a X6.
+MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s((?!L[1-5]|T12)[A-ZÚ])/g, function(fullMatch, groupMatch) {    return ', ' + groupMatch.toLowerCase();}); // po čárce malé písmeno, nevztahuje se na X1-5 a X6.
 MRLumbarRESText.value = MRLumbarRESText.value.replace("Edém pod krycími plotnami Modic I v rámci dekompenzace degenerativních změn. Edém při facet. skloubeních v rámci dekompenzace degenerativních změn.", "Edém pod krycími plotnami Modic I a edém při facet. skloubeních v rámci dekompenzace degenerativních změn."); // combine. edém
 MRLumbarRESText.value = MRLumbarRESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
 
@@ -971,32 +994,36 @@ sloucitStejneRadky();
 function sloucitStejneRadky() {
   const textarea = document.getElementById('MRLumbarRESText');
   if (!textarea) return;
-
-  const lines = textarea.value.split('\n').filter(line => line.trim() !== '');
-
-  const popisyMap = {}; // {popis: [seznam segmentů]}
-
-  lines.forEach(line => {
+  
+  const rawLines = textarea.value.split('\n');
+  
+  const groups = {};  
+  rawLines.forEach(line => {
     const parts = line.split(':');
-    if (parts.length < 2) return; // Špatný formát, přeskoč
-
+    if (parts.length < 2) return;  
     const segment = parts[0].trim();
-    const popis = parts.slice(1).join(':').trim(); // spojíme zpět kdyby byly ":" v textu
-
-    if (!popisyMap[popis]) {
-      popisyMap[popis] = [];
-    }
-    popisyMap[popis].push(segment);
+    const popis   = parts.slice(1).join(':').trim();
+    groups[popis] = groups[popis] || [];
+    groups[popis].push(segment);
   });
-
-  // Vytvořit nový text
-  const noveRadky = [];
-  for (const popis in popisyMap) {
-    const segmenty = popisyMap[popis].join(', ');
-    noveRadky.push(`${segmenty}: ${popis}`);
-  }
-
-  textarea.value = noveRadky.join('\n');
+  
+  const merged = Object.entries(groups).map(
+    ([popis, segs]) => `${segs.join(', ')}: ${popis}`
+  );
+  
+  const result = [];
+  let inserted = false;
+  rawLines.forEach(line => {
+    if (!inserted && line.includes(':')) {
+      merged.forEach(l => result.push(l));
+      inserted = true;
+    }
+    if (!line.includes(':')) {
+      result.push(line);
+    }
+  });
+  
+  textarea.value = result.join('\n');
 }
 
 

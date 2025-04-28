@@ -64,6 +64,15 @@
 
       </table>
     </div>
+
+	<div class="DIVLesions">
+	  <button class="title">DALŠÍ...</button>
+	  <div style="display: flex; gap: 5px; margin-top: 10px;">
+		<textarea id="dalsiPopis" style="width: 400px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+		<textarea id="dalsiZaver" style="width: 400px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+	  </div>
+	</div>
+
   </div>
 
 </div>
@@ -101,7 +110,7 @@ segments.forEach(seg => {
 
   if (seg.type === 'vertebra') {
     tr.innerHTML = `
-      <td>${seg.label}</td>
+      <td></td>
       <td></td><td></td><td></td><td></td>
       <td></td><td></td><td></td><td></td><td></td>
       <td><div style="display:flex">
@@ -141,22 +150,11 @@ segments.forEach(seg => {
 	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="op${seg.id}nahr" onchange="updateTexts()"><span></span></label></td>
 	  <td></td>
     `;
-  } else if (seg.type === 's1') {
-    tr.innerHTML = `
-      <td>${seg.label}</td>
-      <td></td><td></td><td></td><td></td>
-      <td></td><td></td><td></td><td></td><td></td>
-      <td></td><td></td>
-      <td><button id="my${seg.id}LESButton" class="button100" onmousedown="cycle${seg.id}LESText(event)">není</button></td>
-      <td>${seg.label}</td>
-      <td><label class="CHB"><input type="checkbox" id="op${seg.id}stab" onchange="updateTexts()"><span></span></label></td>
-      <td></td>
-      <td></td>
-    `;
-  }
+  } 
 
   tbody.appendChild(tr);
 });
+
 </script>
 
 

@@ -2,329 +2,82 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 
+
 <body>
 
 <div id="MRLPshape" class="MainDIV">
 
-<div id="MRLP" class="mydiv0 standardwidth">MR KRČNÍ PÁTEŘE</div>
-<div id="INDLINE" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
-<div id="OSYLINE" class="standardwidth">
+  <div id="MRLP" class="mydiv0 standardwidth">MR KRČNÍ PÁTEŘE</div>
+
+  <div id="INDLINE" class="mydiv1 standardwidth">
+    <input id="indikace" type="text" placeholder="indikace..." autocomplete="off">
+  </div>
+
+  <div id="OSYLINE" class="standardwidth">
+    <div class="DIVLesions">
+      <button class="title">OBECNÉ</button>
+      Osa <button id="myOSAButton" class="button40" onmousedown="cycleOSAText(event)">|</button>
+      Lordóza <button id="myLORDButton" class="button40" onmousedown="cycleLORDText(event)">(</button>
+      Operace <label class="CHB"><input type="checkbox" class="mycheckbox" id="operace" onchange="toggleLastCells()"><span>+</span></label>
+    </div>
+  </div>
+
+  <div id="TABULKAdiv" class="standardwidth">
+    <div class="DIVLesions">
+      <button class="title">SEGMENTY</button>
+	  <div style="height: 5px;"></div>
+      <table id="TABULKA" class="small-table">
+
+        <thead>
+          <tr>
+            <th></th>
+            <th colspan="4">Patologie</th>
+            <th colspan="5">Stenózy</th>
+            <th colspan="3">Obratlová těla</th>
+            <th></th>
+            <th colspan="3">Operace</th>
+          </tr>
+          <tr>
+            <td></td>
+            <td>DDD</td>
+            <td>Modic</td>
+            <td>Protruze</td>
+            <td>Artróza</td>
+            <td>PF</td>
+            <td>PR</td>
+            <td>K</td>
+            <td>LR</td>
+            <td>LF</td>
+            <td>Listéza</td>
+            <td>Fraktura</td>
+            <td>Ložisko</td>
+            <td></td>
+            <td>Stab</td>
+            <td>Disk</td>
+            <td>Lam</td>
+          </tr>
+        </thead>
+
+        <tbody id="segments-body">
+          <!-- Segmenty se budou generovat skriptem -->
+        </tbody>
+
+      </table>
+    </div>
+	
 	<div class="DIVLesions">
-		<button class="title">OBECNÉ</button>
-		Osa  <button id="myOSAButton" class="button40" onmousedown="cycleOSAText(event)">|</button>
-		Lordóza <button id="myLORDButton" class="button40" onmousedown="cycleLORDText(event)">(</button>
-		Operace <label class="CHB"><input type="checkbox" class="mycheckbox" id="operace" onchange="toggleLastCells()"/><span>+</span></label>
+	  <button class="title">DALŠÍ...</button>
+	  <div style="display: flex; gap: 5px; margin-top: 10px;">
+		<textarea id="dalsiPopis" style="width: 400px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+		<textarea id="dalsiZaver" style="width: 400px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+	  </div>
 	</div>
-</div>
-<div id="TABULKAdiv" class="standardwidth"">
-<div class="DIVLesions">
-	<button class="title">SEGMENTY</button>
-	<table id="TABULKA" style="font-size: 12px;">
-	<tr id="NADPISY0">
-        <th></th>
-		<th colspan="4">Patologie</th>
-		<th colspan="5">Stenózy</th>
-		<th colspan="3">Obratlová těla</th>
-		<th></th>
-		<td></td>
-		<th colspan="3">Operace</th>
-    </tr>
-	<tr id="NADPISY" class="padding">
-		<td></td>
-		<td>DD</td>
-		<td>Modic</td>
-		<td>Hernie</td>
-		<td>FA</td>
-		<td>PF</td>
-		<td>PR</td>
-		<td>K</td>
-		<td>LR</td>
-		<td>LF</td>
-		<td>Listéza</td>
-		<td>Fraktura</td>
-		<td>Ložisko</td>
-		<td></td>
-		<td>Stab</td>
-		<td>Disk</td>
-		<td>Lam</td>
-	</tr>
-	<tr id="C3">
-	<td></td>
 	
-      <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-	  <td><div id="myC3ButtonsContainer" style="display: flex;">
-	  <button id="myC3CCButton" class="button60" onmousedown="cycleC3CCText(event)">není</button>
-	  <button id="myC3LISDButton" class="button60" onmousedown="cycleC3LISDText(event)">1 mm</button>
-	  <button id="myC3SLButton" class="button60" onmousedown="cycleC3SLText(event)">nelýza</button></div></td>
-	  <td><button id="myC3KOMButton" class="button60" onmousedown="cycleC3KOMText(event)">není</td>
-      <td><button id="myC3LESButton" class="button100" onmousedown="cycleC3LESText(event)">není</button></td>
-	  <td>C3</td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC3stab" value="C3" onchange="updateTexts()"/><span></span></label></td>
-	  <td></td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC3lam" value="C3" onchange="updateTexts()"/><span></span></label></td>
-	</tr>
-	
-	<tr id="C34">
-	  <td>C3/4</td>
-        
-	  <td><button id="myC34DDButton" class="button60" onmousedown="cycleC34DDText(event)">není</button></td>
-	  <td><button id="myC34MODButton" class="button60" onmousedown="cycleC34MODText(event)">není</button></td>
-	  <td>
-	  <div style="position: relative; display: flex; align-items: center;">
-	  <button id="myC34BHButton" class="button80" onmousedown="cycleC34BHText(event)">není</button>
+  </div>
 
-   	  <button id="myC34HDButton" class="button60" onmousedown="cycleC34HDText(event)">1 mm</button>
-   
-  	  <button id="myC34HERPFButton" class="myherButton" onmousedown="cycleC34HERPFText(event)">F</button>
-	  <button id="myC34HERPPButton" class="myherButton" onmousedown="cycleC34HERPPText(event)">P</button>
-	  <button id="myC34HERCButton" class="myherButton" onmousedown="cycleC34HERCText(event)">C</button>
-	  <button id="myC34HERLPButton" class="myherButton" onmousedown="cycleC34HERLPText(event)">P</button>
-	  <button id="myC34HERLFButton" class="myherButton" onmousedown="cycleC34HERLFText(event)">F</button>
-	  <button id="myC34MIGButton" class="button40" onmousedown="cycleC34MIGText(event)">M0</button>
-	  </div>
-
-	   </td>
- 	  <td><button id="myC34FAButton" class="button60" onmousedown="cycleC34FAText(event)">není</button></td>
-
-	  <td><button id="myC34PFButton" class="button20" onmousedown="cycleC34PFText(event)">0</button></td>
-	  <td><button id="myC34PRButton" class="button20" onmousedown="cycleC34PRText(event)">0</button></td>
-	  <td><button id="myC34PKButton" class="button20" onmousedown="cycleC34PKText(event)">0</button></td>
-	  <td><button id="myC34LRButton" class="button20" onmousedown="cycleC34LRText(event)">0</button></td>
-	  <td><button id="myC34LFButton" class="button20" onmousedown="cycleC34LFText(event)">0</button></td>
-	  <td></td>
-      <th></th>
-	  <th></th>
-	  <td></td>
-	  <td></td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC34nahr" value="C3/4" onchange="updateTexts()"/><span></span></label></td>
-	  <td></td>
-	</tr>
-	
-	<tr id="C4">
-	<td></td>
-	
-      <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-	  <td><div id="myC4ButtonsContainer" style="display: flex;">
-	  <button id="myC4CCButton" class="button60" onmousedown="cycleC4CCText(event)">není</button>
-	  <button id="myC4LISDButton" class="button60" onmousedown="cycleC4LISDText(event)">1 mm</button>
-	  <button id="myC4SLButton" class="button60" onmousedown="cycleC4SLText(event)">nelýza</button></div></td>
-	  <td><button id="myC4KOMButton" class="button60" onmousedown="cycleC4KOMText(event)">není</button></td>
-      <td><button id="myC4LESButton" class="button100" onmousedown="cycleC4LESText(event)">není</button></td>
-	  <td>C4</td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC4stab" value="C4" onchange="updateTexts()"/><span></span></label></td>
-	  <td></td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC4lam" value="C4" onchange="updateTexts()"/><span></span></label></td>
-	</tr>
-	
-	<tr id="C45">
-	  <td>C4/5</td>
-        
-	  <td><button id="myC45DDButton" class="button60" onmousedown="cycleC45DDText(event)">není</button></td>
-	  <td><button id="myC45MODButton" class="button60" onmousedown="cycleC45MODText(event)">není</button></td>
-	  <td>
-	  <div style="position: relative; display: flex; align-items: center;">
-	  <button id="myC45BHButton" class="button80" onmousedown="cycleC45BHText(event)">není</button>
-
-   	  <button id="myC45HDButton" class="button60" onmousedown="cycleC45HDText(event)">1 mm</button>
-
-  	  <button id="myC45HERPFButton" class="myherButton" onmousedown="cycleC45HERPFText(event)">F</button>
-	  <button id="myC45HERPPButton" class="myherButton" onmousedown="cycleC45HERPPText(event)">P</button>
-	  <button id="myC45HERCButton" class="myherButton" onmousedown="cycleC45HERCText(event)">C</button>
-	  <button id="myC45HERLPButton" class="myherButton" onmousedown="cycleC45HERLPText(event)">P</button>
-	  <button id="myC45HERLFButton" class="myherButton" onmousedown="cycleC45HERLFText(event)">F</button>
-	  <button id="myC45MIGButton" class="button40" onmousedown="cycleC45MIGText(event)">M0</button>
-	  </div>
-
-	   </td>
- 	  <td><button id="myC45FAButton" class="button60" onmousedown="cycleC45FAText(event)">není</button></td>
-	  
-	  <td><button id="myC45PFButton" class="button20" onmousedown="cycleC45PFText(event)">0</button></td>
-	  <td><button id="myC45PRButton" class="button20" onmousedown="cycleC45PRText(event)">0</button></td>
-	  <td><button id="myC45PKButton" class="button20" onmousedown="cycleC45PKText(event)">0</button></td>
-	  <td><button id="myC45LRButton" class="button20" onmousedown="cycleC45LRText(event)">0</button></td>
-	  <td><button id="myC45LFButton" class="button20" onmousedown="cycleC45LFText(event)">0</button></td>
-	  <td></td>
-      <th></th>
-	  <th></th>
-	  <td></td>
-	  <td></td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC45nahr" value="C4/5" onchange="updateTexts()"/><span></span></label></td>
-	  <td></td>
-	</tr>
-
-	<tr id="C5">
-	<td></td>
-	
-	  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-	  <td><div id="myC5ButtonsContainer" style="display: flex;">
-	  <button id="myC5CCButton" class="button60" onmousedown="cycleC5CCText(event)">není</button>
-	  <button id="myC5LISDButton" class="button60" onmousedown="cycleC5LISDText(event)">1 mm</button>
-	  <button id="myC5SLButton" class="button60" onmousedown="cycleC5SLText(event)">nelýza</button></div></td>
-	  <td><button id="myC5KOMButton" class="button60" onmousedown="cycleC5KOMText(event)">není</button></td>
-      <td><button id="myC5LESButton" class="button100" onmousedown="cycleC5LESText(event)">není</button></td>
-	  <td>C5</td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC5stab" value="C5" onchange="updateTexts()"/><span></span></label></td>
-	  <td></td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC5lam" value="C5" onchange="updateTexts()"/><span></span></label></td>
-	</tr>
-	
-	<tr id="C56">
-	  <td>C5/6</td>
-        
-	  <td><button id="myC56DDButton" class="button60" onmousedown="cycleC56DDText(event)">není</button></td>
-	  <td><button id="myC56MODButton" class="button60" onmousedown="cycleC56MODText(event)">není</button></td>
-	  <td>
-	  <div style="position: relative; display: flex; align-items: center;">
-	  <button id="myC56BHButton" class="button80" onmousedown="cycleC56BHText(event)">není</button>
-
-   	  <button id="myC56HDButton" class="button60" onmousedown="cycleC56HDText(event)">1 mm</button>
-   
-  	  <button id="myC56HERPFButton" class="myherButton" onmousedown="cycleC56HERPFText(event)">F</button>
-	  <button id="myC56HERPPButton" class="myherButton" onmousedown="cycleC56HERPPText(event)">P</button>
-	  <button id="myC56HERCButton" class="myherButton" onmousedown="cycleC56HERCText(event)">C</button>
-	  <button id="myC56HERLPButton" class="myherButton" onmousedown="cycleC56HERLPText(event)">P</button>
-	  <button id="myC56HERLFButton" class="myherButton" onmousedown="cycleC56HERLFText(event)">F</button>
-	  <button id="myC56MIGButton" class="button40" onmousedown="cycleC56MIGText(event)">M0</button>
-	  </div>
-
-	   </td>
- 	  <td><button id="myC56FAButton" class="button60" onmousedown="cycleC56FAText(event)">není</button></td>
-
-	  <td><button id="myC56PFButton" class="button20" onmousedown="cycleC56PFText(event)">0</button></td>
-	  <td><button id="myC56PRButton" class="button20" onmousedown="cycleC56PRText(event)">0</button></td>
-	  <td><button id="myC56PKButton" class="button20" onmousedown="cycleC56PKText(event)">0</button></td>
-	  <td><button id="myC56LRButton" class="button20" onmousedown="cycleC56LRText(event)">0</button></td>
-	  <td><button id="myC56LFButton" class="button20" onmousedown="cycleC56LFText(event)">0</button></td>
-	  <td></td>
-      <th></th>
-	  <th></th>
-	  <td></td>
-	  <td></td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC56nahr" value="C5/6" onchange="updateTexts()"/><span></span></label></td>
-	  <td></td>
-	</tr>
-	
-	<tr id="C6">
-	<td></td>
-	<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-	  <td><div id="myC6ButtonsContainer" style="display: flex;">
-	  <button id="myC6CCButton" class="button60" onmousedown="cycleC6CCText(event)">není</button>
-	  <button id="myC6LISDButton" class="button60" onmousedown="cycleC6LISDText(event)">1 mm</button>
-	  <button id="myC6SLButton" class="button60" onmousedown="cycleC6SLText(event)">nelýza</button></div></td>
-	  <td><button id="myC6KOMButton" class="button60" onmousedown="cycleC6KOMText(event)">není</td>
-      <td><button id="myC6LESButton" class="button100" onmousedown="cycleC6LESText(event)">není</button></td>
-	  <td>C6</td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC6stab" value="C6" onchange="updateTexts()"/><span></span></label></td>
-	  <td></td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC6lam" value="C6" onchange="updateTexts()"/><span></span></label></td>
-	</tr>
-	
-	<tr id="C67">
-	  <td>C6/7</td>
-	  
-	  <td><button id="myC67DDButton" class="button60" onmousedown="cycleC67DDText(event)">není</button></td>
-	  <td><button id="myC67MODButton" class="button60" onmousedown="cycleC67MODText(event)">není</button></td>
-	  <td>
-	  <div style="position: relative; display: flex; align-items: center;">
-	  <button id="myC67BHButton" class="button80" onmousedown="cycleC67BHText(event)">není</button>
-
-   	  <button id="myC67HDButton" class="button60" onmousedown="cycleC67HDText(event)">1 mm</button>
-   
-  	  <button id="myC67HERPFButton" class="myherButton" onmousedown="cycleC67HERPFText(event)">F</button>
-	  <button id="myC67HERPPButton" class="myherButton" onmousedown="cycleC67HERPPText(event)">P</button>
-	  <button id="myC67HERCButton" class="myherButton" onmousedown="cycleC67HERCText(event)">C</button>
-	  <button id="myC67HERLPButton" class="myherButton" onmousedown="cycleC67HERLPText(event)">P</button>
-	  <button id="myC67HERLFButton" class="myherButton" onmousedown="cycleC67HERLFText(event)">F</button>
-	  <button id="myC67MIGButton" class="button40" onmousedown="cycleC67MIGText(event)">M0</button>
-	  </div>
-
-	   </td>
- 	  <td><button id="myC67FAButton" class="button60" onmousedown="cycleC67FAText(event)">není</button></td>
-
-	  <td><button id="myC67PFButton" class="button20" onmousedown="cycleC67PFText(event)">0</button></td>
-	  <td><button id="myC67PRButton" class="button20" onmousedown="cycleC67PRText(event)">0</button></td>
-	  <td><button id="myC67PKButton" class="button20" onmousedown="cycleC67PKText(event)">0</button></td>
-	  <td><button id="myC67LRButton" class="button20" onmousedown="cycleC67LRText(event)">0</button></td>
-	  <td><button id="myC67LFButton" class="button20" onmousedown="cycleC67LFText(event)">0</button></td>
-	  <td></td>
-      <th></th>
-	  <th></th>
-	  <td></td>
-	  <td></td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC67nahr" value="C6/7" onchange="updateTexts()"/><span></span></label></td>
-	  <td></td>
-	</tr>
-	
-	<tr id="C7">
-	<td></td>
-	
-	<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-	  <td><div id="myC7ButtonsContainer" style="display: flex;">
-	  <button id="myC7CCButton" class="button60" onmousedown="cycleC7CCText(event)">není</button>
-	  <button id="myC7LISDButton" class="button60" onmousedown="cycleC7LISDText(event)">1 mm</button>
-	  <button id="myC7SLButton" class="button60" onmousedown="cycleC7SLText(event)">nelýza</button></div></td>
-	  <td><button id="myC7KOMButton" class="button60" onmousedown="cycleC7KOMText(event)">není</button></td>
-      <td><button id="myC7LESButton" class="button100" onmousedown="cycleC7LESText(event)">není</button></td>
-	  <td>C7</td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC7stab" value="C7" onchange="updateTexts()"/><span></span></label></td>
-	  <td></td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC7lam" value="C7" onchange="updateTexts()"/><span></span></label></td>
-	</tr>
-	
-	<tr id="C7T1">
-	  <td>C7/T1</td>
-        
-	  <td><button id="myC7T1DDButton" class="button60" onmousedown="cycleC7T1DDText(event)">není</button></td>
-	  <td><button id="myC7T1MODButton" class="button60" onmousedown="cycleC7T1MODText(event)">není</button></td>
-	  <td>
-	  <div style="position: relative; display: flex; align-items: center;">
-	  <button id="myC7T1BHButton" class="button80" onmousedown="cycleC7T1BHText(event)">není</button>
-
-   	  <button id="myC7T1HDButton" class="button60" onmousedown="cycleC7T1HDText(event)">1 mm</button>
-   
-  	  <button id="myC7T1HERPFButton" class="myherButton" onmousedown="cycleC7T1HERPFText(event)">F</button>
-	  <button id="myC7T1HERPPButton" class="myherButton" onmousedown="cycleC7T1HERPPText(event)">P</button>
-	  <button id="myC7T1HERCButton" class="myherButton" onmousedown="cycleC7T1HERCText(event)">C</button>
-	  <button id="myC7T1HERLPButton" class="myherButton" onmousedown="cycleC7T1HERLPText(event)">P</button>
-	  <button id="myC7T1HERLFButton" class="myherButton" onmousedown="cycleC7T1HERLFText(event)">F</button>
-	  <button id="myC7T1MIGButton" class="button40" onmousedown="cycleC7T1MIGText(event)">M0</button>
-	  </div>
-
-	   </td>
- 	  <td><button id="myC7T1FAButton" class="button60" onmousedown="cycleC7T1FAText(event)">není</button></td>
-
-	  <td><button id="myC7T1PFButton" class="button20" onmousedown="cycleC7T1PFText(event)">0</button></td>
-	  <td><button id="myC7T1PRButton" class="button20" onmousedown="cycleC7T1PRText(event)">0</button></td>
-	  <td><button id="myC7T1PKButton" class="button20" onmousedown="cycleC7T1PKText(event)">0</button></td>
-	  <td><button id="myC7T1LRButton" class="button20" onmousedown="cycleC7T1LRText(event)">0</button></td>
-	  <td><button id="myC7T1LFButton" class="button20" onmousedown="cycleC7T1LFText(event)">0</button></td>
-	  <td></td>
-      <th></th>
-	  <th></th>
-	  <td></td>
-	  <td></td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opC7T1nahr" value="C7/T1" onchange="updateTexts()"/><span></span></label></td>
-	  <td></td>
-	</tr>
-	
-	<tr id="T1">
-	<td></td>
-	
-	<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-	  <td></td>
-	  <td></td>
-      <td><button id="myT1LESButton" class="button100" onmousedown="cycleT1LESText(event)">není</button></td>
-	  <td>T1</td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opT1stab" value="T1" onchange="updateTexts()"/><span></span></label></td>
-	  <td></td>
-	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="opT1lam" value="T1" onchange="updateTexts()"/><span></span></label></td>
-	</tr>
-</table>
-</div>
 </div>
 
 
-<!-- POPIS -->	
 <div id="texty1" class=" standardwidth hidden">
 NÁZEV<textarea id="MRCervicalNAMEText" class="medium"></textarea>
 INDIKACE<textarea id="MRCervicalINDText" class="medium"></textarea>
@@ -333,10 +86,80 @@ POPIS<textarea id="MRCervicalPOPText" class="superlarge"></textarea>
 ZÁVĚR<textarea id="MRCervicalRESText" class="superlarge"></textarea>
 </div>
 
+<script>
+const segments = [
+  { type: 'vertebra', id: 'X0', label: 'C2' },
+  { type: 'disc', id: 'X01', label: 'C2/3' },
+  { type: 'vertebra', id: 'X1', label: 'C3' },
+  { type: 'disc', id: 'X12', label: 'C3/4' },
+  { type: 'vertebra', id: 'X2', label: 'C4' },
+  { type: 'disc', id: 'X23', label: 'C4/5' },
+  { type: 'vertebra', id: 'X3', label: 'C5' },
+  { type: 'disc', id: 'X34', label: 'C5/6' },
+  { type: 'vertebra', id: 'X4', label: 'C6' },
+  { type: 'disc', id: 'X45', label: 'C6/7' },
+  { type: 'vertebra', id: 'X5', label: 'C7' },
+  { type: 'disc', id: 'X56', label: 'C7/T1' },
+  { type: 'vertebra', id: 'X6', label: 'T1' },
+];
+const tbody = document.getElementById('segments-body');
+
+segments.forEach(seg => {
+  const tr = document.createElement('tr');
+  tr.id = seg.id;
+
+  if (seg.type === 'vertebra') {
+    tr.innerHTML = `
+      <td></td>
+      <td></td><td></td><td></td><td></td>
+      <td></td><td></td><td></td><td></td><td></td>
+      <td><div style="display:flex">
+        <button id="my${seg.id}LLButton" class="button60" onmousedown="cycle${seg.id}LLText(event)">není</button>
+        <button id="my${seg.id}LISDButton" class="button60" onmousedown="cycle${seg.id}LISDText(event)">1 mm</button>
+        <button id="my${seg.id}SLButton" class="button60" onmousedown="cycle${seg.id}SLText(event)">nelýza</button>
+      </div></td>
+      <td><button id="my${seg.id}KOMButton" class="button60" onmousedown="cycle${seg.id}KOMText(event)">není</button></td>
+      <td><button id="my${seg.id}LESButton" class="button100" onmousedown="cycle${seg.id}LESText(event)">není</button></td>
+      <td>${seg.label}</td>
+      <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="op${seg.id}stab" onchange="updateTexts()"><span></span></label></td>
+      <td></td>
+      <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="op${seg.id}lam" onchange="updateTexts()"><span></span></label></td>
+    `;
+  } else if (seg.type === 'disc') {
+    tr.innerHTML = `
+      <td>${seg.label}</td>
+      <td><button id="my${seg.id}DDButton" class="button60" onmousedown="cycle${seg.id}DDText(event)">není</button></td>
+      <td><button id="my${seg.id}MODButton" class="button60" onmousedown="cycle${seg.id}MODText(event)">není</button></td>
+      <td><div style="display:flex">
+        <button id="my${seg.id}BHButton" class="button80" onmousedown="cycle${seg.id}BHText(event)">není</button>
+        <button id="my${seg.id}HDButton" class="button60" onmousedown="cycle${seg.id}HDText(event)">1 mm</button>
+        <button id="my${seg.id}HERPFButton" class="myherButton" onmousedown="cycle${seg.id}HERPFText(event)">F</button>
+        <button id="my${seg.id}HERPPButton" class="myherButton" onmousedown="cycle${seg.id}HERPPText(event)">P</button>
+        <button id="my${seg.id}HERCButton" class="myherButton" onmousedown="cycle${seg.id}HERCText(event)">C</button>
+        <button id="my${seg.id}HERLPButton" class="myherButton" onmousedown="cycle${seg.id}HERLPText(event)">P</button>
+        <button id="my${seg.id}HERLFButton" class="myherButton" onmousedown="cycle${seg.id}HERLFText(event)">F</button>
+        <button id="my${seg.id}MIGButton" class="myherButton" onmousedown="cycle${seg.id}MIGText(event)">M0</button>
+      </div></td>
+      <td><button id="my${seg.id}FAButton" class="button60" onmousedown="cycle${seg.id}FAText(event)">není</button></td>
+      <td><button id="my${seg.id}PFButton" class="button20" onmousedown="cycle${seg.id}PFText(event)">0</button></td>
+      <td><button id="my${seg.id}PRButton" class="button20" onmousedown="cycle${seg.id}PRText(event)">0</button></td>
+      <td><button id="my${seg.id}PKButton" class="button20" onmousedown="cycle${seg.id}PKText(event)">0</button></td>
+      <td><button id="my${seg.id}LRButton" class="button20" onmousedown="cycle${seg.id}LRText(event)">0</button></td>
+      <td><button id="my${seg.id}LFButton" class="button20" onmousedown="cycle${seg.id}LFText(event)">0</button></td>
+      <td></td><td></td><td></td><td></td><td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="op${seg.id}nahr" onchange="updateTexts()"><span></span></label></td>
+	  <td></td>
+    `;
+  } 
+
+  tbody.appendChild(tr);
+});
+</script>
 
 
-<script src="MRCPscript.js"></script>  
+<script src="Universal.js"></script>  
 <script src="MRCPpopis.js"></script>          
+
 
 	</body>
 </html>
