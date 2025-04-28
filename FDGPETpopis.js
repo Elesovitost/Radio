@@ -3435,6 +3435,10 @@ let codeForSkeletonLesion1 = `
 
 var SkeletonLesion1Locationtext = "";
 
+if (document.getElementById('Chb1SkeletonAll').checked) {
+    SkeletonLesion1Locationtext += "skeletu";
+}
+
     if (document.getElementById('Chb1SkeletCalvaR').checked && document.getElementById('Chb1SkeletCalvaL').checked) {
         SkeletonLesion1Locationtext += "kalvy bilat.";
     } else if (document.getElementById('Chb1SkeletCalvaR').checked) {
