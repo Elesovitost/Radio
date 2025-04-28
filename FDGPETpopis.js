@@ -703,7 +703,7 @@ function checkSmallSize(LesionSize, LesionSUV) {
 // viability check
 
 function checkViability(text) {
-  const keywords = ['na úrovni', 'nad úrovní', 'intermed', 'střední', 'zvýšen', 'vysok', 'hyper'];
+  const keywords = ['na úrovni', 'nad úrovní', 'intermed', 'střední', 'zvýšen', 'vysok', 'hyper', 'vyšší'];
   const hasKeyword = keywords.some(keyword => text.includes(keyword));
   const suvMatch = text.match(/SUVmax=([\d.]+)/);
   const hasHighSUV = suvMatch && parseFloat(suvMatch[1]) > 1;
@@ -1225,14 +1225,14 @@ var NeckVCordsText = "";
   }
 
   if (ChbVCordsR && ChbVCordsL) {
-    NeckVCordsText += "obě bez patrné akumulace RF, ";
+    NeckVCordsText += "abduktory oboustranně bez patrné akumulace RF, ";
 } else {
     if (ChbVCordsR) {
-        NeckVCordsText += "pravá asymetricky bez patrné akumulace RF, "; 
+        NeckVCordsText += "pravý m. cricoaryt. post. asymetricky bez patrné akumulace RF, "; 
         NeckVCordsRes = "Paréza pravé hlasivky. ";
     }
     if (ChbVCordsL) {
-        NeckVCordsText += "levá asymetricky bez patrné akumulace RF, "; 
+        NeckVCordsText += "levý m. cricoaryt. post. asymetricky bez patrné akumulace RF, "; 
         NeckVCordsRes = "Paréza levé hlasivky. ";
     }
 }
