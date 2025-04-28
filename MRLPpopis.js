@@ -55,24 +55,25 @@ const segmentTemplates = {
     LR: ["0", "1", "2", "3"],
     LF: ["0", "1", "2", "3"]
   },
-  S1: {
+  X6: {
     LES: ["není", "hemangiom", "atyp hem", "lytické", "sklerotické"]
   }
 };
 
 const segmentMap = {
-  L01: "disc",
-  L1: "vertebra",
-  L12: "disc",
-  L2: "vertebra",
-  L23: "disc",
-  L3: "vertebra",
-  L34: "disc",
-  L4: "vertebra",
-  L45: "disc",
-  L5: "vertebra",
-  L5S1: "disc",
-  S1: "S1"
+  X0: "vertebra",
+  X01: "disc",
+  X1: "vertebra",
+  X12: "disc",
+  X2: "vertebra",
+  X23: "disc",
+  X3: "vertebra",
+  X34: "disc",
+  X4: "vertebra",
+  X45: "disc",
+  X5: "vertebra",
+  X56: "disc",
+  X6: "vertebra"
 };
 
 for (const [seg, type] of Object.entries(segmentMap)) {
@@ -105,19 +106,21 @@ function setupShowHide(mainButton, dependentButtons, inline = false) {
 
 
 // Obratle LL ➔ LISD a SL (block)
-setupShowHide(buttonElementL1LL, [buttonElementL1LISD, buttonElementL1SL]);
-setupShowHide(buttonElementL2LL, [buttonElementL2LISD, buttonElementL2SL]);
-setupShowHide(buttonElementL3LL, [buttonElementL3LISD, buttonElementL3SL]);
-setupShowHide(buttonElementL4LL, [buttonElementL4LISD, buttonElementL4SL]);
-setupShowHide(buttonElementL5LL, [buttonElementL5LISD, buttonElementL5SL]);
+setupShowHide(buttonElementX0LL, [buttonElementX0LISD, buttonElementX0SL]);
+setupShowHide(buttonElementX1LL, [buttonElementX1LISD, buttonElementX1SL]);
+setupShowHide(buttonElementX2LL, [buttonElementX2LISD, buttonElementX2SL]);
+setupShowHide(buttonElementX3LL, [buttonElementX3LISD, buttonElementX3SL]);
+setupShowHide(buttonElementX4LL, [buttonElementX4LISD, buttonElementX4SL]);
+setupShowHide(buttonElementX5LL, [buttonElementX5LISD, buttonElementX5SL]);
+setupShowHide(buttonElementX6LL, [buttonElementX6LISD, buttonElementX6SL]);
 
 // Prostory BH ➔ HD a herniace (inline-block)
-setupShowHide(buttonElementL01BH, [buttonElementL01HD, buttonElementL01HERPF, buttonElementL01HERPP, buttonElementL01HERC, buttonElementL01HERLP, buttonElementL01HERLF, buttonElementL01MIG], true);
-setupShowHide(buttonElementL12BH, [buttonElementL12HD, buttonElementL12HERPF, buttonElementL12HERPP, buttonElementL12HERC, buttonElementL12HERLP, buttonElementL12HERLF, buttonElementL12MIG], true);
-setupShowHide(buttonElementL23BH, [buttonElementL23HD, buttonElementL23HERPF, buttonElementL23HERPP, buttonElementL23HERC, buttonElementL23HERLP, buttonElementL23HERLF, buttonElementL23MIG], true);
-setupShowHide(buttonElementL34BH, [buttonElementL34HD, buttonElementL34HERPF, buttonElementL34HERPP, buttonElementL34HERC, buttonElementL34HERLP, buttonElementL34HERLF, buttonElementL34MIG], true);
-setupShowHide(buttonElementL45BH, [buttonElementL45HD, buttonElementL45HERPF, buttonElementL45HERPP, buttonElementL45HERC, buttonElementL45HERLP, buttonElementL45HERLF, buttonElementL45MIG], true);
-setupShowHide(buttonElementL5S1BH, [buttonElementL5S1HD, buttonElementL5S1HERPF, buttonElementL5S1HERPP, buttonElementL5S1HERC, buttonElementL5S1HERLP, buttonElementL5S1HERLF, buttonElementL5S1MIG], true);
+setupShowHide(buttonElementX01BH, [buttonElementX01HD, buttonElementX01HERPF, buttonElementX01HERPP, buttonElementX01HERC, buttonElementX01HERLP, buttonElementX01HERLF, buttonElementX01MIG], true);
+setupShowHide(buttonElementX12BH, [buttonElementX12HD, buttonElementX12HERPF, buttonElementX12HERPP, buttonElementX12HERC, buttonElementX12HERLP, buttonElementX12HERLF, buttonElementX12MIG], true);
+setupShowHide(buttonElementX23BH, [buttonElementX23HD, buttonElementX23HERPF, buttonElementX23HERPP, buttonElementX23HERC, buttonElementX23HERLP, buttonElementX23HERLF, buttonElementX23MIG], true);
+setupShowHide(buttonElementX34BH, [buttonElementX34HD, buttonElementX34HERPF, buttonElementX34HERPP, buttonElementX34HERC, buttonElementX34HERLP, buttonElementX34HERLF, buttonElementX34MIG], true);
+setupShowHide(buttonElementX45BH, [buttonElementX45HD, buttonElementX45HERPF, buttonElementX45HERPP, buttonElementX45HERC, buttonElementX45HERLP, buttonElementX45HERLF, buttonElementX45MIG], true);
+setupShowHide(buttonElementX56BH, [buttonElementX56HD, buttonElementX56HERPF, buttonElementX56HERPP, buttonElementX56HERC, buttonElementX56HERLP, buttonElementX56HERLF, buttonElementX56MIG], true);
 
 
 //unhide operace
@@ -142,37 +145,38 @@ const buttonConfigs = [
   { textName: "OSA", updateBackground: false },
   { textName: "LORD", updateBackground: false },
   
-  { textName: "L01DD" }, { textName: "L01MOD" }, { textName: "L01BH" }, { textName: "L01HD", updateBackground: false }, { textName: "L01FA" },
-  { textName: "L01HERPF" }, { textName: "L01HERPP" }, { textName: "L01HERC" }, { textName: "L01HERLP" }, { textName: "L01HERLF" },
-  { textName: "L01MIG" }, { textName: "L01PF" }, { textName: "L01PR" }, { textName: "L01PK" }, { textName: "L01LR" }, { textName: "L01LF" },
+  { textName: "X0KOM" }, { textName: "X0LES" }, { textName: "X0LL" }, { textName: "X0LISD", updateBackground: false }, { textName: "X0SL" },
+  { textName: "X01DD" }, { textName: "X01MOD" }, { textName: "X01BH" }, { textName: "X01HD", updateBackground: false }, { textName: "X01FA" },
+  { textName: "X01HERPF" }, { textName: "X01HERPP" }, { textName: "X01HERC" }, { textName: "X01HERLP" }, { textName: "X01HERLF" },
+  { textName: "X01MIG" }, { textName: "X01PF" }, { textName: "X01PR" }, { textName: "X01PK" }, { textName: "X01LR" }, { textName: "X01LF" },
 
   
-  { textName: "L1KOM" }, { textName: "L1LES" }, { textName: "L1LL" }, { textName: "L1LISD", updateBackground: false }, { textName: "L1SL" },
-  { textName: "L12DD" }, { textName: "L12MOD" }, { textName: "L12BH" }, { textName: "L12HD", updateBackground: false }, { textName: "L12FA" },
-  { textName: "L12HERPF" }, { textName: "L12HERPP" }, { textName: "L12HERC" }, { textName: "L12HERLP" }, { textName: "L12HERLF" },
-  { textName: "L12MIG" }, { textName: "L12PF" }, { textName: "L12PR" }, { textName: "L12PK" }, { textName: "L12LR" }, { textName: "L12LF" },
+  { textName: "X1KOM" }, { textName: "X1LES" }, { textName: "X1LL" }, { textName: "X1LISD", updateBackground: false }, { textName: "X1SL" },
+  { textName: "X12DD" }, { textName: "X12MOD" }, { textName: "X12BH" }, { textName: "X12HD", updateBackground: false }, { textName: "X12FA" },
+  { textName: "X12HERPF" }, { textName: "X12HERPP" }, { textName: "X12HERC" }, { textName: "X12HERLP" }, { textName: "X12HERLF" },
+  { textName: "X12MIG" }, { textName: "X12PF" }, { textName: "X12PR" }, { textName: "X12PK" }, { textName: "X12LR" }, { textName: "X12LF" },
 
-  { textName: "L2KOM" }, { textName: "L2LES" }, { textName: "L2LL" }, { textName: "L2LISD", updateBackground: false }, { textName: "L2SL" },
-  { textName: "L23DD" }, { textName: "L23MOD" }, { textName: "L23BH" }, { textName: "L23HD", updateBackground: false }, { textName: "L23FA" },
-  { textName: "L23HERPF" }, { textName: "L23HERPP" }, { textName: "L23HERC" }, { textName: "L23HERLP" }, { textName: "L23HERLF" },
-  { textName: "L23MIG" }, { textName: "L23PF" }, { textName: "L23PR" }, { textName: "L23PK" }, { textName: "L23LR" }, { textName: "L23LF" },
+  { textName: "X2KOM" }, { textName: "X2LES" }, { textName: "X2LL" }, { textName: "X2LISD", updateBackground: false }, { textName: "X2SL" },
+  { textName: "X23DD" }, { textName: "X23MOD" }, { textName: "X23BH" }, { textName: "X23HD", updateBackground: false }, { textName: "X23FA" },
+  { textName: "X23HERPF" }, { textName: "X23HERPP" }, { textName: "X23HERC" }, { textName: "X23HERLP" }, { textName: "X23HERLF" },
+  { textName: "X23MIG" }, { textName: "X23PF" }, { textName: "X23PR" }, { textName: "X23PK" }, { textName: "X23LR" }, { textName: "X23LF" },
 
-  { textName: "L3KOM" }, { textName: "L3LES" }, { textName: "L3LL" }, { textName: "L3LISD", updateBackground: false }, { textName: "L3SL" },
-  { textName: "L34DD" }, { textName: "L34MOD" }, { textName: "L34BH" }, { textName: "L34HD", updateBackground: false }, { textName: "L34FA" },
-  { textName: "L34HERPF" }, { textName: "L34HERPP" }, { textName: "L34HERC" }, { textName: "L34HERLP" }, { textName: "L34HERLF" },
-  { textName: "L34MIG" }, { textName: "L34PF" }, { textName: "L34PR" }, { textName: "L34PK" }, { textName: "L34LR" }, { textName: "L34LF" },
+  { textName: "X3KOM" }, { textName: "X3LES" }, { textName: "X3LL" }, { textName: "X3LISD", updateBackground: false }, { textName: "X3SL" },
+  { textName: "X34DD" }, { textName: "X34MOD" }, { textName: "X34BH" }, { textName: "X34HD", updateBackground: false }, { textName: "X34FA" },
+  { textName: "X34HERPF" }, { textName: "X34HERPP" }, { textName: "X34HERC" }, { textName: "X34HERLP" }, { textName: "X34HERLF" },
+  { textName: "X34MIG" }, { textName: "X34PF" }, { textName: "X34PR" }, { textName: "X34PK" }, { textName: "X34LR" }, { textName: "X34LF" },
 
-  { textName: "L4KOM" }, { textName: "L4LES" }, { textName: "L4LL" }, { textName: "L4LISD", updateBackground: false }, { textName: "L4SL" },
-  { textName: "L45DD" }, { textName: "L45MOD" }, { textName: "L45BH" }, { textName: "L45HD", updateBackground: false }, { textName: "L45FA" },
-  { textName: "L45HERPF" }, { textName: "L45HERPP" }, { textName: "L45HERC" }, { textName: "L45HERLP" }, { textName: "L45HERLF" },
-  { textName: "L45MIG" }, { textName: "L45PF" }, { textName: "L45PR" }, { textName: "L45PK" }, { textName: "L45LR" }, { textName: "L45LF" },
+  { textName: "X4KOM" }, { textName: "X4LES" }, { textName: "X4LL" }, { textName: "X4LISD", updateBackground: false }, { textName: "X4SL" },
+  { textName: "X45DD" }, { textName: "X45MOD" }, { textName: "X45BH" }, { textName: "X45HD", updateBackground: false }, { textName: "X45FA" },
+  { textName: "X45HERPF" }, { textName: "X45HERPP" }, { textName: "X45HERC" }, { textName: "X45HERLP" }, { textName: "X45HERLF" },
+  { textName: "X45MIG" }, { textName: "X45PF" }, { textName: "X45PR" }, { textName: "X45PK" }, { textName: "X45LR" }, { textName: "X45LF" },
 
-  { textName: "L5KOM" }, { textName: "L5LES" }, { textName: "L5LL" }, { textName: "L5LISD", updateBackground: false }, { textName: "L5SL" },
-  { textName: "L5S1DD" }, { textName: "L5S1MOD" }, { textName: "L5S1BH" }, { textName: "L5S1HD", updateBackground: false }, { textName: "L5S1FA" },
-  { textName: "L5S1HERPF" }, { textName: "L5S1HERPP" }, { textName: "L5S1HERC" }, { textName: "L5S1HERLP" }, { textName: "L5S1HERLF" },
-  { textName: "L5S1MIG" }, { textName: "L5S1PF" }, { textName: "L5S1PR" }, { textName: "L5S1PK" }, { textName: "L5S1LR" }, { textName: "L5S1LF" },
+  { textName: "X5KOM" }, { textName: "X5LES" }, { textName: "X5LL" }, { textName: "X5LISD", updateBackground: false }, { textName: "X5SL" },
+  { textName: "X56DD" }, { textName: "X56MOD" }, { textName: "X56BH" }, { textName: "X56HD", updateBackground: false }, { textName: "X56FA" },
+  { textName: "X56HERPF" }, { textName: "X56HERPP" }, { textName: "X56HERC" }, { textName: "X56HERLP" }, { textName: "X56HERLF" },
+  { textName: "X56MIG" }, { textName: "X56PF" }, { textName: "X56PR" }, { textName: "X56PK" }, { textName: "X56LR" }, { textName: "X56LF" },
 
-  { textName: "S1LES" }
+  { textName: "X6KOM" }, { textName: "X6LES" }, { textName: "X6LL" }, { textName: "X6LISD", updateBackground: false }, { textName: "X6SL" }
 ];
 
 
@@ -227,40 +231,41 @@ var FINALText = document.getElementById("FINALText");
 
 //stenozyR
 
-var L01stenPK = ""; var L01stenPR = ""; var L01stenLR = ""; var L01stenPF = ""; var L01stenLF = ""; var L01stenBF = ""; 
-var L01herniaceR = ""; var L01herniacePodklad = ""; var L01degenerPodklad = ""; var L01degenerdR = ""; var L01degenerfaR = ""; var L01listR = ""; var L01edemR = "";
+var X01stenPK = ""; var X01stenPR = ""; var X01stenLR = ""; var X01stenPF = ""; var X01stenLF = ""; var X01stenBF = ""; 
+var X01herniaceR = ""; var X01herniacePodklad = ""; var X01degenerPodklad = ""; var X01degenerdR = ""; var X01degenerfaR = ""; var X01listR = ""; var X01edemR = "";
 
-var L12stenPK = ""; var L12stenPR = ""; var L12stenLR = ""; var L12stenPF = ""; var L12stenLF = ""; var L12stenBF = ""; 
-var L12herniaceR = ""; var L12herniacePodklad = ""; var L12degenerPodklad = ""; var L12degenerdR = ""; var L12degenerfaR = ""; var L12listR = ""; var L12edemR = "";
+var X12stenPK = ""; var X12stenPR = ""; var X12stenLR = ""; var X12stenPF = ""; var X12stenLF = ""; var X12stenBF = ""; 
+var X12herniaceR = ""; var X12herniacePodklad = ""; var X12degenerPodklad = ""; var X12degenerdR = ""; var X12degenerfaR = ""; var X12listR = ""; var X12edemR = "";
 
-var L23stenPK = ""; var L23stenPR = ""; var L23stenLR = ""; var L23stenPF = ""; var L23stenLF = ""; var L23stenBF = ""; 
-var L23herniaceR = ""; var L23herniacePodklad = ""; var L23degenerPodklad = ""; var L23degenerdR = ""; var L23degenerfaR = ""; var L23listR = ""; var L23edemR = "";
+var X23stenPK = ""; var X23stenPR = ""; var X23stenLR = ""; var X23stenPF = ""; var X23stenLF = ""; var X23stenBF = ""; 
+var X23herniaceR = ""; var X23herniacePodklad = ""; var X23degenerPodklad = ""; var X23degenerdR = ""; var X23degenerfaR = ""; var X23listR = ""; var X23edemR = "";
 
-var L34stenPK = ""; var L34stenPR = ""; var L34stenLR = ""; var L34stenPF = ""; var L34stenLF = ""; var L34stenBF = ""; 
-var L34herniaceR = ""; var L34herniacePodklad = ""; var L34degenerPodklad = ""; var L34degenerdR = ""; var L34degenerfaR = ""; var L34listR = ""; var L34edemR = "";
+var X34stenPK = ""; var X34stenPR = ""; var X34stenLR = ""; var X34stenPF = ""; var X34stenLF = ""; var X34stenBF = ""; 
+var X34herniaceR = ""; var X34herniacePodklad = ""; var X34degenerPodklad = ""; var X34degenerdR = ""; var X34degenerfaR = ""; var X34listR = ""; var X34edemR = "";
 
-var L45stenPK = ""; var L45stenPR = ""; var L45stenLR = ""; var L45stenPF = ""; var L45stenLF = ""; var L45stenBF = ""; 
-var L45herniaceR = ""; var L45herniacePodklad = ""; var L45degenerPodklad = ""; var L45degenerdR = ""; var L45degenerfaR = ""; var L45listR = ""; var L45edemR = "";
+var X45stenPK = ""; var X45stenPR = ""; var X45stenLR = ""; var X45stenPF = ""; var X45stenLF = ""; var X45stenBF = ""; 
+var X45herniaceR = ""; var X45herniacePodklad = ""; var X45degenerPodklad = ""; var X45degenerdR = ""; var X45degenerfaR = ""; var X45listR = ""; var X45edemR = "";
 
-var L5S1stenPK = ""; var L5S1stenPR = ""; var L5S1stenLR = ""; var L5S1stenPF = ""; var L5S1stenLF = ""; var L5S1stenBF = ""; 
-var L5S1herniaceR = ""; var L5S1herniacePodklad = ""; var L5S1degenerPodklad = ""; var L5S1degenerdR = ""; var L5S1degenerfaR = ""; var L5S1listR = ""; var L5S1edemR = "";
+var X56stenPK = ""; var X56stenPR = ""; var X56stenLR = ""; var X56stenPF = ""; var X56stenLF = ""; var X56stenBF = ""; 
+var X56herniaceR = ""; var X56herniacePodklad = ""; var X56degenerPodklad = ""; var X56degenerdR = ""; var X56degenerfaR = ""; var X56listR = ""; var X56edemR = "";
 
 
 //TEXTY
  
 
 // nativ - upravit s každým segmentem !!!
-const wL01 = "T12/L1 ";
-const wL1 = "L1 ";
-const wL12 = "L1/2 ";
-const wL2 = "L2 ";
-const wL23 = "L2/3 ";
-const wL3 = "L3 ";
-const wL34 = "L3/4 ";
-const wL4 = "L4 ";
-const wL45 = "L4/5 ";
-const wL5 = "L5 ";
-const wL5S1 = "L5/S1 ";
+const wX0 = "T12 ";
+const wX01 = "T12/L1 ";
+const wX1 = "L1 ";
+const wX12 = "L1/2 ";
+const wX2 = "L2 ";
+const wX23 = "L2/3 ";
+const wX3 = "L3 ";
+const wX34 = "L3/4 ";
+const wX4 = "L4 ";
+const wX45 = "L4/5 ";
+const wX5 = "L5 ";
+const wX56 = "L5/S1 ";
 
 
 // CODE
@@ -272,13 +277,13 @@ var indikace = document.getElementById("indikace").value;
 
 const levels = [
     "OSA", "LORD", 
-												"L01BH", "L01DD", "L01MOD", "L01HD", "L01HERPF", "L01HERPP", "L01HERC", "L01HERLP", "L01HERLF", "L01MIG", "L01FA", "L01PF", "L01PR", "L01PK", "L01LR", "L01LF", 
-    "L1LL", "L1LISD", "L1SL", "L1KOM", "L1LES", "L12BH", "L12DD", "L12MOD", "L12HD", "L12HERPF", "L12HERPP", "L12HERC", "L12HERLP", "L12HERLF", "L12MIG", "L12FA", "L12PF", "L12PR", "L12PK", "L12LR", "L12LF", 
-    "L2LL", "L2LISD", "L2SL", "L2KOM", "L2LES", "L23BH", "L23DD", "L23MOD", "L23HD", "L23HERPF", "L23HERPP", "L23HERC", "L23HERLP", "L23HERLF", "L23MIG", "L23FA", "L23PF", "L23PR", "L23PK", "L23LR", "L23LF", 
-    "L3LL", "L3LISD", "L3SL", "L3KOM", "L3LES", "L34BH", "L34DD", "L34MOD", "L34HD", "L34HERPF", "L34HERPP", "L34HERC", "L34HERLP", "L34HERLF", "L34MIG", "L34FA", "L34PF", "L34PR", "L34PK", "L34LR", "L34LF", 
-    "L4LL", "L4LISD", "L4SL", "L4KOM", "L4LES", "L45BH", "L45DD", "L45MOD", "L45HD", "L45HERPF", "L45HERPP", "L45HERC", "L45HERLP", "L45HERLF", "L45MIG", "L45FA", "L45PF", "L45PR", "L45PK", "L45LR", "L45LF", 
-    "L5LL", "L5LISD", "L5SL", "L5KOM", "L5LES", "L5S1BH", "L5S1DD", "L5S1MOD", "L5S1HD", "L5S1HERPF", "L5S1HERPP", "L5S1HERC", "L5S1HERLP", "L5S1HERLF", "L5S1MIG", "L5S1FA", "L5S1PF", "L5S1PR", "L5S1PK", "L5S1LR", "L5S1LF",
-    "S1LES"
+	"X0LL", "X0LISD", "X0SL", "X0KOM", "X0LES", "X01BH", "X01DD", "X01MOD", "X01HD", "X01HERPF", "X01HERPP", "X01HERC", "X01HERLP", "X01HERLF", "X01MIG", "X01FA", "X01PF", "X01PR", "X01PK", "X01LR", "X01LF", 
+    "X1LL", "X1LISD", "X1SL", "X1KOM", "X1LES", "X12BH", "X12DD", "X12MOD", "X12HD", "X12HERPF", "X12HERPP", "X12HERC", "X12HERLP", "X12HERLF", "X12MIG", "X12FA", "X12PF", "X12PR", "X12PK", "X12LR", "X12LF", 
+    "X2LL", "X2LISD", "X2SL", "X2KOM", "X2LES", "X23BH", "X23DD", "X23MOD", "X23HD", "X23HERPF", "X23HERPP", "X23HERC", "X23HERLP", "X23HERLF", "X23MIG", "X23FA", "X23PF", "X23PR", "X23PK", "X23LR", "X23LF", 
+    "X3LL", "X3LISD", "X3SL", "X3KOM", "X3LES", "X34BH", "X34DD", "X34MOD", "X34HD", "X34HERPF", "X34HERPP", "X34HERC", "X34HERLP", "X34HERLF", "X34MIG", "X34FA", "X34PF", "X34PR", "X34PK", "X34LR", "X34LF", 
+    "X4LL", "X4LISD", "X4SL", "X4KOM", "X4LES", "X45BH", "X45DD", "X45MOD", "X45HD", "X45HERPF", "X45HERPP", "X45HERC", "X45HERLP", "X45HERLF", "X45MIG", "X45FA", "X45PF", "X45PR", "X45PK", "X45LR", "X45LF", 
+    "X5LL", "X5LISD", "X5SL", "X5KOM", "X5LES", "X56BH", "X56DD", "X56MOD", "X56HD", "X56HERPF", "X56HERPP", "X56HERC", "X56HERLP", "X56HERLF", "X56MIG", "X56FA", "X56PF", "X56PR", "X56PK", "X56LR", "X56LF",
+    "X6LL", "X6LISD", "X6SL", "X6KOM", "X6LES" 
 ];
 
 levels.forEach(level => {
@@ -321,25 +326,47 @@ if (LORDText === "(") {
 
 // NATIVNÍ TEXTY  
 
-// operace 
+// Definice segmentů
+const vertebraLabels = {
+  X0: "T12",
+  X1: "L1",
+  X2: "L2",
+  X3: "L3",
+  X4: "L4",
+  X5: "L5",
+  X6: "S1",
+  X01: "T12/L1",
+  X12: "L1/2",
+  X23: "L2/3",
+  X34: "L3/4",
+  X45: "L4/5",
+  X56: "L5/S1"
+};
 
-var LLoperace = ""; 
+function getVertebraLabel(id) {
+  return vertebraLabels[id] || id;
+}
 
-    var stabCheckboxes = document.querySelectorAll('input[id$="stab"]:checked');
-    var nahrCheckboxes = document.querySelectorAll('input[id$="nahr"]:checked');
-    var lamCheckboxes = document.querySelectorAll('input[id$="lam"]:checked');
-    
-const segmentsMap = segments.reduce((map, seg) => {
-  map[seg.id] = seg.label;
-  return map;
-}, {});
+
+
+// OPERACE
+var LLoperace = "";
+
+var stabCheckboxes = document.querySelectorAll('input[id$="stab"]:checked');
+var nahrCheckboxes = document.querySelectorAll('input[id$="nahr"]:checked');
+var lamCheckboxes = document.querySelectorAll('input[id$="lam"]:checked');
+
+function extractSegmentId(id) {
+  const match = id.match(/(X\d+)/);
+  return match ? match[1] : id;
+}
 
 // Zadní stabilizace
 if (stabCheckboxes.length > 0) {
   LLoperace += "Zadní stabilizace ";
   stabCheckboxes.forEach((checkbox, i) => {
-    const segId = checkbox.id.replace(/^op|stab$/g, '');
-    const lbl = segmentsMap[segId] || segId;
+    const segId = extractSegmentId(checkbox.id);
+    const lbl = getVertebraLabel(segId);
     LLoperace += lbl + (i < stabCheckboxes.length - 1 ? "-" : "");
   });
   LLoperace += ". ";
@@ -349,8 +376,8 @@ if (stabCheckboxes.length > 0) {
 if (nahrCheckboxes.length > 0) {
   LLoperace += "Náhrada disku ";
   nahrCheckboxes.forEach((checkbox, i) => {
-    const segId = checkbox.id.replace(/^op|nahr$/g, '');
-    const lbl = segmentsMap[segId] || segId;
+    const segId = extractSegmentId(checkbox.id);
+    const lbl = getVertebraLabel(segId);
     LLoperace += lbl + (i < nahrCheckboxes.length - 1 ? ", " : "");
   });
   LLoperace += ". ";
@@ -360,386 +387,389 @@ if (nahrCheckboxes.length > 0) {
 if (lamCheckboxes.length > 0) {
   LLoperace += "Laminektomie ";
   lamCheckboxes.forEach((checkbox, i) => {
-    const segId = checkbox.id.replace(/^op|lam$/g, '');
-    const lbl = segmentsMap[segId] || segId;
+    const segId = extractSegmentId(checkbox.id);
+    const lbl = getVertebraLabel(segId);
     LLoperace += lbl + (i < lamCheckboxes.length - 1 ? ", " : "");
   });
   LLoperace += ". ";
 }
 
 
+// LOŽISKA
+var selectedLES = [X0LESText, X1LESText, X2LESText, X3LESText, X4LESText, X5LESText, X6LESText];
 
-
-// ložiska
-
-var selectedLES = [L1LESText, L2LESText, L3LESText, L4LESText, L5LESText, S1LESText];
 var hemangiomList = [];
 var atypHemList = [];
 var lytickeList = [];
 var sklerotickeList = [];
 
 for (var i = 0; i < selectedLES.length; i++) {
-    var currentLevel = i < 5 ? "L" + (i + 1) : "S1";
-    switch (selectedLES[i]) {
-        case "hemangiom":
-            hemangiomList.push(currentLevel);
-            break;
-        case "atyp hem":
-            atypHemList.push(currentLevel);
-            break;
-        case "lytické":
-            lytickeList.push(currentLevel);
-            break;
-        case "sklerotické":
-            sklerotickeList.push(currentLevel);
-            break;
-        default:
-            break;
-    }
+  var vertebraId = "X" + i;
+  var levelName = getVertebraLabel(vertebraId);
+
+  switch (selectedLES[i]) {
+    case "hemangiom":
+      hemangiomList.push(levelName);
+      break;
+    case "atyp hem":
+      atypHemList.push(levelName);
+      break;
+    case "lytické":
+      lytickeList.push(levelName);
+      break;
+    case "sklerotické":
+      sklerotickeList.push(levelName);
+      break;
+    default:
+      break;
+  }
 }
 
-LLlozisko = ""; 
-LLloziskoR = "";
+var LLlozisko = "";
+var LLloziskoR = "";
 
 if (hemangiomList.length > 0) {
-    LLlozisko += "Ložisko T1+ STIR- (hemangiom) obratle " + hemangiomList.join(", ") + ". ";
+  LLlozisko += "Ložisko T1+ STIR- (hemangiom) obratle " + hemangiomList.join(", ") + ". ";
 }
 if (atypHemList.length > 0) {
-    LLlozisko += "Ložisko T1+/- STIR+/- obratle " + atypHemList.join(", ") + ". ";
+  LLlozisko += "Ložisko T1+/- STIR+/- obratle " + atypHemList.join(", ") + ". ";
 }
 if (lytickeList.length > 0) {
-    LLlozisko += "Ložisko T2+ STIR+ obratle " + lytickeList.join(", ") + ". ";
-    LLloziskoR += "Patologické lytické ložisko " + lytickeList.join(", ") + ". ";
+  LLlozisko += "Ložisko T2+ STIR+ obratle " + lytickeList.join(", ") + ". ";
+  LLloziskoR += "Patologické lytické ložisko " + lytickeList.join(", ") + ". ";
 }
 if (sklerotickeList.length > 0) {
-    LLlozisko += "Ložisko T1- T2- obratle " + sklerotickeList.join(", ") + ". ";
-    LLloziskoR += "Sklerotické ložisko / hypercelulární ostrůvek " + sklerotickeList.join(", ") + ". ";
+  LLlozisko += "Ložisko T1- T2- obratle " + sklerotickeList.join(", ") + ". ";
+  LLloziskoR += "Sklerotické ložisko / hypercelulární ostrůvek " + sklerotickeList.join(", ") + ". ";
 }
 
+// KOMPRESNÍ FRAKTURY
+var selectedKOM = [X0KOMText, X1KOMText, X2KOMText, X3KOMText, X4KOMText, X5KOMText, X6KOMText];
 
-//komprese
-var selectedKOM = [L1KOMText, L2KOMText, L3KOMText, L4KOMText, L5KOMText];
 var schmorlList = [];
 var horniList = [];
 var klinovitaList = [];
 var vyraznaList = [];
 
 for (var i = 0; i < selectedKOM.length; i++) {
-    switch (selectedKOM[i]) {
-        case "schmorl":
-            schmorlList.push("L" + (i + 1));
-            break;
-		case "horní":
-            horniList.push("L" + (i + 1));
-            break;
-        case "klínovitá":
-            klinovitaList.push("L" + (i + 1));
-            break;
-        case "výrazná":
-            vyraznaList.push("L" + (i + 1));
-            break;
-        default:
-            break;
-    }
+  var vertebraId = "X" + i;
+  var levelName = getVertebraLabel(vertebraId);
+
+  switch (selectedKOM[i]) {
+    case "schmorl":
+      schmorlList.push(levelName);
+      break;
+    case "horní":
+      horniList.push(levelName);
+      break;
+    case "klínovitá":
+      klinovitaList.push(levelName);
+      break;
+    case "výrazná":
+      vyraznaList.push(levelName);
+      break;
+    default:
+      break;
+  }
 }
 
-LLfraktura = ""; 
-LLfrakturaR = "";
+var LLfraktura = "";
+var LLfrakturaR = "";
 
 if (schmorlList.length > 0) {
-    LLfraktura += "Schmorlův uzel krycí plotny obratl. těla " + schmorlList.join(", ") + ". ";
-	LLfrakturaR = "";
+  LLfraktura += "Schmorlův uzel krycí plotny obratl. těla " + schmorlList.join(", ") + ". ";
 }
 if (horniList.length > 0) {
-    LLfraktura += "Prolomení krycí plotny obratl. těla " + horniList.join(", ") + ". ";
-	LLfrakturaR += "St.p. prolomení horní krycí plotny obratl. těla " + horniList.join(", ") + ". ";
+  LLfraktura += "Prolomení krycí plotny obratl. těla " + horniList.join(", ") + ". ";
 }
 if (klinovitaList.length > 0) {
-    LLfraktura += "Klínovitá komprese obratl. těla " + klinovitaList.join(", ") + ". ";
-	LLfrakturaR += "St.p. klínovité kompresi obratl. těla " + klinovitaList.join(", ") + ". ";
+  LLfraktura += "Klínovitá komprese obratl. těla " + klinovitaList.join(", ") + ". ";
 }
 if (vyraznaList.length > 0) {
-    LLfraktura += "Výrazná komprese obratl. těla " + vyraznaList.join(", ") + ". ";
-    LLfrakturaR += "St.p. výrazné kompresi obratl. těla " + vyraznaList.join(", ") + ". ";
+  LLfraktura += "Výrazná komprese obratl. těla " + vyraznaList.join(", ") + ". ";
 }
+
+// MÍCHA
+var LLmicha = "Přehledný úsek míchy bez signálových změn.";
+
 
 //mícha
 LLmicha = "Přehledný úsek míchy bez signálových změn.";
 
 
-let codeForL12 = `
-//L12
+let codeForX01 = `
+//X01
 
 // nativ
-if (L1LLText === "není" && L12DDText === "není" && L12MODText === "není" && L12BHText === "není" && L12FAText === "není" && L12PFText === "0" && L12PRText === "0" && L12PKText === "0" && L12LRText === "0" && L12LFText === "0") {
- L12nativ = ""; 
+if (X0LLText === "není" && X01DDText === "není" && X01MODText === "není" && X01BHText === "není" && X01FAText === "není" && X01PFText === "0" && X01PRText === "0" && X01PKText === "0" && X01LRText === "0" && X01LFText === "0") {
+ X01nativ = ""; 
  } else {
- L12nativ = "L1/2: ";
+ X01nativ = "Level0/1: ";
  } 
 
-if (L1LLText === "není" && L12DDText !== "těžká" && L12MODText !== "I" && L12BHText === "není" && L12FAText !== "edém" && L12PFText === "0" && L12PRText === "0" && L12PKText === "0" && L12LRText === "0" && L12LFText === "0") {
- L12nativR = "";
+if (X0LLText === "není" && X01DDText !== "těžká" && X01MODText !== "I" && X01BHText === "není" && X01FAText !== "edém" && X01PFText === "0" && X01PRText === "0" && X01PKText === "0" && X01LRText === "0" && X01LFText === "0") {
+ X01nativR = "";
  } else {
- L12nativR = "L1/2: ";
+ X01nativR = "Level0/1: ";
  } 
  
 
 //LISTÉZA
-if (L1LLText === "není") {
- L1listezaP = ""; 
- L1listezaR = ""; 
- L12listR = "";
-} else if (L1LLText === "ventro" && L1SLText === "nelýza") {
- L1listezaP = "Ventrolistéza " + wL1 + "o " + L1LISDText + " bez lýzy oblouku. ";
- L1listezaR = "Ventrolistéza obratle " + wL1 + " bez lýzy oblouku ";
- L12listR = "ventrolistézy " + wL1 + " bez lýzy oblouku, ";
-} else if (L1LLText === "ventro" && L1SLText === "lýza") {
- L1listezaP = "Ventrolistéza " + wL1 + "o " + L1LISDText + " s lýzou oblouku. ";
- L1listezaR = "Ventrolistéza obratle " + wL1 + " s lýzou oblouku. ";
- L12listR = "ventrolistézy " + wL1 + " s pseudobulgingem disku ";
-} else if (L1LLText === "dorzo" && L1SLText === "nelýza") {
- L1listezaP = "Retrolistéza " + wL1 + "o " + L1LISDText + " bez lýzy oblouku. ";
- L1listezaR = "Retrolistéza obratle " + wL1 + " bez lýzy oblouku. ";
- L12listR = "retrolistézy " + wL1 + " bez lýzy oblouku ";
-} else if (L1LLText === "dorzo" && L1SLText === "lýza") {
- L1listezaP = "Retrolistéza " + wL1 + "o " + L1LISDText + " s lýzou oblouku. ";
- L1listezaR = "Retrolistéza obratle " + wL1 + " s lýzou oblouku. ";
- L12listR = "retrolistézy " + wL1 + " s lýzou oblouku ";
+if (X0LLText === "není") {
+ X0listezaP = ""; 
+ X0listezaR = ""; 
+ X01listR = "";
+} else if (X0LLText === "ventro" && X0SLText === "nelýza") {
+ X0listezaP = "Ventrolistéza " + wX0 + "o " + X0LISDText + " bez lýzy oblouku. ";
+ X0listezaR = "Ventrolistéza obratle " + wX0 + " bez lýzy oblouku ";
+ X01listR = "ventrolistézy " + wX0 + " bez lýzy oblouku, ";
+} else if (X0LLText === "ventro" && X0SLText === "lýza") {
+ X0listezaP = "Ventrolistéza " + wX0 + "o " + X0LISDText + " s lýzou oblouku. ";
+ X0listezaR = "Ventrolistéza obratle " + wX0 + " s lýzou oblouku. ";
+ X01listR = "ventrolistézy " + wX0 + " s pseudobulgingem disku ";
+} else if (X0LLText === "dorzo" && X0SLText === "nelýza") {
+ X0listezaP = "Retrolistéza " + wX0 + "o " + X0LISDText + " bez lýzy oblouku. ";
+ X0listezaR = "Retrolistéza obratle " + wX0 + " bez lýzy oblouku. ";
+ X01listR = "retrolistézy " + wX0 + " bez lýzy oblouku ";
+} else if (X0LLText === "dorzo" && X0SLText === "lýza") {
+ X0listezaP = "Retrolistéza " + wX0 + "o " + X0LISDText + " s lýzou oblouku. ";
+ X0listezaR = "Retrolistéza obratle " + wX0 + " s lýzou oblouku. ";
+ X01listR = "retrolistézy " + wX0 + " s lýzou oblouku ";
 }
 
 //DEGENERACE DISKU
-if (L12DDText === "není") {
- L12degenerdP = ""; 
- L12degenerdR = "";
- L12degenerPodklad = "";
-} else if (L12DDText === "mírná") {
- L12degenerdP = "Mírně snížený disk s nižší SI. ";
- L12degenerdR = "";
- L12degenerPodklad = "";
-} else if (L12DDText === "střední") {
- L12degenerdP = "Snížený disk s nízkou SI. ";
- L12degenerdR = "";
- L12degenerPodklad = "";
-} else if (L12DDText === "těžká") {
- L12degenerdP = "Výrazně snížený disk a osteofytický lem. ";
- L12degenerdR = "Osteochondróza. ";
- L12degenerPodklad = "osteochondrózy ";
+if (X01DDText === "není") {
+ X01degenerdP = ""; 
+ X01degenerdR = "";
+ X01degenerPodklad = "";
+} else if (X01DDText === "mírná") {
+ X01degenerdP = "Mírně snížený disk s nižší SI. ";
+ X01degenerdR = "";
+ X01degenerPodklad = "";
+} else if (X01DDText === "střední") {
+ X01degenerdP = "Snížený disk s nízkou SI. ";
+ X01degenerdR = "";
+ X01degenerPodklad = "";
+} else if (X01DDText === "těžká") {
+ X01degenerdP = "Výrazně snížený disk a osteofytický lem. ";
+ X01degenerdR = "Osteochondróza. ";
+ X01degenerPodklad = "osteochondrózy ";
 }
 
 //MODIC 
-if (L12MODText === "není") {
- L12edemP = ""; 
- L12edemR = "";
-} else if (L12MODText === "I") {
- L12edemP = "Signál T2W+ T1W- (edém) pod krycími plotnami. ";
- L12edemR = "Edém pod krycími plotnami Modic I v rámci dekompenzace degenerativních změn. ";
-} else if (L12MODText === "II") {
- L12edemP = "Signál T2W+ T1W+ (tuková degenerace) pod krycími plotnami. ";
- L12edemR = "";
-} else if (L12MODText === "III") {
- L12edemP = "Signál T2W- T1W- (sklerotizace) pod krycími plotnami. ";
- L12edemR = "";
+if (X01MODText === "není") {
+ X01edemP = ""; 
+ X01edemR = "";
+} else if (X01MODText === "I") {
+ X01edemP = "Signál T2W+ T1W- (edém) pod krycími plotnami. ";
+ X01edemR = "Edém pod krycími plotnami Modic I v rámci dekompenzace degenerativních změn. ";
+} else if (X01MODText === "II") {
+ X01edemP = "Signál T2W+ T1W+ (tuková degenerace) pod krycími plotnami. ";
+ X01edemR = "";
+} else if (X01MODText === "III") {
+ X01edemP = "Signál T2W- T1W- (sklerotizace) pod krycími plotnami. ";
+ X01edemR = "";
 }
 
 //FACETOVÁ ARTRÓZA
-if (L12FAText === "není") {
- L12degenerfaP = ""; 
- L12degenerfaR = "";
- L12edemR += "";
-} else if (L12FAText === "mírná") {
- L12degenerfaP = "Mírná facetová degenerace. ";
- L12degenerfaR = "mírné facetové artrózy ";
- L12edemR += "";
-} else if (L12FAText === "střední") {
- L12degenerfaP = "Facetová degenerace. ";
- L12degenerfaR = "facetové artrózy ";
- L12edemR += "";
-} else if (L12FAText === "těžká") {
- L12degenerfaP = "Pokročilá facetová degenerace. ";
- L12degenerfaR = "pokročilé facetové artrózy ";
- L12edemR += "";
-} else if (L12FAText === "edém") {
- L12degenerfaP = "Pokročilá facetová degenerace s okolním edémem. ";
- L12degenerfaR = "pokročilé dekompenzované facetové artrózy ";
- L12edemR += "Edém při facet. skloubeních v rámci dekompenzace degenerativních změn. ";
+if (X01FAText === "není") {
+ X01degenerfaP = ""; 
+ X01degenerfaR = "";
+ X01edemR += "";
+} else if (X01FAText === "mírná") {
+ X01degenerfaP = "Mírná facetová degenerace. ";
+ X01degenerfaR = "mírné facetové artrózy ";
+ X01edemR += "";
+} else if (X01FAText === "střední") {
+ X01degenerfaP = "Facetová degenerace. ";
+ X01degenerfaR = "facetové artrózy ";
+ X01edemR += "";
+} else if (X01FAText === "těžká") {
+ X01degenerfaP = "Pokročilá facetová degenerace. ";
+ X01degenerfaR = "pokročilé facetové artrózy ";
+ X01edemR += "";
+} else if (X01FAText === "edém") {
+ X01degenerfaP = "Pokročilá facetová degenerace s okolním edémem. ";
+ X01degenerfaR = "pokročilé dekompenzované facetové artrózy ";
+ X01edemR += "Edém při facet. skloubeních v rámci dekompenzace degenerativních změn. ";
 }
 
 //HERNIACE  
-let L12HDdiameter = parseFloat(L12HDText.split(" ")[0]);
-if (L12BHText === "není") {
- L12herniace = ""; 
- L12herniaceR = "";
- L12herniacePodklad = ""; 
-} else if (L12BHText === "bulging" && L12HDdiameter >= 4) {
- L12herniace = "Bulging disku " + "o " + L12HDText;
- L12herniaceR = "Bulging disku"; 
- L12herniacePodklad = "bulgingu disku ";
-} else if (L12BHText === "bulging" && L12HDdiameter < 4) {
- L12herniace = "Nevýrazný bulging disku " + "o " + L12HDText;
- L12herniaceR = "Nevýrazný bulging disku"; 
- L12herniacePodklad = "bulgingu disku ";
-} else if (L12BHText === "osteofyty" && L12HDdiameter >= 4) {
- L12herniace = "Spondylofyty obratl. těl " + "o " + L12HDText;
- L12herniaceR = "Výrazné spondylofyty "; 
- L12herniacePodklad = "spondylofytů obratl. těl ";
-} else if (L12BHText === "osteofyty" && L12HDdiameter < 4) {
- L12herniace = "Spondylofyty " + "o " + L12HDText;
- L12herniaceR = "Spondylofyty"; 
- L12herniacePodklad = "spondylofytů ";
-} else if (L12BHText === "herniace" && L12HDdiameter < 4) {
- L12herniace = "Herniace disku " + "o " + L12HDText;
- L12herniaceR = "Drobná herniace disku"; 
- L12herniacePodklad = "herniace disku ";
-} else if (L12BHText === "herniace" && L12HDdiameter >= 4 && L12HDdiameter <= 6) {
- L12herniace = "Herniace disku " + "o " + L12HDText;
- L12herniaceR = "Herniace disku"; 
- L12herniacePodklad = "herniace disku ";
-} else if (L12BHText === "herniace" && L12HDdiameter > 6) {
- L12herniace = "Herniace disku " + "o " + L12HDText;
- L12herniaceR = "Objemná herniace disku"; 
- L12herniacePodklad = "objemné herniace disku ";
-} else if (L12BHText === "kombinace") {
- L12herniace = "Spondylofyty a protruze disku " + "o " + L12HDText;
- L12herniaceR = "Spondylofyty a protruze disku"; 
- L12herniacePodklad = "spondylofytů a bulgingu disku "; 
+let X01HDdiameter = parseFloat(X01HDText.split(" ")[0]);
+if (X01BHText === "není") {
+ X01herniace = ""; 
+ X01herniaceR = "";
+ X01herniacePodklad = ""; 
+} else if (X01BHText === "bulging" && X01HDdiameter >= 4) {
+ X01herniace = "Bulging disku " + "o " + X01HDText;
+ X01herniaceR = "Bulging disku"; 
+ X01herniacePodklad = "bulgingu disku ";
+} else if (X01BHText === "bulging" && X01HDdiameter < 4) {
+ X01herniace = "Nevýrazný bulging disku " + "o " + X01HDText;
+ X01herniaceR = "Nevýrazný bulging disku"; 
+ X01herniacePodklad = "bulgingu disku ";
+} else if (X01BHText === "osteofyty" && X01HDdiameter >= 4) {
+ X01herniace = "Spondylofyty obratl. těl " + "o " + X01HDText;
+ X01herniaceR = "Výrazné spondylofyty "; 
+ X01herniacePodklad = "spondylofytů obratl. těl ";
+} else if (X01BHText === "osteofyty" && X01HDdiameter < 4) {
+ X01herniace = "Spondylofyty " + "o " + X01HDText;
+ X01herniaceR = "Spondylofyty"; 
+ X01herniacePodklad = "spondylofytů ";
+} else if (X01BHText === "herniace" && X01HDdiameter < 4) {
+ X01herniace = "Herniace disku " + "o " + X01HDText;
+ X01herniaceR = "Drobná herniace disku"; 
+ X01herniacePodklad = "herniace disku ";
+} else if (X01BHText === "herniace" && X01HDdiameter >= 4 && X01HDdiameter <= 6) {
+ X01herniace = "Herniace disku " + "o " + X01HDText;
+ X01herniaceR = "Herniace disku"; 
+ X01herniacePodklad = "herniace disku ";
+} else if (X01BHText === "herniace" && X01HDdiameter > 6) {
+ X01herniace = "Herniace disku " + "o " + X01HDText;
+ X01herniaceR = "Objemná herniace disku"; 
+ X01herniacePodklad = "objemné herniace disku ";
+} else if (X01BHText === "kombinace") {
+ X01herniace = "Spondylofyty a protruze disku " + "o " + X01HDText;
+ X01herniaceR = "Spondylofyty a protruze disku"; 
+ X01herniacePodklad = "spondylofytů a bulgingu disku "; 
 }
 
 //HERNIACE SMĚR
-const L12herniaDirections = [
-    { text: "foraminálně vpravo", active: L12HERPFText === "+" },
-    { text: "paracentrálně vpravo", active: L12HERPPText === "+" },
-    { text: "centrálně", active: L12HERCText === "+" },
-    { text: "paracentrálně vlevo", active: L12HERLPText === "+" },
-    { text: "foraminálně vlevo", active: L12HERLFText === "+" },
+const X01herniaDirections = [
+    { text: "foraminálně vpravo", active: X01HERPFText === "+" },
+    { text: "paracentrálně vpravo", active: X01HERPPText === "+" },
+    { text: "centrálně", active: X01HERCText === "+" },
+    { text: "paracentrálně vlevo", active: X01HERLPText === "+" },
+    { text: "foraminálně vlevo", active: X01HERLFText === "+" },
   ];
 
-  const L12activeDirections = L12herniaDirections.filter(direction => direction.active);
+  const X01activeDirections = X01herniaDirections.filter(direction => direction.active);
 
-  if (L12BHText !== "není" && L12activeDirections.length === 0) {
-    L12herniace += ""; 
-	L12herniaceR += " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
-    L12herniacePodklad += "";
-  } else if (L12activeDirections.length === 1) {
-    L12herniace += " " + L12activeDirections[0].text;
-	L12herniaceR += " " + L12activeDirections[0].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
-    L12herniacePodklad += " " + L12activeDirections[0].text; 
-  } else if (L12activeDirections.length > 1) {
-    L12herniace += " " + L12activeDirections[0].text + " až " + L12activeDirections[L12activeDirections.length - 1].text;
-	L12herniaceR += " " + L12activeDirections[0].text + " až " + L12activeDirections[L12activeDirections.length - 1].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
-    L12herniacePodklad += " " + L12activeDirections[0].text + " až " + L12activeDirections[L12activeDirections.length - 1].text;
+  if (X01BHText !== "není" && X01activeDirections.length === 0) {
+    X01herniace += ""; 
+	X01herniaceR += " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
+    X01herniacePodklad += "";
+  } else if (X01activeDirections.length === 1) {
+    X01herniace += " " + X01activeDirections[0].text;
+	X01herniaceR += " " + X01activeDirections[0].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
+    X01herniacePodklad += " " + X01activeDirections[0].text; 
+  } else if (X01activeDirections.length > 1) {
+    X01herniace += " " + X01activeDirections[0].text + " až " + X01activeDirections[X01activeDirections.length - 1].text;
+	X01herniaceR += " " + X01activeDirections[0].text + " až " + X01activeDirections[X01activeDirections.length - 1].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
+    X01herniacePodklad += " " + X01activeDirections[0].text + " až " + X01activeDirections[X01activeDirections.length - 1].text;
   } else {
-    L12herniace += ""; 
-	L12herniaceR += "";
-    L12herniacePodklad += "";
+    X01herniace += ""; 
+	X01herniaceR += "";
+    X01herniacePodklad += "";
   }
   
 
 
-if (L12MIGText === "M0" && L12BHText !== "není") {
- L12herniace += ". "; 
-} else if (L12MIGText === "M▲") {
- L12herniace += " s migrací kraniálně. ";
-} else if (L12MIGText === "M▼") {
- L12herniace += " s migrací kaudálně. ";
+if (X01MIGText === "M0" && X01BHText !== "není") {
+ X01herniace += ". "; 
+} else if (X01MIGText === "M▲") {
+ X01herniace += " s migrací kraniálně. ";
+} else if (X01MIGText === "M▼") {
+ X01herniace += " s migrací kaudálně. ";
 }
  
 
 //STENÓZY A KOŘENY
 
-if (L12PKText === "0") {
- L12stenozyP = "";  
- L12stenPK = ""; 
-} else if (L12PKText === "1") {
- L12stenozyP = "Páteřní kanál " + "mírně zúžen. ";
- L12stenPK = "Mírná stenóza páteřního kanálu ";
-} else if (L12PKText === "2") {
- L12stenozyP = "Páteřní kanál " + "zúžen. ";
- L12stenPK = "Stenóza páteřního kanálu ";
-} else if (L12PKText === "3") {
- L12stenozyP = "Páteřní kanál " + "výrazně zúžen s agregací kaudy. ";
- L12stenPK = "Výrazná stenóza páteřního kanálu ";
+if (X01PKText === "0") {
+ X01stenozyP = "";  
+ X01stenPK = ""; 
+} else if (X01PKText === "1") {
+ X01stenozyP = "Páteřní kanál " + "mírně zúžen. ";
+ X01stenPK = "Mírná stenóza páteřního kanálu ";
+} else if (X01PKText === "2") {
+ X01stenozyP = "Páteřní kanál " + "zúžen. ";
+ X01stenPK = "Stenóza páteřního kanálu ";
+} else if (X01PKText === "3") {
+ X01stenozyP = "Páteřní kanál " + "výrazně zúžen s agregací kaudy. ";
+ X01stenPK = "Výrazná stenóza páteřního kanálu ";
 } 
 
 
-if (L12PRText === "0") {
- L12stenozyP += ""; 
- L12stenPR = "";  
-} else if (L12PRText === "1") {
- L12stenozyP += "Mírný tlak na pravostranný kořen v durálním vaku. ";
- L12stenPR = "Mírný tlak na kořen L2 l.dx. ";
-} else if (L12PRText === "2") {
- L12stenozyP += "Útlak pravostranného kořene v durálním vaku. ";
- L12stenPR = "Útlak kořene L2 l.dx. ";
-} else if (L12PRText === "3") {
- L12stenozyP += "Komprese pravostranného kořene v durálním vaku / laterálním recesu. ";
- L12stenPR = "Komprese kořene L2 l.dx. ";
+if (X01PRText === "0") {
+ X01stenozyP += ""; 
+ X01stenPR = "";  
+} else if (X01PRText === "1") {
+ X01stenozyP += "Mírný tlak na pravostranný kořen v durálním vaku. ";
+ X01stenPR = "Mírný tlak na kořen Root1 l.dx. ";
+} else if (X01PRText === "2") {
+ X01stenozyP += "Útlak pravostranného kořene v durálním vaku. ";
+ X01stenPR = "Útlak kořene Root1 l.dx. ";
+} else if (X01PRText === "3") {
+ X01stenozyP += "Komprese pravostranného kořene v durálním vaku / laterálním recesu. ";
+ X01stenPR = "Komprese kořene Root1 l.dx. ";
 } 
 
-if (L12LRText === "0") {
- L12stenozyP += "";  
- L12stenLR = "";
-} else if (L12LRText === "1") {
- L12stenozyP += "Mírný tlak na levostranný kořen v durálním vaku. ";
- L12stenLR = "Mírný tlak na kořen L2 l.sin. ";
-} else if (L12LRText === "2") {
- L12stenozyP += "Útlak levostranného kořene v durálním vaku. ";
- L12stenLR = "Útlak kořene L2 l.sin. ";
-} else if (L12LRText === "3") {
- L12stenozyP += "Komprese levostranného kořene v durálním vaku / laterálním recesu. ";
- L12stenLR = "Komprese kořene L2 l.sin. ";
+if (X01LRText === "0") {
+ X01stenozyP += "";  
+ X01stenLR = "";
+} else if (X01LRText === "1") {
+ X01stenozyP += "Mírný tlak na levostranný kořen v durálním vaku. ";
+ X01stenLR = "Mírný tlak na kořen Root1 l.sin. ";
+} else if (X01LRText === "2") {
+ X01stenozyP += "Útlak levostranného kořene v durálním vaku. ";
+ X01stenLR = "Útlak kořene Root1 l.sin. ";
+} else if (X01LRText === "3") {
+ X01stenozyP += "Komprese levostranného kořene v durálním vaku / laterálním recesu. ";
+ X01stenLR = "Komprese kořene Root1 l.sin. ";
 } 
 
 
 
-if (L12PFText === L12LFText) {
-  if (L12PFText === "0") {
-    L12stenozyP += "";
-    L12stenBF = "";
-    L12stenPF = "";
-    L12stenLF = "";
-  } else if (L12PFText === "1") {
-    L12stenozyP += "Mírné zúžení obou foramin. ";
-    L12stenBF = "Mírné zúžení obou foramin ";
-    L12stenPF = "";
-    L12stenLF = "";
-  } else if (L12PFText === "2") {
-    L12stenozyP += "Stenóza obou foramin. ";
-    L12stenBF = "Stenóza obou foramin ";
-    L12stenPF = "";
-    L12stenLF = "";
-  } else if (L12PFText === "3") {
-    L12stenozyP += "Výrazná stenóza obou foramin s tvarovou defigurací kořenů. ";
-    L12stenBF = "Výrazná stenóza obou foramin s kompresí kořenů L1 l.utr. ";
-    L12stenPF = "";
-    L12stenLF = "";
+if (X01PFText === X01LFText) {
+  if (X01PFText === "0") {
+    X01stenozyP += "";
+    X01stenBF = "";
+    X01stenPF = "";
+    X01stenLF = "";
+  } else if (X01PFText === "1") {
+    X01stenozyP += "Mírné zúžení obou foramin. ";
+    X01stenBF = "Mírné zúžení obou foramin ";
+    X01stenPF = "";
+    X01stenLF = "";
+  } else if (X01PFText === "2") {
+    X01stenozyP += "Stenóza obou foramin. ";
+    X01stenBF = "Stenóza obou foramin ";
+    X01stenPF = "";
+    X01stenLF = "";
+  } else if (X01PFText === "3") {
+    X01stenozyP += "Výrazná stenóza obou foramin s tvarovou defigurací kořenů. ";
+    X01stenBF = "Výrazná stenóza obou foramin s kompresí kořenů Root0 l.utr. ";
+    X01stenPF = "";
+    X01stenLF = "";
   }
 } else {
-  if (L12PFText === "1") {
-    L12stenozyP += "Mírné zúžení pravostranného foramina. ";
-    L12stenPF = "Mírná stenóza pravostranného foramina ";
-    L12stenBF = "";
-  } else if (L12PFText === "2") {
-    L12stenozyP += "Stenóza pravostranného foramina. ";
-    L12stenPF = "Stenóza pravostranného foramina ";
-    L12stenBF = "";
-  } else if (L12PFText === "3") {
-    L12stenozyP += "Výrazná stenóza pravostranného foramina s tvarovou defigurací kořene. ";
-    L12stenPF = "Výrazná stenóza pravostranného foramina s kompresí kořene L1 l.dx. ";
-    L12stenBF = "";
+  if (X01PFText === "1") {
+    X01stenozyP += "Mírné zúžení pravostranného foramina. ";
+    X01stenPF = "Mírná stenóza pravostranného foramina ";
+    X01stenBF = "";
+  } else if (X01PFText === "2") {
+    X01stenozyP += "Stenóza pravostranného foramina. ";
+    X01stenPF = "Stenóza pravostranného foramina ";
+    X01stenBF = "";
+  } else if (X01PFText === "3") {
+    X01stenozyP += "Výrazná stenóza pravostranného foramina s tvarovou defigurací kořene. ";
+    X01stenPF = "Výrazná stenóza pravostranného foramina s kompresí kořene Root0 l.dx. ";
+    X01stenBF = "";
   }
 
-  if (L12LFText === "1") {
-    L12stenozyP += "Mírné zúžení levostranného foramina. ";
-    L12stenLF = "Mírná stenóza levostranného foramina ";
-    L12stenBF = "";
-  } else if (L12LFText === "2") {
-    L12stenozyP += "Stenóza levostranného foramina. ";
-    L12stenLF = "Stenóza levostranného foramina ";
-    L12stenBF = "";
-  } else if (L12LFText === "3") {
-    L12stenozyP += "Výrazná stenóza levostranného foramina s tvarovou defigurací kořene. ";
-    L12stenLF = "Výrazná stenóza levostranného foramina s kompresí kořene L1 l.sin. ";
-    L12stenBF = "";
+  if (X01LFText === "1") {
+    X01stenozyP += "Mírné zúžení levostranného foramina. ";
+    X01stenLF = "Mírná stenóza levostranného foramina ";
+    X01stenBF = "";
+  } else if (X01LFText === "2") {
+    X01stenozyP += "Stenóza levostranného foramina. ";
+    X01stenLF = "Stenóza levostranného foramina ";
+    X01stenBF = "";
+  } else if (X01LFText === "3") {
+    X01stenozyP += "Výrazná stenóza levostranného foramina s tvarovou defigurací kořene. ";
+    X01stenLF = "Výrazná stenóza levostranného foramina s kompresí kořene Root0 l.sin. ";
+    X01stenBF = "";
   }
 }
 
@@ -748,64 +778,66 @@ if (L12PFText === L12LFText) {
 
 // combine texts
 
-let L12stenosisArray = [L12stenPK, L12stenPR, L12stenLR, L12stenPF, L12stenLF, L12stenBF].filter(text => text !== "");  // Filter out any empty strings
+let X01stenosisArray = [X01stenPK, X01stenPR, X01stenLR, X01stenPF, X01stenLF, X01stenBF].filter(text => text !== "");  // Filter out any empty strings
 
-if (L12stenosisArray.length > 2) {
-    let last = L12stenosisArray.pop();
+if (X01stenosisArray.length > 2) {
+    let last = X01stenosisArray.pop();
     last = last.charAt(0).toLowerCase() + last.slice(1);
-    L12stenosisALL = L12stenosisArray.join(", ") + " a " + last;
-} else if (L12stenosisArray.length == 2) {
-    let first = L12stenosisArray[0];
-    let second = L12stenosisArray[1].charAt(0).toLowerCase() + L12stenosisArray[1].slice(1);
-    L12stenosisALL = first + " a " + second;
-} else if (L12stenosisArray.length == 1) {
-    L12stenosisALL = L12stenosisArray[0];
+    X01stenosisALL = X01stenosisArray.join(", ") + " a " + last;
+} else if (X01stenosisArray.length == 2) {
+    let first = X01stenosisArray[0];
+    let second = X01stenosisArray[1].charAt(0).toLowerCase() + X01stenosisArray[1].slice(1);
+    X01stenosisALL = first + " a " + second;
+} else if (X01stenosisArray.length == 1) {
+    X01stenosisALL = X01stenosisArray[0];
 } else {
-    L12stenosisALL = "";
+    X01stenosisALL = "";
 }
 
-let L12stenosisreasonALLArray = [L12listR, L12herniacePodklad, L12degenerPodklad, L12degenerfaR].filter(text => text !== "");  // Filter out any empty strings
+let X01stenosisreasonALLArray = [X01listR, X01herniacePodklad, X01degenerPodklad, X01degenerfaR].filter(text => text !== "");  // Filter out any empty strings
 
-if (L12stenosisreasonALLArray.length > 2) {
-    let lastReason = L12stenosisreasonALLArray.pop();
-    L12stenosisreasonALL = L12stenosisreasonALLArray.join(", ") + " a " + lastReason + ". ";
-} else if (L12stenosisreasonALLArray.length == 2) {
-    let firstReason = L12stenosisreasonALLArray[0];
-    let secondReason = L12stenosisreasonALLArray[1];
-    L12stenosisreasonALL = firstReason + " a " + secondReason + ". ";
-} else if (L12stenosisreasonALLArray.length == 1) {
-    L12stenosisreasonALL = L12stenosisreasonALLArray[0] + ". ";
+if (X01stenosisreasonALLArray.length > 2) {
+    let lastReason = X01stenosisreasonALLArray.pop();
+    X01stenosisreasonALL = X01stenosisreasonALLArray.join(", ") + " a " + lastReason + ". ";
+} else if (X01stenosisreasonALLArray.length == 2) {
+    let firstReason = X01stenosisreasonALLArray[0];
+    let secondReason = X01stenosisreasonALLArray[1];
+    X01stenosisreasonALL = firstReason + " a " + secondReason + ". ";
+} else if (X01stenosisreasonALLArray.length == 1) {
+    X01stenosisreasonALL = X01stenosisreasonALLArray[0] + ". ";
 } else {
-    L12stenosisreasonALL = "";
+    X01stenosisreasonALL = "";
 }
 
 // stenóza v závěru ano / ne a proč
-if (L12PKText === "0" && L12PRText === "0" && L12LRText === "0" && L12PFText === "0" && L12LFText === "0") {
-L12stenozyR = "";	
+if (X01PKText === "0" && X01PRText === "0" && X01LRText === "0" && X01PFText === "0" && X01LFText === "0") {
+X01stenozyR = "";	
 } else {
-L12stenozyR = L12stenosisALL + 
-" na podkladě " + L12stenosisreasonALL;
-L12herniaceR = ""; L12degenerdR = ""; L1listezaR = ""; L12edemR = "";
+X01stenozyR = X01stenosisALL + 
+" na podkladě " + X01stenosisreasonALL;
+X01herniaceR = ""; X01degenerdR = ""; X0listezaR = ""; X01edemR = "";
 }
 
 `;
-let codeForL01 = codeForL12.replace(/L12/g, 'L01').replace(/L1\/2/g, 'T12/L1').replace(/L2 l./g, 'L1 l.');
-let codeForL23 = codeForL12.replace(/L12/g, 'L23').replace(/L1\/2/g, 'L2/3').replace(/L2 l./g, 'L3 l.').replace(/L1/g, 'L2');
-let codeForL34 = codeForL12.replace(/L12/g, 'L34').replace(/L1\/2/g, 'L3/4').replace(/L2 l./g, 'L4 l.').replace(/L1/g, 'L3');
-let codeForL45 = codeForL12.replace(/L12/g, 'L45').replace(/L1\/2/g, 'L4/5').replace(/L2 l./g, 'L5 l.').replace(/L1/g, 'L4');
-let codeForL5S1 = codeForL12.replace(/L12/g, 'L5S1').replace(/L1\/2/g, 'L5/S1').replace(/L2 l./g, 'S1 l.').replace(/L1/g, 'L5');
-eval(codeForL01);
-eval(codeForL12);
-eval(codeForL23);
-eval(codeForL34);
-eval(codeForL45);
-eval(codeForL5S1);
+let codeForX12 = codeForX01.replace(/X01/g, 'X12').replace(/Level0\/1/g, 'L1/2').replace(/X0/g, 'X1').replace(/Root0/g, 'L1').replace(/Root1/g, 'L2');
+let codeForX23 = codeForX01.replace(/X01/g, 'X23').replace(/Level0\/1/g, 'L2/3').replace(/X0/g, 'X2').replace(/Root0/g, 'L2').replace(/Root1/g, 'L3');
+let codeForX34 = codeForX01.replace(/X01/g, 'X34').replace(/Level0\/1/g, 'L3/4').replace(/X0/g, 'X3').replace(/Root0/g, 'L3').replace(/Root1/g, 'L4');
+let codeForX45 = codeForX01.replace(/X01/g, 'X45').replace(/Level0\/1/g, 'L4/5').replace(/X0/g, 'X4').replace(/Root0/g, 'L4').replace(/Root1/g, 'L5');
+let codeForX56 = codeForX01.replace(/X01/g, 'X56').replace(/Level0\/1/g, 'L5/S1').replace(/X0/g, 'X5').replace(/Root0/g, 'L5').replace(/Root1/g, 'S1');
+      codeForX01 = codeForX01.replace(/X01/g, 'X01').replace(/Level0\/1/g, 'T12/L1').replace(/X0/g, 'X0').replace(/Root0/g, 'T12').replace(/Root1/g, 'L1');
+ 
+eval(codeForX01);
+eval(codeForX12);
+eval(codeForX23);
+eval(codeForX34);
+eval(codeForX45);
+eval(codeForX56);
 
 
 // normální Závěr
 
 //komprese normal vs ostatni
-if (L1KOMText === "není" && L2KOMText === "není" && L3KOMText === "není" && L4KOMText === "není" && L5KOMText === "není") {
+if (X1KOMText === "není" && X2KOMText === "není" && X3KOMText === "není" && X4KOMText === "není" && X5KOMText === "není") {
  LLobratlenormal = "Obratlová těla přiměřených výšek. "; 
  LLostatniobratlenormal = ""; 
  } else {
@@ -814,35 +846,35 @@ if (L1KOMText === "není" && L2KOMText === "není" && L3KOMText === "není" && L
  } 
 
 // disky a kanál vs ostatní normální
-if (L01DDText === "není" && L01BHText === "není" && L12DDText === "není" && L12BHText === "není" && L23DDText === "není" && L23BHText === "není" && L34DDText === "není" && L34BHText === "není" && L45DDText === "není" && L45BHText === "není" && L5S1DDText === "není" && L5S1BHText === "není") {
+if (X01DDText === "není" && X01BHText === "není" && X12DDText === "není" && X12BHText === "není" && X23DDText === "není" && X23BHText === "není" && X34DDText === "není" && X34BHText === "není" && X45DDText === "není" && X45BHText === "není" && X56DDText === "není" && X56BHText === "není") {
     LLdiskynormal = "Disky přiměřené výšky bez výraznějších protruzí."; LLostatnidiskynormal = "";
-} else if ((L01DDText !== "není" || L01BHText !== "není") && (L12DDText !== "není" || L12BHText !== "není") && (L23DDText !== "není" || L23BHText !== "není") && (L34DDText !== "není" || L34BHText !== "není") && (L45DDText !== "není" || L45BHText !== "není") && (L5S1DDText !== "není" || L5S1BHText !== "není")) {
+} else if ((X01DDText !== "není" || X01BHText !== "není") && (X12DDText !== "není" || X12BHText !== "není") && (X23DDText !== "není" || X23BHText !== "není") && (X34DDText !== "není" || X34BHText !== "není") && (X45DDText !== "není" || X45BHText !== "není") && (X56DDText !== "není" || X56BHText !== "není")) {
     LLdiskynormal = ""; LLostatnidiskynormal = "";
-} else if ((L01DDText !== "není" || L01BHText !== "není") || (L12DDText !== "není" || L12BHText !== "není") || (L23DDText !== "není" || L23BHText !== "není") || (L34DDText !== "není" || L34BHText !== "není") || (L45DDText !== "není" || L45BHText !== "není") || (L5S1DDText !== "není" || L5S1BHText !== "není")) {
+} else if ((X01DDText !== "není" || X01BHText !== "není") || (X12DDText !== "není" || X12BHText !== "není") || (X23DDText !== "není" || X23BHText !== "není") || (X34DDText !== "není" || X34BHText !== "není") || (X45DDText !== "není" || X45BHText !== "není") || (X56DDText !== "není" || X56BHText !== "není")) {
     LLdiskynormal = ""; LLostatnidiskynormal = "V ostatních etážích disky přiměřené výšky bez výraznějších protruzí.";
 }
 
 // stenóza kanálu ano vs jinak
-if (L01PKText === "0" && L12PKText === "0" && L23PKText === "0" && L34PKText === "0" && L45PKText === "0" && L5S1PKText === "0") {
+if (X01PKText === "0" && X12PKText === "0" && X23PKText === "0" && X34PKText === "0" && X45PKText === "0" && X56PKText === "0") {
     LLstenozakanalne = "Páteřní kanál je volný. "; LLkanaljinak = "";
-} else if (L01PKText !== "0" && L12PKText !== "0" && L23PKText !== "0" && L34PKText !== "0" && L45PKText !== "0" && L5S1PKText !== "0") {
+} else if (X01PKText !== "0" && X12PKText !== "0" && X23PKText !== "0" && X34PKText !== "0" && X45PKText !== "0" && X56PKText !== "0") {
     LLstenozakanalne = ""; LLkanaljinak = "";
-} else if (L01PKText !== "0" || L12PKText !== "0" || L23PKText !== "0" || L34PKText !== "0" || L45PKText !== "0" || L5S1PKText !== "0") {
+} else if (X01PKText !== "0" || X12PKText !== "0" || X23PKText !== "0" || X34PKText !== "0" || X45PKText !== "0" || X56PKText !== "0") {
     LLstenozakanalne = ""; LLkanaljinak = "V ostatních etážích je páteřní kanál volný. ";
 }
 
 // stenóza foramin ano vs jinak
-if (L01PFText === "0" && L01LFText === "0" && L12PFText === "0" && L12LFText === "0" && L23PFText === "0" && L23LFText === "0" && L34PFText === "0" && L34LFText === "0" && L45PFText === "0" && L45LFText === "0" && L5S1PFText === "0" && L5S1LFText === "0") {
+if (X01PFText === "0" && X01LFText === "0" && X12PFText === "0" && X12LFText === "0" && X23PFText === "0" && X23LFText === "0" && X34PFText === "0" && X34LFText === "0" && X45PFText === "0" && X45LFText === "0" && X56PFText === "0" && X56LFText === "0") {
     LLstenozaforaminne = "Foramina jsou relativně volná. "; LLforaminjinak = "";
-} else if (L01PFText !== "0" && L01LFText !== "0" && L12PFText !== "0" && L12LFText !== "0" && L23PFText !== "0" && L23LFText !== "0" && L34PFText !== "0" && L34LFText !== "0" && L45PFText !== "0" && L45LFText !== "0" && L5S1PFText !== "0" && L5S1LFText !== "0") {
+} else if (X01PFText !== "0" && X01LFText !== "0" && X12PFText !== "0" && X12LFText !== "0" && X23PFText !== "0" && X23LFText !== "0" && X34PFText !== "0" && X34LFText !== "0" && X45PFText !== "0" && X45LFText !== "0" && X56PFText !== "0" && X56LFText !== "0") {
     LLstenozaforaminne = ""; LLforaminjinak = "";
-} else if (L01PFText !== "0" || L01LFText !== "0" || L12PFText !== "0" || L12LFText !== "0" || L23PFText !== "0" || L23LFText !== "0" || L34PFText !== "0" || L34LFText !== "0" || L45PFText !== "0" || L45LFText !== "0" || L5S1PFText !== "0" || L5S1LFText !== "0") {
+} else if (X01PFText !== "0" || X01LFText !== "0" || X12PFText !== "0" || X12LFText !== "0" || X23PFText !== "0" || X23LFText !== "0" || X34PFText !== "0" || X34LFText !== "0" || X45PFText !== "0" || X45LFText !== "0" || X56PFText !== "0" || X56LFText !== "0") {
     LLstenozaforaminne = ""; LLforaminjinak = "Ostatní foramina jsou relativně volná. ";
 }
 
 
 // multietážové degener. změny.
-let DDbuttons = [myL01DDButton, myL12DDButton, myL23DDButton, myL34DDButton, myL45DDButton, myL5S1DDButton];
+let DDbuttons = [myX01DDButton, myX12DDButton, myX23DDButton, myX34DDButton, myX45DDButton, myX56DDButton];
 let textsNotNeni = 0; let textsStredniOrTezka = 0; let textsTezka = 0;
 
 DDbuttons.forEach(button => {
@@ -869,9 +901,9 @@ if (textsNotNeni >= 4 && textsTezka >= 2) {
 
 
 // kdy napsat normální závěr
-if (L01nativR === "" && L12nativR === "" && L23nativR === "" && L34nativR === "" && L45nativR === "" && L5S1nativR === "" &&
-    L01stenozyR === "" && L12stenozyR === "" && L23stenozyR === "" && L34stenozyR === "" && L45stenozyR === "" && L5S1stenozyR === "" &&
-    L01edemR === "" && L12edemR === "" && L23edemR === "" && L34edemR === "" && L45edemR === "" && L5S1edemR === "" &&
+if (X01nativR === "" && X12nativR === "" && X23nativR === "" && X34nativR === "" && X45nativR === "" && X56nativR === "" &&
+    X01stenozyR === "" && X12stenozyR === "" && X23stenozyR === "" && X34stenozyR === "" && X45stenozyR === "" && X56stenozyR === "" &&
+    X01edemR === "" && X12edemR === "" && X23edemR === "" && X34edemR === "" && X45edemR === "" && X56edemR === "" &&
     LLloziskoR === "" && LLfrakturaR === "" && LLmulti === "") {
     LLnormalR = "Přiměřený nález na bederní páteři.";
 } else {
@@ -891,12 +923,12 @@ MRLumbarPOPText.value =
 Osy + "\n" + 
 LLoperace + LLobratlenormal + LLlozisko + LLfraktura + LLostatniobratlenormal + "\n" +
 LLdiskynormal + "\n" +
-L01nativ + " " + L01degenerdP + " " + L01edemP + " " + L01herniace + " " + L01degenerfaP + " " + L01stenozyP + "\n" + 
-L12nativ + L1listezaP + " " + L12degenerdP + " " + L12edemP + " " + L12herniace + " " + L12degenerfaP + " " + L12stenozyP + "\n" + 
-L23nativ + L2listezaP + " " + L23degenerdP + " " + L23edemP + " " + L23herniace + " " + L23degenerfaP + " " + L23stenozyP + "\n" + 
-L34nativ + L3listezaP + " " + L34degenerdP + " " + L34edemP + " " + L34herniace + " " + L34degenerfaP + " " + L34stenozyP + "\n" +
-L45nativ + L4listezaP + " " + L45degenerdP + " " + L45edemP + " " + L45herniace + " " + L45degenerfaP + " " + L45stenozyP + "\n" +
-L5S1nativ + L5listezaP + " " + L5S1degenerdP + " " + L5S1edemP + " " + L5S1herniace + " " + L5S1degenerfaP + " " + L5S1stenozyP + "\n" +
+X01nativ + X0listezaP + " " + X01degenerdP + " " + X01edemP + " " + X01herniace + " " + X01degenerfaP + " " + X01stenozyP + "\n" + 
+X12nativ + X1listezaP + " " + X12degenerdP + " " + X12edemP + " " + X12herniace + " " + X12degenerfaP + " " + X12stenozyP + "\n" + 
+X23nativ + X2listezaP + " " + X23degenerdP + " " + X23edemP + " " + X23herniace + " " + X23degenerfaP + " " + X23stenozyP + "\n" + 
+X34nativ + X3listezaP + " " + X34degenerdP + " " + X34edemP + " " + X34herniace + " " + X34degenerfaP + " " + X34stenozyP + "\n" +
+X45nativ + X4listezaP + " " + X45degenerdP + " " + X45edemP + " " + X45herniace + " " + X45degenerfaP + " " + X45stenozyP + "\n" +
+X56nativ + X5listezaP + " " + X56degenerdP + " " + X56edemP + " " + X56herniace + " " + X56degenerfaP + " " + X56stenozyP + "\n" +
 LLostatnidiskynormal + "\n" + 
 LLstenozakanalne + LLkanaljinak + "\n" + 
 LLstenozaforaminne + LLforaminjinak + "\n" + 
@@ -912,15 +944,13 @@ MRLumbarRESText.value =
 LLmulti + "\n" +
 LLnormalR + "\n" +
 LLloziskoR + LLfrakturaR + "\n" +
-L01nativR + L01degenerdR + " " + L01herniaceR + L01stenozyR + L01edemR + "\n" +
-L12nativR + L1listezaR + L12degenerdR + " " + L12herniaceR + L12stenozyR + L12edemR + "\n" +
-L23nativR + L2listezaR + L23degenerdR + " " + L23herniaceR + L23stenozyR + L23edemR + "\n" +
-L34nativR + L3listezaR + L34degenerdR + " " + L34herniaceR + L34stenozyR + L34edemR + "\n" +
-L45nativR + L4listezaR + L45degenerdR + " " + L45herniaceR + L45stenozyR + L45edemR + "\n" +
-L5S1nativR + L5listezaR + L5S1degenerdR + " " + L5S1herniaceR + L5S1stenozyR + L5S1edemR + "\n" +
+X01nativR + X0listezaR + X01degenerdR + " " + X01herniaceR + X01stenozyR + X01edemR + "\n" +
+X12nativR + X1listezaR + X12degenerdR + " " + X12herniaceR + X12stenozyR + X12edemR + "\n" +
+X23nativR + X2listezaR + X23degenerdR + " " + X23herniaceR + X23stenozyR + X23edemR + "\n" +
+X34nativR + X3listezaR + X34degenerdR + " " + X34herniaceR + X34stenozyR + X34edemR + "\n" +
+X45nativR + X4listezaR + X45degenerdR + " " + X45herniaceR + X45stenozyR + X45edemR + "\n" +
+X56nativR + X5listezaR + X56degenerdR + " " + X56herniaceR + X56stenozyR + X56edemR + "\n" +
 OsyR;
-
-
 
 //náhrady ostatní
 MRLumbarRESText.value = MRLumbarRESText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
@@ -931,11 +961,43 @@ MRLumbarRESText.value = MRLumbarRESText.value.replace(/\,{2,}/g, ','); // více 
 MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
 MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s*na\s+podkladě\s*,\s*|\s*,\s*na\s+podkladě\s*,|,\s*na\s+podkladě\s*|\s*,\s*na\s+podkladě/g, ' na podkladě ');   //odstraní čárku před podkladem
 MRLumbarRESText.value = MRLumbarRESText.value.replace(/  +/g, ' '); // dvojmezery
-MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s((?!L[1-5]|S1)[A-ZÚ])/g, function(fullMatch, groupMatch) {    return ', ' + groupMatch.toLowerCase();}); // po čárce malé písmeno, nevztahuje se na L1-5 a S1.
+MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s((?!L[1-5]|X6)[A-ZÚ])/g, function(fullMatch, groupMatch) {    return ', ' + groupMatch.toLowerCase();}); // po čárce malé písmeno, nevztahuje se na X1-5 a X6.
 MRLumbarRESText.value = MRLumbarRESText.value.replace("Edém pod krycími plotnami Modic I v rámci dekompenzace degenerativních změn. Edém při facet. skloubeních v rámci dekompenzace degenerativních změn.", "Edém pod krycími plotnami Modic I a edém při facet. skloubeních v rámci dekompenzace degenerativních změn."); // combine. edém
 MRLumbarRESText.value = MRLumbarRESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
 
+sloucitStejneRadky();
 
+
+function sloucitStejneRadky() {
+  const textarea = document.getElementById('MRLumbarRESText');
+  if (!textarea) return;
+
+  const lines = textarea.value.split('\n').filter(line => line.trim() !== '');
+
+  const popisyMap = {}; // {popis: [seznam segmentů]}
+
+  lines.forEach(line => {
+    const parts = line.split(':');
+    if (parts.length < 2) return; // Špatný formát, přeskoč
+
+    const segment = parts[0].trim();
+    const popis = parts.slice(1).join(':').trim(); // spojíme zpět kdyby byly ":" v textu
+
+    if (!popisyMap[popis]) {
+      popisyMap[popis] = [];
+    }
+    popisyMap[popis].push(segment);
+  });
+
+  // Vytvořit nový text
+  const noveRadky = [];
+  for (const popis in popisyMap) {
+    const segmenty = popisyMap[popis].join(', ');
+    noveRadky.push(`${segmenty}: ${popis}`);
+  }
+
+  textarea.value = noveRadky.join('\n');
+}
 
 
 document.getElementById("indikace").addEventListener("input", updateTexts);
