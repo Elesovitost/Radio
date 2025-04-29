@@ -65,13 +65,18 @@
       </table>
     </div>
 	
-	<div class="DIVLesions">
+	<div class="DIVLesions" style="margin-top: 5px;">
 	  <button class="title">DALŠÍ...</button>
-	  <div style="display: flex; gap: 5px; margin-top: 10px;">
-		<textarea id="dalsiPopis" style="width: 400px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
-		<textarea id="dalsiZaver" style="width: 400px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+	  <label class="CHB" style="margin-left: 2px;">
+		<input type="checkbox" id="dalsiShow"><span>+</span>
+	  </label>
+
+	  <div id="dalsiFields" style="display: none; flex; gap: 5px; margin-top: 5px;">
+		<textarea id="dalsiPopis" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+		<textarea id="dalsiZaver" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
 	  </div>
 	</div>
+	
 	
   </div>
 

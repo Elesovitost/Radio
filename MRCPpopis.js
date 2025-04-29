@@ -252,6 +252,21 @@ var X56herniaceR = ""; var X56herniacePodklad = ""; var X56degenerPodklad = ""; 
 
 //TEXTY
  
+ // nativ - upravit s každým segmentem !!!
+const wX0  = "C2 ";
+const wX01 = "C2/3 ";
+const wX1  = "C3 ";
+const wX12 = "C3/4 ";
+const wX2  = "C4 ";
+const wX23 = "C4/5 ";
+const wX3  = "C5 ";
+const wX34 = "C5/6 ";
+const wX4  = "C6 ";
+const wX45 = "C6/7 ";
+const wX5  = "C7 ";
+const wX56 = "C7/T1 ";
+ 
+ 
 // CODE
 
 function updateTexts() {
@@ -899,6 +914,19 @@ if (X01nativR === "" && X12nativR === "" && X23nativR === "" && X34nativR === ""
 
 // další
 
+function toggleDalsiSection() {
+  const checkbox = document.getElementById('dalsiShow');
+  const fields = document.getElementById('dalsiFields');
+  fields.style.display = checkbox.checked ? 'flex' : 'none';
+}
+window.addEventListener('load', function() {
+  const checkbox = document.getElementById('dalsiShow');
+  if (checkbox) {
+    checkbox.addEventListener('change', toggleDalsiSection);
+  }
+});
+
+
 function capitalizeAndDot(text) {
   text = text.trim();
   if (text.length === 0) return ""; // prázdný text nech tak
@@ -911,6 +939,7 @@ function capitalizeAndDot(text) {
 
 const dalsiPopis = capitalizeAndDot(document.getElementById('dalsiPopis').value);
 const dalsiZaver = capitalizeAndDot(document.getElementById('dalsiZaver').value);
+
 
 	
 // FINÁLNÍ TEXTY
@@ -971,43 +1000,9 @@ MRCervicalRESText.value = MRCervicalRESText.value.replace(/,\s((?!C[1-7]|T1)[A-Z
 MRCervicalRESText.value = MRCervicalRESText.value.replace("Edém pod krycími plotnami Modic I v rámci dekompenzace degenerativních změn. Edém při facet. skloubeních v rámci dekompenzace degenerativních změn.", "Edém pod krycími plotnami Modic I a edém při facet. skloubeních v rámci dekompenzace degenerativních změn."); // combine. edém
 MRCervicalRESText.value = MRCervicalRESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
 
-sloucitStejneRadky();
+sloucitStejneRadky('MRCervicalRESText');
 
 
-function sloucitStejneRadky() {
-  const textarea = document.getElementById('MRLumbarRESText');
-  if (!textarea) return;
-  
-  const rawLines = textarea.value.split('\n');
-  
-  const groups = {};  
-  rawLines.forEach(line => {
-    const parts = line.split(':');
-    if (parts.length < 2) return;  
-    const segment = parts[0].trim();
-    const popis   = parts.slice(1).join(':').trim();
-    groups[popis] = groups[popis] || [];
-    groups[popis].push(segment);
-  });
-  
-  const merged = Object.entries(groups).map(
-    ([popis, segs]) => `${segs.join(', ')}: ${popis}`
-  );
-  
-  const result = [];
-  let inserted = false;
-  rawLines.forEach(line => {
-    if (!inserted && line.includes(':')) {
-      merged.forEach(l => result.push(l));
-      inserted = true;
-    }
-    if (!line.includes(':')) {
-      result.push(line);
-    }
-  });
-  
-  textarea.value = result.join('\n');
-}
 
 
 document.getElementById("indikace").addEventListener("input", updateTexts);

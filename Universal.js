@@ -86,6 +86,64 @@ const pluralForms = {
 };
 
 
+// slučování řádků u páteře
+
+function sloucitStejneRadky(textareaId) {
+  const textarea = document.getElementById(textareaId);
+  if (!textarea) return;
+
+  const rawLines = textarea.value.split('\n');
+
+  // Definice pravidel pro přepis koncovek (singulár → plurál)
+  const nahrazkyKoncovek = {
+    'disku': 'disků',
+    'stranného': 'stranných',
+    'foramina': 'foramin',
+
+    // přidej další dle potřeby
+  };
+
+	const groups = {};
+	  rawLines.forEach(line => {
+		const parts = line.split(':');
+		if (parts.length < 2) return;
+		const segment = parts[0].trim();
+		const popis = parts.slice(1).join(':').trim();
+		groups[popis] = groups[popis] || [];
+		groups[popis].push(segment);
+	  });
+
+	  const merged = Object.entries(groups).map(([popis, segs]) => {
+		let finalPopis = popis;
+
+		// Nahraď pouze pokud slučujeme více segmentů
+		if (segs.length > 1) {
+		  for (const [hledane, nahrada] of Object.entries(nahrazkyKoncovek)) {
+			const regex = new RegExp(hledane, 'gi'); // globálně, bez hranic slov
+			finalPopis = finalPopis.replace(regex, nahrada);
+		  }
+		}
+
+		return `${segs.join(', ')}: ${finalPopis}`;
+	  });
+
+	  const result = [];
+	  let inserted = false;
+	  rawLines.forEach(line => {
+		if (!inserted && line.includes(':')) {
+		  merged.forEach(l => result.push(l));
+		  inserted = true;
+		}
+		if (!line.includes(':')) {
+		  result.push(line);
+		}
+	  });
+
+	  textarea.value = result.join('\n');
+}
+
+
+
 //DISABLE CONTEXT MENU
 document.addEventListener("contextmenu", function(event) {
     event.preventDefault();

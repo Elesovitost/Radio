@@ -252,7 +252,6 @@ var X56herniaceR = ""; var X56herniacePodklad = ""; var X56degenerPodklad = ""; 
 
 //TEXTY
  
-
 // nativ - upravit s každým segmentem !!!
 const wX0 = "T12 ";
 const wX01 = "T12/L1 ";
@@ -915,6 +914,19 @@ if (X01nativR === "" && X12nativR === "" && X23nativR === "" && X34nativR === ""
 
 // další
 
+function toggleDalsiSection() {
+  const checkbox = document.getElementById('dalsiShow');
+  const fields = document.getElementById('dalsiFields');
+  fields.style.display = checkbox.checked ? 'flex' : 'none';
+}
+window.addEventListener('load', function() {
+  const checkbox = document.getElementById('dalsiShow');
+  if (checkbox) {
+    checkbox.addEventListener('change', toggleDalsiSection);
+  }
+});
+
+
 function capitalizeAndDot(text) {
   text = text.trim();
   if (text.length === 0) return ""; // prázdný text nech tak
@@ -988,43 +1000,8 @@ MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s((?!L[1-5]|T12)[A-ZÚ]
 MRLumbarRESText.value = MRLumbarRESText.value.replace("Edém pod krycími plotnami Modic I v rámci dekompenzace degenerativních změn. Edém při facet. skloubeních v rámci dekompenzace degenerativních změn.", "Edém pod krycími plotnami Modic I a edém při facet. skloubeních v rámci dekompenzace degenerativních změn."); // combine. edém
 MRLumbarRESText.value = MRLumbarRESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
 
-sloucitStejneRadky();
+sloucitStejneRadky('MRLumbarRESText');
 
-
-function sloucitStejneRadky() {
-  const textarea = document.getElementById('MRLumbarRESText');
-  if (!textarea) return;
-  
-  const rawLines = textarea.value.split('\n');
-  
-  const groups = {};  
-  rawLines.forEach(line => {
-    const parts = line.split(':');
-    if (parts.length < 2) return;  
-    const segment = parts[0].trim();
-    const popis   = parts.slice(1).join(':').trim();
-    groups[popis] = groups[popis] || [];
-    groups[popis].push(segment);
-  });
-  
-  const merged = Object.entries(groups).map(
-    ([popis, segs]) => `${segs.join(', ')}: ${popis}`
-  );
-  
-  const result = [];
-  let inserted = false;
-  rawLines.forEach(line => {
-    if (!inserted && line.includes(':')) {
-      merged.forEach(l => result.push(l));
-      inserted = true;
-    }
-    if (!line.includes(':')) {
-      result.push(line);
-    }
-  });
-  
-  textarea.value = result.join('\n');
-}
 
 
 document.getElementById("indikace").addEventListener("input", updateTexts);
