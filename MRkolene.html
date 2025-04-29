@@ -410,15 +410,27 @@
 <div id="LCLtable"> <button id="LCLButton" class="Button80" onmousedown="cycleLCLText(event)">LCL</button> </div>
 
 </div>
+
+	<div class="DIVLesions" style="margin-top: 0px;">
+	 <button class="titleKnee float">DALŠÍ...</button>
+	  <label class="CHB" style="margin-left: 0px;">
+		<input type="checkbox" id="dalsiShow"><span>+</span>
+	  </label>
+
+	  <div id="dalsiFields" style="display: none; flex; gap: 5px; margin-top: 5px;">
+		<textarea id="dalsiPopis" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+		<textarea id="dalsiZaver" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+	  </div>
+	</div>
+
 </div>
 
 <div id="others"  class="standardwidth hidden"><button class="titleKnee float">OSTATNÍ</button>
 
-<table>
-<tr>
-	<td>&nbsp;&nbsp;&nbsp;</td>
-</tr>
-</table>
+ <div id="dalsiFields" style="display: none; flex; gap: 5px; margin-top: 5px;">
+		<textarea id="dalsiPopis" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+		<textarea id="dalsiZaver" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+	  </div>
 
 </div>
 

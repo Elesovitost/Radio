@@ -904,8 +904,36 @@ if (LigLCPRes !== "") {
         LigLCPRes += ". ";
     }
 
+// další
+
+function toggleDalsiSection() {
+  const checkbox = document.getElementById('dalsiShow');
+  const fields = document.getElementById('dalsiFields');
+  fields.style.display = checkbox.checked ? 'flex' : 'none';
+}
+window.addEventListener('load', function() {
+  const checkbox = document.getElementById('dalsiShow');
+  if (checkbox) {
+    checkbox.addEventListener('change', toggleDalsiSection);
+  }
+});
 
 
+function capitalizeAndDot(text) {
+  text = text.trim();
+  if (text.length === 0) return ""; // prázdný text nech tak
+  text = text[0].toUpperCase() + text.slice(1); // první písmeno velké
+  if (!/[.!?]$/.test(text)) {  // pokud text nekončí . ! nebo ?
+    text += ".";
+  }
+  return text;
+}
+
+const dalsiPopis = capitalizeAndDot(document.getElementById('dalsiPopis').value);
+const dalsiZaver = capitalizeAndDot(document.getElementById('dalsiZaver').value);
+
+
+// TEXTY
 
 
 MRKneeNAMEText.value = Nadpis;
@@ -923,7 +951,8 @@ LkMenP + " " + LkFemCondText + " " + LkTibCondText + " " + GonarthrosisLkP + "\n
 LigLCAText + "\n" + 
 LigLCPText + "\n" +
 LCMP + "\n" + 
-LCLP + "\n\n";
+LCLP + "\n" + 
+dalsiPopis + "\n\n";
 
 MRKneePOPText.value = MRKneePOPText.value.trim(); 
 MRKneePOPText.value = MRKneePOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
@@ -959,7 +988,9 @@ LCMR + "\n" +
 LCLR + "\n" +
 PkCartRes + " " + PkLuxaceR + " " + PkWibergR + " " + PkBipartitaR + " " + PkPlicaR + " " + PkJumperR + " " + PkOsgoodR + "\n" +
 PkNaplnR + " " + OstBakerR + " " + SynovitisR + " " + VolnaTeliskaR + "\n" +
-GonarthrosisR + " " + PkFParthrosisR; 
+GonarthrosisR + " " + PkFParthrosisR + "\n" +
+dalsiZaver
+; 
 
 MRKneeRESText.value = MRKneeRESText.value.trim(); 
 MRKneeRESText.value = MRKneeRESText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
