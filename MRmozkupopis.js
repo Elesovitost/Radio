@@ -633,7 +633,7 @@ if (BrainLesion1number === "") {
 } 	
 
 let processedSentencePOPBrainLesion1 = processSentence(BrainLesion1number + " " + BrainLesion1type);	
-POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " +  BrainLesion1POPSignal + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " + BrainLesion1SignalIntensity + " " + BrainLesion1Activity + " " + BrainLesion1additional + " " + BrainLesion1ComparisonText + ".";
+POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " +  BrainLesion1POPSignal + " " + BrainLesion1SignalIntensity + " " + BrainLesion1Activity + " " + BrainLesion1additional + " " + BrainLesion1ComparisonText + ".";
 
 let processedSentenceRESBrainLesionFDG = processSentence(BrainLesion1number + " " + BrainLesion1RESActivityFDG + " " + BrainLesion1type);
 
