@@ -454,6 +454,8 @@ var BrainLesion1AllLocations = "";
 var BrainLesion1SignalIntensity = "";
 var BrainLesion1PrevSize = formatLesionSize("BrainLesion1PrevSize");
 
+var BrainLesion1BTRADS = document.getElementById("BrainLesion1BTGRADE").value;
+
 var BrainLesion1ComparisonText = generateComparisonText(BrainLesion1PrevSize, DateComparison);
 var BrainLesion1ComparisonSizeRes = compareSizes(BrainLesion1Size, BrainLesion1PrevSize);
 var BrainLesion1CombinedResult = combineComparisonResults( BrainLesion1ComparisonSizeRes,  BrainLesion1number);
@@ -638,6 +640,8 @@ POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocati
 let processedSentenceRESBrainLesionFDG = processSentence(BrainLesion1number + " " + BrainLesion1RESActivityFDG + " " + BrainLesion1type);
 
 RESBrainLesion1 = processedSentenceRESBrainLesionFDG + " " + BrainLesion1AllLocations + " " + BrainLesion1CombinedResult + " " + BrainLesion1RESDecision + ".";
+
+if (BrainLesion1BTRADS) {RESBrainLesion1 = RESBrainLesion1 + " " + BrainLesion1BTRADS + ".";}
 
 if (BrainLesion1RESDecision.includes("meta") && BrainLesion1type.includes("ožisk")) {RESBrainLesion1 = RESBrainLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 if (BrainLesion1RESDecision.includes("tumor") && BrainLesion1type.includes("ožisk")) {RESBrainLesion1 = RESBrainLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
@@ -916,7 +920,7 @@ MRbrainRESText.value = MRbrainRESText.value.replace(/^\s+/gm, '');  // odstraní
 MRbrainRESText.value = MRbrainRESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
 MRbrainRESText.value = MRbrainRESText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
 MRbrainRESText.value = MRbrainRESText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
-MRbrainRESText.value = MRbrainRESText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
+MRbrainRESText.value = MRbrainRESText.value.replace(/\s+\./g, '.');// smazat mezery před tečkou
 MRbrainRESText.value = MRbrainRESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
 MRbrainRESText.value = MRbrainRESText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
 MRbrainRESText.value = MRbrainRESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou

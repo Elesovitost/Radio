@@ -283,14 +283,21 @@ document.addEventListener('click', function(e) {
   }
 });
 
-document.getElementById('BrainLesion1Decision').addEventListener('change', function() {
-  var BrainLesion1RESDecision = document.getElementById('BrainLesion1Decision').value;
-  if (BrainLesion1RESDecision.includes("meta") || BrainLesion1RESDecision.includes("tumor")) {
+document.getElementById('BrainLesion1Decision').addEventListener('change', function () {
+  const select = document.getElementById('BrainLesion1Decision');
+  const selectedText = select.options[select.selectedIndex].text.toLowerCase();
+
+  if (
+    selectedText.includes("meta") ||
+    selectedText.includes("tumor") ||
+    selectedText.includes("po rt")
+  ) {
     document.getElementById('BrainLesion1BTRADS').classList.remove('hidden');
   } else {
     document.getElementById('BrainLesion1BTRADS').classList.add('hidden');
   }
 });
+
 
 
 document.getElementById('BrainLesion1BTGRADE').addEventListener('focus', function() {
@@ -353,6 +360,18 @@ document.addEventListener('click', function(e) {
   }
 });
 
+document.getElementById('BrainLesion2Decision').addEventListener('change', function() {
+  var BrainLesion2RESDecision = document.getElementById('BrainLesion2Decision').value;
+  if (BrainLesion2RESDecision.includes("meta") || BrainLesion2RESDecision.includes("tumor") || BrainLesion2RESDecision.includes("RT")) {
+    document.getElementById('BrainLesion2BTRADS').classList.remove('hidden');
+  } else {
+    document.getElementById('BrainLesion2BTRADS').classList.add('hidden');
+  }
+});
+
+
+
+
 
 //LESION3
 
@@ -398,6 +417,17 @@ document.addEventListener('click', function(e) {
     dropdown.classList.add('hidden');
   }
 });
+
+document.getElementById('BrainLesion3Decision').addEventListener('change', function() {
+  var BrainLesion3RESDecision = document.getElementById('BrainLesion3Decision').value;
+  if (BrainLesion3RESDecision.includes("meta") || BrainLesion3RESDecision.includes("tumor") || BrainLesion3RESDecision.includes("RT")) {
+    document.getElementById('BrainLesion3BTRADS').classList.remove('hidden');
+  } else {
+    document.getElementById('BrainLesion3BTRADS').classList.add('hidden');
+  }
+});
+
+
 
 
 // compare older
@@ -489,6 +519,7 @@ populateAktivitaOptions();
 var hodnoceniOptions = [
     { text: "tumor", value: ": charakteru tumoru", valuez1: ": benigního vzhledu"},
     { text: "meta", value: ": charakteru meta", valuez1: ": v.s. zánětlivá aktivace"},
+	{ text: "po RT", value: "", valuez1: ""},
     { text: "arach.cysta", value: ": charakteru arach.c.", valuez1: ": nespecifický nález"},
     { text: "pseudocysta", value: ": charakteru pseudoc.", valuez1: ": suspektní z infiltrace neoplazií"},
 	{ text: "resekce", value: ": po resekci", valuez1: ": po resekci"},
@@ -548,7 +579,7 @@ copyfinal.addEventListener('click', function() {
     function step1Handler(value) {
         document.getElementById('step1').style.display = 'none';
         if (value === 'No') {
-            inputField.value = 'BT-RADS 0: Baseline, no significant findings';
+            inputField.value = 'BT-RADS 0: Baseline, no significant findings'; updateTexts();
         } else {
             document.getElementById('step2').style.display = 'table-row';
         }
@@ -557,9 +588,9 @@ copyfinal.addEventListener('click', function() {
     function step2Handler(value) {
         document.getElementById('step2').style.display = 'none';
         if (value === 'Improved') {
-            document.getElementById('step3').style.display = 'table-row';
+            document.getElementById('step3').style.display = 'table-row'; 
         } else if (value === 'Unchanged') {
-            inputField.value = 'BT-RADS 2: Stable';
+            inputField.value = 'BT-RADS 2: Stable'; updateTexts();
         } else if (value === 'Worse') {
             document.getElementById('step5').style.display = 'table-row';
         }
@@ -568,11 +599,11 @@ copyfinal.addEventListener('click', function() {
     function step3Handler(value) {
         document.getElementById('step3').style.display = 'none';
         if (value === 'None') {
-            inputField.value = 'BT-RADS 1a: Improved';
+            inputField.value = 'BT-RADS 1a: Improved'; updateTexts();
         } else if (value === 'Avastin') {
             document.getElementById('step4').style.display = 'table-row';
         } else if (value === 'Increasing steroids') {
-            inputField.value = 'BT-RADS 1b: Possible medication effect';
+            inputField.value = 'BT-RADS 1b: Possible medication effect'; updateTexts();
         }
     }
 
@@ -581,14 +612,14 @@ copyfinal.addEventListener('click', function() {
         if (value === 'Sustained improvement') {
             inputField.value = 'BT-RADS 1a: Improved';
         } else if (value === 'First study on Avastin') {
-            inputField.value = 'BT-RADS 1b: Possible medication effect';
+            inputField.value = 'BT-RADS 1b: Possible medication effect'; updateTexts();
         }
     }
 
     function step5Handler(value) {
         document.getElementById('step5').style.display = 'none';
         if (value === '< 90 days') {
-            inputField.value = 'BT-RADS 3a: Favor treatment (early post-XRT)';
+            inputField.value = 'BT-RADS 3a: Favor treatment (early post-XRT)'; updateTexts();
         } else {
             document.getElementById('step6').style.display = 'table-row';
         }
@@ -599,14 +630,14 @@ copyfinal.addEventListener('click', function() {
         if (value === 'FLAIR and ENH') {
             document.getElementById('step7').style.display = 'table-row';
         } else if (value === 'FLAIR or ENH') {
-            inputField.value = 'BT-RADS 3b: Indeterminate';
+            inputField.value = 'BT-RADS 3b: Indeterminate'; updateTexts();
         }
     }
 
     function step7Handler(value) {
         document.getElementById('step7').style.display = 'none';
         if (value === '> 25% increase') {
-            inputField.value = 'BT-RADS 4: Highly suspicious';
+            inputField.value = 'BT-RADS 4: Highly suspicious'; updateTexts();
         } else if (value === '< 25% increase') {
             document.getElementById('step8').style.display = 'table-row';
         }
@@ -615,8 +646,8 @@ copyfinal.addEventListener('click', function() {
     function step8Handler(value) {
         document.getElementById('step8').style.display = 'none';
         if (value === 'Yes') {
-            inputField.value = 'BT-RADS 4: Highly suspicious';
+            inputField.value = 'BT-RADS 4: Highly suspicious'; updateTexts();
         } else if (value === 'No') {
-            inputField.value = 'BT-RADS 3c: Favor tumor';
+            inputField.value = 'BT-RADS 3c: Favor tumor'; updateTexts();
         }
     }
