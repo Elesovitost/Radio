@@ -35,12 +35,7 @@ body {
 .bodyINDEX {padding: 3px;}
 
 body, button, input, textarea {
-    font-family: 'Tahoma', sans-serif; color: #000000; scroll-behavior: smooth; text-transform: uppercase;
-}
-
-textarea {
-    font-family: 'Tahoma', sans-serif;
-    text-transform: none;
+    font-family: 'Tahoma', sans-serif; color: #000000; scroll-behavior: smooth; 
 }
 
 /* rozmazání obrazovky */
@@ -106,7 +101,6 @@ iframe, iframes {min-height: 10px; z-index: 2; background-color: #FFFFFF;}
 .mydiv1 {background-color: #DDD5D5; font-Size: 12;}
 .mydivTNM {background-color: none;}
 .DIVLesions {background-color: ; padding: 2px; font-Size: 12;}
-
 
 
 /* SELECT  */
