@@ -343,6 +343,7 @@ PkWibergR = "";
         PkBipartitaR = "";
     }		
 
+const FPjointOther = document.getElementById("FPjointOther").value;
 
 let codeForMkFem = `
 // mediální kompartment new
@@ -945,7 +946,7 @@ MRKneeSEKVText.value = "Koleno vyšetřeno v PDW FS, T1W, T2W.";
 
 MRKneePOPText.value = 
 PkNaplnP + " " + OstBakerP + " " + SynovitisP + " " + VolnaTeliskaP + "\n" + 
-PkLuxaceP + " " + PkCartText + " " + PkFParthrosisP + " " + PkWibergP + " " + PkBipartitaP + " " + PkPlicaP + " " + PkJumperP + " " + PkOsgoodP + " " + "\n" +
+PkLuxaceP + " " + PkCartText + " " + PkFParthrosisP + " " + PkWibergP + " " + PkBipartitaP + " " + PkPlicaP + " " + PkJumperP + " " + PkOsgoodP + " " + FPjointOther + "\n" +
 MkMenP + " " + MkFemCondText + " " + MkTibCondText + " " + GonarthrosisMkP + "\n" +
 LkMenP + " " + LkFemCondText + " " + LkTibCondText + " " + GonarthrosisLkP + "\n" +
 LigLCAText + "\n" + 
