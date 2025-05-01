@@ -20,6 +20,7 @@ var indikace = document.getElementById("indikace").value;
 var PkPlicaP = ""; var PkPlicaR = ""; var checkboxplica = document.getElementById('checkboxplica');
 var PkJumperP = ""; var PkJumperR = ""; var checkboxjumper = document.getElementById('checkboxjumper');
 var PkOsgoodP = ""; var PkOsgoodR = ""; var checkboxOsgood = document.getElementById('checkboxOsgood');
+var PkTiltP = ""; var PkTiltR = ""; var checkboxTilt = document.getElementById('checkboxTilt');
 var PkBipartitaP = ""; var PkBipartitaR = ""; var checkboxBipartita = document.getElementById('checkboxBipartita');
 var VolnaTeliskaP = ""; var VolnaTeliskaR = ""; var checkboxVolnaTeliska = document.getElementById('checkboxVolnaTeliska');
 
@@ -335,6 +336,14 @@ PkWibergR = "";
         PkOsgoodR = "";
     }
 
+ if (checkboxTilt.checked) {
+        PkTiltP = "Laterální náklon patelly. ";
+        PkTiltR = "Laterální tilt patelly. ";
+    } else {
+        PkTiltP = "";
+        PkTiltR = "";
+    }
+
  if (checkboxBipartita.checked) {
         PkBipartitaP = "Oddělena horní laterální hrana patelly. ";
         PkBipartitaR = "Patella bipartita. ";
@@ -360,6 +369,8 @@ var MkFemCondEdemaDif = document.getElementById("MkFemCondEdemaDif").checked;
 var MkFemCondOCDII = document.getElementById("MkFemOCDII").checked;
 var MkFemCondOCDIII = document.getElementById("MkFemOCDIII").checked;
 var MkFemCondOCDIV = document.getElementById("MkFemCondOCDIV").checked;
+
+const MkFemCondOther = document.getElementById("MkFemCondOther").value;
 
 var descriptionsMkFemCondText = [];
 var descriptionsMkFemCondRES = [];
@@ -439,6 +450,11 @@ if (MkFemCondEdemaDif) {
 	descriptionsMkFemCondRES.push("s difuzním edémem kostní dřeně");
 }
 
+if (MkFemCondOther.trim() !== "") {
+	descriptionsMkFemCondText.push(MkFemCondOther.trim());
+	descriptionsMkFemCondRES.push(MkFemCondOther.trim());
+}
+
 
 var MkFemCondText = '';
 if (descriptionsMkFemCondText.length > 1) {
@@ -446,6 +462,7 @@ if (descriptionsMkFemCondText.length > 1) {
 } else {
 	MkFemCondText = descriptionsMkFemCondText.length ? "Mediální kondyl femuru " + descriptionsMkFemCondText[0] + ". " : "";
 }
+
 
 var MkFemCondRES = '';
 if (descriptionsMkFemCondText.length > 1) {
@@ -946,7 +963,7 @@ MRKneeSEKVText.value = "Koleno vyšetřeno v PDW FS, T1W, T2W.";
 
 MRKneePOPText.value = 
 PkNaplnP + " " + OstBakerP + " " + SynovitisP + " " + VolnaTeliskaP + "\n" + 
-PkLuxaceP + " " + PkCartText + " " + PkFParthrosisP + " " + PkWibergP + " " + PkBipartitaP + " " + PkPlicaP + " " + PkJumperP + " " + PkOsgoodP + " " + FPjointOther + "\n" +
+PkLuxaceP + " " + PkCartText + " " + PkFParthrosisP + " " + PkWibergP + " " + PkBipartitaP + " " + PkPlicaP + " " + PkJumperP + " " + PkOsgoodP + " " + PkTiltP + " " + FPjointOther + "\n" +
 MkMenP + " " + MkFemCondText + " " + MkTibCondText + " " + GonarthrosisMkP + "\n" +
 LkMenP + " " + LkFemCondText + " " + LkTibCondText + " " + GonarthrosisLkP + "\n" +
 LigLCAText + "\n" + 
@@ -987,7 +1004,7 @@ LigLCARes + "\n" +
 LigLCPRes + "\n" +
 LCMR + "\n" + 
 LCLR + "\n" +
-PkCartRes + " " + PkLuxaceR + " " + PkWibergR + " " + PkBipartitaR + " " + PkPlicaR + " " + PkJumperR + " " + PkOsgoodR + "\n" +
+PkCartRes + " " + PkLuxaceR + " " + PkWibergR + " " + PkBipartitaR + " " + PkPlicaR + " " + PkJumperR + " " + PkOsgoodR + " " + PkTiltR + "\n" +
 PkNaplnR + " " + OstBakerR + " " + SynovitisR + " " + VolnaTeliskaR + "\n" +
 GonarthrosisR + " " + PkFParthrosisR + "\n" +
 dalsiZaver

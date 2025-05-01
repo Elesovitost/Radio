@@ -54,6 +54,9 @@
 		<td>Osgood-Schlatter</td>
 		<td><label class="CHB"><input type="checkbox" id="checkboxOsgood" onChange="updateTexts()"><span>+</span></label></td>
 		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>tilt</td>
+		<td><label class="CHB"><input type="checkbox" id="checkboxTilt" onChange="updateTexts()"><span>+</span></label></td>
+		<td>&nbsp;&nbsp;&nbsp;</td>
 	</tr>
 	<tr id="PkCartilagestable" class="hidden">
 		<td>
@@ -135,7 +138,7 @@
 				<td class="right"><label class="CHB"><input type="checkbox" id="MkFemCondArt" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="MkFemCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="MkFemCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -208,7 +211,7 @@
 				<td class="right"><label class="CHB"><input type="checkbox" id="MkTibCondArt" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="MkTibCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="MkTibCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -254,7 +257,7 @@
 				<td class="right"><label class="CHB"><input type="checkbox" id="LkFemCondArt" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="LkFemCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="LkFemCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
@@ -327,7 +330,7 @@
 				<td class="right"><label class="CHB"><input type="checkbox" id="LkTibCondArt" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td colspan="2" ><input id="LkTibCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputothers" oninput="updateTexts()"></td>
+				<td colspan="2" ><textarea id="LkTibCondOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>
 			</tr>
 		</table>
 		</td>
