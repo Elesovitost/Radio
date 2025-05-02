@@ -454,7 +454,7 @@ var BrainLesion1AllLocations = "";
 var BrainLesion1SignalIntensity = "";
 var BrainLesion1PrevSize = formatLesionSize("BrainLesion1PrevSize");
 
-var BrainLesion1BTRADS = document.getElementById("BrainLesion1BTGRADE").value;
+var BrainLesion1BTGRADE = document.getElementById("BrainLesion1BTGRADE").value;
 
 var BrainLesion1ComparisonText = generateComparisonText(BrainLesion1PrevSize, DateComparison);
 var BrainLesion1ComparisonSizeRes = compareSizes(BrainLesion1Size, BrainLesion1PrevSize);
@@ -641,7 +641,10 @@ let processedSentenceRESBrainLesionFDG = processSentence(BrainLesion1number + " 
 
 RESBrainLesion1 = processedSentenceRESBrainLesionFDG + " " + BrainLesion1AllLocations + " " + BrainLesion1CombinedResult + " " + BrainLesion1RESDecision + ".";
 
-if (BrainLesion1BTRADS) {RESBrainLesion1 = RESBrainLesion1 + " " + BrainLesion1BTRADS + ".";}
+if (BrainLesion1BTGRADE !== "") {
+    RESBrainLesion1 += " " + BrainLesion1BTGRADE + ".";
+}
+
 
 if (BrainLesion1RESDecision.includes("meta") && BrainLesion1type.includes("ožisk")) {RESBrainLesion1 = RESBrainLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
 if (BrainLesion1RESDecision.includes("tumor") && BrainLesion1type.includes("ožisk")) {RESBrainLesion1 = RESBrainLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}

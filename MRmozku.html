@@ -168,65 +168,25 @@
 			</select>
 		</td>
     </tr>
-    <tr id="BrainLesion1BTRADS" class="hidden">
-		<td colspan="1"></td>
-		<td>&nbsp;BTRADS:</td>
-		<td colspan="7"><input id="BrainLesion1BTGRADE" type="text" placeholder="lokace..." autocomplete="off" class="myButtonLesionS" style="width: 350px;" oninput="updateTexts()"></td>
-		<td></td>
-    </tr>	
+
     <tr id="BrainLesion1Previous" class="hidden">
 		<td colspan="7"></td>
 		<td>&nbsp;minule:</td>
 		<td><input id="BrainLesion1PrevSize" class="select80 numberstext" placeholder="rozměr..." oninput="updateTexts()"></td>
 		<td></td>
     </tr>
+	
+	<tr id="BrainLesion1BTRADS" class="hidden">
+	  <td colspan="1"></td>
+	  <td></td>
+	  <td colspan="7">
+		<input id="BrainLesion1BTGRADE" type="text" placeholder="BTRADS?" autocomplete="off" style="width: 350px; height: 20px;" oninput="updateTexts()">
+	  </td>
+	  <td></td>
+	</tr>
+	
 </table>
-  
-<table id="BrainLesion1selectBTGRADE" class="options hidden">
-    <tr id="step1">
-        <td>Suitable prior?</td>
-        <td><button onclick="step1Handler('No')">No</button></td>
-        <td><button onclick="step1Handler('Yes')">Yes</button></td>
-    </tr>
-    <tr id="step2" style="display: none;">
-        <td>Imaging?</td>
-        <td><button onclick="step2Handler('Improved')">Improved</button></td>
-        <td><button onclick="step2Handler('Worse')">Worse</button></td>
-        <td><button onclick="step2Handler('Unchanged')">Unchanged</button></td>
-    </tr>
-    <tr id="step3" style="display: none;">
-        <td>Medications?</td>
-        <td><button onclick="step3Handler('None')">None</button></td>
-        <td><button onclick="step3Handler('Avastin')">Avastin</button></td>
-        <td><button onclick="step3Handler('Increasing steroids')">Increasing steroids</button></td>
-    </tr>
-    <tr id="step4" style="display: none;">
-        <td>Extend improved?</td>
-        <td><button onclick="step4Handler('Sustained improvement')">Sustained improvement</button></td>
-        <td><button onclick="step4Handler('First study on Avastin')">First study on Avastin</button></td>
-    </tr>
-    <tr id="step5" style="display: none;">
-        <td>Time since XRT?</td>
-        <td><button onclick="step5Handler('> 90 days')">More than 90 days</button></td>
-        <td><button onclick="step5Handler('< 90 days')">Less than 90 days</button></td>
-    </tr>
-    <tr id="step6" style="display: none;">
-        <td>What is worse?</td>
-        <td><button onclick="step6Handler('FLAIR and ENH')">FLAIR and ENH</button></td>
-        <td><button onclick="step6Handler('FLAIR or ENH')">FLAIR or ENH</button></td>
-    </tr>
-    <tr id="step7" style="display: none;">
-        <td>How much worse?</td>
-        <td><button onclick="step7Handler('> 25% increase')">More than 25% increase</button></td>
-        <td><button onclick="step7Handler('< 25% increase')">Less than 25% increase</button></td>
-    </tr>
-    <tr id="step8" style="display: none;">
-        <td>Progressive?</td>
-        <td><button onclick="step8Handler('Yes')">Yes (over 2 studies)</button></td>
-        <td><button onclick="step8Handler('No')">No (first time worse)</button></td>
-    </tr>
-</table>
-  
+ 
 <table id="BrainLesion1selectLocation" class="options hidden">
     <tr>
         <td>Frontálně</td>
