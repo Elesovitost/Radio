@@ -174,7 +174,7 @@ function cycleText(event, texts, index, buttonElement, callback) {
     return index;
 }
 
-function updateBackgroundColor(index, buttonElement, color1 = "transparent", color2 = "transparent") {
+function updateBackgroundColor(index, buttonElement, color1 = "transparent", color2 = "D4A29C") {
   buttonElement.style.backgroundColor = index === 0 ? color1 : color2;
 }
 
