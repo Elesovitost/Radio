@@ -562,8 +562,7 @@ copyfinal.addEventListener('click', function() {
 
     const container = input.parentElement;
     const originalPlaceholder = input.placeholder;
-
-    const lesionId = inputId.replace('BTGRADE', ''); // e.g. BrainLesion1
+    const lesionId = inputId.replace('BTGRADE', ''); // např. “BrainLesion1”
     const globalVarName = lesionId + '_BTRADS';
 
     function clearButtons() {
@@ -594,70 +593,76 @@ copyfinal.addEventListener('click', function() {
       });
     }
 
-	function onAnswer(question, answer) {
-	  switch (question) {
-		case 'Máte k dispozici vhodné předchozí vyšetření?':
-		  if (answer === 'Ne') finish('BT-0: Výchozí vyšetření bez srovnání.');
-		  else askImaging();
-		  break;
+    function onAnswer(question, answer) {
+      switch (question) {
+        case 'Máte k dispozici vhodné předchozí vyšetření?':
+          if (answer === 'Ne') finish('BT-0: Výchozí vyšetření bez srovnání.');
+          else askImaging();
+          break;
 
-		case 'Nález na zobrazovacích studiích?':
-		  if (answer === 'Zlepšení') askMedication();
-		  else if (answer === 'Beze změny') finish('BT-2: Nález je stabilní bez zjevné progrese.');
-		  else if (answer === 'Zhoršení') askTimeSinceRT();
-		  break;
+        case 'Nález na zobrazovacích studiích?':
+          if (answer === 'Zlepšení') askMedication();
+          else if (answer === 'Beze změny') finish('BT-2: Nález je stabilní bez zjevné progrese.');
+          else if (answer === 'Zhoršení') askTimeSinceRT();
+          break;
 
-		case 'Léčba?':
-		  if (answer === 'Žádná') finish('BT-1a: Zlepšení bez aktivní léčby – pravděpodobná regrese.');
-		  else finish('BT-1b: Zlepšení při léčbě – možné vlivem medikace.');
-		  break;
+        case 'Léčba?':
+          if (answer === 'Žádná') finish('BT-1a: Zlepšení bez aktivní léčby – pravděpodobná regrese.');
+          else finish('BT-1b: Zlepšení při léčbě – možné vlivem medikace.');
+          break;
 
-		case 'Čas od radioterapie (RT)?':
-		  if (answer === '< 90 dní') finish('BT-3a: Zhoršení krátce po radioterapii – spíše léčebná odpověď.');
-		  else askPercentIncrease();
-		  break;
+        case 'Čas od radioterapie (RT)?':
+          if (answer === '< 90 dní') finish('BT-3a: Zhoršení krátce po radioterapii – spíše léčebná odpověď.');
+          else askWhatIsWorse();
+          break;
 
-		case 'Jak velké zhoršení?':
-		  if (answer === '< 25 %') finish('BT-3b: Nejednoznačný obraz s mírnou progresí – smíšený typ.');
-		  else askProgressive();
-		  break;
+        case 'Co je horší – FLAIR nebo ENH nebo obojí?':
+          if (answer === 'FLAIR nebo ENH') finish('BT-3b: Nejednoznačný obraz – zhoršení jednoho parametru.');
+          else if (answer === 'FLAIR a ENH') askPercentIncrease();
+          break;
 
-		case 'Je to progresivní (horší ve více než 2 studiích)?':
-		  if (answer === 'Ano') finish('BT-4: Vysoce suspektní pro progresi nádoru.');
-		  else finish('BT-3c: První výskyt zhoršení – spíše nádorová aktivita.');
-		  break;
-	  }
-	  
-	}
+        case 'Jak velké zhoršení?':
+          if (answer === '< 25 %') finish('BT-3b: Nejednoznačný obraz s mírnou progresí – smíšený typ.');
+          else askProgressive();
+          break;
 
+        case 'Je to progresivní (horší ve více než 2 studiích)?':
+          if (answer === 'Ano') finish('BT-4: Vysoce suspektní pro progresi nádoru.');
+          else finish('BT-3c: První výskyt zhoršení – spíše nádorová aktivita.');
+          break;
+      }
+    }
 
     function askSuitablePrior() {
       showQuestion('Máte k dispozici vhodné předchozí vyšetření?', ['Ne', 'Ano']);
     }
-
     function askImaging() {
       showQuestion('Nález na zobrazovacích studiích?', ['Zlepšení', 'Beze změny', 'Zhoršení']);
     }
-
     function askMedication() {
       showQuestion('Léčba?', ['Žádná', 'Avastin', 'Zvyšování steroidů']);
     }
-
     function askTimeSinceRT() {
       showQuestion('Čas od radioterapie (RT)?', ['< 90 dní', '> 90 dní']);
     }
-
+    function askWhatIsWorse() {
+      showQuestion(
+        'Co je horší – FLAIR nebo ENH nebo obojí?',
+        ['FLAIR nebo ENH', 'FLAIR a ENH']
+      );
+    }
     function askPercentIncrease() {
       showQuestion('Jak velké zhoršení?', ['< 25 %', '> 25 %']);
     }
-
     function askProgressive() {
-      showQuestion('Je to progresivní (horší ve více než 2 studiích)?', ['Ano', 'Ne']);
+      showQuestion(
+        'Je to progresivní (horší ve více než 2 studiích)?',
+        ['Ano', 'Ne']
+      );
     }
 
     input.addEventListener('click', askSuitablePrior);
   }
 
   ['1', '2', '3'].forEach(n => initBTRADS(`BrainLesion${n}BTGRADE`));
-
 })();
