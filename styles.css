@@ -111,7 +111,9 @@ select:hover {background-color: #FFFFFF; }
 select:disabled {color: #a0a0a0; background-color: #000000;}
 option {color: #000000; background-color: #FFFFFF;}
 
-
+#PETselect.bezPET {
+  background-color: #EDCC8B;
+}
 
 
 /* BRAIN */
@@ -665,5 +667,4 @@ table.compact-tnm-table td {
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
 }
-
 

@@ -10,7 +10,8 @@ var LKtext = document.getElementById("LKtext");
 
 
 function updateTexts() {
-	
+
+const PETselect = document.getElementById("PETselect").value;
 
 var indikace = document.getElementById("indikace").value;
 
@@ -448,6 +449,7 @@ var BrainLesion1AddLocation = document.getElementById("BrainLesion1AddLocation")
 var BrainLesion1Loclargest = document.getElementById("BrainLesion1Loclargest").value;
 var BrainLesion1Activity = document.getElementById("BrainLesion1Activity").value; var BrainLesion1ActivityCopy = document.getElementById("BrainLesion1Activity").value;
 var BrainLesion1RESActivityFDG = document.getElementById("BrainLesion1Activity"); var selectedOption = BrainLesion1RESActivityFDG.options[BrainLesion1RESActivityFDG.selectedIndex]; var BrainLesion1RESActivityFDG = selectedOption.dataset.valuez2 ? selectedOption.dataset.valuez2 : '';
+var BrainLesion1RESActivityFDOPA = document.getElementById("BrainLesion1Activity"); var selectedOption = BrainLesion1RESActivityFDOPA.options[BrainLesion1RESActivityFDOPA.selectedIndex]; var BrainLesion1RESActivityFDOPA = selectedOption.dataset.valuez1 ? selectedOption.dataset.valuez1 : '';
 var BrainLesion1Size = formatLesionSize("BrainLesion1Size");
 var BrainLesion1RESDecision = document.getElementById("BrainLesion1Decision").value; 
 var BrainLesion1AllLocations = "";
@@ -638,8 +640,9 @@ let processedSentencePOPBrainLesion1 = processSentence(BrainLesion1number + " " 
 POPBrainLesion1 = processedSentencePOPBrainLesion1 + " " + BrainLesion1AllLocations + " " + BrainLesion1Loclargest + " " + BrainLesion1Size + " " +  BrainLesion1POPSignal + " " + BrainLesion1SignalIntensity + " " + BrainLesion1Activity + " " + BrainLesion1additional + " " + BrainLesion1ComparisonText + ".";
 
 let processedSentenceRESBrainLesionFDG = processSentence(BrainLesion1number + " " + BrainLesion1RESActivityFDG + " " + BrainLesion1type);
+let processedSentenceRESBrainLesionFDOPA = processSentence(BrainLesion1number + " " + BrainLesion1type + " " + BrainLesion1RESActivityFDOPA);
 
-RESBrainLesion1 = processedSentenceRESBrainLesionFDG + " " + BrainLesion1AllLocations + " " + BrainLesion1CombinedResult + " " + BrainLesion1RESDecision + ".";
+RESBrainLesion1 = (PETselect === "FDOPA" ? processedSentenceRESBrainLesionFDOPA : processedSentenceRESBrainLesionFDG) + " " + BrainLesion1AllLocations + " " + BrainLesion1CombinedResult + " " + BrainLesion1RESDecision + ".";
 
 if (BrainLesion1BTGRADE !== "") {
     RESBrainLesion1 += " " + BrainLesion1BTGRADE + ".";
@@ -859,8 +862,18 @@ if (!POPBrainLesion1.includes("restrikcí") && !POPBrainLesion2.includes("restri
 }
 
 
-//bez restrikce
+//FMM 
 
+POP_FMM_result = "";
+var FMMstatus = document.getElementById("FMMstatus").value;
+
+if (FMMstatus === "negativní") {
+  POP_FMM_result = "Negativní plaky. ";
+} else if (FMMstatus === "pozitivní bez striata") {
+  POP_FMM_result = "Pozitivní plaky bez striata. ";
+} else if (FMMstatus === "pozitivní včetně striata") {
+  POP_FMM_result = "Pozitivní plaky včetně striata. ";
+}
 
 //Latest examination comparison
 if (DateCompare === "") {ExamCompareText = ""; POPExamCompareText = "";} else {ExamCompareText = "Oproti vyšetření z " + DateComparison + ":"; POPExamCompareText = "Srovnáno s vyšetřením z " + DateComparison + ". ";}
@@ -869,13 +882,22 @@ if (DateCompare === "") {ExamCompareText = ""; POPExamCompareText = "";} else {E
 
 //POPIS
 
-MRbrainNAMEText.value = "MR mozku";
+const MRbrainNAMEText = document.getElementById("MRbrainNAMEText");
+
+if (PETselect === "FDOPA") {
+  MRbrainNAMEText.value = "F-DOPA PET / MR mozku";
+} else if (PETselect === "FMM") {
+  MRbrainNAMEText.value = "FMM PET / MR mozku";
+} else {
+  MRbrainNAMEText.value = "MR mozku";
+}
 
 MRbrainINDText.value = indikace;
 
 MRbrainSEKVText.value = "Mozek v T2W, FLAIR, DWI+ADC, T1W, (event. dle potřeby T2-SPACE, T2-FLASH, SWI, FS, C+). ";
 
 MRbrainPOPText.value = 
+POP_FMM_result + "\n\n" +
 POPExamCompareText + "\n" +
 POPBrainLesion1 + "\n" +
 POPBrainLesion2 + "\n" +

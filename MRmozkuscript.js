@@ -168,7 +168,10 @@ buttonElementWML.addEventListener("mousedown", function() {
 
 	
 
-// Brainlesions hide
+// Nadpis
+
+
+
 
 // new LESIONS
 
@@ -478,12 +481,12 @@ function formatLesionSize(variableName) {
 // Lesion aktivita   
   
 var aktivitaOptions = [
-    { text: "není", value: "bez akumulace RF", valuez1: "bez PSMA exprese", valuez2: "ametabolické"},
-    { text: "nízká", value: "s nízkou akumulací RF", valuez1: "s nízkou PSMA expresí", valuez2: "nízce metabolicky aktivní "},
-    { text: "intermed.", value: "se střední akumulací RF", valuez1: "se střední PSMA expresí", valuez2: "středně metabolicky aktivní "},
-    { text: "zvýšená", value: "se zvýšenou akumulací RF", valuez1: "se zvýšenou PSMA expresí", valuez2: "mírně hypermetabolické "},
-    { text: "vysoká", value: "s vysokou akumulací RF", valuez1: "s vysokou PSMA expresí", valuez2: "hypermetabolické "},
-	{ text: "enormní", value: "s velmi vysokou akumulací RF", valuez1: "s vysokou PSMA expresí", valuez2: "výrazně hypermetabolické "}
+    { text: "není", value: "bez akumulace RF", valuez1: "bez patrné utilizace FDOPA", valuez2: "ametabolické"},
+    { text: "nízká", value: "s nízkou akumulací RF", valuez1: "s nízkou utilizací FDOPA", valuez2: "nízce metabolicky aktivní "},
+    { text: "intermed.", value: "se střední akumulací RF", valuez1: "se střední utilizací FDOPA", valuez2: "středně metabolicky aktivní "},
+    { text: "zvýšená", value: "se zvýšenou akumulací RF", valuez1: "se zvýšenou utilizací FDOPA", valuez2: "mírně hypermetabolické "},
+    { text: "vysoká", value: "s vysokou akumulací RF", valuez1: "s vysokou utilizací FDOPA", valuez2: "hypermetabolické "},
+	{ text: "enormní", value: "s velmi vysokou akumulací RF", valuez1: "s vysokou utilizací FDOPA", valuez2: "výrazně hypermetabolické "}
 ];
 
 function populateAktivitaOptions() {

@@ -6,7 +6,14 @@
 
 <div class="MainDIV">
 
-<div id="MRmozku" class="standardwidth mydiv0">MR MOZKU</div>
+<div id="MRmozku" class="standardwidth mydiv0">
+  <span id="NadpisMR">MR MOZKU</span>
+  <select id="PETselect" class="select120" onchange="updateTexts();">
+    <option value="" selected>bez PET</option>
+    <option value="FDOPA">+ F-DOPA</option>
+    <option value="FMM">+ FMM</option>
+  </select>
+</div>
 <div id="IND" class="mydiv1 standardwidth">
 <input id="indikace" type="text" placeholder="indikace..." autocomplete="off">
 <div class="nowrap">&nbsp;&nbsp;srovnat s: <input type="date" id="DateCompare" name="dateInput" onchange="updateTexts(); toggleElements();"></div>
@@ -18,6 +25,15 @@
 <label class="CHB"> RECIST <input type="checkbox" id="ChbRECIST" onChange="updateTexts()"><span>+</span></label>
 </div>
 
+<div id="FMMdiv" class="standardwidth hidden">
+  &nbsp;&nbsp;&nbsp;<button class="titleBrain float">PLAKY</button>
+  <select id="FMMstatus" class="select200" onchange="updateTexts()">
+    <option value="" selected>nález?</option>
+    <option value="negativní">negativní</option>
+    <option value="pozitivní bez striata">pozitivní bez striata</option>
+    <option value="pozitivní včetně striata">pozitivní včetně striata</option>
+  </select>
+</div>
 
 
 <div id="WM" class="standardwidth"><button class="titleBrain float">BÍLÁ HMOTA</button>
