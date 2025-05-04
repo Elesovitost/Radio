@@ -172,7 +172,6 @@ buttonElementWML.addEventListener("mousedown", function() {
 
 
 
-
 // new LESIONS
 
 document.getElementById('BrainNewLesions').addEventListener('click', function() {
@@ -479,6 +478,23 @@ function formatLesionSize(variableName) {
 
 
 // Lesion aktivita   
+function adjustFDOPAActivityValues() {
+  const PETselect = document.getElementById("PETselect").value;
+
+  if (PETselect === "FDOPA") {
+    aktivitaOptions.forEach((option) => {
+      if (option.text === "nízká") {
+        option.value = "s akumulací RF pod úrovní kontralaterálního striata";
+      } else if (option.text === "intermed.") {
+        option.value = "s akumulací RF na úrovni kontralaterálního striata";
+      } else if (option.text === "zvýšená") {
+        option.value = "s akumulací RF nad úrovní kontralaterálního striata";
+      }
+    });
+  }
+}
+
+adjustFDOPAActivityValues();
   
 var aktivitaOptions = [
     { text: "není", value: "bez akumulace RF", valuez1: "bez patrné utilizace FDOPA", valuez2: "ametabolické"},

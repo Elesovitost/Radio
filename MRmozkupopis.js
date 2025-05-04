@@ -864,15 +864,26 @@ if (!POPBrainLesion1.includes("restrikcí") && !POPBrainLesion2.includes("restri
 
 //FMM 
 
-POP_FMM_result = "";
+const FMMdiv = document.getElementById("FMMdiv");
+
+if (PETselect === "FMM") {
+FMMdiv.classList.remove("hidden");
+} else {
+FMMdiv.classList.add("hidden");
+}
+
+POP_FMM_result = ""; RES_FMM_result = ""; 
 var FMMstatus = document.getElementById("FMMstatus").value;
 
 if (FMMstatus === "negativní") {
   POP_FMM_result = "Negativní plaky. ";
+  RES_FMM_result = "Negativní plaky. ";
 } else if (FMMstatus === "pozitivní bez striata") {
   POP_FMM_result = "Pozitivní plaky bez striata. ";
+  RES_FMM_result = "Pozitivní plaky bez striata. ";
 } else if (FMMstatus === "pozitivní včetně striata") {
   POP_FMM_result = "Pozitivní plaky včetně striata. ";
+  RES_FMM_result = "Pozitivní plaky včetně striata. ";
 }
 
 //Latest examination comparison
@@ -927,6 +938,7 @@ MRbrainPOPText.value = MRbrainPOPText.value.replace(/^\./gm, ''); // odstraní t
 MRbrainPOPText.value = MRbrainPOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
 
 MRbrainRESText.value = 
+RES_FMM_result + "\n\n" +
 ExamCompareText + "\n" +
 RESBrainLesion1 + "\n" +
 RESBrainLesion2 + "\n" +
