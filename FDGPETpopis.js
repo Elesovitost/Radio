@@ -105,10 +105,10 @@ var hodnoceniOptions = [
     { text: "benigní", value: ": benigního vzhledu", valueRPH: ": benigního vzhledu"},
     { text: "spíše ben.", value: ": nemá charakter viabilní neoplázie", valueRPH: ": v.s. zánětlivá aktivace"},
     { text: "nerozhodný", value: ": nespecifický nález", valueRPH: ": nespecifický nález"},
-    { text: "spíše mal.", value: ": suspektní z viabilní neoplázie", valueRPH: ": suspektní z infiltrace neoplazií"},
-    { text: "maligní", value:": charakteru viabilní neoplázie", valueRPH: ": charakteru infiltrace neoplazií"},
-	{ text: "tumor", value:": charakteru tumoru", valueRPH: ": infiltrace neoplazií"},
-	{ text: "meta", value:": charakteru meta", valueRPH: ": infiltrace neoplazií"}
+    { text: "spíše mal.", value: ": suspektní z viabilní neoplázie", valueRPH: ": suspektní z meta"},
+    { text: "maligní", value:": charakteru viabilní neoplázie", valueRPH: ": charakteru meta"},
+	{ text: "tumor", value:": charakteru tumoru", valueRPH: ": viabilní neoplazie"},
+	{ text: "meta", value:": charakteru meta", valueRPH: ": charakteru meta"}
 ];
 
 function populateHodnoceniOptions() {
