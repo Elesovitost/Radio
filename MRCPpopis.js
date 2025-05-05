@@ -315,10 +315,10 @@ if (LORDText === "(") {
  Osy += "Lordóza přiměřená. "; 
 } else if (LORDText === "|") {
  Osy += "Lordóza vyrovnaná. ";
- OsyR += "Napřímená bederní lordóza. ";
+ OsyR += "Napřímená krční lordóza. ";
 } else if (LORDText === ")") {
  Osy += "Paradoxní kyfotizace. ";
- OsyR += "Paradoxní kyfotizace bederní páteře. ";
+ OsyR += "Paradoxní kyfotizace krční páteře. ";
 } else if (LORDText === "((") {
  Osy += "Lordóza akcentovaná. ";
 } 
@@ -907,7 +907,7 @@ if (X01nativR === "" && X12nativR === "" && X23nativR === "" && X34nativR === ""
     X01stenozyR === "" && X12stenozyR === "" && X23stenozyR === "" && X34stenozyR === "" && X45stenozyR === "" && X56stenozyR === "" &&
     X01edemR === "" && X12edemR === "" && X23edemR === "" && X34edemR === "" && X45edemR === "" && X56edemR === "" &&
     LLloziskoR === "" && LLfrakturaR === "" && LLmulti === "") {
-    LLnormalR = "Přiměřený nález na bederní páteři.";
+    LLnormalR = "Přiměřený nález na krční páteři.";
 } else {
     LLnormalR = "";
 }
