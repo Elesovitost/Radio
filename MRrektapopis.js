@@ -352,6 +352,13 @@ if (document.getElementById('ChbRectTuPerit').checked) {
 	RectTuMstageR = "M1c";
 }
 
+// RECID
+
+var ChbRectNoRecid = document.getElementById("ChbRectNoRecid").checked;
+
+if (ChbRectNoRecid) {
+  TMNLoc = "Bez známek recidivy tumoru";
+}
 
 // POPIS
 

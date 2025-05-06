@@ -1,7 +1,5 @@
 // dodělat +sekvence, ostatní, více ložisek, ischemii, RS zvlášť
 
-
-
 var obecnetext = document.getElementById("obecnetext");
 var WMtext = document.getElementById("WMtext");
 var MKtext = document.getElementById("MKtext");
@@ -221,7 +219,7 @@ if (document.getElementById('ChbWMLParietalR').checked && document.getElementByI
 if (document.getElementById('ChbWMLJuxtakortikalni').checked) {results.push("juxtakortikálně");} 
 
 if (document.getElementById('ChbWMLTemporalR').checked && document.getElementById('ChbWMLTemporalL').checked) {
-    results.push("Temporálně bilat.");
+    results.push("temporálně bilat.");
 } else {
     if (document.getElementById('ChbWMLTemporalR').checked) results.push("temporálně vpravo");
     if (document.getElementById('ChbWMLTemporalL').checked) results.push("temporálně vlevo");
@@ -237,7 +235,7 @@ if (document.getElementById('ChbWMLOccipitalR').checked && document.getElementBy
 if (document.getElementById('ChbWMLCorpusCallosum').checked) {results.push("v corpus callosum");}
 
 if (document.getElementById('ChbWMLCentrumOvaleR').checked && document.getElementById('ChbWMLCentrumOvaleL').checked) {
-    results.push("v centrum Ovale bilat.");
+    results.push("v centrum ovale bilat.");
 } else {
     if (document.getElementById('ChbWMLCentrumOvaleR').checked) results.push("v centrum ovale vpravo");
     if (document.getElementById('ChbWMLCentrumOvaleL').checked) results.push("v centrum ovale vlevo");
@@ -279,7 +277,6 @@ if (document.getElementById('ChbWMLObloR').checked && document.getElementById('C
 }
 
 
-
 if (results.length > 1) {
     var last = results.pop();
     WMLLocationP = results.join(", ") + " a " + last;
@@ -289,35 +286,30 @@ if (results.length > 1) {
     WMLLocationP = "";
 }
 
-if (checkedCount > 2 && checkedCountR > 0 && checkedCountL > 0) {
-    WMLLocationR = "supratentoriálně bilat.";
-} else if (checkedCountR > 1) {
-    WMLLocationR = "supratentoriálně vpravo";
-} else if (checkedCountL > 1) {
-    WMLLocationR = "supratentoriálně vlevo";
-} else {
-    WMLLocationR = WMLLocationP;
+WMLLocationR = WMLLocationP;
+
+
+if (WMLText === "ojedinělé") {
+  WMLP = WMLP.replace("T2W", "gliové T2W");
+  WMLR = ""; WMLLocationR = ""; 
+}
+if (WMLText === "sporadické") {
+  WMLR = WMLR.replace("léze", "gliové léze");
 }
 
-document.getElementById('WMLLocation').value = WMLLocationR;
-
-
 if (checkboxRS.checked) {
-    RSP = "";
-    RSR = ". Distribucí a charakterem jsou léze suspektní z demyelinizace. ";
+    WMLLocationR += ". Distribucí a charakterem jsou léze suspektní z demyelinizace. ";
 } else if (!checkboxRS.checked && (WMLText === "vícečetné" || WMLText === "splývající")) {
-    RSP = "";
-    RSR = " v.s. v rámci 'small vessel disease'.";
-} else if (WMLLocationText === "" && WMLText === "0") {
-    RSP = "";
-    RSR = "";
+    WMLLocationR += " v.s. v rámci 'small vessel disease'.";
 } else if (WMLLocationText !== "" && WMLText === "0") {
  WMLLocationP = ""; 
  WMLLocationR = "";
-} else {
-    RSP = "";
-    RSR = ".";
+} 
+
+if (WMLR || WMLLocationR) {
+  WMLLocationR += ". ";
 }
+
 
 
 // KORTEX 
@@ -410,7 +402,7 @@ var PituitaryP = "";
 var PituitaryR = ""; 
 
 if (Pituitary === "") {
-PituitaryP = "Hypofýza normální velikosti uložena v nezvětšeném tureckém sedle. "; 
+PituitaryP = "Nezvětšená hypofýza uložena v nerozšířeném tureckém sedle. "; 
 PituitaryR = ""; 
 } else if (Pituitary === "partial empty") {
  PituitaryP = "Turecké sedlo je z velké části vyplněno signálem likvoru, na jeho dně je zmenšená hypofýza. ";
@@ -876,14 +868,14 @@ POP_FMM_result = ""; RES_FMM_result = "";
 var FMMstatus = document.getElementById("FMMstatus").value;
 
 if (FMMstatus === "negativní") {
-  POP_FMM_result = "Negativní plaky. ";
-  RES_FMM_result = "Negativní plaky. ";
+  POP_FMM_result = "Na tomografických řezech nacházíme fyziologickou distribuci radiofarmaka s maximem akumulace v šedé kůře mozkové, bez oblastí patologického snížení akumulace. V žádné z kritických hodnocených oblastí frontální kůry, předního a zadního cingula a precuneu, temporo-parietální kůry včetně insuly, laterální temporální kůry a striata nenacházíme patologicky zvýšenou akumulaci radiofarmaka. ";
+  RES_FMM_result = "Beta-amyloidové plaky nebyly nalezeny. Nález není konzistentní s diagnózou Alzheimerovy choroby.";
 } else if (FMMstatus === "pozitivní bez striata") {
-  POP_FMM_result = "Pozitivní plaky bez striata. ";
-  RES_FMM_result = "Pozitivní plaky bez striata. ";
+  POP_FMM_result = "Na tomografických řezech nacházíme v amyloidové fázi zvýšenou akumulaci radiofarmaka v šedé kůře mozkové, která přesahuje svojí intenzitou fyziologickou akumulaci v bílé hmotě mozkové - v některých kritických hodnocených oblastech, ale ne ve striatu. ";
+  RES_FMM_result = "Pozitivní nález z hlediska přítomnosti beta-amyloidu v šedé kůře mozkové (bez  striata) je konzistentní s vaší suspekcí na Alzheimerovu chorobu.";
 } else if (FMMstatus === "pozitivní včetně striata") {
-  POP_FMM_result = "Pozitivní plaky včetně striata. ";
-  RES_FMM_result = "Pozitivní plaky včetně striata. ";
+  POP_FMM_result = "Na tomografických řezech nacházíme v amyloidové fázi výrazně zvýšenou akumulaci radiofarmaka v šedé kůře mozkové, která přesahuje svojí intenzitou fyziologickou akumulaci v bílé hmotě mozkové - v kritických hodnocených oblastech, tj. ve frontální kůře, předním a zadním cingulu a precuneu, v temporo-parietální kůře včetně insuly, v laterální temporální kůře i ve striatu nacházíme patologicky zvýšenou akumulaci radiofarmaka.";
+  RES_FMM_result = "Pozitivní nález z hlediska přítomnosti beta-amyloidu v šedé kůře mozkové včetně striata je konzistentní s vaší suspekcí na Alzheimerovu chorobu.";
 }
 
 //Latest examination comparison
@@ -944,7 +936,7 @@ RESBrainLesion1 + "\n" +
 RESBrainLesion2 + "\n" +
 RESBrainLesion3 + "\n" +
 LesionVR + "\n" +
-WMLR + WMLLocationR + RSR + "\n" + 
+WMLR + WMLLocationR + "\n" + 
 GCAR + " " + MTAR + " " + lobaratrophyR + "\n" +
 ventriclesR + "\n" +
 MMKR + "\n" +

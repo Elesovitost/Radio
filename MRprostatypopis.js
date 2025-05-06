@@ -1160,6 +1160,7 @@ var ProstateRecidR = "";
 
 var ChbProstateRecidR = document.getElementById("ChbProstateRecidR").checked;
 var ChbProstateRecidL = document.getElementById("ChbProstateRecidL").checked;
+var ChbProstateNoRecid = document.getElementById("ChbProstateNoRecid").checked;
 
 if (ChbProstateRecidR && ChbProstateRecidL) {
   ProstateRecidP = "Ložiska v lůžku prostaty bilat. ";
@@ -1167,11 +1168,11 @@ if (ChbProstateRecidR && ChbProstateRecidL) {
   ProstateSemVesP = "";
 } else {
   if (ChbProstateRecidR) {
-    ProstateRecidP = "Ložisko v lůžku prostaty vpravo. ";
+    ProstateRecidP = "Ložisko s vysokou akumulací RF v lůžku prostaty vpravo. ";
     ProstateRecidR = "Ložisko recidivy v lůžku prostaty vpravo. ";
 	ProstateSemVesP = "";
   }   if (ChbProstateRecidL) {
-    ProstateRecidP = "Ložisko v lůžku prostaty vlevo. ";
+    ProstateRecidP = "Ložisko s vysokou akumulací RF v lůžku prostaty vlevo. ";
     ProstateRecidR = "Ložisko recidivy v lůžku prostaty vlevo. ";
 	ProstateSemVesP = "";
   } 

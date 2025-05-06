@@ -23,7 +23,8 @@ Tumor: <button id="RectTuTypeButton" class="Button80" onmousedown="cycleRectTuTy
 Od AR úhlu: <input type="number" class="numbers" id="RectTuStartDistance" min="0" max="15" step="1" style="width: 40px;" onchange="updateTexts()"> cm &nbsp;&nbsp;&nbsp;
 Délka tumoru: <input type="number" class="numbers" id="RectTuTotDistance" min="0" max="15" step="1" style="width: 40px;" onchange="updateTexts()"> cm &nbsp;&nbsp;&nbsp;
 Rozsah (ciferník): <input type="number" class="numbers" id="RectTuSpreadFrom" min="1" max="12" step="1" style="width: 40px;" onchange="updateTexts()"> až
-<input type="number" class="numbers" id="RectTuSpreadTo" min="1" max="12" step="1" style="width: 40px;" onchange="updateTexts()">
+<input type="number" class="numbers" id="RectTuSpreadTo" min="1" max="12" step="1" style="width: 40px;" onchange="updateTexts()"> &nbsp;&nbsp;&nbsp;
+bez recidivy<label class="CHB"><input type="checkbox" id="ChbRectNoRecid" onChange="updateTexts()"><span>+</span></label>
 </div>
 
 <div id="Tstage" class="DIVLesions"><button class="titleRect">T STAGE</button>
@@ -31,7 +32,7 @@ Invaze: <button id="RectTuInvasionButton" class="Button160" onmousedown="cycleRe
 Rozsah (ciferník): <input type="number" class="numbers" id="RectTuInvasionFrom" min="1" max="12" step="1" style="width: 40px;" onchange="updateTexts()"> až
 <input type="number" class="numbers" id="RectTuInvasionTo" min="1" max="12" step="1" style="width: 40px;" onchange="updateTexts()"> &nbsp;&nbsp;&nbsp;
 Invaze MRF <label class="CHB"><input type="checkbox" id="ChbRectTuMRFInvasion" onChange="updateTexts()"><span>+</span></label>
-Invaze cév<label class="CHB"><input type="checkbox" id="ChbRectTuAngioInvasion" onChange="updateTexts()"><span>+</span></label>
+Invaze cév<label class="CHB"><input type="checkbox" id="ChbRectTuAngioInvasion" onChange="updateTexts()"><span>+</span></label>&nbsp;&nbsp;&nbsp;
 </div>
 
 
