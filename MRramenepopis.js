@@ -141,7 +141,7 @@ var indexLHBT = 0;function cycleLHBTText(event) {      indexLHBT = cycleText(eve
 //hiding ruptury
 
 buttonElementRMsupra.addEventListener("mousedown", function() {
-    if (this.innerText === 'low-grade' || this.innerText === 'high-grade') {
+    if (this.innerText === 'low-grade' || this.innerText === 'parciální' || this.innerText === 'high-grade') {
         selectElementsupralok.classList.remove('hidden');
 		selectElementsupralokh.classList.remove('hidden');
 		selectElementsupralokv.classList.remove('hidden');
@@ -164,7 +164,7 @@ buttonElementRMsupra.addEventListener("mousedown", function() {
 
 
 buttonElementRMinfra.addEventListener("mousedown", function() {
-    if (this.innerText === 'low-grade' || this.innerText === 'high-grade') {
+    if (this.innerText === 'low-grade' || this.innerText === 'parciální' || this.innerText === 'high-grade') {
         selectElementinfralok.classList.remove('hidden');
 		selectElementinfralokh.classList.remove('hidden');
 		selectElementinfralokv.classList.remove('hidden');
@@ -186,7 +186,7 @@ buttonElementRMinfra.addEventListener("mousedown", function() {
 });
 
 buttonElementRMss.addEventListener("mousedown", function() {
-    if (this.innerText === 'low-grade' || this.innerText === 'high-grade') {
+    if (this.innerText === 'low-grade' || this.innerText === 'parciální' || this.innerText === 'high-grade') {
         selectElementsslok.classList.remove('hidden');
 		selectElementsslokh.classList.remove('hidden');
 		selectElementsslokv.classList.remove('hidden');
@@ -479,7 +479,7 @@ if (RMsupraText === "OK") {
  RMsupraR = "Parciální ruptura šlachy m. supraspinatus ";
 } else if (RMsupraText === "high-grade") {
  RMsupraP = "Výrazné až kompletní porušení kontinuity šlachy m. supraspinatus ";
- RMsupraR = "High-grade parciální ruptura šlachy m. supraspinatus ";
+ RMsupraR = "High-grade ruptura šlachy m. supraspinatus ";
 } else if (RMsupraText === "kompletní") {
  RMsupraP = "Kompletní přerušení kontinuity šlachy m. supraspinatus s její retrakcí ";
  RMsupraR = "Kompletní ruptura šlachy m. supraspinatus ";
@@ -542,7 +542,7 @@ if (RMinfraText === "OK") {
  RMinfraR = "Parciální ruptura šlachy m. infraspinatus ";
 } else if (RMinfraText === "high-grade") {
  RMinfraP = "Výrazné porušení kontinuity šlachy m. infraspinatus ";
- RMinfraR = "High-grade parciální ruptura šlachy m. infraspinatus ";
+ RMinfraR = "High-grade ruptura šlachy m. infraspinatus ";
 } else if (RMinfraText === "kompletní") {
  RMinfraP = "Kompletní přerušení kontinuity šlachy m. infraspinatus s její retrakcí ";
  RMinfraR = "Kompletní ruptura šlachy m. infraspinatus ";
@@ -605,7 +605,7 @@ if (RMssText === "OK") {
  RMssR = "Parciální ruptura šlachy m. subscapularis ";
 } else if (RMssText === "high-grade") {
  RMssP = "Výrazné porušení kontinuity šlachy m. subscapularis ";
- RMssR = "High-grade parciální ruptura šlachy m. subscapularis ";
+ RMssR = "High-grade ruptura šlachy m. subscapularis ";
 } else if (RMssText === "kompletní") {
  RMssP = "Kompletní přerušení kontinuity šlachy m. subscapularis s její retrakcí ";
  RMssR = "Kompletní ruptura šlachy m. subscapularis ";
@@ -723,7 +723,7 @@ if (LHBTText === "OK") {
  LHBTR = "Parciální ruptura šlachy dlouhé hlavy bicepsu.";
 } else if (LHBTText === "high-grade") {
  LHBTP = "Výrazné porušení kontinuity šlachy dlouhé hlavy bicepsu.";
- LHBTR = "High-grade parciální ruptura šlachy dlouhé hlavy bicepsu.";
+ LHBTR = "High-grade ruptura šlachy dlouhé hlavy bicepsu.";
 } else if (LHBTText === "kompletní") {
  LHBTP = "Kompletní přerušení kontinuity šlachy dlouhé hlavy bicepsu s její retrakcí.";
  LHBTR = "Kompletní ruptura šlachy dlouhé hlavy bicepsu.";
