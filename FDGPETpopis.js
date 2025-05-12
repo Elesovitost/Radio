@@ -3366,36 +3366,102 @@ if (descriptionsWall.length > 1) {
 }
 
 
-//Ascites
-var AbdomenFluidText = "";
-var AbdomenFluidRes = "";
+// Ascites
+let AbdomenFluidText = "";
+let AbdomenFluidRes = "";
 
-var ChbAbdomenFluidS = document.getElementById("ChbAbdomenFluidS").checked;
-var ChbAbdomenFluidM = document.getElementById("ChbAbdomenFluidM").checked;
-var ChbAbdomenFluidL = document.getElementById("ChbAbdomenFluidL").checked;
-var ChbAbdomenFluidXL = document.getElementById("ChbAbdomenFluidXL").checked;
+const levels = ["S", "M", "L", "XL"];
 
-AbdomenFluidText = "Bez tekutiny v dutině břišní. ";
+const fluidDescriptions = {
+  S: "Malé množství tekutiny v malé pánvi",
+  M: "Tekutina pod játry a v malé pánvi",
+  L: "Tekutina okolo jater, sleziny, mezikličkově a v pánvi",
+  XL: "Velké množství splývající tekutiny intraperitoneálně"
+};
 
-function uncheckOthers(clickedCheckboxId) {
-    const checkboxes = ["ChbAbdomenFluidS", "ChbAbdomenFluidM", "ChbAbdomenFluidL", "ChbAbdomenFluidXL"];
-    checkboxes.forEach(function(id) {
-        if (id !== clickedCheckboxId) {
-            document.getElementById(id).checked = false;
-        }
-    });
+const fluidConclusions = {
+  S: "Malé množství tekutiny v malé pánvi",
+  M: "Nevýrazný ascites",
+  L: "Ascites",
+  XL: "Výrazný ascites"
+};
+
+const fluidComparisons = {
+  less: "menší množství tekutiny",
+  same: "obdobné množství tekutiny",
+  more: "větší množství tekutiny"
+};
+
+const fluidResults = {
+  less: "v parciální regresi",
+  same: "obdobného rozsahu",
+  more: "v progresi"
+};
+
+// Zjištění, co je zvoleno
+function getSelectedLevel(prefix) {
+  for (let lvl of levels) {
+    if (document.getElementById(`${prefix}${lvl}`)?.checked) return lvl;
+  }
+  return null;
 }
-["ChbAbdomenFluidS", "ChbAbdomenFluidM", "ChbAbdomenFluidL", "ChbAbdomenFluidXL"].forEach(function(id) {
-    document.getElementById(id).addEventListener("click", function() {
-        uncheckOthers(id);
-    });
+
+const currentLevel = getSelectedLevel("ChbAbdomenFluid");
+const previousLevel = getSelectedLevel("ChbAbdomenFluidPrev");
+
+const hasComparison = document.getElementById("DateCompare").value !== "";
+const prevRow = document.getElementById("AbdomenFluidPrevRow");
+if (prevRow) prevRow.classList.toggle("hidden", !hasComparison);
+
+// Logika srovnání
+if (!currentLevel && !previousLevel) {
+  AbdomenFluidText = "Bez volné tekutiny.";
+  AbdomenFluidRes = "";
+} else if (!currentLevel && previousLevel) {
+  AbdomenFluidText = "Bez volné tekutiny.";
+  AbdomenFluidRes = "Ascites kompletně regredoval.";
+} else if (currentLevel && !previousLevel) {
+  const desc = fluidDescriptions[currentLevel];
+  const concl = fluidConclusions[currentLevel];
+  AbdomenFluidText = capitalizeFirst(desc) + ".";
+  AbdomenFluidRes = "Nově " + concl.charAt(0).toLowerCase() + concl.slice(1) + ".";
+} else if (currentLevel && previousLevel) {
+  const currIdx = levels.indexOf(currentLevel);
+  const prevIdx = levels.indexOf(previousLevel);
+  const desc = fluidDescriptions[currentLevel];
+  const concl = fluidConclusions[currentLevel];
+
+  let diffKey = "same";
+  if (currIdx > prevIdx) diffKey = "more";
+  else if (currIdx < prevIdx) diffKey = "less";
+
+  AbdomenFluidText = capitalizeFirst(desc) + " (minule " + fluidComparisons[diffKey] + ").";
+  AbdomenFluidRes = capitalizeFirst(concl) + " " + fluidResults[diffKey] + ".";
+}
+
+// Pomocná funkce na velké písmeno
+function capitalizeFirst(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+// Uncheck – pouze jeden výběr v každé skupině
+function uncheckExclusive(groupIds, clickedId) {
+  groupIds.forEach(id => {
+    if (id !== clickedId) {
+      document.getElementById(id).checked = false;
+    }
+  });
+}
+
+const groupCurrent = ["ChbAbdomenFluidS", "ChbAbdomenFluidM", "ChbAbdomenFluidL", "ChbAbdomenFluidXL"];
+const groupPrev = ["ChbAbdomenFluidPrevS", "ChbAbdomenFluidPrevM", "ChbAbdomenFluidPrevL", "ChbAbdomenFluidPrevXL"];
+
+[...groupCurrent, ...groupPrev].forEach(id => {
+  document.getElementById(id)?.addEventListener("click", () => {
+    const group = id.includes("Prev") ? groupPrev : groupCurrent;
+    uncheckExclusive(group, id);
+  });
 });
-
-
-if (ChbAbdomenFluidS) {AbdomenFluidText = "Malé množství tekutiny v malé pánvi.";AbdomenFluidRes = "Malé množství tekutiny v malé pánvi. ";}
-if (ChbAbdomenFluidM) {AbdomenFluidText = "Tekutina pod játry a v malé pánvi.";AbdomenFluidRes = "Nevýrazný ascites. ";}
-if (ChbAbdomenFluidL) {AbdomenFluidText = "Tekutina okolo jater, sleziny, mezikličkově a v pánvi.";AbdomenFluidRes = "Ascites. ";}
-if (ChbAbdomenFluidXL) {AbdomenFluidText = "Velké množství tekutiny intraperitoneálně.";AbdomenFluidRes = "Výrazný ascites. ";}
 
 
 // Vessels
