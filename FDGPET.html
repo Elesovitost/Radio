@@ -1521,30 +1521,49 @@ table {width: auto; white-space: nowrap;}
 	</div>
 
 	<div class="section" style="top: 290px; left: 150px;">
-		<table>
-			<tr>
-				<td><button id="ThoraxFluid" class="others menu_button">Tekutina</button></td>
-			</tr>
-			<tr id="ThoraxFluidtable" class="hidden">
-				<td>
-				<table>
-					<tr>
-						<td class="middle">R &nbsp; fluidothorax &nbsp; L</td>
-					</tr>
-					<tr>
-						<td class="middle"><input type="number" class="numbers" id="ThoraxFluidFTR" min="0" max="100" step="5" style="width: 50px;" oninput="updateTexts()">&nbsp;<input type="number" class="numbers" id="ThoraxFluidFTL" min="0" max="100" step="5" style="width: 50px;" oninput="updateTexts()"></td>
-					</tr>
-					<tr>
-						<td class="middle">fluidoperikard</td>
-					</tr>
-					<tr>
-						<td class="middle"><input type="number" class="numbers" id="ThoraxFluidFP" min="0" max="50" step="1" style="width: 50px;" oninput="updateTexts()"></td>
-					</tr>
-				</table>
+	  <table>
+		<tr>
+		  <td><button id="ThoraxFluid" class="others menu_button">Tekutina</button></td>
+		</tr>
+		<tr id="ThoraxFluidtable" class="hidden">
+		  <td>
+			<table>
+			  <tr>
+				<td class="middle">R &nbsp; fluidothorax &nbsp; L</td>
+			  </tr>
+			  <tr>
+				<td class="middle">
+				  <input type="number" class="numbers" id="ThoraxFluidFTR" min="0" max="100" step="5" style="width: 50px;" oninput="updateTexts()">
+				  &nbsp;
+				  <input type="number" class="numbers" id="ThoraxFluidFTL" min="0" max="100" step="5" style="width: 50px;" oninput="updateTexts()">
 				</td>
-			</tr>
-		</table>
+			  </tr>
+			  <tr id="ThoraxFluidPrevRow1" class="hidden">
+				<td class="middle">
+				  <input type="number" class="numbers" id="ThoraxFluidFTRPrev" placeholder="minule" min="0" max="100" step="5" style="width: 50px;" oninput="updateTexts()">
+				  &nbsp;
+				  <input type="number" class="numbers" id="ThoraxFluidFTLPrev" placeholder="minule" min="0" max="100" step="5" style="width: 50px;" oninput="updateTexts()">
+				</td>
+			  </tr>
+			  <tr>
+				<td class="middle">fluidoperikard</td>
+			  </tr>
+			  <tr>
+				<td class="middle">
+				  <input type="number" class="numbers" id="ThoraxFluidFP" min="0" max="50" step="1" style="width: 50px;" oninput="updateTexts()">
+				</td>
+			  </tr>
+			  <tr id="ThoraxFluidPrevRow2" class="hidden">
+				<td class="middle">
+				  <input type="number" class="numbers" id="ThoraxFluidFPPrev" placeholder="minule" min="0" max="50" step="1" style="width: 50px;" oninput="updateTexts()">
+				</td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+	  </table>
 	</div>
+
 	
 
 	<div class="section" style="top: 250px; left: 300px;">
