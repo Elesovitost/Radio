@@ -1228,11 +1228,11 @@ var NeckVCordsText = "";
     NeckVCordsText += "abduktory oboustranně bez patrné akumulace RF, ";
 } else {
     if (ChbVCordsR) {
-        NeckVCordsText += "pravý m. cricoaryt. post. asymetricky bez patrné akumulace RF, "; 
+        NeckVCordsText += "pravostranné hlasivkové svaly bez patrné akumulace RF, "; 
         NeckVCordsRes = "Paréza pravé hlasivky. ";
     }
     if (ChbVCordsL) {
-        NeckVCordsText += "levý m. cricoaryt. post. asymetricky bez patrné akumulace RF, "; 
+        NeckVCordsText += "levostranné hlasivkové svaly bez patrné akumulace RF, "; 
         NeckVCordsRes = "Paréza levé hlasivky. ";
     }
 }
@@ -2129,7 +2129,8 @@ if (ThoraxEmbolisationOther) {
     ThoraxEmbolisationText += ThoraxEmbolisationOther + ". ";
 }
 
-// thorax fluid
+
+// THORAX FLUID 
 
 var ThoraxFluidFTR = document.getElementById("ThoraxFluidFTR").value.trim();
 var ThoraxFluidFTL = document.getElementById("ThoraxFluidFTL").value.trim();
@@ -2146,22 +2147,16 @@ if (document.getElementById("ThoraxFluidPrevRow2")) {
   document.getElementById("ThoraxFluidPrevRow2").classList.toggle("hidden", !hasComparisonDate);
 }
 
-// Pomocná funkce pro porovnání
+// Pomocná funkce
 function getTrend(curr, prev) {
   if (!curr || !prev || isNaN(curr) || isNaN(prev)) return "";
-
   curr = parseFloat(curr);
   prev = parseFloat(prev);
 
-  if (Math.abs(curr - prev) < 3) {
-    return "se nemění";
-  } else if (curr > prev) {
-    return "v progresi";
-  } else {
-    return "v regresi";
-  }
+  if (Math.abs(curr - prev) < 3) return "se nemění";
+  else if (curr > prev) return "v progresi";
+  else return "v regresi";
 }
-
 
 // Výstupy
 var ThoraxFluidFTRText = "", ThoraxFluidFTLText = "", ThoraxFluidFPText = "";
@@ -2172,14 +2167,14 @@ if (ThoraxFluidFTR !== "") {
   var val = parseFloat(ThoraxFluidFTR);
   var prev = parseFloat(ThoraxFluidFTRPrev);
 
+  ThoraxFluidFTRText = "Fluidothorax vpravo šíře cca " + val + " mm";
+
   if (val < 20) ThoraxFluidFTRRes = "Drobný fluidothorax vpravo. ";
   else if (val <= 40) ThoraxFluidFTRRes = "Fluidothorax vpravo. ";
   else ThoraxFluidFTRRes = "Výrazný fluidothorax vpravo. ";
 
-  ThoraxFluidFTRText = "Fluidothorax vpravo šíře cca " + val + " mm";
-
-  if (ThoraxFluidFTRPrev !== "") {
-    if (prev === 0) {
+  if (hasComparisonDate) {
+    if (ThoraxFluidFTRPrev === "") {
       ThoraxFluidFTRText += " (minule nebyl přítomen)";
       ThoraxFluidFTRRes = "Nově " + ThoraxFluidFTRRes.charAt(0).toLowerCase() + ThoraxFluidFTRRes.slice(1);
     } else {
@@ -2189,32 +2184,34 @@ if (ThoraxFluidFTR !== "") {
   }
 
   ThoraxFluidFTRText += ".";
+} else if (hasComparisonDate && ThoraxFluidFTRPrev !== "" && parseFloat(ThoraxFluidFTRPrev) > 0) {
+  ThoraxFluidFTRRes = "Fluidothorax vpravo kompletně regredoval. ";
 }
-
 
 // FTL
 if (ThoraxFluidFTL !== "") {
   var val = parseFloat(ThoraxFluidFTL);
   var prev = parseFloat(ThoraxFluidFTLPrev);
 
+  ThoraxFluidFTLText = "Fluidothorax vlevo šíře cca " + val + " mm";
+
   if (val < 20) ThoraxFluidFTLRes = "Drobný fluidothorax vlevo. ";
   else if (val <= 40) ThoraxFluidFTLRes = "Fluidothorax vlevo. ";
   else ThoraxFluidFTLRes = "Výrazný fluidothorax vlevo. ";
 
-  ThoraxFluidFTLText = "Fluidothorax vlevo šíře cca " + val + " mm";
-
-  if (ThoraxFluidFTLPrev !== "") {
-    if (prev === 0) {
+  if (hasComparisonDate) {
+    if (ThoraxFluidFTLPrev === "") {
       ThoraxFluidFTLText += " (minule nebyl přítomen)";
       ThoraxFluidFTLRes = "Nově " + ThoraxFluidFTLRes.charAt(0).toLowerCase() + ThoraxFluidFTLRes.slice(1);
     } else {
       ThoraxFluidFTLText += " (minule cca " + ThoraxFluidFTLPrev + " mm)";
       ThoraxFluidFTLRes = "Fluidothorax vlevo " + getTrend(val, prev) + ". ";
-
     }
   }
 
   ThoraxFluidFTLText += ".";
+} else if (hasComparisonDate && ThoraxFluidFTLPrev !== "" && parseFloat(ThoraxFluidFTLPrev) > 0) {
+  ThoraxFluidFTLRes = "Fluidothorax vlevo kompletně regredoval. ";
 }
 
 // FP
@@ -2222,16 +2219,16 @@ if (ThoraxFluidFP !== "") {
   var val = parseFloat(ThoraxFluidFP);
   var prev = parseFloat(ThoraxFluidFPPrev);
 
+  ThoraxFluidFPText = "Perikardiální výpotek šíře cca " + val + " mm";
+
   if (val < 10) ThoraxFluidFPRes = "Drobný perikardiální výpotek.";
   else if (val <= 20) ThoraxFluidFPRes = "Perikardiální výpotek.";
   else ThoraxFluidFPRes = "Výrazný perikardiální výpotek.";
 
-  ThoraxFluidFPText = "Perikardiální výpotek šíře cca " + val + " mm";
-
-  if (ThoraxFluidFPPrev !== "") {
-    if (prev === 0) {
+  if (hasComparisonDate) {
+    if (ThoraxFluidFPPrev === "") {
       ThoraxFluidFPText += " (minule nebyl přítomen)";
-      ThoraxFluidFPRes  = "Nově " + ThoraxFluidFPRes.charAt(0).toLowerCase() + ThoraxFluidFPRes.slice(1);
+      ThoraxFluidFPRes = "Nově " + ThoraxFluidFPRes.charAt(0).toLowerCase() + ThoraxFluidFPRes.slice(1);
     } else {
       ThoraxFluidFPText += " (minule cca " + ThoraxFluidFPPrev + " mm)";
       ThoraxFluidFPRes = "Perikardiální výpotek " + getTrend(val, prev) + ". ";
@@ -2239,6 +2236,8 @@ if (ThoraxFluidFP !== "") {
   }
 
   ThoraxFluidFPText += ".";
+} else if (hasComparisonDate && ThoraxFluidFPPrev !== "" && parseFloat(ThoraxFluidFPPrev) > 0) {
+  ThoraxFluidFPRes = "Perikardiální výpotek kompletně regredoval. ";
 }
 
 
@@ -2250,7 +2249,6 @@ if (combinedFTRight && combinedFTRight === combinedFTLeft) {
   ThoraxFluidFTRRes = combinedFTRight + " bilat. ";
   ThoraxFluidFTLRes = "";
 }
-
 
 
 // Shrnutí
