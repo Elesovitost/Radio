@@ -3847,7 +3847,7 @@ if (ChbSkeletTraumaRecent && SkeletTraumaRecentOther !== "") {SkeletonTraumaRece
 SkeletonTraumaText = SkeletonTraumaRecentText + SkeletonTraumaOlderText;
 
 // degener
-var SkeletonDegenerText = "";
+var SkeletonDegenerText = ""; var SkeletonDegenerRes = "";
 
 var ChbSkeletDegenerVertC = document.getElementById("ChbSkeletDegenerVertC").checked;
 var ChbSkeletDegenerVertT = document.getElementById("ChbSkeletDegenerVertT").checked;
@@ -3856,6 +3856,7 @@ var ChbSkeletDegenerShoulderR = document.getElementById("ChbSkeletDegenerShoulde
 var ChbSkeletDegenerShoulderL = document.getElementById("ChbSkeletDegenerShoulderL").checked;
 var ChbSkeletDegenerHipR = document.getElementById("ChbSkeletDegenerHipR").checked;
 var ChbSkeletDegenerHipL = document.getElementById("ChbSkeletDegenerHipL").checked;
+var ChbSkeletDegenerDISH = document.getElementById("ChbSkeletDegenerDISH").checked;
 var SkeletDegenerOther = document.getElementById("SkeletDegenerOther").value.trim();
 
 var descriptionsSkeleton = [];
@@ -3890,6 +3891,10 @@ if (descriptionsSkeleton.length > 1) {
   SkeletonDegenerText = descriptionsSkeleton.length ? "Pokročilé degenerativní změny " + descriptionsSkeleton[0] + ". " : "";
 }
 
+if (ChbSkeletDegenerDISH) {SkeletonDegenerText += "Osifikace v oblasti předního longitudinálního lig. páteře, nejvýrazněji v thorakálním úseku, s tvorbou osteofytů. Zachovaná výška meziobratlových plotének a bez známek erozí SI či sakroiliitidy. Osifikační změny v oblasti entézí pánevního skeletu. Vše bez významné akumulace RF.  "; 
+								SkeletonDegenerRes += "Obraz difuzní idiopatické skeletální hyperostózy (DISH) s  osifikací předního longitudinálního ligamenta v thorakolumbální oblasti bez zánětlivé aktivace a bez známek aktivní sakroiliitidy či metabolicky aktivní entezopatie. ";}
+
+
 // Joints activity
 
 var SkeletonJointsText = ""; var SkeletonJointsRes = "";
@@ -3908,6 +3913,7 @@ var ChbSkeletJointsHipL = document.getElementById("ChbSkeletJointsHipL").checked
 var ChbSkeletJointsIschR = document.getElementById("ChbSkeletJointsIschR").checked;
 var ChbSkeletJointsIschL = document.getElementById("ChbSkeletJointsIschL").checked;
 var ChbSkeletJointsSymR = document.getElementById("ChbSkeletJointsSymR").checked;
+var ChbSkeletJointsAS = document.getElementById("ChbSkeletJointsAS").checked;
 var ChbSkeletJointsPolyMyaR = document.getElementById("ChbSkeletJointsPolyMyaR").checked;
 var SkeletJointsOther = document.getElementById("SkeletJointsOther").value.trim();
 
@@ -3966,8 +3972,11 @@ if (descriptionsJoints.length > 1) {
   SkeletonJointsText = descriptionsJoints.length ? "Zvýšená akumulace RF v oblasti " + descriptionsJoints[0] + " v rámci degenerativních / zánětlivých změn. " : "";
 }
 
-if (ChbSkeletJointsPolyMyaR) {SkeletonJointsText = "Zvýšená akumulace RF v oblastech, ramenních, SC, AC, kyčelních kloubech, při symfýze, velkých trochanterech, interpsinózně."; 
-								SkeletonJointsRes = "Zvýšená metabolická aktivita v mnohočetných kloubních lokalizacích a při šlachových úponech v rámci burzitis, entezitis a synovitis: v.s. v rámci polymyalgia rheumatica.";}
+if (ChbSkeletJointsPolyMyaR) {SkeletonJointsText += "Zvýšená akumulace RF v oblastech, ramenních, SC, AC, kyčelních kloubech, při symfýze, velkých trochanterech, interspinózně."; 
+								SkeletonJointsRes += "Obraz suspektní z  polymyalgia rheumatica. Zvýšená metabolická aktivita v mnohočetných kloubních lokalizacích a při šlachových úponech v rámci burzitis, entezitis a synovitis. ";}
+
+if (ChbSkeletJointsAS) {SkeletonJointsText += "Změny v oblasti sakroiliakálních kloubů, bilaterálně, s ankylózou či vyšší akumulací RF. Osifikace zejména předních longitudinálních ligament a interspinozní úponů. "; 
+								SkeletonJointsRes += "Obraz suspektní z aktivní spondyloartritidy charakteru m. Bechtěrev. Bilaterální sakroiliitida, aktivita v oblasti entézí axiálního skeletu. ";}
 
 
 
@@ -4180,7 +4189,7 @@ RESSkeletonLesion2 + "\n" +
 RESSkeletonLesion3 + "\n" +
 SkeletonTraumaRecentRes + "\n" +
 SkeletonOther1ResPriority + "\n" +
-SkeletonJointsRes + "\n" +
+SkeletonDegenerRes + " " + SkeletonJointsRes + "\n" +
 NeckThyroidRes + HeadTonsilsRes + "\n" +
 RESTextNoNew + "\n" +
 POPREMINDER
