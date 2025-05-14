@@ -4072,13 +4072,13 @@ SkeletonOther1Priority + " " + SkeletonActivityText + " " + SkeletonJointsText +
 ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 
 
+
 	POPText.value = POPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
 	POPText.value = POPText.value.replace(/ {2,}/g, ' ');  // více mezer = jedna mezera
 	POPText.value = POPText.value.replace(/^[.,\s]+/gm, '');  // odstraní tečku a čárku pokud jsou první na řádce
 	POPText.value = POPText.value.replace(/ \./g, '.'); // mezera tečka = bez mezery tečka
 	POPText.value = POPText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
 	POPText.value = POPText.value.replace(/\s\)/g, ')');   // mezera závorka = jen závorka
-
 
 	//  Modifikátor: nastaví "minule shodného obrazu", když má ložisko teď a minule stejná měření - nyní nefunkční
     let originalPOPText = POPText.value;
@@ -4118,6 +4118,15 @@ ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 	if (buttonElementPETType.value === "DOPA") {
         POPText.value = POPText.value.replace(/>> ref. játra/g, '> ref. slezina');
     }
+
+	//posun stac. (nefunguje pokud je ve větš jiná tečka např., bilat. apod.)
+	POPText.value = POPText.value.replace(/((?:^|\n|\. )([^.?!\n]*?))(,)? stac\./g, (match, celaVeta, teloVety, carka) => {
+		let vetniCast = teloVety.trim();
+		vetniCast = vetniCast.replace(/^([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][^\s.,!?]*)/, (slovo) => `${slovo} stac.`);
+		const prefix = celaVeta.slice(0, celaVeta.length - teloVety.length);
+		return `${prefix}${vetniCast}.`;
+	});
+
 
 
 // ZÁVĚR
