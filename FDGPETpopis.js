@@ -25,9 +25,9 @@ sections.forEach((section, index) => {
 var textsPETType = ["FDG", "PSMA", "DOTATOC", "DOPA"];
 var buttonElementPETType = document.getElementById("PETTypeButton");
 buttonElementPETType.value = "FDG";
-var indexPETType = 0;function cyclePETTypeText(event) {  indexPETType = cycleText(event, textsPETType, indexPETType, buttonElementPETType, updateBackgroundColor);}
+var indexPETType = 0;function cyclePETTypeText(event) {  indexPETType = cycleText(event, textsPETType, indexPETType, buttonElementPETType);}
 
-function cyclePETTypeText(event) {  indexPETType = cycleText(event, textsPETType, indexPETType, buttonElementPETType, updateBackgroundColor);  updateTexts();}
+function cyclePETTypeText(event) {  indexPETType = cycleText(event, textsPETType, indexPETType, buttonElementPETType);  updateTexts();}
 
 
 // Lesion aktivita   
@@ -3385,9 +3385,9 @@ const fluidConclusions = {
 };
 
 const fluidComparisons = {
-  less: "menší množství tekutiny",
+  less: "větší množství tekutiny",
   same: "obdobné množství tekutiny",
-  more: "větší množství tekutiny"
+  more: "menší množství tekutiny"
 };
 
 const fluidResults = {
