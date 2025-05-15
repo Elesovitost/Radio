@@ -3,11 +3,8 @@
 
 <style>
 .section {position: absolute; width: auto;}
-
 .others {min-width: 90px; height: 18px;}
-
 table {width: auto; white-space: nowrap;}
-
 </style>
 
 </head>
@@ -19,42 +16,62 @@ table {width: auto; white-space: nowrap;}
 <div id="MRAnkle" class="standardwidth mydiv0">MR <button id="StranaButton" class="ButtonStrana" onmousedown="cycleStranaText(event)">jakého?</button> HLEZNA</div>
 <div id="IND" class="mydivIND standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
 
-<img id="MRankleimage" src="MRankle.jpg" style="transform: rotate(180deg); margin-left: 200px; display: none;">
+<img id="MRankleimage" src="MRankle.jpg" style="transform: rotate(0deg); margin-left: 100px; display: none;">
 
-<!-- VAZY -->
 
-	<div class="section" style="top: 150px; left: 100px;">
+
+<!-- KLOUBNÍ DUTINA -->
+<div id="AnkleJointtable" class="standardwidth">
+  <button class="titleKnee float">KLOUBNÍ DUTINA</button>
+  <table>
+    <tr id="AnkleJointtable" class="">
+      <td>&nbsp;&nbsp;&nbsp;</td>
+      <td>náplň</td>
+      <td><button id="AnkleNaplnButton" class="ButtonCycleText w40">0</button></td>
+      <td></td>
+      <td>volná tělíska</td>
+      <td><label class="CHB"><input type="checkbox" id="checkboxAnkleTeliska" onChange="updateTexts()"><span>+</span></label></td>
+    </tr>
+  </table>
+</div>
+
+<!-- PŘEDNÍ KOMPARTMENT -->
+<div id="komant" class="standardwidth">
+  <button class="titleKnee float">PŘEDNÍ KOM.</button>
 		<table>
 			<tr>
-				<td><button id="AnkleLL" class="others">Later. vazy</button></td>
+				<td><button id="AnkleAT" class="others">Přední šlachy</button></td>
 			</tr>
-			<tr id="AnkleLLtable" class="hidden">
+			<tr id="AnkleATtable" class="">
 				<td>
 				<table>
 					<tr>
-						<td>LFTA</td>
-						<td class="right"><button id="ChbAnkleLFTA" class="buttonCheckbox w30">OK</button></td>
+						<td>Ext. Dig. Long.</td>
+						<td class="right"><button id="ChbAnkleEDL" class="buttonCheckbox w70">OK</button></td>
 					</tr>
 					<tr>
-						<td>LFC</td>
-						<td class="right"><button id="ChbAnkleLFC" class="buttonCheckbox w30">OK</button></td>
+						<td>Ext. Hal. Long.</td>
+						<td class="right"><button id="ChbAnkleEHL" class="buttonCheckbox w70">OK</button></td>
 					</tr>
 					<tr>
-						<td>LFTP</td>
-						<td class="right"><button id="ChbAnkleLFTP" class="buttonCheckbox w30">OK</button></td>
+						<td>Ext. Tibialis</td>
+						<td class="right"><button id="ChbAnkleET" class="buttonCheckbox w70">OK</button></td>
 					</tr>
 				</table>
 				</td>
 			</tr>
 		</table>
-	</div>
-	
-	<div class="section" style="top: 150px; left: 200px;">
+</div>
+
+<div class="flex-container">
+  <!-- MEDIÁLNÍ KOMPARTMENT -->
+  <div id="kommed" class="standardwidthHALF">
+    <button class="titleKnee float">MEDIÁLNÍ KOM.</button><br><br>
 		<table>
 			<tr>
 				<td><button id="AnkleML" class="others">Med. vazy</button></td>
 			</tr>
-			<tr id="AnkleMLtable" class="hidden">
+			<tr id="AnkleMLtable" class="">
 				<td>
 				<table>
 					<tr>
@@ -69,16 +86,12 @@ table {width: auto; white-space: nowrap;}
 				</td>
 			</tr>
 		</table>
-	</div>
 
-<!-- TENDONS -->
-
-	<div class="section" style="top: 200px; left: 200px;">
 		<table>
 			<tr>
 				<td><button id="AnkleMT" class="others">Med. šlachy</button></td>
 			</tr>
-			<tr id="AnkleMTtable" class="hidden">
+			<tr id="AnkleMTtable" class="">
 				<td>
 				<table>
 					<tr>
@@ -97,14 +110,40 @@ table {width: auto; white-space: nowrap;}
 				</td>
 			</tr>
 		</table>
-	</div>
+  </div>
 
-	<div class="section" style="top: 200; left: 100px;">
+  <!-- LATERÁLNÍ KOMPARTMENT -->
+  <div id="komlat" class="standardwidthHALF">
+    <button class="titleKnee float">LATERÁLNÍ KOM.</button><br><br>
+		<table>
+			<tr>
+				<td><button id="AnkleLL" class="others">Later. vazy</button></td>
+			</tr>
+			<tr id="AnkleLLtable" class="">
+				<td>
+				<table>
+					<tr>
+						<td>LFTA</td>
+						<td class="right"><button id="ChbAnkleLFTA" class="buttonCheckbox w30">OK</button></td>
+					</tr>
+					<tr>
+						<td>LFC</td>
+						<td class="right"><button id="ChbAnkleLFC" class="buttonCheckbox w30">OK</button></td>
+					</tr>
+					<tr>
+						<td>LFTP</td>
+						<td class="right"><button id="ChbAnkleLFTP" class="buttonCheckbox w30">OK</button></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+
 		<table>
 			<tr>
 				<td><button id="AnkleLT" class="others">Later. šlachy</button></td>
 			</tr>
-			<tr id="AnkleLTtable" class="hidden">
+			<tr id="AnkleLTtable" class="">
 				<td>
 				<table>
 					<tr>
@@ -119,59 +158,21 @@ table {width: auto; white-space: nowrap;}
 				</td>
 			</tr>
 		</table>
-	</div>
+  </div>
+</div>
 
-	<div class="section" style="top: 100; left: 150;">
-		<table>
-			<tr>
-				<td><button id="AnkleAT" class="others">Přední šlachy</button></td>
-			</tr>
-			<tr id="AnkleATtable" class="hidden">
-				<td>
-				<table>
-					<tr>
-						<td>Ext. Dig. Long.</td>
-						<td class="right"><button id="ChbAnkleEDL" class="buttonCheckbox w70">OK</button></td>
-					</tr>
-					<tr>
-						<td>Ext. Hal. Long.</td>
-						<td class="right"><button id="ChbAnkleEHL" class="buttonCheckbox w70">OK</button></td>
-					</tr>
-					<tr>
-						<td>Ext. Tibialis</td>
-						<td class="right"><button id="ChbAnkleET" class="buttonCheckbox w70">OK</button></td>
-					</tr>
-				</table>
-				</td>
-			</tr>
-		</table>
-	</div>
+<!-- ZADNÍ KOMPARTMENT -->
+<div id="anklePosterior" class="standardwidth">
+  <button class="titleKnee float">ZADNÍ KOM.</button>
+  <table>
+    <tr>
+      <td>Achilova šlacha</td>
+      <td class="right"><button id="ChbAnkleACH" class="ButtonCycleText w70">OK</button></td>
+    </tr>
+  </table>
+</div>
 
-	<div class="section" style="top: 300; left: 150;">
-		<table>
-			<tr>
-				<td><button id="AnkleACH" class="others">Achilova šlacha</button></td>
-			</tr>
-			<tr id="AnkleACHtable" class="hidden">
-				<td>
-				<table>
-					<tr>
-						<td>Ext. Dig. Long.</td>
-						<td class="right"><button id="ChbAnkleEDL" class="buttonCheckbox w70">OK</button></td>
-					</tr>
-					<tr>
-						<td>Ext. Hal. Long.</td>
-						<td class="right"><button id="ChbAnkleEHL" class="buttonCheckbox w70">OK</button></td>
-					</tr>
-					<tr>
-						<td>Ext. Tibialis</td>
-						<td class="right"><button id="ChbAnkleET" class="buttonCheckbox w70">OK</button></td>
-					</tr>
-				</table>
-				</td>
-			</tr>
-		</table>
-	</div>
+
 
 </div>
 
@@ -185,7 +186,6 @@ ZÁVĚR<textarea id="MRAnkleRESText" class="superlarge"></textarea>
 
 
 <script src="Universal.js"></script>  
-<script src="MRanklescript.js"></script> 
 <script src="MRanklepopis.js"></script> 
 
 </body>

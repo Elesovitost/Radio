@@ -1,24 +1,77 @@
+function updateBackgroundColor(index, buttonElement, color1 = "transparent", color2 = "#D4A29C") {
+  buttonElement.style.backgroundColor = index === 0 ? color1 : color2;
+}
+
+var textsStrana = ["jakého?", "PRAVÉHO", "LEVÉHO"];
+var buttonElementStrana = document.getElementById("StranaButton");
+var indexStrana = 0;function cycleStranaText(event) {  indexStrana = cycleText(event, textsStrana, indexStrana, buttonElementStrana, updateBackgroundColor);}
+
+function cycleStranaText(event) {  indexStrana = cycleText(event, textsStrana, indexStrana, buttonElementStrana);  updateTexts();}
+
+
+
 function updateTexts() {
 
-
 //strana
+
+
 const StranaText = buttonElementStrana.innerText;
 const imageElement = document.getElementById('MRankleimage');
 
 if (StranaText === "jakého?") {
  Nadpis = "MR hlezna"; 
- imageElement.style.display = "none";
 } else if (StranaText === "PRAVÉHO") {
  Nadpis = "MR pravého hlezna";
- imageElement.style.display = "block"; imageElement.style.transform = "none"; 
 } else if (StranaText === "LEVÉHO") {
  Nadpis = "MR levého hlezna";
- imageElement.style.display = "block"; imageElement.style.transform = "scaleX(-1)";
 }
+
+const flexContainer = document.querySelector('.flex-container');
+const kommed = document.getElementById('kommed');
+const komlat = document.getElementById('komlat');
+
+
+if (StranaText === "PRAVÉHO") {
+    flexContainer.insertBefore(komlat, kommed);
+} else if (StranaText === "LEVÉHO") {
+    flexContainer.insertBefore(kommed, komlat);
+}
+
+
 
 // indikace
 var indikace = document.getElementById("indikace").value;
 document.getElementById("indikace").addEventListener("input", updateTexts);
+
+
+// KL DUTINA
+ButtonCycleInnerTexts["AnkleNaplnButton"] = ["0", "↑", "↑↑", "↑↑↑"];
+
+var AnkleNapln = document.getElementById("AnkleNaplnButton").innerText;
+var AnkleNaplnText = "";
+var AnkleNaplnRes = "";
+
+if (AnkleNapln === "0") {
+  AnkleNaplnText = "Bez zvýšené tekutiny v kloubní dutině.";
+} else if (AnkleNapln === "↑") {
+  AnkleNaplnText = "Mírně zvýšené množství tekutiny v hlezenní kloubní dutině.";
+  AnkleNaplnRes = "Mírně zvýšená náplň.";
+} else if (AnkleNapln === "↑↑") {
+  AnkleNaplnText = "Zvýšené množství tekutiny v kloubní dutině.";
+  AnkleNaplnRes = "Zvýšená náplň.";
+} else if (AnkleNapln === "↑↑↑") {
+  AnkleNaplnText = "Výrazně zvýšená tekutinová náplň hlezenního kloubu.";
+  AnkleNaplnRes = "Výrazně zvýšená náplň.";
+}
+
+var VolnaTeliska = document.getElementById("checkboxAnkleTeliska").checked;
+
+if (VolnaTeliska) {
+  AnkleVolnaDesc = "Volná tělíska v kloubní dutině.";
+} else {
+  AnkleVolnaDesc = "";
+}
+
 
 // VAZY
 
@@ -253,6 +306,29 @@ if (AnkleLCDescRes.length) {
   AnkleLCRes = AnkleLCDescRes.join(". ") + ". ";
 } 
 
+// achilova
+ButtonCycleInnerTexts["ChbAnkleACH"] = ['OK', 'synovitis', 'tendinóza', 'parc. rpt', 'ruptura'];
+
+var ChbAnkleACH = document.getElementById("ChbAnkleACH").innerText;
+var AnkleACHText = "";
+var AnkleACHRes = "";
+
+if (ChbAnkleACH === "OK") {
+  AnkleACHText = "";
+} else if (ChbAnkleACH === "synovitis") {
+  AnkleACHText = "Achilova šlacha s tekutinou v okolí. ";
+  AnkleACHRes = "Tenosynovitis Achilovy šlachy. ";
+} else if (ChbAnkleACH === "tendinóza") {
+  AnkleACHText = "Achilova šlacha rozšířena s vysokou SI. ";
+  AnkleACHRes = "Tendinóza Achilovy šlachy. ";
+} else if (ChbAnkleACH === "parc. rpt") {
+  AnkleACHText = "Achilova šlacha s částečně porušenou kontinuitou. ";
+  AnkleACHRes = "Achilova šlachs s parc. rupturou. ";
+} else if (ChbAnkleACH === "ruptura") {
+  AnkleACHText = "Achilova šlacha s přerušenou kontinuitou. ";
+  AnkleACHRes = "Achilova šlachs s kompletní rupturou. ";
+}
+
 // šlachy ok?
 AnkleTendonsText = AnkleMCText + AnkleLCText + AnkleACText;
 AnkleTendonsRes = AnkleMCRes + AnkleLCRes + AnkleACRes;
@@ -271,19 +347,20 @@ MRAnkleINDText.value = indikace;
 MRAnkleSEKVText.value = "Hlezno vyšetřeno v PDW FS, T1W, T2W.";
 
 MRAnklePOPText.value = 
-	"Bez známek zmnožené nitrokloubní tekutiny.\n" + 
+	AnkleNaplnText + " " + AnkleVolnaDesc + "\n" + 
 	"Kontury kortikalis jsou neporušené, kostní dřeň normálního signálu bez známek edému.\n" +
 	"Chrupavka bez zjevných defektů.\n" +
 	AnkleMLText + "\n" +
 	AnkleLLText + "\n" +
-	AnkleTendonsText + "\n" +
+	AnkleTendonsText + " " + AnkleACHText + "\n" +
 	"Měkké tkáně bez hrubých patol. odchylek."
 ;
 
 MRAnkleRESText.value = 
+	AnkleNaplnRes + " " + AnkleVolnaDesc + "\n" +
 	AnkleMLRes + "\n" +
 	AnkleLLRes + "\n" +
-	AnkleTendonsRes
+	AnkleTendonsRes + " " +	AnkleACHRes
 ;
 
 }
