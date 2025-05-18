@@ -26,16 +26,34 @@ if (StranaText === "jakého?") {
  Nadpis = "MR levého hlezna";
 }
 
+// Přehazování pořadí šlach 
+
 const flexContainer = document.querySelector('.flex-container');
 const kommed = document.getElementById('kommed');
 const komlat = document.getElementById('komlat');
-
 
 if (StranaText === "PRAVÉHO") {
     flexContainer.insertBefore(komlat, kommed);
 } else if (StranaText === "LEVÉHO") {
     flexContainer.insertBefore(kommed, komlat);
 }
+
+
+// Přehazování pořadí předních šlach v tabulce
+const atRow = document.getElementById("AnkleATrow");
+const tdTib = document.getElementById("AT_tib");
+const tdHal = document.getElementById("AT_hal");
+const tdDig = document.getElementById("AT_dig");
+
+if (atRow && tdTib && tdHal && tdDig) {
+  // Přehodí sloupce v požadovaném pořadí
+  if (StranaText === "PRAVÉHO") {
+    atRow.append(tdTib, tdHal, tdDig);
+  } else if (StranaText === "LEVÉHO") {
+    atRow.append(tdDig, tdHal, tdTib);
+  }
+}
+
 
 
 
