@@ -3184,21 +3184,34 @@ var AbdomenUterusText = "";
 
 var ChbUterusEctomy = document.getElementById("ChbUterusEctomy").checked;
 var buttonUterusMyomaText = document.getElementById("ChbUterusMyoma").innerText;
+var buttonUterusMyomaCText = document.getElementById("ChbUterusMyomaC").innerText;
 var ChbUterusActivity = document.getElementById("ChbUterusActivity").checked;
+var ChbUterusIUD = document.getElementById("ChbUterusIUD").checked;
 var AbdomenUterusOther = document.getElementById("AbdomenUterusOther").value.trim();
 
 updateButtonTexts({
             'ChbUterusMyoma': ['0', '+', '++']
+        });
+updateButtonTexts({
+            'ChbUterusMyomaC': ['0', '+', '++']
         });
 
 var descriptionsUterus = [];
 
 if (ChbUterusEctomy) {descriptionsUterus.push("chybí po hysterektomii");}
 
+if (ChbUterusIUD) {descriptionsUterus.push("s IUD v dutině");}
+
 if (buttonUterusMyomaText === "+") {
     descriptionsUterus.push("s ložiskem bez zvýšené akumulace RF obrazu myomu");
 } else if (buttonUterusMyomaText === "++") {
     descriptionsUterus.push("s vícečetnými ložisky bez zvýšené akumulace RF obrazu myomů");
+}
+
+if (buttonUterusMyomaCText === "+") {
+    descriptionsUterus.push("s ložiskem bez zvýšené akumulace RF a s kalcifikacemi obrazu myomu");
+} else if (buttonUterusMyomaCText === "++") {
+    descriptionsUterus.push("s vícečetnými ložisky bez zvýšené akumulace RF a s kalcifikacemi obrazu myomů");
 }
 
 if (ChbUterusActivity) {descriptionsUterus.push("se zvýšenou aktivitou sliznice pravděp. v rámci cyklu");}
@@ -3791,29 +3804,45 @@ if (ChbSkeletInjGlut && ChbSkeletInjAbd) {SkeletonSoftTissueText += "V podkoží
 
 if (SkeletSoftTissueOther) SkeletonSoftTissueText += SkeletSoftTissueOther + ". ";
 
-// activity
 
-var SkeletonActivityText = ""; var SkeletonActivityRes = "";
+// Skeleton Activity
+var SkeletonActivityText = ""; 
+var SkeletonActivityRes = [];
 
 var ChbSkeletonActivityPlus = document.getElementById("ChbSkeletonActivityPlus").checked;
 var ChbSkeletonActivityMinus = document.getElementById("ChbSkeletonActivityMinus").checked;
 var buttonSkeletonEnostosisText = document.getElementById("ChbSkeletonEnostosis").innerText;
 var SkeletonActivityOther = document.getElementById("SkeletonActivityOther").value.trim();
 
+var descriptionsActivity = [];
+
 updateButtonTexts({
-            'ChbSkeletonEnostosis': ['0', '+', '++']
-        });
+    'ChbSkeletonEnostosis': ['0', '+', '++']
+});
 
-if (ChbSkeletonActivityPlus) SkeletonActivityText += "Difuzně zvýšená metabolická aktivita v kostní dřeni. ";
-if (ChbSkeletonActivityMinus) SkeletonActivityText += "Lokální absence akumulace RF v kostní dřeni ozářené oblasti. ";  
-
-if (buttonSkeletonEnostosisText === "+") {
-    SkeletonActivityText +=("Drobná enostóza bez zvýšené akumulace RF.");
-} else if (buttonSkeletonEnostosisText === "++") {
-    SkeletonActivityText +=("Drobné enostózy bez zvýšené akumulace RF.");
+if (ChbSkeletonActivityPlus) {
+    descriptionsActivity.push("difuzně zvýšená metabolická aktivita v kostní dřeni");
 }
 
-if (SkeletonActivityOther) SkeletonActivityText += SkeletonActivityOther + ". ";
+if (ChbSkeletonActivityMinus) {
+    descriptionsActivity.push("lokální absence akumulace RF v kostní dřeni ozářené oblasti");
+}
+
+if (buttonSkeletonEnostosisText === "+") {
+    descriptionsActivity.push("drobná enostóza bez zvýšené akumulace RF");
+} else if (buttonSkeletonEnostosisText === "++") {
+    descriptionsActivity.push("drobné enostózy bez zvýšené akumulace RF");
+}
+
+if (SkeletonActivityOther) {
+    descriptionsActivity.push(SkeletonActivityOther);
+}
+
+if (descriptionsActivity.length) {
+    SkeletonActivityText = descriptionsActivity.join(", ") + ". ";
+	SkeletonActivityText = SkeletonActivityText.charAt(0).toUpperCase() + SkeletonActivityText.slice(1);
+}
+
 
 
 // trauma
