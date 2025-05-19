@@ -102,11 +102,13 @@ populateAktivitaOptions();
 // Lesion hodnoceni
 
 var hodnoceniOptions = [
-    { text: "benigní", value: ": benigního vzhledu", valueRPH: ": benigního vzhledu"},
+	{ text: "benigní", value: ": benigního vzhledu", valueRPH: ": benigního vzhledu"},
     { text: "spíše ben.", value: ": nemá charakter viabilní neoplázie", valueRPH: ": v.s. zánětlivá aktivace"},
     { text: "nerozhodný", value: ": nespecifický nález", valueRPH: ": nespecifický nález"},
     { text: "spíše mal.", value: ": suspektní z viabilní neoplázie", valueRPH: ": suspektní z meta"},
     { text: "maligní", value:": charakteru viabilní neoplázie", valueRPH: ": charakteru meta"},
+	{ text: " ", value: "", valueRPH: "", separator: true },
+	{ text: "zánět", value:": v.s. zánětlivé etiologie", valueRPH: ": v.s. zánětlivá aktivace"},
 	{ text: "tumor", value:": charakteru tumoru", valueRPH: ": viabilní neoplazie"},
 	{ text: "meta", value:": charakteru meta", valueRPH: ": charakteru meta"}
 ];
@@ -117,13 +119,23 @@ function populateHodnoceniOptions() {
     selectElements.forEach(function (selectElement) {
         hodnoceniOptions.forEach(function (option) {
             var optionElement = document.createElement("option");
-            optionElement.value = option.value;
             optionElement.textContent = option.text;
-            optionElement.dataset.valueRPH = option.valueRPH;
+
+            if (option.separator) {
+                optionElement.disabled = true;
+                optionElement.value = ""; 
+                optionElement.style.fontStyle = "italic";
+                optionElement.style.color = "#888";
+            } else {
+                optionElement.value = option.value;
+                optionElement.dataset.valueRPH = option.valueRPH;
+            }
+
             selectElement.appendChild(optionElement);
         });
     });
 }
+
 populateHodnoceniOptions();
 
 

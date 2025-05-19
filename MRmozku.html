@@ -160,6 +160,8 @@
 			<option value="infiltrace| infiltracePL">infiltrace</option>
 			<option value="cysta| cysty">cysta</option>
 			<option value="defekt| defekty">defekt</option>
+			<option value="tečkovitá léze| tečkovité léze">tečka</option>
+			<option value="pruhovitá struktura| pruhovité struktury">pruh</option>
 		</select>
 		</td>
 		<td><select id="BrainLesion1number" class="select35" onchange="updateTexts()">
@@ -180,7 +182,7 @@
 		</td>
 		<td><input id="BrainLesion1Size" class="select80 numberstext" placeholder="rozměr..." oninput="updateTexts()"></td>
 		<td><select id="BrainLesion1Decision" class="hod" class="select40" onchange="updateTexts()">
-			<option value="" selected>?</option>
+			<option value="" selected>etiologie...</option>
 			</select>
 		</td>
     </tr>
@@ -420,7 +422,6 @@ ZÁVĚR<textarea id="MRbrainRESText" class="superlarge"></textarea>
 
 
 <script src="Universal.js"></script>  
-<script src="MRmozkuscript.js"></script>  
 <script src="MRmozkupopis.js"></script>          
 <script>
     document.addEventListener("DOMContentLoaded", function() {
