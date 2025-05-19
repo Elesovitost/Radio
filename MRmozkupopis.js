@@ -1316,9 +1316,7 @@ if (document.getElementById('Chb1edema').checked && !document.getElementById('Ch
 }
 
 
-
 BrainLesion1AllLocations = BrainLesion1Location + " " + BrainLesion1AddLocation;
-
 
 if (BrainLesion1number === "") {
 	BrainLesion1type = BrainLesion1type[0];
@@ -1352,6 +1350,9 @@ if (BrainLesion1RESDecision.includes("pseudo") && BrainLesion1type.includes("cys
 
 if (BrainLesion1RESDecision.includes("resekc") && BrainLesion1type.includes("efekt")) {RESBrainLesion1 = RESBrainLesion1.replace(/defekt/g, "pooperační defekt").replace(/Defekt/g, "Pooperační defekt").replace(": po resekci", "");}
 if (BrainLesion1RESDecision.includes("ischemie") && BrainLesion1type.includes("efekt")) {RESBrainLesion1 = RESBrainLesion1.replace(/Defekt/g, "Postischemický kortikosubkortikální defekt").replace(/defekty/g, "postischemické kortikosubkortikální defekty").replace(": charakteru ischemie", ".");}
+
+if (BrainLesion1RESDecision.includes("DVA") && BrainLesion1type.toLowerCase().includes("struktur")) {RESBrainLesion1 = RESBrainLesion1.replace(/Pruhovitá struktura/gi, "DVA (venózní angiom)").replace(/pruhovité struktury/gi, "DVA (venózní angiomy)").replace(": charakteru DVA", "");}
+
 
 if (BrainLesion1CombinedResult.includes("je nově") || BrainLesion1CombinedResult.includes("jsou nově")) { RESBrainLesion1 = "Nově " + RESBrainLesion1.charAt(0).toLowerCase() + RESBrainLesion1.substring(1) ; RESBrainLesion1 = RESBrainLesion1.replace(" je nově", "").replace(" jsou nově", "");}
 
