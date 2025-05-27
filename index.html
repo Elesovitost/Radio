@@ -1,855 +1,1318 @@
+  <!--Musí se měnit řádka se seznamem slov a dále počet animací a skladeb -->
+
 <!DOCTYPE html>
-<html>
+<html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Písmenková hra</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; }
+	
+	.topbar {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  gap: 20px;
+	  margin-bottom: 30px;
+	}
 
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
+	.menu {
+	  display: flex;
+	  gap: 20px;
+	  justify-content: center;
+	}
 
-<link rel="stylesheet" href="styles.css">
+	.score-container {
+	  text-align: center;
+	}
 
+	.mode-button {
+	  font-size: 20px;
+	  padding: 12px 20px;
+	  border: none;
+	  border-radius: 12px;
+	  cursor: pointer;
+	  transition: all 0.3s;
+	  font-weight: bold;
+	  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+	}
+
+	.mode-button.writing {
+	  background-color: #ffcc70;
+	  color: #4b2e00;
+	}
+
+	.mode-button.reading {
+	  background-color: #a0e8af;
+	  color: #004d25;
+	}
+
+	.mode-button.math {
+	  background-color: #99ccff;
+	  color: #002b80;
+	}
+
+	#math-task {
+	  font-size: 32px;
+	  margin: 20px;
+	}
+
+
+	.mode-button:hover {
+	  transform: scale(1.05);
+	  box-shadow: 4px 4px 10px rgba(0,0,0,0.3);
+	}
+
+	.framed-image {
+	  border: 2px solid #333;
+	  max-height: 200px;
+	  margin-bottom: 20px;
+	}
+
+	.apple-group {
+	  display: flex;
+	  flex-wrap: wrap;
+	  justify-content: center;
+	  gap: 4px;
+	  max-width: 150px;
+	  font-size: 22px;
+	  background: transparent;
+	  padding: 6px;
+	}
+
+	.apple-group div {
+	  width: 24px;
+	  text-align: center;
+	}
+
+
+	.math-row {
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  font-size: 48px;
+	  gap: 40px;
+	  margin-bottom: 10px;
+	}
+	.math-column {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	}
+
+
+    .score-label {
+      font-size: 16px;
+	  margin-bottom: 10px; /* nebo více podle potřeby */
+	  display: block;
+    }
+    .score {
+      font-size: 20px;
+    }
+    .score .good { color: green; margin-right: 10px; }
+    .score .bad { color: red; }
+
+	.letter-box {
+	  display: inline-block;
+	  width: 40px;
+	  height: 40px;
+	  border: 1px solid #ccc;
+	  font-size: 30px;
+	  line-height: 40px;
+	  margin: 2px;
+	  text-align: center;
+	  vertical-align: middle;
+	}
+
+	@keyframes pop-in {
+	  0%   { transform: scale(1); }
+	  40%  { transform: scale(1.3); }
+	  100% { transform: scale(1); }
+	}
+
+	.letter-pop {
+	  animation: pop-in 0.2s ease-out;
+	}
+
+	.image-pop {
+	  animation: pop-in 0.2s ease-out;
+	}
+
+
+    .correct { border-color: green; color: green; }
+    .incorrect { border-color: red; color: red; }
+
+	#image {
+	  max-height: 200px;
+	  margin-bottom: 20px;
+	  border-radius: 12px;
+	  border: 2px solid #333;
+	}
+
+    canvas { position: fixed; top: 0; left: 0; pointer-events: none; }
+
+	#fireworks {
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100%;
+	  pointer-events: none;
+	  z-index: 1000;
+	  background: transparent;
+	}
+
+	@media (max-width: 699px) {
+	  #gif-container {
+		left: 10px !important;
+		transform: none !important;
+	  }
+	}
+
+
+
+    #reading-word { font-size: 32px; margin: 20px; }
+    #reading-options {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+	#reading-options img {
+	  height: 105px;
+	  cursor: pointer;
+	  border: 2px solid #333;
+	  border-radius: 12px;
+	  transition: transform 0.2s ease, filter 0.3s ease, border 0.2s;
+	}
+
+	#reading-options img:hover {
+	  transform: scale(1.05);
+	}
+
+
+#progress-bar-container {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 300px;
+  height: 24px;
+  border: 2px solid #fff;
+  margin-inline: auto;
+  position: relative;
+  background: linear-gradient(to right, #222, #111);
+  border-radius: 14px;
+  box-shadow: inset 0 0 4px #000, 0 0 10px #00ffc055;
+  overflow: hidden;
+}
+
+#progress-fill-green,
+#progress-fill-teal,
+#progress-fill-cyan,
+#progress-fill-blue,
+#progress-fill-purple,
+#progress-fill-pink,
+#progress-fill-red,
+#progress-fill-orange,
+#progress-fill-gold {
+  height: 100%;
+  width: 0%;
+  position: absolute;
+  left: 0;
+  border-radius: 12px 0 0 12px;
+  z-index: 1;
+  transition: width 0.4s ease-in-out;
+  opacity: 0.95;
+}
+
+#progress-fill-green {
+  background: linear-gradient(to right, #00ff88, #007744);
+  box-shadow: inset 0 0 4px #00ff88, 0 0 6px #00ff88aa;
+  z-index: 1;
+}
+
+#progress-fill-teal {
+  background: linear-gradient(to right, #00ffaa, #008877);
+  box-shadow: inset 0 0 4px #00ffaa, 0 0 6px #00ffaaaa;
+  z-index: 2;
+}
+
+#progress-fill-cyan {
+  background: linear-gradient(to right, #33ccff, #0099cc);
+  box-shadow: inset 0 0 4px #33ccff, 0 0 6px #33ccffaa;
+  z-index: 3;
+}
+
+#progress-fill-blue {
+  background: linear-gradient(to right, #3399ff, #003355);
+  box-shadow: inset 0 0 4px #3399ff, 0 0 6px #3399ffaa;
+  z-index: 4;
+}
+
+#progress-fill-purple {
+  background: linear-gradient(to right, #cc66ff, #4b0066);
+  box-shadow: inset 0 0 4px #cc66ff, 0 0 6px #cc66ffaa;
+  z-index: 5;
+}
+
+#progress-fill-pink {
+  background: linear-gradient(to right, #ff99cc, #cc0066);
+  box-shadow: inset 0 0 4px #ff99cc, 0 0 6px #ff99ccaa;
+  z-index: 6;
+}
+
+#progress-fill-red {
+  background: linear-gradient(to right, #ff4444, #880000);
+  box-shadow: inset 0 0 4px #ff4444, 0 0 6px #ff4444aa;
+  z-index: 7;
+}
+
+#progress-fill-orange {
+  background: linear-gradient(to right, #ffaa33, #cc5500);
+  box-shadow: inset 0 0 4px #ffaa33, 0 0 6px #ffaa33aa;
+  z-index: 8;
+}
+
+#progress-fill-gold {
+  background: linear-gradient(to right, #ffd700, #ccaa00);
+  box-shadow: inset 0 0 4px #ffd700, 0 0 6px #ffd700aa;
+  z-index: 9;
+}
+
+@keyframes pulse-3x {
+  0% { transform: scale(1); }
+  16% { transform: scale(2); }
+  33% { transform: scale(1); }
+  50% { transform: scale(2); }
+  66% { transform: scale(1); }
+  83% { transform: scale(2); }
+  100% { transform: scale(1); }
+}
+
+.pulsing {
+  animation: pulse-3x 0.6s ease-in-out;
+}
+
+@@keyframes screen-shake {
+  0% { transform: translate(0px, 0px); }
+  25% { transform: translate(4px, -4px); }
+  50% { transform: translate(-4px, 4px); }
+  75% { transform: translate(4px, 4px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+.shake {
+  animation: screen-shake 0.3s ease-in-out;
+}
+
+.score-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 40px;
+  overflow: hidden;
+  position: relative;
+}
+
+.score-inner {
+  font-family: Impact, sans-serif;
+  font-weight: normal;
+  font-size: 22px;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+@keyframes pop-win {
+  0% { transform: scale(0.5) translate(-50%, -50%); opacity: 0; }
+  50% { transform: scale(1.2) translate(-50%, -50%); opacity: 1; }
+  100% { transform: scale(1) translate(-50%, -50%); opacity: 1; }
+}
+
+	
+  </style>
 </head>
+<body>
 
-<body class="bodyINDEX">
-
-
-
-<div id="background-wrapper">
-	<div id="random-background" class="background-image"></div>
-	<div id="chessboard-overlay"></div>
+ <div class="topbar">
+<div class="menu">
+  <button class="mode-button writing" onclick="startGame('writing')">✍️ PSANÍ</button>
+  <button class="mode-button reading" onclick="startGame('reading')">📖 ČTENÍ</button>
+  <button class="mode-button math" onclick="startGame('math')">➕ POČTY</button>
 </div>
 
-
-<div id="SEG1" class="headerBar">
-
-	
-        <div class="dropdown">
-            <button class="dropbtn">PET/CT</button>
-            <div class="dropdown-content">
-                <a href="#" onclick="changePage('FDGPET.html')">PET/CT/MR trupu</a>
-                <a href="#" onclick="changePage('NaFskelet.html')">PET/CT NaF skeletu</a>
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="dropbtn">MR</button>
-            <div class="dropdown-content">
-                <a href="#" onclick="changePage('MRmozku.html')">MR mozku</a>
-                <a href="#" onclick="changePage('MRBrainAngio.html')">MR angiografie</a>
-                <a href="#" onclick="changePage('MRORL.html')">MR ORL</a>
-                <div style="height: 10px;"></div>
-                <a href="#" onclick="changePage('MRrekta.html')">MR rekta</a>
-                <a href="#" onclick="changePage('MRprostaty.html')">MR prostaty</a>
-                <a href="#" onclick="changePage('MRcervix.html')">MR cervixu</a>
-                <a href="#" onclick="changePage('MRbreast.html')">MR prsu</a>
-                <div style="height: 10px;"></div>
-                <a href="#" onclick="changePage('MRCP.html')">MR C páteře</a>
-                <a href="#" onclick="changePage('MRTP.html')">MR T páteře</a>
-                <a href="#" onclick="changePage('MRLP.html')">MR L páteře</a>
-                <a href="#" onclick="changePage('MRSIS.html')">MR SIS</a>
-                <div style="height: 10px;"></div>
-                <a href="#" onclick="changePage('MRramene.html')">MR ramene</a>
-                <a href="#" onclick="changePage('MRhips.html')">MR kyčlí</a>
-                <a href="#" onclick="changePage('MRkolene.html')">MR kolene</a>
-                <a href="#" onclick="changePage('MRankle.html')">MR hlezna</a>
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="dropbtn">UZ</button>
-            <div class="dropdown-content">
-                <a href="#" onclick="changePage('UZcarotid.html')">UZ karotid</a>
-                <a href="#" onclick="changePage('UZrenal.html')">UZ renálních tepen</a>
-                <a href="#" onclick="changePage('UZthyroid.html')">UZ štítné žlázy</a>
-                <a href="#" onclick="changePage('UZabdomen.html')">UZ břicha</a>
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="dropbtn">RTG</button>
-            <div class="dropdown-content">
-                <a href="#" onclick="changePage('RTGpre.html')">RTG předdefinované</a>
-                <a href="#" onclick="changePage('RTGchest.html')">RTG plic</a>
-            </div>
-        </div>
-
-		<!-- Pravá skupina: TNM a PDF -->
-		<div style="float: right; margin-right: 0px;">
-
-			<div class="dropdown">
-			  <button class="button60 dropbtn">HELPER</button>
-			  <div class="dropdown-content">
-				<a href="#" onclick="changePage('TNMORL.html')">TNM ORL</a>
-				<a href="#" onclick="changePage('TNMRectum.html')">TNM rektum</a>
-				<a href="#" onclick="changePage('TNMmiProstate.html')">TNM prostata</a>
-				<a href="#" onclick="changePage('TNMCervix.html')">TNM cervix</a>
-				<div style="height: 8px; border-top: 1px solid #aaa; margin: 6px 0;"></div>
-				<a href="#" onclick="changePage('BTIT.html')">BT-IT</a>
-			  </div>
-			</div>
-
-			<div class="dropdown" style="display: inline-block;">
-				<button id="btnPDF" class="button60 dropbtn">📂PDF</button>
-			</div>
+  <div class="score-container">
+    <div class="score-label">SCORE</div>
+		<div class="score">
+		  <div class="score-box">
+			<div class="score-inner good" id="score-good">0</div>
+		  </div>
+		  <div class="score-box">
+			<div class="score-inner bad" id="score-bad">0</div>
+		  </div>
 		</div>
-
-		<input type="file" id="pdfFileInput" accept=".pdf,.docx" style="display: none;">
-
-	
-</div>
-
-
-<div id="promptSelectExam" class="noticeBar">VYBER TYP VYŠETŘENÍ...   <span class="bouncingPointer">👆</span> </div>
-
-<div id="page-container">
-</div>
-
-<span style="display: inline-block; height: 10px; width: 100%;"></span>
-
-<div style="display:none;">
-&nbsp; NÁZEV <button id="copyNAME" class="buttonTEXT">COPY</button>
-<textarea id="FINALNAMEText" class="FINALXXL" readonly></textarea>
-
-&nbsp; INDIKACE <button id="copyIND" class="buttonTEXT">COPY</button>
-<textarea id="FINALINDText" class="FINALXXL" readonly></textarea>
-
-&nbsp; SEKVENCE <button id="copySEKV" class="buttonTEXT">COPY</button>
-<textarea id="FINALSEKVText" class="FINALXXL" readonly></textarea>
-
-</div>
-
-
-<div id="texty1" class="standardwidthFinalText" style="display: none;" >
-<textarea id="FINALPOPText" class="FINALXXL" readonly></textarea>
-<textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
-</div>
-
-<div id="texty2" class="standardwidthFinalText" style="display: ; position: relative; "> 
-
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 0 12px;">
-  
-  <!-- Levá skupina -->
-  <div style="display: flex; gap: 4px;">
-    <button id="copyCOMP" class="buttonCLICK">📋 KOMPLET</button> 
-    <button id="copyPOP" class="buttonCLICK">📋 POPIS</button> 
-    <button id="copyRES" class="buttonCLICK">📋 ZÁVĚR</button> 
-  </div>
-
-  <!-- Pravá skupina -->
-  <div style="display: flex; gap: 4px;">
-    <button id="toggleEdit" class="buttonCLICK">📝 EDIT</button>
-    <button id="checkAI" class="buttonCLICK">🔍 AI</button>
-    <button id="saveButton" class="buttonCLICK">💾 SAVE</button>
-    <button id="loadButton" class="buttonCLICK">📂 LOAD</button>
-  </div>
-
-</div>
-
-
-  <div id="popupMessage" style="display:none; position:relative; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold; width:300px;">
-  </div>
-
-  <textarea id="FINALCOMPLETEText" class="FINALXXL" readonly></textarea>
-  
-<div id="aiResult" class="standardwidthFinalText" style="margin-top: 10px; display: none;">
-  <div style="font-size: 14px; margin-bottom: 0px;">
-	<button id="AIresult" class="buttonTEXT">📋 AI CHECK</button>
-  <pre id="aiOutput" style="white-space: pre-wrap; background: #f7f7f7; padding: 4px; border: 1px solid #ccc; font-size: 12px; line-height: 1.0;"></pre>
   </div>
 </div>
 
-
+<div id="progress-bar-container" style="margin-top: 10px; margin-bottom: 20px; width: 300px; height: 24px; border: 2px solid #aaa; margin-inline: auto; position: relative; background: #f8f8f8; border-radius: 12px; overflow: hidden;">
+  <div id="progress-fill-green"></div>
+  <div id="progress-fill-teal"></div>
+  <div id="progress-fill-cyan"></div>
+  <div id="progress-fill-blue"></div>
+  <div id="progress-fill-purple"></div>
+  <div id="progress-fill-pink"></div>
+  <div id="progress-fill-red"></div>
+  <div id="progress-fill-orange"></div>
+  <div id="progress-fill-gold"></div>
+  <span style="position: absolute; right: -32px; top: 0; font-size: 24px;">🏅</span>
 </div>
 
 
-<div id="helpOverlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9999;">
-  <div style="position:absolute;top:10%;left:10%;width:80%;height:80%;background:#fff;border:1px solid #000;padding:10px;box-sizing:border-box;">
-    <button class="remove-button" style="position:absolute;top:2px;left:2px;" onclick="document.getElementById('helpOverlay').style.display='none'">X</button>
-    <textarea id="backupViewer" readonly style="width:100%;height:100%;box-sizing:border-box;resize:none;overflow:auto;"></textarea>
-  </div>
+
+  </br>
+
+<div id="gif-container" style="position:fixed;top:60px;left:50%;transform:translateX(-220px);z-index:999;display:none;"><img id="gif-animation" src="dance1.gif" style="height:100px;" /></div>
+
+
+<audio id="special-audio" src="music1.mp3"></audio>
+
+
+<input id="mobile-input" type="text" inputmode="text" style="position:fixed;top:100vh;left:0;width:1px;height:1px;opacity:0;border:none;z-index:-1;" />
+
+
+  <img id="image" class="framed-image" src="" alt="obrázek" hidden />
+  <div id="letters"></div>
+
+  <div id="reading-word"></div>
+  <div id="reading-options"></div>
+  <div id="math-task"></div>
+
+<h5 id="medals-today-title" style="margin-top: 30px; margin-bottom: 6px;">DNES</h5>
+<div id="medals-container" style="font-size: 32px;"></div>
+
+<div id="history-container" style="margin-top: 30px;">
+  <h5 id="history-title">DŘÍVE</h5>
+  <div id="history-list" style="font-size: 24px;"></div>
 </div>
 
+<div id="medal-animation" style="position: fixed; top: -100px; left: 50%; transform: translateX(-50%); font-size: 80px; z-index: 9999; pointer-events: none; display: none;"></div>
 
 
-<svg width="0" height="0">
-<filter id="bubbleFilter">
-  <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="1" result="turbulence">
-	<animate attributeName="baseFrequency" values="0.005;0.001;0.003;0.001;0.005" dur="60s" repeatCount="indefinite"/>
-  </feTurbulence>
-  <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="40" xChannelSelector="R" yChannelSelector="G"/>
-</filter>
-</svg>
+  <canvas id="fireworks"></canvas>
+
+  <!-- Zvuky -->
+  <audio id="fanfare" src="fanfara.mp3"></audio>
+  <audio id="sound-correct" src="correct.mp3"></audio>
+  <audio id="sound-wrong" src="wrong.mp3"></audio>
+  <audio id="sound-win" src="win.mp3"></audio>
+
+<div id="win-banner" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;font-weight:bold;color:gold;text-shadow:4px 4px 10px black;z-index:9999;display:none;animation:pop-win 1s ease-out;">VYHRÁL JSI!</div>
 
 
+  <script>
+	const words = ['auto', 'autobus', 'bagr', 'banán', 'bazén', 'bota', 'bunda', 'delfín', 'dort', 'drak', 'gepard', 'hasiči', 'hodinky', 'holub', 'houska', 'hruška', 'jahoda', 'jogurt', 'kalhoty', 'kavka', 'kolo', 'koláč', 'koruna', 'kočka', 'kráva', 'letadlo', 'meloun', 'motorka', 'myš', 'míč', 'oko', 'opice', 'ovce', 'papoušek', 'pes', 'policie', 'postel', 'raketa', 'robot', 'rohlík', 'ruka', 'sklenice', 'slon', 'slunce', 'strom', 'tank', 'telefon', 'tramvaj', 'triko', 'tygr', 'vidlička', 'vlak', 'vlk', 'vodopád', 'volant', 'zebra', 'země', 'čepice', 'židle', 'žirafa', 'žralok'];
 
-<script>
+	const data = words.map(word => ({
+      word: word,
+      img: `${word}.jpg`
+    }));
 
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    setupRefreshOnAction(document);
-
-    var container = document.getElementById("page-container");
-    var iframes = container.getElementsByTagName("iframe");
-    for (var i = 0; i < iframes.length; i++) {
-        bindEventsToIframe(iframes[i]);
-    }
-
-    var textareas = document.querySelectorAll('.FINALXXL');
-    textareas.forEach(adjustTextareaHeight);
-
-	checkAndUpdateDivVisibility(); // Immediate check
-	setupRefreshOnAction(document);
-});
-
-
-function adjustTextareaHeight(textarea) {
-    textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px';
-}
-
-function changePage(url) {
-    var container = document.getElementById("page-container");
-    var uniqueId = "iframe-" + url + "-" + Date.now();
-
-    var iframeContainer = document.createElement("div");
-    iframeContainer.className = "iframe-container";
-
-    var iframe = document.createElement("iframe");
-    iframe.id = uniqueId;
-    iframe.src = url;
-    iframe.style.width = "100%";
-    iframe.style.border = "none";
-    iframe.style.opacity = 0; // Initially invisible
-    iframe.onload = function() {
-        iframe.style.height = "0px";
-        try {
-            adjustIframeHeight(iframe);
-            bindEventsToIframe(iframe);
-            updateFinalTextAreas();
-            checkAndUpdateDivVisibility();
-
-            // Delay the fade-in animation until the iframe is loaded
-            setTimeout(() => {
-                iframe.style.opacity = 1; // Make the iframe visible
-				const bg = document.getElementById('random-background');
-				if (bg) {
-					bg.style.opacity = 0.3;
-					bg.style.filter = 'blur(4px)';
-				}
-                iframe.classList.add('iframe-fade-in');
-            }, 100); // Short delay before fade-in starts
-			
-            setTimeout(() => {
-                iframe.classList.remove('iframe-fade-in');
-            }, 1100); // Duration of the animation plus initial delay
-        } catch (e) {
-            console.log('Error in iframe onload:', e);
-        }
-    };
-
-    var removeButton = document.createElement("button");
-    removeButton.textContent = "X";;
-    removeButton.className = "remove-button"; 
-	
-		removeButton.onclick = function() {
-			container.removeChild(iframeContainer);
-			// Skryj výstup AI po zavření okna
-			document.getElementById("aiResult").style.display = "none";
-
-			if (container.children.length === 0) {
-				const bg = document.getElementById('random-background');
-				if (bg) {
-					// Načtení nového náhodného obrázku před zvýšením opacity
-					const randomIndex = Math.floor(Math.random() * 6) + 1;
-					bg.style.backgroundImage = `url('background/${randomIndex}.webp')`;
-					bg.style.opacity = 1;
-				}
-				resetBackgroundFilter();
-				// Zavřít PDF viewer, pokud je otevřený
-				const pdfViewer = document.getElementById('doc-viewer');
-				if (pdfViewer) {
-					pdfViewer.remove();
-				}
-			}
-		};
-
-    iframeContainer.appendChild(removeButton);
-    iframeContainer.appendChild(iframe);
-    container.appendChild(iframeContainer);
-}
-
-
-function adjustIframeHeight(iframe) {
-    var observer = new MutationObserver(function() {
-        updateIframeHeight(iframe);
+    data.forEach(item => {
+      const img = new Image();
+      img.onload = () => { item.img = img.src; };
+      img.onerror = () => {
+        const jpegImg = new Image();
+        jpegImg.onload = () => { item.img = jpegImg.src; };
+        jpegImg.src = `${item.word}.jpeg`;
+      };
+      img.src = item.img;
     });
 
-    observer.observe(iframe.contentWindow.document.body, {
-        attributes: true,
-        childList: true,
-        subtree: true
-    });
-
-    updateIframeHeight(iframe);
-}
-
-function updateIframeHeight(iframe) {
-    // Remember the current scroll position
-    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    iframe.style.height = '0px';
-    var minHeight = 10; // Minimum height
-    var iframeContentHeight = iframe.contentWindow.document.body.scrollHeight;
-    iframe.style.height = Math.max(iframeContentHeight, minHeight) + 'px';
-
-    // Restore the scroll position
-    window.scrollTo(0, scrollTop);
-}
+    let writingPool = [...data];
+    let readingPool = [...data];
+    let currentWord = '';
+    let userInput = [];
+    let scoreGood = 0;
+    let scoreBad = 0;
+    let isLocked = false;
+	let lastInputLength = 0;
+	let currentMode = null;
+	let correctAnswer = null;
+	let medals = { gold: 0, silver: 0, bronze: 0 };
+	const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
 
 
-function bindEventsToIframe(iframe) {
-    try {
-        var doc = iframe.contentWindow.document;
-        setupRefreshOnAction(doc);
-    } catch (e) {
-        console.log('Error binding events to iframe:', e);
+    function updateScoreDisplay() {
+      document.getElementById('score-good').textContent = scoreGood;
+      document.getElementById('score-bad').textContent = scoreBad;
     }
+
+    function playSound(id) {
+      const sound = document.getElementById(id);
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+      }
+    }
+
+function startGame(mode) {
+	currentMode = mode;
+  // Odpojit oba klávesnicové režimy
+  document.removeEventListener('keydown', handleKey);
+  document.removeEventListener('keydown', handleMathKey);
+
+  // Vyčistit a skrýt vše
+  document.getElementById('image').hidden = true;
+  document.getElementById('letters').style.display = 'none';
+  document.getElementById('letters').innerHTML = '';
+  document.getElementById('reading-word').textContent = '';
+  document.getElementById('reading-options').innerHTML = '';
+  document.getElementById('math-task').innerHTML = '';
+
+  if (mode === 'writing') {
+    writingPool = [...data];
+    loadRandom();
+    document.getElementById('image').hidden = false;
+    document.getElementById('letters').style.display = 'block';
+    document.addEventListener('keydown', handleKey);
+	document.getElementById('mobile-input').focus();
+  } else if (mode === 'reading') {
+    readingPool = [...data];
+    loadReadingTask();
+  } else if (mode === 'math') {
+    loadMathTask();
+    document.addEventListener('keydown', handleMathKey);
+	document.getElementById('mobile-input').focus();
+  }
 }
 
-function setupRefreshOnAction(doc) {
-    function delayedUpdate(event) {
-		if (editMode) return;
-        // Add the IDs of the buttons to the condition
-        if (event.target.id === 'FINALPOPText' || event.target.id === 'FINALRESText' || event.target.id === 'FINALCOMPLETEText' ||
-            event.target.id === 'copyPOP' || event.target.id === 'copyRES' || event.target.id === 'copyCOMP') {
-            // If the event target is one of the specified elements, skip the rest of the function
-            return;
+
+    function loadRandom() {
+      if (writingPool.length === 0) {
+        alert("Všechna slova byla použita!");
+        return;
+      }
+      const index = Math.floor(Math.random() * writingPool.length);
+      const random = writingPool.splice(index, 1)[0];
+      currentWord = random.word;
+      userInput = [];
+      isLocked = false;
+
+      const img = document.getElementById('image');
+      img.src = random.img;
+      img.hidden = false;
+
+      const lettersDiv = document.getElementById('letters');
+      lettersDiv.innerHTML = '';
+
+      for (let i = 0; i < currentWord.length; i++) {
+        const span = document.createElement('span');
+        span.className = 'letter-box';
+        span.textContent = '';
+        lettersDiv.appendChild(span);
+      }
+    }
+
+    function handleKey(e) {
+      if (isLocked) return;
+
+      const key = e.key;
+      const index = userInput.length;
+
+      if (key.length === 1 && key.match(/[a-zA-Zá-žÁ-Ž]/i)) {
+        if (index < currentWord.length) {
+          const correctChar = currentWord[index];
+
+          if (key.toLowerCase() === correctChar.toLowerCase()) {
+            userInput.push(key);
+            scoreGood++; addProgress(1); checkCelebrationTrigger(scoreGood);
+            playSound('sound-correct');
+            updateScoreDisplay();
+            updateDisplay();
+          } else {
+            userInput.push(key);
+            scoreBad++; resetProgressBar();
+            playSound('sound-wrong');
+            updateScoreDisplay();
+            updateDisplay();
+
+            isLocked = true;
+            setTimeout(() => {
+              if (userInput[index]?.toLowerCase() !== correctChar.toLowerCase()) {
+                userInput.splice(index, 1);
+                updateDisplay();
+              }
+              isLocked = false;
+            }, 1000);
+          }
         }
-
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-
-        setTimeout(function() {
-            updateFinalTextAreas();
-            checkAndUpdateDivVisibility();
-
-            // Restore the scroll position
-            window.scrollTo(scrollLeft, scrollTop);
-        }, 1);
+      } else if (e.key === 'Backspace') {
+        userInput.pop();
+        updateDisplay();
+      }
     }
 
-    // Attach the event listeners to the document or passed document-like object (e.g., iframe's document)
-    doc.addEventListener('keydown', delayedUpdate);
-    doc.addEventListener('mouseup', delayedUpdate);
-    doc.addEventListener('input', delayedUpdate);
-    doc.addEventListener('wheel', delayedUpdate);
-}
 
+function updateDisplay() {
+  const letters = document.getElementById('letters').children;
 
+  for (let i = 0; i < currentWord.length; i++) {
+    const box = letters[i];
+    const inputChar = userInput[i];
 
-//Příprava textů s názvy apod.
+    box.textContent = inputChar || '';
 
-function updateFinalTextAreas() {
-	if (editMode) return;
-    var container = document.getElementById("page-container");
-    var iframes = container.getElementsByTagName("iframe");
-    
-    var finalNAMEText = '';
-    var finalINDText = '';
-    var finalSEKVText = '';
-    var finalPOPText = '';
-    var finalRESText = '';
-    var nameTexts = []; // Array to hold NAMEText values
-    var popTexts = []; // Array to hold POPText values
-
-
-    for (var i = 0; i < iframes.length; i++) {
-        var iframe = iframes[i];
-        try {
-            var doc = iframe.contentWindow.document;
-            
-            // Extract NAMEText and store in array
-            var nameTextAreas = doc.querySelectorAll("textarea[id$='NAMEText']");
-            for (var j = 0; j < nameTextAreas.length; j++) {
-                finalNAMEText += nameTextAreas[j].value + ", ";
-                nameTexts.push(nameTextAreas[j].value); // Add to array
-            }
-
-            // Extract INDText
-            var indTextAreas = doc.querySelectorAll("textarea[id$='INDText']");
-            for (var j = 0; j < indTextAreas.length; j++) {
-                if (indTextAreas[j].value.trim() !== "") {
-                    finalINDText += (finalINDText ? ", " : "") + indTextAreas[j].value;
-                }
-            }
-
-            // Extract SEKVText
-            var sekvTextAreas = doc.querySelectorAll("textarea[id$='SEKVText']");
-            for (var j = 0; j < sekvTextAreas.length; j++) {
-                finalSEKVText += sekvTextAreas[j].value;
-            }
-
-            // Extract POPText and store in array
-            var popTextAreas = doc.querySelectorAll("textarea[id$='POPText']");
-            for (var j = 0; j < popTextAreas.length; j++) {
-                popTexts.push(popTextAreas[j].value); // Add to array without modification
-            }
-
-            // Extract RESText
-            var resTextAreas = doc.querySelectorAll("textarea[id$='RESText']");
-            for (var j = 0; j < resTextAreas.length; j++) {
-                finalRESText += resTextAreas[j].value + "\n";
-            }
-
-        } catch (e) {
-            console.log('Error accessing iframe contents:', e);
-        }
-    }
-	
-	
-    // Prepend NAMEText to corresponding POPText if more than one NAMEText
-    if (nameTexts.length > 1) {
-        finalPOPText = nameTexts.map((name, index) => name + ":\n" + (popTexts[index] || "")).join("\n \n");
+    if (!inputChar) {
+      box.className = 'letter-box';
+    } else if (inputChar.toLowerCase() === currentWord[i].toLowerCase()) {
+      box.className = 'letter-box correct';
     } else {
-        finalPOPText = popTexts.join("\n\n"); // Use as is if only one POPText
+      box.className = 'letter-box incorrect';
     }
 
-	// Check if compText contains "PSMA-PET/CT" and replace "MR" with "PSMA-PET/MR, same for FDG-PET"
-	if (finalPOPText.includes("FDG-PET/CT")) {
-		finalPOPText = finalPOPText.replace(/(?:^|, )MR/gm, function(match) {
-			return match === 'MR' ? "FDG-PET/MR" : ", FDG-PET/MR";
-		});
-	}
-	else if (finalPOPText.includes("PSMA-PET/CT")) {
-		finalPOPText = finalPOPText.replace(/(?:^|, )MR/gm, function(match) {
-			return match === 'MR' ? "PSMA-PET/MR" : ", PSMA-PET/MR";
-		});
-	}
-
-    // Update final text areas
-    document.getElementById("FINALNAMEText").value = finalNAMEText.slice(0, -2).trim();
-    document.getElementById("FINALINDText").value = finalINDText.trim();
-    document.getElementById("FINALSEKVText").value = finalSEKVText.trim();
-    document.getElementById("FINALPOPText").value = finalPOPText.trim();
-    document.getElementById("FINALRESText").value = finalRESText.trim();
-
-    // Combine into FINALCOMPLETEText
-    var finalCompleteText = finalNAMEText.slice(0, -2);
-
-    if (finalSEKVText.trim()) {
-        finalCompleteText += "\n\nSekvence: " + finalSEKVText.trim();
+    // Poskočení pouze při novém zadání znaku (ne při mazání)
+    if (i === userInput.length - 1 && inputChar && userInput.length > lastInputLength) {
+      box.classList.add('letter-pop');
+      box.addEventListener('animationend', () => {
+        box.classList.remove('letter-pop');
+      }, { once: true });
     }
+  }
 
-    if (finalINDText.trim()) {
-        finalCompleteText += (finalCompleteText ? "\n\n" : "") + "Indikace: " + finalINDText.trim();
-    }
-
-    finalCompleteText += "\n\n" + finalPOPText.trim() + "\n\n" + "Závěr: " + "\n" + finalRESText.trim();
-
-    document.getElementById("FINALCOMPLETEText").value = finalCompleteText.trim();
-}	
-
-
-
-
-function checkAndUpdateDivVisibility() {
-    var popText = document.getElementById("FINALPOPText").value.trim();
-    var resText = document.getElementById("FINALRESText").value.trim();
-	var compText = document.getElementById("FINALCOMPLETEText").value.trim();
-    var div = document.getElementById("texty1");
-	var div2 = document.getElementById("texty2");
-
-    if (popText === '' && resText === '') {
-        div.classList.add('invisible'); div2.classList.add('invisible');
-		div.classList.remove('visible'); div2.classList.remove('visible');
-    } else {
-        div.classList.add('visible'); div2.classList.add('visible')
-		div.classList.remove('invisible'); div2.classList.remove('invisible')
-    }
-	
-	adjustTextareaHeight(document.getElementById("FINALPOPText"));
-    adjustTextareaHeight(document.getElementById("FINALRESText"));
-	adjustTextareaHeight(document.getElementById("FINALCOMPLETEText"));
-	
-	const promptBox = document.getElementById("promptSelectExam");
-	const pageContent = document.getElementById("page-container");
-
-	if (pageContent.children.length === 0) {
-	  promptBox.style.display = "block";
-	} else {
-	  promptBox.style.display = "none";
-	}
-
-}
-
-function adjustTextareaHeight(textarea) {
-    textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px';
-}
-
-
-
-// COPY and blink
-
-function highlightTextInTextarea(textareaId, textToHighlight) {
-    const textarea = document.getElementById(textareaId);
-    const fullText = textarea.value;
-
-    const startIndex = fullText.indexOf(textToHighlight);
-    if (startIndex === -1) return;
-
-    const endIndex = startIndex + textToHighlight.length;
-
-    textarea.focus();
-    textarea.setSelectionRange(startIndex, endIndex);
-
-    // Automaticky zruší výběr po 400 ms
+  // Pokud je celé slovo správně
+  if (
+    userInput.length === currentWord.length &&
+    userInput.join('').toLowerCase() === currentWord.toLowerCase()
+  ) {
+    playSound('sound-win');
+    launchFireworks();
+    isLocked = true;
     setTimeout(() => {
-        textarea.setSelectionRange(0, 0);
-    }, 400);
+      stopFireworks();
+      if (currentMode === 'writing') {
+        loadRandom();
+        isLocked = false;
+      }
+    }, 2000);
+  }
+
+  // Záznam délky vstupu pro další srovnání
+  lastInputLength = userInput.length;
 }
 
 
-document.addEventListener('DOMContentLoaded', () => {
 
-    function showPopup(message) {
-        const popup = document.getElementById('popupMessage');
-        popup.textContent = message;
-        popup.style.display = 'block';
-        setTimeout(() => popup.style.display = 'none', 2000);
+    function loadReadingTask() {
+      if (readingPool.length === 0) {
+        alert("Všechna slova byla přečtena!");
+        return;
+      }
+      const index = Math.floor(Math.random() * readingPool.length);
+      const correct = readingPool.splice(index, 1)[0];
+      currentWord = correct.word;
+
+      document.getElementById('reading-word').textContent = currentWord;
+      const container = document.getElementById('reading-options');
+      container.innerHTML = '';
+
+      const shuffled = [...data]
+        .filter(item => item.word !== currentWord)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 4);
+
+      shuffled.push(correct);
+      shuffled.sort(() => 0.5 - Math.random());
+
+      shuffled.forEach(item => {
+        const img = document.createElement('img');
+        img.src = item.img;
+        img.alt = item.word;
+        img.style.filter = '';
+        img.addEventListener('mouseenter', () => img.style.border = '2px solid blue');
+        img.addEventListener('mouseleave', () => img.style.border = '2px solid #333');
+        img.addEventListener('click', () => handleReadingClick(img, item.word === currentWord));
+        container.appendChild(img);
+      });
     }
 
-    function validateText(text) {
-        if (text.includes("MR kolene") || text.includes("MR ramene") || text.includes("MR hlezna")) {
-            showPopup("DOPLŇ STRANU");
-            return false;
-        }
+    function handleReadingClick(img, isCorrect) {
+	
+		// Animace poskočení obrázku
+	img.classList.add('image-pop');
+	img.addEventListener('animationend', () => {
+	  img.classList.remove('image-pop');
+	}, { once: true });
 
-        const invalidCombo =
-            (text.includes("FDG") && text.includes("PSMA")) ||
-            (text.includes("FDG") && text.includes("DOTATOC")) ||
-            (text.includes("PSMA") && text.includes("DOTATOC"));
+      const all = document.querySelectorAll('#reading-options img');
+      all.forEach(el => el.style.pointerEvents = 'none');
 
-        if (invalidCombo) {
-            showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
-            return false;
-        }
+      if (isCorrect) {
+		  img.style.filter = 'brightness(0.6) sepia(1) hue-rotate(90deg) saturate(4)';
+		  scoreGood++; addProgress(3); checkCelebrationTrigger(scoreGood);
+		  updateScoreDisplay();
+		  playSound('sound-win');
+		  launchFireworks();
+		  setTimeout(() => {
+			stopFireworks();
+			if (currentMode === 'reading') {
+			  loadReadingTask();
+			}
+		  }, 2000);
+		} else {
+		  img.style.filter = 'brightness(0.5) sepia(1) hue-rotate(-50deg) saturate(5)';
+		  scoreBad++; resetProgressBar();
+		  updateScoreDisplay();
+		  playSound('sound-wrong');
 
-        return true;
+		  // Znovupovolení klikání na ostatní obrázky
+		  setTimeout(() => {
+			const all = document.querySelectorAll('#reading-options img');
+			all.forEach(el => el.style.pointerEvents = 'auto');
+		  }, 1000);
+		}
     }
 
-	  function copyTextAndBlink(text, targetTextareaId) {
-		if (!validateText(text)) return;
+	function loadMathTask() {
+	let a = Math.floor(Math.random() * 9) + 2;
+	let b = Math.floor(Math.random() * 9) + 2;
+	const op = Math.random() > 0.5 ? '+' : '-';
 
-		navigator.clipboard.writeText(text)
-			.then(() => {
-				console.log("Text copied:", text);
-				highlightTextInTextarea(targetTextareaId, text); // použijeme výběr, ne animaci
-			})
-			.catch(err => {
-				console.error("Copy failed:", err);
-			});
+	if (op === '-' && b > a) {
+	  [a, b] = [b, a]; // prohodíme, aby výsledek nebyl záporný
 	}
 
+	correctAnswer = op === '+' ? a + b : a - b;
 
-    // Setup copy buttons
-    document.getElementById('copyCOMP').addEventListener('click', () => {
-        const text = document.getElementById("FINALCOMPLETEText").value;
-        copyTextAndBlink(text, "FINALCOMPLETEText");
-    });
+  userInput = [];
+  isLocked = false;
 
-    document.getElementById('copyPOP').addEventListener('click', () => {
-		const text = document.getElementById("FINALCOMPLETEText").value;
-		let lines = text.split('\n');
-		lines.shift(); // remove name
+  const taskDiv = document.getElementById('math-task');
+  taskDiv.innerHTML = '';
 
-		let sekvIndex = lines.findIndex(line => line.trim().startsWith("Sekvence:"));
-		if (sekvIndex !== -1) lines.splice(sekvIndex, 2);
+// Číselná řada – nová verze
+// hlavní grid – 3 sloupce: jablka vlevo | střed (čísla+znak) | jablka vpravo
+const grid = document.createElement('div');
+grid.style.display = 'grid';
+grid.style.gridTemplateColumns = '1fr auto 1fr'; // střed je fixní
+grid.style.alignItems = 'center';
+grid.style.justifyItems = 'center';
+grid.style.gap = '2px';
+grid.style.width = '100%';
 
-		let indIndex = lines.findIndex(line => line.trim().startsWith("Indikace:"));
-		if (indIndex !== -1) lines.splice(indIndex, 2);
-
-		let zavIndex = lines.findIndex(line => line.trim() === "Závěr:");
-		if (zavIndex !== -1) lines = lines.slice(0, zavIndex);
-
-		const finalPop = lines.join('\n').trim();
-		copyTextAndBlink(finalPop, "FINALCOMPLETEText");
-		highlightTextInTextarea("FINALCOMPLETEText", finalPop); // přidáno
-	});	
-
-	document.getElementById('copyRES').addEventListener('click', () => {
-		const text = document.getElementById("FINALCOMPLETEText").value;
-		const match = text.match(/Závěr:\s*\n([\s\S]*)$/);
-		const finalRes = match ? match[1].trim() : "";
-		copyTextAndBlink(finalRes, "FINALCOMPLETEText");
-		highlightTextInTextarea("FINALCOMPLETEText", finalRes); // přidáno
-	});
-	
-});
-
-
-
-// SAVE button handler
-document.getElementById('saveButton').addEventListener('click', function () {
-  const text = document.getElementById('FINALCOMPLETEText').value;
-  const trimmed = text.trim();
-  const blob = new Blob([trimmed], { type: 'text/plain' });
-
-  // vytvoření timestampu
-  const now = new Date();
-  const datePart = now.toISOString().split("T")[0].replace(/-/g, '');       // YYYYMMDD
-  const timePart = now.toTimeString().split(" ")[0].replace(/:/g, '');      // HHMMSS
-  const filename = `${datePart}-${timePart}-radio-popis.txt`;
-
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = filename;
-
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  if (trimmed) {
-    appendToLocalStorageLog(trimmed, " (ručně)");
-  }
-
-  lastSavedText = trimmed;
-});
-
-
-
-// check AI
-
-const btn = document.getElementById('checkAI');
-if (btn) {
-  btn.addEventListener('click', () => {
-    // Přečteme obsah viditelné textarea FINALCOMPLETEText
-    const textareaCOMP = document.getElementById('FINALCOMPLETEText');
-    const completeText = textareaCOMP ? textareaCOMP.value.trim() : "";
-
-    //alert("📤 Text odeslaný do AI:\n\n" + completeText);
-
-    zkontrolujAI(completeText);
-  });
+// jablka vlevo (pro A)
+const applesA = document.createElement('div');
+applesA.className = 'apple-group';
+applesA.style.justifyContent = 'flex-end'; // tlačí jablka k číslu
+for (let i = 0; i < a; i++) {
+  const apple = document.createElement('div');
+  apple.textContent = '🍎';
+  applesA.appendChild(apple);
 }
 
-async function zkontrolujAI(completeText) {
-  const output = document.getElementById('aiOutput');
-  const resultDiv = document.getElementById('aiResult');
+// jablka vpravo (pro B)
+const applesB = document.createElement('div');
+applesB.className = 'apple-group';
+applesB.style.justifyContent = 'flex-start'; // tlačí jablka k číslu
+for (let i = 0; i < b; i++) {
+  const apple = document.createElement('div');
+  apple.textContent = '🍎';
+  applesB.appendChild(apple);
+}
 
-  if (!completeText) {
-    alert("Text je prázdný.");
-    return;
+// střední část: číslo A + znaménko + číslo B
+const center = document.createElement('div');
+center.style.display = 'flex';
+center.style.alignItems = 'center';
+center.style.gap = '20px';
+
+const numberA = document.createElement('div');
+numberA.textContent = a;
+numberA.style.fontSize = '48px';
+
+const operator = document.createElement('div');
+operator.textContent = op;
+operator.style.fontSize = '48px';
+
+const numberB = document.createElement('div');
+numberB.textContent = b;
+numberB.style.fontSize = '48px';
+
+center.appendChild(numberA);
+center.appendChild(operator);
+center.appendChild(numberB);
+
+// přidej do gridu
+grid.appendChild(applesA);  // levý sloupec
+grid.appendChild(center);   // střední sloupec
+grid.appendChild(applesB);  // pravý sloupec
+
+// vlož do hlavního divu
+taskDiv.appendChild(grid);
+
+
+
+  // Okénka pro výsledek
+  const lettersDiv = document.createElement('div');
+  lettersDiv.id = 'letters';
+  lettersDiv.style.display = 'flex';
+  lettersDiv.style.justifyContent = 'center';
+  lettersDiv.style.marginTop = '10px';
+
+  const length = correctAnswer.toString().length;
+  for (let i = 0; i < length; i++) {
+    const span = document.createElement('span');
+    span.className = 'letter-box';
+    span.textContent = '';
+    lettersDiv.appendChild(span);
   }
-
-  output.innerText = "⏳ AI analyzuje...";
-  resultDiv.style.display = 'block';
-
-  // Odešleme JSON s polem 'text'
-  try {
-    const response = await fetch("https://radio-ai-backend.onrender.com/api/check", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: completeText })
-    });
-
-    const data = await response.json();
-    output.innerText = data.result || "⚠️ Žádná odpověď od AI.";
-  } catch (error) {
-    output.innerText = "❌ Chyba připojení: " + error.message;
-  }
+  taskDiv.appendChild(lettersDiv);
 }
 
 
+function handleMathKey(e) {
+  if (isLocked) return;
+  const key = e.key;
+  const index = userInput.length;
 
-	// EDIT mód
-
-let editMode = false;
-
-document.getElementById('toggleEdit').addEventListener('click', () => {
-  const textareaIDs = ["FINALPOPText", "FINALRESText", "FINALCOMPLETEText"];
-  editMode = !editMode;
-
-  textareaIDs.forEach(id => {
-    const el = document.getElementById(id);
-    el.readOnly = !editMode;
-    el.style.backgroundColor = editMode ? "#fffceb" : ""; // jemnější žlutá
-  });
-
-  const toggleBtn = document.getElementById('toggleEdit');
-  toggleBtn.textContent = editMode ? "Zrušit EDIT" : "📝 EDIT";
-  toggleBtn.style.backgroundColor = editMode ? "#ffe0b3" : ""; // jemná oranžová
-
-  const page = document.getElementById('page-container');
-  if (page) {
-    page.style.pointerEvents = editMode ? "none" : "";
-    page.style.opacity = editMode ? "0.2" : "";
+  if (key >= '0' && key <= '9') {
+    if (index < correctAnswer.toString().length) {
+      userInput.push(key);
+      updateMathDisplay();
+    }
+  } else if (key === 'Backspace') {
+    userInput.pop();
+    updateMathDisplay();
   }
 
-  // Pokud se právě ukončuje režim editace, ulož do LocalStorage
-  if (!editMode) {
-    const text = document.getElementById('FINALCOMPLETEText').value.trim();
-    if (text && text !== lastSavedText) {
-      appendToLocalStorageLog(text, " (po EDITACI)");
-      lastSavedText = text;
+  if (userInput.join('') === correctAnswer.toString()) {
+    scoreGood++; addProgress(3); checkCelebrationTrigger(scoreGood);
+    updateScoreDisplay();
+    playSound('sound-win');
+    launchFireworks();
+    isLocked = true;
+setTimeout(() => {
+  stopFireworks();
+  if (currentMode === 'math') {
+    loadMathTask();
+  }
+}, 2000);
+
+	} else if (userInput.length === correctAnswer.toString().length) {
+	  scoreBad++;
+	  resetProgressBar();
+	  updateScoreDisplay();
+	  playSound('sound-wrong');
+	  markMathIncorrect();
+
+	  // Smaž odpověď a dovol zkusit znovu, ale nech příklad beze změny
+	  isLocked = true;
+	  setTimeout(() => {
+		userInput = [];
+		updateMathDisplay();
+		isLocked = false;
+	  }, 1000);
+	}
+
+}
+
+function updateMathDisplay() {
+  const boxes = document.querySelectorAll('#letters .letter-box');
+  for (let i = 0; i < boxes.length; i++) {
+    boxes[i].textContent = userInput[i] || '';
+
+    // základní třída
+    boxes[i].className = 'letter-box';
+
+    // přidej animaci jen nově zapsanému znaku
+    if (i === userInput.length - 1 && userInput[i]) {
+      boxes[i].classList.add('letter-pop');
+      boxes[i].addEventListener('animationend', () => {
+        boxes[i].classList.remove('letter-pop');
+      }, { once: true });
     }
   }
+}
+
+
+function markMathIncorrect() {
+  const boxes = document.querySelectorAll('#letters .letter-box');
+  boxes.forEach(box => {
+    box.classList.add('incorrect');
+  });
+}
+
+
+
+const canvas = document.getElementById('fireworks');
+const ctx = canvas.getContext('2d');
+let fireworks = [];
+let fireworksInterval;
+
+function launchFireworks() {
+  resizeCanvas();
+  fireworks = [];
+  for (let i = 0; i < 5; i++) {
+    fireworks.push(createFirework());
+  }
+  fireworksInterval = setInterval(updateFireworks, 50);
+
+  const audio = document.getElementById('fanfare');
+  if (audio) {
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  }
+}
+
+function stopFireworks() {
+  clearInterval(fireworksInterval);
+  fireworks = [];
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function createFirework() {
+  const colors = ['#ff3333', '#33cc33', '#3399ff', '#ffff33', '#ff66cc', '#00ffff'];
+  const x = Math.random() * canvas.width;
+  const y = Math.random() * canvas.height / 2;
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  const particles = [];
+
+  for (let i = 0; i < 40; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 5 + 2;
+    particles.push({
+      x, y,
+      dx: Math.cos(angle) * speed,
+      dy: Math.sin(angle) * speed,
+      alpha: 1,
+      color
+    });
+  }
+
+  return { particles };
+}
+
+function updateFireworks() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // nesmaže zbytek stránky
+
+  fireworks.forEach(firework => {
+    firework.particles.forEach(p => {
+      p.x += p.dx;
+      p.y += p.dy;
+      p.alpha -= 0.02;
+    });
+
+    firework.particles = firework.particles.filter(p => p.alpha > 0);
+  });
+
+  fireworks = fireworks.filter(f => f.particles.length > 0);
+
+  fireworks.forEach(firework => {
+    firework.particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 3, 0, 2 * Math.PI);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.alpha;
+      ctx.fill();
+    });
+  });
+
+  ctx.globalAlpha = 1;
+}
+
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', resizeCanvas);
+
+
+document.getElementById('mobile-input').addEventListener('input', (e) => {
+  if (!isMobile) return; // tím se vyhneš duplikaci na desktopu a s BT klávesnicí
+  const char = e.target.value;
+  e.target.value = '';
+  if (currentMode === 'writing') handleKey({ key: char });
+  else if (currentMode === 'math') handleMathKey({ key: char });
 });
 
 
+// animace tanec
+let lastCelebrationScore = 0;
+
+function checkCelebrationTrigger(score) {
+  if (score > 0 && score % 100 === 0 && score !== lastCelebrationScore) {
+    lastCelebrationScore = score;
+
+    const medalAudio = new Audio("medal.mp3");
+    medalAudio.play().catch(() => {});
+
+    updateScoreStyle(); // zvětšení čísla
+  }
+}
 
 
-//PDF open
 
-document.getElementById('btnPDF').addEventListener('click', function() {
-    document.getElementById('pdfFileInput').click();
-});
+// TADY TADY TADY TADY																						TADY TADY animace POČET 
 
-document.getElementById('pdfFileInput').addEventListener('change', function(event) {
-    var file = event.target.files[0];
-    if (!file) return;
+function showCelebration() {
+  const gifContainer = document.getElementById('gif-container');
+  const gif = document.getElementById('gif-animation');
 
-    // Vytvoření URL vybraného souboru
-    var fileURL = URL.createObjectURL(file);
+  // === Animace ===
+  const gifCount = 7; // např. dance1.gif až dance5.gif
+  const randomGif = Math.floor(Math.random() * gifCount) + 1;
+  gif.src = `dance${randomGif}.gif`;
 
-    // Vytvoření kontejneru pro zobrazení dokumentu
-    var docContainer = document.createElement('div');
-    docContainer.id = 'doc-viewer';
-    // Umístění: napravo od page-container – upravte podle potřebného layoutu
-    docContainer.style.position = 'fixed';
-    docContainer.style.top = '100px';
-    docContainer.style.right = '20px';
-    docContainer.style.width = '40%';
-    docContainer.style.height = '80%';
-    docContainer.style.border = '1px solid #ccc';
-    docContainer.style.backgroundColor = '#fff';
+  // === Hudba ===
+  const musicCount = 5; // např. music1.mp3 až music4.mp3
+  const randomMusic = Math.floor(Math.random() * musicCount) + 1;
+  const audio = new Audio(`music${randomMusic}.mp3`);
+  audio.volume = 1;
+  audio.play().catch(() => {});
 
-    // Vytvoření iframe pro zobrazení dokumentu
-    var iframe = document.createElement('iframe');
-    iframe.src = fileURL;
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-    iframe.style.border = 'none';
+  // Zobrazit animaci
+  gifContainer.style.display = 'block';
 
-	var removeBtn = document.createElement('button');
-	removeBtn.textContent = 'X';
-	removeBtn.className = 'remove-button'; // použije se existující styl pro odebrání (červené tlačítko)
-	removeBtn.style.position = 'absolute';
-	removeBtn.style.top = '0';
-	removeBtn.style.left = '0';  // Upraveno na levý horní roh
-	removeBtn.style.zIndex = '10';
+  // Spustit fade-out ve 4. sekundě
+  setTimeout(() => {
+    const fadeInterval = setInterval(() => {
+      if (audio.volume > 0.05) {
+        audio.volume -= 0.05;
+      } else {
+        audio.volume = 0;
+        audio.pause();
+        clearInterval(fadeInterval);
+      }
+    }, 50); // každých 50 ms sníží hlasitost
+  }, 4000);
 
-	removeBtn.addEventListener('click', function() {
-		if (docContainer) {
-			docContainer.parentNode.removeChild(docContainer);
-		}
-	});
+  // Skryj animaci po 5 sekundách
+  setTimeout(() => {
+    gifContainer.style.display = 'none';
+  }, 5000);
+}
 
-    docContainer.appendChild(removeBtn);
-    docContainer.appendChild(iframe);
 
-    // Přidání kontejneru do dokumentu (můžete upravit umístění dle potřeby)
-    document.body.appendChild(docContainer);
-});
-	
-	
-// local storage backup
 
-// PŘIDÁ NOVÝ ZÁZNAM A UDRŽÍ POUZE POSLEDNÍCH 10
-function appendToLocalStorageLog(text, prefix = "") {
-  const key = "radioBackup";
-  const now = new Date();
-  const today = now.toISOString().split("T")[0];
-  const time = now.toTimeString().split(" ")[0];
+// Zvětšování skóre
 
-  let data = localStorage.getItem(key);
-  let parsed = { date: today, logs: [] };
+function updateScoreStyle() {
+  const el = document.getElementById('score-good');
+  const baseSize = 20;
+  const layers = Math.floor(scoreGood / 10);
 
-  if (data) {
+  // Nová velikost písma (4px za každých 10 bodů)
+  el.style.fontSize = `${baseSize + 1 * layers}px`;
+
+  // Generování vrstveného žlutého obrysu se zvyšující se světelností
+  const colors = ['#FFD700', '#FF4444', '#AA66CC', '#33B5E5', '#99CC00', '#FF8800']; // žlutá, červená, fialová, modrá, zelená, oranžová
+  const outline = [];
+
+  for (let i = 1; i <= layers; i++) {
+    const offset = 1 * i;
+    const color = colors[(i - 1) % colors.length]; // cyklické barvy
+
+    outline.push(
+      `${offset}px ${offset}px 0 ${color}`,
+      `-${offset}px ${offset}px 0 ${color}`,
+      `${offset}px -${offset}px 0 ${color}`,
+      `-${offset}px -${offset}px 0 ${color}`
+    );
+  }
+
+  el.style.textShadow = outline.join(', ');
+
+}
+
+
+let lastStyleScore = 0;
+
+function checkScoreStyleUpdate() {
+  if (scoreGood !== lastStyleScore && scoreGood % 10 === 0) {
+    lastStyleScore = scoreGood;
+    updateScoreStyle();
+  }
+}
+
+setInterval(checkScoreStyleUpdate, 500);
+
+// ACHIEVEMENTS 
+
+let progressPoints = 0;
+let progressLayer = 0;
+const maxLayer = 9;
+
+function addProgress(points) {
+  progressPoints += points;
+
+  if (progressPoints >= 15) {
+    if (progressLayer === 8) {
+      showWinBanner(); // konec cyklu → výhra!
+    }
+
+    progressPoints = 0;
+    addMedal();
+    progressLayer = (progressLayer + 1) % maxLayer;
+  }
+
+  updateProgressBar();
+  saveMedals();
+}
+
+
+function updateProgressBar() {
+  const percent = (progressPoints / 15) * 100;
+  const fillIds = [
+    "progress-fill-green",
+    "progress-fill-teal",
+	"progress-fill-cyan",
+    "progress-fill-blue",
+    "progress-fill-purple",
+    "progress-fill-pink",
+    "progress-fill-red",
+    "progress-fill-orange",
+    "progress-fill-gold"
+  ];
+
+  fillIds.forEach((id, index) => {
+    const fill = document.getElementById(id);
+    if (!fill) return;
+
+    fill.style.width =
+      index < progressLayer
+        ? "100%"
+        : index === progressLayer
+        ? `${percent}%`
+        : "0%";
+  });
+}
+
+function resetProgressBar() {
+  progressPoints = 0;
+  progressLayer = 0;
+  updateProgressBar();
+}
+
+function addMedal() {
+  medals.bronze += 1; // vždy přidej 1x 🥉
+
+  while (medals.bronze >= 3) {
+    medals.bronze -= 3;
+    medals.silver += 1;
+  }
+
+  while (medals.silver >= 3) {
+    medals.silver -= 3;
+    medals.gold += 1;
+  }
+
+  animateMedal("bronze"); // vizuální animace – vždy jako bronz
+  updateMedals();
+  saveMedals();
+  showCelebration();
+}
+
+
+
+function updateMedals() {
+  const container = document.getElementById("medals-container");
+  container.innerHTML =
+    "🥇".repeat(medals.gold) +
+    "🥈".repeat(medals.silver) +
+    "🥉".repeat(medals.bronze);
+
+  const hasAny = medals.gold || medals.silver || medals.bronze;
+  document.getElementById("medals-today-title").style.display = hasAny ? "block" : "none";
+}
+
+
+
+function saveMedals() {
+  document.cookie = `medals=${JSON.stringify(medals)};path=/;max-age=31536000`;
+}
+
+function loadMedals() {
+  const match = document.cookie.match(/medals=([^;]+)/);
+  if (match) {
     try {
-      parsed = JSON.parse(data);
-      if (parsed.date !== today) parsed = { date: today, logs: [] };
-    } catch (e) {
-      parsed = { date: today, logs: [] };
-    }
-  }
-
-  // Přidání nového záznamu
-  parsed.logs.push(`[${time}]${prefix}\n${text}\n\n---\n`);
-
-  // Udržení max. 20 záznamů
-  if (parsed.logs.length > 20) {
-    parsed.logs = parsed.logs.slice(-20);
-  }
-
-  localStorage.setItem(key, JSON.stringify(parsed));
-}
-
-// AUTOSAVE každých 5 minut do localStorage s razítkem a denní rotací
-
-let lastSavedText = ""; // uchová poslední uložený text
-
-setInterval(() => {
-  if (editMode) return;
-
-  const text = document.getElementById("FINALCOMPLETEText").value.trim();
-  if (!text || text === lastSavedText) return;
-
-  appendToLocalStorageLog(text);
-  lastSavedText = text;
-}, 10 * 60 * 1000);
-
-
-//LOAD
-
-document.getElementById("loadButton").addEventListener("click", function () {
-  const overlay = document.getElementById("helpOverlay");
-  const viewer = document.getElementById("backupViewer");
-
-  try {
-    const backup = JSON.parse(localStorage.getItem("radioBackup") || "{}");
-    viewer.value = backup.logs ? backup.logs.join("\n") : "Žádná data.";
-  } catch (e) {
-    viewer.value = "Chyba při načítání zálohy.";
-  }
-
-  overlay.style.display = "block";
-});
-
-
-
-// background IMAGE
-
-
-document.addEventListener('DOMContentLoaded', function () {
- const bgDiv = document.getElementById('random-background');
- if (bgDiv) {
-	 const randomIndex = Math.floor(Math.random() * 7) + 1;
-	 bgDiv.style.backgroundImage = `url('background/${randomIndex}.webp')`;
- }
- console.log("Načten obrázek:", bgDiv.style.backgroundImage);
-});
-
-
-function resetBackgroundFilter() {
-  const bg = document.getElementById('random-background');
-  if (bg) {
-	bg.style.opacity = 1;
-	bg.style.filter = 'url(#bubbleFilter)';
+      medals = JSON.parse(match[1]);
+      updateMedals();
+    } catch {}
   }
 }
 
-	
-</script>
+saveMedalsToHistoryIfNewDay();
+loadMedals();
+updateProgressBar();
+
+
+// ANIMACE medaile
+
+function animateMedal(type) {
+  const anim = document.getElementById("medal-animation");
+  const emoji = type === "gold" ? "🥇" : type === "silver" ? "🥈" : "🥉";
+
+  // Cílový kontejner
+  const container = document.getElementById("medals-container");
+  const rect = container.getBoundingClientRect();
+
+  // Střed cílové oblasti
+  const targetLeft = rect.left + rect.width / 2;
+  const targetTop = rect.top + window.scrollY;
+
+  anim.textContent = emoji;
+  anim.style.display = "block";
+  anim.style.opacity = "1";
+  anim.style.position = "absolute";
+  anim.style.left = `${targetLeft}px`;
+  anim.style.top = `-100px`;
+  anim.style.transform = "translate(-50%, 0) scale(0.8)";
+  anim.style.transition = "none";
+
+  // Pád na pozici
+  anim.animate([
+    { transform: "translate(-50%, 0) scale(0.5)", top: "-100px", opacity: 0 },
+    { transform: "translate(-50%, 0) scale(1.5)", top: `${targetTop - 20}px`, opacity: 1 },
+    { transform: "translate(-50%, 0) scale(1)", top: `${targetTop}px`, opacity: 1 }
+  ], {
+    duration: 1000,
+    easing: "ease-out"
+  });
+
+  // Po dopadu – třes a pauza
+  setTimeout(() => {
+    anim.style.top = `${targetTop}px`;
+    anim.style.left = `${targetLeft}px`;
+    anim.style.transform = "translate(-50%, 0) scale(1)";
+    document.body.classList.add("shake");
+
+    setTimeout(() => {
+      document.body.classList.remove("shake");
+    }, 300);
+
+    // Nech 3 sekundy na místě
+    setTimeout(() => {
+      // Najít přesné místo nové medaile v containeru po aktualizaci
+      updateMedals(); // přidá novou medaili do DOM
+      const newMedal = container.querySelector("span:last-child, .medal:last-child"); // nebo uprav dle potřeby
+      const newRect = container.getBoundingClientRect();
+
+      // Posunout animovaný element na nové místo
+      const finalLeft = newRect.left + newRect.width / 2;
+      const finalTop = newRect.top + window.scrollY;
+
+      anim.style.transition = "all 0.6s ease-in-out";
+      anim.style.left = `${finalLeft}px`;
+      anim.style.top = `${finalTop}px`;
+      anim.style.opacity = "0";
+
+      setTimeout(() => {
+        anim.style.display = "none";
+      }, 700);
+    }, 3000);
+  }, 1000);
+}
 
 
 
+
+
+
+// HISTORIE
+
+function getTodayDateStr() {
+  return new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+}
+
+function saveMedalsToHistoryIfNewDay() {
+  const today = getTodayDateStr();
+  const lastDate = localStorage.getItem("medals-date");
+
+  if (lastDate && lastDate !== today) {
+    // Přesunout aktuální medaile do historie
+    const previous = { date: lastDate, ...medals };
+    let history = JSON.parse(localStorage.getItem("medals-history") || "[]");
+    history.push(previous);
+
+    // Seřadit a zkrátit na 5 dní
+    history.sort((a, b) => {
+      if (b.gold !== a.gold) return b.gold - a.gold;
+      if (b.silver !== a.silver) return b.silver - a.silver;
+      return b.bronze - a.bronze;
+    });
+    history = history.slice(0, 5);
+
+    localStorage.setItem("medals-history", JSON.stringify(history));
+
+    // Reset aktuálních medailí
+    medals = { gold: 0, silver: 0, bronze: 0 };
+    saveMedals();
+  }
+
+  // Zapsat nové datum
+  localStorage.setItem("medals-date", today);
+  updateHistory();
+}
+
+function updateHistory() {
+  const container = document.getElementById("history-list");
+  const history = JSON.parse(localStorage.getItem("medals-history") || "[]");
+
+  let html = "";
+
+  for (let i = 0; i < history.length; i++) {
+    const entry = history[i];
+
+    const golds = "🥇".repeat(entry.gold || 0);
+    const silvers = "🥈".repeat(entry.silver || 0);
+    const bronzes = "🥉".repeat(entry.bronze || 0);
+
+    html += '<div style="margin-bottom: 10px; font-size: 24px;">';
+    html += golds + silvers + bronzes;
+    html += '<span style="margin-left: 10px; font-size: 16px; color: #555;">' + entry.date + '</span>';
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
+  document.getElementById("history-title").style.display = history.length > 0 ? "block" : "none";
+}
+
+
+
+// reset medailí
+function resetTodayMedals() {
+  medals = { gold: 0, silver: 0, bronze: 0 };
+  saveMedals();
+  updateMedals();
+  console.log("Dnešní medaile byly resetovány.");
+}
+
+document.addEventListener("keydown", function(e) {
+  if (e.altKey && e.key.toLowerCase() === "r") {
+    resetTodayMedals();
+  }
+
+  if (e.altKey && e.key.toLowerCase() === "p") {
+    scoreGood++;
+    updateScoreDisplay();
+    addProgress(1);
+    checkCelebrationTrigger(scoreGood);
+  }
+});
+
+function showWinBanner() {
+  const banner = document.getElementById("win-banner");
+  banner.style.display = "block";
+
+  setTimeout(() => {
+    banner.style.display = "none";
+  }, 50000); // zmizí po 5 vteřinách
+}
+
+
+
+  </script>
 </body>
-
 </html>
-
