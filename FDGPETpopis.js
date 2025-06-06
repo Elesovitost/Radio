@@ -1312,7 +1312,7 @@ NeckOther1ResPriority = NeckOther1ResPriority.charAt(0).toUpperCase() + NeckOthe
 // neck native or not
 if (checkViability(POPNeckLymphNode1 || POPNeckLesion1 || POPNeckLesion2 || POPNeckLesion3 )) {
   POPNeckNative = "";
-  POPNeckElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
+  POPNeckElse = "Jinde se patologická hyperakumulující ložiska nezobrazují. ";
 } else {
   POPNeckNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
   POPNeckElse = "";
@@ -2300,7 +2300,7 @@ if (ThoraxParenchymaText.includes('fibróz') || ThoraxParenchymaText.includes('e
 
 if (checkViability(POPThoraxLymphNode1 || POPThoraxLesion1 || POPThoraxLesion2 || POPThoraxLesion3)) {
   POPThoraxNative = "";
-  POPThoraxElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
+  POPThoraxElse = "Jinde se patologická hyperakumulující ložiska nezobrazují. ";
 } else {
   POPThoraxNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
   POPThoraxElse = "";
@@ -3600,7 +3600,7 @@ if (AbdomenOrgansText.trim() === "" && AbdomenOther1Priority === "") {
 
 if (checkViability(POPAbdomenLymphNode1 || POPAbdomenLesion1 || POPAbdomenLesion2 || POPAbdomenLesion3)) {
   POPAbdomenNative = "";
-  POPAbdomenElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
+  POPAbdomenElse = "Jinde se patologická hyperakumulující ložiska nezobrazují. ";
 } else {
   POPAbdomenNative = "Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie. ";
   POPAbdomenElse = "";
@@ -4033,7 +4033,7 @@ if (SkeletonOther1Pop !== "" && SkeletonOther1Res ==="") {SkeletonOther1Priority
 
 if (checkViability(POPSkeletonLesion1 || POPSkeletonLesion2 || POPSkeletonLesion3)) {
   POPSkeletonNative = "";
-  POPSkeletonElse = "Jinde se patologická hypermetabolická ložiska nezobrazují. ";
+  POPSkeletonElse = "Jinde se patologická hyperakumulující ložiska nezobrazují. ";
 } else {
   POPSkeletonNative = "Není přítomen patologický hyperakumulující fokus či ložisko. ";
   POPSkeletonElse = "";
