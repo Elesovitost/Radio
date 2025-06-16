@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <title>Snake Game</title>
+  <style>
+  
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+  
+  
+    @font-face {
+	  font-family: 'IgnisEtGlaciesSharp';
+	  src: url('Ignis et Glacies Sharp.ttf') format('truetype');
+	  font-display: swap;
+	}
+
+  
+    /* Reset a základní styl */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Horní lišta s tlačítky */
+#topBar {
+  background: #ffffff;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-wrap: wrap; /* umožní přetečení do dalšího řádku */
+  align-items: center;
+  padding: 0 20px;
+  z-index: 10;
+  flex-shrink: 0;
+}
+	#playerButtons button {
+	  margin-right: 5px;
+	  padding: 4px 6px;
+	  font-size: 14px;
+	  cursor: pointer;
+	  border: 2px solid transparent;
+	  background: #fff;
+	  transition: border 0.2s;
+	  height: 36px;
+	  min-width: 110px;
+	  justify-content: space-between;
+	}
+
+    #playerButtons button.active {
+      color: #fff;
+      border-color: transparent;
+    }
+    /* Definice barev pro aktivované stavy */
+    #btnP1.active { background: rgb(200, 30, 30); }
+    #btnP2.active { background: rgb(30, 30, 200); }
+    #btnP3.active { background: rgb(30, 150, 30); }
+    #btnP4.active { background: rgb(0, 0, 0); }
+
+    /* Blikající nápis "MEZERNÍK = START" */
+    #startPrompt {
+      margin-left: auto;
+      font-weight: bold;
+      font-size: 16px;
+      animation: blink 1s step-start 0s infinite;
+      user-select: none;
+    }
+	@keyframes blink {
+	  0%, 100% { opacity: 0.2; }
+	  50% { opacity: 1; }
+	}
+	#startPrompt {
+	  margin-left: auto;
+	  font-weight: bold;
+	  font-size: 16px;
+	  animation: blink 1.6s ease-in-out infinite;
+	  user-select: none;
+	  transition: opacity 0.3s ease;
+	}
+
+
+.winnerLabel {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 6px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  font-family: 'Arial', sans-serif;
+}
+
+
+    /* Kontejner pro herní plátno */
+#container {
+  margin: 2px;
+  border: 2px solid #000;
+  background: #fff;
+  flex-grow: 1;
+  position: relative;
+}
+    #gameCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Text pro zobrazení výsledků (po skončení hry) */
+	#resultText {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  font-size: 20px;
+	  font-weight: bold;
+	  text-align: left;
+	  padding: 20px;
+	  background: rgba(255, 255, 255, 0.95); /* bílé pozadí s 80 % průhledností */
+	  border-radius: 10px;
+	  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+	  white-space: pre-line;
+	  pointer-events: none;
+	}
+	.kbd {
+	  display: inline-block;
+	  padding: 2px 5px;
+	  font-size: 13px;
+	  background: #fff;
+	  border: 2px solid #aaa;
+	  border-radius: 3px;
+	  width: 25px;
+	  height: 25px;
+	  text-align: center;
+	}
+	.kbdGroup:hover {
+	  transform: scale(1.12);
+	  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+	  cursor: pointer;
+	}
+
+	.nameSpan {
+	  cursor: text;
+	  font-size: 14px;
+	  margin-left: 6px;
+	}
+
+	.nameInput {
+	  font-size: 14px;
+	  margin-left: 6px;
+	  border: 1px solid #ccc;
+	  border-radius: 3px;
+	  padding: 2px 4px;
+	  height: 24px;
+	  width: 50px;
+	}
+
+
+	#btnMod1.active {
+	  background: #333;
+	  color: #fff;
+	  border-color: #666;
+	}
+		
+	#btnMod2.active {
+	  background: #333;
+	  color: #fff;
+	  border-color: #666;
+	}
+	
+	#btnMod3.active {
+	  background: #333;
+	  color: #fff;
+	  border-color: #666;
+	}
+	#modButtons button:hover {
+	  cursor: pointer;
+	}	
+	.nameSpan {
+	  cursor: default;
+	}
+  </style>
+</head>
+<body>
+
+  <!-- Horní lišta s tlačítky hráčů a startem -->
+  <div id="topBar">
+    <div id="playerButtons">
+      <button id="btnP1">hráč1 QW</button>
+      <button id="btnP2">hráč2 NM</button>
+      <button id="btnP3">hráč3 ◀ ▶</button>
+      <button id="btnP4">hráč4 -+</button>
+    </div>
+	<div id="modButtons" style="margin-left: 10px;">
+	<button id="btnMod1">SPEEDS</button>
+	<button id="btnMod2">GHOST</button>
+	<button id="btnMod3">THIN</button>
+	</div>
+
+	<div id="roundsControl" style="margin-left: 10px; display: flex; align-items: center;">
+	  <label for="roundsInput">kol:</label>
+	  <input type="number" id="roundsInput" value="5" min="1" max="10" style="width: 35px; margin-left: 5px;">
+	</div>
+    <div id="startPrompt">MEZERNÍK = START</div>
+  </div>
+
+  <!-- Kontejner s plátnem -->
+  <div id="container">
+    <canvas id="gameCanvas"></canvas>
+    <div id="resultText" style="display: none;"></div>
+	<div id="winnerCelebration" style="display:none; position:absolute; top:25%; left:50%; transform:translate(-50%, -50%); text-align:center; z-index:20;">
+	  <img id="winnerGif" src="snakes-dancing.gif" style="width:200px; max-width:90%; display:block; margin:0 auto;" />
+	  <div id="winnerName" style="font-size:32px; font-weight:bold; margin-top:10px;"></div>
+	</div>
+  </div>
+
+<audio id="bgMusic" src="snakes-music.mp3" loop volume="0.3"></audio>
+<audio id="crashSound" src="snakes-kolize.mp3"></audio>
+<audio id="medalSound" src="likeaboss.mp3"></audio>
+<audio id="clickSound" src="click.mp3"></audio>
+
+
+
+<script>
+  // ------------------------ PROMĚNNÉ A KONSTANTY ------------------------
+  
+  
+  const canvas = document.getElementById('gameCanvas');
+  // přidáno willReadFrequently pro rychlejší getImageData
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  const container = document.getElementById('container');
+  const startPrompt = document.getElementById('startPrompt');
+  const resultText = document.getElementById('resultText');
+  
+
+const colorCycle = ['orange', 'red', 'purple', 'blue', 'green', 'brown', 'black'];
+let playerColorIndexes = [null, null, null, null]; // výběrový index pro každého hráče
+
+
+  // Tlačítka pro hráče
+  const btnP1 = document.getElementById('btnP1');
+  const btnP2 = document.getElementById('btnP2');
+  const btnP3 = document.getElementById('btnP3');
+  const btnP4 = document.getElementById('btnP4');
+  const playerButtons = [btnP1, btnP2, btnP3, btnP4];
+  let playerNames = ['hráč1', 'hráč2', 'hráč3', 'hráč4'];
+  let totalScores = [0, 0, 0, 0]; // index odpovídá hráči 1–4
+  // Barevné kódy hráčů
+  const playerColors = ['rgb(200,30,30)', 'rgb(30,30,200)', 'rgb(30,150,30)', 'rgb(0,0,0)'];
+  // Klávesy pro ovládání hráčů: [vlevo, vpravo]
+  const playerKeys = [
+    ['KeyQ', 'KeyW'],           // hráč 1
+    ['KeyN', 'KeyM'],           // hráč 2
+    ['ArrowLeft', 'ArrowRight'], // hráč 3
+    ['Numpad1', 'Numpad2']          // hráč 4 
+  ];
+
+  let activePlayers = [false, false, false, false]; // stav tlačítek
+  let players = [];    // pole objektů aktivních hráčů
+  let finishOrder = []; // pořadí, jak hráči vypadli
+  let gameState = 'init'; // 'init', 'running', 'paused', 'ended'
+  let lastTimestamp = null; // pro delta time výpočty
+
+  // Rychlosti a parametry
+  const headRadius = 2.5;              // poloměr hlavy hráče (průměr 5px)
+  const trailWidth = 5;                // tloušťka stopy
+  const moveSpeed = 60;                // rychlost 10 px/s
+  const rotationSpeed = 100 * Math.PI/90; // 20°/s => v radiánech/s
+  
+ // ghost mode
+ let ghostInterval = null;
+const ghostDuration = 3000; // 3 sekundy
+const ghostCooldown = 20000; // každých 20 sekund
+
+	//sounds
+const bgMusic = document.getElementById('bgMusic');
+bgMusic.volume = 0.1;
+const crashSound = document.getElementById('crashSound');
+crashSound.volume = 0.6;
+const medalSound = document.getElementById('medalSound');
+medalSound.volume = 0.7;
+const clickSound = document.getElementById('clickSound');
+function playClickSound() {
+  try {
+    clickSound.currentTime = 0;
+    clickSound.play();
+  } catch (e) {
+    console.warn("Zvuk kliknutí nelze přehrát:", e);
+  }
+}
+
+
+  // Počet kol 
+	const roundsInput = document.getElementById('roundsInput');
+	let totalRounds = 5;
+	let currentRound = 0;
+
+		function updateRoundsFromInput() {
+		  totalRounds = Math.min(10, Math.max(1, parseInt(roundsInput.value) || 0));
+		  roundsInput.value = totalRounds;
+		  saveRoundsToStorage();
+		}
+
+		roundsInput.addEventListener('input', updateRoundsFromInput);
+		roundsInput.addEventListener('change', updateRoundsFromInput);
+
+		const roundsControl = document.getElementById('roundsControl');
+		roundsControl.addEventListener('wheel', (e) => {
+		  e.preventDefault(); // zamezí scrollu stránky
+		  const delta = Math.sign(e.deltaY);
+		  let newVal = parseInt(roundsInput.value) || 0;
+		  newVal -= delta;
+		  newVal = Math.max(0, Math.min(100, newVal));
+		  roundsInput.value = newVal;
+		  updateRoundsFromInput();
+		  playClickSound();
+		});
+
+  // MOD1 variabilní rychlost
+  const btnMod1 = document.getElementById('btnMod1');
+	let mod1Enabled = true;
+	btnMod1.classList.add('active');
+
+	btnMod1.addEventListener('click', () => {
+	  mod1Enabled = !mod1Enabled;
+	  btnMod1.classList.toggle('active', mod1Enabled);
+	  playClickSound();
+	});
+
+	// MOD2 ghost mode
+	const btnMod2 = document.getElementById('btnMod2');
+	let mod2Enabled = true;
+	btnMod2.classList.add('active');
+
+	btnMod2.addEventListener('click', () => {
+	  mod2Enabled = !mod2Enabled;
+	  btnMod2.classList.toggle('active', mod2Enabled);
+	  playClickSound();
+	});
+	
+	
+	const btnMod3 = document.getElementById('btnMod3');
+	let mod3Enabled = false;
+
+	btnMod3.addEventListener('click', () => {
+	  mod3Enabled = !mod3Enabled;
+	  btnMod3.classList.toggle('active', mod3Enabled);
+	  playClickSound();
+	});
+
+//LOCAL STORAGE
+
+
+
+  // Pomocné pro držení kláves
+  let keyState = {};
+  // ----------------------------------------------------------------------
+
+  // ------------------------ NASTAVENÍ VELIKOSTI CANVAS ------------------------
+  function resizeCanvas() {
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (gameState === 'ended') {
+      drawResults();
+    }
+  }
+  window.addEventListener('resize', () => { 
+    resetGame();
+    resizeCanvas();
+  });
+  // ---------------------------------------------------------------------------
+
+  // ------------------------ OVĚŘOVÁNÍ TLAČÍTEK HRAČŮ ------------------------
+playerButtons.forEach((btn, idx) => {
+
+btn.addEventListener('contextmenu', (e) => {
+  e.preventDefault(); // zamezí zobrazení kontextového menu
+});
+
+const updateLabel = () => {
+  const name = playerNames[idx];
+  const [keyL, keyR] = playerKeys[idx].map(k => {
+    switch (k) {
+      case 'ArrowLeft': return '◀';
+      case 'ArrowRight': return '▶';
+      case 'Numpad1': return '1';
+      case 'Numpad2': return '2';
+      default: return k.replace('Key', '');
+    }
+  });
+
+  const btnColor = (playerColorIndexes[idx] !== null)
+    ? colorCycle[playerColorIndexes[idx]]
+    : '#888';
+
+	btn.innerHTML =
+	  '<span class="kbdGroup" style="display:inline-flex; gap:4px;">' +
+		'<span class="kbd" style="border-color:' + btnColor + '; color:' + btnColor + ';">' + keyL + '</span>' +
+		'<span class="kbd" style="border-color:' + btnColor + '; color:' + btnColor + ';">' + keyR + '</span>' +
+	  '</span>' +
+	  ' <span class="nameSpan" style="color:' + btnColor + ';">' + name + '</span>';
+
+
+
+  playerColors[idx] = btnColor; // barva hada
+};
+
+
+
+btn.addEventListener('mousedown', (e) => {
+  e.preventDefault();
+    if (btn.querySelector('.nameInput')) {return;}
+    if (e.target.classList.contains('nameSpan')) return;
+
+  const forward = e.button === 0; // levý klik
+  const backward = e.button === 2; // pravý klik
+  const total = colorCycle.length;
+
+  const usedColors = playerColorIndexes
+    .filter((val, i) => val !== null && activePlayers[i] && i !== idx)
+    .map(i => colorCycle[i]);
+
+  let currentIndex = playerColorIndexes[idx];
+  let nextIndex = null;
+
+  if (forward) {
+    if (currentIndex === null) currentIndex = -1;
+
+    for (let i = currentIndex + 1; i <= total; i++) {
+      if (i === total) {
+        // Přeskočeno vše → deaktivace
+        activePlayers[idx] = false;
+        playerColorIndexes[idx] = null;
+        updateLabel();
+        updateStartPromptText();
+        return;
+      }
+      const color = colorCycle[i];
+      if (!usedColors.includes(color)) {
+        nextIndex = i;
+        break;
+      }
+    }
+  }
+
+  if (backward) {
+    if (currentIndex === null) currentIndex = total;
+
+    for (let i = currentIndex - 1; i >= -1; i--) {
+      if (i === -1) {
+        // Přeskočeno vše → deaktivace
+        activePlayers[idx] = false;
+        playerColorIndexes[idx] = null;
+        updateLabel();
+        updateStartPromptText();
+        return;
+      }
+      const color = colorCycle[i];
+      if (!usedColors.includes(color)) {
+        nextIndex = i;
+        break;
+      }
+    }
+  }
+
+  if (nextIndex !== null) {
+    playerColorIndexes[idx] = nextIndex;
+    activePlayers[idx] = true;
+  }
+
+  updateLabel();
+  updateStartPromptText();
+  playClickSound();
+
+});
+
+
+btn.addEventListener('dblclick', (e) => {
+  if (!e.target.classList.contains('nameSpan')) return;
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = playerNames[idx];
+	input.className = 'nameInput';
+
+btn.innerHTML = '';
+
+const [keyL, keyR] = playerKeys[idx].map(k => {
+  switch (k) {
+    case 'ArrowLeft': return '◀';
+    case 'ArrowRight': return '▶';
+    case 'Numpad1': return '1';
+    case 'Numpad2': return '2';
+    default: return k.replace('Key', '');
+  }
+});
+
+const keySpan = document.createElement('span');
+keySpan.innerHTML = '<span class="kbd">' + keyL + '</span><span class="kbd">' + keyR + '</span>';
+btn.appendChild(keySpan);
+btn.appendChild(document.createTextNode(' '));
+btn.appendChild(input);
+
+
+  input.focus();
+  input.select();
+
+  const saveName = () => {
+    const name = input.value.trim();
+    if (name) playerNames[idx] = name;
+    setTimeout(() => {
+      updateLabel();
+      savePlayerNamesToStorage();
+    }, 0);
+  };
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') saveName();
+  });
+
+  input.addEventListener('blur', saveName);
+});
+
+
+
+
+
+
+
+  updateLabel();
+  
+});
+
+
+  function updateStartPromptText() {
+  const anyActive = activePlayers.some(v => v);
+  startPrompt.textContent = anyActive ? 'MEZERNÍK = START' : 'AKTIVUJ HRÁČE';
+	}
+
+  // ----------------------------------------------------------------------
+
+  // ------------------------ START / PAUZA HRY (MEZERNÍK) ------------------------
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+      e.preventDefault();
+      if (gameState === 'init') {
+        startGame();
+      } else if (gameState === 'running') {
+        pauseGame();
+      } else if (gameState === 'paused') {
+        resumeGame();
+      } else if (gameState === 'ended') {
+        resetGame();
+      }
+    }
+    keyState[e.code] = true;
+  });
+  document.addEventListener('keyup', (e) => {
+    keyState[e.code] = false;
+  });
+  // ----------------------------------------------------------------------
+
+  // ------------------------ FUNKCE PRO ŘÍZENÍ STAVŮ HRY ------------------------
+	function startGame() {
+	  bgMusic.playbackRate = 1.0;
+	  const countActive = activePlayers.filter(v => v).length;
+	  if (countActive === 0 || (currentRound >= totalRounds)) return;
+
+	  currentRound++;
+	  resultText.style.display = 'none'; // <- SKRYJE KOLO
+	  startPrompt.style.display = 'none';
+	  gameState = 'running';
+	  finishOrder = [];
+	  initializePlayers();
+	  lastTimestamp = null;
+	  requestAnimationFrame(gameLoop);
+	  
+	  
+	  if (mod2Enabled) {
+		  ghostInterval = setInterval(() => {
+			const alivePlayers = players.filter(p => p.alive && !p.ghost);
+			if (alivePlayers.length === 0) return;
+			const ghostPlayer = alivePlayers[Math.floor(Math.random() * alivePlayers.length)];
+			ghostPlayer.ghost = true;
+			ghostPlayer.originalColor = ghostPlayer.color;
+			ghostPlayer.color = 'rgba(240,240,240,0.9)'; // téměř bílá
+
+			const randomDuration = 2000 + Math.random() * 2000; // 2000–4000 ms
+			setTimeout(() => {
+			  ghostPlayer.ghost = false;
+			  ghostPlayer.color = ghostPlayer.originalColor;
+			  delete ghostPlayer.originalColor;
+			}, randomDuration);
+		  }, ghostCooldown);
+		}
+		// hudba
+		try {
+		  bgMusic.currentTime = 0;
+		  bgMusic.play();
+		} catch (e) {
+		  console.warn("Zvuk nelze přehrát (možná kvůli omezením prohlížeče):", e);
+		}
+
+	}
+
+   //PAUZA
+	function pauseGame() {
+	  if (gameState !== 'running') return;
+	  gameState = 'paused';
+	  bgMusic.pause(); // pozastaví hudbu
+	}
+
+
+	function resumeGame() {
+	  if (gameState !== 'paused') return;
+	  gameState = 'running';
+	  lastTimestamp = null;
+	  requestAnimationFrame(gameLoop);
+	  try {
+		bgMusic.play(); // znovu spustí hudbu
+	  } catch (e) {
+		console.warn("Hudba po pauze se nepodařila přehrát:", e);
+	  }
+	}
+
+// ENDGAME
+  function endGame() {
+    gameState = 'ended';
+    drawResults();
+	
+	if (ghostInterval) {
+	  clearInterval(ghostInterval);
+	  ghostInterval = null;
+	}
+	bgMusic.pause();
+	bgMusic.currentTime = 0;
+  }
+
+// RESET GAME
+
+function resetGame() {
+	const celebrationDiv = document.getElementById('winnerCelebration');
+	celebrationDiv.style.display = 'none';
+	celebrationDiv.innerHTML = '';
+	try {
+	  medalSound.pause();
+	  medalSound.currentTime = 0;
+	} catch (e) {
+	  console.warn("Zvuk výhry nelze zastavit:", e);
+	}
+	
+	if (currentRound >= totalRounds) {
+	  let html = '<div style="font-size:16px; text-align:left;">';
+	  html += '<h2 style="text-align:center; margin-bottom:10px;">KONEC HRY</h2>';
+	  html += '<h3 style="margin-bottom:6px;">Celkové skóre:</h3>';
+	  html += '<table style="width:100%; border-collapse: collapse;">';
+
+	  const withScores = totalScores
+		.map((s, i) => ({ id: i + 1, score: s }))
+		.filter((_, i) => activePlayers[i])
+		.sort((a, b) => b.score - a.score);
+
+	  withScores.forEach((entry, i) => {
+		const color = playerColors[entry.id - 1];
+		const name = playerNames[entry.id - 1];
+		html += `<tr>
+		  <td style="padding:4px;">${i + 1}.</td>
+		  <td style="color:${color}; padding:4px;">${name}</td>
+		  <td style="padding:4px;">${entry.score} B</td>
+		</tr>`;
+	  });
+
+	  html += '</table></div>';
+	  resultText.innerHTML = html;
+	  resultText.style.display = 'block';
+
+
+    // === ÚPRAVA: Detekuj více vítězů ===
+    const maxScore = withScores[0].score;
+    const winners = withScores.filter(p => p.score === maxScore);
+
+    // Zobrazení více hadích gifů
+    const celebrationDiv = document.getElementById('winnerCelebration');
+    celebrationDiv.innerHTML = ''; // Vyčisti starý obsah
+
+    winners.forEach((winner) => {
+      const color = playerColors[winner.id - 1];
+      const name = playerNames[winner.id - 1].toUpperCase();
+
+      const gif = document.createElement('img');
+      gif.src = 'snakes-dancing.gif';
+      gif.style.width = '150px';
+      gif.style.maxWidth = '90%';
+      gif.style.margin = '10px';
+      gif.style.display = 'inline-block';
+
+      const label = document.createElement('div');
+      label.textContent = name;
+	  label.className = 'winnerLabel';
+	  label.style.color = color; 
+
+      const container = document.createElement('div');
+      container.style.display = 'inline-block';
+      container.style.textAlign = 'center';
+      container.appendChild(gif);
+      container.appendChild(label);
+
+      celebrationDiv.appendChild(container);
+    });
+
+    celebrationDiv.style.display = 'block';
+
+    try {
+      medalSound.currentTime = 0;
+      medalSound.play();
+    } catch (e) {
+      console.warn("Zvuk výhry (medal.mp3) se nepodařilo přehrát:", e);
+    }
+
+    setTimeout(() => {
+      celebrationDiv.style.display = 'none';
+    }, 7500);
+
+    startPrompt.textContent = 'MEZERNÍK = RESTART';
+    startPrompt.style.display = 'block';
+    currentRound = 0;
+    totalScores = [0, 0, 0, 0]; // Reset skóre
+
+    return;
+  }
+
+  gameState = 'init';
+  players = [];
+  finishOrder = [];
+  resultText.innerHTML = '<div style="text-align:center;">Kolo ' + (currentRound + 1) + ' / ' + totalRounds + '</div>';
+  resultText.style.display = 'block';
+  startPrompt.style.display = 'block';
+  updateStartPromptText();
+  resizeCanvas();
+}
+
+
+
+  // ----------------------------------------------------------------------
+
+  // ------------------------ INICIALIZACE HRÁČŮ ------------------------
+  function initializePlayers() {
+    players = [];
+    const aktifIdx = activePlayers
+      .map((v, i) => v ? i : -1)
+      .filter(i => i !== -1);
+    const n = aktifIdx.length;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = (canvas.height / 2) / 2; // poloměr pro obvod
+	
+    for (let k = 0; k < n; k++) {
+      const idx = aktifIdx[k];
+      const theta = (2 * Math.PI / n) * k;
+      const x0 = centerX + radius * Math.cos(theta);
+      const y0 = centerY + radius * Math.sin(theta);
+      const dir = theta + Math.PI;
+      const player = {
+        id: idx + 1,
+        color: playerColors[idx],
+        x: x0,
+        y: y0,
+        angle: dir,
+        alive: true,
+        turnLeft: false,
+        turnRight: false,
+		speed: mod1Enabled ? moveSpeed * (1 + (Math.random() * 0.4 - 0.1)) : moveSpeed, 
+		thinActive: false,
+		widthFactor: 1,
+		prevTurnState: { left: false, right: false },
+		thinWindowStart: 0,
+		thinState: null
+      };
+      players.push(player);
+
+      // Vykreslit počáteční hlavu
+      ctx.beginPath();
+      ctx.fillStyle = player.color;
+      ctx.arc(x0, y0, headRadius, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // VYPIS DO KONZOLE: kde se hráč objevil
+      console.log(`Hráč ${player.id} se objevil na (${x0.toFixed(1)}, ${y0.toFixed(1)})`);
+    }
+  }
+  // ----------------------------------------------------------------------
+
+  // ------------------------ HERNÍ SMYČKA ------------------------
+function gameLoop(timestamp) {
+  if (gameState !== 'running') return;
+
+  if (!lastTimestamp) lastTimestamp = timestamp;
+  const delta = (timestamp - lastTimestamp) / 1000;
+  lastTimestamp = timestamp;
+
+  for (let p of players) {
+    if (!p.alive) continue;
+
+    if (p.turnLeft) {
+      p.angle -= rotationSpeed * delta;
+    }
+    if (p.turnRight) {
+      p.angle += rotationSpeed * delta;
+    }
+
+	let baseSpeed = p.speed || moveSpeed;
+		if (p.thinActive) baseSpeed *= 0.7;
+		const speed = baseSpeed;
+	const dx = Math.cos(p.angle) * speed * delta;
+	const dy = Math.sin(p.angle) * speed * delta;
+
+    const newX = p.x + dx;
+    const newY = p.y + dy;
+
+    // ---- SPRÁVNÁ ČELNÍ KOLIZE PODLE SOUČASNÉ POZICE ----
+const frontRadius = headRadius + 1;
+const numSamples = 8;
+const ownRgb = p.color.replace(/[^\d,]/g, '').split(',').map(Number);
+let hitCount = 0;
+
+for (let i = 0; i < numSamples; i++) {
+  const offsetAngle = (i / (numSamples - 1) - 0.7) * Math.PI / 2;
+  const checkAngle = p.angle + offsetAngle;
+  const cx = p.x + frontRadius * Math.cos(checkAngle);
+  const cy = p.y + frontRadius * Math.sin(checkAngle);
+
+  const ix = Math.floor(cx);
+  const iy = Math.floor(cy);
+
+
+  if (ix < 0 || ix >= canvas.width || iy < 0 || iy >= canvas.height) {
+    hitCount++; // zásah mimo hranici = kolize
+    continue;
+  }
+
+  const pixel = ctx.getImageData(ix, iy, 1, 1).data;
+  const isWhite = (pixel[0] >= 245 && pixel[1] >= 245 && pixel[2] >= 245);
+  const isOwnColor = (
+    pixel[0] === ownRgb[0] &&
+    pixel[1] === ownRgb[1] &&
+    pixel[2] === ownRgb[2]
+  );
+
+	const isBlack = (pixel[0] < 10 && pixel[1] < 10 && pixel[2] < 10);
+
+	if ((p.ghost && isBlack) || (!p.ghost && !isWhite && !isOwnColor)) {
+	  hitCount++;
+	}
+}
+
+if ((hitCount >= 4 && !p.ghost) || (hitCount >= 1 && p.ghost)) {
+  p.alive = false;
+  finishOrder.push(p);
+  console.log(`Hráč ${p.id} narazil.`);
+
+  try {
+    const s = new Audio('snakes-kolize.mp3');
+    s.volume = 0.6;
+    s.play();
+  } catch (e) {
+    console.warn("Zvuk kolize nelze přehrát:", e);
+  }
+
+  if (mod1Enabled) {
+    players.forEach(other => {
+      if (other.alive) {
+        other.speed *= 1.2;
+      }
+    });
+    try {
+      bgMusic.playbackRate = Math.min(bgMusic.playbackRate * 1.1, 2.0);
+    } catch (e) {
+      console.warn("Nepodařilo se upravit rychlost hudby:", e);
+    }
+  }
+}
+
+
+
+
+    // ---- VYKRESLENÍ POHYBU A AKTUALIZACE POZICE ----
+    ctx.beginPath();
+    ctx.strokeStyle = p.color;
+    ctx.lineWidth = trailWidth * (p.widthFactor || 1);
+    ctx.moveTo(p.x, p.y);
+    ctx.lineTo(newX, newY);
+    ctx.stroke();
+
+    p.x = newX;
+    p.y = newY;
+
+	ctx.beginPath();
+	ctx.fillStyle = p.color;
+	ctx.arc(p.x, p.y, headRadius * (p.widthFactor || 1), 0, 2 * Math.PI);
+	ctx.fill();
+  }
+
+  updateTurningStates();
+
+  const anyAlive = players.some(p => p.alive);
+  if (!anyAlive) {
+    endGame();
+    return;
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+function updateTurningStates() {
+  const now = performance.now();
+
+  for (let p of players) {
+    const idx = p.id - 1;
+    const [keyL, keyR] = playerKeys[idx];
+
+    const isLeft = !!keyState[keyL];
+    const isRight = !!keyState[keyR];
+
+    p.turnLeft = isLeft;
+    p.turnRight = isRight;
+
+    if (mod3Enabled && !p.thinActive) {
+      const nonePressed = !isLeft && !isRight;
+      const bothPressed = isLeft && isRight;
+
+      // Pokud obě klávesy puštěny → začni hlídat čas
+      if (nonePressed && p.thinState !== 'waiting') {
+        p.thinState = 'waiting';
+        p.thinWindowStart = now;
+      }
+
+      // Pokud jsme v čekání a najednou jsou obě stisknuty do 150 ms
+      if (p.thinState === 'waiting' && bothPressed && (now - p.thinWindowStart <= 150)) {
+        p.thinActive = true;
+        p.thinState = null;
+        console.log(`Hráč ${p.id} aktivoval ztenčení (MOD3)`);
+      }
+
+      // Pokud čas vypršel bez aktivace
+      if (p.thinState === 'waiting' && (now - p.thinWindowStart > 150)) {
+        p.thinState = null;
+      }
+    }
+
+    // Ulož stav kláves
+    p.prevTurnState = { left: isLeft, right: isRight };
+    p.widthFactor = p.thinActive ? 0.5 : 1;
+  }
+}
+
+
+
+
+  // ----------------------------------------------------------------------
+
+  // ------------------------ ZOBRAZENÍ POŘADÍ PO KONCI ------------------------
+function drawResults() {
+  const ranking = [...finishOrder].reverse();
+  const n = ranking.length;
+
+  let html = '<div style="font-size:16px;">';
+  html += '<h3 style="margin-bottom:6px;">Pořadí kola:</h3>';
+  html += '<table style="width:100%; border-collapse: collapse; margin-bottom:12px;">';
+
+  for (let i = 0; i < n; i++) {
+    const playerId = ranking[i].id;
+    const score = n - 1 - i;
+    totalScores[playerId - 1] += score;
+    const color = playerColors[playerId - 1];
+    const name = playerNames[playerId - 1];
+    html += `<tr>
+      <td style="padding:4px;">${i + 1}.</td>
+      <td style="color:${color}; padding:4px;">${name}</td>
+      <td style="padding:4px;">${score} B</td>
+    </tr>`;
+  }
+
+  html += '</table><h3 style="margin-bottom:6px;">Celkové skóre:</h3>';
+  html += '<table style="width:100%; border-collapse: collapse;">';
+
+  const withScores = totalScores
+    .map((s, i) => ({ id: i + 1, score: s }))
+    .filter((_, i) => activePlayers[i])
+    .sort((a, b) => b.score - a.score);
+
+  withScores.forEach((entry, i) => {
+    const color = playerColors[entry.id - 1];
+    const name = playerNames[entry.id - 1];
+    html += `<tr>
+      <td style="padding:4px;">${i + 1}.</td>
+      <td style="color:${color}; padding:4px;">${name}</td>
+      <td style="padding:4px;">${entry.score} B</td>
+    </tr>`;
+  });
+
+  html += '</table></div>';
+  resultText.innerHTML = html;
+  resultText.style.display = 'block';
+}
+
+
+
+
+  // ----------------------------------------------------------------------
+
+  // ------------------------ INITIALIZACE A START ------------------------
+window.addEventListener('load', () => {
+  loadPlayerNamesFromStorage();
+  resizeCanvas();
+  updateStartPromptText();
+  loadRoundsFromStorage();
+});
+
+  // ----------------------------------------------------------------------
+
+
+function savePlayerNamesToStorage() {
+  localStorage.setItem('playerNames', JSON.stringify(playerNames));
+}
+
+function loadPlayerNamesFromStorage() {
+  const stored = localStorage.getItem('playerNames');
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length === playerNames.length) {
+        for (let i = 0; i < playerNames.length; i++) {
+          playerNames[i] = parsed[i];
+        }
+      }
+    } catch (e) {
+      console.warn("Chyba při načítání jmen z localStorage:", e);
+    }
+  }
+}
+
+function saveRoundsToStorage() {
+  localStorage.setItem('totalRounds', totalRounds);
+}
+
+function loadRoundsFromStorage() {
+  const stored = localStorage.getItem('totalRounds');
+  if (stored) {
+    const parsed = parseInt(stored);
+    if (!isNaN(parsed)) {
+      totalRounds = parsed;
+      roundsInput.value = parsed;
+    }
+  }
+}
+
+
+</script>
+
+</body>
+</html>

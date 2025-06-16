@@ -1,0 +1,1591 @@
+  <!-- resetProgressBar(); pro reset bárku při chybě  -->
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Písmenková hra</title>
+<style>
+/* Základní tělo stránky */
+body {font-family:sans-serif;text-align:center;padding:10px;}
+canvas {position:fixed;top:0;left:0;pointer-events:none;}
+#fireworks {position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1000;background:transparent;}
+
+
+/* Horní panel a menu */
+.topbar {display:flex;flex-direction:column;align-items:center;gap:20px;margin-bottom:20px;margin-top:10px;}
+.menu {display:flex;gap:10px;justify-content:center;}
+.score-container {text-align:center;}
+
+/* Tlačítka módů */
+.mode-button {font-size:20px;padding:6px 12px;border:1px solid #000;border-radius:12px;cursor:pointer;transition:all 0.3s;font-weight:bold;box-shadow:2px 2px 6px rgba(0,0,0,0.2);}
+.mode-button.writing {background-color:#ffcc70;color:#4b2e00;}
+.mode-button.reading {background-color:#a0e8af;color:#004d25;}
+.mode-button.syllables {background-color:#99ccff;color:#002b80;}
+.mode-button.free {background-color:#f4c2c2;color:#6b0000;}
+.mode-button:hover {transform:scale(1.05);box-shadow:4px 4px 10px rgba(0,0,0,0.3);}
+
+/* Styl pro tlačítko OK (free mód) */
+#free-ok {width:50px;height:50px;border-radius:12px;padding:0;font-size:18px;font-weight:bold;background-color:#f4c2c2;color:#6b0000;border:1px solid #000;box-shadow:2px 2px 6px rgba(0,0,0,0.2);transition:all 0.3s;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:20px auto;}
+#free-ok:hover {transform:scale(1.05);box-shadow:4px 4px 10px rgba(0,0,0,0.3);}
+
+/* Rámeček obrázků */
+.framed-image {border:2px solid #333;max-height:200px;margin-bottom:20px;}
+#image {max-height:200px;margin-bottom:20px;border-radius:12px;border:2px solid #333;}
+
+/* Skupina jablek (pro matiku) */
+.apple-group {display:flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:140px;font-size:22px;background:transparent;padding:6px;}
+.apple-group div {width:24px;text-align:center;}
+
+
+/* Podtržítko (blikající) */
+.blinking-underscore {display:inline-block;animation:blink-underscore 1.2s infinite;}
+@keyframes blink-underscore {0%{opacity:1;}50%{opacity:0;}100%{opacity:1;}}
+
+/* Skóre */
+.score-label {font-size:16px;margin-bottom:10px;display:block;}
+.score {font-size:20px;}
+.score .good {color:green;margin-right:10px;}
+.score .bad {color:red;}
+.score-box {display:inline-flex;align-items:center;justify-content:center;width:80px;height:40px;overflow:hidden;position:relative;}
+.score-inner {font-family:Impact,sans-serif;font-weight:normal;font-size:22px;letter-spacing:1px;line-height:1;}
+
+/* Písmena (psaní a matika) */
+.letter-box {display:inline-block;width:40px;height:40px;border:1px solid #ccc;font-size:30px;line-height:40px;margin:2px;text-align:center;vertical-align:middle;}
+.correct {border-color:green;color:green;}
+.incorrect {border-color:red;color:red;}
+
+/* Animace písmen a obrázků */
+@keyframes pop-in {0%{transform:scale(1);}40%{transform:scale(1.3);}100%{transform:scale(1);}}
+.letter-pop {animation:pop-in 0.2s ease-out;}
+.image-pop {animation:pop-in 0.2s ease-out;}
+
+/* Čtení - slovo a volby */
+#reading-word {font-size:32px;margin:20px;}
+#reading-options {display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+#reading-options img {height:105px;cursor:pointer;border:2px solid #333;border-radius:12px;transition:transform 0.2s ease,filter 0.3s ease,border 0.2s;}
+#reading-options img:hover {transform:scale(1.05);}
+
+/* Pokrokový pruh */
+#progress-bar-container {margin-top:10px;margin-bottom:20px;width:300px;height:24px;border:2px solid #fff;margin-inline:auto;position:relative;background:linear-gradient(to right,#222,#111);border-radius:14px;box-shadow:inset 0 0 4px #000,0 0 10px #00ffc055;overflow:hidden;}
+#progress-fill-green,
+#progress-fill-teal,
+#progress-fill-cyan,
+#progress-fill-blue,
+#progress-fill-purple,
+#progress-fill-pink,
+#progress-fill-red,
+#progress-fill-orange,
+#progress-fill-gold {
+height:100%;
+width:0%;
+position:absolute;
+left:0;
+border-radius:12px 0 0 12px;
+z-index:1;
+transition:width 0.4s ease-in-out;
+opacity:0.95;
+}
+#progress-fill-green {background:linear-gradient(to right,#00ff88,#007744);box-shadow:inset 0 0 4px #00ff88,0 0 6px #00ff88aa;z-index:1;}
+#progress-fill-teal {background:linear-gradient(to right,#00ffaa,#008877);box-shadow:inset 0 0 4px #00ffaa,0 0 6px #00ffaaaa;z-index:2;}
+#progress-fill-cyan {background:linear-gradient(to right,#33ccff,#0099cc);box-shadow:inset 0 0 4px #33ccff,0 0 6px #33ccffaa;z-index:3;}
+#progress-fill-blue {background:linear-gradient(to right,#3399ff,#003355);box-shadow:inset 0 0 4px #3399ff,0 0 6px #3399ffaa;z-index:4;}
+#progress-fill-purple {background:linear-gradient(to right,#cc66ff,#4b0066);box-shadow:inset 0 0 4px #cc66ff,0 0 6px #cc66ffaa;z-index:5;}
+#progress-fill-pink {background:linear-gradient(to right,#ff99cc,#cc0066);box-shadow:inset 0 0 4px #ff99cc,0 0 6px #ff99ccaa;z-index:6;}
+#progress-fill-red {background:linear-gradient(to right,#ff4444,#880000);box-shadow:inset 0 0 4px #ff4444,0 0 6px #ff4444aa;z-index:7;}
+#progress-fill-orange {background:linear-gradient(to right,#ffaa33,#cc5500);box-shadow:inset 0 0 4px #ffaa33,0 0 6px #ffaa33aa;z-index:8;}
+#progress-fill-gold {background:linear-gradient(to right,#ffd700,#ccaa00);box-shadow:inset 0 0 4px #ffd700,0 0 6px #ffd700aa;z-index:9;}
+
+/* Animace – výhra, chvění, pulzace */
+@keyframes pop-win {0%{transform:scale(0.5) translate(-50%,-50%);opacity:0;}50%{transform:scale(1.2) translate(-50%,-50%);opacity:1;}100%{transform:scale(1) translate(-50%,-50%);opacity:1;}}
+@keyframes medal-from-depth {
+  0%   { transform: translate(-50%, -50%) scale(5); opacity: 0; }
+  95% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+
+.dip-effect {
+  animation: screen-dip 0.5s ease-out;
+}
+
+/* Responsivita – mobil */
+@media (max-width:699px) {
+#gif-container {left:10px !important;transform:none !important;}
+}
+@media (max-width:600px) {
+body {font-size:3.5vw;}
+#letters {font-size:5vw;}
+#reading-options button,#free-ok {font-size:5vw;padding:2vw 4vw;}
+#free-cursor {font-size:8vw;}
+img {max-width:80vw;height:auto;}
+#mobile-input {position:absolute;top:0;left:0;width:1px;height:1px;opacity:0.01;z-index:1;}
+#main-container {padding:2vw;max-width:100vw;overflow:hidden;}
+}
+
+/* kolečko settings rotace */
+#settings-toggle { width:48px; height:42px; font-size:24px; line-height:40px; text-align:center; display:inline-block; transform-origin:center; } #settings-toggle:hover { animation: rotate360 1s linear infinite; } @keyframes rotate360 { to { transform: rotate(360deg); } }
+</style>
+
+</head>
+<body>
+
+<!--  event. free mód -->
+ <div class="topbar">
+<div class="menu" style="align-items: center;">
+  <div style="display: flex; gap: 10px;">
+    <button class="mode-button writing" onclick="startGame('writing')">✍️ PSANÍ</button>
+	<button class="mode-button free" style="display: none;" onclick="startGame('free')">✒️ VOLNÉ</button>
+    <button class="mode-button reading" onclick="startGame('reading')">📖 ČTENÍ</button>
+    <button class="mode-button syllables" onclick="startGame('syllables')">➕ SLABIKY</button>
+  </div>
+</div>
+  <div class="score-container">
+    <div class="score-label">SCORE</div>
+		<div class="score">
+		  <div class="score-box">
+			<div class="score-inner good" id="score-good">0</div>
+		  </div>
+		  <div class="score-box">
+			<div class="score-inner bad" id="score-bad">0</div>
+		  </div>
+		</div>
+  </div>
+</div>
+
+<div id="progress-bar-container" style="margin-top: 10px; margin-bottom: 20px; width: 300px; height: 24px; border: 2px solid #aaa; margin-inline: auto; position: relative; background: #f8f8f8; border-radius: 12px; overflow: hidden;">
+  <div id="progress-fill-green"></div>
+  <div id="progress-fill-teal"></div>
+  <div id="progress-fill-cyan"></div>
+  <div id="progress-fill-blue"></div>
+  <div id="progress-fill-purple"></div>
+  <div id="progress-fill-pink"></div>
+  <div id="progress-fill-red"></div>
+  <div id="progress-fill-orange"></div>
+  <div id="progress-fill-gold"></div>
+  <span style="position: absolute; right: -32px; top: 0; font-size: 24px;">🏅</span>
+</div>
+
+
+
+  </br>
+
+<div id="wrong-robot-fixed" style="position:fixed;top:80px;left:50%;transform:translateX(60px);z-index:999;display:none;">  <img src="wrong-robot.gif" style="height:100px;" /></div>
+
+<div id="gif-container" style="position:fixed;top:80px;left:50%;transform:translateX(-160px);z-index:999;display:none;"><img id="gif-animation" src="dance1.gif" style="height:100px;" /></div>
+
+
+<audio id="special-audio" src="music1.mp3"></audio>
+
+
+<input id="mobile-input" type="text" inputmode="text" style="position:fixed;top:50vh;left:0;width:1px;height:1px;opacity:0;border:none;z-index:-1;" />
+
+
+  <img id="image" class="framed-image" src="" alt="obrázek" hidden />
+  <div id="letters"></div>
+
+  <div id="reading-word"></div>
+  <div id="reading-options"></div>
+  <div id="syllables-task"></div>
+
+
+<div id="free-mode" style="display: none; margin-top: 20px;">
+  <div id="free-cursor" style="font-size: 36px; width: fit-content; margin-inline: auto; padding: 5px 10px;"></div>
+  <button id="free-ok" style="margin-top: 10px; font-size: 18px; width: 50px; height: 40px;">OK</button>
+  <div id="free-images" style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;"></div>
+</div>
+
+
+<h5 id="medals-today-title" style="margin-top: 30px; margin-bottom: 6px; display: none;">MEDAILE</h5>
+<div id="medals-container" style="font-size: 32px;"></div>
+<div style="text-align: center; margin-top: 20px;">
+  <button id="settings-toggle" style="font-size: 24px; background: none; border: none; cursor: pointer;">⚙️</button>
+   <div id="settings" style="display: none; margin-top: 10px;">
+	  <button id="toggle-uppercase" style="font-size: 24px;">🔠</button>
+	  <button id="toggle-sound" style="font-size: 24px;">🔇</button>
+	  <button id="toggle-free-mode" style="font-size: 24px;">❌🖊️</button>
+	  <button id="toggle-kid-mode" style="font-size: 24px;">🧒</button>
+	  <div id="tooltip" style="position: absolute; display: none; background: #222; color: #fff; padding: 6px 10px; border-radius: 8px; font-size: 14px; z-index: 9999; pointer-events: none;"></div>
+	</div>
+</div>
+
+<div id="medal-animation" style="position: fixed; top: -100px; left: 50%; transform: translateX(-50%); font-size: 80px; z-index: 9999; pointer-events: none; display: none;"></div>
+
+
+  <canvas id="fireworks"></canvas>
+
+  <!-- Zvuky -->
+  <audio id="sound-correct" src="correct.mp3"></audio>
+  <audio id="sound-wrong" src="wrong.mp3"></audio>
+  <audio id="sound-win" src="win.mp3"></audio>
+
+<div id="win-banner" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;font-weight:bold;color:gold;text-shadow:4px 4px 10px black;z-index:9999;display:none;animation:pop-win 1s ease-out;">VYHRÁL JSI!</div>
+
+<div id="typing-log" style="display: none; white-space: pre-wrap; font-family: monospace; text-align: center; padding: 10px; margin: 10px auto; max-width: 600px;">
+  <div style="margin-bottom: 10px;">
+    <button onclick="resetTodayMedals()">🔁 Reset medailí</button> <button onclick="plusPoint()">✅ +1 bod</button> <button onclick="clearLog()">🗑️ Smazat log</button>
+  </div>
+</div>
+
+
+
+  <script>
+
+let data = [];
+let writingPool = [];
+let readingPool = [];
+let syllablesPool = [];
+
+
+// Použijeme asynchronní funkci, abychom mohli počkat na načtení souboru
+(async () => {
+  try {
+    const response = await fetch('WORDS/words.txt');
+    if (!response.ok) {
+      throw new Error(`Failed to fetch words.txt: ${response.statusText}`);
+    }
+    const textContent = await response.text();
+
+    const words = textContent.split('\n').map(word => word.trim()).filter(word => word !== '');
+
+    data = words.map(word => ({
+      word: word,
+      img: null 
+    }));
+
+    data.forEach(item => {
+      const tryLoad = (exts, index = 0) => {
+        if (index >= exts.length) return; 
+        const img = new Image();
+        img.onload = () => { item.img = img.src; }; 
+        img.onerror = () => tryLoad(exts, index + 1); 
+        img.src = `WORDS/${item.word}.${exts[index]}`;
+      };
+      tryLoad(['jpeg', 'jpg']); 
+    });
+
+    writingPool = [...data];
+    readingPool = [...data];
+    
+    console.log(`Successfully loaded ${data.length} words.`);
+
+  } catch (error) {
+    console.error("Critical error loading game data:", error);
+    alert("Nepodařilo se načíst data pro hru. Zkontrolujte konzoli (F12) pro více detailů.");
+  }
+})();
+
+    let currentWord = '';
+    let userInput = [];
+    let scoreGood = 0;
+    let scoreBad = 0;
+    let isLocked = false;
+	let lastInputLength = 0;
+	let currentMode = null;
+	let correctAnswer = null;
+	let medals = { gold: 0, silver: 0, bronze: 0 };
+	const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+
+
+    function updateScoreDisplay() {
+      document.getElementById('score-good').textContent = scoreGood;
+      document.getElementById('score-bad').textContent = scoreBad;
+    }
+
+    function playSound(id) {
+      const sound = document.getElementById(id);
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+      }
+    }
+
+//kláves. zkratky
+
+document.addEventListener("keydown", function(e) {
+  if (e.code === "F1") {
+    e.preventDefault();
+    logContainer.style.display = logContainer.style.display === "none" ? "block" : "none";
+    return;
+  }
+
+  if (e.altKey && e.code === "KeyR") {
+    resetTodayMedals();
+  }
+
+  if (e.altKey && e.code === "KeyP") {
+    plusPoint();
+  }
+
+  if (e.code === "End") {
+    clearLog();
+    logContainer.style.display = "none";
+  }
+});
+
+function plusPoint() {
+  scoreGood++;
+  updateScoreDisplay();
+  addProgress(5);
+  checkCelebrationTrigger(scoreGood);
+}
+
+
+
+// SETTINGS
+
+let settings = {
+  uppercase: false,
+  sound: true,
+  kidMode: false
+};
+
+function saveSettings() {
+  document.cookie = `gameSettings=${JSON.stringify(settings)};path=/;max-age=31536000`;
+}
+
+function loadSettings() {
+  const match = document.cookie.match(/gameSettings=([^;]+)/);
+  if (match) {
+    try {
+      settings = JSON.parse(match[1]);
+    } catch {}
+  }
+  applySettings();
+}
+
+function applySettings() {
+  document.getElementById("toggle-uppercase").textContent = settings.uppercase ? "🔠" : "🔡";
+  document.getElementById("toggle-sound").textContent = settings.sound ? "🔊" : "🔇";
+  document.getElementById("toggle-kid-mode").textContent = settings.kidMode ? "👶" : "🧒";
+
+  const uppercaseStyle = settings.uppercase ? "uppercase" : "none";
+  ["mobile-input", "reading-word", "letters"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.textTransform = uppercaseStyle;
+  });
+}
+
+document.getElementById("settings-toggle").addEventListener("click", () => {
+  const s = document.getElementById("settings");
+  s.style.display = s.style.display === "none" ? "block" : "none";
+});
+
+document.getElementById("toggle-uppercase").addEventListener("click", () => {
+  settings.uppercase = !settings.uppercase;
+  saveSettings();
+  applySettings();
+  showTooltip(event.currentTarget, settings.uppercase ? "VELKÁ PÍSMENA" : "malá písmena");
+});
+
+document.getElementById("toggle-sound").addEventListener("click", () => {
+  settings.sound = !settings.sound;
+  saveSettings();
+  applySettings();
+  showTooltip(event.currentTarget, settings.sound ? "zvuk ON" : "zvuk OFF");
+});
+
+document.getElementById("toggle-free-mode").addEventListener("click", (e) => {
+  const btn = document.getElementById("toggle-free-mode");
+  const freeBtn = document.querySelector(".mode-button.free");
+
+  const isActive = btn.textContent === "✅🖊️";
+  if (isActive) {
+    btn.textContent = "❌🖊️";
+    freeBtn.style.display = "none";
+    showTooltip(btn, "volné psaní NEaktivní");
+  } else {
+    btn.textContent = "✅🖊️";
+    freeBtn.style.display = "inline-block";
+    showTooltip(btn, "volné psaní AKTIVNÍ");
+  }
+});
+
+document.getElementById("toggle-kid-mode").addEventListener("click", () => {
+  settings.kidMode = !settings.kidMode;
+  saveSettings();
+  applySettings();
+  showTooltip(event.currentTarget, settings.kidMode ? "miminčí mód" : "dětský mód");
+});
+
+
+
+
+// Změň existující playSound funkci:
+function playSound(id) {
+  if (!settings.sound) return;
+  if (settings.kidMode && id === 'sound-wrong') return;
+
+  const sound = document.getElementById(id);
+  if (sound) {
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+  }
+}
+
+loadSettings();
+
+function showTooltip(button, text) {
+  const tooltip = document.getElementById("tooltip");
+  tooltip.textContent = text;
+
+  const rect = button.getBoundingClientRect();
+  tooltip.style.left = `${rect.left + window.scrollX}px`;
+  tooltip.style.top = `${rect.bottom + window.scrollY + 4}px`;
+  tooltip.style.display = "block";
+
+  setTimeout(() => {
+    tooltip.style.display = "none";
+  }, 1000);
+}
+
+
+
+//START
+
+function startGame(mode) {
+  currentMode = mode;
+
+  // Odpojit všechny klávesnicové režimy
+  document.removeEventListener('keydown', handleKey);
+
+  // Vyčistit a skrýt vše
+  document.getElementById('image').hidden = true;
+  document.getElementById('letters').style.display = 'none';
+  document.getElementById('letters').innerHTML = '';
+  document.getElementById('reading-word').textContent = '';
+  document.getElementById('reading-options').innerHTML = '';
+  document.getElementById('syllables-task').innerHTML = '';
+  document.getElementById('free-mode').style.display = 'none';
+  document.getElementById('free-images').innerHTML = '';
+
+  // Reset inputu
+  userInput = [];
+  lastInputLength = 0;
+  isLocked = false;
+
+  if (mode === 'writing') {
+    writingPool = [...data];
+    loadRandom();
+    document.getElementById('image').hidden = false;
+    document.getElementById('letters').style.display = 'block';
+    document.addEventListener('keydown', handleKey);
+
+  } else if (mode === 'reading') {
+    readingPool = [...data];
+    loadReadingTask();
+
+	} else if (mode === 'syllables') {
+	  syllablesPool = [...data]; // ⬅️ nový řádek
+	  loadsyllablesTask();
+	  document.addEventListener('keydown', handlesyllablesKey);
+
+
+  } else if (mode === 'free') {
+    document.getElementById('free-mode').style.display = 'block';
+    updateFreeCursor();
+  }
+
+  // Vždy aktivuj vstup na mobilu (pro všechny módy s psaním)
+  if (mode === 'writing' || mode === 'syllables' || mode === 'free') {
+    setTimeout(() => {
+      const input = document.getElementById('mobile-input');
+      input.focus();
+    }, 100);
+  }
+}
+
+
+
+    function loadRandom() {
+      if (writingPool.length === 0) {
+        alert("Všechna slova byla použita!");
+        return;
+      }
+      const index = Math.floor(Math.random() * writingPool.length);
+      const random = writingPool.splice(index, 1)[0];
+      currentWord = random.word;
+      userInput = [];
+      isLocked = false;
+
+      const img = document.getElementById('image');
+      img.src = random.img;
+      img.hidden = false;
+
+      const lettersDiv = document.getElementById('letters');
+      lettersDiv.innerHTML = '';
+
+      for (let i = 0; i < currentWord.length; i++) {
+        const span = document.createElement('span');
+        span.className = 'letter-box';
+        span.textContent = '';
+        lettersDiv.appendChild(span);
+      }
+    }
+
+    function handleKey(e) {
+      if (e.repeat || isLocked) return;
+
+      const key = e.key;
+      const index = userInput.length;
+
+      if (key.length === 1 && key.match(/[a-zA-Zá-žÁ-Ž]/i)) {
+        if (index < currentWord.length) {
+          const correctChar = currentWord[index];
+		  appendToLog(key, key.toLowerCase() === correctChar.toLowerCase());
+
+
+          if (key.toLowerCase() === correctChar.toLowerCase()) {
+            userInput.push(key);
+            scoreGood++; addProgress(1); checkCelebrationTrigger(scoreGood);
+            playSound('sound-correct');
+            updateScoreDisplay();
+            updateDisplay();
+          } else {
+            userInput.push(key);
+            scoreBad++; //resetProgressBar();
+			if (!settings.kidMode) resetProgressBar();
+            playSound('sound-wrong');
+			showWrongRobot();
+            updateScoreDisplay();
+            updateDisplay();
+
+            isLocked = true;
+            setTimeout(() => {
+              if (userInput[index]?.toLowerCase() !== correctChar.toLowerCase()) {
+                userInput.splice(index, 1);
+                updateDisplay();
+              }
+              isLocked = false;
+            }, 1000);
+          }
+        }
+		} else if (e.key === 'Backspace') {
+		  if (currentMode === 'writing') {
+			userInput.pop();
+			scoreGood = Math.max(0, scoreGood - 1);
+			updateScoreDisplay();
+			updateDisplay();
+		  } else {
+			userInput.pop();
+			updateDisplay();
+		  }
+		}
+
+    }
+
+
+function updateDisplay() {
+  const letters = document.getElementById('letters').children;
+
+  for (let i = 0; i < currentWord.length; i++) {
+    const box = letters[i];
+    const inputChar = userInput[i];
+
+    box.textContent = inputChar || '';
+
+    if (!inputChar) {
+      box.className = 'letter-box';
+    } else if (inputChar.toLowerCase() === currentWord[i].toLowerCase()) {
+      box.className = 'letter-box correct';
+    } else {
+      box.className = 'letter-box incorrect';
+    }
+
+    // Poskočení pouze při novém zadání znaku (ne při mazání)
+    if (i === userInput.length - 1 && inputChar && userInput.length > lastInputLength) {
+      box.classList.add('letter-pop');
+      box.addEventListener('animationend', () => {
+        box.classList.remove('letter-pop');
+      }, { once: true });
+    }
+  }
+
+  // Pokud je celé slovo správně
+  if (
+    userInput.length === currentWord.length &&
+    userInput.join('').toLowerCase() === currentWord.toLowerCase()
+  ) {
+    playSound('sound-win');
+	newLogLine();
+    launchFireworks();
+    isLocked = true;
+    setTimeout(() => {
+      stopFireworks();
+      if (currentMode === 'writing') {
+        loadRandom();
+        isLocked = false;
+      }
+    }, 2000);
+  }
+
+  // Záznam délky vstupu pro další srovnání
+  lastInputLength = userInput.length;
+}
+
+
+
+    function loadReadingTask() {
+      if (readingPool.length === 0) {
+        alert("Všechna slova byla přečtena!");
+        return;
+      }
+      const index = Math.floor(Math.random() * readingPool.length);
+      const correct = readingPool.splice(index, 1)[0];
+      currentWord = correct.word;
+
+      document.getElementById('reading-word').textContent = currentWord;
+      const container = document.getElementById('reading-options');
+      container.innerHTML = '';
+
+      const shuffled = [...data]
+        .filter(item => item.word !== currentWord)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 4);
+
+      shuffled.push(correct);
+      shuffled.sort(() => 0.5 - Math.random());
+
+      shuffled.forEach(item => {
+        const img = document.createElement('img');
+        img.src = item.img;
+        img.alt = item.word;
+        img.style.filter = '';
+        img.addEventListener('mouseenter', () => img.style.border = '2px solid blue');
+        img.addEventListener('mouseleave', () => img.style.border = '2px solid #333');
+        img.addEventListener('click', () => handleReadingClick(img, item.word === currentWord));
+        container.appendChild(img);
+      });
+    }
+
+    function handleReadingClick(img, isCorrect) {
+	
+		// Animace poskočení obrázku
+	img.classList.add('image-pop');
+	img.addEventListener('animationend', () => {
+	  img.classList.remove('image-pop');
+	}, { once: true });
+
+      const all = document.querySelectorAll('#reading-options img');
+      all.forEach(el => el.style.pointerEvents = 'none');
+
+      if (isCorrect) {
+		  img.style.filter = 'brightness(0.6) sepia(1) hue-rotate(90deg) saturate(4)';
+		  scoreGood++; addProgress(3); checkCelebrationTrigger(scoreGood);
+		  updateScoreDisplay();
+		  playSound('sound-win');
+		  launchFireworks();
+		  setTimeout(() => {
+			stopFireworks();
+			if (currentMode === 'reading') {
+			  loadReadingTask();
+			}
+		  }, 2000);
+		} else {
+		  img.style.filter = 'brightness(0.5) sepia(1) hue-rotate(-50deg) saturate(5)';
+		  scoreBad++; //resetProgressBar();
+		  if (!settings.kidMode) resetProgressBar();
+		  updateScoreDisplay();
+		  playSound('sound-wrong');
+		  showWrongRobot();
+
+		  // Znovupovolení klikání na ostatní obrázky
+		  setTimeout(() => {
+			const all = document.querySelectorAll('#reading-options img');
+			all.forEach(el => el.style.pointerEvents = 'auto');
+		  }, 1000);
+		}
+    }
+
+
+
+
+
+const canvas = document.getElementById('fireworks');
+const ctx = canvas.getContext('2d');
+let fireworks = [];
+let fireworksInterval;
+
+function launchFireworks() {
+  resizeCanvas();
+  fireworks = [];
+  for (let i = 0; i < 5; i++) {
+    fireworks.push(createFirework());
+  }
+  fireworksInterval = setInterval(updateFireworks, 50);
+}
+
+function stopFireworks() {
+  clearInterval(fireworksInterval);
+  fireworks = [];
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function createFirework() {
+  const colors = ['#ff3333', '#33cc33', '#3399ff', '#ffff33', '#ff66cc', '#00ffff'];
+  const x = Math.random() * canvas.width;
+  const y = Math.random() * canvas.height / 2;
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  const particles = [];
+
+  for (let i = 0; i < 40; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 5 + 2;
+    particles.push({
+      x, y,
+      dx: Math.cos(angle) * speed,
+      dy: Math.sin(angle) * speed,
+      alpha: 1,
+      color
+    });
+  }
+
+  return { particles };
+}
+
+
+//syllables
+
+function loadsyllablesTask() {
+  if (syllablesPool.length === 0) {
+    alert("Všechna slova byla použita!");
+    return;
+  }
+
+  const index = Math.floor(Math.random() * syllablesPool.length);
+  const wordObj = syllablesPool.splice(index, 1)[0];
+
+  currentWord = wordObj.word;
+  const container = document.getElementById('syllables-task');
+  container.innerHTML = '';
+
+  const wordWrapper = document.createElement('div');
+  wordWrapper.style.display = 'flex';
+  wordWrapper.style.justifyContent = 'center';
+  wordWrapper.style.gap = '0px';
+  wordWrapper.style.fontSize = '36px';
+  wordWrapper.style.position = 'relative';
+
+  for (let i = 0; i < currentWord.length; i++) {
+    const letterSpan = document.createElement('span');
+    letterSpan.textContent = settings.uppercase
+	  ? currentWord[i].toUpperCase()
+	  : currentWord[i].toLowerCase();
+
+	letterSpan.dataset.index = i;
+	letterSpan.style.cursor = 'pointer';
+
+	letterSpan.addEventListener('mousemove', (e) => {
+	  const rect = letterSpan.getBoundingClientRect();
+	  const middle = rect.left + rect.width / 2;
+	  const index = parseInt(letterSpan.dataset.index, 10);
+
+	  if (e.clientX < middle) {
+		highlightDivider(index);       // levá půlka písmene
+	  } else {
+		highlightDivider(index + 1);   // pravá půlka písmene
+	  }
+	});
+
+letterSpan.addEventListener('click', (e) => {
+  const rect = letterSpan.getBoundingClientRect();
+  const middle = rect.left + rect.width / 2;
+  const index = parseInt(letterSpan.dataset.index, 10);
+  const dividerIndex = e.clientX < middle ? index : index + 1;
+
+  const divider = document.querySelector(`.divider[data-index="${dividerIndex}"]`);
+  if (divider) {
+    divider.classList.toggle('active');
+    divider.style.backgroundColor = divider.classList.contains('active') ? 'black' : 'transparent';
+  }
+});
+
+
+	letterSpan.addEventListener('mouseleave', () => {
+	  clearDividerHighlights();
+	});
+
+    wordWrapper.appendChild(letterSpan);
+
+    if (i < currentWord.length - 1) {
+      const divider = document.createElement('div');
+      divider.className = 'divider';
+      divider.dataset.index = i + 1;
+      divider.style.width = '10px';
+      divider.style.height = '40px';
+      divider.style.backgroundColor = 'transparent';
+      divider.style.transition = 'background 0.2s';
+      divider.style.cursor = 'pointer';
+
+      divider.addEventListener('mouseenter', () => {
+        if (!divider.classList.contains('active')) {
+          divider.style.backgroundColor = 'lightgray';
+        }
+      });
+
+      divider.addEventListener('mouseleave', () => {
+        if (!divider.classList.contains('active')) {
+          divider.style.backgroundColor = 'transparent';
+        }
+      });
+
+      divider.addEventListener('click', () => {
+        divider.classList.toggle('active');
+        divider.style.backgroundColor = divider.classList.contains('active') ? 'black' : 'transparent';
+      });
+
+      wordWrapper.appendChild(divider);
+    }
+  }
+
+  container.appendChild(wordWrapper);
+
+  const okButton = document.createElement('button');
+  okButton.textContent = 'OK';
+  okButton.style.marginTop = '20px';
+  okButton.className = 'mode-button syllables';
+  okButton.onclick = () => evaluateSyllables(currentWord);
+  container.appendChild(okButton);
+}
+
+
+function highlightDivider(index) {
+  document.querySelectorAll('.divider').forEach(div => {
+    if (!div.classList.contains('active')) {
+      div.style.backgroundColor = 'transparent';
+    }
+  });
+
+  const div = document.querySelector(`.divider[data-index="${index}"]`);
+  if (div && !div.classList.contains('active')) {
+    div.style.backgroundColor = 'lightgray';
+  }
+}
+
+function clearDividerHighlights() {
+  document.querySelectorAll('.divider').forEach(div => {
+    if (!div.classList.contains('active')) {
+      div.style.backgroundColor = 'transparent';
+    }
+  });
+}
+
+
+function splitToSyllables(word) {
+  // Převod na malá písmena a označení digrafů/diphtongů
+  let w = word.toLowerCase()
+    .replace(/ch/g, 'Ç')    // digraf ch
+    .replace(/au/g, 'Ä')    // diphtong au
+    .replace(/ou/g, 'Ö')    // diphtong ou
+    .replace(/ie/g, 'Î');   // diphtong ie
+
+  const letters = Array.from(w);
+  const vowels = new Set('aeiouyáéěíóúůýÄÖÎ'.split(''));
+
+  // Přidáme běžné české počáteční dvoupísmenné shluky
+  const onsetClusters = new Set([
+    'bl','br','pl','pr','kl','kr','fl','fr','gl','gr',
+    'dr','tr','vr','vl','zr','zl','sm','sn','sl',
+    'hr'
+  ]);
+
+  // Speciální pravidlo: pokud slovo začíná jedním z onsetClusters,
+  // následuje další souhláska a celkově má právě jednu samohlásku,
+  // rozděl ho hned za tím počátečním shlukem.
+  const wLower = word.toLowerCase();
+  const initial2 = wLower.slice(0, 2);
+  const vowelCount = letters.filter(c => vowels.has(c)).length;
+  const thirdChar = wLower.charAt(2);
+  if (onsetClusters.has(initial2) && !vowels.has(thirdChar) && vowelCount === 1) {
+    return [ word.slice(0,2), word.slice(2) ];
+  }
+
+  const syllables = [];
+  let start = 0, n = letters.length;
+
+  while (true) {
+    // najdi první samohlásku (nucleus)
+    let vpos = -1;
+    for (let i = start; i < n; i++) {
+      if (vowels.has(letters[i])) { vpos = i; break; }
+    }
+    if (vpos === -1) {
+      // žádná další samohláska → připoj zbytek k poslední slabice
+      if (start < n) {
+        const tail = letters.slice(start).join('');
+        if (syllables.length) {
+          syllables[syllables.length - 1] += tail;
+        } else {
+          syllables.push(tail);
+        }
+      }
+      break;
+    }
+
+    // najdi další samohlásku
+    let vpos2 = -1;
+    for (let i = vpos + 1; i < n; i++) {
+      if (vowels.has(letters[i])) { vpos2 = i; break; }
+    }
+    if (vpos2 === -1) {
+      const remaining = letters.slice(start);
+
+      // pouze kontrola na konci slova:
+      // pokud zbytek končí platným shlukem, rozděl před ním
+      if (remaining.length > 2) {
+        const last2 = remaining.slice(-2).join('');
+        if (onsetClusters.has(last2)) {
+          syllables.push(remaining.slice(0, remaining.length - 2).join(''));
+          syllables.push(last2);
+          break;
+        }
+      }
+
+      // jinak celý zbytek jako jedna slabika
+      syllables.push(remaining.join(''));
+      break;
+    }
+
+    // VCV nebo VCC…CV?
+    const ccount = vpos2 - vpos - 1;
+    const splitPos = (ccount <= 1) ? vpos : vpos + 1;
+    syllables.push(letters.slice(start, splitPos + 1).join(''));
+    start = splitPos + 1;
+  }
+
+  // navrátit originální digrafy/diphtongy
+  return syllables.map(s =>
+    s.replace(/Ç/g, 'ch')
+     .replace(/Ä/g, 'au')
+     .replace(/Ö/g, 'ou')
+     .replace(/Î/g, 'ie')
+  );
+}
+
+
+
+function evaluateSyllables(originalWord) {
+  const correct = splitToSyllables(originalWord);
+  const expectedPositions = [];
+  let count = 0;
+
+  for (let i = 0; i < correct.length - 1; i++) {
+    count += correct[i].length;
+    expectedPositions.push(count);
+  }
+
+  const clickedDividers = Array.from(document.querySelectorAll('.divider.active'))
+    .map(div => parseInt(div.dataset.index));
+
+  const correctSet = new Set(expectedPositions);
+  const userSet = new Set(clickedDividers);
+  const allDividers = document.querySelectorAll('.divider');
+
+  // ✅ SPRÁVNÉ ROZDĚLENÍ
+  if (arraysEqual([...userSet].sort(), [...correctSet].sort())) {
+    scoreGood += 3;
+    addProgress(3);
+    playSound("sound-win");
+    launchFireworks();
+	
+
+    allDividers.forEach(div => {
+      if (userSet.has(parseInt(div.dataset.index))) {
+        div.style.backgroundColor = 'green';
+      }
+    });
+
+    // 🔡 Oddělení slabik
+    const letters = document.querySelectorAll('#syllables-task div span');
+    correctSet.forEach(pos => {
+      if (letters[pos - 1]) {
+        letters[pos - 1].style.marginRight = '20px';
+        letters[pos - 1].style.transition = 'margin 0.3s';
+      }
+    });
+
+    updateScoreDisplay();
+
+    setTimeout(() => {
+      stopFireworks();
+      loadsyllablesTask();
+    }, 3000);
+
+  } else {
+    // ❌ ŠPATNÉ ROZDĚLENÍ
+    scoreBad += 1;
+    if (!settings.kidMode) resetProgressBar();
+    playSound("sound-wrong");
+    showWrongRobot();
+    updateScoreDisplay();
+	speakSyllables(correct); 
+
+    allDividers.forEach(div => {
+      const pos = parseInt(div.dataset.index);
+      if (userSet.has(pos)) {
+        div.style.backgroundColor = correctSet.has(pos) ? 'green' : 'red';
+      } else if (correctSet.has(pos)) {
+        div.style.backgroundColor = 'red';
+      }
+    });
+
+    setTimeout(() => {
+      allDividers.forEach(div => {
+        div.classList.remove('active');
+        div.style.backgroundColor = 'transparent';
+      });
+    }, 1000); // reset
+  }
+}
+
+
+function arraysEqual(a, b) {
+  return a.length === b.length && a.every((val, i) => val === b[i]);
+}
+
+
+function handlesyllablesKey(e) {
+  if (e.key === 'Enter') {
+    evaluateSyllables(currentWord);
+  }
+}
+
+
+//fireworks
+
+function updateFireworks() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // nesmaže zbytek stránky
+
+  fireworks.forEach(firework => {
+    firework.particles.forEach(p => {
+      p.x += p.dx;
+      p.y += p.dy;
+      p.alpha -= 0.02;
+    });
+
+    firework.particles = firework.particles.filter(p => p.alpha > 0);
+  });
+
+  fireworks = fireworks.filter(f => f.particles.length > 0);
+
+  fireworks.forEach(firework => {
+    firework.particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 3, 0, 2 * Math.PI);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.alpha;
+      ctx.fill();
+    });
+  });
+
+  ctx.globalAlpha = 1;
+}
+
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', resizeCanvas);
+
+
+document.getElementById('mobile-input').addEventListener('input', (e) => {
+  if (!isMobile) return;
+  const char = e.target.value;
+  e.target.value = '';
+
+  if (currentMode === 'writing') {
+    handleKey({ key: char });
+  } else if (currentMode === 'syllables') {
+    handleMathKey({ key: char });
+  } else if (currentMode === 'free') {
+    const okButton = document.getElementById("free-ok");
+    if (okButton.textContent !== "OK") {
+      resetFreeSection();
+    }
+    if (char.length === 1 && char.match(/[a-zA-Zá-žÁ-Ž]/i) && userInput.length < 10) {
+      userInput.push(char);
+      updateFreeCursor();
+    }
+  }
+});
+
+
+
+// animace tanec
+let lastCelebrationScore = 0;
+
+function checkCelebrationTrigger(score) {
+  if (score > 0 && score % 100 === 0 && score !== lastCelebrationScore) {
+    lastCelebrationScore = score;
+
+    const medalAudio = new Audio("medal.mp3");
+    medalAudio.play().catch(() => {});
+
+    updateScoreStyle(); // zvětšení čísla
+  }
+}
+
+
+// wrong robot
+
+function showWrongRobot() {
+  if (settings.kidMode) return;
+  const robot = document.getElementById("wrong-robot-fixed");
+  if (!robot) return;
+  robot.style.display = "block";
+  setTimeout(() => {
+    robot.style.display = "none";
+  }, 1300);
+}
+
+
+
+
+
+// TADY TADY TADY TADY																						TADY TADY animace POČET 
+
+function showCelebration() {
+  const gifContainer = document.getElementById('gif-container');
+  const gif = document.getElementById('gif-animation');
+
+  // === Animace ===
+  const gifCount = 13; // např. dance1.gif až dance5.gif
+  const randomGif = Math.floor(Math.random() * gifCount) + 1;
+  gif.src = `dance${randomGif}.gif`;
+
+  // === Hudba ===
+  const musicCount = 7; // např. music1.mp3 až music4.mp3
+  const randomMusic = Math.floor(Math.random() * musicCount) + 1;
+  const audio = new Audio(`music${randomMusic}.mp3`);
+  audio.volume = 1;
+  audio.play().catch(() => {});
+
+  // Zobrazit animaci
+  gifContainer.style.display = 'block';
+
+  // Spustit fade-out ve 4. sekundě
+  setTimeout(() => {
+    const fadeInterval = setInterval(() => {
+      if (audio.volume > 0.05) {
+        audio.volume -= 0.05;
+      } else {
+        audio.volume = 0;
+        audio.pause();
+        clearInterval(fadeInterval);
+      }
+    }, 50); // každých 50 ms sníží hlasitost
+  }, 4000);
+
+  // Skryj animaci po 5 sekundách
+  setTimeout(() => {
+    gifContainer.style.display = 'none';
+  }, 5000);
+}
+
+
+
+// Zvětšování skóre
+
+function updateScoreStyle() {
+  const el = document.getElementById('score-good');
+  const baseSize = 20;
+  const layers = Math.floor(scoreGood / 10);
+
+  // Nová velikost písma (4px za každých 10 bodů)
+  el.style.fontSize = `${baseSize + 1 * layers}px`;
+
+  // Generování vrstveného žlutého obrysu se zvyšující se světelností
+  const colors = ['#FFD700', '#FF4444', '#AA66CC', '#33B5E5', '#99CC00', '#FF8800']; // žlutá, červená, fialová, modrá, zelená, oranžová
+  const outline = [];
+
+  for (let i = 1; i <= layers; i++) {
+    const offset = 1 * i;
+    const color = colors[(i - 1) % colors.length]; // cyklické barvy
+
+    outline.push(
+      `${offset}px ${offset}px 0 ${color}`,
+      `-${offset}px ${offset}px 0 ${color}`,
+      `${offset}px -${offset}px 0 ${color}`,
+      `-${offset}px -${offset}px 0 ${color}`
+    );
+  }
+
+  el.style.textShadow = outline.join(', ');
+
+}
+
+
+let lastStyleScore = 0;
+
+function checkScoreStyleUpdate() {
+  if (scoreGood !== lastStyleScore && scoreGood % 10 === 0) {
+    lastStyleScore = scoreGood;
+    updateScoreStyle();
+  }
+}
+
+setInterval(checkScoreStyleUpdate, 500);
+
+// ACHIEVEMENTS 
+
+let progressPoints = 0;
+let progressLayer = 0;
+const maxLayer = 9;
+
+function addProgress(points) {
+  progressPoints += points;
+
+  if (progressPoints >= 15) {
+    if (progressLayer === 8) {
+      showWinBanner(); // konec cyklu → výhra!
+    }
+
+    progressPoints = 0;
+    addMedal();
+    progressLayer = (progressLayer + 1) % maxLayer;
+  }
+
+  updateProgressBar();
+  saveMedals();
+}
+
+
+function updateProgressBar() {
+  const percent = (progressPoints / 15) * 100;
+  const fillIds = [
+    "progress-fill-green",
+    "progress-fill-teal",
+	"progress-fill-cyan",
+    "progress-fill-blue",
+    "progress-fill-purple",
+    "progress-fill-pink",
+    "progress-fill-red",
+    "progress-fill-orange",
+    "progress-fill-gold"
+  ];
+
+  fillIds.forEach((id, index) => {
+    const fill = document.getElementById(id);
+    if (!fill) return;
+
+    fill.style.width =
+      index < progressLayer
+        ? "100%"
+        : index === progressLayer
+        ? `${percent}%`
+        : "0%";
+  });
+}
+
+function resetProgressBar() {
+  progressPoints = 0;
+  progressLayer = 0;
+  updateProgressBar();
+}
+
+// MEDAILE
+
+function addMedal() {
+  medals.bronze += 1;
+
+  while (medals.bronze >= 3) {
+    medals.bronze -= 3;
+    medals.silver += 1;
+  }
+  while (medals.silver >= 3) {
+    medals.silver -= 3;
+    medals.gold += 1;
+  }
+
+  // Spustí animaci a až po jejím konci aktualizuje řádek medailí
+  animateMedal("bronze", () => {
+    updateMedals();
+    saveMedals();
+    showCelebration();
+  });
+}
+
+
+function updateMedals() {
+  const container = document.getElementById("medals-container");
+  container.innerHTML =
+    "🥇".repeat(medals.gold) +
+    "🥈".repeat(medals.silver) +
+    "🥉".repeat(medals.bronze);
+
+  const hasAny = medals.gold || medals.silver || medals.bronze;
+  document.getElementById("medals-today-title").style.display = hasAny ? "block" : "none";
+}
+
+
+
+function saveMedals() {
+  document.cookie = `medals=${JSON.stringify(medals)};path=/;max-age=31536000`;
+}
+
+function loadMedals() {
+  const match = document.cookie.match(/medals=([^;]+)/);
+  if (match) {
+    try {
+      medals = JSON.parse(match[1]);
+      updateMedals();
+    } catch {}
+  }
+}
+
+loadMedals();
+updateProgressBar();
+
+
+// ANIMACE medaile
+
+function animateMedal(type, onComplete = null) {
+  const anim = document.getElementById("medal-animation");
+  const emoji = type === "gold" ? "🥇" : type === "silver" ? "🥈" : "🥉";
+  const container = document.getElementById("medals-container");
+  const rect = container.getBoundingClientRect();
+  const targetLeft = rect.left + rect.width / 2;
+  const targetTop = rect.top + window.scrollY;
+
+  anim.textContent = emoji;
+  anim.style.display = "block";
+  anim.style.opacity = "1";
+  anim.style.position = "absolute";
+  anim.style.left = `${targetLeft}px`;
+  anim.style.top = `${targetTop}px`;
+  anim.style.transform = "translate(-50%, -50%) scale(1)";
+  anim.style.animation = "medal-from-depth 1s ease-out forwards";
+
+  // Až skončí animace, zobraz medaili v řádku
+  setTimeout(() => {
+    anim.style.display = "none";
+    if (typeof onComplete === "function") onComplete();
+  }, 1000); // Doba odpovídá délce animace
+}
+
+
+
+
+
+// reset medailí
+function resetTodayMedals() {
+  medals = { gold: 0, silver: 0, bronze: 0 };
+  saveMedals();
+  updateMedals();
+  console.log("Dnešní medaile byly resetovány.");
+}
+
+// vítěz
+
+function showWinBanner() {
+  const banner = document.getElementById("win-banner");
+  banner.textContent = "🎉 VÍTĚZ! 🎉";
+  banner.style.display = "block";
+
+  let danceIndex = 1;
+  let musicIndex = 1;
+  const maxDances = 8;
+  const maxMusic = 5;
+  let cycleInterval;
+
+  const gifContainer = document.getElementById("gif-container");
+  const gif = document.getElementById("gif-animation");
+
+  const audio = new Audio();
+  audio.volume = 1;
+
+  function cycleCelebration() {
+    // Změna GIFu
+    gif.src = `dance${danceIndex}.gif`;
+    gifContainer.style.display = "block";
+
+    // Změna hudby
+    audio.pause();
+    audio.src = `music${musicIndex}.mp3`;
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+
+    // Další iterace
+    danceIndex = (danceIndex % maxDances) + 1;
+    musicIndex = (musicIndex % maxMusic) + 1;
+  }
+
+
+	setTimeout(() => {
+	  cycleCelebration();
+	  cycleInterval = setInterval(cycleCelebration, 6000);
+	}, 7000);
+
+  // Ukončení celé show po 20 vteřinách
+  setTimeout(() => {
+    clearInterval(cycleInterval);
+    audio.pause();
+    gifContainer.style.display = "none";
+    banner.style.display = "none";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }, 60000);
+}
+
+
+
+// FREESTYLE
+
+function resetFreeSection() {
+  document.getElementById("free-ok").textContent = "OK";
+  document.getElementById("free-ok").style.backgroundColor = "";
+  document.getElementById("free-images").innerHTML = "";
+  userInput = [];
+  updateFreeCursor();
+}
+
+
+function updateFreeCursor() {
+  const cursor = document.getElementById('free-cursor');
+  cursor.innerHTML = userInput.join('') +
+    (userInput.length < 10 ? '<span class="blinking-underscore">_</span>' : '');
+}
+
+document.addEventListener("keydown", function(e) {
+  if (currentMode === 'free' && e.key === 'Enter') {
+    const btn = document.getElementById("free-ok");
+    btn.click();
+  }
+});
+
+document.addEventListener("keydown", function(e) {
+  if (currentMode !== 'free') return;
+
+  // Reset po předchozím potvrzení slova
+  const okButton = document.getElementById("free-ok");
+  if (okButton.textContent !== "OK") {
+    resetFreeSection();
+  }
+
+  // Zápis písmen
+  if (e.key.length === 1 && e.key.match(/[a-zA-Zá-žÁ-Ž]/i) && userInput.length < 10) {
+    userInput.push(e.key);
+    updateFreeCursor();
+  } else if (e.key === 'Backspace') {
+    userInput.pop();
+    updateFreeCursor();
+  }
+});
+
+
+document.getElementById("free-ok").addEventListener("click", async () => {
+  const word = userInput.join('').toLowerCase();
+  if (!word) return;
+
+  const btn = document.getElementById("free-ok");
+
+  try {
+    const response = await fetch("slovnikCJ.txt");
+    const text = await response.text();
+    const words = text.split('\n').map(w => w.trim());
+
+    if (words.includes(word)) {
+      const points = word.length;
+      scoreGood += points;
+      addProgress(points);
+      playSound("sound-win");
+      updateScoreDisplay();
+      launchFireworks();
+      btn.style.backgroundColor = "green";
+      btn.textContent = `+${points}`;
+      showImages(word);
+
+      // ⚠️ RESET po správném slově
+      setTimeout(() => {
+        stopFireworks();
+        resetFreeSection();  // smaže input, obrázky, tlačítko
+        document.getElementById('mobile-input').focus();
+      }, 3000);
+
+    } else {
+      scoreBad++;
+	  if (!settings.kidMode) resetProgressBar();
+      resetProgressBar();
+      playSound("sound-wrong");
+      showWrongRobot();
+      updateScoreDisplay();
+      btn.style.backgroundColor = "red";
+      btn.textContent = "✗";
+    }
+  } catch (err) {
+    alert("Chyba při načítání slovníku.");
+  }
+});
+
+
+
+async function showImages(word) {
+  const container = document.getElementById("free-images");
+  container.innerHTML = '';
+
+  try {
+    const response = await fetch(`https://abeceda-production.up.railway.app/images?q=${encodeURIComponent(word)}`);
+    const data = await response.json();
+
+    console.log("🔍 Bing dotaz:", data.query);
+
+    data.images.forEach(url => {
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = word;
+      img.style.height = "120px";
+      img.style.margin = "0 5px";
+      img.style.border = "2px solid #444";
+      img.style.borderRadius = "8px";
+      container.appendChild(img);
+    });
+
+  } catch (err) {
+    console.error("❌ Chyba při načítání obrázků:", err);
+    container.textContent = "Obrázky se nepodařilo načíst.";
+  }
+}
+
+
+
+const logContainer = document.getElementById("typing-log");
+
+function appendToLog(char, isCorrect) {
+  const span = document.createElement("span");
+  span.textContent = char;
+  span.style.color = isCorrect ? "green" : "red";
+  logContainer.appendChild(span);
+}
+
+function newLogLine() {
+  logContainer.appendChild(document.createElement("br"));
+}
+
+function clearLog() {
+  logContainer.innerHTML = "";
+}
+
+
+async function speakSyllables(syllables) {
+  // čekej 2 sekundy po přehrání zvuku
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  for (let syllable of syllables) {
+    const utterance = new SpeechSynthesisUtterance(syllable);
+    utterance.lang = 'cs-CZ';
+	utterance.lang = 'cs-CZ';
+    utterance.volume = 1;         // max hlasitost
+    utterance.rate = 2;           // normální rychlost
+    utterance.pitch = 1.1;        // trošku vyšší tón
+    speechSynthesis.speak(utterance);
+    await new Promise(resolve => setTimeout(resolve, 10)); // pauza 5s mezi slabikami
+  }
+}
+
+
+  </script>
+</body>
+</html>
