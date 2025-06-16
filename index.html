@@ -1,380 +1,855 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Herní Rozcestník</title>
-  <style>
-  
-  @font-face {
-	  font-family: 'IgnisEtGlaciesSharp';
-	  src: url('Ignis et Glacies Sharp.ttf') format('truetype');
-	  font-display: swap;
-	}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  
-    body {
-      margin: 0;
-      padding: 0;
-      background: #fff;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 
-	.circle {
-	  position: absolute;
-	  width: 600px;
-	  height: 600px;
-	  z-index: 0;
+<link rel="stylesheet" href="styles.css">
 
-	}
-
-	.circle::before {
-	  content: '';
-	  position: absolute;
-	  inset: 0;
-	  background: url('TechCircle.png') center/contain no-repeat;
-	  animation: rotate-circle 120s linear infinite;
-	  transform-origin: center center;
-	}
-		.circle.paused::before {
-  animation-play-state: paused;
-}
-
-    .game-button {
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: transform 0.6s ease, box-shadow 0.3s ease;
-      background: none;
-      overflow: hidden;
-    }
-
-	.game-icon {
-	  position: absolute;
-	  width: 70%;
-	  height: 70%;
-	  object-fit: contain;
-	  border-radius: 50%;
-	  z-index: 1;
-	  transform: rotate(0deg); /* důležité */
-	  will-change: transform;
-	}
-
-	.gamecircle {
-	  position: absolute;
-	  width: 100%;
-	  height: 100%;
-	  background: url('TechCircle.png') center/cover no-repeat;
-	  z-index: 2;
-	  pointer-events: none;
-	  animation: slow-spin 30s linear infinite;
-	  transform-origin: center;
-	}
-	.gamecircle.paused {
-  animation-play-state: paused;
-}
-
-
-    .game-button:hover {
-      transform: scale(1.1);
-
-    }
-
-	.game-button.clicked .gamecircle {
-	  animation: fast-spin 1.5s linear forwards;
-	}
-
-
-    .game-button.clicked .game-icon {
-      animation: glow-out 1.5s ease forwards;
-    }
-
-    .whiteout {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: white;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 1000ms ease;
-      z-index: 9999;
-    }
-
-    .whiteout.visible {
-      opacity: 1;
-    }
-
-    @keyframes slow-spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes fast-spin {
-      to { transform: rotate(720deg); }
-    }
-
-    @keyframes glow-out {
-      50% {
-        filter: brightness(2) drop-shadow(0 0 20px white);
-      }
-      100% {
-        filter: brightness(3) drop-shadow(0 0 40px white);
-      }
-    }
-	
-	@keyframes rotate-counterclockwise {
-	  from { transform: rotate(0deg); }
-	  to { transform: rotate(-360deg); }
-	}
-	
-	@keyframes rotate-circle {
-	  from {
-		transform: rotate(0deg);
-	  }
-	  to {
-		transform: rotate(-360deg);
-	  }
-	}
-	
-	
-	.circle.hover-boost::before {
-	  animation: rotate-circle-fast 10s linear infinite !important;
-	}
-	@keyframes rotate-circle-fast {
-	  to { transform: rotate(-360deg); }
-	}
-
-	.gamecircle.fast {
-	  animation: slow-spin 5s linear infinite !important;
-	}
-
-
-.game-title {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ffcc00;
-  pointer-events: none;
-  z-index: 10;
-  display: inline-block;
-  white-space: nowrap;
-}
-
-.game-title span {
-  display: inline-block;
-  position: relative;
-  color: #ffcc00;
-  font-family: 'IgnisEtGlaciesSharp', sans-serif;
-  font-size: 28px; /* zvětšení základní velikosti */
-  text-shadow:
-    -1px -1px 0 #000,
-     1px -1px 0 #000,
-    -1px  1px 0 #000,
-     1px  1px 0 #000,
-     0 0 6px #ff6600,
-     0 0 12px #ff3300,
-     0 0 20px rgba(255, 80, 0, 0.7);
-  transition: text-shadow 0.2s;
-}
-
-
-
-
-@keyframes glitch-flicker {
-  0%, 100% {
-    transform: translate(0px, 0px) scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: translate(
-      calc(-2px + 4px * random()),
-      calc(-2px + 4px * random())
-    ) scale(calc(1 + 0.05 * random()));
-    opacity: calc(0.8 + 0.2 * random());
-  }
-}
-
-
-
-
-
-  </style>
 </head>
-<body>
-  <div class="circle" id="circle"></div>
-  <div id="game-title" class="game-title"></div>
-  <div class="whiteout" id="whiteout"></div>
-  <audio id="bg-music" src="index-tech-background.mp3" loop></audio>
-  <audio id="poweron-sound" src="index-tech-poweron.mp3"></audio>
-  <audio id="hover-hum" src="index-tech-hum.mp3" loop></audio>
 
-  <script>
-    const games = [
-      { name: 'ABECEDA', file: 'ABC.html', image: 'ABC.webp' },
-      { name: 'HADI', file: 'Snakes.html', image: 'Snakes.webp' },
-      { name: 'BLUDIŠTĚ', file: 'Maze.html', image: 'Maze.webp' },
-	  { name: 'HODINY', file: 'Clock.html', image: 'Clock.webp' },
-	  { name: 'MAKROFÁG', file: 'Macrophage.html', image: 'Macrophage.jpg' }
-    ];
-
-    const circle = document.getElementById('circle');
-    const whiteout = document.getElementById('whiteout');
-    const bgMusic = document.getElementById('bg-music');
-    const powerSound = document.getElementById('poweron-sound');
-
-    const radius = 230, centerX = 300, centerY = 280, speed = 0.001;
-    const buttons = [];
-    const frag = document.createDocumentFragment();
-
-    games.forEach((game, i) => {
-	  circle.classList.add('paused');
-	  const angle = (2 * Math.PI / games.length) * i;
-	  const btn = document.createElement('div');
-	  btn.className = 'game-button';
-
-	  // HTML obsahu
-	  btn.innerHTML = `
-		<img src="${game.image}" alt="${game.name}" class="game-icon">
-		<div class="gamecircle"></div>
-	  `;
-
-	  // Výpočet pozice
-	  const x = centerX + radius * Math.cos(angle) - 130;
-	  const y = centerY + radius * Math.sin(angle) - 130;
-	  btn.style.left = `${x}px`;
-	  btn.style.top = `${y}px`;
-
-	btn.innerHTML = `
-	  <img src="${game.image}" alt="${game.name}" class="game-icon">
-	  <div class="gamecircle"></div>
-	`;
+<body class="bodyINDEX">
 
 
-      btn.addEventListener('click', () => {
-        if (btn.classList.contains('clicked')) return;
 
-        powerSound.currentTime = 0;
-        powerSound.play().catch(() => {});
-        bgMusic.pause();
+<div id="background-wrapper">
+	<div id="random-background" class="background-image"></div>
+	<div id="chessboard-overlay"></div>
+</div>
 
-        btn.classList.add('clicked');
-        circle.classList.add('clicked');
 
-        setTimeout(() => whiteout.classList.add('visible'), 500);
-        setTimeout(() => window.location.href = game.file, 1500);
-      });
+<div id="SEG1" class="headerBar">
 
-const humSound = document.getElementById('hover-hum'); humSound.volume = 0.3;
+	
+        <div class="dropdown">
+            <button class="dropbtn">PET/CT</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="changePage('FDGPET.html')">PET/CT/MR trupu</a>
+                <a href="#" onclick="changePage('NaFskelet.html')">PET/CT NaF skeletu</a>
+            </div>
+        </div>
 
-btn.addEventListener('mouseenter', () => {
-  showGameTitle(game.name);
+        <div class="dropdown">
+            <button class="dropbtn">MR</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="changePage('MRmozku.html')">MR mozku</a>
+                <a href="#" onclick="changePage('MRBrainAngio.html')">MR angiografie</a>
+                <a href="#" onclick="changePage('MRORL.html')">MR ORL</a>
+                <div style="height: 10px;"></div>
+                <a href="#" onclick="changePage('MRrekta.html')">MR rekta</a>
+                <a href="#" onclick="changePage('MRprostaty.html')">MR prostaty</a>
+                <a href="#" onclick="changePage('MRcervix.html')">MR cervixu</a>
+                <a href="#" onclick="changePage('MRbreast.html')">MR prsu</a>
+                <div style="height: 10px;"></div>
+                <a href="#" onclick="changePage('MRCP.html')">MR C páteře</a>
+                <a href="#" onclick="changePage('MRTP.html')">MR T páteře</a>
+                <a href="#" onclick="changePage('MRLP.html')">MR L páteře</a>
+                <a href="#" onclick="changePage('MRSIS.html')">MR SIS</a>
+                <div style="height: 10px;"></div>
+                <a href="#" onclick="changePage('MRramene.html')">MR ramene</a>
+                <a href="#" onclick="changePage('MRhips.html')">MR kyčlí</a>
+                <a href="#" onclick="changePage('MRkolene.html')">MR kolene</a>
+                <a href="#" onclick="changePage('MRankle.html')">MR hlezna</a>
+            </div>
+        </div>
 
-  humSound.currentTime = 0;
-  humSound.play().catch(() => {});
+        <div class="dropdown">
+            <button class="dropbtn">UZ</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="changePage('UZcarotid.html')">UZ karotid</a>
+                <a href="#" onclick="changePage('UZrenal.html')">UZ renálních tepen</a>
+                <a href="#" onclick="changePage('UZthyroid.html')">UZ štítné žlázy</a>
+                <a href="#" onclick="changePage('UZabdomen.html')">UZ břicha</a>
+            </div>
+        </div>
 
-  circle.classList.remove('paused');
-  gameCircle.classList.remove('paused');
+        <div class="dropdown">
+            <button class="dropbtn">RTG</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="changePage('RTGpre.html')">RTG předdefinované</a>
+                <a href="#" onclick="changePage('RTGchest.html')">RTG plic</a>
+            </div>
+        </div>
+
+		<!-- Pravá skupina: TNM a PDF -->
+		<div style="float: right; margin-right: 0px;">
+
+			<div class="dropdown">
+			  <button class="button60 dropbtn">HELPER</button>
+			  <div class="dropdown-content">
+				<a href="#" onclick="changePage('TNMORL.html')">TNM ORL</a>
+				<a href="#" onclick="changePage('TNMRectum.html')">TNM rektum</a>
+				<a href="#" onclick="changePage('TNMmiProstate.html')">TNM prostata</a>
+				<a href="#" onclick="changePage('TNMCervix.html')">TNM cervix</a>
+				<div style="height: 8px; border-top: 1px solid #aaa; margin: 6px 0;"></div>
+				<a href="#" onclick="changePage('BTIT.html')">BT-IT</a>
+			  </div>
+			</div>
+
+			<div class="dropdown" style="display: inline-block;">
+				<button id="btnPDF" class="button60 dropbtn">📂PDF</button>
+			</div>
+		</div>
+
+		<input type="file" id="pdfFileInput" accept=".pdf,.docx" style="display: none;">
+
+	
+</div>
+
+
+<div id="promptSelectExam" class="noticeBar">VYBER TYP VYŠETŘENÍ...   <span class="bouncingPointer">👆</span> </div>
+
+<div id="page-container">
+</div>
+
+<span style="display: inline-block; height: 10px; width: 100%;"></span>
+
+<div style="display:none;">
+&nbsp; NÁZEV <button id="copyNAME" class="buttonTEXT">COPY</button>
+<textarea id="FINALNAMEText" class="FINALXXL" readonly></textarea>
+
+&nbsp; INDIKACE <button id="copyIND" class="buttonTEXT">COPY</button>
+<textarea id="FINALINDText" class="FINALXXL" readonly></textarea>
+
+&nbsp; SEKVENCE <button id="copySEKV" class="buttonTEXT">COPY</button>
+<textarea id="FINALSEKVText" class="FINALXXL" readonly></textarea>
+
+</div>
+
+
+<div id="texty1" class="standardwidthFinalText" style="display: none;" >
+<textarea id="FINALPOPText" class="FINALXXL" readonly></textarea>
+<textarea id="FINALRESText" class="FINALXXL" readonly></textarea>
+</div>
+
+<div id="texty2" class="standardwidthFinalText" style="display: ; position: relative; "> 
+
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 0 12px;">
+  
+  <!-- Levá skupina -->
+  <div style="display: flex; gap: 4px;">
+    <button id="copyCOMP" class="buttonCLICK">📋 KOMPLET</button> 
+    <button id="copyPOP" class="buttonCLICK">📋 POPIS</button> 
+    <button id="copyRES" class="buttonCLICK">📋 ZÁVĚR</button> 
+  </div>
+
+  <!-- Pravá skupina -->
+  <div style="display: flex; gap: 4px;">
+    <button id="toggleEdit" class="buttonCLICK">📝 EDIT</button>
+    <button id="checkAI" class="buttonCLICK">🔍 AI</button>
+    <button id="saveButton" class="buttonCLICK">💾 SAVE</button>
+    <button id="loadButton" class="buttonCLICK">📂 LOAD</button>
+  </div>
+
+</div>
+
+
+  <div id="popupMessage" style="display:none; position:relative; background-color:white; padding:10px; z-index:100; border:1px solid black; font-size:14px; text-transform: uppercase; font-weight: bold; width:300px;">
+  </div>
+
+  <textarea id="FINALCOMPLETEText" class="FINALXXL" readonly></textarea>
+  
+<div id="aiResult" class="standardwidthFinalText" style="margin-top: 10px; display: none;">
+  <div style="font-size: 14px; margin-bottom: 0px;">
+	<button id="AIresult" class="buttonTEXT">📋 AI CHECK</button>
+  <pre id="aiOutput" style="white-space: pre-wrap; background: #f7f7f7; padding: 4px; border: 1px solid #ccc; font-size: 12px; line-height: 1.0;"></pre>
+  </div>
+</div>
+
+
+</div>
+
+
+<div id="helpOverlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9999;">
+  <div style="position:absolute;top:10%;left:10%;width:80%;height:80%;background:#fff;border:1px solid #000;padding:10px;box-sizing:border-box;">
+    <button class="remove-button" style="position:absolute;top:2px;left:2px;" onclick="document.getElementById('helpOverlay').style.display='none'">X</button>
+    <textarea id="backupViewer" readonly style="width:100%;height:100%;box-sizing:border-box;resize:none;overflow:auto;"></textarea>
+  </div>
+</div>
+
+
+
+<svg width="0" height="0">
+<filter id="bubbleFilter">
+  <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="1" result="turbulence">
+	<animate attributeName="baseFrequency" values="0.005;0.001;0.003;0.001;0.005" dur="60s" repeatCount="indefinite"/>
+  </feTurbulence>
+  <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="40" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</svg>
+
+
+
+<script>
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    setupRefreshOnAction(document);
+
+    var container = document.getElementById("page-container");
+    var iframes = container.getElementsByTagName("iframe");
+    for (var i = 0; i < iframes.length; i++) {
+        bindEventsToIframe(iframes[i]);
+    }
+
+    var textareas = document.querySelectorAll('.FINALXXL');
+    textareas.forEach(adjustTextareaHeight);
+
+	checkAndUpdateDivVisibility(); // Immediate check
+	setupRefreshOnAction(document);
 });
 
 
-btn.addEventListener('mouseleave', () => {
-  clearGameTitle();
-  humSound.pause();
-  humSound.currentTime = 0;
+function adjustTextareaHeight(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+}
 
-  circle.classList.add('paused');
-  gameCircle.classList.add('paused');
-});
+function changePage(url) {
+    var container = document.getElementById("page-container");
+    var uniqueId = "iframe-" + url + "-" + Date.now();
 
-const gameCircle = btn.querySelector('.gamecircle');
-gameCircle.classList.add('paused');
+    var iframeContainer = document.createElement("div");
+    iframeContainer.className = "iframe-container";
 
-      frag.appendChild(btn);
-      buttons.push(btn);
+    var iframe = document.createElement("iframe");
+    iframe.id = uniqueId;
+    iframe.src = url;
+    iframe.style.width = "100%";
+    iframe.style.border = "none";
+    iframe.style.opacity = 0; // Initially invisible
+    iframe.onload = function() {
+        iframe.style.height = "0px";
+        try {
+            adjustIframeHeight(iframe);
+            bindEventsToIframe(iframe);
+            updateFinalTextAreas();
+            checkAndUpdateDivVisibility();
+
+            // Delay the fade-in animation until the iframe is loaded
+            setTimeout(() => {
+                iframe.style.opacity = 1; // Make the iframe visible
+				const bg = document.getElementById('random-background');
+				if (bg) {
+					bg.style.opacity = 0.3;
+					bg.style.filter = 'blur(4px)';
+				}
+                iframe.classList.add('iframe-fade-in');
+            }, 100); // Short delay before fade-in starts
+			
+            setTimeout(() => {
+                iframe.classList.remove('iframe-fade-in');
+            }, 1100); // Duration of the animation plus initial delay
+        } catch (e) {
+            console.log('Error in iframe onload:', e);
+        }
+    };
+
+    var removeButton = document.createElement("button");
+    removeButton.textContent = "X";;
+    removeButton.className = "remove-button"; 
+	
+		removeButton.onclick = function() {
+			container.removeChild(iframeContainer);
+			// Skryj výstup AI po zavření okna
+			document.getElementById("aiResult").style.display = "none";
+
+			if (container.children.length === 0) {
+				const bg = document.getElementById('random-background');
+				if (bg) {
+					// Načtení nového náhodného obrázku před zvýšením opacity
+					const randomIndex = Math.floor(Math.random() * 6) + 1;
+					bg.style.backgroundImage = `url('background/${randomIndex}.webp')`;
+					bg.style.opacity = 1;
+				}
+				resetBackgroundFilter();
+				// Zavřít PDF viewer, pokud je otevřený
+				const pdfViewer = document.getElementById('doc-viewer');
+				if (pdfViewer) {
+					pdfViewer.remove();
+				}
+			}
+		};
+
+    iframeContainer.appendChild(removeButton);
+    iframeContainer.appendChild(iframe);
+    container.appendChild(iframeContainer);
+}
+
+
+function adjustIframeHeight(iframe) {
+    var observer = new MutationObserver(function() {
+        updateIframeHeight(iframe);
     });
 
-    circle.appendChild(frag);
-	
-	const gameTitle = document.getElementById('game-title');
+    observer.observe(iframe.contentWindow.document.body, {
+        attributes: true,
+        childList: true,
+        subtree: true
+    });
 
-function showGameTitle(text) {
-  gameTitle.innerHTML = ''; // vymazat předchozí text
-
-  text.split('').forEach(char => {
-    const span = document.createElement('span');
-    span.textContent = char;
-	span.style.fontFamily = 'IgnisEtGlaciesSharp, sans-serif';
-    span.style.top = `${Math.floor(Math.random() * 6 - 3)}px`;
-    span.style.left = `${Math.floor(Math.random() * 6 - 3)}px`;
-    gameTitle.appendChild(span);
-  });
+    updateIframeHeight(iframe);
 }
 
-function clearGameTitle() {
-  gameTitle.innerHTML = '';
+function updateIframeHeight(iframe) {
+    // Remember the current scroll position
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    iframe.style.height = '0px';
+    var minHeight = 10; // Minimum height
+    var iframeContentHeight = iframe.contentWindow.document.body.scrollHeight;
+    iframe.style.height = Math.max(iframeContentHeight, minHeight) + 'px';
+
+    // Restore the scroll position
+    window.scrollTo(0, scrollTop);
 }
 
 
-function StartAction() {
-  const bgMusic = document.getElementById('bg-music');
-  const humSound = document.getElementById('hover-hum');
 
-  const startMusic = () => {
-    bgMusic.volume = 0.5;
-    bgMusic.play().catch(() => {});
+function bindEventsToIframe(iframe) {
+    try {
+        var doc = iframe.contentWindow.document;
+        setupRefreshOnAction(doc);
+    } catch (e) {
+        console.log('Error binding events to iframe:', e);
+    }
+}
+
+function setupRefreshOnAction(doc) {
+    function delayedUpdate(event) {
+		if (editMode) return;
+        // Add the IDs of the buttons to the condition
+        if (event.target.id === 'FINALPOPText' || event.target.id === 'FINALRESText' || event.target.id === 'FINALCOMPLETEText' ||
+            event.target.id === 'copyPOP' || event.target.id === 'copyRES' || event.target.id === 'copyCOMP') {
+            // If the event target is one of the specified elements, skip the rest of the function
+            return;
+        }
+
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+        setTimeout(function() {
+            updateFinalTextAreas();
+            checkAndUpdateDivVisibility();
+
+            // Restore the scroll position
+            window.scrollTo(scrollLeft, scrollTop);
+        }, 1);
+    }
+
+    // Attach the event listeners to the document or passed document-like object (e.g., iframe's document)
+    doc.addEventListener('keydown', delayedUpdate);
+    doc.addEventListener('mouseup', delayedUpdate);
+    doc.addEventListener('input', delayedUpdate);
+    doc.addEventListener('wheel', delayedUpdate);
+}
+
+
+
+//Příprava textů s názvy apod.
+
+function updateFinalTextAreas() {
+	if (editMode) return;
+    var container = document.getElementById("page-container");
+    var iframes = container.getElementsByTagName("iframe");
     
-    // připrav hover-hum na přehrávání
-    humSound.play().then(() => {
-      humSound.pause();
-      humSound.currentTime = 0;
-    }).catch(() => {});
+    var finalNAMEText = '';
+    var finalINDText = '';
+    var finalSEKVText = '';
+    var finalPOPText = '';
+    var finalRESText = '';
+    var nameTexts = []; // Array to hold NAMEText values
+    var popTexts = []; // Array to hold POPText values
 
-    window.removeEventListener('mousemove', startMusic);
-  };
 
-  window.addEventListener('mousemove', startMusic);
+    for (var i = 0; i < iframes.length; i++) {
+        var iframe = iframes[i];
+        try {
+            var doc = iframe.contentWindow.document;
+            
+            // Extract NAMEText and store in array
+            var nameTextAreas = doc.querySelectorAll("textarea[id$='NAMEText']");
+            for (var j = 0; j < nameTextAreas.length; j++) {
+                finalNAMEText += nameTextAreas[j].value + ", ";
+                nameTexts.push(nameTextAreas[j].value); // Add to array
+            }
+
+            // Extract INDText
+            var indTextAreas = doc.querySelectorAll("textarea[id$='INDText']");
+            for (var j = 0; j < indTextAreas.length; j++) {
+                if (indTextAreas[j].value.trim() !== "") {
+                    finalINDText += (finalINDText ? ", " : "") + indTextAreas[j].value;
+                }
+            }
+
+            // Extract SEKVText
+            var sekvTextAreas = doc.querySelectorAll("textarea[id$='SEKVText']");
+            for (var j = 0; j < sekvTextAreas.length; j++) {
+                finalSEKVText += sekvTextAreas[j].value;
+            }
+
+            // Extract POPText and store in array
+            var popTextAreas = doc.querySelectorAll("textarea[id$='POPText']");
+            for (var j = 0; j < popTextAreas.length; j++) {
+                popTexts.push(popTextAreas[j].value); // Add to array without modification
+            }
+
+            // Extract RESText
+            var resTextAreas = doc.querySelectorAll("textarea[id$='RESText']");
+            for (var j = 0; j < resTextAreas.length; j++) {
+                finalRESText += resTextAreas[j].value + "\n";
+            }
+
+        } catch (e) {
+            console.log('Error accessing iframe contents:', e);
+        }
+    }
+	
+	
+    // Prepend NAMEText to corresponding POPText if more than one NAMEText
+    if (nameTexts.length > 1) {
+        finalPOPText = nameTexts.map((name, index) => name + ":\n" + (popTexts[index] || "")).join("\n \n");
+    } else {
+        finalPOPText = popTexts.join("\n\n"); // Use as is if only one POPText
+    }
+
+	// Check if compText contains "PSMA-PET/CT" and replace "MR" with "PSMA-PET/MR, same for FDG-PET"
+	if (finalPOPText.includes("FDG-PET/CT")) {
+		finalPOPText = finalPOPText.replace(/(?:^|, )MR/gm, function(match) {
+			return match === 'MR' ? "FDG-PET/MR" : ", FDG-PET/MR";
+		});
+	}
+	else if (finalPOPText.includes("PSMA-PET/CT")) {
+		finalPOPText = finalPOPText.replace(/(?:^|, )MR/gm, function(match) {
+			return match === 'MR' ? "PSMA-PET/MR" : ", PSMA-PET/MR";
+		});
+	}
+
+    // Update final text areas
+    document.getElementById("FINALNAMEText").value = finalNAMEText.slice(0, -2).trim();
+    document.getElementById("FINALINDText").value = finalINDText.trim();
+    document.getElementById("FINALSEKVText").value = finalSEKVText.trim();
+    document.getElementById("FINALPOPText").value = finalPOPText.trim();
+    document.getElementById("FINALRESText").value = finalRESText.trim();
+
+    // Combine into FINALCOMPLETEText
+    var finalCompleteText = finalNAMEText.slice(0, -2);
+
+    if (finalSEKVText.trim()) {
+        finalCompleteText += "\n\nSekvence: " + finalSEKVText.trim();
+    }
+
+    if (finalINDText.trim()) {
+        finalCompleteText += (finalCompleteText ? "\n\n" : "") + "Indikace: " + finalINDText.trim();
+    }
+
+    finalCompleteText += "\n\n" + finalPOPText.trim() + "\n\n" + "Závěr: " + "\n" + finalRESText.trim();
+
+    document.getElementById("FINALCOMPLETEText").value = finalCompleteText.trim();
+}	
+
+
+
+
+function checkAndUpdateDivVisibility() {
+    var popText = document.getElementById("FINALPOPText").value.trim();
+    var resText = document.getElementById("FINALRESText").value.trim();
+	var compText = document.getElementById("FINALCOMPLETEText").value.trim();
+    var div = document.getElementById("texty1");
+	var div2 = document.getElementById("texty2");
+
+    if (popText === '' && resText === '') {
+        div.classList.add('invisible'); div2.classList.add('invisible');
+		div.classList.remove('visible'); div2.classList.remove('visible');
+    } else {
+        div.classList.add('visible'); div2.classList.add('visible')
+		div.classList.remove('invisible'); div2.classList.remove('invisible')
+    }
+	
+	adjustTextareaHeight(document.getElementById("FINALPOPText"));
+    adjustTextareaHeight(document.getElementById("FINALRESText"));
+	adjustTextareaHeight(document.getElementById("FINALCOMPLETEText"));
+	
+	const promptBox = document.getElementById("promptSelectExam");
+	const pageContent = document.getElementById("page-container");
+
+	if (pageContent.children.length === 0) {
+	  promptBox.style.display = "block";
+	} else {
+	  promptBox.style.display = "none";
+	}
+
+}
+
+function adjustTextareaHeight(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
 }
 
 
-setInterval(() => {
-  document.querySelectorAll('.game-title span').forEach(span => {
-    const dx = Math.floor(Math.random() * 5 - 2);
-    const dy = Math.floor(Math.random() * 5 - 2);
-    const scale = 1 + (Math.random() - 0.5) * 0.1;
-    const blur = 6 + Math.random() * 6;
 
-    span.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
-	span.style.textShadow = `
-	  -1px -1px 0 #000,
-	   1px -1px 0 #000,
-	  -1px  1px 0 #000,
-	   1px  1px 0 #000,
-	   0 0 ${blur}px #ff6600,
-	   0 0 ${blur + 10}px #ff3300,
-	   0 0 ${blur + 20}px rgba(255, 100, 0, 0.5)
-	`;
+// COPY and blink
 
+function highlightTextInTextarea(textareaId, textToHighlight) {
+    const textarea = document.getElementById(textareaId);
+    const fullText = textarea.value;
+
+    const startIndex = fullText.indexOf(textToHighlight);
+    if (startIndex === -1) return;
+
+    const endIndex = startIndex + textToHighlight.length;
+
+    textarea.focus();
+    textarea.setSelectionRange(startIndex, endIndex);
+
+    // Automaticky zruší výběr po 400 ms
+    setTimeout(() => {
+        textarea.setSelectionRange(0, 0);
+    }, 400);
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    function showPopup(message) {
+        const popup = document.getElementById('popupMessage');
+        popup.textContent = message;
+        popup.style.display = 'block';
+        setTimeout(() => popup.style.display = 'none', 2000);
+    }
+
+    function validateText(text) {
+        if (text.includes("MR kolene") || text.includes("MR ramene") || text.includes("MR hlezna")) {
+            showPopup("DOPLŇ STRANU");
+            return false;
+        }
+
+        const invalidCombo =
+            (text.includes("FDG") && text.includes("PSMA")) ||
+            (text.includes("FDG") && text.includes("DOTATOC")) ||
+            (text.includes("PSMA") && text.includes("DOTATOC"));
+
+        if (invalidCombo) {
+            showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
+            return false;
+        }
+
+        return true;
+    }
+
+	  function copyTextAndBlink(text, targetTextareaId) {
+		if (!validateText(text)) return;
+
+		navigator.clipboard.writeText(text)
+			.then(() => {
+				console.log("Text copied:", text);
+				highlightTextInTextarea(targetTextareaId, text); // použijeme výběr, ne animaci
+			})
+			.catch(err => {
+				console.error("Copy failed:", err);
+			});
+	}
+
+
+    // Setup copy buttons
+    document.getElementById('copyCOMP').addEventListener('click', () => {
+        const text = document.getElementById("FINALCOMPLETEText").value;
+        copyTextAndBlink(text, "FINALCOMPLETEText");
+    });
+
+    document.getElementById('copyPOP').addEventListener('click', () => {
+		const text = document.getElementById("FINALCOMPLETEText").value;
+		let lines = text.split('\n');
+		lines.shift(); // remove name
+
+		let sekvIndex = lines.findIndex(line => line.trim().startsWith("Sekvence:"));
+		if (sekvIndex !== -1) lines.splice(sekvIndex, 2);
+
+		let indIndex = lines.findIndex(line => line.trim().startsWith("Indikace:"));
+		if (indIndex !== -1) lines.splice(indIndex, 2);
+
+		let zavIndex = lines.findIndex(line => line.trim() === "Závěr:");
+		if (zavIndex !== -1) lines = lines.slice(0, zavIndex);
+
+		const finalPop = lines.join('\n').trim();
+		copyTextAndBlink(finalPop, "FINALCOMPLETEText");
+		highlightTextInTextarea("FINALCOMPLETEText", finalPop); // přidáno
+	});	
+
+	document.getElementById('copyRES').addEventListener('click', () => {
+		const text = document.getElementById("FINALCOMPLETEText").value;
+		const match = text.match(/Závěr:\s*\n([\s\S]*)$/);
+		const finalRes = match ? match[1].trim() : "";
+		copyTextAndBlink(finalRes, "FINALCOMPLETEText");
+		highlightTextInTextarea("FINALCOMPLETEText", finalRes); // přidáno
+	});
+	
+});
+
+
+
+// SAVE button handler
+document.getElementById('saveButton').addEventListener('click', function () {
+  const text = document.getElementById('FINALCOMPLETEText').value;
+  const trimmed = text.trim();
+  const blob = new Blob([trimmed], { type: 'text/plain' });
+
+  // vytvoření timestampu
+  const now = new Date();
+  const datePart = now.toISOString().split("T")[0].replace(/-/g, '');       // YYYYMMDD
+  const timePart = now.toTimeString().split(" ")[0].replace(/:/g, '');      // HHMMSS
+  const filename = `${datePart}-${timePart}-radio-popis.txt`;
+
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  if (trimmed) {
+    appendToLocalStorageLog(trimmed, " (ručně)");
+  }
+
+  lastSavedText = trimmed;
+});
+
+
+
+// check AI
+
+const btn = document.getElementById('checkAI');
+if (btn) {
+  btn.addEventListener('click', () => {
+    // Přečteme obsah viditelné textarea FINALCOMPLETEText
+    const textareaCOMP = document.getElementById('FINALCOMPLETEText');
+    const completeText = textareaCOMP ? textareaCOMP.value.trim() : "";
+
+    //alert("📤 Text odeslaný do AI:\n\n" + completeText);
+
+    zkontrolujAI(completeText);
   });
-}, 80);
+}
 
-window.addEventListener('pageshow', (event) => {
-  if (event.persisted) {
-    location.reload();
+async function zkontrolujAI(completeText) {
+  const output = document.getElementById('aiOutput');
+  const resultDiv = document.getElementById('aiResult');
+
+  if (!completeText) {
+    alert("Text je prázdný.");
+    return;
+  }
+
+  output.innerText = "⏳ AI analyzuje...";
+  resultDiv.style.display = 'block';
+
+  // Odešleme JSON s polem 'text'
+  try {
+    const response = await fetch("https://radio-ai-backend.onrender.com/api/check", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: completeText })
+    });
+
+    const data = await response.json();
+    output.innerText = data.result || "⚠️ Žádná odpověď od AI.";
+  } catch (error) {
+    output.innerText = "❌ Chyba připojení: " + error.message;
+  }
+}
+
+
+
+	// EDIT mód
+
+let editMode = false;
+
+document.getElementById('toggleEdit').addEventListener('click', () => {
+  const textareaIDs = ["FINALPOPText", "FINALRESText", "FINALCOMPLETEText"];
+  editMode = !editMode;
+
+  textareaIDs.forEach(id => {
+    const el = document.getElementById(id);
+    el.readOnly = !editMode;
+    el.style.backgroundColor = editMode ? "#fffceb" : ""; // jemnější žlutá
+  });
+
+  const toggleBtn = document.getElementById('toggleEdit');
+  toggleBtn.textContent = editMode ? "Zrušit EDIT" : "📝 EDIT";
+  toggleBtn.style.backgroundColor = editMode ? "#ffe0b3" : ""; // jemná oranžová
+
+  const page = document.getElementById('page-container');
+  if (page) {
+    page.style.pointerEvents = editMode ? "none" : "";
+    page.style.opacity = editMode ? "0.2" : "";
+  }
+
+  // Pokud se právě ukončuje režim editace, ulož do LocalStorage
+  if (!editMode) {
+    const text = document.getElementById('FINALCOMPLETEText').value.trim();
+    if (text && text !== lastSavedText) {
+      appendToLocalStorageLog(text, " (po EDITACI)");
+      lastSavedText = text;
+    }
   }
 });
 
 
 
-  </script>
+
+//PDF open
+
+document.getElementById('btnPDF').addEventListener('click', function() {
+    document.getElementById('pdfFileInput').click();
+});
+
+document.getElementById('pdfFileInput').addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    if (!file) return;
+
+    // Vytvoření URL vybraného souboru
+    var fileURL = URL.createObjectURL(file);
+
+    // Vytvoření kontejneru pro zobrazení dokumentu
+    var docContainer = document.createElement('div');
+    docContainer.id = 'doc-viewer';
+    // Umístění: napravo od page-container – upravte podle potřebného layoutu
+    docContainer.style.position = 'fixed';
+    docContainer.style.top = '100px';
+    docContainer.style.right = '20px';
+    docContainer.style.width = '40%';
+    docContainer.style.height = '80%';
+    docContainer.style.border = '1px solid #ccc';
+    docContainer.style.backgroundColor = '#fff';
+
+    // Vytvoření iframe pro zobrazení dokumentu
+    var iframe = document.createElement('iframe');
+    iframe.src = fileURL;
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+
+	var removeBtn = document.createElement('button');
+	removeBtn.textContent = 'X';
+	removeBtn.className = 'remove-button'; // použije se existující styl pro odebrání (červené tlačítko)
+	removeBtn.style.position = 'absolute';
+	removeBtn.style.top = '0';
+	removeBtn.style.left = '0';  // Upraveno na levý horní roh
+	removeBtn.style.zIndex = '10';
+
+	removeBtn.addEventListener('click', function() {
+		if (docContainer) {
+			docContainer.parentNode.removeChild(docContainer);
+		}
+	});
+
+    docContainer.appendChild(removeBtn);
+    docContainer.appendChild(iframe);
+
+    // Přidání kontejneru do dokumentu (můžete upravit umístění dle potřeby)
+    document.body.appendChild(docContainer);
+});
+	
+	
+// local storage backup
+
+// PŘIDÁ NOVÝ ZÁZNAM A UDRŽÍ POUZE POSLEDNÍCH 10
+function appendToLocalStorageLog(text, prefix = "") {
+  const key = "radioBackup";
+  const now = new Date();
+  const today = now.toISOString().split("T")[0];
+  const time = now.toTimeString().split(" ")[0];
+
+  let data = localStorage.getItem(key);
+  let parsed = { date: today, logs: [] };
+
+  if (data) {
+    try {
+      parsed = JSON.parse(data);
+      if (parsed.date !== today) parsed = { date: today, logs: [] };
+    } catch (e) {
+      parsed = { date: today, logs: [] };
+    }
+  }
+
+  // Přidání nového záznamu
+  parsed.logs.push(`[${time}]${prefix}\n${text}\n\n---\n`);
+
+  // Udržení max. 20 záznamů
+  if (parsed.logs.length > 20) {
+    parsed.logs = parsed.logs.slice(-20);
+  }
+
+  localStorage.setItem(key, JSON.stringify(parsed));
+}
+
+// AUTOSAVE každých 5 minut do localStorage s razítkem a denní rotací
+
+let lastSavedText = ""; // uchová poslední uložený text
+
+setInterval(() => {
+  if (editMode) return;
+
+  const text = document.getElementById("FINALCOMPLETEText").value.trim();
+  if (!text || text === lastSavedText) return;
+
+  appendToLocalStorageLog(text);
+  lastSavedText = text;
+}, 10 * 60 * 1000);
+
+
+//LOAD
+
+document.getElementById("loadButton").addEventListener("click", function () {
+  const overlay = document.getElementById("helpOverlay");
+  const viewer = document.getElementById("backupViewer");
+
+  try {
+    const backup = JSON.parse(localStorage.getItem("radioBackup") || "{}");
+    viewer.value = backup.logs ? backup.logs.join("\n") : "Žádná data.";
+  } catch (e) {
+    viewer.value = "Chyba při načítání zálohy.";
+  }
+
+  overlay.style.display = "block";
+});
+
+
+
+// background IMAGE
+
+
+document.addEventListener('DOMContentLoaded', function () {
+ const bgDiv = document.getElementById('random-background');
+ if (bgDiv) {
+	 const randomIndex = Math.floor(Math.random() * 7) + 1;
+	 bgDiv.style.backgroundImage = `url('background/${randomIndex}.webp')`;
+ }
+ console.log("Načten obrázek:", bgDiv.style.backgroundImage);
+});
+
+
+function resetBackgroundFilter() {
+  const bg = document.getElementById('random-background');
+  if (bg) {
+	bg.style.opacity = 1;
+	bg.style.filter = 'url(#bubbleFilter)';
+  }
+}
+
+	
+</script>
+
+
+
 </body>
+
 </html>
+
