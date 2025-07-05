@@ -304,11 +304,11 @@ if (OSAText === "|") {
  Osy = "Mírná sinistrokonvexní skolióza. ";
  OsyR = ""; 
 } else if (OSAText === "((") {
- Osy = "Výrazná dextrokonvexní skolióza. ";
- OsyR = "Výrazná dextrokonvexní skolióza. ";
+ Osy = "Dextrokonvexní skolióza. ";
+ OsyR = "Dextrokonvexní skolióza. ";
 } else if (OSAText === "))") {
- Osy = "Výrazná sinistrokonvexní skolióza. ";
- OsyR = "Výrazná sinistrokonvexní skolióza. ";
+ Osy = "Sinistrokonvexní skolióza. ";
+ OsyR = "Sinistrokonvexní skolióza. ";
 }
 
 if (LORDText === "(") {
