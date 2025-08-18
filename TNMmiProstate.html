@@ -3,13 +3,45 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="content-type">
 <link rel="stylesheet" href="styles.css">
-
+<style>
+  h4 {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-top: 20px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+  }
+  table th, table td {
+    border: 1px solid #ccc;
+    padding: 4px 6px;
+    text-align: left;
+  }
+  thead td, thead th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    text-align: center;
+  }
+  .main-row td {
+    background-color: #d9edf7;
+    font-weight: bold;
+  }
+  .section-header {
+    background-color: #f9e79f;
+    font-weight: bold;
+    text-align: center;
+  }
+</style>
 </head>
 <body class="TNM">
 <div id="GeneralDIV" class="standardwidthTNM">
+
+<h4>Prostate Cancer miTNM staging (v2)</h4>
 <table>
-    <tr><th colspan="4">Prostate Cancer miTNM staging (v2)</th></tr>
-    <tr class="main-row"><td colspan="4">Local tumor (T)</td></tr>
+    <tr class="main-row"><th colspan="4">Local tumor (T)</th></tr>
     <tr>
         <td>miT0</td>
         <td></td>
@@ -64,7 +96,7 @@
         <td>Presence of local recurrence after radical prostatectomy</td>
         <td></td>
     </tr>
-    <tr class="main-row"><td colspan="4">Intrapelvic nodes (N)</td></tr>
+    <tr class="main-row"><th colspan="4">Intrapelvic nodes (N)</th></tr>
     <tr>
         <td>miN0</td>
         <td></td>
@@ -82,7 +114,7 @@
         <td>Multiple (≥2) lymph node regions harbor lymph node metastases, report location(s) by a standardized template</td>
         <td></td>
     </tr>
-    <tr class="main-row"><td colspan="4">Distant metastases (M)</td></tr>
+    <tr class="main-row"><th colspan="4">Distant metastases (M)</th></tr>
     <tr>
         <td>miM0</td>
         <td></td>
@@ -114,6 +146,141 @@
         <td></td>
     </tr>
 </table>
+
+<h4>PSMA-RADS 2.0 – Přehledná tabulka</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Kategorie</th>
+      <th>Pravděpodobnost malignity</th>
+      <th>Typické znaky</th>
+      <th>Příklad</th>
+      <th>Doporučený postup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>1</b></td>
+      <td>0 % (určitě benigní)</td>
+      <td>Fyziologická akumulace, jasně benigní struktury</td>
+      <td>Slinné žlázy, ledviny, tenké střevo</td>
+      <td>Bez akce</td>
+    </tr>
+    <tr>
+      <td><b>2</b></td>
+      <td>Nízká, pravděpodobně benigní</td>
+      <td>Atypická lokalizace, uptake vysvětlitelný benigní etiologií</td>
+      <td>Symetrické uptake v gangliích, žebro po traumatu</td>
+      <td>Klinická korelace, obvykle bez akce</td>
+    </tr>
+    <tr>
+      <td><b>3A</b></td>
+      <td>Nejasné, měkkotkáňové</td>
+      <td>Malý lymfatický uzel nebo ložisko bez jasného korelátu, uptake &lt; játra</td>
+      <td>Subcentimetrická uzlina s nízkým uptake</td>
+      <td>Sledování, opakovaný PET/MR</td>
+    </tr>
+    <tr>
+      <td><b>3B</b></td>
+      <td>Nejasné, kostní</td>
+      <td>Kostní uptake bez CT/MR korelátu, subhepatická intenzita</td>
+      <td>Fokus v žebru, bez strukturální léze</td>
+      <td>Sledování PSA, opakování PET při progresi</td>
+    </tr>
+    <tr>
+      <td><b>3C</b></td>
+      <td>Nejasné, atypická lokalizace</td>
+      <td>Uptake v orgánu, kde obvykle nejsou metastázy</td>
+      <td>Ložisko ve slezině, plíci bez uzlin</td>
+      <td>Korelace s klinikou, ev. další zobrazovací metody</td>
+    </tr>
+    <tr>
+      <td><b>3D</b></td>
+      <td>Nejasné, konfuzní etiologie</td>
+      <td>Aktivita v ložisku, kde nelze odlišit zánět vs. nádor</td>
+      <td>Uptake v plíci při známé pneumonii</td>
+      <td>Krátkodobý follow-up, ev. doplnit CT/MR</td>
+    </tr>
+    <tr>
+      <td><b>4</b></td>
+      <td>Pravděpodobně maligní</td>
+      <td>Typická distribuce, intenzita ≈ játra, ale bez úplných kritérií</td>
+      <td>Sklerotické ložisko s uptake blízkým játrům</td>
+      <td>Vysoce suspektní, zvažte terapii nebo potvrzení</td>
+    </tr>
+    <tr>
+      <td><b>5</b></td>
+      <td>Určitě maligní</td>
+      <td>Typická lokalizace, vysoký uptake &gt; játra, CT/MR korelát</td>
+      <td>Uzlina s výrazným uptake, metastáza v kosti se sklerózou</td>
+      <td>Metastatické postižení, klinické rozhodnutí</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Cambridge Prognostic Group (CPG) – Risk Stratification</h4>
+<table>
+  <thead>
+    <tr class="section-header">
+      <th>CPG</th>
+      <th>Kritéria</th>
+      <th>Riziková kategorie</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>CPG 1</b></td>
+      <td>GG 1 (Gleason 6), PSA < 10, T1–T2</td>
+      <td>Velmi nízké / nízké riziko</td>
+    </tr>
+    <tr>
+      <td><b>CPG 2</b></td>
+      <td>GG 2 (Gleason 3+4) nebo PSA 10–20, T1–T2</td>
+      <td>Nízké až střední riziko</td>
+    </tr>
+    <tr>
+      <td><b>CPG 3</b></td>
+      <td>GG 3 (Gleason 4+3) nebo kombinace GG 2 + PSA 10–20, T1–T2</td>
+      <td>Střední riziko</td>
+    </tr>
+    <tr>
+      <td><b>CPG 4</b></td>
+      <td>GG 4 (Gleason 8) nebo PSA > 20 nebo T3</td>
+      <td>Vysoké riziko</td>
+    </tr>
+    <tr>
+      <td><b>CPG 5</b></td>
+      <td>GG 5 (Gleason 9–10) nebo T4, nebo ≥ 2 high-risk kritéria</td>
+      <td>Velmi vysoké riziko</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Indikace PSMA PET v ČR</h4>
+<table>
+  <thead>
+    <tr class="section-header">
+      <th>Indikace</th>
+      <th>Popis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Primární staging (high‑risk)</td>
+      <td>Vysoce rizikoví pacienti před kurativní terapií</td>
+    </tr>
+    <tr>
+      <td>Biochemická recidiva (BCR)</td>
+      <td>Stoupající PSA po léčbě, PSMA PET lokalizuje recidivu</td>
+    </tr>
+    <tr>
+      <td>mCRPC pro PSMA‑RLT</td>
+      <td>Identifikace vhodných kandidátů pro radionuklidovou terapii</td>
+    </tr>
+  </tbody>
+</table>
+
 </div>
 </body>
 </html>
+
