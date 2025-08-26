@@ -688,7 +688,7 @@ if (X01PKText === "0") {
  X01stenozyP = "Páteřní kanál " + "zúžen. ";
  X01stenPK = "Spinální stenóza ";
 } else if (X01PKText === "3") {
- X01stenozyP = "Páteřní kanál " + "výrazně zúžen s agregací kaudy. ";
+ X01stenozyP = "Páteřní kanál " + "výrazně zúžen s kompresí míchy. ";
  X01stenPK = "Výrazná spinální stenóza ";
 } 
 
