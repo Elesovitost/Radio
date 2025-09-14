@@ -46,7 +46,7 @@ table {width: auto; white-space: nowrap;}
 <div class="MainDIV">   
 
 	<div id="FDGPET" class="standardwidth mydiv0" >
-	<button id="PETTypeButton" class="buttonSELECT" onmousedown="cyclePETTypeText(event)">FDG</button> - PET / CT (MR)
+	<button id="PETTypeButton" class="buttonSELECT" onmousedown="cyclePETTypeText(event)">FDG</button> PET / CT (MR)
 	<label class="CHB hidden"> + variabilně: MR <input type="checkbox" id="ChbMRrekta" onChange="updateTexts()"><span>+</span></label>
 	</div>
 
@@ -373,87 +373,133 @@ table {width: auto; white-space: nowrap;}
 					<tr>
 						<td>
 							<table>
-								<tr>
-									<td>Plíce</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungsR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LungsL" onChange="updateTexts()"><span>L</span></label></td>
-									<td>S1</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungS1R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LungS1L" onChange="updateTexts()"><span>L</span></label></td>
-									<td>Mamma HZK</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1MammaULQR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1MammaULQL" onChange="updateTexts()"><span>L</span></label></td>
-								</tr>
-								<tr>
-									<td>Horní lalok</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LobeUpperR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LobeUpperL" onChange="updateTexts()"><span>L</span></label></td>
-									<td>S2</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungS2R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LungS2L"><span></span></label></td>
-									<td>Mamma HVK</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1MammaUMQR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1MammaUMQL" onChange="updateTexts()"><span>L</span></label></td>
-								</tr>
-								<tr>
-									<td>Střední lalok</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LobeMiddleR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LobeMiddleL" onChange="updateTexts()"><span>L</span></label></td>
-									<td>S3</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungS3R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LungS3L" onChange="updateTexts()"><span>L</span></label></td>
-									<td>Mamma DZK</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1MammaLLQR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1MammaLLQL" onChange="updateTexts()"><span>L</span></label></td>
-								</tr>
-								<tr>
-									<td>Dolní lalok</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LobeLowerR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LobeLowerL" onChange="updateTexts()"><span>L</span></label></td>
-									<td>S4</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungS4R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LungS4L" onChange="updateTexts()"><span>L</span></label></td>
-									<td>Mamma DVK</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1MammaLMQR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1MammaLMQL" onChange="updateTexts()"><span>L</span></label></td>
-								</tr>
-								<tr>
-									<td></td>
-									<td></td>
-									<td>S5</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungS5R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LungS5L" onChange="updateTexts()"><span>L</span></label></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>Centrálně</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1CentralLocation" onChange="updateTexts()"><span>+</span></label></td>
-									<td>S6</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungS6R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LungS6L" onChange="updateTexts()"><span>L</span></label></td>
-									<td>Jícen horní</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1OesophagusUpper" onChange="updateTexts()"><span>+</span></label></td>
-								</tr>
-								<tr>
-									<td>Periferně</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1PeripheralLocation" onChange="updateTexts()"><span>+</span></label></td>
-									<td>S7</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungS7R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LungS7L" onChange="updateTexts()"><span>L</span></label></td>
-									<td>Jícen střední</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1OesophagusMiddle" onChange="updateTexts()"><span>+</span></label></td>
-								</tr>
-								<tr>
-									<td></td>
-									<td></td>
-									<td>S8</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungS8R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LungS8L" onChange="updateTexts()"><span>L</span></label></td>
-									<td>Jícen dolní</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1OesophagusLower" onChange="updateTexts()"><span>+</span></label></td>
-								</tr>
-								<tr>
-									<td>Pleura</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1PleuraR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1PleuraL" onChange="updateTexts()"><span>L</span></label></td>
-									<td>S9</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungS9R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LungS9L" onChange="updateTexts()"><span>L</span></label></td>
-									<td>Thymus</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1ThymusR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1ThymusL" onChange="updateTexts()"><span>L</span></label></td>
-								</tr>
-								<tr>
-									<td>Hrudní stěna</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1ChestWallR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1ChestWallL" onChange="updateTexts()"><span>L</span></label></td>
-									<td>S10</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungS10R" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1LungS10L" onChange="updateTexts()"><span>L</span></label></td>
-									<td>Parakardie</td>
-									<td class="right"><label class="CHB"><input type="checkbox" id="Chb1ParacardialR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="Chb1ParacardialL" onChange="updateTexts()"><span>L</span></label></td>
-								</tr>
-							</table>   
+							  <tr>
+								<td class="right"><label class="CHB"><input type="checkbox" id="Chb1LungsR" onChange="updateTexts()"><span>R</span></label></td>
+								<td style="text-align:center">Plíce</td>
+								<td><label class="CHB"><input type="checkbox" id="Chb1LungsL" onChange="updateTexts()"><span>L</span></label></td>
+							  </tr>
+
+							  <tr>
+								<td class="right">
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS1R" onChange="updateTexts()"><span>S1</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS2R" onChange="updateTexts()"><span>S2</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS3R" onChange="updateTexts()"><span>S3</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LobeUpperR" onChange="updateTexts()"><span>R</span></label>
+								</td>
+								<td style="text-align:center">Horní lalok</td>
+								<td>
+								  <label class="CHB"><input type="checkbox" id="Chb1LobeUpperL" onChange="updateTexts()"><span>L</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS1L" onChange="updateTexts()"><span>S1</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS2L" onChange="updateTexts()"><span>S2</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS3L" onChange="updateTexts()"><span>S3</span></label>
+								</td>
+							  </tr>
+
+							  <tr>
+								<td class="right">
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS4R" onChange="updateTexts()"><span>S4</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS5R" onChange="updateTexts()"><span>S5</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LobeMiddleR" onChange="updateTexts()"><span>R</span></label>
+								</td>
+								<td style="text-align:center">Střední lalok</td>
+								<td>
+								  <label class="CHB"><input type="checkbox" id="Chb1LobeMiddleL" onChange="updateTexts()"><span>L</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS4L" onChange="updateTexts()"><span>S4</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS5L" onChange="updateTexts()"><span>S5</span></label>
+								</td>
+							  </tr>
+
+							  <tr>
+								<td class="right">
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS6R" onChange="updateTexts()"><span>S6</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS7R" onChange="updateTexts()"><span>S7</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS8R" onChange="updateTexts()"><span>S8</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS9R" onChange="updateTexts()"><span>S9</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS10R" onChange="updateTexts()"><span>S10</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LobeLowerR" onChange="updateTexts()"><span>R</span></label>
+								</td>
+								<td style="text-align:center">Dolní lalok</td>
+								<td>
+								  <label class="CHB"><input type="checkbox" id="Chb1LobeLowerL" onChange="updateTexts()"><span>L</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS6L" onChange="updateTexts()"><span>S6</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS7L" onChange="updateTexts()"><span>S7</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS8L" onChange="updateTexts()"><span>S8</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS9L" onChange="updateTexts()"><span>S9</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1LungS10L" onChange="updateTexts()"><span>S10</span></label>
+								</td>
+							  </tr>
+
+							  <tr>
+								<td class="right"><label class="CHB"><input type="checkbox" id="Chb1PleuraR" onChange="updateTexts()"><span>R</span></label></td>
+								<td style="text-align:center">Pleura</td>
+								<td><label class="CHB"><input type="checkbox" id="Chb1PleuraL" onChange="updateTexts()"><span>L</span></label></td>
+							  </tr>
+
+							  <tr>
+								<td class="right"><label class="CHB"><input type="checkbox" id="Chb1ChestWallR" onChange="updateTexts()"><span>R</span></label></td>
+								<td style="text-align:center">Hrudní stěna</td>
+								<td><label class="CHB"><input type="checkbox" id="Chb1ChestWallL" onChange="updateTexts()"><span>L</span></label></td>
+							  </tr>
+
+							  <tr>
+								<td class="right"><label class="CHB"><input type="checkbox" id="Chb1ParacardialR" onChange="updateTexts()"><span>R</span></label></td>
+								<td style="text-align:center">Parakardiální tuk</td>
+								<td><label class="CHB"><input type="checkbox" id="Chb1ParacardialL" onChange="updateTexts()"><span>L</span></label></td>
+							  </tr>
+
+							  <tr>
+								<td class="right"><label class="CHB"><input type="checkbox" id="Chb1ThymusR" onChange="updateTexts()"><span>R</span></label></td>
+								<td style="text-align:center">Thymus</td>
+								<td><label class="CHB"><input type="checkbox" id="Chb1ThymusL" onChange="updateTexts()"><span>L</span></label></td>
+							  </tr>
+
+							  <tr>
+								<td class="right">
+								  <label class="CHB wider"><input type="checkbox" id="Chb1MammaULQR" onChange="updateTexts()"><span>HZK</span></label>
+								  <label class="CHB wider"><input type="checkbox" id="Chb1MammaUMQR" onChange="updateTexts()"><span>HVK</span></label>
+								</td>
+								<td style="text-align:center">Mamma</td>
+								<td>
+								  <label class="CHB wider"><input type="checkbox" id="Chb1MammaULQL" onChange="updateTexts()"><span>HZK</span></label>
+								  <label class="CHB wider"><input type="checkbox" id="Chb1MammaUMQL" onChange="updateTexts()"><span>HVK</span></label>
+								</td>
+							  </tr>
+
+							  <tr>
+								<td class="right">
+								  <label class="CHB wider"><input type="checkbox" id="Chb1MammaLLQR" onChange="updateTexts()"><span>DZK</span></label>
+								  <label class="CHB wider"><input type="checkbox" id="Chb1MammaLMQR" onChange="updateTexts()"><span>DVK</span></label>
+								</td>
+								<td></td>
+								<td>
+								  <label class="CHB wider"><input type="checkbox" id="Chb1MammaLLQL" onChange="updateTexts()"><span>DZK</span></label>
+								  <label class="CHB wider"><input type="checkbox" id="Chb1MammaLMQL" onChange="updateTexts()"><span>DVK</span></label>
+								</td>
+							  </tr>
+
+							  <tr>
+								<td></td>
+								<td style="text-align:center">Jícen</td>
+								<td></td>
+							  </tr>
+
+							  <tr>
+								<td></td>
+								<td style="text-align:center">
+								  <label class="CHB"><input type="checkbox" id="Chb1OesophagusUpper" onChange="updateTexts()"><span>U</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1OesophagusMiddle" onChange="updateTexts()"><span>M</span></label>
+								  <label class="CHB"><input type="checkbox" id="Chb1OesophagusLower" onChange="updateTexts()"><span>L</span></label>
+								</td>
+								<td></td>
+							  </tr>
+
+							  <tr style="display:none">
+								<td class="right"><label class="CHB"><input type="checkbox" id="Chb1CentralLocation" onChange="updateTexts()"><span>Centrálně</span></label></td>
+								<td></td>
+								<td><label class="CHB"><input type="checkbox" id="Chb1PeripheralLocation" onChange="updateTexts()"><span>Periferně</span></label></td>
+							  </tr>
+							</table>
+
 						
 						</td>
 					</tr>

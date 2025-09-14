@@ -59,6 +59,14 @@
         </div>
 
         <div class="dropdown">
+            <button class="dropbtn">CT</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="changePage('CTmozku.html')">CT mozku</a>
+				<a href="#" onclick="changePage('CTWB.html')">CT celotělo</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
             <button class="dropbtn">UZ</button>
             <div class="dropdown-content">
                 <a href="#" onclick="changePage('UZcarotid.html')">UZ karotid</a>
@@ -539,6 +547,11 @@ document.addEventListener('DOMContentLoaded', () => {
             showPopup("NEPŘÍPUSTNÁ KOMBINACE RADIOFARMAK");
             return false;
         }
+
+		if (/(?:^|\n)CT\s*$/m.test(text)) {
+			showPopup("DOPLŇ ROZSAH VYŠETŘENÍ");
+			return false;
+		}
 
         return true;
     }

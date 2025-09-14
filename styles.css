@@ -403,7 +403,7 @@ input {  border: 1px solid #000000; text-align: left; padding-left: 5px; border-
   margin: 0px 0px 0px 3px;
   vertical-align: middle;
   background: #FFFFFF;
-  border: 1px solid #000000;
+  border: 1px solid #888888;
   border-radius: 1px;
   box-sizing: border-box;
   cursor: pointer;
@@ -423,6 +423,10 @@ input {  border: 1px solid #000000; text-align: left; padding-left: 5px; border-
   width: 30px; 
 }
 
+.CHB.ultrawide span {
+  width: 80px; 
+  background: transparent;
+}
 
 /* COPY */
 
