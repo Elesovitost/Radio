@@ -223,8 +223,8 @@ var LLmicha = "";
 var LLmulti = "";
 var LLnormalR = ""; var variousR  = "";
 
-var MRLumbarPOPText = document.getElementById("MRLumbarPOPText");
-var MRLumbarRESText = document.getElementById("MRLumbarRESText");
+var MRThoracicPOPText = document.getElementById("MRThoracicPOPText");
+var MRThoracicRESText = document.getElementById("MRThoracicRESText");
 var FINALText = document.getElementById("FINALText");
 
 
@@ -963,13 +963,13 @@ const dalsiZaver = capitalizeAndDot(document.getElementById('dalsiZaver').value)
 	
 // FINÁLNÍ TEXTY
 
-MRLumbarNAMEText.value = "MR hrudní páteře";
+MRThoracicNAMEText.value = "MR hrudní páteře";
 
-MRLumbarINDText.value = indikace;
+MRThoracicINDText.value = indikace;
 
-MRLumbarSEKVText.value = "Th páteř v sag T1W, T2W, STIR, tra T2W, (event. tra T1W dle potřeby). ";
+MRThoracicSEKVText.value = "Th páteř v sag T1W, T2W, STIR, tra T2W, (event. tra T1W dle potřeby). ";
 
-MRLumbarPOPText.value = 
+MRThoracicPOPText.value = 
 Osy + "\n" + 
 LLoperace + LLobratlenormal + LLlozisko + LLfraktura + LLostatniobratlenormal + "\n" +
 LLdiskynormal + "\n" +
@@ -986,13 +986,13 @@ LLmicha + "\n" +
 dalsiPopis
 ;
 
-MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/^\s*[\r\n]/gm, '');  // smaže prázdné řádky
-MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
-MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/  +/g, ' '); // dvojmezery
+MRThoracicPOPText.value = MRThoracicPOPText.value.replace(/^\s*[\r\n]/gm, '');  // smaže prázdné řádky
+MRThoracicPOPText.value = MRThoracicPOPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
+MRThoracicPOPText.value = MRThoracicPOPText.value.replace(/  +/g, ' '); // dvojmezery
 
 
 
-MRLumbarRESText.value = 
+MRThoracicRESText.value = 
 LLoperace + "\n" +
 LLmulti + "\n" +
 LLnormalR + "\n" +
@@ -1007,19 +1007,19 @@ OsyR + "\n" +
 dalsiZaver;
 
 //náhrady ostatní
-MRLumbarRESText.value = MRLumbarRESText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
-MRLumbarRESText.value = MRLumbarRESText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
-MRLumbarRESText.value = MRLumbarRESText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
-MRLumbarRESText.value = MRLumbarRESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
-MRLumbarRESText.value = MRLumbarRESText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
-MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
-MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s*na\s+podkladě\s*,\s*|\s*,\s*na\s+podkladě\s*,|,\s*na\s+podkladě\s*|\s*,\s*na\s+podkladě/g, ' na podkladě ');   //odstraní čárku před podkladem
-MRLumbarRESText.value = MRLumbarRESText.value.replace(/  +/g, ' '); // dvojmezery
-MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s((?!L[1-5]|T12)[A-ZÚ])/g, function(fullMatch, groupMatch) {    return ', ' + groupMatch.toLowerCase();}); // po čárce malé písmeno, nevztahuje se na X1-5 a X6.
-MRLumbarRESText.value = MRLumbarRESText.value.replace("Edém pod krycími plotnami Modic I v rámci dekompenzace degenerativních změn. Edém při facet. skloubeních v rámci dekompenzace degenerativních změn.", "Edém pod krycími plotnami Modic I a edém při facet. skloubeních v rámci dekompenzace degenerativních změn."); // combine. edém
-MRLumbarRESText.value = MRLumbarRESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
+MRThoracicRESText.value = MRThoracicRESText.value.split(/\r?\n/).filter(item => item.trim() !== '').join('\n');  // prázdné řádky
+MRThoracicRESText.value = MRThoracicRESText.value.replace(/ ,/g, ',');  // smazat mezeru před čárkou
+MRThoracicRESText.value = MRThoracicRESText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
+MRThoracicRESText.value = MRThoracicRESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
+MRThoracicRESText.value = MRThoracicRESText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
+MRThoracicRESText.value = MRThoracicRESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
+MRThoracicRESText.value = MRThoracicRESText.value.replace(/,\s*na\s+podkladě\s*,\s*|\s*,\s*na\s+podkladě\s*,|,\s*na\s+podkladě\s*|\s*,\s*na\s+podkladě/g, ' na podkladě ');   //odstraní čárku před podkladem
+MRThoracicRESText.value = MRThoracicRESText.value.replace(/  +/g, ' '); // dvojmezery
+MRThoracicRESText.value = MRThoracicRESText.value.replace(/,\s((?!L[1-5]|T12)[A-ZÚ])/g, function(fullMatch, groupMatch) {    return ', ' + groupMatch.toLowerCase();}); // po čárce malé písmeno, nevztahuje se na X1-5 a X6.
+MRThoracicRESText.value = MRThoracicRESText.value.replace("Edém pod krycími plotnami Modic I v rámci dekompenzace degenerativních změn. Edém při facet. skloubeních v rámci dekompenzace degenerativních změn.", "Edém pod krycími plotnami Modic I a edém při facet. skloubeních v rámci dekompenzace degenerativních změn."); // combine. edém
+MRThoracicRESText.value = MRThoracicRESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
 
-sloucitStejneRadky('MRLumbarRESText');
+sloucitStejneRadky('MRThoracicRESText');
 
 
 
