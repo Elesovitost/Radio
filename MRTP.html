@@ -2,24 +2,341 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
-<div class="MainDIV">
+<style>
 
-<div id="MRThoracic" class="standardwidth mydiv0">MR HRUDNÍ PÁTEŘE</div>
-<div id="IND" class="mydiv1 standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
+tr.row-locked {
+  opacity: 0.45;
+  pointer-events: none;   /* zablokuje klikání v řádku */
+}
+
+/* zamknuté listézové tlačítko u vertebry */
+.btn-locked {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+</style>
+
+<body>
+
+<div id="MRLPshape" class="MainDIV">
+
+  <div id="MRLP" class="mydiv0 standardwidth">MR HRUDNÍ PÁTEŘE</div>
+
+  <div id="INDLINE" class="mydiv1 standardwidth">
+    <input id="indikace" type="text" placeholder="indikace..." autocomplete="off">
+  </div>
+
+  <div id="OSYLINE" class="standardwidth">
+    <div class="DIVLesions">
+      <button class="title">OBECNÉ</button>
+      Osa <button id="myOSAButton" class="button40" onmousedown="cycleOSAText(event)">|</button>
+      Kyfóza <button id="myLORDButton" class="button40" onmousedown="cycleLORDText(event)">)</button>
+      Operace <label class="CHB"><input type="checkbox" class="mycheckbox" id="operace" onchange="toggleLastCells()"><span>+</span></label>
+    </div>
+  </div>
+
+  <div id="TABULKAdiv" class="standardwidth">
+    <div class="DIVLesions">
+      <button class="title">SEGMENTY</button>
+	  <div style="height: 5px;"></div>
+      <table id="TABULKA" class="small-table">
+
+        <thead>
+          <tr>
+            <th></th>
+            <th colspan="4">Patologie</th>
+            <th colspan="5">Stenózy</th>
+            <th colspan="3">Obratlová těla</th>
+            <th></th>
+            <th colspan="3">Operace</th>
+          </tr>
+          <tr>
+            <td></td>
+            <td>DDD</td>
+            <td>Modic</td>
+            <td>Protruze</td>
+            <td>Artróza</td>
+            <td>PF</td>
+            <td>PR</td>
+            <td>K</td>
+            <td>LR</td>
+            <td>LF</td>
+            <td>Listéza</td>
+            <td>Fraktura</td>
+            <td>Ložisko</td>
+            <td></td>
+            <td>Stab</td>
+            <td>Disk</td>
+            <td>Lam</td>
+          </tr>
+        </thead>
+
+        <tbody id="segments-body">
+          <!-- Segmenty se budou generovat skriptem -->
+        </tbody>
+
+      </table>
+    </div>
+
+	<div class="DIVLesions" style="margin-top: 5px;">
+	  <button class="title">DALŠÍ...</button>
+	  <label class="CHB" style="margin-left: 2px;">
+		<input type="checkbox" id="dalsiShow"><span>+</span>
+	  </label>
+
+	  <div id="dalsiFields" style="display: none; flex; gap: 5px; margin-top: 5px;">
+		<textarea id="dalsiPopis" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+		<textarea id="dalsiZaver" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+	  </div>
+	</div>
+
+
+  </div>
+
+</div>
+
 
 <div id="texty1" class=" standardwidth hidden">
-NÁZEV<textarea id="MRThoracicNAMEText" class="medium"></textarea>
-INDIKACE<textarea id="MRThoracicINDText" class="medium"></textarea>
-SEKVENCE<textarea id="MRThoracicSEKVText" class="medium"></textarea>
-POPIS<textarea id="MRThoracicPOPText" class="superlarge"></textarea>
-ZÁVĚR<textarea id="MRThoracicRESText" class="superlarge"></textarea>
+NÁZEV<textarea id="MRLumbarNAMEText" class="medium"></textarea>
+INDIKACE<textarea id="MRLumbarINDText" class="medium"></textarea>
+SEKVENCE<textarea id="MRLumbarSEKVText" class="medium"></textarea>
+POPIS<textarea id="MRLumbarPOPText" class="superlarge"></textarea>
+ZÁVĚR<textarea id="MRLumbarRESText" class="superlarge"></textarea>
 </div>
 
-</div>
+<script>
+const segments = [
+  { type: 'vertebra', id: 'X0', label: 'T12' },
+  { type: 'disc', id: 'X01', label: 'T12/L1' },
+  { type: 'vertebra', id: 'X1', label: 'L1' },
+  { type: 'disc', id: 'X12', label: 'L1/2' },
+  { type: 'vertebra', id: 'X2', label: 'L2' },
+  { type: 'disc', id: 'X23', label: 'L2/3' },
+  { type: 'vertebra', id: 'X3', label: 'L3' },
+  { type: 'disc', id: 'X34', label: 'L3/4' },
+  { type: 'vertebra', id: 'X4', label: 'L4' },
+  { type: 'disc', id: 'X45', label: 'L4/5' },
+  { type: 'vertebra', id: 'X5', label: 'L5' },
+  { type: 'disc', id: 'X56', label: 'L5/S1' },
+  { type: 'vertebra', id: 'X6', label: 'S1' },
+];
+const tbody = document.getElementById('segments-body');
 
-<script src="MRTpopis.js"></script> 
+segments.forEach(seg => {
+  const tr = document.createElement('tr');
+  tr.id = seg.id;
 
-</body>
+  if (seg.type === 'vertebra') {
+    tr.innerHTML = `
+      <td></td>
+      <td></td><td></td><td></td><td></td>
+      <td></td><td></td><td></td><td></td><td></td>
+      <td><div style="display:flex">
+        <button id="my${seg.id}LLButton" class="button60" onmousedown="cycle${seg.id}LLText(event)">není</button>
+        <button id="my${seg.id}LISDButton" class="button60" onmousedown="cycle${seg.id}LISDText(event)">1 mm</button>
+        <button id="my${seg.id}SLButton" class="button60" onmousedown="cycle${seg.id}SLText(event)">nelýza</button>
+      </div></td>
+      <td><button id="my${seg.id}KOMButton" class="button60" onmousedown="cycle${seg.id}KOMText(event)">není</button></td>
+      <td><button id="my${seg.id}LESButton" class="button100" onmousedown="cycle${seg.id}LESText(event)">není</button></td>
+      <td class="level-cell" data-seg="${seg.id}"></td>
+      <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="op${seg.id}stab" onchange="updateTexts()"><span></span></label></td>
+      <td></td>
+      <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="op${seg.id}lam" onchange="updateTexts()"><span></span></label></td>
+    `;
+  } else if (seg.type === 'disc') {
+    tr.innerHTML = `
+      <td>
+        <select id="sel${seg.id}" class="level-select">
+          <option value="" selected>vyber</option>
+        </select>
+      </td>
+      <td><button id="my${seg.id}DDButton" class="button60" onmousedown="cycle${seg.id}DDText(event)">není</button></td>
+      <td><button id="my${seg.id}MODButton" class="button60" onmousedown="cycle${seg.id}MODText(event)">není</button></td>
+      <td><div style="display:flex">
+        <button id="my${seg.id}BHButton" class="button80" onmousedown="cycle${seg.id}BHText(event)">není</button>
+        <button id="my${seg.id}HDButton" class="button60" onmousedown="cycle${seg.id}HDText(event)">1 mm</button>
+        <button id="my${seg.id}HERPFButton" class="myherButton" onmousedown="cycle${seg.id}HERPFText(event)">F</button>
+        <button id="my${seg.id}HERPPButton" class="myherButton" onmousedown="cycle${seg.id}HERPPText(event)">P</button>
+        <button id="my${seg.id}HERCButton" class="myherButton" onmousedown="cycle${seg.id}HERCText(event)">C</button>
+        <button id="my${seg.id}HERLPButton" class="myherButton" onmousedown="cycle${seg.id}HERLPText(event)">P</button>
+        <button id="my${seg.id}HERLFButton" class="myherButton" onmousedown="cycle${seg.id}HERLFText(event)">F</button>
+        <button id="my${seg.id}MIGButton" class="myherButton" onmousedown="cycle${seg.id}MIGText(event)">M0</button>
+      </div></td>
+      <td><button id="my${seg.id}FAButton" class="button60" onmousedown="cycle${seg.id}FAText(event)">není</button></td>
+      <td><button id="my${seg.id}PFButton" class="button20" onmousedown="cycle${seg.id}PFText(event)">0</button></td>
+      <td><button id="my${seg.id}PRButton" class="button20" onmousedown="cycle${seg.id}PRText(event)">0</button></td>
+      <td><button id="my${seg.id}PKButton" class="button20" onmousedown="cycle${seg.id}PKText(event)">0</button></td>
+      <td><button id="my${seg.id}LRButton" class="button20" onmousedown="cycle${seg.id}LRText(event)">0</button></td>
+      <td><button id="my${seg.id}LFButton" class="button20" onmousedown="cycle${seg.id}LFText(event)">0</button></td>
+      <td></td><td></td><td></td><td></td><td></td>
+	  <td><label class="CHB"><input type="checkbox" class="mycheckbox" id="op${seg.id}nahr" onchange="updateTexts()"><span></span></label></td>
+	  <td></td>
+    `;
+  } 
 
+  tbody.appendChild(tr);
+});
+
+const discOptions = ["C7/T1"]
+  .concat(Array.from({length: 11}, (_,i)=>`T${i+1}/${i+2}`))   // T1/2 ... T11/12
+  .concat(["T12/L1"]);
+
+
+
+
+// ID všech disků podle tabulky
+const discIds = segments.filter(s => s.type === 'disc').map(s => s.id);
+
+// pomůcky na zjištění sousedů
+function discIndex(id){ return discIds.indexOf(id); }
+function areNeighbors(a, b){
+  const ia = discIndex(a), ib = discIndex(b);
+  return ia !== -1 && ib !== -1 && Math.abs(ia - ib) === 1;
+}
+
+function setVertebraListesisDisabled(vertId, disabled) {
+  ["LLButton","LISDButton","SLButton"].forEach(suffix => {
+    const btn = document.getElementById(`my${vertId}${suffix}`);
+    if (btn) {
+      btn.disabled = disabled;
+      btn.classList.toggle('btn-locked', disabled);
+    }
+  });
+}
+
+// přepočet zámků: zamkne sousední DISK řádky a zablokuje listézu u vertebry POD vybraným diskem
+function refreshDisabledState() {
+  // kdo je aktuálně vybrán (disky s neprázdnou hodnotou)
+  const picked = discIds.filter(id => {
+    const sel = document.getElementById('sel' + id);
+    return sel && sel.value !== '';
+  });
+
+  // 1) Napřed vše odemknout a zrušit šednutí
+  discIds.forEach(id => {
+    const tr = document.getElementById(id);
+    const sel = document.getElementById('sel' + id);
+    if (tr) tr.classList.remove('row-locked');
+    if (sel) sel.disabled = false;
+  });
+  // povolit listézu všem obratlům
+  segments.filter(s => s.type === 'vertebra').forEach(v => {
+    setVertebraListesisDisabled(v.id, false);
+  });
+
+  // 2) Zamknout sousední DISKY u každého vybraného disku
+  discIds.forEach(id => {
+    const sel = document.getElementById('sel' + id);
+    if (!sel) return;
+
+    const isPicked = picked.includes(id);
+    // zamykáme pouze sousedy, ne samotný vybraný řádek,
+    // aby šlo kdykoli vrátit na "vyber"
+    const shouldLock = !isPicked && picked.some(pid => areNeighbors(pid, id));
+
+    const tr = document.getElementById(id);
+    if (tr) tr.classList.toggle('row-locked', shouldLock);
+    sel.disabled = !!shouldLock;
+  });
+
+  // 3) Zablokovat listézu u vertebry POD každým vybraným diskem
+  picked.forEach(pid => {
+    const [, vertebraDownId] = neighborVertebraIds(pid); // X01 -> X1, X12 -> X2, ...
+    setVertebraListesisDisabled(vertebraDownId, true);
+  });
+}
+
+segments.forEach(seg => {
+  if (seg.type === 'disc') {
+    const sel = document.getElementById(`sel${seg.id}`);
+    if (!sel) return;
+    discOptions.forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt;
+      o.textContent = opt;
+      sel.appendChild(o);
+    });
+  }
+});
+
+// --- pomocné: najdi vertebra sousedy k danému disc id (X01 -> X0 a X1 atd.) ---
+function neighborVertebraIds(discId) {
+  // discId: "X01","X12","X23","X34","X45","X56"
+  const a = parseInt(discId[1],10);       // např. "0"
+  const b = a + 1;                        // např. 1
+  return [`X${a}`, `X${b}`];
+}
+
+// --- globální mapy názvů (použije MRTPpopis.js) ---
+window.vertebraLabels = {};  // { X0:"C7", X1:"T1", ..., X01:"C7/T1", ... }
+function rebuildVertebraLabelsFromSelects() {
+  // vyčisti popisky v tabulce i mapu
+  document.querySelectorAll('td.level-cell').forEach(td => td.textContent = "");
+  window.vertebraLabels = window.vertebraLabels || {};
+  ["X0","X1","X2","X3","X4","X5","X6","X01","X12","X23","X34","X45","X56"].forEach(id=>{
+    delete window.vertebraLabels[id];
+  });
+
+  // pomocná funkce: když "T1/2", udělej "T1/T2"
+  const normalizePart = (part, other) => {
+    if (/^[A-Za-z]/.test(part)) return part;                 // už má písmeno (C/T/L/S)
+    const m = other.match(/^[A-Za-z]+/);                     // vezmi prefix z druhé půlky
+    return m ? (m[0] + part) : part;
+  };
+
+  // projdi všechny disky a zapiš jim i sousedním obratlům plné názvy
+  segments.filter(s => s.type==='disc').forEach(s => {
+    const sel = document.getElementById(`sel${s.id}`);
+    if (!sel || !sel.value) return;
+
+    const [rawUp, rawDown] = sel.value.split('/');           // např. "T1" a "2"
+    const up   = normalizePart(rawUp,   rawDown);            // "T1"
+    const down = normalizePart(rawDown, rawUp);              // "T2"
+
+    const [vUpId, vDnId] = neighborVertebraIds(s.id);
+
+    window.vertebraLabels[s.id]  = `${up}/${down}`;          // např. "T1/T2"
+    window.vertebraLabels[vUpId] = up;                       // "T1"
+    window.vertebraLabels[vDnId] = down;                     // "T2"
+
+    const tdUp = document.querySelector(`td.level-cell[data-seg="${vUpId}"]`);
+    const tdDn = document.querySelector(`td.level-cell[data-seg="${vDnId}"]`);
+    if (tdUp) tdUp.textContent = up;
+    if (tdDn) tdDn.textContent = down;
+  });
+
+  // nastav i wX* proměnné (využívá MRTPpopis.js)
+  ["X0","X1","X2","X3","X4","X5","X6","X01","X12","X23","X34","X45","X56"].forEach(id=>{
+    window["w"+id] = window.vertebraLabels[id] ? (window.vertebraLabels[id] + " ") : "";
+  });
+}
+
+// --- změny selectů -> přepočítej a přegeneruj texty ---
+segments.filter(s=>s.type==='disc').forEach(s=>{
+  const sel = document.getElementById(`sel${s.id}`);
+  if (!sel) return;
+  sel.addEventListener('change', () => {
+    // nejdřív smaž staré popisky (ať se nepřekrývají, když uživatel mění etáž)
+    document.querySelectorAll('td.level-cell').forEach(td => td.textContent = "");
+    window.vertebraLabels = {};
+    rebuildVertebraLabelsFromSelects();
+	refreshDisabledState();
+    // přegenerovat výstup
+    if (typeof updateTexts === 'function') updateTexts();
+  });
+});
+
+// první inicializace (nic nevyplní, dokud si nevybereš "vyber")
+rebuildVertebraLabelsFromSelects();
+refreshDisabledState();
+</script>
+
+
+<script src="Universal.js"></script>  
+<script src="MRTPpopis.js"></script>          
+
+
+	</body>
+</html>
   
