@@ -295,7 +295,7 @@ levels.forEach(level => {
 
 //OSY
 if (OSAText === "|") {
- Osy = "Osa přímá. ";
+ Osy = "Osa Lp přímá. ";
  OsyR = ""; 
 } else if (OSAText === "(") {
  Osy = "Mírná dextrokonvexní skolióza. ";
@@ -867,7 +867,7 @@ if (X01PKText === "0" && X12PKText === "0" && X23PKText === "0" && X34PKText ===
 
 // stenóza foramin ano vs jinak
 if (X01PFText === "0" && X01LFText === "0" && X12PFText === "0" && X12LFText === "0" && X23PFText === "0" && X23LFText === "0" && X34PFText === "0" && X34LFText === "0" && X45PFText === "0" && X45LFText === "0" && X56PFText === "0" && X56LFText === "0") {
-    LLstenozaforaminne = "Foramina jsou relativně volná. "; LLforaminjinak = "";
+    LLstenozaforaminne = "Foramina jsou volná. "; LLforaminjinak = "";
 } else if (X01PFText !== "0" && X01LFText !== "0" && X12PFText !== "0" && X12LFText !== "0" && X23PFText !== "0" && X23LFText !== "0" && X34PFText !== "0" && X34LFText !== "0" && X45PFText !== "0" && X45LFText !== "0" && X56PFText !== "0" && X56LFText !== "0") {
     LLstenozaforaminne = ""; LLforaminjinak = "";
 } else if (X01PFText !== "0" || X01LFText !== "0" || X12PFText !== "0" || X12LFText !== "0" || X23PFText !== "0" || X23LFText !== "0" || X34PFText !== "0" || X34LFText !== "0" || X45PFText !== "0" || X45LFText !== "0" || X56PFText !== "0" || X56LFText !== "0") {
