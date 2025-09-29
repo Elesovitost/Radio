@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>MRWB</title>
+  <style>
+    .hidden-by-ctwb { display: none !important; }
+  </style>
+</head>
+<body>
+<script>
+  fetch('FDGPET.html')
+    .then(r => r.text())
+    .then(html => {
+      // základní textové úpravy
+    html = html.replace(/PETCT/g, 'MRWB');
+    html = html.replace(/FDGPETpopis\.js/g, 'MRWBpopis.js');
+    html = html.replace(/PET \/ CT \(MR\)/g, 'MR');
+
+		// elegantní hromadné smazání popisků (včetně mezer a &nbsp;)
+		['SUVmax jater', 'aktivace tuku', 'paravazace', 'nelačnění'].forEach(txt => {
+		  const esc = txt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		  const re  = new RegExp(esc + '(?:\\s|&nbsp;)*', 'g');
+		  html = html.replace(re, '');
+		});	  
+	
+	html = html.replace(/FDG\+ ložisko/g, 'ložisko');
+	
+	html = html.replace(/FDG\- nodul/g, 'nodul cyst.');   
+	html = html.replace(/FDG\+ nodul/g, 'nodul solid.'); 
+	
+	html = html.replace(/Recentní \(FDG\+\)/g, 'Čerstvé');
+	html = html.replace(/Starší \(FDG\-\)/g, 'Starší');
+
+	html = html.replace(
+	  /(<div id="FDGPET"[^>]*>[\s\S]*?)(<\/div>)/i,
+	  `$1
+	   <label class="CHB ultrawide">
+		 <input type="checkbox" id="MRnadpisKRK" onChange="updateTexts()">
+		 <span>KRKU</span>
+	   </label>
+	   <label class="CHB ultrawide">
+		 <input type="checkbox" id="MRnadpisHRUDNIK" onChange="updateTexts()">
+		 <span>HRUDNÍKU</span>
+	   </label>
+	   <label class="CHB ultrawide">
+		 <input type="checkbox" id="MRnadpisBRICHO" onChange="updateTexts()">
+		 <span>BŘICHA</span>
+	   </label>
+	  $2`
+	);
+
+
+      // vložení CSS: schování požadovaných prvků
+      html = html.replace(
+        /<\/head>/i,
+        `<style>
+           /* skrytí tlačítka PETTypeButton */
+           #PETTypeButton { display:none !important; }
+
+           /* schovej všechny přímé potomky divu #obecne */
+           #obecne > * { display:none !important; }
+
+           /* ale zobraz titulek */
+           #obecne > button.title { display:inline-block !important; }
+
+           /* a zobraz label obsahující input s id="ChbRECIST" */
+           #obecne > label:has(#ChbRECIST) { display:inline-flex !important; }
+
+           /* skrytí všech elementů s id obsahujícím požadované řetězce */
+           [id*="Lesion1SUV"],
+           [id*="Lesion2SUV"],
+           [id*="Lesion3SUV"],
+           [id*="Lesion1Activity"],
+           [id*="Lesion2Activity"],
+           [id*="Lesion3Activity"] { display:none !important; }
+
+           /* NOVÉ: skryj celou tabulku, která obsahuje button s id="" */
+           table:has(#NeckVCords) { display:none !important; }
+		   table:has(#HeadTonsils) { display:none !important; }
+		   table:has(#HeadTeeth) { display:none !important; }
+		   table:has(#ThoraxLNPlus) { display:none !important; }
+		   table:has(#SkeletonJoints) { display:none !important; }
+		   
+           #NeckThyroidtable table tr:has(#ChbThyroidaviddiffuse) { display:none !important }
+		   #ThoraxThymustable table tr:has(#ChbThoraxThymusAct) { display:none !important }
+		   #AbdomenSpleentable table tr:has(#ChbSpleenActivity) { display:none !important }
+		   #AbdomenStomachtable table tr:has(#ChbStomachActivity) { display:none !important }
+		   #AbdomenAdrenaltable table tr:has(#ChbAdrenalActivityR) { display:none !important }
+		   #AbdomenWalltable table tr:has(#ChbAbdomenWallPlus) { display:none !important }
+		   #AbdomenProstatetable table tr:has(#ChbProstateLesionR) { display:none !important }
+		   #AbdomenOvariestable table tr:has(#ChbOvariesActivityR) { display:none !important }
+		   #AbdomenUterustable table tr:has(#ChbUterusActivity) { display:none !important }
+		   #SkeletonActivitytable table tr:has(#ChbSkeletonActivityPlus) { display:none !important }
+		   #SkeletonActivitytable table tr:has(#ChbSkeletonActivityMinus) { display:none !important }
+
+         </style></head>`
+      );
+
+      document.open();
+      document.write(html);
+      document.close();
+
+      // pojistka: kdyby se tlačítko vytvořilo až dynamicky
+      const tryHide = () => {
+        const btn = document.getElementById('PETTypeButton');
+        if (btn) btn.classList.add('hidden-by-ctwb');
+      };
+      tryHide();
+
+      const mo = new MutationObserver(() => tryHide());
+      mo.observe(document.documentElement, { childList: true, subtree: true });
+
+      // (volitelné) původní skrývání podle textu
+      const all = document.body.getElementsByTagName('*');
+      for (let el of all) {
+        const t = el.innerText || '';
+        if (t.includes('1Activity') || t.includes('FDG') || t.includes('PET / CT (MR)')) {
+          el.classList.add('hidden-by-ctwb');
+        }
+      }
+    })
+    .catch(err => {
+      document.body.innerHTML = "<p style='color:red'>Chyba při načítání FDGPET.html</p>";
+      console.error(err);
+    });
+</script>
+</body>
+</html>

@@ -22,9 +22,11 @@ function cycleText(event, texts, index, button) {
 
 var textsOSA = ["((", "(", "|", ")", "))"];
 var textsLORD = ["((", "(", "|", ")"];
+var textsLSTV = ["ne", "S1", "L5"];
 
 var buttonElementOSA = document.getElementById("myOSAButton");
 var buttonElementLORD = document.getElementById("myLORDButton");
+var buttonElementLSTV = document.getElementById("myLSTVButton");
 
 // DEFINICE segmentů
 
@@ -144,6 +146,7 @@ function toggleLastCells() {
 const buttonConfigs = [
   { textName: "OSA", updateBackground: false },
   { textName: "LORD", updateBackground: false },
+  { textName: "LSTV", updateBackground: false },
   
   { textName: "X0KOM" }, { textName: "X0LES" }, { textName: "X0LL" }, { textName: "X0LISD", updateBackground: false }, { textName: "X0SL" },
   { textName: "X01DD" }, { textName: "X01MOD" }, { textName: "X01BH" }, { textName: "X01HD", updateBackground: false }, { textName: "X01FA" },
@@ -275,7 +278,7 @@ function updateTexts() {
 var indikace = document.getElementById("indikace").value;
 
 const levels = [
-    "OSA", "LORD", 
+    "OSA", "LORD", "LSTV", 
 	"X0LL", "X0LISD", "X0SL", "X0KOM", "X0LES", "X01BH", "X01DD", "X01MOD", "X01HD", "X01HERPF", "X01HERPP", "X01HERC", "X01HERLP", "X01HERLF", "X01MIG", "X01FA", "X01PF", "X01PR", "X01PK", "X01LR", "X01LF", 
     "X1LL", "X1LISD", "X1SL", "X1KOM", "X1LES", "X12BH", "X12DD", "X12MOD", "X12HD", "X12HERPF", "X12HERPP", "X12HERC", "X12HERLP", "X12HERLF", "X12MIG", "X12FA", "X12PF", "X12PR", "X12PK", "X12LR", "X12LF", 
     "X2LL", "X2LISD", "X2SL", "X2KOM", "X2LES", "X23BH", "X23DD", "X23MOD", "X23HD", "X23HERPF", "X23HERPP", "X23HERC", "X23HERLP", "X23HERLF", "X23MIG", "X23FA", "X23PF", "X23PR", "X23PK", "X23LR", "X23LF", 
@@ -321,6 +324,16 @@ if (LORDText === "(") {
  OsyR += "Paradoxní kyfotizace bederní páteře. ";
 } else if (LORDText === "((") {
  Osy += "Lordóza akcentovaná. ";
+} 
+
+if (LSTVText === "ne") {
+ Osy += ""; 
+} else if (LSTVText === "S1") {
+ Osy += "Přechodný LS obratel, počítán jako S1. ";
+ OsyR += "Přechodný LS obratel, počítán jako S1. ";
+} else if (LSTVText === "L5") {
+ Osy += "Přechodný LS obratel, počítán jako L5. ";
+ OsyR += "Přechodný LS obratel, počítán jako L5. ";
 } 
 
 // NATIVNÍ TEXTY  
