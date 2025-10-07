@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MR ZÁPĚSTÍ – rychlopopis</title>
+  <link rel="stylesheet" href="styles.css" />
+
+</head>
+<body>
+<div class="MainDIV">
+  <div id="MRzapesti" class="standardwidth mydiv0">MR <button id="StranaButton" class="buttonSELECT ButtonCycleText">jakého?</button> ZÁPĚSTÍ</div>
+  <div id="IND" class="mydivIND standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off" oninput="updateTexts()" ></div>
+
+  <div id="wrist-obecne" class="standardwidth">
+    <button class="titleKnee float">KL. DUTINA</button>
+    <table>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>náplň</td>
+        <td><button id="NaplButton" class="Button40 ButtonCycleText">0</button></td>
+        <td></td>
+        <td>synovitis</td>
+        <td><label class="CHB"><input type="checkbox" id="cbSyn" onchange="updateTexts()"><span>+</span></label></td>
+        <td></td>
+        <td>volná tělíska</td>
+        <td><label class="CHB"><input type="checkbox" id="cbLoose" onchange="updateTexts()"><span>+</span></label></td>
+        <td></td>
+        <td>ganglion</td>
+        <td><label class="CHB"><input type="checkbox" id="cbGanglion" onchange="updateTexts()"><span>+</span></label>
+            <span id="ganglionLokalizaceSpan" class="hidden">
+                <input type="text" id="ganglionLokalizaceInput" placeholder="kde..." class="inline-input" oninput="updateTexts()">
+            </span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="wrist-bones" class="standardwidth">
+    <button class="titleKnee float">KOSTI</button>
+    <table>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>skafoideum</td>
+        <td><button id="ScaphoidFx" class="Button100 ButtonCycleText">bez fraktury</button>
+            <span id="scaphoidLokalizaceSpan" class="hidden">
+                <button id="ScaphoidFxLokalizace" class="Button80 ButtonCycleText">prox. pól</button>
+            </span>
+        </td>
+        <td></td>
+        <td>Kienböck</td>
+        <td><button id="Kienbock" class="Button80 ButtonCycleText">0</button></td>
+        <td></td>
+        <td>ulnar impaction</td>
+        <td><label class="CHB"><input type="checkbox" id="cbUlnarImp" onchange="updateTexts()"><span>+</span></label></td>
+        <td></td>
+        <td>cysty / subchondr. edém</td>
+        <td><label class="CHB"><input type="checkbox" id="cbBoneEdema" onchange="updateTexts()"><span>+</span></label>
+            <span id="edemLokalizaceSpan" class="hidden">
+                <input type="text" id="edemLokalizaceInput" placeholder="kde..." class="inline-input" oninput="updateTexts()">
+            </span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="wrist-lig" class="standardwidth">
+    <button class="titleKnee float">VAZY & TFCC</button>
+    <table>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>SL vaz</td>
+        <td><button id="SL" class="Button100 ButtonCycleText">OK</button>
+            <span id="disiSpan" class="hidden">
+                <button id="disiButton" class="Button80 ButtonCycleText">DISI-</button>
+            </span>
+        </td>
+        <td></td>
+        <td>LT vaz</td>
+        <td><button id="LT" class="Button100 ButtonCycleText">OK</button>
+            <span id="visiSpan" class="hidden">
+                <button id="visiButton" class="Button80 ButtonCycleText">VISI-</button>
+            </span>
+        </td>
+        <td></td>
+        <td>TFCC</td>
+        <td><button id="TFCC" class="Button100 ButtonCycleText">OK</button></td>
+        <td></td>
+        <td>DRUJ stabilita</td>
+        <td><button id="DRUJ" class="Button80 ButtonCycleText">stabilní</button></td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="wrist-tendons" class="standardwidth">
+    <button class="titleKnee float">ŠLACHY&NERVY</button>
+    <table>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>De Quervain (1. komp.)</td>
+        <td><label class="CHB"><input type="checkbox" id="cbDQ" onchange="updateTexts()"><span>+</span></label></td>
+        <td></td>
+        <td>ECU subluxace</td>
+        <td><label class="CHB"><input type="checkbox" id="cbECU" onchange="updateTexts()"><span>+</span></label></td>
+        <td></td>
+        <td>tenosynovitida flexorů</td>
+        <td><label class="CHB"><input type="checkbox" id="cbFlexTen" onchange="updateTexts()"><span>+</span></label></td>
+        <td></td>
+        <td>karpální tunel</td>
+        <td><label class="CHB"><input type="checkbox" id="cbCTS" onchange="updateTexts()"><span>+</span></label></td>
+      </tr>
+    </table>
+  </div>
+
+<div class="DIVLesions" style="margin-top: 0px;">
+ <button class="titleKnee float">DALŠÍ...</button>
+  <label class="CHB" style="margin-left: 0px;">
+	<input type="checkbox" id="dalsiShow"><span>+</span>
+  </label>
+
+  <div id="dalsiFields" style="display: none; flex; gap: 5px; margin-top: 5px;">
+	<textarea id="dalsiPopis" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+	<textarea id="dalsiZaver" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+  </div>
+</div>
+
+<div id="others"  class="standardwidth hidden"><button class="titleKnee float">OSTATNÍ</button>
+	<div id="dalsiFields" style="display: none; flex; gap: 5px; margin-top: 5px;">
+		<textarea id="dalsiPopis" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+		<textarea id="dalsiZaver" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+	</div>
+</div>
+
+</div>
+
+  <div style="display:none;">
+    &nbsp; NÁZEV
+    <textarea id="MRWristNAMEText" class="FINALXXL" readonly></textarea>
+    &nbsp; INDIKACE
+    <textarea id="MRWristINDText" class="FINALXXL" readonly></textarea>
+    &nbsp; SEKVENCE
+    <textarea id="MRWristSEKVText" class="FINALXXL" readonly></textarea>
+    &nbsp; POPIS
+    <textarea id="MRWristPOPText" class="FINALXXL" readonly></textarea>
+    &nbsp; ZÁVĚR
+    <textarea id="MRWristRESText" class="FINALXXL" readonly></textarea>
+  </div>
+</div>
+
+<script src="Universal.js"></script>
+<script>
+  // --- Integrace Universal.js: definice cyklovacích textů ---
+  ButtonCycleInnerTexts['StranaButton'] = ["jakého?","PRAVÉHO","LEVÉHO"];
+  ButtonCycleInnerTexts['NaplButton']   = ["0","↑","↑↑","↑↑↑"];
+  ButtonCycleInnerTexts['ScaphoidFx']   = ["bez fraktury","suspektní","fraktura"];
+  ButtonCycleInnerTexts['ScaphoidFxLokalizace'] = ["prox. pól", "pas", "dist. pól"];
+  ButtonCycleInnerTexts['Kienbock']     = ["0","časný","pokročilý"];
+  ButtonCycleInnerTexts['SL']           = ["OK","parciální","ruptura"];
+  ButtonCycleInnerTexts['LT']           = ["OK","parciální","ruptura"];
+  ButtonCycleInnerTexts['disiButton']   = ["DISI-","DISI+"];
+  ButtonCycleInnerTexts['visiButton']   = ["VISI-","VISI+"];
+  ButtonCycleInnerTexts['TFCC']         = ["OK","degenerace","parciální","foveální ruptura"];
+  ButtonCycleInnerTexts['DRUJ']         = ["stabilní","instabilita"];
+
+  // --- Event Listeners pro nově přidané prvky ---
+  document.getElementById('cbGanglion').addEventListener('change', function() {
+    document.getElementById('ganglionLokalizaceSpan').classList.toggle('hidden', !this.checked);
+    updateTexts();
+  });
+
+  document.getElementById('cbBoneEdema').addEventListener('change', function() {
+    document.getElementById('edemLokalizaceSpan').classList.toggle('hidden', !this.checked);
+    updateTexts();
+  });
+
+  // Speciální handler pro tlačítka, která se mění na základě jiných tlačítek
+  function setupConditionalButton(mainButtonId, conditionalSpanId, triggerText, cycleButtonId) {
+      const mainButton = document.getElementById(mainButtonId);
+      const conditionalSpan = document.getElementById(conditionalSpanId);
+      
+      // Musíme poslouchat změny, které provádí Universal.js
+      const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+              if (mutation.type === "characterData" || (mutation.type === "childList" && mutation.addedNodes.length > 0)) {
+                  const show = mainButton.innerText === triggerText;
+                  conditionalSpan.classList.toggle('hidden', !show);
+                  updateTexts();
+              }
+          });
+      });
+      observer.observe(mainButton, { subtree: true, characterData: true, childList: true });
+
+      // Univerzální handler pro cyklování textu v novém tlačítku
+      if(cycleButtonId) {
+          const cycleButton = document.getElementById(cycleButtonId);
+          if(cycleButton) {
+              cycleButton.addEventListener('click', updateTexts);
+          }
+      }
+  }
+
+  setupConditionalButton('ScaphoidFx', 'scaphoidLokalizaceSpan', 'fraktura', 'ScaphoidFxLokalizace');
+  setupConditionalButton('SL', 'disiSpan', 'ruptura', 'disiButton');
+  setupConditionalButton('LT', 'visiSpan', 'ruptura', 'visiButton');
+
+
+  function sideWord(){
+    const s = document.getElementById('StranaButton').innerText;
+    if(s==="PRAVÉHO") return "pravého";
+    if(s==="LEVÉHO") return "levého";
+    return "";
+  }
+
+  // --- Hlavní funkce pro aktualizaci textů ---
+  function updateTexts(){
+    // Načtení hodnot ze všech prvků
+    const side = sideWord();
+    const ind = document.getElementById('indikace').value?.trim();
+    const napl = document.getElementById('NaplButton').innerText;
+    const syn = document.getElementById('cbSyn').checked;
+    const loose = document.getElementById('cbLoose').checked;
+    const ganglion = document.getElementById('cbGanglion').checked;
+    const ganglionLok = document.getElementById('ganglionLokalizaceInput').value?.trim();
+
+    const sca = document.getElementById('ScaphoidFx').innerText;
+    const scaLok = document.getElementById('ScaphoidFxLokalizace').innerText;
+    const kien = document.getElementById('Kienbock').innerText;
+    const uImp = document.getElementById('cbUlnarImp').checked;
+    const bEd = document.getElementById('cbBoneEdema').checked;
+    const edemLok = document.getElementById('edemLokalizaceInput').value?.trim();
+
+    const sl = document.getElementById('SL').innerText;
+    const disi = document.getElementById('disiButton').innerText;
+    const lt = document.getElementById('LT').innerText;
+    const visi = document.getElementById('visiButton').innerText;
+    const tfcc = document.getElementById('TFCC').innerText;
+    const druj = document.getElementById('DRUJ').innerText;
+
+    const dq = document.getElementById('cbDQ').checked;
+    const ecu = document.getElementById('cbECU').checked;
+    const flex = document.getElementById('cbFlexTen').checked;
+    const cts = document.getElementById('cbCTS').checked;
+
+    const dalsiPopis = document.getElementById('dalsiPopis').value?.trim();
+	const dalsiZaver = document.getElementById('dalsiZaver').value?.trim();
+
+	function toggleDalsiSection() {
+	  const checkbox = document.getElementById('dalsiShow');
+	  const fields = document.getElementById('dalsiFields');
+	  fields.style.display = checkbox.checked ? 'flex' : 'none';
+	}
+	window.addEventListener('load', function() {
+	  const checkbox = document.getElementById('dalsiShow');
+	  if (checkbox) {
+		checkbox.addEventListener('change', toggleDalsiSection);
+	  }
+	});
+
+    // --- POPIS ---
+    let Popis = [];
+
+
+    // Kloubní dutina
+    if(napl==="0") Popis.push("Radiokarpální a mediokarpální klouby bez patologické náplně.");
+    else if(napl==="↑") Popis.push("Mírně zvýšené množství kloubní tekutiny radiokarpálně/mediokarpálně bez synoviální proliferace.");
+    else if(napl==="↑↑") Popis.push("Zvýšené množství tekutiny v kloubních dutinách, přiměřeně napjaté pouzdro.");
+    else if(napl==="↑↑↑") Popis.push("Výrazná náplň kloubních dutin se známkami napětí pouzdra.");
+    if(syn) Popis.push("Synoviální ztluštění s vyšším signálem na T2/PD‑FS, postkontrastní sycení očekávatelné – obraz synovitidy.");
+    if(loose) Popis.push("V kloubu ložiskově drobná tělíska/kalcifikace (hypoT1/hypoT2 až s bloomingem), bez jasné impakce.");
+    if(ganglion) Popis.push("Cystická léze tekutinového signálu s tenkou stěnou – typické pro ganglion" + (ganglionLok ? ` v lokalizaci ${ganglionLok}` : "") + ".");
+
+    // Kosti
+    if(sca==="bez fraktury") Popis.push("Skafoideum bez linie fraktury, bez kostního edému a bez poruchy kortikalis.");
+    else if(sca==="suspektní") Popis.push("V oblasti skafoidea jemná liniová nízkosignální kresba na T1 s okolním edémem na STIR/PD‑FS – suspektní okultní fraktura.");
+    else if(sca==="fraktura") Popis.push(`Zřetelná frakturní linie skafoidea v oblasti ${scaLok} s porušením kortikalis.`);
+
+    if(kien!=="0") {
+      if(kien==="časný") Popis.push("Lunatum s difuzním snížením T1 signálu a kolísavým T2/STIR, bez kolapsu – obraz časné AVN (Kienböck).");
+      else Popis.push("Lunatum se sníženým T1 signálem, fragmentací a subchondrálním kolapsem, okolní reaktivní změny – pokročilá AVN (Kienböck).");
+    }
+
+    if(uImp) Popis.push("Znaky ulnar impaction: plus varianta ulny, subchondrální edém/chondromalacie ulnární části lunata a triquetra, změny u ulnární hlavičky a ulnárního úponu TFCC.");
+    if(bEd) Popis.push("Subchondrální edém a drobné geody" + (edemLok ? ` v lokalizaci ${edemLok}` : "") + " v zatěžovaných zónách radiokarpálně/mediokarpálně.");
+
+    // Vazy / TFCC
+    let slText = "SL vaz intaktní, bez diskontinuity a bez tekutinové fisury";
+    if(sl==="parciální") slText = "SL vaz ztluštělý se zvýšeným signálem na PD‑FS, bez kompletní diskontinuity (parciální léze)";
+    else if(sl==="ruptura") slText = `SL vaz s diskontinuitou a tekutinou v intervalu; ${disi === 'DISI+' ? 'přítomny známky DISI' : 'bez jednoznačných známek DISI'}`;
+
+    let ltText = "LT vaz intaktní, bez diskontinuity";
+    if(lt==="parciální") ltText = "LT vaz s vyšším signálem na PD‑FS a ztluštěním, kontinuální (parciální léze)";
+    else if(lt==="ruptura") ltText = `LT vaz přerušen, tekutina v intervalu; ${visi === 'VISI+' ? 'přítomny známky VISI' : 'bez jednoznačných známek VISI'}`;
+
+    let tfccText = "TFCC normální tloušťky a signálu, bez defektu";
+    if(tfcc==="degenerace") tfccText = "TFCC ztluštělý s vyšším signálem v centrální části, bez prokazatelné komunikace – degenerativní změny";
+    else if(tfcc==="parciální") tfccText = "TFCC s intrasubstanční fisurou/zvýšeným signálem, bez kompletního defektu disku";
+    else if(tfcc==="foveální ruptura") tfccText = "Diskontinuita u foveálního ulnárního úponu TFCC s tekutinovou komunikací do DRUJ, přidružené změny u ulnární hlavičky možné";
+
+    let drujText = "DRUJ morfologicky přiměřený, bez známek subluxace";
+    if(druj==="instabilita") drujText = "DRUJ s jemnou ventrální/dorzální předsazeností ulnární hlavičky a asymetrií štěrbiny – MR známky laxity; korelace klinicky";
+
+    Popis.push(slText+". "+ltText+". "+tfccText+". "+drujText+".");
+
+    // Šlachy / nervy
+    if(dq) Popis.push("Obraz De Quervain: zbytnění retinakula 1. kompartmentu, tekutina v pochvě APL/EPB a ztluštění šlach.");
+    if(ecu) Popis.push("ECU: excentrická poloha v sulcus ulnaris s tekutinou v pochvě, známky porušeného subsheath – odpovídá subluxaci.");
+    if(flex) Popis.push("Flexory s tenosynovitidou – tekutina v pochvách, ztluštění synovie, zvýšený signál šlach na PD‑FS.");
+    if(cts) Popis.push("Karpální tunel: ztluštění n. medianus proximálně s T2 hyperintenzitou a zploštěním pod retinakulem, částečná obliterace tukového lemu.");
+
+    if(dalsiPopis) Popis.push(dalsiPopis);
+
+    // --- ZÁVĚR ---
+    let Res = [];
+    function pushIf(cond, txt){ if(cond) Res.push(txt); }
+    
+    pushIf(napl !== "0", "Zmnožená tekutina v kloubních dutinách.");
+    pushIf(syn, "Synovitida.");
+    pushIf(ganglion, "Ganglion" + (ganglionLok ? ` (${ganglionLok}).` : "."));
+    pushIf(sca==="fraktura",`Fraktura skafoidea v oblasti ${scaLok}.`);
+    pushIf(sca==="suspektní","Suspektní okultní fraktura skafoidea.");
+    pushIf(kien!=="0", "Kienböckova choroba lunata – "+(kien==="časný"?"časná":"pokročilá")+" fáze.");
+    pushIf(bEd, "Subchondrální edém/cysty" + (edemLok ? ` (${edemLok}).` : "."));
+    pushIf(tfcc==="foveální ruptura","Ruptura TFCC u foveálního úponu.");
+    pushIf(sl==="ruptura", `Ruptura scapholunátního vazu${disi === 'DISI+' ? ' se známkami DISI' : ''}.`);
+    pushIf(lt==="ruptura", `Ruptura lunotriquetrálního vazu${visi === 'VISI+' ? ' se známkami VISI' : ''}.`);
+    pushIf(uImp, "Ulnar impaction syndrom.");
+    pushIf(dq, "Tendovaginitida De Quervain.");
+    pushIf(ecu, "Subluxace šlachy ECU.");
+    pushIf(flex, "Tenosynovitida flexorů.");
+    pushIf(cts, "MR známky syndromu karpálního tunelu.");
+
+    if(dalsiZaver) Res.push(dalsiZaver);
+    if(Res.length===0){ Res.push("MR zápěstí bez průkazu závažné patologie."); }
+    
+
+    // Zápis do skrytých textarea
+    const nameOut = document.getElementById('MRWristNAMEText');
+    const indOut  = document.getElementById('MRWristINDText');
+    const sekvOut = document.getElementById('MRWristSEKVText');
+    const popOut  = document.getElementById('MRWristPOPText');
+    const resOut  = document.getElementById('MRWristRESText');
+
+    nameOut.value = "MR "+(side?side+" ":"")+"zápěstí";
+    indOut.value = ind ? ind : "";
+    sekvOut.value = "Kor PD/T2 FS, Kor T1, Axi PD/T2 FS, Sag PD/T2 FS ± GRE; tenké řezy přes TFCC/SL/LT";
+    popOut.value = Popis.join(' ');
+    resOut.value = Res.join(' ');
+  }
+
+  // Inicializace při načtení stránky
+  window.addEventListener('DOMContentLoaded',()=>{
+    updateTexts();
+  });
+</script>
+</body>
+</html>
