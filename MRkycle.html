@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MR KYČLE</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="MainDIV">
+  <div id="MRkycle" class="standardwidth mydiv0" style="font-size:13px; font-weight:bold; line-height:1.4;">
+  MR <button id="StranaButton" class="buttonSELECT ButtonCycleText" onmousedown="cycleStranaText(event)">jakého?</button> KYČELNÍHO KLOUBU
+</div>
+
+
+  <div id="IND" class="mydivIND standardwidth">
+    <input id="indikace" type="text" placeholder="indikace..." autocomplete="off" oninput="updateTexts()" >
+  </div>
+
+  <!-- OBECNÉ / KL. DUTINA -->
+  <div id="hip-obecne" class="standardwidth">
+    <button class="titleKnee float">KL. DUTINA</button>
+    <table>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>náplň</td>
+        <td><button id="NaplButton" class="button60 ButtonCycleText">0</button></td>
+        <td></td>
+        <td>synovitis</td>
+        <td><label class="CHB"><input type="checkbox" id="cbSyn" onchange="updateTexts()"><span>+</span></label></td>
+        <td></td>
+        <td>volná tělíska</td>
+        <td><label class="CHB"><input type="checkbox" id="cbLoose" onchange="updateTexts()"><span>+</span></label></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- LABRUM -->
+  <div id="hip-labrum" class="standardwidth">
+    <button class="titleKnee float">LABRUM</button>
+    <table>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>stav</td>
+        <td>
+          <button id="Labrum" class="button120 ButtonCycleText">OK</button>
+          <span id="labrumDetailSpan" class="hidden" style="margin-left: 8px;">
+            <select id="LabrumLok" class="input140" onchange="updateTexts()">
+              <option value="">lokalizace...</option>
+              <option value="anterosuperiorně">anterosuperiorně</option>
+              <option value="anteroinferiorně">anteroinferiorně</option>
+              <option value="superiorně">superiorně</option>
+              <option value="posterosuperiorně">posterosuperiorně</option>
+              <option value="posteriorně">posteriorně</option>
+              <option value="difuzně">difuzně</option>
+            </select>
+            <span style="margin-left: 10px;">cysta</span>
+            <label class="CHB"><input type="checkbox" id="cbParalabralCyst" onchange="updateTexts()"><span>+</span></label>
+          </span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+  <!-- CHONDROPATIE -->
+  <div id="hip-chr" class="standardwidth">
+    <button class="titleKnee float">CHONDROPATIE</button>
+    <table>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>femoroacetabulární chrupavka</td>
+        <td>
+          <button id="ChrFA" class="button100 ButtonCycleText">0</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+	<!-- FAI -->
+	<div id="hip-fai" class="standardwidth">
+	  <button class="titleKnee float">FAI</button>
+	  <table>
+		<tr>
+		  <td>&nbsp;&nbsp;&nbsp;</td>
+		  <td>femoroacetabulární impingement</td>
+		  <td>
+			<button id="FAI" class="button120 ButtonCycleText">NE</button>
+		  </td>
+		</tr>
+	  </table>
+	</div>
+
+
+  <!-- KOSTI -->
+  <div id="hip-bones" class="standardwidth">
+    <button class="titleKnee float">KOSTI</button>
+    <table>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>AVN capitis femoris</td>
+        <td><button id="AVN" class="button120 ButtonCycleText">0</button></td>
+        <td></td>
+        <td>kostní edém</td>
+        <td>
+          <label class="CHB"><input type="checkbox" id="cbBoneEdema" onchange="updateTexts()"><span>+</span></label>
+          <span id="edemLokalizaceSpan" class="hidden">
+            <input type="text" id="edemLokalizaceInput" placeholder="kde..." class="inline-input" oninput="updateTexts()">
+          </span>
+        </td>
+        <td></td>
+        <td>stres/fraktura</td>
+		<td>
+		  <button id="StressFx" class="button120 ButtonCycleText">0</button>
+		  <span id="frakturaLokSpan" class="hidden">
+			<input type="text" id="frakturaLokInput" placeholder="kde..." class="inline-input" oninput="updateTexts()">
+		  </span>
+		</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BURZY -->
+  <div id="hip-bursae" class="standardwidth">
+    <button class="titleKnee float">BURZY</button>
+    <table>
+      <tr>
+	    <td>&nbsp;&nbsp;&nbsp;</td>
+        <td class="right">trochanterická</td>
+        <td><label class="CHB"><input type="checkbox" id="cbGTbursa" onchange="updateTexts()"><span>+</span></label></td>
+        <td class="right">iliopsoas</td>
+        <td><label class="CHB"><input type="checkbox" id="cbIPbursa" onchange="updateTexts()"><span>+</span></label></td>
+        <td class="right">ischiogluteální</td>
+        <td><label class="CHB"><input type="checkbox" id="cbIGbursa" onchange="updateTexts()"><span>+</span></label></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ŠLACHY -->
+  <div id="hip-tendons" class="standardwidth">
+    <button class="titleKnee float">ŠLACHY</button>
+    <table>
+      <tr>
+	    <td>&nbsp;&nbsp;&nbsp;</td>
+        <td class="right">glut. med/min</td>
+        <td>
+          <button id="Gluteus" class="button120 ButtonCycleText">OK</button>
+        </td>
+        <td class="right">hamstringy (origo)</td>
+        <td>
+          <button id="Hamstr" class="button120 ButtonCycleText">OK</button>
+        </td>
+        <td class="right">m. iliopsoas</td>
+        <td>
+          <button id="Iliopsoas" class="button120 ButtonCycleText">OK</button>
+        </td>
+        <td class="right">adduktory / RF</td>
+        <td>
+          <button id="Adductors" class="button120 ButtonCycleText">OK</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- DALŠÍ -->
+  <div id="dalsi" class="standardwidth">
+    <button class="titleKnee float">DALŠÍ...</button>
+    <td>&nbsp;&nbsp;</td>
+    <label class="CHB" style="margin-left: 0px;">
+      <input type="checkbox" id="dalsiShow"><span>+</span>
+    </label>
+    <div id="dalsiFields" style="display: none; flex; gap: 5px; margin-top: 5px;">
+      <textarea id="dalsiPopis" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+      <textarea id="dalsiZaver" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+    </div>
+  </div>
+
+  <!-- FINAL TEXTS (skryté) -->
+  <div style="display:none;">
+    &nbsp; NÁZEV
+    <textarea id="MRHipNAMEText" class="FINALXXL" readonly></textarea>
+    &nbsp; INDIKACE
+    <textarea id="MRHipINDText" class="FINALXXL" readonly></textarea>
+    &nbsp; SEKVENCE
+    <textarea id="MRHipSEKVText" class="FINALXXL" readonly></textarea>
+    &nbsp; POPIS
+    <textarea id="MRHipPOPText" class="FINALXXL" readonly></textarea>
+    &nbsp; ZÁVĚR
+    <textarea id="MRHipRESText" class="FINALXXL" readonly></textarea>
+  </div>
+</div>
+
+<script src="Universal.js"></script>
+<script>
+  // --- Button text cycles ---
+  ButtonCycleInnerTexts['StranaButton'] = ['jakého?','PRAVÉHO','LEVÉHO'];
+  ButtonCycleInnerTexts['NaplButton']   = ['0','↑','↑↑','↑↑↑'];
+
+  ButtonCycleInnerTexts['Labrum']       = ['OK','degenerace','fisura','ruptura','odtržení'];
+  
+  ButtonCycleInnerTexts['ChrFA']        = ['0','I','II','III','IV'];
+
+  ButtonCycleInnerTexts['FAI'] = ['NE','CAM','PINCER','smíšený'];
+
+  ButtonCycleInnerTexts['AVN']          = ['0','časná','subchondr. kolaps','pokročilá'];
+  ButtonCycleInnerTexts['StressFx']     = ['0','stres. edém','stres. fraktura','fraktura'];
+
+  ButtonCycleInnerTexts['Gluteus']      = ['OK','tendinopatie','parciální léze','ruptura'];
+  ButtonCycleInnerTexts['Hamstr']       = ['OK','tendinopatie','parciální léze','ruptura'];
+  ButtonCycleInnerTexts['Iliopsoas']    = ['OK','tendinopatie','tenosynovitida'];
+  ButtonCycleInnerTexts['Adductors']    = ['OK','tendinopatie','parciální léze'];
+
+  // --- Zobrazení/skrývání detailů podle voleb ---
+  function setupConditionalButton(mainButtonId, conditionalSpanId, triggerList) {
+    const mainButton = document.getElementById(mainButtonId);
+    const conditionalSpan = document.getElementById(conditionalSpanId);
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'characterData' || (mutation.type === 'childList' && mutation.addedNodes.length > 0)) {
+          const show = triggerList.includes(mainButton.innerText);
+          conditionalSpan.classList.toggle('hidden', !show);
+          updateTexts();
+        }
+      });
+    });
+    observer.observe(mainButton, { subtree: true, characterData: true, childList: true });
+  }
+  setupConditionalButton('Labrum','labrumDetailSpan',['degenerace','fisura','ruptura','odtržení']);
+
+  document.getElementById('cbBoneEdema').addEventListener('change', function(){
+    document.getElementById('edemLokalizaceSpan').classList.toggle('hidden', !this.checked);
+    updateTexts();
+  });
+
+  // --- Pomocné funkce ---
+  function sideWord(){
+    const s = document.getElementById('StranaButton').innerText;
+    if(s==='PRAVÉHO') return 'pravého';
+    if(s==='LEVÉHO') return 'levého';
+    return '';
+  }
+
+  function toggleDalsiSection() {
+    const checkbox = document.getElementById('dalsiShow');
+    const fields = document.getElementById('dalsiFields');
+    fields.style.display = checkbox.checked ? 'flex' : 'none';
+  }
+  window.addEventListener('load', function() {
+    const checkbox = document.getElementById('dalsiShow');
+    if (checkbox) checkbox.addEventListener('change', toggleDalsiSection);
+  });
+
+	function toggleFrakturaLok() {
+	  const stress = document.getElementById('StressFx').innerText;
+	  document.getElementById('frakturaLokSpan').classList.toggle('hidden', stress === '0');
+	}
+	document.getElementById('StressFx').addEventListener('click', toggleFrakturaLok);
+
+
+  // --- Hlavní generátor textu ---
+  function updateTexts(){
+    const side = sideWord();
+    const ind = document.getElementById('indikace').value?.trim();
+
+    const napl = document.getElementById('NaplButton').innerText;
+    const syn = document.getElementById('cbSyn').checked;
+    const loose = document.getElementById('cbLoose').checked;
+
+    const labrum = document.getElementById('Labrum').innerText;
+    const labrumLok = document.getElementById('LabrumLok').value;
+    const paraCyst = document.getElementById('cbParalabralCyst').checked;
+
+	const chrFA = document.getElementById('ChrFA').innerText;
+
+	const faiState = document.getElementById('FAI').innerText; // 'NE','CAM','PINCER','smíšený'
+
+    const avn = document.getElementById('AVN').innerText;
+    const bEd = document.getElementById('cbBoneEdema').checked;
+    const edemLok = document.getElementById('edemLokalizaceInput').value?.trim();
+    const stressFx = document.getElementById('StressFx').innerText;
+	const frakturaLok = document.getElementById('frakturaLokInput').value?.trim();
+
+
+    const gluteus = document.getElementById('Gluteus').innerText;
+    const hamstr = document.getElementById('Hamstr').innerText;
+    const iliop = document.getElementById('Iliopsoas').innerText;
+    const adduct = document.getElementById('Adductors').innerText;
+
+    const dalsiPopis = document.getElementById('dalsiPopis').value?.trim();
+    const dalsiZaver = document.getElementById('dalsiZaver').value?.trim();
+
+    // POPIS
+    let Popis = [];
+
+    // název/indikace/sekvence
+    document.getElementById('MRHipNAMEText').value = 'MR ' + (side ? side + ' ' : '') + 'kyčelního kloubu';
+    document.getElementById('MRHipINDText').value = ind || '';
+    document.getElementById('MRHipSEKVText').value = 'Standardní MR kyčle: koronární a axiální PD/PD‑FS, sagitální PD‑FS; podle indikace doplněno T1 a 3D sekvencí.';
+
+    // kl. dutina
+    if(napl==='0') Popis.push('Kloubní dutina bez patologické náplně.');
+    else if(napl==='↑') Popis.push('Mírně zvýšené množství tekutiny v kloubní dutině.');
+    else if(napl==='↑↑') Popis.push('Zvýšené množství tekutiny v kloubní dutině, pouzdro přiměřeně napjaté.');
+    else if(napl==='↑↑↑') Popis.push('Výrazná náplň kloubu se známkami napětí pouzdra.');
+    if(syn) Popis.push('Synoviální ztluštění/aktivita se zvýšeným signálem na PD‑FS.');
+    if(loose) Popis.push('V kloubu drobná volná tělíska.');
+
+	// labrum
+	if(labrum==='OK') {
+	  Popis.push('Labrum přiměřené výšky a signálu bez fisur.');
+	} else {
+	  let stavText = '';
+	  switch(labrum) {
+		case 'degenerace': stavText = 's degenerací'; break;
+		case 'fisura': stavText = 's fisurou'; break;
+		case 'ruptura': stavText = 's rupturou'; break;
+		case 'odtržení': stavText = 's odtržením'; break;
+		default: stavText = 's ' + labrum; break;
+	  }
+	  let l = 'Labrum ' + stavText + (labrumLok ? ' ' + labrumLok : '') + '.';
+	  if(paraCyst) l += ' Přítomna paralabrální cysta.';
+	  Popis.push(l);
+	}
+
+	// chrupavka
+	if(chrFA!=='0') {
+	  let chrFADesc = '';
+	  switch(chrFA){
+		case 'I': chrFADesc = 'mírné snížení signálu / lehká chondropatie'; break;
+		case 'II': chrFADesc = 'střední chondropatie s nerovností povrchu'; break;
+		case 'III': chrFADesc = 'pokročilá chondropatie s částečnou ztrátou chrupavky'; break;
+		case 'IV': chrFADesc = 'těžká chondropatie s úplnou ztrátou chrupavky'; break;
+		default: chrFADesc = 'chondropatie'; break;
+	  }
+	  Popis.push('Femoroacetabulární chrupavka: ' + chrFADesc + '.');
+	}
+ 
+			 // 2️⃣ Chrupavka – když není chondropatie
+			if (chrFA === '0') {
+			  Popis.push('Kloubní chrupavka je přiměřená.');
+			}
+ 
+	// FAI (nově)
+	if (faiState !== 'NE') {
+	  // POPIS
+	  if (faiState === 'CAM') {
+		Popis.push('Známky femoroacetabulárního impingementu typu CAM.');
+	  } else if (faiState === 'PINCER') {
+		Popis.push('Známky femoroacetabulárního impingementu typu PINCER.');
+	  } else {
+		Popis.push('Známky femoroacetabulárního impingementu smíšeného typu (CAM/PINCER).');
+	  }
+	}
+
+    // kosti
+    if(avn!=='0'){
+      if(avn==='časná') Popis.push('Caput femoris se sníženým T1 a kolísavým T2/STIR bez kolapsu – suspektní časná AVN.');
+      else if(avn==='subchondr. kolaps') Popis.push('AVN hlavice s linií subchondrálního kolapsu (crescent sign).');
+      else if(avn==='pokročilá') Popis.push('Pokročilá AVN hlavice s deformitou a sekundárními změnami kloubu.');
+    }
+    if(bEd) Popis.push('Kostní edém ' + (edemLok ? edemLok : 'v okolí kloubu') + '.');
+	if(stressFx!=='0'){
+	  if(stressFx==='stres. edém') {
+		Popis.push('Známky kostního stresu bez zřejmé lomné linie' + (frakturaLok ? ' v oblasti ' + frakturaLok : '') + '.');
+	  }
+	  if(stressFx==='stres. fraktura') {
+		Popis.push('Stresová fraktura s jemnou nízkosignální linií' + (frakturaLok ? ' v oblasti ' + frakturaLok : '') + '.');
+	  }
+	  if(stressFx==='fraktura') {
+		Popis.push('Fraktura se zřetelnou lomnou linií a reaktivními změnami' + (frakturaLok ? ' v oblasti ' + frakturaLok : '') + '.');
+	  }
+	}
+
+			// 1️⃣ Hlavice a jamka – když není AVN, edém ani FAI
+			if (avn === '0' && !bEd && faiState === 'NE') {
+			  Popis.unshift('Hlavice i jamka mají normální tvar, strukturu i signál.');
+			}
+
+    // šlachy a burzy
+    if(document.getElementById('cbGTbursa').checked) Popis.push('Trochanterická burzitida se zvýšeným signálem tekutiny.');
+    if(document.getElementById('cbIPbursa').checked) Popis.push('Iliopsoas bursa s nadbytkem tekutiny.');
+    if(document.getElementById('cbIGbursa').checked) Popis.push('Ischiogluteální bursa s tekutinou.');
+
+    function tendonText(name, state){
+      if(state==='OK') return '';
+      if(state==='tendinopatie') return name + ' s tendinopatií.';
+      if(state==='parciální léze') return name + ' s parciální lézí (vyšší signál/ztluštění).';
+      if(state==='ruptura') return name + ' s rupturou a retrakcí dle rozsahu.';
+      if(state==='tenosynovitida') return name + ' s tekutinou v pochvě/tenosynovitidou.';
+      return '';
+    }
+    [ ['Gluteus med/min', gluteus],
+      ['Hamstringy u sedací kosti', hamstr],
+      ['Iliopsoas', iliop],
+      ['Adduktory/rectus femoris', adduct]
+    ].forEach(([n,s])=>{ const t = tendonText(n,s); if(t) Popis.push(t); });
+
+			// 4️⃣ Šlachy a okolní měkké tkáně – když jsou všechny šlachy OK a žádná burza není pozitivní
+			const bursaOK = !document.getElementById('cbGTbursa').checked &&
+							!document.getElementById('cbIPbursa').checked &&
+							!document.getElementById('cbIGbursa').checked;
+			const slachyOK = gluteus === 'OK' && hamstr === 'OK' && iliop === 'OK' && adduct === 'OK';
+
+			if (bursaOK && slachyOK) {
+			  Popis.push('Okolní svalové struktury jsou bez patologických změn, svaly i šlachy a jejich úpony mají normální průběh, jsou bez patrné infiltrace či prosáknutí.');
+			}
+
+    if(dalsiPopis) Popis.push(dalsiPopis);
+
+    // ZÁVĚR
+    let Res = [];
+    const pushIf = (c,t)=>{ if(c) Res.push(t); };
+
+    pushIf(napl!=='0','Zmnožená kloubní tekutina.' + (syn ? ' Aktivní synovitis.' : ''));
+    pushIf(labrum!=='OK','Léze labra' + (labrumLok ? ' ' + labrumLok : '') + (labrum ? ' – ' + labrum : '') + (paraCyst ? ' s paralabrální cystou' : '') + '.');
+    
+	if(chrFA!=='0'){
+	  let chrFAText = '';
+	  switch(chrFA){
+		case 'I': chrFAText = 'lehká'; break;
+		case 'II': chrFAText = 'střední'; break;
+		case 'III': chrFAText = 'pokročilá'; break;
+		case 'IV': chrFAText = 'těžká'; break;
+		default: chrFAText = chrFA; break;
+	  }
+	  pushIf(true, 'Chondropatie femoroacetabulární chrupavky ' + chrFAText + '.');
+	}
+
+    pushIf(avn!=='0','Aseptická nekróza hlavice femuru – ' + avn + '.');
+    pushIf(bEd, 'Kostní edém' + (edemLok ? ' ' + edemLok : '') + '.');
+ 
+	 if (stressFx !== '0') {
+	  let txt = '';
+	  if (stressFx === 'stres. edém') txt = 'Kostní stres bez fraktury';
+	  else if (stressFx === 'stres. fraktura') txt = 'Stresová fraktura';
+	  else if (stressFx === 'fraktura') txt = 'Fraktura';
+
+	  if (frakturaLok) txt += ' v oblasti ' + frakturaLok;
+	  txt += '.';
+	  Res.push(txt);
+	}
+
+ 
+    pushIf(document.getElementById('cbGTbursa').checked, 'Trochanterická burzitida.');
+    pushIf(document.getElementById('cbIPbursa').checked, 'Iliopsoas bursitis.');
+    pushIf(document.getElementById('cbIGbursa').checked, 'Ischiogluteální bursitis.');
+	
+	if (faiState !== 'NE') {
+	  if (faiState === 'smíšený') {
+		pushIf(true, 'Femoroacetabulární impingement – smíšený typ.');
+	  } else {
+		// CAM nebo PINCER
+		pushIf(true, 'Femoroacetabulární impingement – ' + faiState + '.');
+	  }
+	}
+
+	
+    if(gluteus!=='OK') Res.push('Tendinopatie/léze gluteálních šlach (' + gluteus + ').');
+    if(hamstr!=='OK') Res.push('Postižení hamstringových šlach v místě origina (' + hamstr + ').');
+    if(iliop!=='OK') Res.push('Postižení šlachy iliopsoas (' + iliop + ').');
+    if(adduct!=='OK') Res.push('Postižení adduktorů/RF (' + adduct + ').');
+    if(dalsiZaver) Res.push(dalsiZaver);
+
+		// --- Pokud je vše v normě, doplň "Bez patrné patologie." ---
+		const everythingOK =
+		  avn === '0' &&
+		  faiState === 'NE' &&
+		  !bEd &&
+		  chrFA === '0' &&
+		  stressFx === '0' &&
+		  napl === '0' &&
+		  !syn &&
+		  !loose &&
+		  gluteus === 'OK' &&
+		  hamstr === 'OK' &&
+		  iliop === 'OK' &&
+		  adduct === 'OK' &&
+		  !document.getElementById('cbGTbursa').checked &&
+		  !document.getElementById('cbIPbursa').checked &&
+		  !document.getElementById('cbIGbursa').checked;
+
+		if (everythingOK) {
+		  Res.push('Bez patrné patologie.');
+		}
+
+    // Zápis
+    document.getElementById('MRHipPOPText').value = Popis.join(' ');
+    document.getElementById('MRHipRESText').value = Res.join('\\n');
+
+  }
+  
+  // Inicializace při načtení stránky
+window.addEventListener('DOMContentLoaded', () => {
+  updateTexts();
+});
+</script>
+</body>
+</html>

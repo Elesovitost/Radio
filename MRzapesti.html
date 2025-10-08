@@ -3,13 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MR ZÁPĚSTÍ – rychlopopis</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>MR ZÁPĚSTÍ</title>
+  <link rel="stylesheet" href="styles.css">
 
 </head>
 <body>
 <div class="MainDIV">
-  <div id="MRzapesti" class="standardwidth mydiv0">MR <button id="StranaButton" class="buttonSELECT ButtonCycleText">jakého?</button> ZÁPĚSTÍ</div>
+  <div class="MainDIV">
+  <div id="MRzapesti" class="standardwidth mydiv0" style="font-size:13px; font-weight:bold; line-height:1.4;">
+  MR <button id="StranaButton" class="buttonSELECT ButtonCycleText" onmousedown="cycleStranaText(event)">jakého?</button> ZÁPĚSTÍ 
+</div>
   <div id="IND" class="mydivIND standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off" oninput="updateTexts()" ></div>
 
   <div id="wrist-obecne" class="standardwidth">
@@ -44,7 +47,7 @@
         <td>skafoideum</td>
         <td><button id="ScaphoidFx" class="Button100 ButtonCycleText">bez fraktury</button>
             <span id="scaphoidLokalizaceSpan" class="hidden">
-                <button id="ScaphoidFxLokalizace" class="Button80 ButtonCycleText">prox. pól</button>
+                <button id="ScaphoidFxLokalizace" class="Button80 ButtonCycleText">-</button>
             </span>
         </td>
         <td></td>
@@ -112,8 +115,9 @@
     </table>
   </div>
 
-<div class="DIVLesions" style="margin-top: 0px;">
+<div id="dalsi" class="standardwidth">
  <button class="titleKnee float">DALŠÍ...</button>
+ <td>&nbsp;&nbsp;</td>
   <label class="CHB" style="margin-left: 0px;">
 	<input type="checkbox" id="dalsiShow"><span>+</span>
   </label>
@@ -124,12 +128,7 @@
   </div>
 </div>
 
-<div id="others"  class="standardwidth hidden"><button class="titleKnee float">OSTATNÍ</button>
-	<div id="dalsiFields" style="display: none; flex; gap: 5px; margin-top: 5px;">
-		<textarea id="dalsiPopis" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
-		<textarea id="dalsiZaver" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
-	</div>
-</div>
+
 
 </div>
 
@@ -153,7 +152,7 @@
   ButtonCycleInnerTexts['StranaButton'] = ["jakého?","PRAVÉHO","LEVÉHO"];
   ButtonCycleInnerTexts['NaplButton']   = ["0","↑","↑↑","↑↑↑"];
   ButtonCycleInnerTexts['ScaphoidFx']   = ["bez fraktury","suspektní","fraktura"];
-  ButtonCycleInnerTexts['ScaphoidFxLokalizace'] = ["prox. pól", "pas", "dist. pól"];
+  ButtonCycleInnerTexts['ScaphoidFxLokalizace'] = ["-", "prox. pólu", "pasu", "dist. pólu"];
   ButtonCycleInnerTexts['Kienbock']     = ["0","časný","pokročilý"];
   ButtonCycleInnerTexts['SL']           = ["OK","parciální","ruptura"];
   ButtonCycleInnerTexts['LT']           = ["OK","parciální","ruptura"];
@@ -265,13 +264,13 @@
     else if(napl==="↑") Popis.push("Mírně zvýšené množství kloubní tekutiny radiokarpálně/mediokarpálně bez synoviální proliferace.");
     else if(napl==="↑↑") Popis.push("Zvýšené množství tekutiny v kloubních dutinách, přiměřeně napjaté pouzdro.");
     else if(napl==="↑↑↑") Popis.push("Výrazná náplň kloubních dutin se známkami napětí pouzdra.");
-    if(syn) Popis.push("Synoviální ztluštění s vyšším signálem na T2/PD‑FS, postkontrastní sycení očekávatelné – obraz synovitidy.");
+    if(syn) Popis.push("Synoviální ztluštění s vyšším signálem na T2/PD‑FS.");
     if(loose) Popis.push("V kloubu ložiskově drobná tělíska/kalcifikace (hypoT1/hypoT2 až s bloomingem), bez jasné impakce.");
-    if(ganglion) Popis.push("Cystická léze tekutinového signálu s tenkou stěnou – typické pro ganglion" + (ganglionLok ? ` v lokalizaci ${ganglionLok}` : "") + ".");
+    if(ganglion) Popis.push("Cystická léze tekutinového signálu s tenkou stěnou" + (ganglionLok ? ` ${ganglionLok}` : "") + ".");
 
     // Kosti
     if(sca==="bez fraktury") Popis.push("Skafoideum bez linie fraktury, bez kostního edému a bez poruchy kortikalis.");
-    else if(sca==="suspektní") Popis.push("V oblasti skafoidea jemná liniová nízkosignální kresba na T1 s okolním edémem na STIR/PD‑FS – suspektní okultní fraktura.");
+    else if(sca==="suspektní") Popis.push("V oblasti skafoidea jemná liniová nízkosignální kresba na T1 s okolním edémem na STIR/PD‑FS.");
     else if(sca==="fraktura") Popis.push(`Zřetelná frakturní linie skafoidea v oblasti ${scaLok} s porušením kortikalis.`);
 
     if(kien!=="0") {
@@ -280,7 +279,7 @@
     }
 
     if(uImp) Popis.push("Znaky ulnar impaction: plus varianta ulny, subchondrální edém/chondromalacie ulnární části lunata a triquetra, změny u ulnární hlavičky a ulnárního úponu TFCC.");
-    if(bEd) Popis.push("Subchondrální edém a drobné geody" + (edemLok ? ` v lokalizaci ${edemLok}` : "") + " v zatěžovaných zónách radiokarpálně/mediokarpálně.");
+    if (bEd) Popis.push("Subchondrální edém" + (edemLok ? ` ${edemLok}` : "") + ".");
 
     // Vazy / TFCC
     let slText = "SL vaz intaktní, bez diskontinuity a bez tekutinové fisury";
@@ -316,8 +315,8 @@
     pushIf(napl !== "0", "Zmnožená tekutina v kloubních dutinách.");
     pushIf(syn, "Synovitida.");
     pushIf(ganglion, "Ganglion" + (ganglionLok ? ` (${ganglionLok}).` : "."));
-    pushIf(sca==="fraktura",`Fraktura skafoidea v oblasti ${scaLok}.`);
-    pushIf(sca==="suspektní","Suspektní okultní fraktura skafoidea.");
+    pushIf(sca==="fraktura",`Fraktura ${scaLok} scafoidea.`);
+    pushIf(sca==="suspektní","Suspektní okultní fraktura scafoidea.");
     pushIf(kien!=="0", "Kienböckova choroba lunata – "+(kien==="časný"?"časná":"pokročilá")+" fáze.");
     pushIf(bEd, "Subchondrální edém/cysty" + (edemLok ? ` (${edemLok}).` : "."));
     pushIf(tfcc==="foveální ruptura","Ruptura TFCC u foveálního úponu.");
