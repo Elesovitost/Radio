@@ -1208,14 +1208,14 @@ var NeckThyroidText = ""; var NeckThyroidRes = "";
     if (ThyroidenlargementL) { NeckThyroidText += "zvětšený levý lalok, "; NeckThyroidRes = "Zvětšený levý lalok štítnice. "; }
   }
 
-if (ThyroidavidLesionR && ThyroidavidLesionL) {NeckThyroidText += "noduly se zvýšenou akumulací RF v obou lalocích, "; NeckThyroidRes += "Oba laloky štítné žlázy s metabolicky aktivními noduly k dovyšetření. ";
+if (ThyroidavidLesionR && ThyroidavidLesionL) {NeckThyroidText += "solidní noduly v obou lalocích, "; NeckThyroidRes += "Oba laloky štítné žlázy s noduly k dovyšetření. ";
 } else {
     if (ThyroidavidLesionR) {NeckThyroidText += "solidní nodul v pravém laloku, "; NeckThyroidRes += "Pravý lalok štítné žlázy se solidním nodulem, event. k dovyšetření. "; }
     if (ThyroidavidLesionL) {NeckThyroidText += "solidní nodul v levém laloku, "; NeckThyroidRes += "Levý lalok štítné žlázy se solidním nodulem, event. k dovyšetření. "; }
 }
 
 
-  if (ThyroidnonAvidLesionR && ThyroidnonAvidLesionL) NeckThyroidText += "noduly bez zvýšené akumulace RF v obou lalocích, ";
+  if (ThyroidnonAvidLesionR && ThyroidnonAvidLesionL) NeckThyroidText += "cystické noduly v obou lalocích, ";
   else {
     if (ThyroidnonAvidLesionR) NeckThyroidText += "cystický nodul v pravém laloku, ";
     if (ThyroidnonAvidLesionL) NeckThyroidText += "cystický nodul v levém laloku, ";
@@ -1241,7 +1241,7 @@ if (ThyroidavidLesionR && ThyroidavidLesionL) {NeckThyroidText += "noduly se zv�
   }
 
 if (!NeckThyroidText) {
-  NeckThyroidText = "Štítná žláza nezvětšena. "; 
+  NeckThyroidText = ""; 
 }
 
 // Hlasivky
@@ -1335,7 +1335,7 @@ if (checkViability(POPNeckLymphNode1 || POPNeckLesion1 || POPNeckLesion2 || POPN
   POPNeckNative = "";
   POPNeckElse = "Jinde se zřetelně patologická ložiska nezobrazují. ";
 } else {
-  POPNeckNative = "Nejsou přítomna patologická ložiska či lymfadenopatie. ";
+  POPNeckNative = "Nejsou patrna patologická ložiska či lymfadenopatie. ";
   POPNeckElse = "";
 }
 
@@ -1908,24 +1908,24 @@ var ChbThoraxParenchymaNodulesR = document.getElementById("ChbThoraxParenchymaNo
 var ChbThoraxParenchymaNodulesL = document.getElementById("ChbThoraxParenchymaNodulesL").innerText;
 
 if (ChbThoraxParenchymaNodulesR === "+" && ChbThoraxParenchymaNodulesL === "+") {
-	ThoraxParenchymaText += "drobný nespecifický nodul bez zvýšené akumulace RF bilat., ";
+	ThoraxParenchymaText += "drobný nespecifický nodul bilat., ";
 } else {
 	if (ChbThoraxParenchymaNodulesR === "+") {
-		ThoraxParenchymaText +="drobný nespecifický nodul bez zvýšené akumulace RF vpravo, ";
+		ThoraxParenchymaText +="drobný nespecifický nodul vpravo, ";
 	}
 	if (ChbThoraxParenchymaNodulesL === "+") {
-		ThoraxParenchymaText += "drobný nespecifický nodul bez zvýšené akumulace RF vlevo, ";
+		ThoraxParenchymaText += "drobný nespecifický nodul RF vlevo, ";
 	}
 }
 
 if (ChbThoraxParenchymaNodulesR === "++" && ChbThoraxParenchymaNodulesL === "++") {
-	ThoraxParenchymaText += "drobné nespecifické noduly bez zvýšené akumulace RF bilat., ";
+	ThoraxParenchymaText += "drobné nespecifické noduly bilat., ";
 } else {
 	if (ChbThoraxParenchymaNodulesR === "++") {
-		ThoraxParenchymaText += "drobné nespecifické noduly bez zvýšené akumulace RF vpravo, ";
+		ThoraxParenchymaText += "drobné nespecifické noduly vpravo, ";
 	}
 	if (ChbThoraxParenchymaNodulesL === "++") {
-		ThoraxParenchymaText += "drobné nespecifické noduly bez zvýšené akumulace RF vlevo, ";
+		ThoraxParenchymaText += "drobné nespecifické noduly vlevo, ";
 	}
 }
 
@@ -1939,24 +1939,24 @@ var ChbThoraxParenchymaMicroR = document.getElementById("ChbThoraxParenchymaMicr
 var ChbThoraxParenchymaMicroL = document.getElementById("ChbThoraxParenchymaMicroL").innerText;
 
 if (ChbThoraxParenchymaMicroR === "+" && ChbThoraxParenchymaMicroL === "+") {
-    ThoraxParenchymaText += "drobný mikronodul bez zvýšené akumulace RF bilat., ";
+    ThoraxParenchymaText += "drobný mikronodul bilat., ";
 } else {
     if (ChbThoraxParenchymaMicroR === "+") {
-        ThoraxParenchymaText += "drobný mikronodul bez zvýšené akumulace RF vpravo, ";
+        ThoraxParenchymaText += "drobný mikronodul vpravo, ";
     }
     if (ChbThoraxParenchymaMicroL === "+") {
-        ThoraxParenchymaText += "drobný mikronodul bez zvýšené akumulace RF vlevo, ";
+        ThoraxParenchymaText += "drobný mikronodul vlevo, ";
     }
 }
 
 if (ChbThoraxParenchymaMicroR === "++" && ChbThoraxParenchymaMicroL === "++") {
-    ThoraxParenchymaText += "drobné mikronoduly bez zvýšené akumulace RF bilat., ";
+    ThoraxParenchymaText += "drobné mikronoduly bilat., ";
 } else {
     if (ChbThoraxParenchymaMicroR === "++") {
-        ThoraxParenchymaText += "drobné mikronoduly bez zvýšené akumulace RF vpravo, ";
+        ThoraxParenchymaText += "drobné mikronoduly vpravo, ";
     }
     if (ChbThoraxParenchymaMicroL === "++") {
-        ThoraxParenchymaText += "drobné mikronoduly bez zvýšené akumulace RF vlevo, ";
+        ThoraxParenchymaText += "drobné mikronoduly vlevo, ";
     }
 }
 
@@ -1970,24 +1970,24 @@ var ChbThoraxParenchymaOpacR = document.getElementById("ChbThoraxParenchymaOpacR
 var ChbThoraxParenchymaOpacL = document.getElementById("ChbThoraxParenchymaOpacL").innerText;
 
 if (ChbThoraxParenchymaOpacR === "+" && ChbThoraxParenchymaOpacL === "+") {
-    ThoraxParenchymaText += "drobná opacita bez zvýšené akumulace RF bilat., ";
+    ThoraxParenchymaText += "drobná opacita bilat., ";
 } else {
     if (ChbThoraxParenchymaOpacR === "+") {
-        ThoraxParenchymaText += "drobná opacita bez zvýšené akumulace RF vpravo, ";
+        ThoraxParenchymaText += "drobná opacita vpravo, ";
     }
     if (ChbThoraxParenchymaOpacL === "+") {
-        ThoraxParenchymaText += "drobná opacita bez zvýšené akumulace RF vlevo, ";
+        ThoraxParenchymaText += "drobná opacita vlevo, ";
     }
 }
 
 if (ChbThoraxParenchymaOpacR === "++" && ChbThoraxParenchymaOpacL === "++") {
-    ThoraxParenchymaText += "drobné opacity bez zvýšené akumulace RF bilat., ";
+    ThoraxParenchymaText += "drobné opacity bilat., ";
 } else {
     if (ChbThoraxParenchymaOpacR === "++") {
-        ThoraxParenchymaText += "drobné opacity bez zvýšené akumulace RF vpravo, ";
+        ThoraxParenchymaText += "drobné opacity vpravo, ";
     }
     if (ChbThoraxParenchymaOpacL === "++") {
-        ThoraxParenchymaText += "drobné opacity bez zvýšené akumulace RF vlevo, ";
+        ThoraxParenchymaText += "drobné opacity vlevo, ";
     }
 }
 
@@ -2002,24 +2002,24 @@ var ChbThoraxParenchymaConsolR = document.getElementById("ChbThoraxParenchymaCon
 var ChbThoraxParenchymaConsolL = document.getElementById("ChbThoraxParenchymaConsolL").innerText;
 
 if (ChbThoraxParenchymaConsolR === "+" && ChbThoraxParenchymaConsolL === "+") {
-	ThoraxParenchymaText += "drobné infiltráty / konsolidace s nízkou až střední akumulací RF bilat., ";
+	ThoraxParenchymaText += "drobné infiltráty / konsolidace bilat., ";
 } else {
 	if (ChbThoraxParenchymaConsolR === "+") {
-		ThoraxParenchymaText +="drobný infiltrát / konsolidace s nízkou až střední akumulací RF vpravo, ";
+		ThoraxParenchymaText +="drobný infiltrát / konsolidace vpravo, ";
 	}
 	if (ChbThoraxParenchymaConsolL === "+") {
-		ThoraxParenchymaText += "drobný infiltrát / konsolidace s nízkou až střední akumulací RF vlevo, ";
+		ThoraxParenchymaText += "drobný infiltrát / konsolidace vlevo, ";
 	}
 }
 
 if (ChbThoraxParenchymaConsolR === "++" && ChbThoraxParenchymaConsolL === "++") {
-	ThoraxParenchymaText += "vícečetné drobné infiltráty / konsolidace s nízkou až střední akumulací RF bilat., ";
+	ThoraxParenchymaText += "vícečetné drobné infiltráty / konsolidace bilat., ";
 } else {
 	if (ChbThoraxParenchymaConsolR === "++") {
-		ThoraxParenchymaText += "drobné infiltráty / konsolidace s nízkou až střední akumulací RF vpravo, ";
+		ThoraxParenchymaText += "drobné infiltráty / konsolidace vpravo, ";
 	}
 	if (ChbThoraxParenchymaConsolL === "++") {
-		ThoraxParenchymaText += "drobné infiltráty / konsolidace s nízkou až střední akumulací RF vlevo, ";
+		ThoraxParenchymaText += "drobné infiltráty / konsolidace vlevo, ";
 	}
 }
 
@@ -2323,7 +2323,7 @@ if (checkViability(POPThoraxLymphNode1 || POPThoraxLesion1 || POPThoraxLesion2 |
   POPThoraxNative = "";
   POPThoraxElse = "Jinde se zřetelně patologická ložiska nezobrazují. ";
 } else {
-  POPThoraxNative = "Nejsou přítomna patologická ložiska či lymfadenopatie. ";
+  POPThoraxNative = "Nejsou patrna patologická ložiska či lymfadenopatie. ";
   POPThoraxElse = "";
 }
 
@@ -2838,15 +2838,15 @@ var descriptions = [];
 if (ChbLiverSteatosis) descriptions.push("steatotická");
 
 if (buttonLiverCystText === "+") {
-    descriptions.push("s fotopenickou cystou");
+    descriptions.push("s nízkodenzitní cystou");
 } else if (buttonLiverCystText === "++") {
-    descriptions.push("s fotopenickými cystami");
+    descriptions.push("s nízkodenzitními cystami");
 }
 
 if (buttonLiverHemangiomaText === "+") {
-    descriptions.push("s ložiskem bez zvýšené akumulace RF charakteru hemangiomu");
+    descriptions.push("s ložiskem charakteru hemangiomu");
 } else if (buttonLiverHemangiomaText === "++") {
-    descriptions.push("s vícečetnými ložisky bez zvýšené akumulace RF charakteru hemangiomů");
+    descriptions.push("s vícečetnými ložisky charakteru hemangiomů");
 }
 
 if (ChbLiverResectionR && ChbLiverResectionL) {
@@ -2922,9 +2922,9 @@ if (ChbSpleenActivity) spleenDescriptions.push("s difuzně vysokou akumulací RF
 if (ChbSpleenEctomy) spleenDescriptions.push("chybí po splenektomii");
 
 if (buttonSpleenCystText === "+") {
-    spleenDescriptions.push("s fotopenickou cystou");
+    spleenDescriptions.push("s nízkodenzitní cystou");
 } else if (buttonSpleenCystText === "++") {
-    spleenDescriptions.push("s fotopenickými cystami");
+    spleenDescriptions.push("s nízkodenzitními cystami");
 }
 
 if (ChbSpleenInfarct) spleenDescriptions.push("s klínovitým defektem po infarktu");
@@ -2977,9 +2977,9 @@ if (ChbSPancreasEnlarged) pancreasDescriptions.push("atrofický");
 if (ChbPancreasActivity) pancreasDescriptions.push("s dilatovaným Wirsungem");
 
 if (buttonPancreasCystText === "+") {
-    pancreasDescriptions.push("s fotopenickým cystickým ložiskem");
+    pancreasDescriptions.push("s nízkodenzitním cystickým ložiskem");
 } else if (buttonPancreasCystText === "++") {
-    pancreasDescriptions.push("s fotopenickými cystickými ložisky");
+    pancreasDescriptions.push("s nízkodenzitními cystickými ložisky");
 }
 
 if (ChbPancreasEctomy) pancreasDescriptions.push("chybí po totální pankreatektomii");
@@ -3011,24 +3011,24 @@ var AbdomenAdrenalOther = document.getElementById("AbdomenAdrenalOther").value.t
 var descriptionsAdrenal = [];
 
 if (ChbAdrenalAdenomaR && ChbAdrenalAdenomaL) {
-    descriptionsAdrenal.push("bilat. s ložisky bez zvýšené akumulace RF obrazu adenomů");
+    descriptionsAdrenal.push("bilat. s ložisky nízké denzity obrazu adenomů");
 } else {
-    if (ChbAdrenalAdenomaR) descriptionsAdrenal.push("pravá s ložiskem bez zvýšené akumulace RF obrazu adenomu");
-    if (ChbAdrenalAdenomaL) descriptionsAdrenal.push("levá s ložiskem bez zvýšené akumulace RF obrazu adenomu");
+    if (ChbAdrenalAdenomaR) descriptionsAdrenal.push("pravá s ložiskem nízké denzity obrazu adenomu");
+    if (ChbAdrenalAdenomaL) descriptionsAdrenal.push("levá s ložiskem nízké denzity obrazu adenomu");
 } 
 
 if (ChbAdrenalHyperplasiaR && ChbAdrenalHyperplasiaL) {
     descriptionsAdrenal.push("bilat. rozšířeny bez výrazněji zvýšené akumulace RF obrazu hyperplázie");
 } else {
-    if (ChbAdrenalHyperplasiaR) descriptionsAdrenal.push("pravá rozšířena bez zvýšené akumulace RF obrazu hyperplázie");
-    if (ChbAdrenalHyperplasiaL) descriptionsAdrenal.push("levá rozšířena bez zvýšené akumulace RF obrazu hyperplázie");
+    if (ChbAdrenalHyperplasiaR) descriptionsAdrenal.push("pravá rozšířena obrazu hyperplázie");
+    if (ChbAdrenalHyperplasiaL) descriptionsAdrenal.push("levá rozšířena obrazu hyperplázie");
 }
 
 if (ChbAdrenalMyelolipomaR && ChbAdrenalMyelolipomaL) {
-    descriptionsAdrenal.push("bilat. s ložisky s podílem tuku a bez zvýšené akumulace RF obrazu myelolipomů");
+    descriptionsAdrenal.push("bilat. s ložisky s podílem tuku obrazu myelolipomů");
 } else {
-    if (ChbAdrenalMyelolipomaR) descriptionsAdrenal.push("pravá s ložiskem s podílem tuku a bez zvýšené akumulace RF obrazu myelolipomu");
-    if (ChbAdrenalMyelolipomaL) descriptionsAdrenal.push("levá s ložiskem s podílem tuku a bez zvýšené akumulace RF obrazu myelolipomu");
+    if (ChbAdrenalMyelolipomaR) descriptionsAdrenal.push("pravá s ložiskem s podílem tuku obrazu myelolipomu");
+    if (ChbAdrenalMyelolipomaL) descriptionsAdrenal.push("levá s ložiskem s podílem tuku obrazu myelolipomu");
 }
 
 if (ChbAdrenalActivityR && ChbAdrenalActivityL) {
@@ -3089,7 +3089,7 @@ function addBilateralDescription(rCheck, lCheck, bilateralDesc, rDesc, lDesc) {
 }
 
 addBilateralDescription(ChbKidneysLithR, ChbKidneysLithL, "kalikolitiáza bilat.", "kalikolitiáza vpravo", "kalikolitiáza vlevo");
-addBilateralDescription(ChbKidneysAMLR, ChbKidneysAMLL, "bilat. ložiska s tuk. denzitami bez zvýšené akumulace RF obrazu AML", "vpravo ložisko s tuk. denzitami bez zvýšené akumulace RF obrazu AML", "vlevo ložisko s tuk. denzitami bez zvýšené akumulace RF obrazu AML");
+addBilateralDescription(ChbKidneysAMLR, ChbKidneysAMLL, "bilat. ložiska s tuk. denzitami obrazu AML", "vpravo ložisko s tuk. denzitami obrazu AML", "vlevo ložisko s tuk. denzitami obrazu AML");
 addBilateralDescription(ChbKidneysScarR, ChbKidneysScarL, "jizevnaté změny parenchymu bilat.", "jizevnaté změny parenchymu vpravo", "jizevnaté změny parenchymu vlevo");
 addBilateralDescription(ChbKidneysStentR, ChbKidneysStentL, "double pig-tail katetr pánvička - ureter bilat.", "double pig-tail katetr pánvička - ureter vpravo", "double pig-tail katetr pánvička - ureter vlevo");
 addBilateralDescription(ChbKidneysStomyR, ChbKidneysStomyL, "nefrostomie bilat.", "nefrostomie vpravo", "nefrostomie vlevo");
@@ -3132,24 +3132,24 @@ function updateCystDescriptions() {
     var buttonCystsLText = document.getElementById("ChbKidneysCystsL").innerText;
 
     if (buttonCystsRText === "+" && buttonCystsLText === "+") {
-        descriptionsKidneys.push("fotopenické cysty bilat.");
+        descriptionsKidneys.push("nízkodenzitní cysty bilat.");
     } else {
         if (buttonCystsRText === "+") {
-            descriptionsKidneys.push("fotopenická cysta vpravo");
+            descriptionsKidneys.push("nízkodenzitní cysta vpravo");
         }
         if (buttonCystsLText === "+") {
-            descriptionsKidneys.push("fotopenická cysta vlevo");
+            descriptionsKidneys.push("nízkodenzitní cysta vlevo");
         }
     }
 
     if (buttonCystsRText === "++" && buttonCystsLText === "++") {
-        descriptionsKidneys.push("vícečetné fotopenické cysty bilat.");
+        descriptionsKidneys.push("vícečetné nízkodenzitní cysty bilat.");
     } else {
         if (buttonCystsRText === "++") {
-            descriptionsKidneys.push("vícečetné fotopenické cysty vpravo");
+            descriptionsKidneys.push("vícečetné nízkodenzitní cysty vpravo");
         }
         if (buttonCystsLText === "++") {
-            descriptionsKidneys.push("vícečetné fotopenické cysty vlevo");
+            descriptionsKidneys.push("vícečetné nízkodenzitní cysty vlevo");
         }
     }
 }
@@ -3236,15 +3236,15 @@ if (ChbUterusEctomy) {descriptionsUterus.push("chybí po hysterektomii");}
 if (ChbUterusIUD) {descriptionsUterus.push("s IUD v dutině");}
 
 if (buttonUterusMyomaText === "+") {
-    descriptionsUterus.push("s ložiskem bez zvýšené akumulace RF obrazu myomu");
+    descriptionsUterus.push("s ložiskem obrazu myomu");
 } else if (buttonUterusMyomaText === "++") {
-    descriptionsUterus.push("s vícečetnými ložisky bez zvýšené akumulace RF obrazu myomů");
+    descriptionsUterus.push("s vícečetnými ložisky obrazu myomů");
 }
 
 if (buttonUterusMyomaCText === "+") {
-    descriptionsUterus.push("s ložiskem bez zvýšené akumulace RF a s kalcifikacemi obrazu myomu");
+    descriptionsUterus.push("s ložiskem a s kalcifikacemi obrazu myomu");
 } else if (buttonUterusMyomaCText === "++") {
-    descriptionsUterus.push("s vícečetnými ložisky bez zvýšené akumulace RF a s kalcifikacemi obrazu myomů");
+    descriptionsUterus.push("s vícečetnými ložisky a s kalcifikacemi obrazu myomů");
 }
 
 if (ChbUterusActivity) {descriptionsUterus.push("se zvýšenou aktivitou sliznice pravděp. v rámci cyklu");}
@@ -3264,10 +3264,10 @@ var AbdomenOvariesOther = document.getElementById("AbdomenOvariesOther").value.t
 var descriptionsOvaries = [];
 
 if (ChbOvariesCystR && ChbOvariesCystL) {
-    descriptionsOvaries.push("obě s fotopenickými cystami");
+    descriptionsOvaries.push("obě s nízkodenzitními cystami");
 } else {
-	if (ChbOvariesCystR) {descriptionsOvaries.push("pravé s fotopenickou cystou");}
-	if (ChbOvariesCystL) {descriptionsOvaries.push("levé s fotopenickou cystou");}
+	if (ChbOvariesCystR) {descriptionsOvaries.push("pravé s nízkodenzitní cystou");}
+	if (ChbOvariesCystL) {descriptionsOvaries.push("levé s nízkodenzitní cystou");}
 }
 
 if (ChbOvariesActivityR && ChbOvariesActivityL) {
@@ -3623,7 +3623,7 @@ if (checkViability(POPAbdomenLymphNode1 || POPAbdomenLesion1 || POPAbdomenLesion
   POPAbdomenNative = "";
   POPAbdomenElse = "Jinde se zřetelně patologická ložiska nezobrazují. ";
 } else {
-  POPAbdomenNative = "Nejsou přítomna patologická ložiska či lymfadenopatie. ";
+  POPAbdomenNative = "Nejsou patrna patologická ložiska či lymfadenopatie. ";
   POPAbdomenElse = "";
 }
 
@@ -3831,8 +3831,8 @@ var SkeletSoftTissueOther = document.getElementById("SkeletSoftTissueOther").val
 
 if (ChbSkeletInjGlut && ChbSkeletInjAbd) {SkeletonSoftTissueText += "V podkoží hýžďové i břišní krajiny infiltráty s mírně zvýšenou akumulací RF v.s. postinjekční.  ";
 } else {
-    if (ChbSkeletInjGlut) SkeletonSoftTissueText += "V podkoží hýžďové krajiny infiltráty s mírně zvýšenou akumulací RF v.s. postinjekční. ";
-    if (ChbSkeletInjAbd) SkeletonSoftTissueText += "V podkoží krajiny břišní infiltráty s mírně zvýšenou akumulací RF v.s. postinjekční. ";
+    if (ChbSkeletInjGlut) SkeletonSoftTissueText += "V podkoží hýžďové krajiny infiltráty v.s. postinjekční. ";
+    if (ChbSkeletInjAbd) SkeletonSoftTissueText += "V podkoží krajiny břišní infiltráty v.s. postinjekční. ";
 }
 
 if (SkeletSoftTissueOther) SkeletonSoftTissueText += SkeletSoftTissueOther + ". ";
@@ -3901,8 +3901,8 @@ if (ChbSkeletTraumaOlder) {
     SkeletTraumaOld.classList.add("hidden");
 }
 
-if (SkeletTraumaRecentOther) SkeletonTraumaRecentText = "Potraumatické změny " + SkeletTraumaRecentOther + " se zvýšenou akumulací RF (recentní). ";
-if (SkeletTraumaOlderOther) SkeletonTraumaOlderText = "Potraumatické změny " + SkeletTraumaOlderOther + " bez zvýšené akumulace RF (staršího data). ";
+if (SkeletTraumaRecentOther) SkeletonTraumaRecentText = "Potraumatické změny " + SkeletTraumaRecentOther + " s edémem / odezvou okolí (recentní). ";
+if (SkeletTraumaOlderOther) SkeletonTraumaOlderText = "Potraumatické změny " + SkeletTraumaOlderOther + " bez edéu / odezvy okolí (staršího data). ";
 
 if (ChbSkeletTraumaRecent && SkeletTraumaRecentOther !== "") {SkeletonTraumaRecentRes = "Zvýšená metabolická aktivita " + SkeletTraumaRecentOther + " na podkladu recentních traumatických změn. ";}
 
@@ -3953,7 +3953,7 @@ if (descriptionsSkeleton.length > 1) {
   SkeletonDegenerText = descriptionsSkeleton.length ? "Pokročilé degenerativní změny " + descriptionsSkeleton[0] + ". " : "";
 }
 
-if (ChbSkeletDegenerDISH) {SkeletonDegenerText += "Osifikace v oblasti předního longitudinálního lig. páteře, nejvýrazněji v thorakálním úseku, s tvorbou osteofytů. Zachovaná výška meziobratlových plotének a bez známek erozí SI či sakroiliitidy. Osifikační změny v oblasti entézí pánevního skeletu. Vše bez významné akumulace RF.  "; 
+if (ChbSkeletDegenerDISH) {SkeletonDegenerText += "Osifikace v oblasti předního longitudinálního lig. páteře, nejvýrazněji v thorakálním úseku, s tvorbou osteofytů. Zachovaná výška meziobratlových plotének a bez známek erozí SI či sakroiliitidy. Osifikační změny v oblasti entézí pánevního skeletu. "; 
 								SkeletonDegenerRes += "Obraz difuzní idiopatické skeletální hyperostózy (DISH) s  osifikací předního longitudinálního ligamenta v thorakolumbální oblasti bez zánětlivé aktivace a bez známek aktivní sakroiliitidy či metabolicky aktivní entezopatie. ";}
 
 
@@ -4056,7 +4056,7 @@ if (checkViability(POPSkeletonLesion1 || POPSkeletonLesion2 || POPSkeletonLesion
   POPSkeletonNative = "";
   POPSkeletonElse = "Jinde se abnormální ložiska nezobrazují. ";
 } else {
-  POPSkeletonNative = "Nejsou přítomna patologická ložiska. ";
+  POPSkeletonNative = "Nejsou patrna patologická ložiska. ";
   POPSkeletonElse = "";
 }
 
