@@ -90,17 +90,12 @@
 		<!-- Pravá skupina: TNM a PDF -->
 		<div style="float: right; margin-right: 0px;">
 
-			<div class="dropdown">
+			<div class="dropdown" id="helperDropdown">
 			  <button class="button60 dropbtn">HELPER</button>
-			  <div class="dropdown-content">
-				<a href="#" onclick="changePage('TNMORL.html')">TNM ORL</a>
-				<a href="#" onclick="changePage('TNMRectum.html')">TNM rektum</a>
-				<a href="#" onclick="changePage('TNMmiProstate.html')">TNM prostata</a>
-				<a href="#" onclick="changePage('TNMCervix.html')">TNM cervix</a>
-				<div style="height: 8px; border-top: 1px solid #aaa; margin: 6px 0;"></div>
-				<a href="#" onclick="changePage('BTIT.html')">BT-IT</a>
-			  </div>
+			  <div class="dropdown-content" id="helperMenu"></div>
 			</div>
+
+
 
 			<div class="dropdown" style="display: inline-block;">
 				<button id="btnPDF" class="button60 dropbtn">📂PDF</button>
@@ -223,7 +218,7 @@ function adjustTextareaHeight(textarea) {
 }
 
 function changePage(url) {
-    var container = document.getElementById("page-container");
+	var container = document.getElementById("page-container");
     var uniqueId = "iframe-" + url + "-" + Date.now();
 
     var iframeContainer = document.createElement("div");
@@ -242,6 +237,7 @@ function changePage(url) {
             bindEventsToIframe(iframe);
             updateFinalTextAreas();
             checkAndUpdateDivVisibility();
+			updateHelperDropdown(); // 🔹 aktualizuj helper po načtení nového vyšetření
 
             // Delay the fade-in animation until the iframe is loaded
             setTimeout(() => {
@@ -270,6 +266,8 @@ function changePage(url) {
 			container.removeChild(iframeContainer);
 			// Skryj výstup AI po zavření okna
 			document.getElementById("aiResult").style.display = "none";
+
+			updateHelperDropdown();
 
 			if (container.children.length === 0) {
 				const bg = document.getElementById('random-background');
@@ -859,6 +857,80 @@ function resetBackgroundFilter() {
 	bg.style.filter = 'url(#bubbleFilter)';
   }
 }
+
+
+
+// HELPER
+
+// HELPER
+// ====== Jednoduchý dynamický HELPER – reaguje na otevření i zavření ======
+
+function updateHelperDropdown() {
+  const container = document.getElementById("page-container");
+  const iframes = container.getElementsByTagName("iframe");
+  const menu = document.getElementById("helperMenu");
+  const btn = document.getElementById("helperDropdown");
+  menu.innerHTML = "";
+
+  let added = false;
+  let text = "";
+
+  // 🔹 posbírá texty a URL všech otevřených iframe
+  for (let i = 0; i < iframes.length; i++) {
+    try {
+      const doc = iframes[i].contentWindow.document;
+      text += " " + (doc.body?.innerText || "").toLowerCase();
+    } catch (e) {
+      // pokud iframe ještě nenačtený, ignoruj
+    }
+    text += " " + (iframes[i].src || "").toLowerCase();
+  }
+
+
+  // TNM ORL
+  if (text.includes("fdgpet") || text.includes("wb") || text.includes("orl")) {
+    menu.innerHTML += `<a href="#" onclick="changePage('Helper TNMORL.html')">TNM ORL</a>`;
+    added = true;
+  }
+
+  // TNMREKTUM
+  if (text.includes("fdgpet") || text.includes("wb") || text.includes("rekt")) {
+    menu.innerHTML += `<a href="#" onclick="changePage('Helper TNMRectum.html')">TNM rektum</a>`;
+    added = true;
+  }
+
+  // TNM PROSTATA
+  if (text.includes("fdgpet") || text.includes("wb") || text.includes("prostat")) {
+    menu.innerHTML += `<a href="#" onclick="changePage('Helper TNMmiProstate.html')">TNM prostata</a>`;
+    added = true;
+  }
+
+  // TNM CERVIX
+  if (text.includes("fdgpet") || text.includes("wb") || text.includes("cervix")) {
+    menu.innerHTML += `<a href="#" onclick="changePage('Helper TNMCervix.html')">TNM cervix</a>`;
+    added = true;
+  }
+
+
+  // BT-IT
+  if (text.includes("fdgpet")) {
+    menu.innerHTML += `<a href="#" onclick="changePage('Helper BTIT.html')">Bio a imuno sideeffects</a>`;
+    added = true;
+  }
+
+  // RAMP KOLENO
+  if (text.includes("kolen") || text.includes("ramp")) {
+    menu.innerHTML += `<a href="#" onclick="changePage('Helper RAMP lesion.png')">RAMP léze</a>`;
+    added = true;
+  }
+
+
+  // 🔹 když nic nenajde → skryj celé tlačítko
+  btn.style.display = added ? "inline-block" : "none";
+}
+
+// 🔹 spustí se při načtení stránky
+document.addEventListener("DOMContentLoaded", updateHelperDropdown);
 
 	
 </script>
