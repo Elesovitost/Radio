@@ -1123,6 +1123,21 @@ function mergeLateralSentences() {
 }
 mergeLateralSentences();
 
+
+// Sloučení textů o kolaterálních vazech
+if (MRKneePOPText.value.includes("Mediální kolaterální vaz je nízkého signálu bez porušení kontinuity, bez edému okolí.") &&
+    MRKneePOPText.value.includes("Laterální kolaterální vaz je nízkého signálu bez porušení kontinuity, bez edému okolí.")) {
+
+    MRKneePOPText.value = MRKneePOPText.value
+        .replace("Mediální kolaterální vaz je nízkého signálu bez porušení kontinuity, bez edému okolí.", "")
+        .replace("Laterální kolaterální vaz je nízkého signálu bez porušení kontinuity, bez edému okolí.", "")
+        .trim();
+
+    MRKneePOPText.value += "\nKolaterální vazy nízkého signálu bez porušení kontinuity, bez edému okolí.";
+}
+
+
+
 MRKneeRESText.value = 
 MkMenR + " " + MkFemCondRES + MkTibCondRES + "\n" +
 LkMenR + " " + LkFemCondRES + LkTibCondRES + "\n" +
