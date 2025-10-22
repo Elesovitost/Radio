@@ -271,6 +271,7 @@ button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-
 .toggleColorRed {background-color: #FFADAD;}
 .myButtonO {width: 20px; background-color: #FFADAD;}
 .button20 {width: 20px;}
+.button40 {width: 38px;}
 .buttonCheckbox {width: 18px; height: 18px; text-align: center; justify-content: center; display: inline-flex;   margin: 0px 0px 0px 3px; }
 .buttonCheckbox {background-color: white;}
 .buttonCheckbox.red-background {background-color: #D4A29C;}

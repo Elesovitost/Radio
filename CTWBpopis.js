@@ -1785,6 +1785,7 @@ var ThoraxMammaText = "";
 var ThoraxMammaMER = document.getElementById("ChbMammaMER").checked; var ThoraxMammaMEL = document.getElementById("ChbMammaMEL").checked;
 var ThoraxMammaKVER = document.getElementById("ChbMammaKVER").checked; var ThoraxMammaKVEL = document.getElementById("ChbMammaKVEL").checked;
 var ThoraxMammaSegR = document.getElementById("ChbMammaSegR").checked; var ThoraxMammaSegL = document.getElementById("ChbMammaSegL").checked;
+var ThoraxMammaSkinR = document.getElementById("ChbMammaSkinR").checked; var ThoraxMammaSkinL = document.getElementById("ChbMammaSkinL").checked;
 var ThoraxMammaReplaceR = document.getElementById("ChbMammaReplaceR").checked; var ThoraxMammaReplaceL = document.getElementById("ChbMammaReplaceL").checked;
 var ThoraxMammaOther = document.getElementById("ThoraxMammaOther").value.trim();
 
@@ -1804,6 +1805,12 @@ if (ThoraxMammaSegR && ThoraxMammaSegL) ThoraxMammaText += "St.p. segmentektomii
   else {
 	if (ThoraxMammaSegR) ThoraxMammaText += "St.p. segmentektomii pravého prsu. ";
 	if (ThoraxMammaSegL) ThoraxMammaText += "St.p. segmentektomii levého prsu. ";
+  }
+
+if (ThoraxMammaSkinR && ThoraxMammaSkinL) ThoraxMammaText += "Zesílení kožního krytu obou prsů. ";
+  else {
+	if (ThoraxMammaSkinR) ThoraxMammaText += "Zesílení kožního krytu pravého prsu. ";
+	if (ThoraxMammaSkinL) ThoraxMammaText += "Zesílení kožního krytu levého prsu. ";
   }
 
 if (ThoraxMammaReplaceR && ThoraxMammaReplaceL) ThoraxMammaText += "St.p. náhradě obou prsů. ";
@@ -1852,7 +1859,7 @@ var ThoraxLNPlusOther = document.getElementById("ThoraxLNPlusOther").value.trim(
 
 updateButtonTexts({
             'ChbThoraxParenchymaFibr': ['0', 'I', 'II','III'],
-			'ChbThoraxParenchymaEmphys': ['0', 'I', 'II','III']
+			'ChbThoraxParenchymaEmphys': ['0', 'ParaI', 'ParaII', 'CentI', 'CentII', 'PAN']
         });
 
 if (ThoraxPulmonectomyR) ThoraxParenchymaText += "st.p. pravostranné pneumonektomii, ";
@@ -2044,11 +2051,15 @@ if (buttonThoraxParenchymaFibrText === "I") {
     ThoraxParenchymaText +=("pokročilá fibróza s honeycombingem, ");
 }
 
-if (buttonThoraxParenchymaEmphysText === "I") {
-    ThoraxParenchymaText +=("mírný emfyzém, ");
-} else if (buttonThoraxParenchymaEmphysText === "II") {
-    ThoraxParenchymaText +=("přítomen emfyzém, ");
-} else if (buttonThoraxParenchymaEmphysText === "III") {
+if (buttonThoraxParenchymaEmphysText === "ParaI") {
+    ThoraxParenchymaText +=("mírný paraseptální emfyzém, ");
+} else if (buttonThoraxParenchymaEmphysText === "ParaII") {
+    ThoraxParenchymaText +=("paraseptální emfyzém, ");
+} else if (buttonThoraxParenchymaEmphysText === "CentI") {
+    ThoraxParenchymaText +=("mírný centrilobulární emfyzém, ");
+} else if (buttonThoraxParenchymaEmphysText === "CentII") {
+    ThoraxParenchymaText +=("centrilobulární emfyzém, ");
+} else if (buttonThoraxParenchymaEmphysText === "PAN") {
     ThoraxParenchymaText +=("panlobulární pokročilý emfyzém, ");
 }
 

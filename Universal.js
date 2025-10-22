@@ -9,6 +9,8 @@ function processSentence(sentence) {
 		containsExactWord("noduly") || 
 		containsExactWord("ložisko") || 
 		containsExactWord("cystické ložisko") ||
+		containsExactWord("subsolidní ložisko") ||
+		containsExactWord("kavitované ložisko") ||
 		containsExactWord("infiltráty") || 
 		containsExactWord("tumory") || 
 		containsExactWord("pakety")) {
@@ -30,6 +32,8 @@ function processSentence(sentence) {
 		containsExactWord("opacita") || 
 		containsExactWord("ložiska") || 
 		containsExactWord("cystická ložiska") ||
+		containsExactWord("subsolidní ložiska") ||
+		containsExactWord("kavitovaná ložiska") ||
 		containsExactWord("cysta") || 
 		containsExactWord("struktura") ||
 		containsExactWord("neložisková") ||
@@ -65,7 +69,9 @@ function processSentence(sentence) {
 
 const pluralForms = {
   "ložisko": "ložiska",
+  "subsolidní ložisko":"subsolidní ložiska",
   "cystické ložisko": "cystická ložiska",
+  "kavitované ložisko": "kavitovaná ložiska",
   "nodul": "noduly",
   "opacita": "opacity",
   "expanze": "expanzePL",

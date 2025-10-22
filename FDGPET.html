@@ -95,11 +95,12 @@ table {width: auto; white-space: nowrap;}
 					<tr>
 						<td>
 						<select id="NeckLesion1type" class="selectLESION" onchange="updateTexts()">
+							<option value="cystické ložisko">cysta</option>
+							<option value="fokus">fokus</option>
+							<option value="infiltrace">infiltrace</option>
+							<option value="kolekce">kolekce</option>
 							<option value="ložisko" selected>ložisko</option>
 							<option value="masa">masa</option>
-							<option value="infiltrace">infiltrace</option>
-							<option value="fokus">fokus</option>
-							<option value="kolekce">kolekce</option>
 						</select>
 						<input type="text" class="customInput" placeholder="Zadejte vlastní text" style="display: none;" oninput="updateTexts()">
 						<select id="NeckLesion1number" class="select35" onchange="updateTexts()">
@@ -348,14 +349,17 @@ table {width: auto; white-space: nowrap;}
 					<tr>
 						<td>
 							<select id="ThoraxLesion1type" class="selectLESION" onchange="updateTexts()">
+							  <option value="expanze">expanze</option>
+							  <option value="fokus">fokus</option>
+							  <option value="infiltrace">infiltrace</option>
+							  <option value="kavitované ložisko">kavita</option>
+							  <option value="kolekce">kolekce</option>
+							  <option value="konsolidace">konsolidace</option>
 							  <option value="ložisko" selected>ložisko</option>
 							  <option value="nodul">nodul</option>
-							  <option value="opacita">opacita</option>
-							  <option value="expanze">expanze</option>
-							  <option value="konsolidace">konsolidace</option>
-							  <option value="infiltrace">infiltrace</option>
-							  <option value="fokus">fokus</option>
-							  <option value="kolekce">kolekce</option>
+							  <option value="opacita">opacita</option>  
+							  <option value="subsolidní ložisko">subsolid</option>
+							  <option value="struktura">struktura</option>
 							</select>
 						<select id="ThoraxLesion1number" class="select35" onchange="updateTexts()">
 							<option value="" selected>1</option>
@@ -710,13 +714,13 @@ table {width: auto; white-space: nowrap;}
 					<tr>
 						<td>
 							<select id="AbdomenLesion1type" class="selectLESION" onchange="updateTexts()">
-							  <option value="ložisko" selected>ložisko</option>
-							  <option value="cystické ložisko">- cystické</option>
+							  <option value="cystické ložisko">cystoid</option>
 							  <option value="expanze">expanze</option>
-							  <option value="infiltrát">infiltrace</option>
-							  <option value="struktura">struktura</option>
 							  <option value="fokus">fokus</option>
+							  <option value="infiltrace">infiltrace</option>
 							  <option value="kolekce">kolekce</option>
+							  <option value="ložisko" selected>ložisko</option>
+							  <option value="struktura">struktura</option>
 							</select>
 						<select id="AbdomenLesion1number" class="select35" onchange="updateTexts()">
 							<option value="" selected>1</option>
@@ -1408,6 +1412,10 @@ table {width: auto; white-space: nowrap;}
 						<td class="right"><label class="CHB"><input type="checkbox" id="ChbMammaSegR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMammaSegL" onChange="updateTexts()"><span>L</span></label></td>
 					</tr>
 					<tr>
+						<td>Kožní zesílení</td>
+						<td class="right"><label class="CHB"><input type="checkbox" id="ChbMammaSkinR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMammaSkinL" onChange="updateTexts()"><span>L</span></label></td>
+					</tr>
+					<tr>
 						<td>Náhrada</td>
 						<td class="right"><label class="CHB"><input type="checkbox" id="ChbMammaReplaceR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbMammaReplaceL" onChange="updateTexts()"><span>L</span></label></td>
 					</tr>
@@ -1531,7 +1539,7 @@ table {width: auto; white-space: nowrap;}
 					</tr>
 					<tr>
 						<td>Emfyzém</td>
-						<td class="right"><button id="ChbThoraxParenchymaEmphys" class="buttonCheckbox">0</button></td>
+						<td class="right"><button id="ChbThoraxParenchymaEmphys" class="buttonCheckbox button40">0</button></td>
 					</tr>
 					<tr>
 					<td colspan="2" ><textarea id="ThoraxParenchymaOther" type="text" placeholder="doplnění..." autocomplete="off" class="inputother" ondblclick="this.select()" oninput="updateTexts()"></textarea></td>

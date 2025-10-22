@@ -1338,18 +1338,18 @@ var ThoraxLesion1Locationtext = "";
 
 // Right side
 var rightLungLobes = [];
-if (document.getElementById('Chb1LobeUpperR').checked) rightLungLobes.push("horního laloku");
-if (document.getElementById('Chb1LobeMiddleR').checked) rightLungLobes.push("středního laloku");
-if (document.getElementById('Chb1LobeLowerR').checked) rightLungLobes.push("dolního laloku");
+if (document.getElementById('Chb1LobeUpperR').checked) rightLungLobes.push("v horním laloku");
+if (document.getElementById('Chb1LobeMiddleR').checked) rightLungLobes.push("ve středním laloku");
+if (document.getElementById('Chb1LobeLowerR').checked) rightLungLobes.push("v dolním laloku");
 if (rightLungLobes.length > 0) {
   ThoraxLesion1Locationtext += (ThoraxLesion1Locationtext ? ", " : "") + rightLungLobes.join(' a ') + " pravé plíce";
 }
 
 // Left side
 var leftLungLobes = [];
-if (document.getElementById('Chb1LobeUpperL').checked) leftLungLobes.push("horního laloku");
-if (document.getElementById('Chb1LobeMiddleL').checked) leftLungLobes.push("linguly");
-if (document.getElementById('Chb1LobeLowerL').checked) leftLungLobes.push("dolního laloku");
+if (document.getElementById('Chb1LobeUpperL').checked) leftLungLobes.push("v horním laloku");
+if (document.getElementById('Chb1LobeMiddleL').checked) leftLungLobes.push("v lingule");
+if (document.getElementById('Chb1LobeLowerL').checked) leftLungLobes.push("v dolním laloku");
 if (leftLungLobes.length > 0) {
   ThoraxLesion1Locationtext += (ThoraxLesion1Locationtext ? ", " : "") + leftLungLobes.join(' a ') + " levé plíce";
 }
@@ -1362,23 +1362,31 @@ var leftLungSegments = [];
 
 for (var i = 1; i <= 10; i++) {
   if (document.getElementById('Chb1LungS' + i + 'R').checked) {
-    rightLungSegments.push("S" + i);
+    rightLungSegments.push("v S" + i);
   }
   if (document.getElementById('Chb1LungS' + i + 'L').checked) {
     if (i === 1 ) {
-      leftLungSegments.push("S1+2");
+      leftLungSegments.push("v S1+2");
     } else {
-      leftLungSegments.push("S" + i);
+      leftLungSegments.push("v S" + i);
     }
   }
 }
 
+function joinWithAnd(arr) {
+  if (arr.length === 1) return arr[0];
+  if (arr.length === 2) return arr.join(' a ');
+  if (arr.length > 2) return arr.slice(0, -1).join(', ') + ' a ' + arr.slice(-1);
+  return "";
+}
+
 if (rightLungSegments.length > 0) {
-  ThoraxLesion1Locationtext += (ThoraxLesion1Locationtext ? ", " : "") + rightLungSegments.join(', ') + " pravé plíce";
+  ThoraxLesion1Locationtext += (ThoraxLesion1Locationtext ? ", " : "") + joinWithAnd(rightLungSegments) + " pravé plíce";
 }
 if (leftLungSegments.length > 0) {
-  ThoraxLesion1Locationtext += (ThoraxLesion1Locationtext ? ", " : "") + leftLungSegments.join(', ') + " levé plíce";
+  ThoraxLesion1Locationtext += (ThoraxLesion1Locationtext ? ", " : "") + joinWithAnd(leftLungSegments) + " levé plíce";
 }
+
 
 
 // Central and Peripheral locations
@@ -1764,6 +1772,7 @@ var ThoraxMammaText = "";
 var ThoraxMammaMER = document.getElementById("ChbMammaMER").checked; var ThoraxMammaMEL = document.getElementById("ChbMammaMEL").checked;
 var ThoraxMammaKVER = document.getElementById("ChbMammaKVER").checked; var ThoraxMammaKVEL = document.getElementById("ChbMammaKVEL").checked;
 var ThoraxMammaSegR = document.getElementById("ChbMammaSegR").checked; var ThoraxMammaSegL = document.getElementById("ChbMammaSegL").checked;
+var ThoraxMammaSkinR = document.getElementById("ChbMammaSkinR").checked; var ThoraxMammaSkinL = document.getElementById("ChbMammaSkinL").checked;
 var ThoraxMammaReplaceR = document.getElementById("ChbMammaReplaceR").checked; var ThoraxMammaReplaceL = document.getElementById("ChbMammaReplaceL").checked;
 var ThoraxMammaOther = document.getElementById("ThoraxMammaOther").value.trim();
 
@@ -1783,6 +1792,12 @@ if (ThoraxMammaSegR && ThoraxMammaSegL) ThoraxMammaText += "St.p. segmentektomii
   else {
 	if (ThoraxMammaSegR) ThoraxMammaText += "St.p. segmentektomii pravého prsu. ";
 	if (ThoraxMammaSegL) ThoraxMammaText += "St.p. segmentektomii levého prsu. ";
+  }
+
+if (ThoraxMammaSkinR && ThoraxMammaSkinL) ThoraxMammaText += "Zesílení kožního krytu obou prsů. ";
+  else {
+	if (ThoraxMammaSkinR) ThoraxMammaText += "Zesílení kožního krytu pravého prsu. ";
+	if (ThoraxMammaSkinL) ThoraxMammaText += "Zesílení kožního krytu levého prsu. ";
   }
 
 if (ThoraxMammaReplaceR && ThoraxMammaReplaceL) ThoraxMammaText += "St.p. náhradě obou prsů. ";
@@ -1831,7 +1846,7 @@ var ThoraxLNPlusOther = document.getElementById("ThoraxLNPlusOther").value.trim(
 
 updateButtonTexts({
             'ChbThoraxParenchymaFibr': ['0', 'I', 'II','III'],
-			'ChbThoraxParenchymaEmphys': ['0', 'I', 'II','III']
+			'ChbThoraxParenchymaEmphys': ['0', 'ParaI', 'ParaII', 'CentI', 'CentII', 'PAN']
         });
 
 if (ThoraxPulmonectomyR) ThoraxParenchymaText += "st.p. pravostranné pneumonektomii, ";
@@ -2023,11 +2038,15 @@ if (buttonThoraxParenchymaFibrText === "I") {
     ThoraxParenchymaText +=("pokročilá fibróza s honeycombingem, ");
 }
 
-if (buttonThoraxParenchymaEmphysText === "I") {
-    ThoraxParenchymaText +=("mírný emfyzém, ");
-} else if (buttonThoraxParenchymaEmphysText === "II") {
-    ThoraxParenchymaText +=("přítomen emfyzém, ");
-} else if (buttonThoraxParenchymaEmphysText === "III") {
+if (buttonThoraxParenchymaEmphysText === "ParaI") {
+    ThoraxParenchymaText +=("mírný paraseptální emfyzém, ");
+} else if (buttonThoraxParenchymaEmphysText === "ParaII") {
+    ThoraxParenchymaText +=("paraseptální emfyzém, ");
+} else if (buttonThoraxParenchymaEmphysText === "CentI") {
+    ThoraxParenchymaText +=("mírný centrilobulární emfyzém, ");
+} else if (buttonThoraxParenchymaEmphysText === "CentII") {
+    ThoraxParenchymaText +=("centrilobulární emfyzém, ");
+} else if (buttonThoraxParenchymaEmphysText === "PAN") {
     ThoraxParenchymaText +=("panlobulární pokročilý emfyzém, ");
 }
 
