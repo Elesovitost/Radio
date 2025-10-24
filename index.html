@@ -539,6 +539,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
 
+		if (/^(CT|\s*CT\s*)$/m.test(text)) {
+			showPopup("DOPLŇ OBLAST V NÁZVU");
+			return false;
+		}
+
+
         const invalidCombo =
             (text.includes("FDG") && text.includes("PSMA")) ||
             (text.includes("FDG") && text.includes("DOTATOC")) ||

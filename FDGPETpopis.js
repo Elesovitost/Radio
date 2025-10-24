@@ -770,6 +770,7 @@ if (PETTypeText === "FDG") {
 	elementParotid.classList.add('hidden');
 }
 
+let CTparts=0;
 
 // NECK	
 // neck lesions (clones)
@@ -4131,6 +4132,8 @@ POPSkeletonElse + " " +
 SkeletonOther1Priority + " " + SkeletonActivityText + " " + SkeletonJointsText + " " + SkeletonTraumaText + " " + SkeletonSurgeryText + " " + SkeletonDegenerText + " " + SkeletonOther1NoPriority + " " + SkeletonSoftTissueText + "\n" +			
 ObecneTexts + " " + ObecneNativeText + " " + ReferenceText;
 
+// úpravy pro CTWB (KRK / HRUDNÍK / BŘICHO)
+let CTWBcode=0;
 
 
 	POPText.value = POPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
