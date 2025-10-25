@@ -799,7 +799,7 @@ window.addEventListener('load',()=>document.querySelectorAll('[id^="my"][id$="PK
   const p=btn.parentElement,e=p.querySelector('.numbers');
   if(btn.innerText!=="0"){
     if(!e){
-      const i=Object.assign(document.createElement('input'),{type:'number',className:'numbers',placeholder:'',min:0,max:10,step:1,oninput:()=>{if(i.value==="0")i.value="";updateTexts();}});
+      const i=Object.assign(document.createElement('input'),{type:'number',className:'numbers PHsmall',placeholder:'mm',min:0,max:10,step:1,oninput:()=>{if(i.value==="0")i.value="";updateTexts();}});
       Object.assign(i.style,{position:'absolute',left:'50%',bottom:'100%',transform:'translateX(-50%) translateY(+1px)',zIndex:10,width:'22px',textAlign:'center',caretColor:'transparent'});
       i.addEventListener('mouseenter',()=>i.focus());
       p.style.position='relative';p.appendChild(i);

@@ -23,6 +23,8 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-app
 input[type=number] { -moz-appearance: textfield; } /* Firefox */
 input[type=number]::-ms-clear, input[type=number]::-ms-reveal { display: none; } /* IE11 */
 
+.PHsmall { font-size: 12px; text-align: center; padding: 0;}
+.PHsmall::placeholder {font-size: 10px; text-align: center;}
 
 
 body {
