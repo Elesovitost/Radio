@@ -649,15 +649,15 @@ const X01herniaDirections = [
 
   if (X01BHText !== "není" && X01activeDirections.length === 0) {
     X01herniace += ""; 
-	X01herniaceR += " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
+	X01herniaceR += " bez stenózy páteřního kanálu a bez známek útlaku kořenů. ";
     X01herniacePodklad += "";
   } else if (X01activeDirections.length === 1) {
     X01herniace += " " + X01activeDirections[0].text;
-	X01herniaceR += " " + X01activeDirections[0].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
+	X01herniaceR += " " + X01activeDirections[0].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů. ";
     X01herniacePodklad += " " + X01activeDirections[0].text; 
   } else if (X01activeDirections.length > 1) {
     X01herniace += " " + X01activeDirections[0].text + " až " + X01activeDirections[X01activeDirections.length - 1].text;
-	X01herniaceR += " " + X01activeDirections[0].text + " až " + X01activeDirections[X01activeDirections.length - 1].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
+	X01herniaceR += " " + X01activeDirections[0].text + " až " + X01activeDirections[X01activeDirections.length - 1].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů. ";
     X01herniacePodklad += " " + X01activeDirections[0].text + " až " + X01activeDirections[X01activeDirections.length - 1].text;
   } else {
     X01herniace += ""; 
@@ -677,18 +677,23 @@ if (X01MIGText === "M0" && X01BHText !== "není") {
  
 
 //STENÓZY A KOŘENY
+let HeSize = "";
+let inp = myX01PKButton.parentElement.querySelector(".numbers");
+if (inp && inp.value && inp.value.trim() !== "0") {
+  HeSize = " (" + inp.value.trim() + " mm AP)";
+}
 
 if (X01PKText === "0") {
  X01stenozyP = "";  
  X01stenPK = ""; 
 } else if (X01PKText === "1") {
- X01stenozyP = "Páteřní kanál " + "mírně zúžen. ";
+ X01stenozyP = "Páteřní kanál mírně zúžen" + HeSize + ". ";
  X01stenPK = "Mírná spinální stenóza ";
 } else if (X01PKText === "2") {
- X01stenozyP = "Páteřní kanál " + "zúžen. ";
+ X01stenozyP = "Páteřní kanál zúžen" + HeSize + " s obliterací likvorových prostor. ";
  X01stenPK = "Spinální stenóza ";
 } else if (X01PKText === "3") {
- X01stenozyP = "Páteřní kanál " + "výrazně zúžen s kompresí míchy. ";
+ X01stenozyP = "Páteřní kanál výrazně zúžen" + HeSize + " s kompresí míchy. ";
  X01stenPK = "Výrazná spinální stenóza ";
 } 
 
@@ -775,6 +780,18 @@ if (X01PFText === X01LFText) {
   }
 }
 
+// stenózy, diametr
+window.addEventListener('load',()=>document.querySelectorAll('[id^="my"][id$="PKButton"]').forEach(btn=>btn.addEventListener('mousedown',()=>setTimeout(()=>{
+  const p=btn.parentElement,e=p.querySelector('.numbers');
+  if(btn.innerText!=="0"){
+    if(!e){
+      const i=Object.assign(document.createElement('input'),{type:'number',className:'numbers PHsmall',placeholder:'mm',min:0,max:10,step:1,oninput:()=>{if(i.value==="0")i.value="";updateTexts();}});
+      Object.assign(i.style,{position:'absolute',left:'50%',bottom:'100%',transform:'translateX(-50%) translateY(+1px)',zIndex:10,width:'22px',textAlign:'center',caretColor:'transparent'});
+      i.addEventListener('mouseenter',()=>i.focus());
+      p.style.position='relative';p.appendChild(i);
+    }
+  }else e?.remove();
+},50))));
 
 
 
@@ -971,6 +988,7 @@ MRCervicalPOPText.value = MRCervicalPOPText.value.replace(/^\s*[\r\n]/gm, '');  
 MRCervicalPOPText.value = MRCervicalPOPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
 MRCervicalPOPText.value = MRCervicalPOPText.value.replace(/  +/g, ' '); // dvojmezery
 
+sloucitStejneRadky('MRCervicalPOPText');
 
 
 MRCervicalRESText.value = 

@@ -662,15 +662,15 @@ const X01herniaDirections = [
 
   if (X01BHText !== "není" && X01activeDirections.length === 0) {
     X01herniace += ""; 
-	X01herniaceR += " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
+	X01herniaceR += " bez stenózy páteřního kanálu a bez známek útlaku kořenů. ";
     X01herniacePodklad += "";
   } else if (X01activeDirections.length === 1) {
     X01herniace += " " + X01activeDirections[0].text;
-	X01herniaceR += " " + X01activeDirections[0].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
+	X01herniaceR += " " + X01activeDirections[0].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů. ";
     X01herniacePodklad += " " + X01activeDirections[0].text; 
   } else if (X01activeDirections.length > 1) {
     X01herniace += " " + X01activeDirections[0].text + " až " + X01activeDirections[X01activeDirections.length - 1].text;
-	X01herniaceR += " " + X01activeDirections[0].text + " až " + X01activeDirections[X01activeDirections.length - 1].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů.";
+	X01herniaceR += " " + X01activeDirections[0].text + " až " + X01activeDirections[X01activeDirections.length - 1].text + " bez stenózy páteřního kanálu a bez známek útlaku kořenů. ";
     X01herniacePodklad += " " + X01activeDirections[0].text + " až " + X01activeDirections[X01activeDirections.length - 1].text;
   } else {
     X01herniace += ""; 
@@ -1004,6 +1004,7 @@ MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/^\s*[\r\n]/gm, '');  // s
 MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/ \./g, '.'); // smazat mezeru před tečkou
 MRLumbarPOPText.value = MRLumbarPOPText.value.replace(/  +/g, ' '); // dvojmezery
 
+sloucitStejneRadky('MRLumbarPOPText');
 
 
 MRLumbarRESText.value = 

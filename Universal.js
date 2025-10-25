@@ -106,8 +106,18 @@ function sloucitStejneRadky(textareaId) {
   // Definice pravidel pro přepis koncovek (singulár → plurál)
   const nahrazkyKoncovek = {
     'disku': 'disků',
+	'nížený disk': 'nížené disky',
+	'ulging': 'ulgingy',
     'stranného': 'stranných',
     'foramina': 'foramin',
+	'snížený': 'snížené',
+	'ický': 'ické',
+	'írný': 'írné',
+	'ová': 'ové',
+	'čilá': 'čilé',
+	'bná': 'bné',
+	'výrazný': 'výrazné',
+	'lem': 'lemy',
 
     // přidej další dle potřeby
   };
