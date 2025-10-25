@@ -690,20 +690,26 @@ if (X01MIGText === "M0" && X01BHText !== "není") {
  
 
 //STENÓZY A KOŘENY
+let HeSize = "";
+let inp = myX01PKButton.parentElement.querySelector(".numbers");
+if (inp && inp.value && inp.value.trim() !== "0") {
+  HeSize = " (" + inp.value.trim() + " mm AP)";
+}
 
 if (X01PKText === "0") {
- X01stenozyP = "";  
- X01stenPK = ""; 
+  X01stenozyP = "";
+  X01stenPK = "";
 } else if (X01PKText === "1") {
- X01stenozyP = "Durální vak " + "mírně zúžen. ";
- X01stenPK = "Mírná spinální stenóza ";
+  X01stenozyP = "Durální vak mírně zúžen" + HeSize + ". ";
+  X01stenPK = "Mírná spinální stenóza ";
 } else if (X01PKText === "2") {
- X01stenozyP = "Durální vak " + "zúžen. ";
- X01stenPK = "Spinální stenóza ";
+  X01stenozyP = "Durální vak zúžen" + HeSize + ". ";
+  X01stenPK = "Spinální stenóza ";
 } else if (X01PKText === "3") {
- X01stenozyP = "Durální vak " + "výrazně zúžen s agregací kaudy. ";
- X01stenPK = "Výrazná spinální stenóza ";
-} 
+  X01stenozyP = "Durální vak výrazně zúžen" + HeSize + " s agregací kaudy. ";
+  X01stenPK = "Výrazná spinální stenóza ";
+}
+
 
 
 if (X01PRText === "0") {
@@ -788,6 +794,18 @@ if (X01PFText === X01LFText) {
   }
 }
 
+// stenózy, diametr
+window.addEventListener('load',()=>document.querySelectorAll('[id^="my"][id$="PKButton"]').forEach(btn=>btn.addEventListener('mousedown',()=>setTimeout(()=>{
+  const p=btn.parentElement,e=p.querySelector('.numbers');
+  if(btn.innerText!=="0"){
+    if(!e){
+      const i=Object.assign(document.createElement('input'),{type:'number',className:'numbers',placeholder:'',min:0,max:10,step:1,oninput:()=>{if(i.value==="0")i.value="";updateTexts();}});
+      Object.assign(i.style,{position:'absolute',left:'50%',bottom:'100%',transform:'translateX(-50%) translateY(+1px)',zIndex:10,width:'22px',textAlign:'center',caretColor:'transparent'});
+      i.addEventListener('mouseenter',()=>i.focus());
+      p.style.position='relative';p.appendChild(i);
+    }
+  }else e?.remove();
+},50))));
 
 
 
@@ -832,6 +850,8 @@ X01stenozyR = X01stenosisALL +
 " na podkladě " + X01stenosisreasonALL;
 X01herniaceR = ""; X01degenerdR = ""; X0listezaR = ""; X01edemR = "";
 }
+
+
 
 `;
 let codeForX12 = codeForX01.replace(/X01/g, 'X12').replace(/Level0\/1/g, 'L1/2').replace(/X0/g, 'X1').replace(/Root0/g, 'L1').replace(/Root1/g, 'L2');
