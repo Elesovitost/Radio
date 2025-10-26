@@ -52,11 +52,11 @@ var textsSC = ["0", "↑", "↑↑"];
 var textsBankart = ["0", "ano", "osseozní", "Perthes", "reverzní"];
 var textsIGHL = ["OK", "edém", "HAGL", "GAGL"];
 
-var textsRMsupra = ["OK", "tendinóza", "low-grade", "parciální", "high-grade", "kompletní"];
+var textsRMsupra = ["OK", "tendinóza", "kalc.tend.", "low-grade", "parciální", "high-grade", "kompletní"];
 var textsRMsupraLokHoriz = ["část...", "ventrálně", "centrálně", "dorzálně"];
 var textsRMsupraLokVert = ["povrch...", "burzálně", "intersticiálně", "artikulárně"];
 
-var textsRMinfra = ["OK", "tendinóza", "low-grade", "parciální", "high-grade", "kompletní"];
+var textsRMinfra = ["OK", "tendinóza", "kalc.tend.", "low-grade", "parciální", "high-grade", "kompletní"];
 var textsRMinfraLokHoriz = ["část...", "kraniálně", "centrálně", "kaudálně"];
 var textsRMinfraLokVert = ["povrch...", "burzálně", "intersticiálně", "artikulárně"];
 
@@ -65,6 +65,7 @@ var textsRMssLokHoriz = ["část...", "kraniálně", "centrálně", "kaudálně"
 var textsRMssLokVert = ["povrch...", "burzálně", "intersticiálně", "artikulárně"];
 
 var textsLHBT = ["OK", "tendinóza", "low-grade", "parciální", "high-grade", "kompletní"];
+var textsLHBTLoc = ["kde...", "intraartik.", "ohyb", "v sulku"];
 
 
 
@@ -107,6 +108,9 @@ var buttonElementRMssLokHoriz = document.getElementById("RMssLokHorizButton");
 var selectElementRMssLokHoriz = document.getElementById('RMssLokHorizButton');
 
 var buttonElementLHBT = document.getElementById("LHBTButton");
+var buttonElementLHBTLoc = document.getElementById("LHBTLocButton");
+var selectElementlhbtloc = document.getElementById('lhbtloc');
+
 
 
 var indexStrana = 0;function cycleStranaText(event) {  indexStrana = cycleText(event, textsStrana, indexStrana, buttonElementStrana, updateBackgroundColor);}
@@ -137,11 +141,13 @@ var indexRMssLokVert = 0;function cycleRMssLokVertText(event) {      indexRMssLo
 var indexRMssLokHoriz = 0;function cycleRMssLokHorizText(event) {      indexRMssLokHoriz = cycleText(event, textsRMssLokHoriz, indexRMssLokHoriz, buttonElementRMssLokHoriz, updateBackgroundColor);}
 
 var indexLHBT = 0;function cycleLHBTText(event) {      indexLHBT = cycleText(event, textsLHBT, indexLHBT, buttonElementLHBT, updateBackgroundColor);}
+var indexLHBTLoc = 0;function cycleLHBTLocText(event) {indexLHBTLoc = cycleText(event, textsLHBTLoc, indexLHBTLoc, buttonElementLHBTLoc, updateBackgroundColor);}
+
 
 //hiding ruptury
 
 buttonElementRMsupra.addEventListener("mousedown", function() {
-    if (this.innerText === 'low-grade' || this.innerText === 'parciální' || this.innerText === 'high-grade') {
+    if (this.innerText === 'kalc.tend.' || this.innerText === 'low-grade' || this.innerText === 'parciální' || this.innerText === 'high-grade') {
         selectElementsupralok.classList.remove('hidden');
 		selectElementsupralokh.classList.remove('hidden');
 		selectElementsupralokv.classList.remove('hidden');
@@ -164,7 +170,7 @@ buttonElementRMsupra.addEventListener("mousedown", function() {
 
 
 buttonElementRMinfra.addEventListener("mousedown", function() {
-    if (this.innerText === 'low-grade' || this.innerText === 'parciální' || this.innerText === 'high-grade') {
+    if (this.innerText === 'kalc.tend.' || this.innerText === 'low-grade' || this.innerText === 'parciální' || this.innerText === 'high-grade') {
         selectElementinfralok.classList.remove('hidden');
 		selectElementinfralokh.classList.remove('hidden');
 		selectElementinfralokv.classList.remove('hidden');
@@ -207,6 +213,18 @@ buttonElementRMss.addEventListener("mousedown", function() {
     }
 });
 
+
+buttonElementLHBT.addEventListener("mousedown", function() {
+    if (this.innerText === 'OK') {
+        selectElementlhbtloc.classList.add('hidden');
+    } else {
+        selectElementlhbtloc.classList.remove('hidden');
+    }
+});
+
+
+
+
 function updateTextAndCycleText(event, texts, index, buttonElement, cycleFunc) {  cycleFunc(event);  updateTexts();}
 
 function cycleStranaText(event) {  indexStrana = cycleText(event, textsStrana, indexStrana, buttonElementStrana);  updateTexts();}
@@ -234,6 +252,7 @@ function cycleRMssLokVertText(event) { indexRMssLokVert = cycleText(event, texts
 function cycleRMssLokHorizText(event) { indexRMssLokHoriz = cycleText(event, textsRMssLokHoriz, indexRMssLokHoriz, buttonElementRMssLokHoriz, updateBackgroundColor); updateTexts(); }
 
 function cycleLHBTText(event) { indexLHBT = cycleText(event, textsLHBT, indexLHBT, buttonElementLHBT, updateBackgroundColor); updateTexts(); }
+function cycleLHBTLocText(event) { indexLHBTLoc = cycleText(event, textsLHBTLoc, indexLHBTLoc, buttonElementLHBTLoc, updateBackgroundColor); updateTexts(); }
 
 
 // TEXTS
@@ -275,6 +294,8 @@ const RMssLokVertText = buttonElementRMssLokVert.innerText;
 const RMssLokHorizText = buttonElementRMssLokHoriz.innerText;
 
 const LHBTText = buttonElementLHBT.innerText;
+const LHBTLocText = buttonElementLHBTLoc.innerText;
+
 
 var SAprostorP = ""; var SAprostorR = ""; var checkboxSAprostor = document.getElementById('checkboxSAprostor');
 var SLAPP = ""; var SLAPR = ""; var checkboxSLAP = document.getElementById('checkboxSLAP');
@@ -471,6 +492,9 @@ if (RMsupraText === "OK") {
 } else if (RMsupraText === "tendinóza") {
  RMsupraP = "Zvýšená SI šlachy m. supraspinatus "; 
  RMsupraR = "Tendinóza šlachy m. supraspinatus ";
+} else if (RMsupraText === "kalc.tend.") {
+ RMsupraP = "Okrsek nízké SI na všech sekvencích při úponu šlachy m. supraspinatus "; 
+ RMsupraR = "Kalfic. tendonitis úponu šlachy m. supraspinatus ";
 } else if (RMsupraText === "low-grade") {
  RMsupraP = "Drobné porušení kontinuity šlachy m. supraspinatus ";
  RMsupraR = "Low-grade léze šlachy m. supraspinatus ";
@@ -534,6 +558,9 @@ if (RMinfraText === "OK") {
 } else if (RMinfraText === "tendinóza") {
  RMinfraP = "Zvýšená SI šlachy m. infraspinatus "; 
  RMinfraR = "Tendinóza šlachy m. infraspinatus ";
+} else if (RMinfraText === "kalc.tend.") {
+ RMinfraText = "Okrsek nízké SI na všech sekvencích při úponu šlachy m. infraspinatus "; 
+ RMinfraText = "Kalfic. tendonitis úponu šlachy m. infraspinatus ";
 } else if (RMinfraText === "low-grade") {
  RMinfraP = "Drobné porušení kontinuity šlachy m. infraspinatus ";
  RMinfraR = "Low-grade léze šlachy m. infraspinatus ";
@@ -713,21 +740,45 @@ if (LHBTText === "OK") {
  LHBTP = "Šlacha dlouhé hlavy bicepsu má zachovalou kontinuitu a přiměřenou SI."; 
  LHBTR = ""; 
 } else if (LHBTText === "tendinóza") {
- LHBTP = "Zvýšená SI šlachy dlouhé hlavy bicepsu."; 
- LHBTR = "Tendinóza šlachy dlouhé hlavy bicepsu.";
+ LHBTP = "Zvýšená SI šlachy dlouhé hlavy bicepsu"; 
+ LHBTR = "Tendinóza šlachy dlouhé hlavy bicepsu";
 } else if (LHBTText === "low-grade") {
- LHBTP = "Drobné porušení kontinuity šlachy dlouhé hlavy bicepsu.";
- LHBTR = "Low-grade léze šlachy dlouhé hlavy bicepsu.";
+ LHBTP = "Drobné porušení kontinuity šlachy dlouhé hlavy bicepsu";
+ LHBTR = "Low-grade léze šlachy dlouhé hlavy bicepsu";
 } else if (LHBTText === "parciální") {
- LHBTP = "Parciální porušení kontinuity šlachy dlouhé hlavy bicepsu.";
- LHBTR = "Parciální ruptura šlachy dlouhé hlavy bicepsu.";
+ LHBTP = "Parciální porušení kontinuity šlachy dlouhé hlavy bicepsu";
+ LHBTR = "Parciální ruptura šlachy dlouhé hlavy bicepsu";
 } else if (LHBTText === "high-grade") {
- LHBTP = "Výrazné porušení kontinuity šlachy dlouhé hlavy bicepsu.";
- LHBTR = "High-grade ruptura šlachy dlouhé hlavy bicepsu.";
+ LHBTP = "Výrazné porušení kontinuity šlachy dlouhé hlavy bicepsu";
+ LHBTR = "High-grade ruptura šlachy dlouhé hlavy bicepsu";
 } else if (LHBTText === "kompletní") {
- LHBTP = "Kompletní přerušení kontinuity šlachy dlouhé hlavy bicepsu s její retrakcí.";
- LHBTR = "Kompletní ruptura šlachy dlouhé hlavy bicepsu.";
+ LHBTP = "Kompletní přerušení kontinuity šlachy dlouhé hlavy bicepsu s její retrakcí";
+ LHBTR = "Kompletní ruptura šlachy dlouhé hlavy bicepsu";
 }
+
+// lokalizace LHBT
+if (LHBTLocText === "kde...") {
+  LHBTLocP = ""; LHBTLocR = "";
+} else if (LHBTLocText === "intraartik.") {
+  LHBTLocP = " intraartikulárně";
+  LHBTLocR = " intraartikulárně";
+} else if (LHBTLocText === "ohyb") {
+  LHBTLocP = " při vstupu do sulku";
+  LHBTLocR = " při vstupu do sulku";
+} else if (LHBTLocText === "v sulku") {
+  LHBTLocP = " v bicipit. sulku";
+  LHBTLocR = " v bicipitálním sulku";
+}
+
+if (LHBTText === "OK") {
+  LHBTLocP = "";
+  LHBTLocR = "";
+}
+
+LHBTAllP = LHBTP + LHBTLocP + "."
+LHBTAllR = LHBTR + LHBTLocR + "."
+
+
 
 if (checkboxLHBTsulkus.checked)  {
   LHBTsulkusP = "Zmnožená tekutina v bicipitálním sulku.";
@@ -760,7 +811,7 @@ RMsupraFinalP + "\n" +
 RMinfraFinalP + "\n" +
 RMssFinalP + "\n" +
 LezeLabraFinalP + "\n" +
-LHBTP + " " + LHBTdislP + " " + LHBTsulkusP;
+LHBTAllP + " " + LHBTdislP + " " + LHBTsulkusP;
 	
 MRShoulderPOPText.value = MRShoulderPOPText.value.trim(); 
 MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
@@ -781,7 +832,7 @@ RMinfraFinalR + "\n" +
 RMssFinalR + "\n" +
 SASDR + " " + SCR + "\n" +
 LezeLabraFinalR + "\n" +
-LHBTR + " " + LHBTdislR + "\n" +
+LHBTAllR + " " + LHBTdislR + "\n" +
 GHdegeneraceR + " " + GHsubluxaceR + " " + IGHLR + " " + HSR + "\n" + 
 VolnaTeliskaR + " " + ACsubluxaceR + " " + ACdegeneraceR + " " + AcromionR + " " + SAprostorR  + "\n" +
 NaplnR
