@@ -698,7 +698,7 @@ MkMenLezeR = "s rupturou";
  MkMenLezeP = "s šikmo probíhající linií vysoké SI ";
  MkMenLezeR = "s šikmou rupturou ";
 } else if (MkMenLeze === "koml") {
- MkMenLezeP = "s tvarovou defigurací, porušením kontinuity, liniemi / okrsky tekutiny ";
+ MkMenLezeP = "s tvarovou defigurací, porušením kontinuity, s okrsky tekutiny ";
  MkMenLezeR = "s komplexní rupturou ";
 } else if (MkMenLeze === "BH") {
  MkMenLezeP = "s odtržením vnitřní části a dislokací protilehle ";
@@ -760,7 +760,7 @@ MkMenMETextR = "";
 }
 
 if (MkMenText === "Meniskus OK" && MkMenMEText === "bez operace") {
- MkMenP = "Mediální meniskus má normální tvar, velikost a uložení."; 
+ MkMenP = "Mediální meniskus má normální vzhled a signál."; 
  MkMenR = ""; 
 } else if (MkMenText === "Meniskus OK" && MkMenMEText !== "bez operace") {
  MkMenP = "Mediální meniskus" + MkMenMETextP + ".";
@@ -769,7 +769,7 @@ if (MkMenText === "Meniskus OK" && MkMenMEText === "bez operace") {
  MkMenP = "Mediální meniskus" + MkMenMETextP + " " + MkMenLezeP + " " + MkMenLokaceP + " bez kontaktu s artikulární plochou." + MkMenCystP;
  MkMenR = "";
 } else if (MkMenText === "ruptura") {
- if (MkMenLeze === "BH" || MkMenLeze === "PB" || MkMenLeze === "destr") {
+ if (MkMenLeze === "BH" || MkMenLeze === "PB" || MkMenLeze === "koml" || MkMenLeze === "destr") {
     MkMenP = "Mediální meniskus " + MkMenMETextP + MkMenLezeP + "." + MkMenCystP;
     MkMenR = "Mediální meniskus " + MkMenMETextR + MkMenLezeR + MkMenCystR + ".";
  } else {
@@ -796,7 +796,7 @@ LkMenLezeR = "s rupturou";
  LkMenLezeP = "s longitudinální linií vysoké SI ";
  LkMenLezeR = "s longitudinální rupturou ";
 } else if (LkMenLeze === "koml") {
- LkMenLezeP = "s tvarovou defigurací, porušením kontinuity, vícečetnými liniemi či okrsky tekutiny ";
+ LkMenLezeP = "s tvarovou defigurací, porušením kontinuity, s okrsky tekutiny ";
  LkMenLezeR = "s komplexní rupturou ";
 } else if (LkMenLeze === "BH") {
  LkMenLezeP = "s odtržením vnitřní části a dislokací protilehle ";
@@ -858,7 +858,7 @@ LkMenMETextR = "";
 }
 
 if (LkMenText === "Meniskus OK" && LkMenMEText === "bez operace") {
- LkMenP = "Laterální meniskus má normální tvar, velikost a uložení."; 
+ LkMenP = "Laterální meniskus má normální vzhled a signál."; 
  LkMenR = ""; 
 } else if (LkMenText === "Meniskus OK" && LkMenMEText !== "bez operace") {
  LkMenP = "Laterální meniskus" + LkMenMETextP + ".";
@@ -867,7 +867,7 @@ if (LkMenText === "Meniskus OK" && LkMenMEText === "bez operace") {
  LkMenP = "Laterální meniskus" + LkMenMETextP + " " + LkMenLezeP + " " + LkMenLokaceP + " bez kontaktu s artikulární plochou." + LkMenCystP;
  LkMenR = "";
 } else if (LkMenText === "ruptura") {
- if (LkMenLeze === "BH" || LkMenLeze === "PB" || LkMenLeze === "destr") {
+ if (LkMenLeze === "BH" || LkMenLeze === "PB" || LkMenLeze === "koml" || LkMenLeze === "destr") {
     LkMenP = "Laterální meniskus " + LkMenMETextP + LkMenLezeP + "." + LkMenCystP;
     LkMenR = "Laterální meniskus " + LkMenMETextR + LkMenLezeR + LkMenCystR + ".";
  } else {
@@ -1124,18 +1124,8 @@ function mergeLateralSentences() {
 mergeLateralSentences();
 
 
-// Sloučení textů o kolaterálních vazech
-if (MRKneePOPText.value.includes("Mediální kolaterální vaz je nízkého signálu bez porušení kontinuity, bez edému okolí.") &&
-    MRKneePOPText.value.includes("Laterální kolaterální vaz je nízkého signálu bez porušení kontinuity, bez edému okolí.")) {
-
-    MRKneePOPText.value = MRKneePOPText.value
-        .replace("Mediální kolaterální vaz je nízkého signálu bez porušení kontinuity, bez edému okolí.", "")
-        .replace("Laterální kolaterální vaz je nízkého signálu bez porušení kontinuity, bez edému okolí.", "")
-        .trim();
-
-    MRKneePOPText.value += "\nKolaterální vazy nízkého signálu bez porušení kontinuity, bez edému okolí.";
-}
-
+// Sloučení med late
+mergeBilateralSentences('MRKneePOPText');
 
 
 MRKneeRESText.value = 
@@ -1161,6 +1151,11 @@ MRKneeRESText.value = MRKneeRESText.value.replace(/\.{2,}/g, '.'); // více teč
 MRKneeRESText.value = MRKneeRESText.value.replace(/\,{2,}/g, ','); // více čárek = jedna čárka
 MRKneeRESText.value = MRKneeRESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
 MRKneeRESText.value = MRKneeRESText.value.replace(/  +/g, ' '); // dvojmezery
+
+
+// Sloučení med late
+mergeBilateralSentences('MRKneeRESText');
+
 
 if (MRKneeRESText.value.trim() === "") {
         MRKneeRESText.value = "Bez patrné signifikantní patologie.";

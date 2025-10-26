@@ -856,40 +856,69 @@ eval(codeForX56);
 // normální Závěr
 
 //komprese normal vs ostatni
-if (X1KOMText === "není" && X2KOMText === "není" && X3KOMText === "není" && X4KOMText === "není" && X5KOMText === "není") {
- LLobratlenormal = "Obratlová těla přiměřených výšek. "; 
- LLostatniobratlenormal = ""; 
- } else {
- LLobratlenormal = "";
- LLostatniobratlenormal = "Ostatní obratlová těla přiměřených výšek. ";
- } 
-
-// disky a kanál vs ostatní normální
-if (X01DDText === "není" && X01BHText === "není" && X12DDText === "není" && X12BHText === "není" && X23DDText === "není" && X23BHText === "není" && X34DDText === "není" && X34BHText === "není" && X45DDText === "není" && X45BHText === "není" && X56DDText === "není" && X56BHText === "není") {
-    LLdiskynormal = "Disky přiměřené výšky bez výraznějších protruzí."; LLostatnidiskynormal = "";
-} else if ((X01DDText !== "není" || X01BHText !== "není") && (X12DDText !== "není" || X12BHText !== "není") && (X23DDText !== "není" || X23BHText !== "není") && (X34DDText !== "není" || X34BHText !== "není") && (X45DDText !== "není" || X45BHText !== "není") && (X56DDText !== "není" || X56BHText !== "není")) {
-    LLdiskynormal = ""; LLostatnidiskynormal = "";
-} else if ((X01DDText !== "není" || X01BHText !== "není") || (X12DDText !== "není" || X12BHText !== "není") || (X23DDText !== "není" || X23BHText !== "není") || (X34DDText !== "není" || X34BHText !== "není") || (X45DDText !== "není" || X45BHText !== "není") || (X56DDText !== "není" || X56BHText !== "není")) {
-    LLdiskynormal = ""; LLostatnidiskynormal = "V ostatních etážích disky přiměřené výšky bez výraznějších protruzí.";
+if (
+  ((X0KOMText === "není" || X0KOMText === "schmorl") &&
+   (X1KOMText === "není" || X1KOMText === "schmorl") &&
+   (X2KOMText === "není" || X2KOMText === "schmorl") &&
+   (X3KOMText === "není" || X3KOMText === "schmorl") &&
+   (X4KOMText === "není" || X4KOMText === "schmorl") &&
+   (X5KOMText === "není" || X5KOMText === "schmorl") &&
+   (X6KOMText === "není" || X6KOMText === "schmorl"))
+) {
+  LLobratlenormal = "Obratlová těla přiměřených výšek. ";
+  LLostatniobratlenormal = "";
+} else {
+  LLobratlenormal = "";
+  LLostatniobratlenormal = "Ostatní obratlová těla přiměřených výšek. ";
 }
 
-// stenóza kanálu ano vs jinak
-if (X01PKText === "0" && X12PKText === "0" && X23PKText === "0" && X34PKText === "0" && X45PKText === "0" && X56PKText === "0") {
-    LLstenozakanalne = "Páteřní kanál je volný. "; LLkanaljinak = "";
-} else if (X01PKText !== "0" && X12PKText !== "0" && X23PKText !== "0" && X34PKText !== "0" && X45PKText !== "0" && X56PKText !== "0") {
-    LLstenozakanalne = ""; LLkanaljinak = "";
-} else if (X01PKText !== "0" || X12PKText !== "0" || X23PKText !== "0" || X34PKText !== "0" || X45PKText !== "0" || X56PKText !== "0") {
-    LLstenozakanalne = ""; LLkanaljinak = "V ostatních etážích je páteřní kanál volný. ";
+
+// disky vs ostatní normální
+const lezeDisc = [X01DDText, X01BHText, X12DDText, X12BHText, X23DDText, X23BHText, X34DDText, X34BHText, X45DDText, X45BHText, X56DDText, X56BHText];
+const pocetDiscPat = lezeDisc.filter(h => h !== "není").length;
+
+if (pocetDiscPat === 0) {
+  LLdiskynormal = "Disky přiměřené výšky bez výraznějších protruzí.";
+  LLostatnidiskynormal = "";
+} else if (pocetDiscPat > 3) {
+  LLdiskynormal = "";
+  LLostatnidiskynormal = "";
+} else {
+  LLdiskynormal = "";
+  LLostatnidiskynormal = "V ostatních etážích disky přiměřené výšky bez výraznějších protruzí.";
 }
 
-// stenóza foramin ano vs jinak
-if (X01PFText === "0" && X01LFText === "0" && X12PFText === "0" && X12LFText === "0" && X23PFText === "0" && X23LFText === "0" && X34PFText === "0" && X34LFText === "0" && X45PFText === "0" && X45LFText === "0" && X56PFText === "0" && X56LFText === "0") {
-    LLstenozaforaminne = "Foramina jsou volná. "; LLforaminjinak = "";
-} else if (X01PFText !== "0" && X01LFText !== "0" && X12PFText !== "0" && X12LFText !== "0" && X23PFText !== "0" && X23LFText !== "0" && X34PFText !== "0" && X34LFText !== "0" && X45PFText !== "0" && X45LFText !== "0" && X56PFText !== "0" && X56LFText !== "0") {
-    LLstenozaforaminne = ""; LLforaminjinak = "";
-} else if (X01PFText !== "0" || X01LFText !== "0" || X12PFText !== "0" || X12LFText !== "0" || X23PFText !== "0" || X23LFText !== "0" || X34PFText !== "0" || X34LFText !== "0" || X45PFText !== "0" || X45LFText !== "0" || X56PFText !== "0" || X56LFText !== "0") {
-    LLstenozaforaminne = ""; LLforaminjinak = "Ostatní foramina jsou relativně volná. ";
+// Páteřní kanál / nad 2 patologie
+const kanal = [X01PKText, X12PKText, X23PKText, X34PKText, X45PKText, X56PKText];
+const pocetKanalPat = kanal.filter(h => h !== "0").length;
+
+if (pocetKanalPat === 0) {
+  LLstenozakanalne = "Páteřní kanál je volný. ";
+  LLkanaljinak = "";
+} else if (pocetKanalPat > 2) {
+  LLstenozakanalne = "";
+  LLkanaljinak = "";
+} else {
+  LLstenozakanalne = "";
+  LLkanaljinak = "V ostatních etážích je páteřní kanál volný. ";
 }
+
+// Foramina / nad 2 patologie
+const foramina = [
+  X01PFText, X01LFText, X12PFText, X12LFText, X23PFText, X23LFText, X34PFText, X34LFText, X45PFText, X45LFText, X56PFText, X56LFText];
+const pocetForaminPat = foramina.filter(h => h !== "0").length;
+
+if (pocetForaminPat === 0) {
+  LLstenozaforaminne = "Foramina jsou volná. ";
+  LLforaminjinak = "";
+} else if (pocetForaminPat > 2) {
+  LLstenozaforaminne = "";
+  LLforaminjinak = "";
+} else {
+  LLstenozaforaminne = "";
+  LLforaminjinak = "Ostatní foramina jsou relativně volná. ";
+}
+
 
 
 // multietážové degener. změny.

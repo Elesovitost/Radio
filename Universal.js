@@ -161,6 +161,53 @@ function sloucitStejneRadky(textareaId) {
 	  textarea.value = result.join('\n');
 }
 
+// slučování mediální a Laterální
+
+function mergeBilateralSentences(textareaId) {
+    const field = document.getElementById(textareaId);
+    if (!field) return;
+
+    const pluralMap = {
+        "vaz": "vazy",
+        "meniskus": "menisky",
+        "retinakulum": "retinakula",
+        "sval": "svaly"
+    };
+
+    let text = field.value;
+
+    // Regex – ignoruje tečky, koncem bloku je konec řádku
+    const bilateralRegex = /Mediální\s+([^\n]+?)\s*\n+\s*Laterální\s+\1\s*(?:\n|$)/gis;
+
+    text = text.replace(bilateralRegex, (match, group) => {
+        let sentence = group.trim();
+
+        // odstraní výskyty "mediálního"/"laterálního" v celém bloku
+        sentence = sentence.replace(/\b(mediáln\w*|lateráln\w*)\b/gi, "").replace(/\s{2,}/g, " ");
+
+        // nahraď "kompartmentu" -> "kompartmentů"
+        sentence = sentence.replace(/\bkompartmentu\b/gi, "kompartmentů");
+
+        // převeď podmět do množného čísla
+        for (const [singular, plural] of Object.entries(pluralMap)) {
+            const regex = new RegExp(`\\b${singular}\\b`, "gi");
+            if (regex.test(sentence)) {
+                sentence = sentence.replace(regex, plural);
+                break;
+            }
+        }
+
+        // nahraď "je" za "jsou"
+        sentence = sentence.replace(/\bje\b/g, "jsou");
+
+        // první písmeno velké
+        sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+
+        return sentence + " ";
+    });
+
+    field.value = text.trim();
+}
 
 
 //DISABLE CONTEXT MENU
