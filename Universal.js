@@ -203,7 +203,7 @@ function mergeBilateralSentences(textareaId) {
         // první písmeno velké
         sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
 
-        return sentence + " ";
+        return sentence + "\n";
     });
 
     field.value = text.trim();
@@ -685,6 +685,35 @@ function updateButtonText(button, direction) {
             updateButtonText(e.target, 'backward');
         }
     });
+
+
+
+// === Detect if the opened file is just an image and wrap it in HTML ===
+(function () {
+    // Pokud stránka nemá <html> nebo <body>, pokračuj
+    if (document.body && document.body.children.length === 1 && document.body.firstElementChild.tagName === "IMG") {
+        const img = document.body.firstElementChild;
+        const src = img.src;
+        const filename = src.split("/").pop().split("\\").pop();
+        const nameWithoutHelper = filename.replace(/^Helper\s*/i, "").replace(/\.[^/.]+$/, ""); // odstraní "Helper" a příponu
+
+        // Vytvoří nový HTML obsah
+        const htmlContent = `
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="MainDIV">
+        <div class="standardwidth mydiv0">${nameWithoutHelper}</div>
+        <img src="${src}" style="max-width:100%; display:block; margin:20px auto;">
+    </div>
+</body>`;
+
+        document.open();
+        document.write(htmlContent);
+        document.close();
+    }
+})();
 
 
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+  <title>Helper Viewer</title>
+  </style>
+</head>
+
+<body>
+
+<div class="MainDIV">
+  <div id="title" class="standardwidth mydiv0"></div>
+  <div id="imageContainer"></div>
+</div>
+
+<script>
+(function () {
+    // 1️⃣ Získá jméno obrázku z parametru URL (např. HelperWrapper.html?file=Helper%20RAMP%20lesion.png)
+    const params = new URLSearchParams(window.location.search);
+    const imgFile = params.get("file");
+
+    if (!imgFile) {
+        document.getElementById("title").innerText = "❌ Chybí parametr ?file=...";
+        return;
+    }
+
+    // 2️⃣ Odstraní prefix „Helper“ a příponu
+    const fileName = decodeURIComponent(imgFile.split("/").pop());
+    const nameWithoutHelper = fileName.replace(/^Helper\s*/i, "").replace(/\.[^/.]+$/, "");
+
+    // 3️⃣ Vloží název a obrázek do DOM
+    document.getElementById("title").innerText = nameWithoutHelper;
+    const img = document.createElement("img");
+    img.src = imgFile;
+    img.alt = nameWithoutHelper;
+    document.getElementById("imageContainer").appendChild(img);
+})();
+</script>
+
+</body>
+</html>
