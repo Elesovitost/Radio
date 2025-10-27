@@ -3094,7 +3094,6 @@ addBilateralDescription(ChbKidneysStentR, ChbKidneysStentL, "double pig-tail kat
 addBilateralDescription(ChbKidneysStomyR, ChbKidneysStomyL, "nefrostomie bilat.", "nefrostomie vpravo", "nefrostomie vlevo");
 addBilateralDescription(ChbKidneysParcResectionR, ChbKidneysParcResectionL, "obě po parc. resekci", "pravá po parc. resekci", "levá po parc. resekci");
 addBilateralDescription(ChbKidneysEctomyR, ChbKidneysEctomyL, "obě chybí po totální nefrektomii", "pravá chybí po totální nefrektomii", "levá chybí po totální nefrektomii");
-if (AbdomenKidneysOther) descriptionsKidneys.push(AbdomenKidneysOther);
 
 
 function addHydroDescription(buttonIdR, buttonIdL, sideTextR, sideTextL) {
@@ -3154,6 +3153,7 @@ function updateCystDescriptions() {
 }
 updateCystDescriptions();
 
+if (AbdomenKidneysOther) descriptionsKidneys.push(AbdomenKidneysOther);
 
 if (descriptionsKidneys.length) {
   AbdomenKidneysText = "Ledviny: " + descriptionsKidneys.join(", ") + ". ";
