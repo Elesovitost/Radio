@@ -930,6 +930,17 @@ function updateHelperDropdown() {
 	  added = true;
 	}
 
+	// Patella tilt
+	if (text.includes("kolen") || text.includes("tilt")) {
+	  menu.innerHTML += `<a href="#" onclick="changePage('HelperWrapper.html?file=Helper Patellar tilt.png')">Patelární tilt</a>`;
+	  added = true;
+	}
+
+	// LHBT disclocation
+	if (text.includes("ramen") || text.includes("LHBT")) {
+	  menu.innerHTML += `<a href="#" onclick="changePage('HelperWrapper.html?file=Helper LHBT.png')">LHBT dislokace</a>`;
+	  added = true;
+	}
 
 
   // 🔹 když nic nenajde → skryj celé tlačítko
