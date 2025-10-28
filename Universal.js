@@ -171,7 +171,8 @@ function mergeBilateralSentences(textareaId) {
         "vaz": "vazy",
         "meniskus": "menisky",
         "retinakulum": "retinakula",
-        "sval": "svaly"
+        "sval": "svaly",
+		"kompartment": "oba kompartmenty",
     };
 
     let text = field.value;
