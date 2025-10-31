@@ -795,6 +795,37 @@ if (checkboxLHBTdisl.checked)  {
 }
 
 
+// další
+
+function toggleDalsiSection() {
+  const checkbox = document.getElementById('dalsiShow');
+  const fields = document.getElementById('dalsiFields');
+  fields.style.display = checkbox.checked ? 'flex' : 'none';
+}
+window.addEventListener('load', function() {
+  const checkbox = document.getElementById('dalsiShow');
+  if (checkbox) {
+    checkbox.addEventListener('change', toggleDalsiSection);
+  }
+});
+
+
+function capitalizeAndDot(text) {
+  text = text.trim();
+  if (text.length === 0) return ""; // prázdný text nech tak
+  text = text[0].toUpperCase() + text.slice(1); // první písmeno velké
+  if (!/[.!?]$/.test(text)) {  // pokud text nekončí . ! nebo ?
+    text += ".";
+  }
+  return text;
+}
+
+const dalsiPopis = capitalizeAndDot(document.getElementById('dalsiPopis').value);
+const dalsiZaver = capitalizeAndDot(document.getElementById('dalsiZaver').value);
+
+
+
+
 //POPISY
 
 MRShoulderNAMEText.value = Nadpis;
@@ -811,7 +842,8 @@ RMsupraFinalP + "\n" +
 RMinfraFinalP + "\n" +
 RMssFinalP + "\n" +
 LezeLabraFinalP + "\n" +
-LHBTAllP + " " + LHBTdislP + " " + LHBTsulkusP;
+LHBTAllP + " " + LHBTdislP + " " + LHBTsulkusP + "\n" +
+dalsiPopis;
 	
 MRShoulderPOPText.value = MRShoulderPOPText.value.trim(); 
 MRShoulderPOPText.value = MRShoulderPOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
@@ -835,7 +867,8 @@ LezeLabraFinalR + "\n" +
 LHBTAllR + " " + LHBTdislR + "\n" +
 GHdegeneraceR + " " + GHsubluxaceR + " " + IGHLR + " " + HSR + "\n" + 
 VolnaTeliskaR + " " + ACsubluxaceR + " " + ACdegeneraceR + " " + AcromionR + " " + SAprostorR  + "\n" +
-NaplnR
+NaplnR + "\n" +
+dalsiZaver
 ; 
 
 MRShoulderRESText.value = MRShoulderRESText.value.trim(); 

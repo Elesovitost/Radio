@@ -148,15 +148,19 @@
 </table>
 </div>
 
-<div id="shoulderothers" class="standardwidth hidden"><button class="titleShoulder float">OSTATNÍ</button>
-<table>
-<tr>
-    <td></td>
-    <td></td>
-    <td></td>
-</tr>
-</table>
+<div id="dalsi" class="standardwidth" style="display: flex; align-items: center; gap: 8px;">
+  <button class="titleShoulder">DALŠÍ</button>
+
+  <label class="CHB" style="margin-left: 2px;">
+    <input type="checkbox" id="dalsiShow"><span>+</span>
+  </label>
+
+  <div id="dalsiFields" style="display: none; gap: 5px; flex-direction: row;">
+    <textarea id="dalsiPopis" style="width: 400px; height: 20px; overflow: hidden;" class="inputOtherFinding" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+    <textarea id="dalsiZaver" style="width: 400px; height: 20px; overflow: hidden;" class="inputOtherFinding" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+  </div>
 </div>
+
 
 </div>
 

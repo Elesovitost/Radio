@@ -343,7 +343,7 @@
 
 <div id="ligamenta" class="standardwidth"> <button class="titleKnee float">VAZY</button>
 <div id="vazy"  class="flex-container">
-<div id="LCMtable"> <button id="LCMButton" class="Button80" onmousedown="cycleLCMText(event)">LCM</button> </div>
+<div id="LCMtable"> &nbsp;&nbsp;&nbsp;<button id="LCMButton" class="Button80" onmousedown="cycleLCMText(event)">LCM</button> </div>
 
 <table>
 	<tr>
@@ -412,30 +412,20 @@
 </table>
 
 <div id="LCLtable"> <button id="LCLButton" class="Button80" onmousedown="cycleLCLText(event)">LCL</button> </div>
+</div>
 
 </div>
 
-	<div class="DIVLesions" style="margin-top: 0px;">
-	 <button class="titleKnee float">DALŠÍ...</button>
-	  <label class="CHB" style="margin-left: 0px;">
-		<input type="checkbox" id="dalsiShow"><span>+</span>
-	  </label>
+<div id="others" class="standardwidth" style="display: flex; align-items: center; gap: 5px;"><button class="titleKnee">DALŠÍ</button>
 
-	  <div id="dalsiFields" style="display: none; flex; gap: 5px; margin-top: 5px;">
-		<textarea id="dalsiPopis" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
-		<textarea id="dalsiZaver" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
-	  </div>
-	</div>
+  <label class="CHB" style="margin-left: 2px;">
+    <input type="checkbox" id="dalsiShow"><span>+</span>
+  </label>
 
-</div>
-
-<div id="others"  class="standardwidth hidden"><button class="titleKnee float">OSTATNÍ</button>
-
- <div id="dalsiFields" style="display: none; flex; gap: 5px; margin-top: 5px;">
-		<textarea id="dalsiPopis" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
-		<textarea id="dalsiZaver" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
-	  </div>
-
+  <div id="dalsiFields" style="display: none; gap: 5px; flex-direction: row;">
+    <textarea id="dalsiPopis" style="width: 400px; height: 20px; overflow: hidden;" class="inputOtherFinding" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+    <textarea id="dalsiZaver" style="width: 400px; height: 20px; overflow: hidden;" class="inputOtherFinding" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+  </div>
 </div>
 
 </div>

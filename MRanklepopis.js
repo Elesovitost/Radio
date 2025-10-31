@@ -356,6 +356,39 @@ if (AnkleTendonsText.trim() === "") {
   AnkleTendonsText = "Šlachy bez patrné patologie.";
 }
 
+
+// další
+
+function toggleDalsiSection() {
+  const checkbox = document.getElementById('dalsiShow');
+  const fields = document.getElementById('dalsiFields');
+  fields.style.display = checkbox.checked ? 'flex' : 'none';
+}
+window.addEventListener('load', function() {
+  const checkbox = document.getElementById('dalsiShow');
+  if (checkbox) {
+    checkbox.addEventListener('change', toggleDalsiSection);
+  }
+});
+
+
+function capitalizeAndDot(text) {
+  text = text.trim();
+  if (text.length === 0) return ""; // prázdný text nech tak
+  text = text[0].toUpperCase() + text.slice(1); // první písmeno velké
+  if (!/[.!?]$/.test(text)) {  // pokud text nekončí . ! nebo ?
+    text += ".";
+  }
+  return text;
+}
+
+const dalsiPopis = capitalizeAndDot(document.getElementById('dalsiPopis').value);
+const dalsiZaver = capitalizeAndDot(document.getElementById('dalsiZaver').value);
+
+
+
+
+
 // POPIS
 	
 MRAnkleNAMEText.value = Nadpis;
@@ -371,14 +404,16 @@ MRAnklePOPText.value =
 	AnkleMLText + "\n" +
 	AnkleLLText + "\n" +
 	AnkleTendonsText + " " + AnkleACHText + "\n" +
-	"Měkké tkáně bez hrubých patol. odchylek."
+	"Měkké tkáně bez hrubých patol. odchylek." + "\n" +
+	dalsiPopis;
 ;
 
 MRAnkleRESText.value = 
 	AnkleNaplnRes + " " + AnkleVolnaDesc + "\n" +
 	AnkleMLRes + "\n" +
 	AnkleLLRes + "\n" +
-	AnkleTendonsRes + " " +	AnkleACHRes
+	AnkleTendonsRes + " " +	AnkleACHRes + "\n" +
+	dalsiZaver
 ;
 
 }
