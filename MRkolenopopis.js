@@ -588,7 +588,7 @@ if (descriptionsMkFemCondText.length > 1) {
 
 
 var MkFemCondRES = '';
-if (descriptionsMkFemCondText.length > 1) {
+if (descriptionsMkFemCondRES.length > 1) {
 	MkFemCondRES = "Mediální kondyl femuru " + descriptionsMkFemCondRES.slice(0, -1).join(", ") + " a " + descriptionsMkFemCondRES.slice(-1) + ". ";
 } else {
 	MkFemCondRES = descriptionsMkFemCondRES.length ? "Mediální kondyl femuru " + descriptionsMkFemCondRES[0] + ". " : "";
@@ -612,8 +612,12 @@ var isMkFemChpChecked = buttonMkFemCondCHP !== "0"; // any chondropathy checked
 var isMkFemOtherConditionsNotChecked = !MkFemCondFrS && !MkFemCondFrL && !MkFemCondOCDII && !MkFemCondOCDIII && !MkFemCondOCDIV && !MkFemCondEdemaCont && !MkFemCondEdemaDif; // fracture / OCD not checked
 var isMkTibChpChecked = buttonMkTibCondCHP !== "0";
 var isMkTibOtherConditionsNotChecked = !MkTibCondFrS && !MkTibCondFrL && !MkTibCondOCDII && !MkTibCondOCDIII && !MkTibCondOCDIV && !MkTibCondEdemaCont && !MkTibCondEdemaDif;
-var isMkAnySubEdema = MkFemCondEdemaSub && MkTibCondEdemaSub;
+var isMkAnySubEdema = MkFemCondEdemaSub || MkTibCondEdemaSub;
 var isMkFissureDefect = MkFemCondFisOne || MkFemCondFisMore || MkFemCondDefOne || MkFemCondDefMore || MkTibCondFisOne || MkTibCondFisMore || MkTibCondDefOne || MkTibCondDefMore;
+
+if (!isMkFemChpChecked && !isMkAnySubEdema && isMkFemOtherConditionsNotChecked && !isMkTibChpChecked && isMkTibOtherConditionsNotChecked && !isMkFissureDefect) {
+	MkFemCondText = "Chrupavky mediálního kompartmentu bez výraznější patologie. "; 
+}
 
 if ((isMkFemChpChecked && isMkFemOtherConditionsNotChecked) && (isMkTibChpChecked && isMkTibOtherConditionsNotChecked)) {
     if (buttonMkFemCondCHP === "IV" || buttonMkTibCondCHP === "IV") {
@@ -637,9 +641,6 @@ if ((isMkFemChpChecked && isMkFemOtherConditionsNotChecked) && (isMkTibChpChecke
     MkFemCondRES += ". ";
 }
 
-if (!isMkFemChpChecked && isMkFemOtherConditionsNotChecked && !isMkTibChpChecked && isMkTibOtherConditionsNotChecked && !isMkFissureDefect) {
-	MkFemCondText = "Chrupavky mediálního kompartmentu bez výraznější patologie. "; MkTibCondT = "";
-}
 
 // edem kostní dřeně
 
@@ -1152,6 +1153,20 @@ MRKneeRESText.value = MRKneeRESText.value.replace(/\,{2,}/g, ','); // více čá
 MRKneeRESText.value = MRKneeRESText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
 MRKneeRESText.value = MRKneeRESText.value.replace(/  +/g, ' '); // dvojmezery
 
+
+function mergeMedialSentences() {
+    const pattern = /Mediální kondyl femuru ([^.]+)\. Mediální plato tibie \1\./g;
+    const replacement = "Mediální kondyl femuru i plato tibie $1.";
+    MRKneeRESText.value = MRKneeRESText.value.replace(pattern, replacement);
+}
+mergeMedialSentences();
+
+function mergeLateralSentences() {
+    const pattern = /Laterální kondyl femuru ([^.]+)\. Laterální plato tibie \1\./g;
+    const replacement = "Laterální kondyl femuru i plato tibie $1.";
+    MRKneeRESText.value = MRKneeRESText.value.replace(pattern, replacement);
+}
+mergeLateralSentences();
 
 // Sloučení med late
 mergeBilateralSentences('MRKneeRESText');
