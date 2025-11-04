@@ -554,8 +554,8 @@ if (MkFemCondDefOne) {
 	descriptionsMkFemCondRES.push("s defektem chrupavky");
 }
 if (MkFemCondDefMore) {
-	descriptionsMkFemCondText.push("s defektem chrupavky");
-	descriptionsMkFemCondRES.push("s defektem chrupavky");
+	descriptionsMkFemCondText.push("s defekty chrupavky");
+	descriptionsMkFemCondRES.push("s defekty chrupavky");
 }
 
 if (MkFemCondEdemaSub) {
@@ -581,9 +581,11 @@ if (MkFemCondOther.trim() !== "") {
 
 var MkFemCondText = '';
 if (descriptionsMkFemCondText.length > 1) {
-	MkFemCondText = "Mediální kondyl femuru " + descriptionsMkFemCondText.slice(0, -1).join(", ") + " a " + descriptionsMkFemCondText.slice(-1) + ". ";
+  MkFemCondText = "Mediální kondyl femuru " + descriptionsMkFemCondText.slice(0, -1).join(", ") + " a " + descriptionsMkFemCondText.slice(-1) + ". ";
+} else if (descriptionsMkFemCondText.length === 1) {
+  MkFemCondText = "Mediální kondyl femuru " + descriptionsMkFemCondText[0] + ". ";
 } else {
-	MkFemCondText = descriptionsMkFemCondText.length ? "Mediální kondyl femuru " + descriptionsMkFemCondText[0] + ". " : "";
+  MkFemCondText = "Mediální kondyl femuru bez výraznější patologie. ";
 }
 
 
@@ -615,9 +617,6 @@ var isMkTibOtherConditionsNotChecked = !MkTibCondFrS && !MkTibCondFrL && !MkTibC
 var isMkAnySubEdema = MkFemCondEdemaSub || MkTibCondEdemaSub;
 var isMkFissureDefect = MkFemCondFisOne || MkFemCondFisMore || MkFemCondDefOne || MkFemCondDefMore || MkTibCondFisOne || MkTibCondFisMore || MkTibCondDefOne || MkTibCondDefMore;
 
-if (!isMkFemChpChecked && !isMkAnySubEdema && isMkFemOtherConditionsNotChecked && !isMkTibChpChecked && isMkTibOtherConditionsNotChecked && !isMkFissureDefect) {
-	MkFemCondText = "Chrupavky mediálního kompartmentu bez výraznější patologie. "; 
-}
 
 if ((isMkFemChpChecked && isMkFemOtherConditionsNotChecked) && (isMkTibChpChecked && isMkTibOtherConditionsNotChecked)) {
     if (buttonMkFemCondCHP === "IV" || buttonMkTibCondCHP === "IV") {
@@ -675,10 +674,6 @@ if ((isLkFemChpChecked && isLkFemOtherConditionsNotChecked) && (isLkTibChpChecke
 	}
 
     LkFemCondRES += ". ";
-}
-
-if (!isLkFemChpChecked && isLkFemOtherConditionsNotChecked && !isLkTibChpChecked && isLkTibOtherConditionsNotChecked && !isLkFissureDefect) {
-	LkFemCondText = "Chrupavky laterálního kompartmentu bez výraznější patologie. "; LkTibCondT = "";
 }
 
 // Mk meniskus
@@ -1110,22 +1105,24 @@ MRKneePOPText.value = MRKneePOPText.value.replace(/\,{2,}/g, ','); // více čá
 MRKneePOPText.value = MRKneePOPText.value.replace(/,\./g, '.'); // odstraní čárku před tečkou
 MRKneePOPText.value = MRKneePOPText.value.replace(/  +/g, ' '); // dvojmezery
 
-function mergeMedialSentences() {
+function mergeMedialSentencesPOP() {
     const pattern = /Mediální kondyl femuru ([^.]+)\. Mediální plato tibie \1\./g;
     const replacement = "Mediální kondyl femuru i plato tibie $1.";
     MRKneePOPText.value = MRKneePOPText.value.replace(pattern, replacement);
 }
-mergeMedialSentences();
+mergeMedialSentencesPOP();
 
-function mergeLateralSentences() {
+function mergeLateralSentencesPOP() {
     const pattern = /Laterální kondyl femuru ([^.]+)\. Laterální plato tibie \1\./g;
     const replacement = "Laterální kondyl femuru i plato tibie $1.";
     MRKneePOPText.value = MRKneePOPText.value.replace(pattern, replacement);
 }
-mergeLateralSentences();
+mergeLateralSentencesPOP();
 
+// kompartment
+MRKneePOPText.value = MRKneePOPText.value.replace(/kondyl femuru i plato tibie/g, 'kompartment');
 
-// Sloučení med late
+// Sloučení med lat
 mergeBilateralSentences('MRKneePOPText');
 
 
