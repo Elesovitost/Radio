@@ -107,7 +107,8 @@ function sloucitStejneRadky(textareaId) {
   const nahrazkyKoncovek = {
     'disku': 'disků',
 	'nížený disk': 'nížené disky',
-	'ulging': 'ulgingy',
+	'ulging d': 'ulgingy d',
+	'ulgingu d': 'ulgingů d',
     'stranného': 'stranných',
     'foramina': 'foramin',
 	'snížený': 'snížené',
@@ -118,6 +119,7 @@ function sloucitStejneRadky(textareaId) {
 	'bná': 'bné',
 	'výrazný': 'výrazné',
 	'lem': 'lemy',
+	'má': 'mají',
 
     // přidej další dle potřeby
   };
@@ -700,15 +702,15 @@ function updateButtonText(button, direction) {
 
         // Vytvoří nový HTML obsah
         const htmlContent = `
-<head>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="MainDIV">
-        <div class="standardwidth mydiv0">${nameWithoutHelper}</div>
-        <img src="${src}" style="max-width:100%; display:block; margin:20px auto;">
-    </div>
-</body>`;
+			<head>
+				<link rel="stylesheet" href="styles.css">
+			</head>
+			<body>
+				<div class="MainDIV">
+					<div class="standardwidth mydiv0">${nameWithoutHelper}</div>
+					<img src="${src}" style="max-width:100%; display:block; margin:20px auto;">
+				</div>
+			</body>`;
 
         document.open();
         document.write(htmlContent);

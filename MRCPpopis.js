@@ -834,7 +834,7 @@ X01stenozyR = "";
 } else {
 X01stenozyR = X01stenosisALL + 
 " na podkladě " + X01stenosisreasonALL;
-X01herniaceR = ""; X01degenerdR = ""; X0listezaR = ""; X01edemR = "";
+X01herniaceR = ""; X01degenerdR = ""; X0listezaR = ""; // X01edemR = "";
 }
 
 `;

@@ -711,7 +711,6 @@ if (X01PKText === "0") {
 }
 
 
-
 if (X01PRText === "0") {
  X01stenozyP += ""; 
  X01stenPR = "";  
@@ -723,7 +722,7 @@ if (X01PRText === "0") {
  X01stenPR = "Útlak kořene Root1 l.dx. ";
 } else if (X01PRText === "3") {
  X01stenozyP += "Komprese pravostranného kořene v durálním vaku / laterálním recesu. ";
- X01stenPR = "Komprese kořene Root1 l.dx. ";
+ X01stenPR = "Výrazný útlak kořene Root1 l.dx. ";
 } 
 
 if (X01LRText === "0") {
@@ -737,7 +736,7 @@ if (X01LRText === "0") {
  X01stenLR = "Útlak kořene Root1 l.sin. ";
 } else if (X01LRText === "3") {
  X01stenozyP += "Komprese levostranného kořene v durálním vaku / laterálním recesu. ";
- X01stenLR = "Komprese kořene Root1 l.sin. ";
+ X01stenLR = "Výrazný útlak kořene Root1 l.sin. ";
 } 
 
 
@@ -848,7 +847,7 @@ X01stenozyR = "";
 } else {
 X01stenozyR = X01stenosisALL + 
 " na podkladě " + X01stenosisreasonALL;
-X01herniaceR = ""; X01degenerdR = ""; X0listezaR = ""; X01edemR = "";
+X01herniaceR = ""; X01degenerdR = ""; X0listezaR = ""; // X01edemR = "";
 }
 
 
