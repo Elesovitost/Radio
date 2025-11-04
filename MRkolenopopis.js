@@ -771,8 +771,8 @@ if (MkMenText === "Meniskus OK" && MkMenMEText === "bez operace") {
  MkMenR = "";
 } else if (MkMenText === "ruptura") {
  if (MkMenLeze === "BH" || MkMenLeze === "PB" || MkMenLeze === "koml" || MkMenLeze === "destr") {
-    MkMenP = "Mediální meniskus " + MkMenMETextP + MkMenLezeP + "." + MkMenCystP;
-    MkMenR = "Mediální meniskus " + MkMenMETextR + MkMenLezeR + MkMenCystR + ".";
+    MkMenP = "Mediální meniskus " + MkMenMETextP + MkMenLezeP + " " + MkMenLokaceP + "." + MkMenCystP;
+    MkMenR = "Mediální meniskus " + MkMenMETextR + MkMenLezeR + " " + MkMenLokaceR + MkMenCystR + ".";
  } else {
     MkMenP = "Mediální meniskus " + MkMenMETextP + MkMenLezeP + " " + MkMenLokaceP + " v kontaktu s artikulární plochou." + MkMenCystP;
     MkMenR = "Mediální meniskus " + MkMenMETextR + MkMenLezeR + " " + MkMenLokaceR + MkMenCystR + ".";
@@ -869,8 +869,8 @@ if (LkMenText === "Meniskus OK" && LkMenMEText === "bez operace") {
  LkMenR = "";
 } else if (LkMenText === "ruptura") {
  if (LkMenLeze === "BH" || LkMenLeze === "PB" || LkMenLeze === "koml" || LkMenLeze === "destr") {
-    LkMenP = "Laterální meniskus " + LkMenMETextP + LkMenLezeP + "." + LkMenCystP;
-    LkMenR = "Laterální meniskus " + LkMenMETextR + LkMenLezeR + LkMenCystR + ".";
+    LkMenP = "Laterální meniskus " + LkMenMETextP + LkMenLezeP + " " + LkMenLokaceP + "." + LkMenCystP;
+    LkMenR = "Laterální meniskus " + LkMenMETextR + LkMenLezeR + " " + LkMenLokaceR + LkMenCystR + ".";
  } else {
     LkMenP = "Laterální meniskus " + LkMenMETextP + LkMenLezeP + " " + LkMenLokaceP + " v kontaktu s artikulární plochou." + LkMenCystP;
     LkMenR = "Laterální meniskus " + LkMenMETextR + LkMenLezeR + " " + LkMenLokaceR + LkMenCystR + ".";
