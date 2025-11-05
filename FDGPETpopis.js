@@ -1070,26 +1070,19 @@ if (lowerR) locations.push("dolní čelisti vpravo");
 if (lowerL) locations.push("dolní čelisti vlevo");
 
 let locSimplified = "";
-if ((upperR && upperL) && !(lowerR || lowerL)) locSimplified = "v horní čelisti bilat.";
-else if ((lowerR && lowerL) && !(upperR || upperL)) locSimplified = "v dolní čelisti bilat.";
-else if ((upperR && lowerR) && !(upperL || lowerL)) locSimplified = "v horní i dolní čelisti vpravo";
-else if ((upperL && lowerL) && !(upperR || lowerR)) locSimplified = "v horní i dolní čelisti vlevo";
+if ((upperR && upperL) && !(lowerR || lowerL)) locSimplified = "horní čelisti bilat.";
+else if ((lowerR && lowerL) && !(upperR || upperL)) locSimplified = "dolní čelisti bilat.";
+else if ((upperR && lowerR) && !(upperL || lowerL)) locSimplified = "horní i dolní čelisti vpravo";
+else if ((upperL && lowerL) && !(upperR || lowerR)) locSimplified = "horní i dolní čelisti vlevo";
 
-const countChecked = [upperR, upperL, lowerR, lowerL].filter(Boolean).length;
-const plural = (countChecked > 1 || specTeeth.includes("zubů")) ? "zubů" : "zubu";
+let locationText = "";
+if (locSimplified) locationText = locSimplified;
+else if (locations.length > 0) locationText = locations.join(", ");
 
-if (countChecked || specTeeth) {
-  HeadTeethText = "Zvýšená akumulace RF v oblasti " + plural;
-
-  if (specTeeth) {
-    HeadTeethText += " " + specTeeth;
-  } else if (locSimplified) {
-    HeadTeethText += " " + locSimplified;
-  } else if (locations.length > 0) {
-    HeadTeethText += " " + locations.join(", ");
-  }
-
-  HeadTeethText += " - odontogenní etiologie.";
+if (locationText || specTeeth) {
+  HeadTeethText = "Zvýšená akumulace RF v oblasti " + locationText;
+  if (specTeeth) HeadTeethText += " (" + specTeeth + ")";
+  HeadTeethText += ": odontogenní etiologie.";
 }
 
 

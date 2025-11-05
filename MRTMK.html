@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MR TEMPOROMANDIBULÁRNÍCH KLOUBŮ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="MainDIV" style="font-size:13px; font-weight:500; line-height:1.4;">
+
+  <!-- Hlavní nadpis a indikace -->
+  <div id="MRtmkHeader" class="standardwidth mydiv0" style="font-weight:bold;">
+    MR TEMPOROMANDIBULÁRNÍCH KLOUBŮ 
+  </div>
+  <div id="IND" class="mydivIND standardwidth">
+    <input id="indikace" type="text" placeholder="indikace..." autocomplete="off" oninput="updateTexts()">
+  </div>
+
+  <!-- Dvou-sloupcové uspořádání: PRAVÝ / LEVÝ -->
+  <div class="standardwidth" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; align-items:start;">
+
+    <!-- PRAVÝ TMK -->
+    <div id="tmk-right" class="" style="border:1px solid #ddd; border-radius:10px; padding:8px;">
+      <div class="" style="font-weight:bold; margin-bottom:6px;">PRAVÝ TMK</div>
+
+      <!-- DUTINA A SYNOVIE -->
+      <div class="">
+        <button class="titleKnee float">KL. DUTINA</button>
+        <table>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>náplň</td>
+            <td><button id="R_eff" class="Button60 ButtonCycleText">0</button></td>
+            <td style="width:10px;"></td>
+            <td>synovitida</td>
+            <td><label class="CHB"><input type="checkbox" id="R_syn" onchange="updateTexts()"><span>+</span></label></td>
+            <td style="width:10px;"></td>
+            <td>kapsulitida</td>
+            <td><label class="CHB"><input type="checkbox" id="R_caps" onchange="updateTexts()"><span>+</span></label></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- KONDYL / KOSTI / CHRUPAVKA -->
+      <div class="">
+        <button class="titleKnee float">KONDYL</button>
+        <table>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>subchondr. edém</td>
+            <td><label class="CHB"><input type="checkbox" id="R_boneEdema" onchange="updateTexts()"><span>+</span></label></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>artróza</td>
+            <td><button id="R_arthr" class="button100 ButtonCycleText">0</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>chrupavka</td>
+            <td><button id="R_cart" class="button100 ButtonCycleText">normální</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>kontura kondylu</td>
+            <td><button id="R_condContour" class="button100 ButtonCycleText">fyziologická</button></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- DISK: POLOHA / MORFOLOGIE / PERFORACE -->
+      <div class="">
+        <button class="titleKnee float">DISK</button>
+        <table>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>poloha (zavřeno)</td>
+            <td><button id="R_discPos" class="button120 ButtonCycleText">centrická</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>redukce při otevření</td>
+            <td><button id="R_reduction" class="button120 ButtonCycleText">neprovedeno</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>morfologie</td>
+            <td><button id="R_discMorph" class="button120 ButtonCycleText">normální</button></td>
+            <td style="width:10px;"></td>
+            <td>perforace</td>
+            <td><label class="CHB"><input type="checkbox" id="R_perfor" onchange="updateTexts()"><span>+</span></label></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>retrodiskální tkáň (edém)</td>
+            <td><label class="CHB"><input type="checkbox" id="R_retroEdema" onchange="updateTexts()"><span>+</span></label></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- FUNKCE / TRANSLACE -->
+      <div class="">
+        <button class="titleKnee float">FUNKCE</button>
+        <table>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>translace při otevření</td>
+            <td><button id="R_translation" class="button120 ButtonCycleText">normální</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>hyper/hypomobilita</td>
+            <td><button id="R_mobility" class="button100 ButtonCycleText">0</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>ankylóza</td>
+            <td><button id="R_ankyl" class="button120 ButtonCycleText">0</button></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- LEVÝ TMK -->
+    <div id="tmk-left" class="" style="border:1px solid #ddd; border-radius:10px; padding:8px;">
+      <div class="" style="font-weight:bold; margin-bottom:6px;">LEVÝ TMK</div>
+
+      <!-- DUTINA A SYNOVIE -->
+      <div class="">
+        <button class="titleKnee float">KL. DUTINA</button>
+        <table>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>náplň</td>
+            <td><button id="L_eff" class="Button60 ButtonCycleText">0</button></td>
+            <td style="width:10px;"></td>
+            <td>synovitida</td>
+            <td><label class="CHB"><input type="checkbox" id="L_syn" onchange="updateTexts()"><span>+</span></label></td>
+            <td style="width:10px;"></td>
+            <td>kapsulitida</td>
+            <td><label class="CHB"><input type="checkbox" id="L_caps" onchange="updateTexts()"><span>+</span></label></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- KONDYL / KOSTI / CHRUPAVKA -->
+      <div class="">
+        <button class="titleKnee float">KONDYL</button>
+        <table>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>subchondr. edém</td>
+            <td><label class="CHB"><input type="checkbox" id="L_boneEdema" onchange="updateTexts()"><span>+</span></label></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>artróza</td>
+            <td><button id="L_arthr" class="button100 ButtonCycleText">0</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>chrupavka</td>
+            <td><button id="L_cart" class="button100 ButtonCycleText">normální</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>kontura kondylu</td>
+            <td><button id="L_condContour" class="button100 ButtonCycleText">fyziologická</button></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- DISK -->
+      <div class="">
+        <button class="titleKnee float">DISK</button>
+        <table>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>poloha (zavřeno)</td>
+            <td><button id="L_discPos" class="button120 ButtonCycleText">centrická</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>redukce při otevření</td>
+            <td><button id="L_reduction" class="button120 ButtonCycleText">neprovedeno</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>morfologie</td>
+            <td><button id="L_discMorph" class="button120 ButtonCycleText">normální</button></td>
+            <td style="width:10px;"></td>
+            <td>perforace</td>
+            <td><label class="CHB"><input type="checkbox" id="L_perfor" onchange="updateTexts()"><span>+</span></label></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>retrodiskální tkáň (edém)</td>
+            <td><label class="CHB"><input type="checkbox" id="L_retroEdema" onchange="updateTexts()"><span>+</span></label></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- FUNKCE / TRANSLACE -->
+      <div class="">
+        <button class="titleKnee float">FUNKCE</button>
+        <table>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>translace při otevření</td>
+            <td><button id="L_translation" class="button120 ButtonCycleText">normální</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>hyper/hypomobilita</td>
+            <td><button id="L_mobility" class="button100 ButtonCycleText">0</button></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>ankylóza</td>
+            <td><button id="L_ankyl" class="button120 ButtonCycleText">0</button></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- DALŠÍ volný text -->
+  <div id="dalsi" class="standardwidth" style="margin-top:8px;">
+    <button class="titleKnee float">DALŠÍ...</button>
+    <label class="CHB" style="margin-left: 6px;">
+      <input type="checkbox" id="dalsiShow"><span>+</span>
+    </label>
+    <div id="dalsiFields" style="display: none; flex; gap: 5px; margin-top: 5px;">
+      <textarea id="dalsiPopis" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+      <textarea id="dalsiZaver" style="width: 496px; height: 20px; overflow: hidden;" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+    </div>
+  </div>
+
+  <!-- Výstupy (skryté) -->
+  <div style="display:none;">
+    <textarea id="MRTMKNAMEText" class="FINALXXL" readonly></textarea>
+    <textarea id="MRTMKINDText" class="FINALXXL" readonly></textarea>
+    <textarea id="MRTMKSEKVText" class="FINALXXL" readonly></textarea>
+    <textarea id="MRTMKPOPText" class="FINALXXL" readonly></textarea>
+    <textarea id="MRTMKRESText" class="FINALXXL" readonly></textarea>
+  </div>
+</div>
+
+<script src="Universal.js"></script>
+<script>
+// ===== Cyklické texty tlačítek =====
+ButtonCycleInnerTexts['R_eff'] = ["0","↑","↑↑","↑↑↑"];
+ButtonCycleInnerTexts['L_eff'] = ["0","↑","↑↑","↑↑↑"];
+
+ButtonCycleInnerTexts['R_discPos'] = ["centrická","ant. dislokace","post. dislokace","mediální/laterální"];
+ButtonCycleInnerTexts['L_discPos'] = ["centrická","ant. dislokace","post. dislokace","mediální/laterální"];
+
+// Redukce při otevření
+ButtonCycleInnerTexts['R_reduction'] = ["neprovedeno","s redukcí","bez redukce"];
+ButtonCycleInnerTexts['L_reduction'] = ["neprovedeno","s redukcí","bez redukce"];
+
+ButtonCycleInnerTexts['R_discMorph'] = ["normální","ztenčený","deformovaný (biconvex)","dysplastický"];
+ButtonCycleInnerTexts['L_discMorph'] = ["normální","ztenčený","deformovaný (biconvex)","dysplastický"];
+
+ButtonCycleInnerTexts['R_arthr'] = ["0","mírná art.","těžká art."];
+ButtonCycleInnerTexts['L_arthr'] = ["0","mírná art.","těžká art."];
+
+ButtonCycleInnerTexts['R_cart'] = ["normální","thinning","chondromalacie","defekt"];
+ButtonCycleInnerTexts['L_cart'] = ["normální","thinning","chondromalacie","defekt"];
+
+ButtonCycleInnerTexts['R_condContour'] = ["fyziologická","plochá","osteofytická","deformovaná"];
+ButtonCycleInnerTexts['L_condContour'] = ["fyziologická","plochá","osteofytická","deformovaná"];
+
+ButtonCycleInnerTexts['R_translation'] = ["normální","omezená","hypertranslace"];
+ButtonCycleInnerTexts['L_translation'] = ["normální","omezená","hypertranslace"];
+
+ButtonCycleInnerTexts['R_mobility'] = ["0","hypomobilita","hypermobilita"];
+ButtonCycleInnerTexts['L_mobility'] = ["0","hypomobilita","hypermobilita"];
+
+ButtonCycleInnerTexts['R_ankyl'] = ["0","fibrotická?","kostní?"];
+ButtonCycleInnerTexts['L_ankyl'] = ["0","fibrotická?","kostní?"];
+
+// ===== Helpery =====
+function sideLabel(s){ return s === "R" ? "Pravý" : "Levý"; }
+
+function normalizeSentence(text){
+  let t = (text || "").trim();
+  if (!t) return "";
+  if (!/[.!?]$/.test(t)) t += ".";
+  t = t.charAt(0).toUpperCase() + t.slice(1);
+  return t;
+}
+
+function effusionTexts(v) {
+  if (v==="0")   return { popis: "Bez patologické náplně kloubní dutiny.", zaver: "" };
+  if (v==="↑")   return { popis: "Mírná tekutinová náplň kloubní dutiny.", zaver: "mírně zmnožená tekutina v kloubu." };
+  if (v==="↑↑")  return { popis: "Zvýšená tekutinová náplň kloubní dutiny s přiměřeným napětím pouzdra.", zaver: "zmnožená tekutina v kloubu." };
+  if (v==="↑↑↑") return { popis: "Výrazná tekutinová náplň kloubní dutiny s napětím pouzdra.", zaver: "výrazně zmnožená tekutina v kloubu." };
+  return { popis: "", zaver: "" };
+}
+
+function discPosTexts(pos, red){
+  if (pos==="centrická") {
+    return {
+      popis: "Disk v centrální pozici v uzavření.",
+      zaver: ""
+    };
+  }
+  if (pos==="ant. dislokace") {
+    if (red==="s redukcí") {
+      return {
+        popis: "Anteriorní dislokace disku v uzavření, s redukcí při otevření.",
+        zaver: "anteriorní dislokace disku s redukcí při otevření."
+      };
+    }
+    if (red==="bez redukce") {
+      return {
+        popis: "Anteriorní dislokace disku v uzavření bez redukce při otevření.",
+        zaver: "anteriorní dislokace disku bez redukce při otevření."
+      };
+    }
+    if (red==="neprovedeno") {
+      return {
+        popis: "Anteriorní dislokace disku v uzavření.",
+        zaver: "anteriorní dislokace disku."
+      };
+    }
+    return {
+      popis: "Anteriorní dislokace disku v uzavření.",
+      zaver: "anteriorní dislokace disku."
+    };
+  }
+  if (pos==="post. dislokace") {
+    return {
+      popis: "Posteriorní dislokace disku.",
+      zaver: "posteriorní dislokace disku."
+    };
+  }
+  if (pos==="mediální/laterální") {
+    return {
+      popis: "Mediolaterální komponenta dislokace disku.",
+      zaver: "mediolaterální dislokace disku."
+    };
+  }
+  return { popis: "", zaver: "" };
+}
+
+function discMorphTexts(m){
+  if (m==="normální")               return { popis: "Disk přiměřené tloušťky a tvaru.", zaver: "" };
+  if (m==="ztenčený")               return { popis: "Disk ztenčený.", zaver: "" };
+  if (m==="deformovaný (biconvex)") return { popis: "Disk deformovaný (bikonvexní tvar).", zaver: "" };
+  if (m==="dysplastický")           return { popis: "Disk dysplastického tvaru.", zaver: "" };
+  return { popis: "", zaver: "" };
+}
+
+function arthrTexts(a){
+  if (a==="0")            return { popis: "Bez výrazných artrotických kostních změn.", zaver: "" };
+  if (a==="mírná art.")    return { popis: "Osteofytické nárůstky.", zaver: "mírné artrotické změny kloubu." };
+  if (a==="těžká art.")    return { popis: "Výrazné degenerativní změny (osteofyty/sklerotizace).", zaver: "pokročilé artrotické změny kloubu." };
+  return { popis: "", zaver: "" };
+}
+
+function cartTexts(c){
+  if (c==="normální")       return { popis: "Kloubní chrupavka obvyklé tloušťky a signálu.", zaver: "" };
+  if (c==="thinning")       return { popis: "Tenká kloubní chrupavka (thinning).", zaver: "" };
+  if (c==="chondromalacie") return { popis: "Chondromalacie.", zaver: "Chondromalacie." };
+  if (c==="defekt")         return { popis: "Ohraničený defekt chrupavky.", zaver: "Defekt chrupavky." };
+  return { popis: "", zaver: "" };
+}
+
+function contourTexts(t){
+  if (t==="fyziologická") return { popis: "Kontura kondylu hladká, fyziologická.", zaver: "" };
+  if (t==="plochá")       return { popis: "Zploštění kontúry kondylu.", zaver: "" };
+  if (t==="osteofytická") return { popis: "Osteofytické změny kontúry kondylu.", zaver: "" };
+  if (t==="deformovaná")  return { popis: "Deformovaná kontura kondylu.", zaver: "" };
+  return { popis: "", zaver: "" };
+}
+
+function translationTexts(t){
+  if (t==="normální")       return { popis: "Translace při otevření přiměřená (kondyl přes eminenci).", zaver: "" };
+  if (t==="omezená")        return { popis: "Omezená translace při otevření.", zaver: "omezená translace." };
+  if (t==="hypertranslace") return { popis: "Hypertranslace při otevření.", zaver: "hypertranslace." };
+  return { popis: "", zaver: "" };
+}
+
+function mobilityTexts(m){
+  if (m==="0")             return { popis: "", zaver: "" };
+  if (m==="hypomobilita")  return { popis: "MR známky hypomobility.", zaver: "" };
+  if (m==="hypermobilita") return { popis: "MR známky hypermobility.", zaver: "" };
+  return { popis: "", zaver: "" };
+}
+
+function ankylTexts(a){
+  if (a==="0")            return { popis: "", zaver: "" };
+  if (a==="fibrotická?")  return { popis: "Možná fibrotická ankylóza.", zaver: "suspektní fibrotická ankylóza – korelace klinicky." };
+  if (a==="kostní?")      return { popis: "Možná kostní ankylóza.", zaver: "suspektní kostní ankylóza – korelace klinicky a s CT." };
+  return { popis: "", zaver: "" };
+}
+
+function boneEdemaTexts(present){
+  if (!present) return { popis: "", zaver: "" };
+  return {
+    popis: "Subchondrální edém kondylu/eminence.",
+    zaver: "subchondrální edém kondylu/eminence."
+  };
+}
+
+// ===== Skrytí / zobrazení řádku s redukcí =====
+function updateReductionVisibility(S){
+  const btn = document.getElementById(S + '_reduction');
+  if (!btn) return;
+  const row = btn.closest('tr');
+  if (!row) return;
+
+  const discPos = document.getElementById(S + '_discPos').innerText;
+  if (discPos === "ant. dislokace") {
+    row.classList.remove('hidden');
+  } else {
+    row.classList.add('hidden');
+  }
+}
+
+// ===== Popis pro jednu stranu =====
+function buildSideText(S){
+  const eff = document.getElementById(S+'_eff').innerText;
+  const syn = document.getElementById(S+'_syn').checked;
+  const caps = document.getElementById(S+'_caps').checked;
+
+  const discPos = document.getElementById(S+'_discPos').innerText;
+  const red = document.getElementById(S+'_reduction').innerText;
+  const discMorph = document.getElementById(S+'_discMorph').innerText;
+  const perfor = document.getElementById(S+'_perfor').checked;
+  const retroE = document.getElementById(S+'_retroEdema').checked;
+
+  const bEd = document.getElementById(S+'_boneEdema').checked;
+  const arthr = document.getElementById(S+'_arthr').innerText;
+  const cart = document.getElementById(S+'_cart').innerText;
+  const contour = document.getElementById(S+'_condContour').innerText;
+
+  const transl = document.getElementById(S+'_translation').innerText;
+  const mob = document.getElementById(S+'_mobility').innerText;
+  const ankyl = document.getElementById(S+'_ankyl').innerText;
+
+  let seg = [];
+
+  const effT = effusionTexts(eff);
+  if (effT.popis) seg.push(effT.popis);
+
+  if (syn)  seg.push("Synoviální ztluštění/zvýšený signál – synovitida.");
+  if (caps) seg.push("Ztluštění a sycení pouzdra – kapsulitida.");
+
+  const bEdT = boneEdemaTexts(bEd);
+  if (bEdT.popis) seg.push(bEdT.popis);
+
+  const aT = arthrTexts(arthr);
+  if (aT.popis) seg.push(aT.popis);
+
+  const cT = cartTexts(cart);
+  if (cT.popis) seg.push(cT.popis);
+
+  const cntT = contourTexts(contour);
+  if (cntT.popis) seg.push(cntT.popis);
+
+  const morphT = discMorphTexts(discMorph);
+  if (morphT.popis) seg.push(morphT.popis);
+  
+  const posT = discPosTexts(discPos, red);
+  if (posT.popis) seg.push(posT.popis);
+
+  if (perfor) seg.push("Suspektní perforace disku (signalová diskontinuita/komunikace tekutiny).");
+  if (retroE) seg.push("Edém/kontrastní sycení retrodiskální tkáně.");
+
+  const tT = translationTexts(transl);
+  if (tT.popis) seg.push(tT.popis);
+
+  const mT = mobilityTexts(mob);
+  if (mT.popis) seg.push(mT.popis);
+
+  const anT = ankylTexts(ankyl);
+  if (anT.popis) seg.push(anT.popis);
+
+  seg = seg.filter(Boolean);
+  if (seg.length === 0) return "";
+  return sideLabel(S) + " TMK: " + seg.join(' ');
+}
+
+// ===== Závěr pro jednu stranu (jedna věta s „Pravý/Levý TMK:“) =====
+function buildSideConclusion(S){
+  const eff = document.getElementById(S+'_eff').innerText;
+  const syn = document.getElementById(S+'_syn').checked;
+  const caps = document.getElementById(S+'_caps').checked;
+
+  const discPos = document.getElementById(S+'_discPos').innerText;
+  const red = document.getElementById(S+'_reduction').innerText;
+  const perfor = document.getElementById(S+'_perfor').checked;
+
+  const bEd = document.getElementById(S+'_boneEdema').checked;
+  const arthr = document.getElementById(S+'_arthr').innerText;
+  const cart = document.getElementById(S+'_cart').innerText;
+
+  const transl = document.getElementById(S+'_translation').innerText;
+  const ankyl = document.getElementById(S+'_ankyl').innerText;
+
+  let parts = [];
+
+  // Ankylóza
+  const anT = ankylTexts(ankyl);
+  if (anT.zaver) {
+    const s = normalizeSentence(anT.zaver);
+    if (s) parts.push(s);
+  }
+
+  // Tekutina
+  const effT = effusionTexts(eff);
+  if (effT.zaver) {
+    const s = normalizeSentence(effT.zaver);
+    if (s) parts.push(s);
+  }
+
+  // Synovitida / kapsulitida
+  if (syn) {
+    const s = normalizeSentence("synovitida.");
+    if (s) parts.push(s);
+  }
+  if (caps) {
+    const s = normalizeSentence("kapsulitida.");
+    if (s) parts.push(s);
+  }
+
+  // Disk – dislokace + redukce
+  const discT = discPosTexts(discPos, red);
+  if (discT.zaver) {
+    const s = normalizeSentence(discT.zaver);
+    if (s) parts.push(s);
+  }
+
+  // Translace
+  const tT = translationTexts(transl);
+  if (tT.zaver) {
+    const s = normalizeSentence(tT.zaver);
+    if (s) parts.push(s);
+  }
+
+  // Perforace
+  if (perfor) {
+    const s = normalizeSentence("suspektní perforace disku.");
+    if (s) parts.push(s);
+  }
+
+  // Degenerativní změny – sjednoceně, bez duplicit
+  const degStrings = [];
+  const bEdT = boneEdemaTexts(bEd);
+  const aT = arthrTexts(arthr);
+  const cT = cartTexts(cart);
+
+  [bEdT.zaver, aT.zaver, cT.zaver].forEach(z => {
+    if (z && !degStrings.includes(z)) degStrings.push(z);
+  });
+  degStrings.forEach(z => {
+    const s = normalizeSentence(z);
+    if (s) parts.push(s);
+  });
+
+  parts = parts.filter(Boolean);
+  if (parts.length === 0) return "";
+  return sideLabel(S) + " TMK: " + parts.join(' ');
+}
+
+// ===== Hlavní update =====
+function updateTexts(){
+  // nejdřív viditelnost redukce
+  updateReductionVisibility("R");
+  updateReductionVisibility("L");
+
+  const ind = document.getElementById('indikace').value?.trim();
+  const dalsiPopis = document.getElementById('dalsiPopis').value?.trim();
+  const dalsiZaver = document.getElementById('dalsiZaver').value?.trim();
+
+  const popR = buildSideText("R");
+  const popL = buildSideText("L");
+
+  let Popis = [];
+  if (popR) Popis.push(popR);
+  if (popL) Popis.push(popL);   // Levý vždy na novém řádku přes join('\n')
+  if (dalsiPopis) Popis.push(dalsiPopis);
+
+  // Závěr
+  const resR = buildSideConclusion("R"); // string nebo ""
+  const resL = buildSideConclusion("L");
+
+  let Res = [];
+
+  // Oba bez patologie -> společný závěr
+  if (!resR && !resL) {
+    Res.push("Přiměřený nález oboustranně bez signifikantní patologie.");
+  } else {
+    if (!resR) {
+      Res.push("Pravý TMK: Přiměřený nález bez signifikantní patologie.");
+    } else {
+      Res.push(resR);
+    }
+
+    if (!resL) {
+      Res.push("Levý TMK: Přiměřený nález bez signifikantní patologie.");
+    } else {
+      Res.push(resL);
+    }
+  }
+
+  if (dalsiZaver) Res.push(dalsiZaver);
+
+  // Výstupy
+  document.getElementById('MRTMKNAMEText').value = "MR temporomandibulárních kloubů";
+  document.getElementById('MRTMKINDText').value  = ind ? ind : "";
+  document.getElementById('MRTMKSEKVText').value = "Sag/kor PD/T2 FS (uzavření/otevření), Axi PD/T2 FS, T1 bez FS; tenké řezy přes disky a kondyly ± dynamické/cine sekvence";
+  document.getElementById('MRTMKPOPText').value  = Popis.join('\n'); // Levý vždy nový řádek
+  document.getElementById('MRTMKRESText').value  = Res.join('\n');  // Pravý/Levý každý na řádku
+}
+
+// Další pole „DALŠÍ...“
+function toggleDalsiSection() {
+  const checkbox = document.getElementById('dalsiShow');
+  const fields = document.getElementById('dalsiFields');
+  fields.style.display = checkbox.checked ? 'flex' : 'none';
+}
+
+window.addEventListener('load', function() {
+  const checkbox = document.getElementById('dalsiShow');
+  if (checkbox) checkbox.addEventListener('change', toggleDalsiSection);
+});
+
+// Inicializace
+window.addEventListener('DOMContentLoaded', () => {
+  updateReductionVisibility("R");
+  updateReductionVisibility("L");
+  updateTexts();
+});
+</script>
+
+
+</body>
+</html>
