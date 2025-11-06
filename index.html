@@ -894,6 +894,12 @@ function updateHelperDropdown() {
   }
 
 
+  // MOZEK DEMENCE
+  if (text.includes("mozek") || text.includes("brain") || text.includes("mozku")) {
+    menu.innerHTML += `<a href="#" onclick="changePage('HelperWrapper.html?file=Helper Demence.png')">Demence</a>`;
+    added = true;
+  }
+
   // TNM ORL
   if (text.includes("fdgpet") || text.includes("wb") || text.includes("orl")) {
     menu.innerHTML += `<a href="#" onclick="changePage('Helper TNMORL.html')">TNM ORL</a>`;

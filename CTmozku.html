@@ -1,26 +1,128 @@
+<!DOCTYPE html>
+<html lang="cs">
 <head>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>CTmozku</title>
+  <style>
+  .hidden-by-ctmozku { display: none !important; }
+  </style>
 </head>
-
 <body>
+<script>
+  // Načtení původního MRmozku.html
+  fetch('MRmozku.html')
+    .then(r => r.text())
+    .then(html => {
 
-<div class="MainDIV">
+      // --- TEXTOVÉ ÚPRAVY ---
+      html = html.replace(/MR MOZKU/g, 'CT MOZKU');
 
-<div id="CTmozku" class="standardwidth mydiv0">CT mozku</div>
-<div id="IND" class="mydivIND standardwidth"><input id="indikace" type="text" placeholder="indikace..." autocomplete="off"></div>
 
-<div id="texty1" class=" standardwidth hidden">
-NÁZEV<textarea id="CTmozkuNAMEText" class="medium"></textarea>
-INDIKACE<textarea id="CTmozkuINDText" class="medium"></textarea>
-SEKVENCE<textarea id="CTmozkuSEKVText" class="medium"></textarea>
-POPIS<textarea id="CTmozkuPOPText" class="superlarge"></textarea>
-ZÁVĚR<textarea id="CTmozkuRESText" class="superlarge"></textarea>
-</div>
 
-</div>
 
-<script src="CTmozkupopis.js"></script> 
+      // --- ODSTRANĚNÍ PŮVODNÍHO SCRIPTU FDGPETpopis.js ---
+      html = html.replace(/<script[^>]*src=["']MRmozkupopis\.js["'][^>]*><\/script>/i, '');
+	  html = html.replace(/\bFLAIR\b/g, 'denzita');
+	  html = html.replace(/T1\s*C\+\s*/gi, 'sycení ');
+	  html = html.replace(/signál\.\.\./gi, 'denzita...');
+	  
+	  html = html.replace(/FLAIR\+/gi, 'hyperdenzní ');
+	  html = html.replace(/FLAIRizo/gi, 'izodenzní ');
+	  html = html.replace(/FLAIR-/gi, 'hypodenzní ');
 
+
+
+// --- DOPLNĚNÍ CSS ---
+      html = html.replace(
+        /<\/head>/i,
+        `<style>
+          #PETselect { display:none !important; }
+		  
+		  [id*="BrainLesion0Signal"],
+		  [id*="BrainLesion2Signal"],
+		  [id*="BrainLesion3Signal"] { display:none !important; }
+		  
+		  [id*="BrainLesion1Activity"],
+		  [id*="BrainLesion2Activity"],
+		  [id*="BrainLesion3Activity"] { display:none !important; }
+
+		  #BrainLesion1selectSignal #trT1,#trT2, #trDWI, #trSWI  { display:none !important; }
+		  
+
+        </style></head>`
+      );
+
+      // --- VLOŽENÍ UPRAVENÉHO HTML ---
+      document.open();
+      document.write(html);
+      document.close();
+
+// --- DODATEČNÉ SKRÝVÁNÍ ---
+
+
+// --- DYNAMICKÉ NAČTENÍ A ÚPRAVA FDGPETpopis.js ---
+      fetch('MRmozkupopis.js')
+        .then(r => r.text())
+        .then(js => {
+          js = js.replace(/PETCT/g, 'CTWB');  // přepiš všechny výskyty
+
+// --- WML ---
+js = js.replace(/T2W\+\s*FLAIR\+\s*léze/g, 'hypodenzity');
+js = js.replace(/s dobře ohraničeným ložiskem\s*T2W\+\s*FLAIR\+/gi, 's hypodenzním ložiskem');
+js = js.replace(/gliové léze/g, 'léze');
+js = js.replace(/léze v bílé hmotě/g, 'hypodenzity v bílé hmotě');
+js = js.replace(/Bez zvýšené restrikce difuze/g, '');
+
+js = js.replace(/FLAIR\+/gi, 'nativně hyperdenzní ');
+js = js.replace(/FLAIRizo/gi, 'nativně izodenzní ');
+js = js.replace(/FLAIR-/gi, 'nativně hypodenzní ');
+
+js = js.replace(/T1C\+\+/gi, 'C++');
+js = js.replace(/T1C\+/gi, 'C+');
+js = js.replace(/T1C0/gi, 'C0');
+		  
+js = js.replace(/MR mozku/g, 'CT mozku');
+
+js = js.replace(/Bez lézí v bílé hmotě./g, '');
+js = js.replace(/Struktury v MMK a vnitřních zvukovodech bez patrné patologie./g, 'Bez přesunu střední čáry.');
+
+
+
+// HODNOCENÍ
+
+
+//Do závěru
+
+
+
+// 🔹 Okamžitě zobraz texty1 po načtení CTWB
+setTimeout(() => {
+  try {
+    if (window.parent && window.parent.updateFinalTextAreas) {
+      window.parent.updateFinalTextAreas();
+      window.parent.checkAndUpdateDivVisibility();
+      console.log("✅ Texty1 zobrazeny automaticky po načtení CTWB");
+    }
+  } catch (e) {
+    console.warn("⚠️ Nelze zobrazit texty1 automaticky:", e);
+  }
+}, 100);
+
+
+
+
+          const script = document.createElement('script');
+          script.textContent = js;
+          document.body.appendChild(script);
+
+          console.log("MRmozkupopis.js načten a přepsán");
+        })
+        .catch(err => console.error("Chyba při načítání MRmozkupopis.js:", err));
+    })
+    .catch(err => {
+      document.body.innerHTML = "<p style='color:red'>Chyba při načítání FDGPET.html</p>";
+      console.error(err);
+    });
+</script>
 </body>
-
-  
+</html>

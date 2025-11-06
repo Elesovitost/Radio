@@ -46,6 +46,7 @@ var textsStrana = ["jakého?", "PRAVÉHO", "LEVÉHO"];
 var textsWML = ["0", "ojedinělé", "sporadické", "vícečetné", "splývající"];
 var textsGCA = ["0", "1", "2", "3"];
 var textsMTA = ["0", "1", "2", "3", "4"];
+var textsKoedam = ["0", "1", "2", "3"];
 var textsventricles = ["0", "↑", "↑↑", "↑↑↑"];
 var newLesionV = document.getElementById("newLesionV");
 var textsLesion2enhancement = ["?", "0", "↑", "↑↑", "↑↑↑"];
@@ -73,6 +74,7 @@ var buttonElementWML = document.getElementById("WMLButton");
 var selectElementWMLLocation = document.getElementById("WMLLocation");
 var buttonElementGCA = document.getElementById("GCAButton");
 var buttonElementMTA = document.getElementById("MTAButton");
+var buttonElementKoedam = document.getElementById("KoedamButton");
 var buttonElementventricles = document.getElementById("ventriclesButton");
 var buttonElementLesion2enhancement = document.getElementById("Lesion2enhancementButton");
 var buttonElementMMKR = document.getElementById("MMKRButton");
@@ -97,6 +99,7 @@ var indexStrana = 0;function cycleStranaText(event) {  indexStrana = cycleText(e
 var indexWML = 0;function cycleWMLText(event) {  indexWML = cycleText(event, textsWML, indexWML, buttonElementWML, updateBackgroundColor);}
 var indexGCA = 0;function cycleGCAText(event) {  indexGCA = cycleText(event, textsGCA, indexGCA, buttonElementGCA, updateBackgroundColor);}
 var indexMTA = 0; function cycleMTAText(event) {  indexMTA = cycleText(event, textsMTA, indexMTA, buttonElementMTA, updateBackgroundColor);  updateTexts();}
+var indexKoedam = 0; function cycleKoedamText(event) {  indexKoedam = cycleText(event, textsKoedam, indexKoedam, buttonElementKoedam, updateBackgroundColor);  updateTexts();}
 var indexventricles = 0;function cycleventriclesText(event) {  indexventricles = cycleText(event, textsventricles, indexventricles, buttonElementventricles, updateBackgroundColor);}
 var indexLesion2enhancement = 0;function cycleLesion2enhancementText(event) {  indexLesion2enhancement = cycleText(event, textsLesion2enhancement, indexLesion2enhancement, buttonElementLesion2enhancement, updateBackgroundColor);}
 var indexMMKR = 0;function cycleMMKRText(event) {  indexMMKR = cycleText(event, textsMMKR, indexMMKR, buttonElementMMKR, updateBackgroundColor);}
@@ -529,16 +532,17 @@ populateAktivitaOptions();
 var hodnoceniOptions = [
     { text: "tumor", value: ": charakteru tumoru", valuez1: ": benigního vzhledu"},
     { text: "meta", value: ": charakteru meta", valuez1: ": v.s. zánětlivá aktivace"},
+	{ text: "meningeom", value:": charakteru meningeomu", valuez1: ": charakteru infiltrace neoplazií"},
+	{ text: "kavernom", value:": charakteru kavernomu", valuez1: ": charakteru kavernomu"},
+	{ text: "DVA", value:": charakteru DVA", valuez1: ": charakteru DVA"},
 	{ text: " ", value: "", valueRPH: "", separator: true },
-	{ text: "po RT", value: "", valuez1: ""},
     { text: "arach.cysta", value: ": charakteru arach.c.", valuez1: ": nespecifický nález"},
     { text: "pseudocysta", value: ": charakteru pseudoc.", valuez1: ": suspektní z infiltrace neoplazií"},
 	{ text: "resekce", value: ": po resekci", valuez1: ": po resekci"},
 	{ text: " ", value: "", valueRPH: "", separator: true },
-    { text: "meningeom", value:": charakteru meningeomu", valuez1: ": charakteru infiltrace neoplazií"},
-	{ text: "ischemie", value:": charakteru ischemie", valuez1: ": charakteru ischemie"},
-	{ text: "DVA", value:": charakteru DVA", valuez1: ": charakteru DVA"},
-	{ text: "kavernom", value:": charakteru kavernomu", valuez1: ": charakteru kavernomu"}
+	{ text: "ischemie akut.", value:": charakteru (sub)akutní ischemie", valuez1: ": charakteru ischemie"},
+	{ text: "ischemie chron.", value:": charakteru chron. ischemie", valuez1: ": charakteru ischemie"},
+	{ text: "po RT", value: ": charakteru poradiační nekrózy", valuez1: ""},
 ];
 
 function populateHodnoceniOptions() {
@@ -722,6 +726,7 @@ var checkboxNoEnh = document.getElementById('checkboxNoEnh');
 
 const GCAText = buttonElementGCA.innerText;
 const MTAText = document.getElementById("MTAButton").innerText;
+const KoedamText = document.getElementById("KoedamButton").innerText;
 var lobaratrophy = document.getElementById("lobaratrophy").value; 
 const ventriclesText = buttonElementventricles.innerText;
 
@@ -1021,13 +1026,13 @@ GCAP = "Subarachnoidální prostory oboustranně šířkou přiměřené k věku
 GCAR = "";
 } else if (GCAText === "1") {
  GCAP = "Mírné rozšíření sulků mozkových hemisfér. ";
- GCAR = "Mírná atrofie mozku (GCA grade 1). ";
+ GCAR = "GCA skóre 1 - mírná atrofie mozku. ";
 } else if (GCAText === "2") {
  GCAP = "Rozšíření sulků a ztenčení gyrů mozkových hemisfér. ";
- GCAR = "Střední celková atrofie mozku (GCA grade 2). ";
+ GCAR = "GCA skóre 2 - střední celková atrofie mozku. ";
 } else if (GCAText === "3") {
  GCAP = " Výrazné zúžení gyrů a rozšíření sulků mozkových hemisfér. ";
- GCAR = "Pokročilá celková atrofie mozku (GCA grade 3). ";
+ GCAR = "GCA skóre 3 - pokročilá celková atrofie mozku. ";
 }
 
 
@@ -1054,6 +1059,28 @@ switch (MTAText) {
   case "4":
     MTAP = "Těžká atrofie hipokampu a mediotemporální struktury s výraznou dilatací. ";
     MTAR = "MTA skóre 4 – těžká mediotemporální atrofie, typická pro Alzheimerovu chorobu. ";
+    break;
+}
+
+var KoedamP = "";
+var KoedamR = "";
+
+switch (KoedamText) {
+  case "0":
+    KoedamP = "";
+    KoedamR = "";
+    break;
+  case "1":
+    KoedamP = "Mírné rozšíření sulcus cinguli posterior a precuneu, bez zřetelné ztráty gyrálního objemu. ";
+    KoedamR = "Koedam skóre 1 – lehká parietální atrofie, nález může odpovídat věku. ";
+    break;
+  case "2":
+    KoedamP = "Výraznější rozšíření sulcus cinguli posterior a precuneu, patrná ztráta gyrálního objemu parietálně. ";
+    KoedamR = "Koedam skóre 2 – střední parietální atrofie, suspektní pro neurodegenerativního postižení. ";
+    break;
+  case "3":
+    KoedamP = "Těžká parietální atrofie s hlubokými sulky a výraznou ztrátou gyrálního objemu v precuneu a parietální kůře. ";
+    KoedamR = "Koedam skóre 3 – těžká parietální atrofie, svědčí pro neurodegenerativní změny. ";
     break;
 }
 
@@ -1341,17 +1368,82 @@ if (BrainLesion1BTGRADE !== "") {
 }
 
 
-if (BrainLesion1RESDecision.includes("meta") && BrainLesion1type.includes("ožisk")) {RESBrainLesion1 = RESBrainLesion1.replace(/ložisk/g, "meta ložisk").replace(/Ložisk/g, "Meta ložisk").replace(": charakteru meta", ".");}
-if (BrainLesion1RESDecision.includes("tumor") && BrainLesion1type.includes("ožisk")) {RESBrainLesion1 = RESBrainLesion1.replace(/ložisk/g, "tumorózní ložisk").replace(/Ložisk/g, "Tumorózní ložisk").replace(": charakteru tumoru", ".");}
-if (BrainLesion1RESDecision.includes("ischemie") && BrainLesion1type.includes("ožisk")) {RESBrainLesion1 = RESBrainLesion1.replace(/ožisko/g, "ožisko (sub)akutní ischemie").replace(/ožiska/g, "ožiska (sub)akutní ischemie").replace(": charakteru ischemie", ".");}
-if (BrainLesion1RESDecision.includes("tumor") && BrainLesion1type.includes("xpanze")) {RESBrainLesion1 = RESBrainLesion1.replace(/expanze/g, "tumorózní expanze").replace(/Expanze/g, "Tumorózní expanze").replace(": charakteru tumoru", ".");}
-if (BrainLesion1RESDecision.includes("arach") && BrainLesion1type.includes("cyst")) {RESBrainLesion1 = RESBrainLesion1.replace(/cyst/g, "arachnoidální cyst").replace(/Cyst/g, "Arachnoidální cyst").replace(": charakteru arach.c.", ".");}
-if (BrainLesion1RESDecision.includes("pseudo") && BrainLesion1type.includes("cyst")) {RESBrainLesion1 = RESBrainLesion1.replace(/cyst/g, "postmalat. pseudocyst").replace(/Cyst/g, "Postmalat. pseudocyst").replace(": charakteru pseudoc.", ".");}
+if (BrainLesion1RESDecision.includes("meta") && BrainLesion1type.includes("ožisk")) {
+RESBrainLesion1 = RESBrainLesion1
+.replace(/ložisk/g, "meta ložisk")
+.replace(/Ložisk/g, "Meta ložisk")
+.replace(": charakteru meta", ".");
+}
 
-if (BrainLesion1RESDecision.includes("resekc") && BrainLesion1type.includes("efekt")) {RESBrainLesion1 = RESBrainLesion1.replace(/defekt/g, "pooperační defekt").replace(/Defekt/g, "Pooperační defekt").replace(": po resekci", "");}
-if (BrainLesion1RESDecision.includes("ischemie") && BrainLesion1type.includes("efekt")) {RESBrainLesion1 = RESBrainLesion1.replace(/Defekt/g, "Postischemický kortikosubkortikální defekt").replace(/defekty/g, "postischemické kortikosubkortikální defekty").replace(": charakteru ischemie", ".");}
+if (BrainLesion1RESDecision.includes("tumor") && BrainLesion1type.includes("ožisk")) {
+RESBrainLesion1 = RESBrainLesion1
+.replace(/ložisk/g, "tumorózní ložisk")
+.replace(/Ložisk/g, "Tumorózní ložisk")
+.replace(": charakteru tumoru", ".");
+}
 
-if (BrainLesion1RESDecision.includes("DVA") && BrainLesion1type.toLowerCase().includes("struktur")) {RESBrainLesion1 = RESBrainLesion1.replace(/Pruhovitá struktura/gi, "DVA (venózní angiom)").replace(/pruhovité struktury/gi, "DVA (venózní angiomy)").replace(": charakteru DVA", "");}
+if (BrainLesion1RESDecision.includes("akutní ischemie") && BrainLesion1type.includes("ožisk")) {
+RESBrainLesion1 = RESBrainLesion1
+.replace(/ožisko/g, "ožisko (sub)akutní ischemie")
+.replace(/ožiska/g, "ožiska (sub)akutní ischemie")
+.replace(": charakteru (sub)akutní ischemie", ".");
+}
+
+if (BrainLesion1RESDecision.includes("chron. ischemie") && BrainLesion1type.includes("ožisk")) {
+RESBrainLesion1 = RESBrainLesion1
+.replace(/ožisko/g, "ožisko starší ischemie")
+.replace(/ožiska/g, "ožiska starší ischemie")
+.replace(": charakteru chron. ischemie", ".");
+}
+
+if (BrainLesion1RESDecision.includes("chron. ischemie") && BrainLesion1type.includes("krs")) {
+RESBrainLesion1 = RESBrainLesion1
+.replace(/krsek/g, "krsek starší ischemie")
+.replace(/krsky/g, "krsky starší ischemie")
+.replace(": charakteru chron. ischemie", ".");
+}
+
+if (BrainLesion1RESDecision.includes("tumor") && BrainLesion1type.includes("xpanze")) {
+RESBrainLesion1 = RESBrainLesion1
+.replace(/expanze/g, "tumorózní expanze")
+.replace(/Expanze/g, "Tumorózní expanze")
+.replace(": charakteru tumoru", ".");
+}
+
+if (BrainLesion1RESDecision.includes("arach") && BrainLesion1type.includes("cyst")) {
+RESBrainLesion1 = RESBrainLesion1
+.replace(/cyst/g, "arachnoidální cyst")
+.replace(/Cyst/g, "Arachnoidální cyst")
+.replace(": charakteru arach.c.", ".");
+}
+
+if (BrainLesion1RESDecision.includes("pseudo") && BrainLesion1type.includes("cyst")) {
+RESBrainLesion1 = RESBrainLesion1
+.replace(/cyst/g, "postmalat. pseudocyst")
+.replace(/Cyst/g, "Postmalat. pseudocyst")
+.replace(": charakteru pseudoc.", ".");
+}
+
+if (BrainLesion1RESDecision.includes("resekc") && BrainLesion1type.includes("efekt")) {
+RESBrainLesion1 = RESBrainLesion1
+.replace(/defekt/g, "pooperační defekt")
+.replace(/Defekt/g, "Pooperační defekt")
+.replace(": po resekci", "");
+}
+
+if (BrainLesion1RESDecision.includes("ischemie") && BrainLesion1type.includes("efekt")) {
+RESBrainLesion1 = RESBrainLesion1
+.replace(/Defekt/g, "Postischemický kortikosubkortikální defekt")
+.replace(/defekty/g, "postischemické kortikosubkortikální defekty")
+.replace(": charakteru ischemie", ".");
+}
+
+if (BrainLesion1RESDecision.includes("DVA") && BrainLesion1type.toLowerCase().includes("struktur")) {
+RESBrainLesion1 = RESBrainLesion1
+.replace(/Pruhovitá struktura/gi, "DVA (venózní angiom)")
+.replace(/pruhovité struktury/gi, "DVA (venózní angiomy)")
+.replace(": charakteru DVA", "");
+}
 
 
 if (BrainLesion1CombinedResult.includes("je nově") || BrainLesion1CombinedResult.includes("jsou nově")) { RESBrainLesion1 = "Nově " + RESBrainLesion1.charAt(0).toLowerCase() + RESBrainLesion1.substring(1) ; RESBrainLesion1 = RESBrainLesion1.replace(" je nově", "").replace(" jsou nově", "");}
@@ -1611,7 +1703,7 @@ POPBrainLesion3 + "\n" +
 LesionVP + "\n" +
 WMLP + WMLLocationP + RSP + "." + "\n" +
 POPNoLesions + "\n" +
-GCAP + " " + MTAP + " " + lobaratrophyP + "\n" +
+GCAP + " " + MTAP + " " + KoedamP + " " + lobaratrophyP + "\n" +
 ventriclesP + "\n" +
 MMKP + "\n" +
 PituitaryP + PinealP + "\n" +
@@ -1640,7 +1732,7 @@ RESBrainLesion2 + "\n" +
 RESBrainLesion3 + "\n" +
 LesionVR + "\n" +
 WMLR + WMLLocationR + "\n" + 
-GCAR + " " + MTAR + " " + lobaratrophyR + "\n" +
+GCAR + " " + MTAR + " " + KoedamR + " " + lobaratrophyR + "\n" +
 ventriclesR + "\n" +
 MMKR + "\n" +
 PituitaryR + PinealR + "\n" +
