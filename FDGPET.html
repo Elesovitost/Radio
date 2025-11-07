@@ -70,6 +70,7 @@ table {width: auto; white-space: nowrap;}
 		paravazace <label class="CHB"><input type="checkbox" id="ChbParavasR" value="Zvýšená akumulace RF v průběhu lymfatik PHK po parc. extravazaci RF při aplikaci. " onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbParavasL" value="Zvýšená akumulace RF v průběhu lymfatik LHK po parc. extravazaci RF při aplikaci. "onChange="updateTexts()"><span>L</span></label>&nbsp;&nbsp;&nbsp;
 		nelačnění <label class="CHB"><input type="checkbox" id="ChbFull" value="Vysoká akumulace RF v kosterním svalstvu pravděpodobně při nedodržení lačnení. " onclick="updateTexts()"><span>+</span></label>&nbsp;&nbsp;
 		<label class="CHB"> RECIST <input type="checkbox" id="ChbRECIST" onChange="updateTexts()"><span>+</span></label>
+		<label class="CHB"> Vedlejší nálezy <input type="checkbox" id="ChbOtherFindings" onChange="updateTexts()"><span>+</span></label>
 	</div>
 
 	<img src="AORGANSTEST.png" >
@@ -1727,6 +1728,10 @@ table {width: auto; white-space: nowrap;}
 						<td class="right"><button id="ChbLiverCyst" class="buttonCheckbox">0</button></td>
 					</tr>
 					<tr>
+						<td>Incidentalom</td>
+						<td class="right"><button id="ChbLiverIncident" class="buttonCheckbox">0</button></td>
+					</tr>
+					<tr>
 						<td>Hemangiom</td>
 						<td class="right"><button id="ChbLiverHemangioma" class="buttonCheckbox">0</button></td>
 					</tr>
@@ -1915,6 +1920,10 @@ table {width: auto; white-space: nowrap;}
 						<td>Hyperplázie</td>
 						<td class="right"><label class="CHB"><input type="checkbox" id="ChbAdrenalHyperplasiaR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbAdrenalHyperplasiaL" onChange="updateTexts()"><span>L</span></label>
 						</td>
+					</tr>
+					<tr>
+						<td>Incidentalom</td>
+						<td class="right"><label class="CHB"><input type="checkbox" id="ChbAdrenalIncidentR" onChange="updateTexts()"><span>R</span></label><label class="CHB"><input type="checkbox" id="ChbAdrenalIncidentL" onChange="updateTexts()"><span>L</span></label>
 					</tr>
 					<tr>	
 						<td>Adenom</td>

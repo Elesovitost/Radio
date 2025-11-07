@@ -61,6 +61,7 @@
           #obecne > * { display:none !important; }
           #obecne > button.title { display:inline-block !important; }
           #obecne > label:has(#ChbRECIST) { display:inline-flex !important; }
+		  #obecne > label:has(#ChbOtherFindings) { display:inline-flex !important; }
 
           [id*="Lesion1SUV"],
           [id*="Lesion2SUV"],
@@ -173,12 +174,15 @@ js = js.replace(/drobná opacita bez zvýšené akumulace RF/g, 'drobná nespeci
 js = js.replace(/drobné opacity bez zvýšené akumulace RF/g, 'drobné nespecifické opacity');
 js = js.replace(/konsolidace s nízkou až střední akumulací RF/g, 'konsolidace');
 
-//játra hemangiom
-js = js.replace(/bez zvýšené akumulace RF charakteru hemangiom/g, 's perif. sycením a bez washoutu charakteru hemangiom');
+//játra 
+js = js.replace(/bez zvýšené akumulace RF\s*\(hemangiom/g, '(hemangiom');
+js = js.replace(/bez zvýšené akumulace RF benigního charakteru/g, 'bez washoutu benigního charakteru');
+
 
 //nadledviny
 js = js.replace(/bez zvýšené akumulace RF obrazu adenom/g, 'nízké denzity obrazu adenom');
 js = js.replace(/s podílem tuku a bez zvýšené akumulace RF obrazu myelolipom/g, 'tukové denzity obrazu myelolipom');
+js = js.replace(/s vyšší denzitou a intermediární akumulací RF/g, 's vyšší denzitou');
 
 //ledviny
 js = js.replace(/bez zvýšené akumulace RF obrazu AML/g, 'obrazu AML');

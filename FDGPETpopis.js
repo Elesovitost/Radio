@@ -724,6 +724,10 @@ function checkViability(text) {
 }
 
 
+// ostatní nálezy 
+
+var descriptionsOtherFindings = [];
+
 // obecne texts
 
  var ObecneTexts = "";
@@ -1081,9 +1085,19 @@ else if (locations.length > 0) locationText = locations.join(", ");
 
 if (locationText || specTeeth) {
   HeadTeethText = "Zvýšená akumulace RF v oblasti " + locationText;
-  if (specTeeth) HeadTeethText += " (" + specTeeth + ")";
-  HeadTeethText += ": odontogenní etiologie.";
+  if (specTeeth) {
+    HeadTeethText += " (" + specTeeth + ")";
+  }
+  HeadTeethText += " odontogenní etiologie.";
+
+  descriptionsOtherFindings.push(
+    "Zvýšená metabolická aktivita v oblasti zubních kořenů " +
+      locationText +
+      " odontogenní etiologie."
+  );
 }
+
+
 
 
 // Tonsils
@@ -2087,9 +2101,10 @@ var ThoraxHeartOther = document.getElementById("ThoraxHeartOther").value.trim();
 
 if (ThoraxHeartAtrialDilatR && ThoraxHeartAtrialDilatL) ThoraxHeartText += "Dilatace srdečních síní. ";
 else { 
-	if (ThoraxHeartAtrialDilatR) ThoraxHeartText += "Dilatace pravé srdeční síně. ";
+	if (ThoraxHeartAtrialDilatR) ThoraxHeartText += "Dilatace pravé srdeční síně. "; 
 	if (ThoraxHeartAtrialDilatL) ThoraxHeartText += "Dilatace levé srdeční síně. ";
 }
+descriptionsOtherFindings.push(ThoraxHeartText);
 
 if (ThoraxHeartValveMi && ThoraxHeartValveAo) ThoraxHeartText += "Náhrada mitrálních a aortální chlopně. ";
 else {
@@ -2693,14 +2708,18 @@ var ChbAbdomenInguinsL = document.getElementById("ChbAbdomenInguinsL").checked;
 
 var descriptions = [];
 
-// Jednoduché lokace
+if (ChbAbdomenRetrocruralR && ChbAbdomenRetrocruralL) {
+    descriptions.push("retrokrurálně bilat.");
+} else {
+    if (ChbAbdomenRetrocruralR) descriptions.push("retrokrurálně vpravo");
+    if (ChbAbdomenRetrocruralL) descriptions.push("retrokrurálně vlevo");
+}
+
 if (ChbAbdomenSubphrenic) descriptions.push("subfrenicky");
 if (ChbAbdomenPeriportal) descriptions.push("periportálně");
 if (ChbAbdomenMesenterial) descriptions.push("v mesenteriu");
 if (ChbAbdomenRetroperit) descriptions.push("v retroperitoneu");
-if (ChbAbdomenPelvic) descriptions.push("v pánvi");
 
-// Paraaortálně
 if (ChbAbdomenParaaortalR && ChbAbdomenParaaortalL) {
     descriptions.push("paraaortálně bilat.");
 } else {
@@ -2708,13 +2727,7 @@ if (ChbAbdomenParaaortalR && ChbAbdomenParaaortalL) {
     if (ChbAbdomenParaaortalL) descriptions.push("paraaortálně vlevo");
 }
 
-// Retrokrurálně
-if (ChbAbdomenRetrocruralR && ChbAbdomenRetrocruralL) {
-    descriptions.push("retrokrurálně bilat.");
-} else {
-    if (ChbAbdomenRetrocruralR) descriptions.push("retrokrurálně vpravo");
-    if (ChbAbdomenRetrocruralL) descriptions.push("retrokrurálně vlevo");
-}
+if (ChbAbdomenPelvic) descriptions.push("v pánvi");
 
 // --- 🧩 Pokročilá logika pro ilické uzliny (opravená) ---
 function combineIliac(side, common, external, internal) {
@@ -2729,7 +2742,6 @@ function combineIliac(side, common, external, internal) {
   return "při " + list.slice(0, -1).join(", ") + " a " + list.slice(-1) + " ilice " + side;
 }
 
-// pomocná pluralizace pro bilat.
 function pluralIliac(adj) {
   if (adj === "společné") return "společných";
   if (adj === "zevní") return "zevních";
@@ -2737,7 +2749,6 @@ function pluralIliac(adj) {
   return adj;
 }
 
-// set příznaků pro stranu -> seznam etáží
 function iliacSet(common, external, internal) {
   const s = [];
   if (common) s.push("společné");
@@ -2749,11 +2760,9 @@ function iliacSet(common, external, internal) {
 const setR = iliacSet(ChbAbdomenParaAICR, ChbAbdomenParaAIER, ChbAbdomenParaAIIR);
 const setL = iliacSet(ChbAbdomenParaAICL, ChbAbdomenParaAIEL, ChbAbdomenParaAIIL);
 
-// Pravidlo bilat.: pouze když je přesně 1 etáž na P a přesně 1 etáž na L a jsou stejné
 if (setR.length === 1 && setL.length === 1 && setR[0] === setL[0]) {
   descriptions.push("při " + pluralIliac(setR[0]) + " ilikách bilat.");
 } else {
-  // jinak vždy vypiš strany zvlášť (vícečetnost na jedné straně má přednost)
   const iliacR = combineIliac("vpravo", ChbAbdomenParaAICR, ChbAbdomenParaAIER, ChbAbdomenParaAIIR);
   const iliacL = combineIliac("vlevo",  ChbAbdomenParaAICL, ChbAbdomenParaAIEL, ChbAbdomenParaAIIL);
 
@@ -2761,9 +2770,6 @@ if (setR.length === 1 && setL.length === 1 && setR[0] === setL[0]) {
   if (iliacL) descriptions.push(iliacL);
 }
 
-
-
-// Inguinálně
 if (ChbAbdomenInguinsR && ChbAbdomenInguinsL) {
     descriptions.push("inguinálně bilat.");
 } else {
@@ -2843,6 +2849,7 @@ var AbdomenLiverText = "";
 
 var ChbLiverSteatosis = document.getElementById("ChbLiverSteatosis").checked;
 var buttonLiverCystText = document.getElementById("ChbLiverCyst").innerText;
+var buttonLiverIncidentText = document.getElementById("ChbLiverIncident").innerText;
 var buttonLiverHemangiomaText = document.getElementById("ChbLiverHemangioma").innerText;
 var ChbLiverResectionR = document.getElementById("ChbLiverResectionR").checked;
 var ChbLiverResectionL = document.getElementById("ChbLiverResectionL").checked;
@@ -2853,6 +2860,7 @@ var AbdomenLiverOther = document.getElementById("AbdomenLiverOther").value.trim(
 
 updateButtonTexts({
             'ChbLiverCyst': ['0', '+', '++'],
+			'ChbLiverIncident': ['0', '+', '++'],
 			'ChbLiverHemangioma': ['0', '+', '++']
         });
 
@@ -2866,10 +2874,16 @@ if (buttonLiverCystText === "+") {
     descriptions.push("s fotopenickými cystami");
 }
 
+if (buttonLiverIncidentText === "+") {
+    descriptions.push("s nespecifickým ložiskem bez zvýšené akumulace RF benigního charakteru");
+} else if (buttonLiverIncidentText === "++") {
+    descriptions.push("s nespecifickými vícečetnými ložisky bez zvýšené akumulace RF benigního charakteru");
+}
+
 if (buttonLiverHemangiomaText === "+") {
-    descriptions.push("s ložiskem bez zvýšené akumulace RF charakteru hemangiomu");
+    descriptions.push("s ložiskem periferního sycení postkontrastně bez zvýšené akumulace RF (hemangiom)");
 } else if (buttonLiverHemangiomaText === "++") {
-    descriptions.push("s vícečetnými ložisky bez zvýšené akumulace RF charakteru hemangiomů");
+    descriptions.push("s vícečetnými ložisky periferního sycení postkontrastně bez zvýšené akumulace RF (hemangiomy)");
 }
 
 if (ChbLiverResectionR && ChbLiverResectionL) {
@@ -3019,6 +3033,8 @@ var AbdomenAdrenalText = "";
 
 var ChbAdrenalAdenomaR = document.getElementById("ChbAdrenalAdenomaR").checked;
 var ChbAdrenalAdenomaL = document.getElementById("ChbAdrenalAdenomaL").checked;
+var ChbAdrenalIncidentR = document.getElementById("ChbAdrenalIncidentR").checked;
+var ChbAdrenalIncidentL = document.getElementById("ChbAdrenalIncidentL").checked;
 var ChbAdrenalHyperplasiaR = document.getElementById("ChbAdrenalHyperplasiaR").checked;
 var ChbAdrenalHyperplasiaL = document.getElementById("ChbAdrenalHyperplasiaL").checked;
 var ChbAdrenalMyelolipomaR = document.getElementById("ChbAdrenalMyelolipomaR").checked;
@@ -3039,6 +3055,21 @@ if (ChbAdrenalAdenomaR && ChbAdrenalAdenomaL) {
     if (ChbAdrenalAdenomaR) descriptionsAdrenal.push("pravá s ložiskem bez zvýšené akumulace RF obrazu adenomu");
     if (ChbAdrenalAdenomaL) descriptionsAdrenal.push("levá s ložiskem bez zvýšené akumulace RF obrazu adenomu");
 } 
+
+if (ChbAdrenalIncidentR && ChbAdrenalIncidentL) {
+  descriptionsAdrenal.push("bilat. ložiskově rozšířeny s vyšší denzitou a intermediární akumulací RF");
+  descriptionsOtherFindings.push("Incidentalomy obou nadledvin.");
+} else {
+  if (ChbAdrenalIncidentR) {
+    descriptionsAdrenal.push("pravá ložiskově rozšířena s vyšší denzitou a intermediární akumulací RF");
+    descriptionsOtherFindings.push("Incidentalom pravé nadledviny.");
+  }
+  if (ChbAdrenalIncidentL) {
+    descriptionsAdrenal.push("levá ložiskově rozšířena s vyšší denzitou a intermediární akumulací RF");
+    descriptionsOtherFindings.push("Incidentalom levé nadledviny.");
+  }
+}
+
 
 if (ChbAdrenalHyperplasiaR && ChbAdrenalHyperplasiaL) {
     descriptionsAdrenal.push("bilat. rozšířeny bez výrazněji zvýšené akumulace RF obrazu hyperplázie");
@@ -4249,6 +4280,17 @@ if (containsBanned) {
     }
 }
 
+// Ostatní nálezy
+var ChbOtherFindings = document.getElementById("ChbOtherFindings").checked;
+
+if (ChbOtherFindings && descriptionsOtherFindings.filter(t => t.trim() !== "").length > 0) {
+  OtherFindings = "Vedlejší nálezy: " + descriptionsOtherFindings.filter(t => t.trim() !== "").join(" ");
+} else {
+  OtherFindings = "";
+}
+
+
+
 
 // bez nových ložisek
 var ChbNoNew = document.getElementById("ChbNoNew").checked;
@@ -4261,33 +4303,23 @@ var RESText = document.getElementById("RESText");
 RESText.value = 
 RESTextNative + "\n" + 
 ExamCompareText + "\n" + 
-RESNeckLesion1 + "\n" +
-RESNeckLesion2 + "\n" +
-RESNeckLesion3 + "\n" +
-RESNeckLymphNode1 + "\n" +
+RESNeckLesion1 + "\n" + RESNeckLesion2 + "\n" + RESNeckLesion3 + "\n" + RESNeckLymphNode1 + "\n" +
 NeckOther1ResPriority + " " + NeckVCordsRes + "\n" +
-RESThoraxLesion1 + "\n" +
-RESThoraxLesion2 + "\n" +
-RESThoraxLesion3 + "\n" +
-RESThoraxLymphNode1 + "\n" +
+RESThoraxLesion1 + "\n" + RESThoraxLesion2 + "\n" + RESThoraxLesion3 + "\n" + RESThoraxLymphNode1 + "\n" +
 ThoraxOther1ResPriority + "\n" +
 ThoraxFluidFTRRes + ThoraxFluidFTLRes + ThoraxFluidFPRes + ThoraxEmbolisationRes + ThoraxThymusRes + "\n" +
-RESAbdomenLesion1 + " " + 
-RESAbdomenLesion2 + " " +
-RESAbdomenLesion3 + " " +
-RESAbdomenLymphNode1 + "\n" +
+RESAbdomenLesion1 + " " + RESAbdomenLesion2 + " " + RESAbdomenLesion3 + " " + RESAbdomenLymphNode1 + "\n" +
 AbdomenOther1ResPriority + "\n" +
 AbdomenProstateRes + "\n" +
 AbdomenFluidRes + " " + 
 AbdomenVesselsRes + "\n" +
-RESSkeletonLesion1 + "\n" +
-RESSkeletonLesion2 + "\n" +
-RESSkeletonLesion3 + "\n" +
+RESSkeletonLesion1 + "\n" + RESSkeletonLesion2 + "\n" + RESSkeletonLesion3 + "\n" +
 SkeletonTraumaRecentRes + "\n" +
 SkeletonOther1ResPriority + "\n" +
 SkeletonDegenerRes + " " + SkeletonJointsRes + "\n" +
 NeckThyroidRes + HeadTonsilsRes + "\n" +
 RESTextNoNew + "\n" +
+OtherFindings + "\n" +
 POPREMINDER
 ;
 
