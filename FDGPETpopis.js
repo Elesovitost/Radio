@@ -827,8 +827,8 @@ var NeckLesion1AllLocations = (NeckLesion1Location + " " + NeckLesion1AddLocatio
 
 if (NeckLesion1Loclargest !== "") { NeckLesion1Loclargest = NeckLesion1ActivityCopy + ", největší " + NeckLesion1Loclargest + " "; NeckLesion1Activity = ""; }
 if (NeckLesion1number !== "" && NeckLesion1Loclargest === "") {
-  NeckLesion1Size = NeckLesion1Size.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
-  NeckLesion1ComparisonText = NeckLesion1ComparisonText.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
+  NeckLesion1Size = NeckLesion1Size.replace("diametru ", "diametru do ").replace("rozměru ", "rozměru až ");
+  NeckLesion1ComparisonText = NeckLesion1ComparisonText.replace("diametru ", "diametru do ").replace("rozměru ", "rozměru až ");
 }
 
 var processedSentencePOPNeckLesion1 = processSentence(NeckLesion1number + " " + NeckLesion1type);
@@ -990,8 +990,8 @@ document.getElementById("DateCompare").addEventListener('change', () => document
 var NeckLymphNode1AllLocations = (NeckLymphNode1Location + " " + NeckLymphNode1AddLocation).trim();
 if (NeckLymphNode1Loclargest !== "") { NeckLymphNode1Loclargest = NeckLymphNode1ActivityCopy + ", největší " + NeckLymphNode1Loclargest + " "; NeckLymphNode1Activity = ""; }
 if (NeckLymphNode1number !== "" && NeckLymphNode1Loclargest === "") {
-  NeckLymphNode1Size = NeckLymphNode1Size.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
-  NeckLymphNode1ComparisonText = NeckLymphNode1ComparisonText.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
+  NeckLymphNode1Size = NeckLymphNode1Size.replace('diametru ', 'diametru do ').replace('rozměru ', 'rozměru až ');
+  NeckLymphNode1ComparisonText = NeckLymphNode1ComparisonText.replace('diametru ', 'diametru do ').replace('rozměru ', 'rozměru až ');
 }
 
 var processedSentencePOPNeckLymphNode1 = processSentence(NeckLymphNode1number + " " + NeckLymphNode1type);
@@ -1503,8 +1503,8 @@ var ThoraxLesion1AllLocations = (ThoraxLesion1Location + " " + ThoraxLesion1AddL
 
 if (ThoraxLesion1Loclargest !== "") { ThoraxLesion1Loclargest = ThoraxLesion1ActivityCopy + ", největší " + ThoraxLesion1Loclargest + " "; ThoraxLesion1Activity = ""; }
 if (ThoraxLesion1number !== "" && ThoraxLesion1Loclargest === "") {
-  ThoraxLesion1Size = ThoraxLesion1Size.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
-  ThoraxLesion1ComparisonText = ThoraxLesion1ComparisonText.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
+  ThoraxLesion1Size = ThoraxLesion1Size.replace("diametru ", "diametru do ").replace("rozměru ", "rozměru až ");
+  ThoraxLesion1ComparisonText = ThoraxLesion1ComparisonText.replace("diametru ", "diametru do ").replace("rozměru ", "rozměru až ");
 }
 
 var processedSentencePOPThoraxLesion1 = processSentence(ThoraxLesion1number + " " + ThoraxLesion1type);
@@ -1671,8 +1671,8 @@ document.getElementById("DateCompare").addEventListener('change', () => document
 var ThoraxLymphNode1AllLocations = (ThoraxLymphNode1Location + " " + ThoraxLymphNode1AddLocation).trim();
 if (ThoraxLymphNode1Loclargest !== "") { ThoraxLymphNode1Loclargest = ThoraxLymphNode1ActivityCopy + ", největší " + ThoraxLymphNode1Loclargest + " "; ThoraxLymphNode1Activity = ""; }
 if (ThoraxLymphNode1number !== "" && ThoraxLymphNode1Loclargest === "") {
-  ThoraxLymphNode1Size = ThoraxLymphNode1Size.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
-  ThoraxLymphNode1ComparisonText = ThoraxLymphNode1ComparisonText.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
+  ThoraxLymphNode1Size = ThoraxLymphNode1Size.replace('diametru ', 'diametru do ').replace('rozměru ', 'rozměru až ');
+  ThoraxLymphNode1ComparisonText = ThoraxLymphNode1ComparisonText.replace('diametru ', 'diametru do ').replace('rozměru ', 'rozměru až ');
 }
 
 var processedSentencePOPThoraxLymphNode1 = processSentence(ThoraxLymphNode1number + " " + ThoraxLymphNode1type);
@@ -2640,8 +2640,8 @@ var AbdomenLesion1AllLocations = (AbdomenLesion1Location + " " + AbdomenLesion1A
 
 if (AbdomenLesion1Loclargest !== "") { AbdomenLesion1Loclargest = AbdomenLesion1ActivityCopy + ", největší " + AbdomenLesion1Loclargest + " "; AbdomenLesion1Activity = ""; }
 if (AbdomenLesion1number !== "" && AbdomenLesion1Loclargest === "") {
-  AbdomenLesion1Size = AbdomenLesion1Size.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
-  AbdomenLesion1ComparisonText = AbdomenLesion1ComparisonText.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
+  AbdomenLesion1Size = AbdomenLesion1Size.replace("diametru ", "diametru do ").replace("rozměru ", "rozměru až ");
+  AbdomenLesion1ComparisonText = AbdomenLesion1ComparisonText.replace("diametru ", "diametru do ").replace("rozměru ", "rozměru až ");
 }
 
 var processedSentencePOPAbdomenLesion1 = processSentence(AbdomenLesion1number + " " + AbdomenLesion1type);
@@ -2693,12 +2693,14 @@ var ChbAbdomenInguinsL = document.getElementById("ChbAbdomenInguinsL").checked;
 
 var descriptions = [];
 
+// Jednoduché lokace
 if (ChbAbdomenSubphrenic) descriptions.push("subfrenicky");
 if (ChbAbdomenPeriportal) descriptions.push("periportálně");
 if (ChbAbdomenMesenterial) descriptions.push("v mesenteriu");
 if (ChbAbdomenRetroperit) descriptions.push("v retroperitoneu");
 if (ChbAbdomenPelvic) descriptions.push("v pánvi");
 
+// Paraaortálně
 if (ChbAbdomenParaaortalR && ChbAbdomenParaaortalL) {
     descriptions.push("paraaortálně bilat.");
 } else {
@@ -2706,6 +2708,7 @@ if (ChbAbdomenParaaortalR && ChbAbdomenParaaortalL) {
     if (ChbAbdomenParaaortalL) descriptions.push("paraaortálně vlevo");
 }
 
+// Retrokrurálně
 if (ChbAbdomenRetrocruralR && ChbAbdomenRetrocruralL) {
     descriptions.push("retrokrurálně bilat.");
 } else {
@@ -2713,47 +2716,75 @@ if (ChbAbdomenRetrocruralR && ChbAbdomenRetrocruralL) {
     if (ChbAbdomenRetrocruralL) descriptions.push("retrokrurálně vlevo");
 }
 
-if (ChbAbdomenParaAICR && ChbAbdomenParaAICL) {
-    descriptions.push("při společných ilikách bilat.");
-} else {
-    if (ChbAbdomenParaAICR) descriptions.push("při společné ilice vpravo");
-    if (ChbAbdomenParaAICL) descriptions.push("při společné ilice vlevo");
+// --- 🧩 Pokročilá logika pro ilické uzliny (opravená) ---
+function combineIliac(side, common, external, internal) {
+  const list = [];
+  if (common) list.push("společné");
+  if (external) list.push("zevní");
+  if (internal) list.push("vnitřní");
+
+  if (list.length === 0) return "";
+  if (list.length === 1) return "při " + list[0] + " ilice " + side;
+  if (list.length === 2) return "při " + list.join(" a ") + " ilice " + side;
+  return "při " + list.slice(0, -1).join(", ") + " a " + list.slice(-1) + " ilice " + side;
 }
 
-if (ChbAbdomenParaAIER && ChbAbdomenParaAIEL) {
-    descriptions.push("při zevních ilikách bilat.");
-} else {
-    if (ChbAbdomenParaAIER) descriptions.push("při zevní ilice vpravo");
-    if (ChbAbdomenParaAIEL) descriptions.push("při zevní ilice vlevo");
+// pomocná pluralizace pro bilat.
+function pluralIliac(adj) {
+  if (adj === "společné") return "společných";
+  if (adj === "zevní") return "zevních";
+  if (adj === "vnitřní") return "vnitřních";
+  return adj;
 }
 
-if (ChbAbdomenParaAIIR && ChbAbdomenParaAIIL) {
-    descriptions.push("při vnitřních ilikách bilat.");
-} else {
-    if (ChbAbdomenParaAIIR) descriptions.push("při vnitřní ilice vpravo");
-    if (ChbAbdomenParaAIIL) descriptions.push("při vnitřní ilice vlevo");
+// set příznaků pro stranu -> seznam etáží
+function iliacSet(common, external, internal) {
+  const s = [];
+  if (common) s.push("společné");
+  if (external) s.push("zevní");
+  if (internal) s.push("vnitřní");
+  return s;
 }
 
+const setR = iliacSet(ChbAbdomenParaAICR, ChbAbdomenParaAIER, ChbAbdomenParaAIIR);
+const setL = iliacSet(ChbAbdomenParaAICL, ChbAbdomenParaAIEL, ChbAbdomenParaAIIL);
+
+// Pravidlo bilat.: pouze když je přesně 1 etáž na P a přesně 1 etáž na L a jsou stejné
+if (setR.length === 1 && setL.length === 1 && setR[0] === setL[0]) {
+  descriptions.push("při " + pluralIliac(setR[0]) + " ilikách bilat.");
+} else {
+  // jinak vždy vypiš strany zvlášť (vícečetnost na jedné straně má přednost)
+  const iliacR = combineIliac("vpravo", ChbAbdomenParaAICR, ChbAbdomenParaAIER, ChbAbdomenParaAIIR);
+  const iliacL = combineIliac("vlevo",  ChbAbdomenParaAICL, ChbAbdomenParaAIEL, ChbAbdomenParaAIIL);
+
+  if (iliacR) descriptions.push(iliacR);
+  if (iliacL) descriptions.push(iliacL);
+}
+
+
+
+// Inguinálně
 if (ChbAbdomenInguinsR && ChbAbdomenInguinsL) {
-    descriptions.push("inguinální bilat.");
+    descriptions.push("inguinálně bilat.");
 } else {
     if (ChbAbdomenInguinsR) descriptions.push("inguinálně vpravo");
     if (ChbAbdomenInguinsL) descriptions.push("inguinálně vlevo");
 }
 
+// --- Výsledný text ---
 if (descriptions.length === 2) {
-    AbdomenLymphNode1LocationText = descriptions.join(' a ');
+  AbdomenLymphNode1LocationText = descriptions.join(" a ");
 } else if (descriptions.length > 2) {
-    var lastDescription = descriptions.pop();
-    var secondLastDescription = descriptions.pop();
-    AbdomenLymphNode1LocationText = descriptions.join(', ') + ', ' + secondLastDescription + ' a ' + lastDescription;
+  AbdomenLymphNode1LocationText =
+    descriptions.slice(0, -2).join(", ") +
+    ", " +
+    descriptions.slice(-2).join(" a ");
 } else {
-    AbdomenLymphNode1LocationText = descriptions.join(', ');
+  AbdomenLymphNode1LocationText = descriptions.join(", ");
 }
 
-
-document.getElementById('AbdomenLymphNode1Location').value = AbdomenLymphNode1LocationText;
-
+document.getElementById("AbdomenLymphNode1Location").value =
+    AbdomenLymphNode1LocationText;
 
 // Abdomen lymph node popis
 
@@ -2786,8 +2817,8 @@ document.getElementById("DateCompare").addEventListener('change', () => document
 var AbdomenLymphNode1AllLocations = (AbdomenLymphNode1Location + " " + AbdomenLymphNode1AddLocation).trim();
 if (AbdomenLymphNode1Loclargest !== "") { AbdomenLymphNode1Loclargest = AbdomenLymphNode1ActivityCopy + ", největší " + AbdomenLymphNode1Loclargest + " "; AbdomenLymphNode1Activity = ""; }
 if (AbdomenLymphNode1number !== "" && AbdomenLymphNode1Loclargest === "") {
-  AbdomenLymphNode1Size = AbdomenLymphNode1Size.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
-  AbdomenLymphNode1ComparisonText = AbdomenLymphNode1ComparisonText.replace('diametru ', 'diametru až ').replace('rozměru ', 'rozměru až ');
+  AbdomenLymphNode1Size = AbdomenLymphNode1Size.replace('diametru ', 'diametru do ').replace('rozměru ', 'rozměru až ');
+  AbdomenLymphNode1ComparisonText = AbdomenLymphNode1ComparisonText.replace('diametru ', 'diametru do ').replace('rozměru ', 'rozměru až ');
 }
 
 var processedSentencePOPAbdomenLymphNode1 = processSentence(AbdomenLymphNode1number + " " + AbdomenLymphNode1type);
@@ -3763,8 +3794,8 @@ var SkeletonLesion1AllLocations = (SkeletonLesion1Location + " " + SkeletonLesio
 
 if (SkeletonLesion1Loclargest !== "") { SkeletonLesion1Loclargest = SkeletonLesion1ActivityCopy + ", největší " + SkeletonLesion1Loclargest + " "; SkeletonLesion1Activity = ""; }
 if (SkeletonLesion1number !== "" && SkeletonLesion1Loclargest === "") {
-  SkeletonLesion1Size = SkeletonLesion1Size.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
-  SkeletonLesion1ComparisonText = SkeletonLesion1ComparisonText.replace("diametru ", "diametru až ").replace("rozměru ", "rozměru až ");
+  SkeletonLesion1Size = SkeletonLesion1Size.replace("diametru ", "diametru do ").replace("rozměru ", "rozměru až ");
+  SkeletonLesion1ComparisonText = SkeletonLesion1ComparisonText.replace("diametru ", "diametru do ").replace("rozměru ", "rozměru až ");
 }
 
 var processedSentencePOPSkeletonLesion1 = processSentence(SkeletonLesion1number + " " + SkeletonLesion1type);

@@ -16,11 +16,6 @@
 
       // --- TEXTOVÉ ÚPRAVY ---
       html = html.replace(/MR MOZKU/g, 'CT MOZKU');
-
-
-
-
-      // --- ODSTRANĚNÍ PŮVODNÍHO SCRIPTU FDGPETpopis.js ---
       html = html.replace(/<script[^>]*src=["']MRmozkupopis\.js["'][^>]*><\/script>/i, '');
 	  html = html.replace(/\bFLAIR\b/g, 'denzita');
 	  html = html.replace(/T1\s*C\+\s*/gi, 'sycení ');
@@ -29,8 +24,6 @@
 	  html = html.replace(/FLAIR\+/gi, 'hyperdenzní ');
 	  html = html.replace(/FLAIRizo/gi, 'izodenzní ');
 	  html = html.replace(/FLAIR-/gi, 'hypodenzní ');
-
-
 
 // --- DOPLNĚNÍ CSS ---
       html = html.replace(
@@ -47,7 +40,6 @@
 		  [id*="BrainLesion3Activity"] { display:none !important; }
 
 		  #BrainLesion1selectSignal #trT1,#trT2, #trDWI, #trSWI  { display:none !important; }
-		  
 
         </style></head>`
       );
@@ -57,7 +49,6 @@
       document.write(html);
       document.close();
 
-// --- DODATEČNÉ SKRÝVÁNÍ ---
 
 
 // --- DYNAMICKÉ NAČTENÍ A ÚPRAVA FDGPETpopis.js ---
@@ -111,9 +102,15 @@ setTimeout(() => {
 
 
 
-          const script = document.createElement('script');
-          script.textContent = js;
-          document.body.appendChild(script);
+const script = document.createElement('script');
+script.textContent = js;
+script.onload = () => {
+  console.log("✅ MRmozkupopis.js načten");
+  if (typeof updateTexts === 'function') {
+    updateTexts();
+  }
+};
+document.body.appendChild(script);
 
           console.log("MRmozkupopis.js načten a přepsán");
         })
