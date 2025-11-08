@@ -694,7 +694,7 @@ MkMenLezeR = "s rupturou";
  MkMenLezeP = "s šikmo probíhající linií vysoké SI ";
  MkMenLezeR = "s šikmou rupturou ";
 } else if (MkMenLeze === "koml") {
- MkMenLezeP = "s tvarovou defigurací, porušením kontinuity, s okrsky tekutiny ";
+ MkMenLezeP = "s tvarovou defigurací, nepravidelnými okrsky vysoké SI ";
  MkMenLezeR = "s komplexní rupturou ";
 } else if (MkMenLeze === "BH") {
  MkMenLezeP = "s odtržením vnitřní části a dislokací protilehle ";
@@ -791,8 +791,11 @@ LkMenLezeR = "s rupturou";
 } else if (LkMenLeze === "long") {
  LkMenLezeP = "s longitudinální linií vysoké SI ";
  LkMenLezeR = "s longitudinální rupturou ";
+} else if (MkMenLeze === "obl") {
+ LkMenLezeP = "s šikmo probíhající linií vysoké SI ";
+ LkMenLezeR = "s šikmou rupturou ";
 } else if (LkMenLeze === "koml") {
- LkMenLezeP = "s tvarovou defigurací, porušením kontinuity, s okrsky tekutiny ";
+ LkMenLezeP = "s tvarovou defigurací, nepravidelnými okrsky vysoké SI ";
  LkMenLezeR = "s komplexní rupturou ";
 } else if (LkMenLeze === "BH") {
  LkMenLezeP = "s odtržením vnitřní části a dislokací protilehle ";
@@ -927,48 +930,60 @@ if (LCLText === "LCL") {
 } 
 
 // LCA
+updateButtonTexts({
+			'LigLCARupt': ['0', 'I', 'II', 'III'],
+			'LigLCAPlastic': ['0', '+', '+/-', '-']
+        });
+
 let LigLCAText = "Přední zkřížený vaz je nízkého signálu, strmého průběhu, bez porušení kontinuity. ";
 let LigLCARes = "";
 
-const LigLCAI = document.getElementById("LigLCAI").checked;
-const LigLCAII = document.getElementById("LigLCAII").checked;
-const LigLCAIII = document.getElementById("LigLCAIII").checked;
+var buttonLigLCARuptText = document.getElementById("LigLCARupt").innerText;
 const LigLCAEdema = document.getElementById("LigLCAEdema").checked;
-const LigLCAPlasticOk = document.getElementById("LigLCAPlasticOk").checked;
-const LigLCAPlasticPr = document.getElementById("LigLCAPlasticPr").checked;
-const LigLCAPlasticR = document.getElementById("LigLCAPlasticR").checked;
+var buttonLigLCAPlasticText = document.getElementById("LigLCAPlastic").innerText;
+const LigLCACyclop = document.getElementById("LigLCACyclop").checked;
 const LigLCADegen = document.getElementById("LigLCADegen").checked;
 const LigLCACyst = document.getElementById("LigLCACyst").checked;
 const LigLCAOther = document.getElementById("LigLCAOther").value;
 
-if (LigLCAIII) {
-	LigLCAText = "Přední zkřížený vaz má výrazně až totálně porušenou kontinuitu, rozvlákněn. ";
-	LigLCARes = "Přední zkřížený vaz s high-grade rupturou ";
-}
-if (LigLCAII) {
-	LigLCAText = "Přední zkřížený vaz má částečně porušenou kontinuitu, vysokou SI, část zachována. ";
-	LigLCARes = "Přední zkřížený vaz s parciální rupturou ";
-}
-if (LigLCAI) {
+
+if (buttonLigLCARuptText === "I") {
 	LigLCAText = "Přední zkřížený vaz má zachovalou kontinuitu, ale rozšířen či s vyšší SI, event. nezachován strmý průběh. ";
 	LigLCARes = "Přední zkřížený vaz v.s. s distenzí / low-grade parc. lézí ";
 }
+if (buttonLigLCARuptText === "II") {
+	LigLCAText = "Přední zkřížený vaz má částečně porušenou kontinuitu, vysokou SI, část zachována. ";
+	LigLCARes = "Přední zkřížený vaz s parciální rupturou ";
+}
+if (buttonLigLCARuptText === "III") {
+	LigLCAText = "Přední zkřížený vaz má výrazně až totálně porušenou kontinuitu, rozvlákněn. ";
+	LigLCARes = "Přední zkřížený vaz s high-grade rupturou ";
+}
+
 if (LigLCAEdema) {
 	LigLCAText += "Vysoká SI v PD FS v kostní dřeni laterálního kondylu femuru a dorzálních aspektů tibie. ";
 	LigLCARes += "a s odpovídajícím postkontuzním edémem femuru a tibie. ";
 }
-if (LigLCAPlasticOk) {
-	LigLCAText = "Náhrada předního zkříženého vazu je nízké SI, bez porušení kontinuity. ";
-	LigLCARes = "St.p. plastice LCA bez zn. re-ruptury ";
+
+if (buttonLigLCAPlasticText === "+") {
+	LigLCAText = "Náhrada předního zkříženého vazu je nízké SI, strmého průběhu, bez porušení kontinuity. ";
+	LigLCARes = "St.p. plastice LCA bez zn. re-ruptury. ";
 }
-if (LigLCAPlasticPr) {
-	LigLCAText = "Náhrada předního zkříženého vazu je vyšší SI, část vláken se jeví porušena. ";
-	LigLCARes = "St.p. plastice LCA se susp. parciální lézí ";
+if (buttonLigLCAPlasticText === "+/-") {
+	LigLCAText = "Náhrada předního zkříženého vazu je s nehomogenně vyšší SI, část vláken se jeví porušena. ";
+	LigLCARes = "St.p. plastice LCA s parciální lézí náhrady. ";
 }
-if (LigLCAPlasticR) {
-	LigLCAText = "Náhrada předního zkříženého vazu je nehomogenní, rozvlákněna, s výrazně až úplně porušenou kontinuitou. ";
-	LigLCARes = "St.p. plastice LCA s re-rupturou ";
+
+if (buttonLigLCAPlasticText === "-") {
+	LigLCAText = "Náhrada předního zkříženého vazu je rozvlákněna, s výrazně až úplně porušenou kontinuitou. ";
+	LigLCARes = "St.p. plastice LCA s re-rupturou. ";
 }
+
+if (LigLCACyclop) {
+	LigLCAText += "Okrsek nízké SI v T1W i T2W před náhradou. ";
+	LigLCARes += "Kyklop léze. ";
+}
+
 if (LigLCADegen) {
 	LigLCAText = "Přední zkřížený vaz vykazuje zvýšenou SI v T2W, je rozšířen, bez zjevné poruchy kontinuity. ";
 	LigLCARes = "Přední zkřížený vaz s mukoidní degenerací. ";
@@ -1119,7 +1134,7 @@ function mergeLateralSentencesPOP() {
 }
 mergeLateralSentencesPOP();
 
-// kompartment
+// sloučení femuru a tibie na: kompartment
 MRKneePOPText.value = MRKneePOPText.value.replace(/kondyl femuru i plato tibie/g, 'kompartment');
 
 // Sloučení med lat

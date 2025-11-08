@@ -52,9 +52,9 @@ const segmentTemplates = {
     HERLF: ["F", "+"],
     MIG: ["M0", "M▲", "M▼"],
     PF: ["0", "1", "2", "3"],
-    PR: ["0", "1", "2", "3"],
+    PR: ["0", "S", "1", "2", "3", "F"],
     PK: ["0", "1", "2", "3"],
-    LR: ["0", "1", "2", "3"],
+    LR: ["0", "S", "1", "2", "3", "F"],
     LF: ["0", "1", "2", "3"]
   },
   X6: {
@@ -714,6 +714,10 @@ if (X01PKText === "0") {
 if (X01PRText === "0") {
  X01stenozyP += ""; 
  X01stenPR = "";  
+ X01epifibPR = "";
+} else if (X01PRText === "S") {
+ X01stenozyP += "Zúžení laterálního recesu vpravo. ";
+ X01stenPR = "Stenóza laterálního recesu l.dx. ";
 } else if (X01PRText === "1") {
  X01stenozyP += "Mírný tlak na pravostranný kořen v durálním vaku. ";
  X01stenPR = "Mírný tlak na kořen Root1 l.dx. ";
@@ -723,11 +727,20 @@ if (X01PRText === "0") {
 } else if (X01PRText === "3") {
  X01stenozyP += "Komprese pravostranného kořene v durálním vaku / laterálním recesu. ";
  X01stenPR = "Výrazný útlak kořene Root1 l.dx. ";
-} 
+} else if (X01PRText === "F") {
+ X01stenozyP += "Epidurálně vpravo okrsek nízké SI v T1W i T2W. ";
+ X01stenPR = "";
+ X01epifibPR = "Epidurální fibróza vpravo. ";
+}
+
 
 if (X01LRText === "0") {
  X01stenozyP += "";  
  X01stenLR = "";
+ X01epifibLR = "";
+} else if (X01LRText === "S") {
+ X01stenozyP += "Zúžení laterálního recesu vpravo. ";
+ X01stenLR = "Stenóza laterálního recesu l.sin. ";
 } else if (X01LRText === "1") {
  X01stenozyP += "Mírný tlak na levostranný kořen v durálním vaku. ";
  X01stenLR = "Mírný tlak na kořen Root1 l.sin. ";
@@ -737,8 +750,11 @@ if (X01LRText === "0") {
 } else if (X01LRText === "3") {
  X01stenozyP += "Komprese levostranného kořene v durálním vaku / laterálním recesu. ";
  X01stenLR = "Výrazný útlak kořene Root1 l.sin. ";
-} 
-
+} else if (X01LRText === "F") {
+ X01stenozyP += "Epidurálně vpravo okrsek nízké SI v T1W i T2W. ";
+ X01stenLR = "";
+ X01epifibLR = "Epidurální fibróza vlevo. ";
+}
 
 
 if (X01PFText === X01LFText) {
@@ -830,24 +846,40 @@ let X01stenosisreasonALLArray = [X01listR, X01herniacePodklad, X01degenerPodklad
 
 if (X01stenosisreasonALLArray.length > 2) {
     let lastReason = X01stenosisreasonALLArray.pop();
-    X01stenosisreasonALL = X01stenosisreasonALLArray.join(", ") + " a " + lastReason + ". ";
+    X01stenosisreasonALL = " na podkladě " + X01stenosisreasonALLArray.join(", ") + " a " + lastReason + ". ";
 } else if (X01stenosisreasonALLArray.length == 2) {
     let firstReason = X01stenosisreasonALLArray[0];
     let secondReason = X01stenosisreasonALLArray[1];
-    X01stenosisreasonALL = firstReason + " a " + secondReason + ". ";
+    X01stenosisreasonALL = " na podkladě " + firstReason + " a " + secondReason + ". ";
 } else if (X01stenosisreasonALLArray.length == 1) {
-    X01stenosisreasonALL = X01stenosisreasonALLArray[0] + ". ";
+    X01stenosisreasonALL = " na podkladě " + X01stenosisreasonALLArray[0] + ". ";
 } else {
     X01stenosisreasonALL = "";
 }
 
 // stenóza v závěru ano / ne a proč
-if (X01PKText === "0" && X01PRText === "0" && X01LRText === "0" && X01PFText === "0" && X01LFText === "0") {
-X01stenozyR = "";	
+if (
+  X01PKText === "0" &&
+  (X01PRText === "0" || X01PRText === "F") &&
+  (X01LRText === "0" || X01LRText === "F") &&
+  X01PFText === "0" &&
+  X01LFText === "0"
+) {
+  if (X01PRText === "F" || X01LRText === "F") {
+    X01stenozyR = X01epifibPR + " " + X01epifibLR;
+  } else {
+    X01stenozyR = "";
+  }
 } else {
-X01stenozyR = X01stenosisALL + 
-" na podkladě " + X01stenosisreasonALL;
-X01herniaceR = ""; X01degenerdR = ""; X0listezaR = ""; // X01edemR = "";
+  if (X01PRText === "F" || X01LRText === "F") {
+    X01stenozyR = X01stenosisALL + X01stenosisreasonALL + " " + X01epifibPR + " " + X01epifibLR;
+  } else {
+    X01stenozyR = X01stenosisALL + X01stenosisreasonALL;
+  }
+  X01herniaceR = "";
+  X01degenerdR = "";
+  X0listezaR = "";
+  // X01edemR = "";
 }
 
 

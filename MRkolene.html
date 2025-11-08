@@ -39,7 +39,7 @@
 		<td>Wiberg</td>
 		<td><button id="PkWibergButton" class="Button40" onmousedown="cyclePkWibergText(event)">I</button></td>
 		<td>&nbsp;&nbsp;&nbsp;</td>
-		<td>st.p.luxaci patelly </td>
+		<td>st.p.lux. patelly </td>
 		<td><label class="CHB"><input type="checkbox" id="checkboxLuxacePatella" onChange="updateTexts()"><span>+</span></label></td>
 		<td>&nbsp;&nbsp;&nbsp;</td>
 		<td>bipartita</td>
@@ -273,6 +273,7 @@
 	  <option value="hor">horizontální</option>
 	  <option value="rad">radiální</option>
 	  <option value="long">longitudinální</option>
+	  <option value="obl">šikmá</option>
 	  <option value="koml">komplexní</option>
 	  <option value="BH">bucket handle</option>
 	  <option value="PB">parrot beak</option>
@@ -354,15 +355,19 @@
 		<table>
 			<tr>
 				<td>Ruptura</td>
-				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCAI" onChange="updateTexts()"><span>I</span></label><label class="CHB"><input type="checkbox" id="LigLCAII" onChange="updateTexts()"><span>II</span></label><label class="CHB"><input type="checkbox" id="LigLCAIII" onChange="updateTexts()"><span>III</span></label></td>
+				<td class="right"><button id="LigLCARupt" class="buttonCheckbox" onChange="updateTexts()">0</button></td>
 			</tr>
 			<tr>
 				<td>Edém</td>
 				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCAEdema" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
-				<td>Plastika</td>
-				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCAPlasticOk" onChange="updateTexts()"><span>+</span></label><label class="CHB"><input type="checkbox" id="LigLCAPlasticPr" onChange="updateTexts()"><span>+-</span></label><label class="CHB"><input type="checkbox" id="LigLCAPlasticR" onChange="updateTexts()"><span>-</span></label></td>
+				<td>Plastika (štěp)</td>
+				<td class="right"><button id="LigLCAPlastic" class="buttonCheckbox" onChange="updateTexts()">0</button></td>
+			</tr>
+			<tr>
+				<td>Kyklop</td>
+				<td class="right"><label class="CHB"><input type="checkbox" id="LigLCACyclop" onChange="updateTexts()"><span>+</span></label></td>
 			</tr>
 			<tr>
 				<td>Degenerace</td>

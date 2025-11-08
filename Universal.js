@@ -807,3 +807,7 @@ document.addEventListener('mouseup', function(event) {
     event.target.classList.remove('partiallyDisappear');
   }
 });
+
+
+// CUSTOM TABLES
+
