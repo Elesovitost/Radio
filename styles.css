@@ -41,12 +41,12 @@ input[type=number]::-ms-clear, input[type=number]::-ms-reveal { display: none; }
 .PHsmall { font-size: 12px; text-align: center; padding: 0;}
 .PHsmall::placeholder {font-size: 10px; text-align: center;}
 
-
+/* BODY */
 body {
     margin: 0;
     padding: 0px;
 	min-width: 1008px;
-	background-color: #FFFFFF;
+	background-color: rgba(255, 255, 255, 0.1); /* 10% průhlednosti */
 }
 
 .bodyINDEX {padding: 3px;}
@@ -55,17 +55,16 @@ body, button, input, textarea {
     font-family: 'Tahoma', sans-serif; color: #000000; scroll-behavior: smooth; 
 }
 
+/* IFRAMES   */
+.page-container {display: flex; align-items: flex-start; max-width: 1020px; min-height: 10 px; z-index: 2;}
+iframe, iframes {min-height: 10px; z-index: 2; background-color: transparent;} 
+
+
 /* rozmazání obrazovky */
 .blur {
     filter: blur(5px);
     pointer-events: none; /* Zamezí interakci s rozostřeným pozadím */
 }
-
-
-#IND {display: flex; justify-content: space-between; /* This spaces out the children */}
-#indikace {width: 100%; box-sizing: border-box;}
-#REMINDER {width: 99%; box-sizing: border-box; margin: 5px;}
-.nowrap {white-space: nowrap;}
 
 
 /* BARS */
@@ -76,8 +75,14 @@ body, button, input, textarea {
 @keyframes bounceHand { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
 
+/* Indikace */
+#IND {display: flex; justify-content: space-between; /* This spaces out the children */}
+#indikace {width: 100%; box-sizing: border-box;}
+#REMINDER {width: 99%; box-sizing: border-box; margin: 5px;}
+.nowrap {white-space: nowrap;}
 
-/* DROPDOWN MENU UPPER */
+
+/* DROPDOWN MENU MAIN */
 .container {text-align: center; overflow: auto; }
 .dropdown {position: relative; display: inline-block; color: #000000; margin-right: 0px;}
 	.dropbtn {background-color: rgba(157, 170, 162, 0.5); width: 140px; height: 26px; color: #000000; padding: 3px; font-size: 13px; border: 1 px; cursor: pointer; margin-bottom: 2px;}
@@ -97,14 +102,8 @@ body, button, input, textarea {
     color: #000000;
 }
 
-/* IFRAMES   */
-.page-container {display: flex; align-items: flex-start; max-width: 1020px; min-height: 10 px; z-index: 2;}
-iframe, iframes {min-height: 10px; z-index: 2; background-color: #FFFFFF;} 
-
-
-
 /* divs  */
-.MainDIV {max-width: 1006px; border: 1px solid #000000; } 
+.MainDIV {max-width: 1006px; border: 1px solid #000000; background-color: white;} 
 .standardwidth {max-width: 1000px; border: 0px solid #000000; padding: 3px;}
 .standardwidthHALF {max-width: 496px; border: 0px solid #000000; padding: 3px; flex-grow: 1;}
 .standardwidthV {max-width: 1000px; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-left: 2px; padding-right: 2px; }
@@ -113,7 +112,7 @@ iframe, iframes {min-height: 10px; z-index: 2; background-color: #FFFFFF;}
 
 .TextsDIV {max-width: 1000px; border: 1px solid #000000; padding: 3px; border-bottom: none;} 
 
-.mydiv0 {background-color: #EDCC8B; font-size: 13; font-weight: bold; }
+.mydiv0 {background-color: #EDCC8B; font-size: 13; font-weight: bold; border: 1px solid grey; }
 .mydivIND {background-color: #E9E0D3; font-Size: 12; }
 .mydiv1 {background-color: #DDD5D5; font-Size: 12;}
 .mydivTNM {background-color: none;}
@@ -269,12 +268,9 @@ tr { height: 20px;}
 /* BUTTONS */
 
 button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-color: #FFFFFF; text-align: center; justify-content: center; display: inline-flex;}
-.title {width: 86px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12; }
-.titleBrain {width: 96px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
-.titleKnee {width: 126px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
-.titleShoulder {width: 126px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
-.titleBreast {width: 96px; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
-.titleFlex {width: auto; background-color: #E9E0D3; text-align: left; font-weight: bold; border: 1px solid #000000; font-Size: 12;}
+
+.title, .titleBrain, .titleKnee, .titleShoulder, .titleBreast, .titleFlex {background-color:#E9E0D3; text-align:left; font-weight:bold; border:1px solid #000; font-size:12px;}
+.title{width:86px;} .titleBrain{width:96px;} .titleKnee, .titleShoulder{width:126px;} .titleBreast{width:96px;} .titleFlex{width:auto;}
 
 
 .myButtonLesion {width: 20px; background-color: #D3DCE9; text-align: center; justify-content: center;}
@@ -709,7 +705,8 @@ table.compact-tnm-table td {
     mask-size: 100% 100%;
 }
 
-/* CUSTOM SELECT  */
+
+/* FOR ALL */
 
 
 
@@ -722,6 +719,92 @@ table.compact-tnm-table td {
 [id*="table"] td {border-radius: 13px;}
 
 .CHB span, button, select {cursor: pointer;}
+
+
+/* hover efekt */
+
+[class*="others"]:hover, [class*="Button"]:hover, [class*="button"]:hover, .CHB span:hover, select:hover, [class*="numbers"]:hover, textarea:hover, input:hover,
+.tumor_button:hover, .lymphnode_button:hover, .other_button:hover  {
+  box-shadow: 0 0 4px 1px rgba(0,0,0,0.3);
+  box-shadow: 0 0 1px 1px rgba(0,0,0,0.8);
+}
+
+
+/* COLORS */
+body, button, input, textarea, select, option,
+.dropdown, .dropbtn, .dropdown-content a, .remove-button, .MainDIV, .standardwidth, .standardwidthHALF, .standardwidthV, .TextsDIV,
+.CTLesion1, .CTLesion2, .CTLesion3, .ProstateLNReg, .ProstateLNNonReg, .RectTuLNReg, .CervixLNReg,
+.titleRect, .titleCervix, .title, .titleBrain, .titleKnee, .titleShoulder, .titleBreast, .titleFlex,
+.buttonCLICK, .buttonTEXT, .CHB span, .highlight, .noticeBar, .headerBar,
+.dropdown-content, .dropbtn, .standardwidth, .title*, .ProstateLNRegclass, .ProstateLNNonRegclass,
+.RectTuLNRegclass, .CervixLNRegclass, .options, .optionsWML, .suboptions, .buttonRTG,
+#NADPISY, #NADPISY0, #WM, #GMSA, #Loziska, #MMK, #hypoepi, #ostatni, #angio, #kneeobecne, #komppredni, #kommedialni, #kommedlat, #komlateralni, #vazy, #others, #shouldergeneral, #AC, #GH, #RM, #labrum, #biceps, #shoulderothers {
+  background-color: #FFFFFF; color: #000000;  border-color: #FFFFFF; /* white background, black text */
+}
+
+
+.mydivIND, .titleRect, .titleCervix, .title, .titleBrain, .titleKnee, .titleShoulder, .titleBreast, .titleFlex, .UZsubtable .BG1, .UZkarotsubtable .BG1, .buttonTEXT, .buttonCLICK {
+  background-color: #E9E0D3; /* light beige */
+}
+
+#TABULKA thead, .myButtonLesion, .myButtonLN, body.TNM th {
+  background-color: #D3DCE9; /* light blue-gray */
+}
+
+.dropdown-content a:hover, .remove-button, .myButtonLesionS, .myButtonLNselect, .toggleColorRed, .myButtonO {
+  background-color: #FFADAD; /* light pink */
+}
+
+.mydiv0, #PETselect.bezPET {
+  background-color: #EDCC8B; /* sand / light gold */
+}
+
+.mydiv1 {
+  background-color: #DDD5D5; /* light gray */
+}
+
+.buttonCheckbox.red-background, .ButtonCycleText.red-background,
+.CHB input[type="checkbox"]:checked + span {
+  background-color: #D4A29C; /* clay red */
+}
+
+#MRLPshape td, .highlight {
+  border-color: #E8DF90; /* pale yellow */
+}
+
+.prostatesegments, .ProstateLNReg, .ProstateLNNonReg, .RectTuLNReg, .CervixLNReg, .overlay table, .buttonRTG, .button-active {
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.5); /* shadow black 50% */
+}
+
+.headerBar, .button-active {
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.6); /* shadow black 60% */
+}
+
+.CTLesion1, .CTLesion2, .CTLesion3, .buttonRTG {
+  background-color: rgba(255,255,255,0.7); /* white 70% */
+}
+
+.headerBar, .NaFLocation, body {
+  background-color: rgba(255,255,255,0.5); /* white 50% */
+}
+
+.buttonX {
+  background-color: rgba(255,255,255,0.8); /* white 80% */
+}
+
+#L01, #L12, #L23, #L34, #L45, #L5S1 {
+  background-color: #f5f5f5; /* soft gray */
+}
+
+.CTLesion1.active, .CTLesion2.active, .CTLesion3.active, .NaFLocation.active {
+  color: red; /* red */
+}
+
+.NaFLocation.mild {
+  color: purple; /* purple */
+}
+
+
 
 
 
