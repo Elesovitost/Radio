@@ -646,20 +646,32 @@ document.getElementById('saveButton').addEventListener('click', function () {
 
 // check AI
 
+
 const btn = document.getElementById('checkAI');
 if (btn) {
   btn.addEventListener('click', () => {
-    // Přečteme obsah viditelné textarea FINALCOMPLETEText
     const textareaCOMP = document.getElementById('FINALCOMPLETEText');
-    const completeText = textareaCOMP ? textareaCOMP.value.trim() : "";
+    if (!textareaCOMP) return;
 
-    //alert("📤 Text odeslaný do AI:\n\n" + completeText);
+    // celý text
+    const completeText = textareaCOMP.value.trim();
 
-    zkontrolujAI(completeText);
+    // označený text (pokud je)
+    const selectedText = textareaCOMP.value.substring(
+      textareaCOMP.selectionStart,
+      textareaCOMP.selectionEnd
+    ).trim();
+
+    // výpis do konzole
+    console.log("📤 Celý text odesílaný do AI:\n", completeText);
+    console.log("📤 Označený text:\n", selectedText || "(nic neoznačeno)");
+
+    // odeslání obojího do AI
+    zkontrolujAI(completeText, selectedText);
   });
 }
 
-async function zkontrolujAI(completeText) {
+async function zkontrolujAI(completeText, selectedText = "") {
   const output = document.getElementById('aiOutput');
   const resultDiv = document.getElementById('aiResult');
 
@@ -671,21 +683,26 @@ async function zkontrolujAI(completeText) {
   output.innerText = "⏳ AI analyzuje...";
   resultDiv.style.display = 'block';
 
-  // Odešleme JSON s polem 'text'
   try {
     const response = await fetch("https://radio-ai-backend.onrender.com/api/check", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: completeText })
+      body: JSON.stringify({
+        text: completeText,
+        selected: selectedText || null
+      })
     });
 
     const data = await response.json();
     output.innerText = data.result || "⚠️ Žádná odpověď od AI.";
+
+    // výpis odpovědi do konzole
+    console.log("✅ Odpověď AI:", data);
   } catch (error) {
     output.innerText = "❌ Chyba připojení: " + error.message;
+    console.error("❌ Chyba připojení:", error);
   }
 }
-
 
 
 	// EDIT mód
