@@ -29,7 +29,7 @@ input[type=number]::-ms-clear, input[type=number]::-ms-reveal { display: none; }
 
 /* BODY */
 body {
-    margin: 0;
+    margin: 0px;
     padding: 0px;
 	min-width: 1008px;
 	background-color: rgba(255, 255, 255, 0.1); /* 10% průhlednosti */
@@ -89,7 +89,7 @@ iframe, iframes {min-height: 10px; z-index: 2; background-color: transparent;}
 }
 
 /* divs  */
-.MainDIV {max-width: 1006px; border: 1px solid #000000; background-color: white;} 
+.MainDIV {max-width: 1006px; border: 0px solid #000000; background-color: white;} 
 .standardwidth {max-width: 1000px; border: 0px solid #000000; padding: 3px;}
 .standardwidthHALF {max-width: 496px; border: 0px solid #000000; padding: 3px; flex-grow: 1;}
 .standardwidthV {max-width: 1000px; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-left: 2px; padding-right: 2px; }
@@ -485,8 +485,6 @@ input {  border: 1px solid #000000; text-align: left; padding-left: 5px; border-
 .TNMtable {width: 100%; }
 
 body.TNM, body.TNM p {
-    margin: 0;
-    padding: 0;
     font-family: 'Tahoma', sans-serif; 
     color: #000000; 
     scroll-behavior: smooth; 
@@ -495,7 +493,6 @@ body.TNM, body.TNM p {
 
 body.TNM .standardwidth {
     max-width: 1000px; 
-    border: 1px solid #000000;
 }
 
 body.TNM {
@@ -504,7 +501,6 @@ body.TNM {
 }
 
 body.TNM th, body.TNM td {
-    border: 1px solid #cccccc;
     padding: 1px;
     text-align: left;
 }
@@ -706,6 +702,10 @@ table.compact-tnm-table td {
 
 .CHB span, button, select {cursor: pointer;}
 
+.standardwidthTNM, .standardwidth, .MainDIV, #imageContainer img {
+  overflow: hidden; 
+}
+
 
 /* hover efekt */
 
@@ -823,6 +823,5 @@ table, th, td {
 hr {
   border-color: #D3DCE9;
 }
-
 
 

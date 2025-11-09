@@ -148,7 +148,8 @@
   <!-- Pravá skupina -->
   <div style="display: flex; gap: 4px;">
     <button id="toggleEdit" class="buttonCLICK">📝 EDIT</button>
-    <button id="checkAI" class="buttonCLICK">🔍 AI</button>
+    <button id="checkAI" class="buttonCLICK hidden">🔍 AI</button>
+	<button id="AIcopy" class="buttonCLICK">📋 AI COPY</button>
     <button id="saveButton" class="buttonCLICK">💾 SAVE</button>
     <button id="loadButton" class="buttonCLICK">📂 LOAD</button>
   </div>
@@ -163,7 +164,7 @@
   
 <div id="aiResult" class="standardwidthFinalText" style="margin-top: 10px; display: none;">
   <div style="font-size: 14px; margin-bottom: 0px;">
-	<button id="AIresult" class="buttonTEXT">📋 AI CHECK</button>
+	<button id="AIresult" class="buttonTEXT hidden">📋 AI CHECK</button>
   <pre id="aiOutput" style="white-space: pre-wrap; background: #f7f7f7; padding: 4px; border: 1px solid #ccc; font-size: 12px; line-height: 1.0;"></pre>
   </div>
 </div>
@@ -702,6 +703,50 @@ async function zkontrolujAI(completeText, selectedText = "") {
     output.innerText = "❌ Chyba připojení: " + error.message;
     console.error("❌ Chyba připojení:", error);
   }
+}
+
+
+// 📋 AI COPY – zkopíruje připravený prompt do schránky
+const btnAIcopy = document.getElementById('AIcopy');
+if (btnAIcopy) {
+  btnAIcopy.addEventListener('click', () => {
+    const textareaCOMP = document.getElementById('FINALCOMPLETEText');
+    if (!textareaCOMP) return;
+
+    const complete = textareaCOMP.value.trim();
+    const selected = textareaCOMP.value.substring(
+      textareaCOMP.selectionStart,
+      textareaCOMP.selectionEnd
+    ).trim();
+
+    // základní prompt + celý text
+    let out =
+`Toto je radiologický popis vyšetření:
+
+${complete}
+
+Proveď analýzu radiologického vyšetření z hlediska srozumitelnosti. Ber v úvahu odbornou terminologii a specifika popisů. Absenci přísudků toleruj. Typické zkratky toleruj. Je to text pro jiné lékaře. Úkoly:
+Upozorni na nesmyslná nebo neadekvátní spojení, nepochopitelné nebo neukončené věty, překlepy, gramatické chyby. 
+Zkontroluj, zda závěr odpovídá popisu, nejsou v rozporu (stranové, faktické a jiné).
+Uváděj jen chyby, nekopíruj text zadání.`;
+
+    // pokud je něco označeno, přidej i klíčovou patologii + úkol
+    if (selected) {
+      out +=
+`\n\n---\nToto je klíčová patologie:
+${selected}
+
+Úkol: s ohledem na ostatní dostupné informace proveď diferenciální diagnostiku s pravděpodobnostmi. Použij k tomu odbornou literaturu a servery.`;
+    }
+
+    navigator.clipboard.writeText(out)
+      .then(() => {
+        console.log("✅ AI prompt zkopírován do schránky.");
+        highlightTextInTextarea("FINALCOMPLETEText", document.getElementById("FINALCOMPLETEText").value);
+        if (typeof showPopup === "function") showPopup("AI prompt zkopírován");
+      })
+      .catch(err => console.error("❌ Copy failed:", err));
+  });
 }
 
 
