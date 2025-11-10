@@ -259,144 +259,110 @@ copyRES.addEventListener('click', function() {
 });
 
 
-
-
 // IMAGES
 
-
-// Define a general structure for managing images
-const imageConfigs = [
-  {
-    imageElementId: 'krknodImage',
-    imageIndex: 1,
-    imagePath: './pickrknod/krknod-',
-    maxIndex: 34,
-    focusElementId: 'NeckLymphNode1AddLocation',
-    selectElementId: 'NeckLymphNode1AddLocation',
-    fileExtension: '.jpg'
-  },
-  {
-    imageElementId: 'mednodImage',
-    imageIndex: 1,
-    imagePath: './picmednod/mednod-',
-    maxIndex: 28,
-    focusElementId: 'ThoraxLymphNode1AddLocation',
-    selectElementId: 'ThoraxLymphNode1AddLocation',
-    fileExtension: '.jpg'
-  },
-  {
-    imageElementId: 'chestsegImage',
-    imageIndex: 2,
-    imagePath: './picchestseg/chestseg-',
-    maxIndex: 28,
-    focusElementsIds: ['ThoraxLesion1AddLocation'],
-    selectElementsIds: ['ThoraxLesion1AddLocation'],
-    fileExtension: '.png'
-  }
-];
-
-// Initialize each image configuration
-imageConfigs.forEach(config => {
-  const imageElement = document.getElementById(config.imageElementId);
-  let isMouseDown = false; // Track if the mouse button is held down
-  let startY = 0; // Starting Y position when the mouse button is pressed
-  let holdTimeout; // Timeout to track long press
-
-  const updateImageSrc = () => {
-    imageElement.src = `${config.imagePath}${String(config.imageIndex).padStart(2, '0')}${config.fileExtension}`;
-  };
-
-  const onMouseDown = (event) => {
-    if (event.button !== 0) return; // Only respond to the left mouse button
-    startY = event.clientY;
-    isMouseDown = true;
-
-    // Set a timeout for the long press (2 seconds)
-    holdTimeout = setTimeout(() => {
-      if (isMouseDown) {
-        imageElement.style.display = 'block';
-      }
-    }, 500);
-
-    document.addEventListener('mousemove', onMouseMove);
-  };
-
-  const onMouseMove = (event) => {
-    if (!isMouseDown) return;
-
-    const diffY = event.clientY - startY;
-    if (Math.abs(diffY) > 5) { // Add a threshold to reduce sensitivity
-      if (diffY > 0) {
-        // Moved down
-        if (config.imageIndex < config.maxIndex) config.imageIndex++;
-      } else {
-        // Moved up
-        if (config.imageIndex > 1) config.imageIndex--;
-      }
-      updateImageSrc();
-      startY = event.clientY; // Reset start position
+document.addEventListener('DOMContentLoaded', () => {
+  const imageConfigs = [
+    {
+      imageElementId: 'krknodImage',
+      imageIndex: 1,
+      imagePath: './pickrknod/krknod-',
+      maxIndex: 34,
+      buttonIds: ['NeckLymphNode1pics', 'NeckLymphNode2pics', 'NeckLymphNode3pics'],
+      fileExtension: '.jpg'
+    },
+    {
+      imageElementId: 'mednodImage',
+      imageIndex: 1,
+      imagePath: './picmednod/mednod-',
+      maxIndex: 28,
+      buttonIds: ['ThoraxLymphNode1pics', 'ThoraxLymphNode2pics', 'ThoraxLymphNode3pics'],
+      fileExtension: '.jpg'
+    },
+    {
+      imageElementId: 'chestsegImage',
+      imageIndex: 2,
+      imagePath: './picchestseg/chestseg-',
+      maxIndex: 28,
+      buttonIds: ['ThoraxLesion1pics', 'ThoraxLesion2pics', 'ThoraxLesion3pics' ],
+      fileExtension: '.png'
     }
-  };
+  ];
 
-  const onMouseUp = () => {
-    isMouseDown = false;
-    clearTimeout(holdTimeout); // Clear the timeout if mouse button is released early
-    document.removeEventListener('mousemove', onMouseMove);
-  };
+  imageConfigs.forEach(config => {
+    const imageElement = document.getElementById(config.imageElementId);
+    if (!imageElement) return;
 
-  // Prevent context menu on the image
-  imageElement.addEventListener('contextmenu', event => {
-    event.preventDefault();
-    imageElement.style.display = 'none'; // Hide the image on right-click
-  });
+    let isMouseDown = false;
+    let startY = 0;
 
-  // Attach the event listeners to the image element
-  imageElement.addEventListener('mousedown', onMouseDown);
-  document.addEventListener('mouseup', onMouseUp);
+    const updateImageSrc = () => {
+      imageElement.src = `${config.imagePath}${String(config.imageIndex).padStart(2, '0')}${config.fileExtension}`;
+    };
 
-  const focusElementIds = config.focusElementsIds || [config.focusElementId];
-  focusElementIds.forEach(id => {
-    const element = document.getElementById(id);
-    element.addEventListener('mousedown', (event) => {
-      if (event.button !== 0) return; // Allow normal clicks
+    const onMouseDown = (event) => {
+      if (event.button !== 0) return;
       startY = event.clientY;
       isMouseDown = true;
+      document.addEventListener('mousemove', onMouseMove);
+    };
 
-      // Set a timeout for the long press (2 seconds)
-      holdTimeout = setTimeout(() => {
-        if (isMouseDown) {
-          imageElement.style.display = 'block';
-        }
-      }, 500);
-    });
+    const onMouseMove = (event) => {
+      if (!isMouseDown) return;
+      const diffY = event.clientY - startY;
+      if (Math.abs(diffY) > 5) {
+        if (diffY > 0 && config.imageIndex < config.maxIndex) config.imageIndex++;
+        else if (diffY < 0 && config.imageIndex > 1) config.imageIndex--;
+        updateImageSrc();
+        startY = event.clientY;
+      }
+    };
 
-    element.addEventListener('mouseup', () => {
+    const onMouseUp = () => {
       isMouseDown = false;
-      clearTimeout(holdTimeout);
+      document.removeEventListener('mousemove', onMouseMove);
+    };
+
+    imageElement.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mouseup', onMouseUp);
+
+    imageElement.addEventListener('wheel', (event) => {
+      if (event.deltaY > 0 && config.imageIndex < config.maxIndex) config.imageIndex++;
+      else if (event.deltaY < 0 && config.imageIndex > 1) config.imageIndex--;
+      updateImageSrc();
+      event.preventDefault();
     });
 
-    element.addEventListener('focus', () => {
-      // Allow normal focus behavior
-    });
-  });
-
-  const selectElementIds = config.selectElementsIds || [config.selectElementId];
-  document.addEventListener('click', function(e) {
-    if (selectElementIds.concat(focusElementIds).every(id => !document.getElementById(id).contains(e.target)) && !imageElement.contains(e.target)) {
+    imageElement.addEventListener('contextmenu', event => {
+      event.preventDefault();
       imageElement.style.display = 'none';
-    }
-  });
+    });
 
-  imageElement.addEventListener('wheel', (event) => {
-    if (event.deltaY > 0) {
-      if (config.imageIndex < config.maxIndex) config.imageIndex++;
-    } else {
-      if (config.imageIndex > 1) config.imageIndex--;
-    }
-    updateImageSrc();
-    event.preventDefault();
+    // Připojení všech tlačítek z pole buttonIds
+    (config.buttonIds || []).forEach(buttonId => {
+      const buttonElement = document.getElementById(buttonId);
+      if (!buttonElement) return;
+
+      buttonElement.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isVisible = imageElement.style.display === 'block';
+        document.querySelectorAll('#krknodImage, #mednodImage, #chestsegImage')
+                .forEach(img => img.style.display = 'none');
+        imageElement.style.display = isVisible ? 'none' : 'block';
+        if (!isVisible) updateImageSrc();
+      });
+    });
+
+    // Klik mimo zavře obrázek
+    document.addEventListener('click', (e) => {
+      if (!imageElement.contains(e.target) &&
+          !(config.buttonIds || []).some(id => document.getElementById(id) === e.target)) {
+        imageElement.style.display = 'none';
+      }
+    });
   });
 });
+
 
 
 
