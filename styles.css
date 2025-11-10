@@ -178,8 +178,8 @@ option {color: #000000; background-color: #FFFFFF;}
 #TABULKA tr td:nth-last-child(-n+3), #TABULKA tr th:last-child { display: none;}
 #TABULKA td:first-child {padding-left: 5px;}
 
-#TABULKA thead {background-color: #D3DCE9;}
-#TABULKA thead tr:nth-child(2) th {text-align: center;}
+#TABULKA thead {background-color: #FFFFFF;}
+#TABULKA thead tr:nth-child(2) th, #TABULKA thead tr:nth-child(2) td {text-align: center;}
 #L01, #L12, #L23, #L34, #L45, #L5S1 {background-color: #f5f5f5;}
 #L01 button, #L12 button, #L23 button, #L34 button, #L45 button, #L5S1 button {background-color: transparent;}
 
@@ -328,6 +328,8 @@ button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-
   box-shadow: 0 0 4px 1px rgba(0,0,0,0.3);
 }
 
+.smallletters {font-size: 10px; color: purple; }
+
  /* Custom Chbes */ 
  
 .CHB input[type="checkbox"] {
@@ -384,7 +386,6 @@ button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-
 	height: 20px;
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none;
     background-image: none;
 	border-radius: 1px;
   }
@@ -691,7 +692,6 @@ table.compact-tnm-table td {
 /* FOR ALL */
 
 
-
 /* kulacení rohů */
 
 .CHB span, button, select, input, textarea, div, .dropdown-content a {border-radius: 10px;}
@@ -721,7 +721,7 @@ body, button, input, textarea, select, option,
 .dropdown, .dropbtn, .dropdown-content a, .remove-button, .MainDIV, .standardwidth, .standardwidthHALF, .standardwidthV, .TextsDIV,
 .CTLesion1, .CTLesion2, .CTLesion3, .ProstateLNReg, .ProstateLNNonReg, .RectTuLNReg, .CervixLNReg,
 .titleRect, .titleCervix, .title, .titleBrain, .titleKnee, .titleShoulder, .titleBreast, .titleFlex,
-.buttonCLICK, .buttonTEXT, .CHB span, .highlight, .noticeBar, .headerBar,
+.buttonCLICK, .buttonTEXT, .CHB span, .highlight, .headerBar,
 .dropdown-content, .dropbtn, .standardwidth, .title*, .ProstateLNRegclass, .ProstateLNNonRegclass,
 .RectTuLNRegclass, .CervixLNRegclass, .options, .optionsWML, .suboptions, .buttonRTG,
 #NADPISY, #NADPISY0, #WM, #GMSA, #Loziska, #MMK, #hypoepi, #ostatni, #angio, #kneeobecne, #komppredni, #kommedialni, #kommedlat, #komlateralni, #vazy, #others, #shouldergeneral, #AC, #GH, #RM, #labrum, #biceps, #shoulderothers {
@@ -736,7 +736,7 @@ body, button, input, textarea, select, option,
 }
 
 /* tabulky, tlačítka a hlavičky */
-#TABULKA thead, .myButtonLesion, .myButtonLN, body.TNM th, .headerBar, .noticeBar {
+.myButtonLesion, .myButtonLN, body.TNM th, .headerBar {
   background-color: #D3DCE9; 
 }
 
