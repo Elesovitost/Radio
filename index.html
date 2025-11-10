@@ -242,15 +242,24 @@ function changePage(url) {
 			updateHelperDropdown(); // 🔹 aktualizuj helper po načtení nového vyšetření
 
             // Delay the fade-in animation until the iframe is loaded
-            setTimeout(() => {
-                iframe.style.opacity = 1; // Make the iframe visible
+			setTimeout(() => {
+				iframe.style.opacity = 1; // Make the iframe visible
+
 				const bg = document.getElementById('random-background');
+				const chess = document.getElementById('chessboard-overlay');
+
 				if (bg) {
-					bg.style.opacity = 0.3;
+					bg.style.opacity = 0.01;
 					bg.style.filter = 'blur(4px)';
 				}
-                iframe.classList.add('iframe-fade-in');
-            }, 100); // Short delay before fade-in starts
+
+				if (chess) {
+					chess.style.opacity = 0.01;
+					chess.style.filter = 'blur(4px)';
+				}
+
+				iframe.classList.add('iframe-fade-in');
+			}, 100); // Short delay before fade-in starts
 			
             setTimeout(() => {
                 iframe.classList.remove('iframe-fade-in');
@@ -273,6 +282,7 @@ function changePage(url) {
 
 			if (container.children.length === 0) {
 				const bg = document.getElementById('random-background');
+				const chess = document.getElementById('chessboard-overlay');
 				if (bg) {
 					// Načtení nového náhodného obrázku před zvýšením opacity
 					const randomIndex = Math.floor(Math.random() * 6) + 1;
@@ -280,6 +290,10 @@ function changePage(url) {
 					bg.style.opacity = 1;
 				}
 				resetBackgroundFilter();
+				if (chess) {
+					chess.style.opacity = 1;
+					chess.style.filter = 'none';
+				}
 				// Zavřít PDF viewer, pokud je otevřený
 				const pdfViewer = document.getElementById('doc-viewer');
 				if (pdfViewer) {
