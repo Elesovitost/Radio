@@ -1,3 +1,454 @@
+// COPY
+
+var copyFINAL = document.getElementById('copyFINAL');
+var ProstateFinalText = document.getElementById('ProstateFinalText');
+
+copyFINAL.addEventListener('click', function() {
+	
+    navigator.clipboard.writeText(ProstateFinalText.value)
+    .then(() => {
+        ProstateFinalText.classList.add('highlight');
+
+        setTimeout(function() {
+            ProstateFinalText.classList.remove('highlight');
+        }, 100);
+    })
+    .catch(err => {
+    });
+});
+
+
+
+var copyPOP = document.getElementById('copyPOP');
+var ProstateTuPOPText = document.getElementById('ProstateTuPOPText');
+
+copyPOP.addEventListener('click', function() {
+    navigator.clipboard.writeText(ProstateTuPOPText.value)
+    .then(() => {
+        ProstateTuPOPText.classList.add('highlight');
+
+        setTimeout(function() {
+            ProstateTuPOPText.classList.remove('highlight');
+        }, 100);
+    })
+    .catch(err => {
+    });
+});
+
+
+
+var copyRES = document.getElementById('copyRES');
+var ProstateTuRESText = document.getElementById('ProstateTuRESText');
+
+copyRES.addEventListener('click', function() {
+    navigator.clipboard.writeText(ProstateTuRESText.value)
+    .then(() => {
+        ProstateTuRESText.classList.add('highlight');
+
+        setTimeout(function() {
+            ProstateTuRESText.classList.remove('highlight');
+        }, 100);
+    })
+    .catch(err => {
+    });
+});
+
+
+
+// LESION1
+var textsProstateLesion1T2 = ["T2 score 1", "T2 score 2", "T2 score 3", "T2 score 4", "T2 score 5"];
+var buttonElementProstateLesion1T2 = document.getElementById("ProstateLesion1T2Button");
+var indexProstateLesion1T2 = 0;function cycleProstateLesion1T2Text(event) {  indexProstateLesion1T2 = cycleText(event, textsProstateLesion1T2, indexProstateLesion1T2, buttonElementProstateLesion1T2);}
+function cycleProstateLesion1T2Text(event) {  indexProstateLesion1T2 = cycleText(event, textsProstateLesion1T2, indexProstateLesion1T2, buttonElementProstateLesion1T2, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion1DWI = ["DWI score 1", "DWI score 2", "DWI score 3", "DWI score 4", "DWI score 5"];
+var buttonElementProstateLesion1DWI = document.getElementById("ProstateLesion1DWIButton");
+var indexProstateLesion1DWI = 0;function cycleProstateLesion1DWIText(event) {  indexProstateLesion1DWI = cycleText(event, textsProstateLesion1DWI, indexProstateLesion1DWI, buttonElementProstateLesion1DWI);}
+function cycleProstateLesion1DWIText(event) {  indexProstateLesion1DWI = cycleText(event, textsProstateLesion1DWI, indexProstateLesion1DWI, buttonElementProstateLesion1DWI, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion1C = ["kontrast -", "kontrast +"];
+var buttonElementProstateLesion1C = document.getElementById("ProstateLesion1CButton");
+var indexProstateLesion1C = 0;function cycleProstateLesion1CText(event) {  indexProstateLesion1C = cycleText(event, textsProstateLesion1C, indexProstateLesion1C, buttonElementProstateLesion1C);}
+function cycleProstateLesion1CText(event) {  indexProstateLesion1C = cycleText(event, textsProstateLesion1C, indexProstateLesion1C, buttonElementProstateLesion1C, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion1Invasion = ["bez invaze", "přes kapsulu", "semen. váčků", "okolních struktur"];
+var buttonElementProstateLesion1Invasion = document.getElementById("ProstateLesion1InvasionButton");
+var indexProstateLesion1Invasion = 0;function cycleProstateLesion1InvasionText(event) {  indexProstateLesion1Invasion = cycleText(event, textsProstateLesion1Invasion, indexProstateLesion1Invasion, buttonElementProstateLesion1Invasion);}
+function cycleProstateLesion1InvasionText(event) {  indexProstateLesion1Invasion = cycleText(event, textsProstateLesion1Invasion, indexProstateLesion1Invasion, buttonElementProstateLesion1Invasion, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion1PSMA = ["PSMA 0", "PSMA 1", "PSMA 2", "PSMA 3"];
+var buttonElementProstateLesion1PSMA = document.getElementById("ProstateLesion1PSMAButton");
+var indexProstateLesion1PSMA = 0;function cycleProstateLesion1PSMAText(event) {  indexProstateLesion1PSMA = cycleText(event, textsProstateLesion1PSMA, indexProstateLesion1PSMA, buttonElementProstateLesion1PSMA);}
+function cycleProstateLesion1PSMAText(event) {  indexProstateLesion1PSMA = cycleText(event, textsProstateLesion1PSMA, indexProstateLesion1PSMA, buttonElementProstateLesion1PSMA, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion1PIRADS = ["PI-RADS 1", "PI-RADS 2", "PI-RADS 3", "PI-RADS 4", "PI-RADS 5"];
+var buttonElementProstateLesion1PIRADS = document.getElementById("ProstateLesion1PIRADSButton");
+var indexProstateLesion1PIRADS = 0;function cycleProstateLesion1PIRADSText(event) {  indexProstateLesion1PIRADS = cycleText(event, textsProstateLesion1PIRADS, indexProstateLesion1PIRADS, buttonElementProstateLesion1PIRADS);}
+function cycleProstateLesion1PIRADSText(event) {  indexProstateLesion1PIRADS = cycleText(event, textsProstateLesion1PIRADS, indexProstateLesion1PIRADS, buttonElementProstateLesion1PIRADS, updateBackgroundColor);  updateTexts();}
+
+var textsProstateHyperplasia = ["není", "mírná", "střední", "pokročilá"];
+var buttonElementProstateHyperplasia = document.getElementById("ProstateHyperplasiaButton");
+var indexProstateHyperplasia = 0;function cycleProstateHyperplasiaText(event) {  indexProstateHyperplasia = cycleText(event, textsProstateHyperplasia, indexProstateHyperplasia, buttonElementProstateHyperplasia);}
+function cycleProstateHyperplasiaText(event) {  indexProstateHyperplasia = cycleText(event, textsProstateHyperplasia, indexProstateHyperplasia, buttonElementProstateHyperplasia, updateBackgroundColor);  updateTexts();}
+
+var textsProstateSemVes = ["normální", "malá náplň", "bez náplně"];
+var buttonElementProstateSemVes = document.getElementById("ProstateSemVesButton");
+var indexProstateSemVes = 0;function cycleProstateSemVesText(event) {  indexProstateSemVes = cycleText(event, textsProstateSemVes, indexProstateSemVes, buttonElementProstateSemVes);}
+function cycleProstateSemVesText(event) {  indexProstateSemVes = cycleText(event, textsProstateSemVes, indexProstateSemVes, buttonElementProstateSemVes, updateBackgroundColor);  updateTexts();}
+
+// clickable texts Lesion1
+
+let clickedOrderLesion1 = [];
+
+const clickableTextsLesion1 = document.querySelectorAll('.CTLesion1');
+clickableTextsLesion1.forEach(text => {
+    text.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const id = this.id;
+        if (this.classList.contains('active')) {
+            if (!clickedOrderLesion1.includes(id)) {
+                clickedOrderLesion1.push(id);
+            }
+        } else {
+            clickedOrderLesion1 = clickedOrderLesion1.filter(item => item !== id);
+        }
+        updateTexts();
+    });
+});
+
+// Lesion1 hiding
+
+document.getElementById('ProstateLesion1No').addEventListener('click', function() {
+  var element = document.getElementById('ProstateLesion1');
+  element.classList.add('hidden');
+  updateTexts();
+});
+
+document.getElementById('ChbProstatePSMA').addEventListener('change', function() {
+    var element = document.getElementById('ProstateLesion1PSMAButton');
+    if (this.checked) {
+        element.classList.remove('hidden');
+    } else {
+        element.classList.add('hidden');
+    }
+    updateTexts(); 
+});
+
+
+
+// Lesion1 location
+
+document.getElementById('ProstateLesion1Location').addEventListener('focus', function() {
+  document.getElementById('ProstateLesion1selectLocation').classList.remove('hidden');
+});
+document.addEventListener('click', function(e) {
+  const ProstateLesion1LocationElement = document.getElementById('ProstateLesion1Location');
+  const ProstateLesion1selectLocationElement = document.getElementById('ProstateLesion1selectLocation');
+  if (!ProstateLesion1LocationElement.contains(e.target) && !ProstateLesion1selectLocationElement.contains(e.target)) {
+	ProstateLesion1selectLocationElement.classList.add('hidden');
+  }
+});
+
+
+
+// LESION2
+var textsProstateLesion2T2 = ["T2 score 1", "T2 score 2", "T2 score 3", "T2 score 4", "T2 score 5"];
+var buttonElementProstateLesion2T2 = document.getElementById("ProstateLesion2T2Button");
+var indexProstateLesion2T2 = 0;function cycleProstateLesion2T2Text(event) {  indexProstateLesion2T2 = cycleText(event, textsProstateLesion2T2, indexProstateLesion2T2, buttonElementProstateLesion2T2);}
+function cycleProstateLesion2T2Text(event) {  indexProstateLesion2T2 = cycleText(event, textsProstateLesion2T2, indexProstateLesion2T2, buttonElementProstateLesion2T2, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion2DWI = ["DWI score 1", "DWI score 2", "DWI score 3", "DWI score 4", "DWI score 5"];
+var buttonElementProstateLesion2DWI = document.getElementById("ProstateLesion2DWIButton");
+var indexProstateLesion2DWI = 0;function cycleProstateLesion2DWIText(event) {  indexProstateLesion2DWI = cycleText(event, textsProstateLesion2DWI, indexProstateLesion2DWI, buttonElementProstateLesion2DWI);}
+function cycleProstateLesion2DWIText(event) {  indexProstateLesion2DWI = cycleText(event, textsProstateLesion2DWI, indexProstateLesion2DWI, buttonElementProstateLesion2DWI, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion2C = ["kontrast -", "kontrast +"];
+var buttonElementProstateLesion2C = document.getElementById("ProstateLesion2CButton");
+var indexProstateLesion2C = 0;function cycleProstateLesion2CText(event) {  indexProstateLesion2C = cycleText(event, textsProstateLesion2C, indexProstateLesion2C, buttonElementProstateLesion2C);}
+function cycleProstateLesion2CText(event) {  indexProstateLesion2C = cycleText(event, textsProstateLesion2C, indexProstateLesion2C, buttonElementProstateLesion2C, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion2Invasion = ["bez invaze", "invaze kapsuly", "přes kapsulu", "semen. váčků", "okolních struktur"];
+var buttonElementProstateLesion2Invasion = document.getElementById("ProstateLesion2InvasionButton");
+var indexProstateLesion2Invasion = 0;function cycleProstateLesion2InvasionText(event) {  indexProstateLesion2Invasion = cycleText(event, textsProstateLesion2Invasion, indexProstateLesion2Invasion, buttonElementProstateLesion2Invasion);}
+function cycleProstateLesion2InvasionText(event) {  indexProstateLesion2Invasion = cycleText(event, textsProstateLesion2Invasion, indexProstateLesion2Invasion, buttonElementProstateLesion2Invasion, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion2PSMA = ["PSMA 0", "PSMA 1", "PSMA 2", "PSMA 3"];
+var buttonElementProstateLesion2PSMA = document.getElementById("ProstateLesion2PSMAButton");
+var indexProstateLesion2PSMA = 0;function cycleProstateLesion2PSMAText(event) {  indexProstateLesion2PSMA = cycleText(event, textsProstateLesion2PSMA, indexProstateLesion2PSMA, buttonElementProstateLesion2PSMA);}
+function cycleProstateLesion2PSMAText(event) {  indexProstateLesion2PSMA = cycleText(event, textsProstateLesion2PSMA, indexProstateLesion2PSMA, buttonElementProstateLesion2PSMA, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion2PIRADS = ["PI-RADS 1", "PI-RADS 2", "PI-RADS 3", "PI-RADS 4", "PI-RADS 5"];
+var buttonElementProstateLesion2PIRADS = document.getElementById("ProstateLesion2PIRADSButton");
+var indexProstateLesion2PIRADS = 0;function cycleProstateLesion2PIRADSText(event) {  indexProstateLesion2PIRADS = cycleText(event, textsProstateLesion2PIRADS, indexProstateLesion2PIRADS, buttonElementProstateLesion2PIRADS);}
+function cycleProstateLesion2PIRADSText(event) {  indexProstateLesion2PIRADS = cycleText(event, textsProstateLesion2PIRADS, indexProstateLesion2PIRADS, buttonElementProstateLesion2PIRADS, updateBackgroundColor);  updateTexts();}
+
+var textsProstateHyperplasia = ["není", "mírná", "střední", "pokročilá"];
+var buttonElementProstateHyperplasia = document.getElementById("ProstateHyperplasiaButton");
+var indexProstateHyperplasia = 0;function cycleProstateHyperplasiaText(event) {  indexProstateHyperplasia = cycleText(event, textsProstateHyperplasia, indexProstateHyperplasia, buttonElementProstateHyperplasia);}
+function cycleProstateHyperplasiaText(event) {  indexProstateHyperplasia = cycleText(event, textsProstateHyperplasia, indexProstateHyperplasia, buttonElementProstateHyperplasia, updateBackgroundColor);  updateTexts();}
+
+var textsProstateSemVes = ["normální", "malá náplň", "bez náplně"];
+var buttonElementProstateSemVes = document.getElementById("ProstateSemVesButton");
+var indexProstateSemVes = 0;function cycleProstateSemVesText(event) {  indexProstateSemVes = cycleText(event, textsProstateSemVes, indexProstateSemVes, buttonElementProstateSemVes);}
+function cycleProstateSemVesText(event) {  indexProstateSemVes = cycleText(event, textsProstateSemVes, indexProstateSemVes, buttonElementProstateSemVes, updateBackgroundColor);  updateTexts();}
+
+// clickable texts Lesion2
+
+let clickedOrderLesion2 = [];
+
+const clickableTextsLesion2 = document.querySelectorAll('.CTLesion2');
+clickableTextsLesion2.forEach(text => {
+    text.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const id = this.id;
+        if (this.classList.contains('active')) {
+            if (!clickedOrderLesion2.includes(id)) {
+                clickedOrderLesion2.push(id);
+            }
+        } else {
+            clickedOrderLesion2 = clickedOrderLesion2.filter(item => item !== id);
+        }
+        updateTexts();
+    });
+});
+
+// Lesion2 hiding
+
+document.getElementById('ProstateLesion2No').addEventListener('click', function() {
+  var element = document.getElementById('ProstateLesion2');
+  element.classList.add('hidden');
+  updateTexts();
+});
+
+document.getElementById('ChbProstatePSMA').addEventListener('change', function() {
+    var element = document.getElementById('ProstateLesion2PSMAButton');
+    if (this.checked) {
+        element.classList.remove('hidden');
+    } else {
+        element.classList.add('hidden');
+    }
+    updateTexts(); 
+});
+
+document.getElementById('ProstateLesion2Location').addEventListener('focus', function() {
+  document.getElementById('ProstateLesion2selectLocation').classList.remove('hidden');
+});
+document.addEventListener('click', function(e) {
+  const ProstateLesion2LocationElement = document.getElementById('ProstateLesion2Location');
+  const ProstateLesion2selectLocationElement = document.getElementById('ProstateLesion2selectLocation');
+  if (!ProstateLesion2LocationElement.contains(e.target) && !ProstateLesion2selectLocationElement.contains(e.target)) {
+	ProstateLesion2selectLocationElement.classList.add('hidden');
+  }
+});
+
+
+
+// LESION3
+
+var textsProstateLesion3T2 = ["T2 score 1", "T2 score 2", "T2 score 3", "T2 score 4", "T2 score 5"];
+var buttonElementProstateLesion3T2 = document.getElementById("ProstateLesion3T2Button");
+var indexProstateLesion3T2 = 0;function cycleProstateLesion3T2Text(event) {  indexProstateLesion3T2 = cycleText(event, textsProstateLesion3T2, indexProstateLesion3T2, buttonElementProstateLesion3T2);}
+function cycleProstateLesion3T2Text(event) {  indexProstateLesion3T2 = cycleText(event, textsProstateLesion3T2, indexProstateLesion3T2, buttonElementProstateLesion3T2, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion3DWI = ["DWI score 1", "DWI score 2", "DWI score 3", "DWI score 4", "DWI score 5"];
+var buttonElementProstateLesion3DWI = document.getElementById("ProstateLesion3DWIButton");
+var indexProstateLesion3DWI = 0;function cycleProstateLesion3DWIText(event) {  indexProstateLesion3DWI = cycleText(event, textsProstateLesion3DWI, indexProstateLesion3DWI, buttonElementProstateLesion3DWI);}
+function cycleProstateLesion3DWIText(event) {  indexProstateLesion3DWI = cycleText(event, textsProstateLesion3DWI, indexProstateLesion3DWI, buttonElementProstateLesion3DWI, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion3C = ["kontrast -", "kontrast +"];
+var buttonElementProstateLesion3C = document.getElementById("ProstateLesion3CButton");
+var indexProstateLesion3C = 0;function cycleProstateLesion3CText(event) {  indexProstateLesion3C = cycleText(event, textsProstateLesion3C, indexProstateLesion3C, buttonElementProstateLesion3C);}
+function cycleProstateLesion3CText(event) {  indexProstateLesion3C = cycleText(event, textsProstateLesion3C, indexProstateLesion3C, buttonElementProstateLesion3C, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion3Invasion = ["bez invaze", "invaze kapsuly", "přes kapsulu", "semen. váčků", "okolních struktur"];
+var buttonElementProstateLesion3Invasion = document.getElementById("ProstateLesion3InvasionButton");
+var indexProstateLesion3Invasion = 0;function cycleProstateLesion3InvasionText(event) {  indexProstateLesion3Invasion = cycleText(event, textsProstateLesion3Invasion, indexProstateLesion3Invasion, buttonElementProstateLesion3Invasion);}
+function cycleProstateLesion3InvasionText(event) {  indexProstateLesion3Invasion = cycleText(event, textsProstateLesion3Invasion, indexProstateLesion3Invasion, buttonElementProstateLesion3Invasion, updateBackgroundColor);  updateTexts();}
+
+var textsProstateLesion3PSMA = ["PSMA 0", "PSMA 1", "PSMA 2", "PSMA 3"];
+var buttonElementProstateLesion3PSMA = document.getElementById("ProstateLesion3PSMAButton");
+var indexProstateLesion3PSMA = 0;function cycleProstateLesion3PSMAText(event) {  indexProstateLesion3PSMA = cycleText(event, textsProstateLesion3PSMA, indexProstateLesion3PSMA, buttonElementProstateLesion3PSMA);}
+function cycleProstateLesion3PSMAText(event) {  indexProstateLesion3PSMA = cycleText(event, textsProstateLesion3PSMA, indexProstateLesion3PSMA, buttonElementProstateLesion3PSMA, updateBackgroundColor);  updateTexts();}
+
+
+var textsProstateLesion3PIRADS = ["PI-RADS 1", "PI-RADS 2", "PI-RADS 3", "PI-RADS 4", "PI-RADS 5"];
+var buttonElementProstateLesion3PIRADS = document.getElementById("ProstateLesion3PIRADSButton");
+var indexProstateLesion3PIRADS = 0;function cycleProstateLesion3PIRADSText(event) {  indexProstateLesion3PIRADS = cycleText(event, textsProstateLesion3PIRADS, indexProstateLesion3PIRADS, buttonElementProstateLesion3PIRADS);}
+function cycleProstateLesion3PIRADSText(event) {  indexProstateLesion3PIRADS = cycleText(event, textsProstateLesion3PIRADS, indexProstateLesion3PIRADS, buttonElementProstateLesion3PIRADS, updateBackgroundColor);  updateTexts();}
+
+var textsProstateHyperplasia = ["není", "mírná", "střední", "pokročilá"];
+var buttonElementProstateHyperplasia = document.getElementById("ProstateHyperplasiaButton");
+var indexProstateHyperplasia = 0;function cycleProstateHyperplasiaText(event) {  indexProstateHyperplasia = cycleText(event, textsProstateHyperplasia, indexProstateHyperplasia, buttonElementProstateHyperplasia);}
+function cycleProstateHyperplasiaText(event) {  indexProstateHyperplasia = cycleText(event, textsProstateHyperplasia, indexProstateHyperplasia, buttonElementProstateHyperplasia, updateBackgroundColor);  updateTexts();}
+
+var textsProstateSemVes = ["normální", "malá náplň", "bez náplně"];
+var buttonElementProstateSemVes = document.getElementById("ProstateSemVesButton");
+var indexProstateSemVes = 0;function cycleProstateSemVesText(event) {  indexProstateSemVes = cycleText(event, textsProstateSemVes, indexProstateSemVes, buttonElementProstateSemVes);}
+function cycleProstateSemVesText(event) {  indexProstateSemVes = cycleText(event, textsProstateSemVes, indexProstateSemVes, buttonElementProstateSemVes, updateBackgroundColor);  updateTexts();}
+
+// clickable texts Lesion3
+
+let clickedOrderLesion3 = [];
+
+const clickableTextsLesion3 = document.querySelectorAll('.CTLesion3');
+clickableTextsLesion3.forEach(text => {
+    text.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const id = this.id;
+        if (this.classList.contains('active')) {
+            if (!clickedOrderLesion3.includes(id)) {
+                clickedOrderLesion3.push(id);
+            }
+        } else {
+            clickedOrderLesion3 = clickedOrderLesion3.filter(item => item !== id);
+        }
+        updateTexts();
+    });
+});
+
+// Lesions3 hiding
+
+document.getElementById('ProstateLesion3No').addEventListener('click', function() {
+  var element = document.getElementById('ProstateLesion3');
+  element.classList.add('hidden');
+  updateTexts();
+});
+
+document.getElementById('ChbProstatePSMA').addEventListener('change', function() {
+    var element = document.getElementById('ProstateLesion3PSMAButton');
+    if (this.checked) {
+        element.classList.remove('hidden');
+    } else {
+        element.classList.add('hidden');
+    }
+    updateTexts(); 
+});
+
+document.getElementById('ProstateLesion3Location').addEventListener('focus', function() {
+  document.getElementById('ProstateLesion3selectLocation').classList.remove('hidden');
+});
+document.addEventListener('click', function(e) {
+  const ProstateLesion3LocationElement = document.getElementById('ProstateLesion3Location');
+  const ProstateLesion3selectLocationElement = document.getElementById('ProstateLesion3selectLocation');
+  if (!ProstateLesion3LocationElement.contains(e.target) && !ProstateLesion3selectLocationElement.contains(e.target)) {
+	ProstateLesion3selectLocationElement.classList.add('hidden');
+  }
+});
+
+
+// NON Lesion
+
+// LN
+var textsProstateLNReg = ["nesuspektní", "suspektní"];
+var buttonElementProstateLNReg = document.getElementById("ProstateLNRegButton");
+var indexProstateLNReg = 0;function cycleProstateLNRegText(event) {  indexProstateLNReg = cycleText(event, textsProstateLNReg, indexProstateLNReg, buttonElementProstateLNReg);}
+function cycleProstateLNRegText(event) {  indexProstateLNReg = cycleText(event, textsProstateLNReg, indexProstateLNReg, buttonElementProstateLNReg, updateBackgroundColor);  
+// reg LN show hide - alternative...must be within function cycleProstateLNRegText
+let ProstateLNRegValue = buttonElementProstateLNReg.innerText.trim(); 
+    let ProstateLNRegLocationElement = document.getElementById('ProstateLNRegLocation');
+
+    if (ProstateLNRegValue === "suspektní") {
+        ProstateLNRegLocationElement.classList.remove('hidden');
+    } else if (ProstateLNRegValue === "nesuspektní") {
+        ProstateLNRegLocationElement.classList.add('hidden');
+    }
+updateTexts();}
+
+var textsProstateLNNonReg = ["nesuspektní", "suspektní"];
+var buttonElementProstateLNNonReg = document.getElementById("ProstateLNNonRegButton");
+var indexProstateLNNonReg = 0;function cycleProstateLNNonRegText(event) {  indexProstateLNNonReg = cycleText(event, textsProstateLNNonReg, indexProstateLNNonReg, buttonElementProstateLNNonReg);}
+function cycleProstateLNNonRegText(event) {  indexProstateLNNonReg = cycleText(event, textsProstateLNNonReg, indexProstateLNNonReg, buttonElementProstateLNNonReg, updateBackgroundColor);  
+// reg LN show hide - alternative...must be within function cycleProstateLNNonRegText
+let ProstateLNNonRegValue = buttonElementProstateLNNonReg.innerText.trim(); 
+    let ProstateLNNonRegLocationElement = document.getElementById('ProstateLNNonRegLocation');
+
+    if (ProstateLNNonRegValue === "suspektní") {
+        ProstateLNNonRegLocationElement.classList.remove('hidden');
+    } else if (ProstateLNNonRegValue === "nesuspektní") {
+        ProstateLNNonRegLocationElement.classList.add('hidden');
+    }
+updateTexts();}
+
+
+// Lymph node location
+
+document.getElementById('ProstateLNRegLocation').addEventListener('focus', function() {
+  document.getElementById('ProstateLNRegSelectLocation').classList.remove('hidden');
+});
+document.addEventListener('click', function(e) {
+  const ProstateLNRegLocationElement = document.getElementById('ProstateLNRegLocation');
+  const ProstateLNRegSelectLocationElement = document.getElementById('ProstateLNRegSelectLocation');
+  if (!ProstateLNRegLocationElement.contains(e.target) && !ProstateLNRegSelectLocationElement.contains(e.target)) {
+	ProstateLNRegSelectLocationElement.classList.add('hidden');
+  }
+});
+
+document.getElementById('ProstateLNNonRegLocation').addEventListener('focus', function() {
+  document.getElementById('ProstateLNNonRegSelectLocation').classList.remove('hidden');
+});
+document.addEventListener('click', function(e) {
+  const ProstateLNNonRegLocationElement = document.getElementById('ProstateLNNonRegLocation');
+  const ProstateLNNonRegSelectLocationElement = document.getElementById('ProstateLNNonRegSelectLocation');
+  if (!ProstateLNNonRegLocationElement.contains(e.target) && !ProstateLNNonRegSelectLocationElement.contains(e.target)) {
+	ProstateLNNonRegSelectLocationElement.classList.add('hidden');
+  }
+});
+
+
+// BUTTONS texts
+
+
+function updateBackgroundColor(index, buttonElement, color1 = "transparent", color2 = "#D4A29C") {
+  buttonElement.style.backgroundColor = index === 0 ? color1 : color2;
+}
+
+// new LESIONS
+
+document.getElementById('ProstateNewLesions').addEventListener('click', function() {
+  var lesionIds = ['ProstateLesion1', 'ProstateLesion2', 'ProstateLesion3'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (element.classList.contains('hidden')) {
+      element.classList.remove('hidden');
+      break; 
+    }
+  }
+  updateProstateButtonColor();
+});
+
+document.getElementById('ProstateNewLesions').addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+  var lesionIds = ['ProstateLesion3', 'ProstateLesion2', 'ProstateLesion1'];
+
+  for (var i = 0; i < lesionIds.length; i++) {
+    var element = document.getElementById(lesionIds[i]);
+    if (!element.classList.contains('hidden')) {
+      element.classList.add('hidden');
+      break; 
+    }
+  }
+  updateProstateButtonColor();
+});
+
+function updateProstateButtonColor() {
+    var Prostatelesions = ['ProstateLesion1', 'ProstateLesion2', 'ProstateLesion3'];
+    var Prostatebutton = document.getElementById('ProstateNewLesions');
+    var isHidden = Prostatelesions.every(function(id) {
+        return document.getElementById(id).classList.contains('hidden');
+    });
+
+    if (isHidden) {
+        Prostatebutton.classList.remove('toggleColorRed');
+    } else {
+        Prostatebutton.classList.add('toggleColorRed');
+    }
+}
+
+
+
+// TEXTS
+
 
 function updateTexts() {
 
@@ -77,13 +528,6 @@ if (sideStrLesion1 || positionStrLesion1 || segmentStrLesion1) {
 document.getElementById('ProstateLesion1Location').value = segmentsLesion1.join(', ');
 
 
-// Number
-
-// let buttonIDLesion1 = document.getElementById('ProstateLesion1No').id;
-// let matchLesion1 = buttonIDLesion1.match(/(\d)[^\d]{2}$/);
-// if (matchLesion1) {
-//	var ProstateLesion1Number = "Ložisko č. " + matchLesion1[1] + ": ";  
-// }
 
 // T2
 const ProstateLesion1T2Text = buttonElementProstateLesion1T2.innerText;
@@ -112,7 +556,7 @@ if (ProstateLesion1DWIText === "DWI score 1") {
     ProstateLesion1DWIP = "bez vyšší SI na DWI a bez snížení SI na ADC, "; 
     ProstateLesion1DWIR = ""; 
 } else if (ProstateLesion1DWIText === "DWI score 2") {
-    ProstateLesion1DWIP = "mírně vyšší SI na DWI bez výraznějšího snížení SI na ADC, "; 
+    ProstateLesion1DWIP = "pruh/klín lehce vyšší na DWI / nižší na ADC, "; 
     ProstateLesion1DWIR = ""; 
 } else if (ProstateLesion1DWIText === "DWI score 3") {
     ProstateLesion1DWIP = "vyšší SI na DWI nebo nižší SI na ADC, ";
@@ -187,79 +631,62 @@ if (ProstateLesion1InvasionText === "bez invaze") {
 }
 
 
-// PIRADS auto
-var ProstateLesion1SizeRaw = document.getElementById("ProstateLesion1Size").value;
-var ProstateLesion1SizeValue = ProstateLesion1SizeRaw === "" ? "" : parseFloat(ProstateLesion1SizeRaw);
-
-    var firstSegmentLesion1 = segmentsLesion1[0];
-
-// Check the segments
-if (firstSegmentLesion1 && (firstSegmentLesion1.includes("TZa") || firstSegmentLesion1.includes("TZp"))) {
-	if (ProstateLesion1T2Text === "T2 score 1") {
-		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 1";
-	} else if (ProstateLesion1T2Text === "T2 score 2") {
-		if (["DWI score 1", "DWI score 2", "DWI score 3"].includes(ProstateLesion1DWIText)) {
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 2";
-		} else if (["DWI score 4", "DWI score 5"].includes(ProstateLesion1DWIText)) {
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 3";
-		}
-	} else if (ProstateLesion1T2Text === "T2 score 3") {
-		if (["DWI score 1", "DWI score 2", "DWI score 3", "DWI score 4"].includes(ProstateLesion1DWIText)) {
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 3";
-		} else if (ProstateLesion1DWIText === "DWI score 5") {
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
-		}
-	} else if ((ProstateLesion1T2Text === "T2 score 4" || ProstateLesion1T2Text === "T2 score 5") && (ProstateLesion1SizeValue === "" || ProstateLesion1SizeValue < 15)) {
-		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
-	} else if ((ProstateLesion1T2Text === "T2 score 4" || ProstateLesion1T2Text === "T2 score 5") && ProstateLesion1SizeValue >= 15) {
-		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 5";
-	}
-} else if (firstSegmentLesion1 && (
-	firstSegmentLesion1.includes("PZa") || 
-	firstSegmentLesion1.includes("PZpl") || 
-	firstSegmentLesion1.includes("PZpm") ||
-	firstSegmentLesion1.includes("PZ") 
-)) {
-	if (ProstateLesion1DWIText === "DWI score 1") {
-		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 1";
-	} else if (ProstateLesion1DWIText === "DWI score 2") {
-		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 2";
-	} else if (ProstateLesion1DWIText === "DWI score 3") {
-		if (ProstateLesion1CText === "kontrast -") {
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 3";
-		} else if (ProstateLesion1CText === "kontrast +") {
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
-		}
-	} else if (ProstateLesion1DWIText === "DWI score 4") {
-		if (ProstateLesion1SizeValue < 15) {
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
-		} else {
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 5";
-		}
-	} else if (ProstateLesion1DWIText === "DWI score 5") {
-		if (ProstateLesion1SizeValue < 15) {
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
-		} else {
-			buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 5";
-		}
-	}
-} else if (firstSegmentLesion1 && (firstSegmentLesion1.includes("CZ") || firstSegmentLesion1.includes("AFS"))) {
-	const highestScore = Math.max(
-		parseInt(ProstateLesion1DWIText.replace('DWI score ', '')),
-		parseInt(ProstateLesion1T2Text.replace('T2 score ', ''))
-	);
-	if (highestScore === 1) {
-		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 1";
-	} else if (highestScore === 2) {
-		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 2";
-	} else if (highestScore === 3) {
-		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 3";
-	} else if (highestScore === 4) {
-		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 4";
-	} else if (highestScore === 5) {
-		buttonElementProstateLesion1PIRADS.innerText = "PI-RADS 5";
-	}
+// === PI-RADS v2.1 helper ===
+function getZoneFromSegment(seg) {
+  if (!seg) return "unknown";
+  if (seg.includes("PZa") || seg.includes("PZpl") || seg.includes("PZpm") || seg.includes("PZ")) return "PZ";
+  if (seg.includes("TZa") || seg.includes("TZp")) return "TZ";
+  if (seg.includes("CZ") || seg.includes("AFS")) return "CZAFS";
+  return "unknown";
 }
+
+function computePiradsV21({ zone, t2, dwi, dcePos, sizeMm, hasECE }) {
+  const big = (typeof sizeMm === "number" && sizeMm >= 15) || !!hasECE;
+
+  if (zone === "PZ") {
+    if (dwi <= 1) return 1;
+    if (dwi === 2) return 2;
+    if (dwi === 3) return dcePos ? 4 : 3;                // DCE jen jako tie-breaker
+    if (dwi === 4) return big ? 5 : 4;                   // ≥15 mm nebo ECE -> 5
+    if (dwi >= 5) return 5;                              // DWI 5 vždy 5
+  }
+
+  if (zone === "TZ") {
+    if (t2 <= 1) return 1;
+    if (t2 === 2) return (dwi >= 4) ? 3 : 2;
+    if (t2 === 3) return (dwi === 5) ? 4 : 3;
+    if (t2 === 4) return big ? 5 : 4;                    // ≥15 mm nebo ECE -> 5
+    if (t2 >= 5) return 5;
+  }
+
+  // CZ/AFS: vezmi vyšší z T2 a DWI; pokud je 4 a splněn big, povyš na 5
+  let base = Math.max(t2 || 0, dwi || 0);
+  if (base === 4 && big) return 5;
+  return Math.min(Math.max(base, 1), 5);
+}
+
+// === PIRADS auto  ===
+{
+  const firstSegmentLesion1 = segmentsLesion1[0];
+  const zone1 = getZoneFromSegment(firstSegmentLesion1);
+
+  const t2_1  = parseInt(buttonElementProstateLesion1T2.innerText.replace("T2 score ","")) || 0;
+  const dwi_1 = parseInt(buttonElementProstateLesion1DWI.innerText.replace("DWI score ","")) || 0;
+  const dce_1 = (buttonElementProstateLesion1C.innerText.trim() === "kontrast +");
+
+  const sizeRaw1 = document.getElementById("ProstateLesion1Size").value;
+  const sizeMm1 = sizeRaw1 === "" ? undefined : parseFloat(sizeRaw1);
+
+  const inv1 = buttonElementProstateLesion1Invasion.innerText.trim();
+  const hasECE1 = (inv1 !== "bez invaze"); // zahrnuje "přes kapsulu", SV, okolní struktury
+
+  const pi1 = computePiradsV21({
+    zone: zone1, t2: t2_1, dwi: dwi_1, dcePos: dce_1, sizeMm: sizeMm1, hasECE: hasECE1
+  });
+
+  buttonElementProstateLesion1PIRADS.innerText = `PI-RADS ${pi1}`;
+}
+
 
 
 //PIRADS manual
@@ -388,7 +815,7 @@ if (ProstateLesion2DWIText === "DWI score 1") {
     ProstateLesion2DWIP = "bez vyšší SI na DWI a bez snížení SI na ADC, "; 
     ProstateLesion2DWIR = ""; 
 } else if (ProstateLesion2DWIText === "DWI score 2") {
-    ProstateLesion2DWIP = "mírně vyšší SI na DWI bez výraznějšího snížení SI na ADC, "; 
+    ProstateLesion2DWIP = "pruh/klín lehce vyšší na DWI / nižší na ADC, "; 
     ProstateLesion2DWIR = ""; 
 } else if (ProstateLesion2DWIText === "DWI score 3") {
     ProstateLesion2DWIP = "vyšší SI na DWI nebo nižší SI na ADC, ";
@@ -400,6 +827,7 @@ if (ProstateLesion2DWIText === "DWI score 1") {
     ProstateLesion2DWIP = "vysoké SI na DWI a současně nízké SI na ADC, ";
     ProstateLesion2DWIR = "";
 }
+
 // C+
 var ProstateLesion2CText = buttonElementProstateLesion2C.innerText;
 
@@ -409,37 +837,6 @@ if (ProstateLesion2CText === "kontrast -") {
 } else if (ProstateLesion2CText === "kontrast +") {
     ProstateLesion2CP = "s časným postkontrastním sycením, "; 
     ProstateLesion2CR = ""; 
-}
-
-// size
-var ProstateLesion2SizeValue = document.getElementById("ProstateLesion2Size").value;
-document.getElementById("ProstateLesion2Size").addEventListener('input', updateTexts);
-var ProstateLesion2SizeP = "";
-
-if (ProstateLesion2SizeValue === "") {
-    ProstateLesion2SizeP = "";
-} else if (ProstateLesion2SizeValue !== "") {
-    ProstateLesion2SizeP = "diametru cca " + ProstateLesion2SizeValue + " mm,";
-}
-
-// invaze
-var ProstateLesion2InvasionText = buttonElementProstateLesion2Invasion.innerText;
-
-if (ProstateLesion2InvasionText === "bez invaze") {
-    ProstateLesion2InvasionP = ""; 
-    ProstateLesion2InvasionR = ""; 
-} else if (ProstateLesion2InvasionText === "invaze kapsuly") {
-    ProstateLesion2InvasionP = "s invazí kapsuly, "; 
-    ProstateLesion2InvasionR = ", s invazí kapsuly"; 
-} else if (ProstateLesion2InvasionText === "přes kapsulu") {
-    ProstateLesion2InvasionP = "s invazí přes kapsulu, "; 
-    ProstateLesion2InvasionR = ", s invazí přes kapsulu"; 
-} else if (ProstateLesion2InvasionText === "semen. váčků") {
-    ProstateLesion2InvasionP = "s infiltrací semenných váčků, "; 
-    ProstateLesion2InvasionR = ", s infiltrací semenných váčků"; 
-} else if (ProstateLesion2InvasionText === "okolních struktur") {
-    ProstateLesion2InvasionP = "s infiltrací okolních struktur, "; 
-    ProstateLesion2InvasionR = ", s infiltrací okolních struktur"; 
 }
 
 // PSMA
@@ -464,79 +861,91 @@ if (document.getElementById('ChbProstatePSMA').checked) {
         ProstateLesion2PSMAR = "";
     }
 
-// PIRADS auto
-var ProstateLesion2SizeRaw = document.getElementById("ProstateLesion2Size").value;
-var ProstateLesion2SizeValue = ProstateLesion2SizeRaw === "" ? "" : parseFloat(ProstateLesion2SizeRaw);
+// size
+var ProstateLesion2SizeValue = document.getElementById("ProstateLesion2Size").value;
+document.getElementById("ProstateLesion2Size").addEventListener('input', updateTexts);
+var ProstateLesion2SizeP = "";
 
-    var firstSegmentLesion2 = segmentsLesion2[0];
-
-// Check the segments
-if (firstSegmentLesion2 && (firstSegmentLesion2.includes("TZa") || firstSegmentLesion2.includes("TZp"))) {
-	if (ProstateLesion2T2Text === "T2 score 1") {
-		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 1";
-	} else if (ProstateLesion2T2Text === "T2 score 2") {
-		if (["DWI score 1", "DWI score 2", "DWI score 3"].includes(ProstateLesion2DWIText)) {
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 2";
-		} else if (["DWI score 4", "DWI score 5"].includes(ProstateLesion2DWIText)) {
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 3";
-		}
-	} else if (ProstateLesion2T2Text === "T2 score 3") {
-		if (["DWI score 1", "DWI score 2", "DWI score 3", "DWI score 4"].includes(ProstateLesion2DWIText)) {
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 3";
-		} else if (ProstateLesion2DWIText === "DWI score 5") {
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
-		}
-	} else if ((ProstateLesion2T2Text === "T2 score 4" || ProstateLesion2T2Text === "T2 score 5") && (ProstateLesion2SizeValue === "" || ProstateLesion2SizeValue < 15)) {
-		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
-	} else if ((ProstateLesion2T2Text === "T2 score 4" || ProstateLesion2T2Text === "T2 score 5") && ProstateLesion2SizeValue >= 15) {
-		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 5";
-	}
-} else if (firstSegmentLesion2 && (
-	firstSegmentLesion2.includes("PZa") || 
-	firstSegmentLesion2.includes("PZpl") || 
-	firstSegmentLesion2.includes("PZpm") ||
-	firstSegmentLesion2.includes("PZ") 
-)) {
-	if (ProstateLesion2DWIText === "DWI score 1") {
-		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 1";
-	} else if (ProstateLesion2DWIText === "DWI score 2") {
-		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 2";
-	} else if (ProstateLesion2DWIText === "DWI score 3") {
-		if (ProstateLesion2CText === "kontrast -") {
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 3";
-		} else if (ProstateLesion2CText === "kontrast +") {
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
-		}
-	} else if (ProstateLesion2DWIText === "DWI score 4") {
-		if (ProstateLesion2SizeValue < 15) {
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
-		} else {
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 5";
-		}
-	} else if (ProstateLesion2DWIText === "DWI score 5") {
-		if (ProstateLesion2SizeValue < 15) {
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
-		} else {
-			buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 5";
-		}
-	}
-} else if (firstSegmentLesion2 && (firstSegmentLesion2.includes("CZ") || firstSegmentLesion2.includes("AFS"))) {
-	const highestScore = Math.max(
-		parseInt(ProstateLesion2DWIText.replace('DWI score ', '')),
-		parseInt(ProstateLesion2T2Text.replace('T2 score ', ''))
-	);
-	if (highestScore === 1) {
-		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 1";
-	} else if (highestScore === 2) {
-		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 2";
-	} else if (highestScore === 3) {
-		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 3";
-	} else if (highestScore === 4) {
-		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 4";
-	} else if (highestScore === 5) {
-		buttonElementProstateLesion2PIRADS.innerText = "PI-RADS 5";
-	}
+if (ProstateLesion2SizeValue === "") {
+    ProstateLesion2SizeP = "";
+} else if (ProstateLesion2SizeValue !== "") {
+    ProstateLesion2SizeP = "diametru cca " + ProstateLesion2SizeValue + " mm,";
 }
+
+// invaze
+var ProstateLesion2InvasionText = buttonElementProstateLesion2Invasion.innerText;
+
+if (ProstateLesion2InvasionText === "bez invaze") {
+    ProstateLesion2InvasionP = ""; 
+    ProstateLesion2InvasionR = "";  
+} else if (ProstateLesion2InvasionText === "přes kapsulu") {
+    ProstateLesion2InvasionP = "s invazí přes kapsulu, "; 
+    ProstateLesion2InvasionR = ", s invazí přes kapsulu"; 
+} else if (ProstateLesion2InvasionText === "semen. váčků") {
+    ProstateLesion2InvasionP = "s infiltrací semenných váčků, "; 
+    ProstateLesion2InvasionR = ", s infiltrací semenných váčků"; 
+} else if (ProstateLesion2InvasionText === "okolních struktur") {
+    ProstateLesion2InvasionP = "s infiltrací okolních struktur, "; 
+    ProstateLesion2InvasionR = ", s infiltrací okolních struktur"; 
+}
+
+
+// === PI-RADS v2.1 helper ===
+function getZoneFromSegment(seg) {
+  if (!seg) return "unknown";
+  if (seg.includes("PZa") || seg.includes("PZpl") || seg.includes("PZpm") || seg.includes("PZ")) return "PZ";
+  if (seg.includes("TZa") || seg.includes("TZp")) return "TZ";
+  if (seg.includes("CZ") || seg.includes("AFS")) return "CZAFS";
+  return "unknown";
+}
+
+function computePiradsV21({ zone, t2, dwi, dcePos, sizeMm, hasECE }) {
+  const big = (typeof sizeMm === "number" && sizeMm >= 15) || !!hasECE;
+
+  if (zone === "PZ") {
+    if (dwi <= 1) return 1;
+    if (dwi === 2) return 2;
+    if (dwi === 3) return dcePos ? 4 : 3;                // DCE jen jako tie-breaker
+    if (dwi === 4) return big ? 5 : 4;                   // ≥15 mm nebo ECE -> 5
+    if (dwi >= 5) return 5;                              // DWI 5 vždy 5
+  }
+
+  if (zone === "TZ") {
+    if (t2 <= 1) return 1;
+    if (t2 === 2) return (dwi >= 4) ? 3 : 2;
+    if (t2 === 3) return (dwi === 5) ? 4 : 3;
+    if (t2 === 4) return big ? 5 : 4;                    // ≥15 mm nebo ECE -> 5
+    if (t2 >= 5) return 5;
+  }
+
+  // CZ/AFS: vezmi vyšší z T2 a DWI; pokud je 4 a splněn big, povyš na 5
+  let base = Math.max(t2 || 0, dwi || 0);
+  if (base === 4 && big) return 5;
+  return Math.min(Math.max(base, 1), 5);
+}
+
+// === PIRADS auto  ===
+{
+  const firstSegmentLesion2 = segmentsLesion2[0];
+  const zone1 = getZoneFromSegment(firstSegmentLesion2);
+
+  const t2_1  = parseInt(buttonElementProstateLesion2T2.innerText.replace("T2 score ","")) || 0;
+  const dwi_1 = parseInt(buttonElementProstateLesion2DWI.innerText.replace("DWI score ","")) || 0;
+  const dce_1 = (buttonElementProstateLesion2C.innerText.trim() === "kontrast +");
+
+  const sizeRaw1 = document.getElementById("ProstateLesion2Size").value;
+  const sizeMm1 = sizeRaw1 === "" ? undefined : parseFloat(sizeRaw1);
+
+  const inv1 = buttonElementProstateLesion2Invasion.innerText.trim();
+  const hasECE1 = (inv1 !== "bez invaze"); // zahrnuje "přes kapsulu", SV, okolní struktury
+
+  const pi1 = computePiradsV21({
+    zone: zone1, t2: t2_1, dwi: dwi_1, dcePos: dce_1, sizeMm: sizeMm1, hasECE: hasECE1
+  });
+
+  buttonElementProstateLesion2PIRADS.innerText = `PI-RADS ${pi1}`;
+}
+
 
 
 
@@ -668,7 +1077,7 @@ if (ProstateLesion3DWIText === "DWI score 1") {
     ProstateLesion3DWIP = "bez vyšší SI na DWI a bez snížení SI na ADC, "; 
     ProstateLesion3DWIR = ""; 
 } else if (ProstateLesion3DWIText === "DWI score 2") {
-    ProstateLesion3DWIP = "mírně vyšší SI na DWI bez výraznějšího snížení SI na ADC, "; 
+    ProstateLesion3DWIP = "pruh/klín lehce vyšší na DWI / nižší na ADC, "; 
     ProstateLesion3DWIR = ""; 
 } else if (ProstateLesion3DWIText === "DWI score 3") {
     ProstateLesion3DWIP = "vyšší SI na DWI nebo nižší SI na ADC, ";
@@ -690,38 +1099,6 @@ if (ProstateLesion3CText === "kontrast -") {
 } else if (ProstateLesion3CText === "kontrast +") {
     ProstateLesion3CP = "s časným postkontrastním sycením, "; 
     ProstateLesion3CR = ""; 
-}
-
-
-// size
-var ProstateLesion3SizeValue = document.getElementById("ProstateLesion3Size").value;
-document.getElementById("ProstateLesion3Size").addEventListener('input', updateTexts);
-var ProstateLesion3SizeP = "";
-
-if (ProstateLesion3SizeValue === "") {
-    ProstateLesion3SizeP = "";
-} else if (ProstateLesion3SizeValue !== "") {
-    ProstateLesion3SizeP = "diametru cca " + ProstateLesion3SizeValue + " mm,";
-}
-
-// invaze
-var ProstateLesion3InvasionText = buttonElementProstateLesion3Invasion.innerText;
-
-if (ProstateLesion3InvasionText === "bez invaze") {
-    ProstateLesion3InvasionP = ""; 
-    ProstateLesion3InvasionR = ""; 
-} else if (ProstateLesion3InvasionText === "invaze kapsuly") {
-    ProstateLesion3InvasionP = "s invazí kapsuly, "; 
-    ProstateLesion3InvasionR = ", s invazí kapsuly"; 
-} else if (ProstateLesion3InvasionText === "přes kapsulu") {
-    ProstateLesion3InvasionP = "s invazí přes kapsulu, "; 
-    ProstateLesion3InvasionR = ", s invazí přes kapsulu"; 
-} else if (ProstateLesion3InvasionText === "semen. váčků") {
-    ProstateLesion3InvasionP = "s infiltrací semenných váčků, "; 
-    ProstateLesion3InvasionR = ", s infiltrací semenných váčků"; 
-} else if (ProstateLesion3InvasionText === "okolních struktur") {
-    ProstateLesion3InvasionP = "s infiltrací okolních struktur, "; 
-    ProstateLesion3InvasionR = ", s infiltrací okolních struktur"; 
 }
 
 // PSMA
@@ -746,79 +1123,91 @@ if (document.getElementById('ChbProstatePSMA').checked) {
         ProstateLesion3PSMAR = "";
     }
 
-// PIRADS auto
-var ProstateLesion3SizeRaw = document.getElementById("ProstateLesion3Size").value;
-var ProstateLesion3SizeValue = ProstateLesion3SizeRaw === "" ? "" : parseFloat(ProstateLesion3SizeRaw);
+// size
+var ProstateLesion3SizeValue = document.getElementById("ProstateLesion3Size").value;
+document.getElementById("ProstateLesion3Size").addEventListener('input', updateTexts);
+var ProstateLesion3SizeP = "";
 
-    var firstSegmentLesion3 = segmentsLesion3[0];
-
-// Check the segments
-if (firstSegmentLesion3 && (firstSegmentLesion3.includes("TZa") || firstSegmentLesion3.includes("TZp"))) {
-	if (ProstateLesion3T2Text === "T2 score 1") {
-		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 1";
-	} else if (ProstateLesion3T2Text === "T2 score 2") {
-		if (["DWI score 1", "DWI score 2", "DWI score 3"].includes(ProstateLesion3DWIText)) {
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 2";
-		} else if (["DWI score 4", "DWI score 5"].includes(ProstateLesion3DWIText)) {
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 3";
-		}
-	} else if (ProstateLesion3T2Text === "T2 score 3") {
-		if (["DWI score 1", "DWI score 2", "DWI score 3", "DWI score 4"].includes(ProstateLesion3DWIText)) {
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 3";
-		} else if (ProstateLesion3DWIText === "DWI score 5") {
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
-		}
-	} else if ((ProstateLesion3T2Text === "T2 score 4" || ProstateLesion3T2Text === "T2 score 5") && (ProstateLesion3SizeValue === "" || ProstateLesion3SizeValue < 15)) {
-		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
-	} else if ((ProstateLesion3T2Text === "T2 score 4" || ProstateLesion3T2Text === "T2 score 5") && ProstateLesion3SizeValue >= 15) {
-		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 5";
-	}
-} else if (firstSegmentLesion3 && (
-	firstSegmentLesion3.includes("PZa") || 
-	firstSegmentLesion3.includes("PZpl") || 
-	firstSegmentLesion3.includes("PZpm") ||
-	firstSegmentLesion3.includes("PZ") 
-)) {
-	if (ProstateLesion3DWIText === "DWI score 1") {
-		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 1";
-	} else if (ProstateLesion3DWIText === "DWI score 2") {
-		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 2";
-	} else if (ProstateLesion3DWIText === "DWI score 3") {
-		if (ProstateLesion3CText === "kontrast -") {
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 3";
-		} else if (ProstateLesion3CText === "kontrast +") {
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
-		}
-	} else if (ProstateLesion3DWIText === "DWI score 4") {
-		if (ProstateLesion3SizeValue < 15) {
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
-		} else {
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 5";
-		}
-	} else if (ProstateLesion3DWIText === "DWI score 5") {
-		if (ProstateLesion3SizeValue < 15) {
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
-		} else {
-			buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 5";
-		}
-	}
-} else if (firstSegmentLesion3 && (firstSegmentLesion3.includes("CZ") || firstSegmentLesion3.includes("AFS"))) {
-	const highestScore = Math.max(
-		parseInt(ProstateLesion3DWIText.replace('DWI score ', '')),
-		parseInt(ProstateLesion3T2Text.replace('T2 score ', ''))
-	);
-	if (highestScore === 1) {
-		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 1";
-	} else if (highestScore === 2) {
-		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 2";
-	} else if (highestScore === 3) {
-		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 3";
-	} else if (highestScore === 4) {
-		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 4";
-	} else if (highestScore === 5) {
-		buttonElementProstateLesion3PIRADS.innerText = "PI-RADS 5";
-	}
+if (ProstateLesion3SizeValue === "") {
+    ProstateLesion3SizeP = "";
+} else if (ProstateLesion3SizeValue !== "") {
+    ProstateLesion3SizeP = "diametru cca " + ProstateLesion3SizeValue + " mm,";
 }
+
+// invaze
+var ProstateLesion3InvasionText = buttonElementProstateLesion3Invasion.innerText;
+
+if (ProstateLesion3InvasionText === "bez invaze") {
+    ProstateLesion3InvasionP = ""; 
+    ProstateLesion3InvasionR = "";  
+} else if (ProstateLesion3InvasionText === "přes kapsulu") {
+    ProstateLesion3InvasionP = "s invazí přes kapsulu, "; 
+    ProstateLesion3InvasionR = ", s invazí přes kapsulu"; 
+} else if (ProstateLesion3InvasionText === "semen. váčků") {
+    ProstateLesion3InvasionP = "s infiltrací semenných váčků, "; 
+    ProstateLesion3InvasionR = ", s infiltrací semenných váčků"; 
+} else if (ProstateLesion3InvasionText === "okolních struktur") {
+    ProstateLesion3InvasionP = "s infiltrací okolních struktur, "; 
+    ProstateLesion3InvasionR = ", s infiltrací okolních struktur"; 
+}
+
+
+// === PI-RADS v2.1 helper ===
+function getZoneFromSegment(seg) {
+  if (!seg) return "unknown";
+  if (seg.includes("PZa") || seg.includes("PZpl") || seg.includes("PZpm") || seg.includes("PZ")) return "PZ";
+  if (seg.includes("TZa") || seg.includes("TZp")) return "TZ";
+  if (seg.includes("CZ") || seg.includes("AFS")) return "CZAFS";
+  return "unknown";
+}
+
+function computePiradsV21({ zone, t2, dwi, dcePos, sizeMm, hasECE }) {
+  const big = (typeof sizeMm === "number" && sizeMm >= 15) || !!hasECE;
+
+  if (zone === "PZ") {
+    if (dwi <= 1) return 1;
+    if (dwi === 2) return 2;
+    if (dwi === 3) return dcePos ? 4 : 3;                // DCE jen jako tie-breaker
+    if (dwi === 4) return big ? 5 : 4;                   // ≥15 mm nebo ECE -> 5
+    if (dwi >= 5) return 5;                              // DWI 5 vždy 5
+  }
+
+  if (zone === "TZ") {
+    if (t2 <= 1) return 1;
+    if (t2 === 2) return (dwi >= 4) ? 3 : 2;
+    if (t2 === 3) return (dwi === 5) ? 4 : 3;
+    if (t2 === 4) return big ? 5 : 4;                    // ≥15 mm nebo ECE -> 5
+    if (t2 >= 5) return 5;
+  }
+
+  // CZ/AFS: vezmi vyšší z T2 a DWI; pokud je 4 a splněn big, povyš na 5
+  let base = Math.max(t2 || 0, dwi || 0);
+  if (base === 4 && big) return 5;
+  return Math.min(Math.max(base, 1), 5);
+}
+
+// === PIRADS auto  ===
+{
+  const firstSegmentLesion3 = segmentsLesion3[0];
+  const zone1 = getZoneFromSegment(firstSegmentLesion3);
+
+  const t2_1  = parseInt(buttonElementProstateLesion3T2.innerText.replace("T2 score ","")) || 0;
+  const dwi_1 = parseInt(buttonElementProstateLesion3DWI.innerText.replace("DWI score ","")) || 0;
+  const dce_1 = (buttonElementProstateLesion3C.innerText.trim() === "kontrast +");
+
+  const sizeRaw1 = document.getElementById("ProstateLesion3Size").value;
+  const sizeMm1 = sizeRaw1 === "" ? undefined : parseFloat(sizeRaw1);
+
+  const inv1 = buttonElementProstateLesion3Invasion.innerText.trim();
+  const hasECE1 = (inv1 !== "bez invaze"); // zahrnuje "přes kapsulu", SV, okolní struktury
+
+  const pi1 = computePiradsV21({
+    zone: zone1, t2: t2_1, dwi: dwi_1, dcePos: dce_1, sizeMm: sizeMm1, hasECE: hasECE1
+  });
+
+  buttonElementProstateLesion3PIRADS.innerText = `PI-RADS ${pi1}`;
+}
+
 
 
 //PIRADS manual

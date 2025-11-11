@@ -261,6 +261,7 @@ button {border-radius: 1px; border: 1px solid #000000; height: 20px; background-
 
 .myButtonLesion {width: 20px; background-color: #D3DCE9; text-align: center; justify-content: center;}
 .myButtonLesionS {width: 80px; background-color: #FFADAD; font-size: 11px; padding-right: 2px; text-align: left;}
+.myButtonLesionXS {width: 40px; background-color: #D4A29C; font-size: 11px; padding-right: 2px; text-align: left;}
 .myButtonLN {width: 20px; background-color: #D3DCE9;}
 .myButtonLNselect {width: 20px; background-color: #FFADAD;}
 .toggleColorRed {background-color: #FFADAD;}
@@ -741,7 +742,7 @@ body, button, input, textarea, select, option,
 }
 
 /* hover, aktivní, zvýrazněné stavy */
-.dropdown-content a:hover, .remove-button, .myButtonLesionS, .myButtonLNselect, .toggleColorRed, .myButtonO {
+.dropdown-content a:hover, .remove-button, .myButtonLesionS, .myButtonLesionXS, .myButtonLNselect, .toggleColorRed, .myButtonO {
   background-color: #FFADAD; 
 }
 

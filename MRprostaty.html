@@ -29,14 +29,14 @@ RAPE <label class="CHB"><input type="checkbox" id="ChbProstateRAPE" onChange="up
 <div id="Tstage" class="DIVLesions"><button class="title">T STAGE</button> LOŽISKA <button id="ProstateNewLesions" class="myButtonLesion">+</button> 
 	<div id="ProstateRec" style="display: inline-flex; align-items: center; margin-left: 20px;" class="hidden">
 		<label class="CHB">recidiva v lůžku<input type="checkbox" id="ChbProstateRecidR" onChange="updateTexts()"><span>R</span></label>
-		<label class="CHB"><input type="checkbox" id="ChbProstateRecidL" onChange="updateTexts()"><span>L</span></label>
+		<label class="CHB"><input type="checkbox" id="ChbProstateRecidL" onChange="updateTexts()"><span>L</span></label>&nbsp;&nbsp;&nbsp;
 		<label class="CHB">bez recidivy<input type="checkbox" id="ChbProstateNoRecid" onChange="updateTexts()"><span>+</span></label>
 	</div>
 </div >
 <div class="DIVLesions">
 <table style="border:0px" id="ProstateLesion1" class="LesionX hidden">
   <tr>
-    <td><button id="ProstateLesion1No" class="myButtonLesionS">L1</button></td> 
+    <td><button id="ProstateLesion1No" class="myButtonLesionXS">L1</button></td> 
 	<td>
 		<input id="ProstateLesion1Location" type="text" placeholder="segment / segmenty ..." autocomplete="off" class="prostateinput">
     
@@ -97,7 +97,7 @@ RAPE <label class="CHB"><input type="checkbox" id="ChbProstateRAPE" onChange="up
 
 <table style="border:0px" id="ProstateLesion2" class="LesionX hidden">
   <tr>
-    <td><button id="ProstateLesion2No" class="myButtonLesionS">L2</button></td> 
+    <td><button id="ProstateLesion2No" class="myButtonLesionXS">L2</button></td> 
 	<td>
 		<input id="ProstateLesion2Location" type="text" placeholder="segment / segmenty ..." autocomplete="off" class="prostateinput">
     
@@ -158,7 +158,7 @@ RAPE <label class="CHB"><input type="checkbox" id="ChbProstateRAPE" onChange="up
 
 <table style="border:0px" id="ProstateLesion3" class="LesionX hidden">
   <tr>
-    <td><button id="ProstateLesion3No" class="myButtonLesionS">L3</button></td> 
+    <td><button id="ProstateLesion3No" class="myButtonLesionXS">L3</button></td> 
 	<td>
 		<input id="ProstateLesion3Location" type="text" placeholder="segment / segmenty ..." autocomplete="off" class="prostateinput">
     
@@ -305,7 +305,7 @@ INDIKACE<textarea id="ProstateTuINDText" class="medium"></textarea>
 </div>
 
 <script src="Universal.js"></script>  
-<script src="MRprostatyscript.js"></script>  
+
 <script src="MRprostatypopis.js"></script>
 
 <script>

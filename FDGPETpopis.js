@@ -353,13 +353,34 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Klik mimo zavře obrázek
-    document.addEventListener('click', (e) => {
-      if (!imageElement.contains(e.target) &&
-          !(config.buttonIds || []).some(id => document.getElementById(id) === e.target)) {
-        imageElement.style.display = 'none';
-      }
-    });
+	// Klik mimo zavře obrázek (upraveno – respektuje aktivní tabulky)
+	document.addEventListener('click', (e) => {
+	  const krkTable = document.getElementById('NeckLymphNode1table');
+	  const medTable = document.getElementById('ThoraxLymphNode1table');
+	  const chestTable = document.getElementById('ThoraxLesion1table');
+
+	  // Funkce pro kontrolu, zda klik nepatří do žádné z "bezpečných" oblastí
+	  const isInsideSafeZone = (imageElement, config) => {
+		return (
+		  imageElement.contains(e.target) || // klik přímo na obrázek
+		  (config.buttonIds || []).some(id => document.getElementById(id) === e.target) || // klik na odpovídající tlačítka
+		  (krkTable && krkTable.contains(e.target)) || // krční uzliny
+		  (medTable && medTable.contains(e.target)) || // mediastinální uzliny
+		  (chestTable && chestTable.contains(e.target)) // thorax léze
+		);
+	  };
+
+	  imageConfigs.forEach(config => {
+		const imageElement = document.getElementById(config.imageElementId);
+		if (!imageElement) return;
+
+		if (!isInsideSafeZone(imageElement, config)) {
+		  imageElement.style.display = 'none';
+		}
+	  });
+	});
+
+
   });
 });
 
