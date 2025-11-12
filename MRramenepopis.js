@@ -47,8 +47,8 @@ var textsAcromion = ["0", "typ III", "os acrom."];
 
 var textsGHdegenerace = ["0", "mírná", "střední", "výrazná"];
 var textsGHsubluxace = ["0", "kraniální", "ventrální", "dorzální"];
-var textsSASD = ["0", "↑", "↑↑", "↑↑↑"];
-var textsSC = ["0", "↑", "↑↑"];
+var textsSASD = ["0", "↑", "↑↑", "↑↑↑", "B"];
+var textsSC = ["0", "↑", "↑↑", "B"];
 var textsBankart = ["0", "ano", "osseozní", "Perthes", "reverzní"];
 var textsIGHL = ["OK", "edém", "HAGL", "GAGL"];
 
@@ -343,25 +343,31 @@ if (SASDText === "0") {
  SASDP = ""; 
  SASDR = ""; 
 } else if (SASDText === "↑") {
- SASDP = "Stopově tekutina v subakromiální-subdeltoidní burze.";
- SASDR = "Stopově subakromiální-subdeltoidní burzitis.";
+ SASDP = "Stopově tekutina subakromiálně-subdeltoidně.";
+ SASDR = "Stopově tekutina subakromiálně-subdeltoidně.";
 } else if (SASDText === "↑↑") {
- SASDP = "Tekutina v subakromiální-subdeltoidní burze.";
- SASDR = "Subakromiální-subdeltoidní burzitis.";
+ SASDP = "Tekutina subakromiálně-subdeltoidně.";
+ SASDR = "Tekutina subakromiálně-subdeltoidně.";
 } else if (SASDText === "↑↑↑") {
- SASDP = "Výrazné množství tekutiny v subakromiální-subdeltoidní burze.";
- SASDR = "Výrazná subakromiální-subdeltoidní burzitis.";
-}	
+ SASDP = "Výrazné množství tekutiny subakromiálně-subdeltoidně.";
+ SASDR = "Výrazné množství tekutiny subakromiálně-subdeltoidně.";
+} else if (SASDText === "B") {
+ SASDP = "Zvýšená náplň subakromiální burzy.";
+ SASDR = "Subakromiální burzitis.";
+}		
 
 if (SCText === "0") {
  SCP = ""; 
  SCR = ""; 
 } else if (SCText === "↑") {
- SCP = "Tekutina v subkorakoidní burze.";
+ SCP = "Tekutina v subskapulárním recesu.";
  SCR = "Subkorakoidní burzitis.";
 } else if (SCText === "↑↑") {
- SCP = "Větší množství tekutiny v subkorakoidní burze.";
- SCR = "Výrazná subkorakoidní burzitis.";
+ SCP = "Větší množství tekutiny v subskapulárním recesu.";
+ SCR = "Větší množství tekutiny v subskapulárním recesu.";
+} else if (SCText === "B") {
+ SCP = "Tekutina v subkorakoidní burze.";
+ SCR = "Subkorakoidní burzitis.";
 }	
 
 
