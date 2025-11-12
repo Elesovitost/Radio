@@ -16,13 +16,13 @@
 </div >  
 	<table border="0" style="text-align: center;">
     <tr>
-		<td>T12/L1</td>
-		<td>L1/2</td>
-        <td>L2/3</td>
-        <td>L3/4</td>
-        <td>L4/5</td>
-        <td>L5/S1</td>
-		<td>Pánev</td>
+		<td id="header-T12L1">T12/L1</td>
+		<td id="header-L1L2">L1/2</td>
+        <td id="header-L2L3">L2/3</td>
+        <td id="header-L3L4">L3/4</td>
+        <td id="header-L4L5">L4/5</td>
+        <td id="header-L5S1">L5/S1</td>
+		<td id="NaFPelvisName">Pánev</td>
     </tr>
     <tr>
         <td style="position: relative;">
@@ -85,7 +85,7 @@
 			<span class="NaFLocation" id="L5S1-FJ-L" style="position: absolute; top: 65px; left: 70px;">+</span>
 			<span class="NaFLocation" id="L5S1-SP-0" style="position: absolute; top: 100px; left: 52px;">+</span>
 		</td>
-		<td style="position: relative;">
+		<td id="NaFPelvisPic" style="position: relative;">
 			<img src="NaFskeletPelvis.jpg" alt="MR Prostaty Segments" style="border: 0px solid black">
 			<span class="NaFLocation" id="Pelvis-SI-R" style="position: absolute; top: 26px; left: 42px;">+</span>
 			<span class="NaFLocation" id="Pelvis-SI-L" style="position: absolute; top: 26px; left: 98px;">+</span>
@@ -94,6 +94,9 @@
 			<span class="NaFLocation" id="Pelvis-SYM-0" style="position: absolute; top: 84px; left: 68px;">+</span>
 		</td>
     </tr>
+	<tr>
+		<td></td>
+	</tr>
 	</table>	
 
 <div id="rozsah" class="DIVLesions">
@@ -102,9 +105,8 @@
 
 	<table id="NaFskeletOther1" class="LymphNodeX hidden" >
 		<tr>
-			<td><button id="NaFskeletOther1no" class="myButtonO">-</button></td>
-			<td><textarea id="NaFskeletOther1Pop" type="text" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
-			<td><textarea id="NaFskeletOther1Res" type="text" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
+			<td><textarea id="NaFskeletOther1Pop" type="text" style="width: 496px; height: 20px; overflow: hidden;" placeholder="další nálezy..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
+			<td><textarea id="NaFskeletOther1Res" type="text" style="width: 496px; height: 20px; overflow: hidden;" placeholder="do závěru..." autocomplete="off" class="inputOtherFinding" oninput="updateTexts()"></textarea></td>
 		</tr>
 	</table> 
 	

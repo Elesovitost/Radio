@@ -1,13 +1,101 @@
-//buttons
+//C and L spine
 
 var textsNaFType = ["L páteře", "C páteře"];
 var buttonElementNaFType = document.getElementById("NaFTypeButton");
 buttonElementNaFType.value = "L páteře";
 var indexNaFType = 0;function cycleNaFTypeText(event) {  indexNaFType = cycleText(event, textsNaFType, indexNaFType, buttonElementNaFType);}
 
-function cycleNaFTypeText(event) {  indexNaFType = cycleText(event, textsNaFType, indexNaFType, buttonElementNaFType); updateSegmentsBasedOnType(); updateTexts();}
+function cycleNaFTypeText(event) {  
+    // Toto je původní řádek, který provede změnu textu tlačítka
+    indexNaFType = cycleText(event, textsNaFType, indexNaFType, buttonElementNaFType); 
+    
+    // Zjistíme, jaký text je na tlačítku
+    const buttonValue = buttonElementNaFType.value;
+	const pelvisPic = document.getElementById("NaFPelvisPic");
+	const pelvisName = document.getElementById("NaFPelvisName");
+    
+    // A podle hodnoty změníme text v hlavičce tabulky
+    if (buttonValue === "C páteře") {
+        document.getElementById("header-T12L1").innerText = "C2/3";
+        document.getElementById("header-L1L2").innerText = "C3/4";
+        document.getElementById("header-L2L3").innerText = "C4/5";
+        document.getElementById("header-L3L4").innerText = "C5/6";
+        document.getElementById("header-L4L5").innerText = "C6/7";
+        document.getElementById("header-L5S1").innerText = "C7/T1";
+		pelvisPic.classList.add("hidden");
+		pelvisName.classList.add("hidden");
+		
+		const vertebraImages = document.querySelectorAll('img[src*="NaFskeletVertebra.jpg"]');
+        vertebraImages.forEach(img => {
+        img.src = img.src.replace("NaFskeletVertebra.jpg", "NaFskeletVertebraC.jpg");
+        });
+		
+		
+    } else { // "L páteře"
+        document.getElementById("header-T12L1").innerText = "T12/L1";
+        document.getElementById("header-L1L2").innerText = "L1/2";
+        document.getElementById("header-L2L3").innerText = "L2/3";
+        document.getElementById("header-L3L4").innerText = "L3/4";
+        document.getElementById("header-L4L5").innerText = "L4/5";
+        document.getElementById("header-L5S1").innerText = "L5/S1";
+		pelvisPic.classList.remove("hidden");
+		pelvisName.classList.remove("hidden");
+		
+		const vertebraImages = document.querySelectorAll('img[src*="NaFskeletVertebraC.jpg"]');
+        vertebraImages.forEach(img => {
+        img.src = img.src.replace("NaFskeletVertebraC.jpg", "NaFskeletVertebra.jpg");
+        });
+    }
 
 
+    // --- ÚPRAVA POZIC BODŮ PODLE TYPU PÁTEŘE ---
+    const spans = document.querySelectorAll(".NaFLocation");
+
+    // Při prvním běhu si uložíme původní pozice
+    spans.forEach(span => {
+        if (!span.getAttribute("data-original-top")) {
+            span.setAttribute("data-original-top", span.style.top);
+        }
+        if (!span.getAttribute("data-original-left")) {
+            span.setAttribute("data-original-left", span.style.left);
+        }
+    });
+
+    if (buttonValue === "C páteře") {
+        spans.forEach(span => {
+            const id = span.id;
+
+            // VB pozice – R, L, P o 10px nahoru
+            if (id.includes("-VB-")) {
+                if (id.endsWith("-R") || id.endsWith("-L") || id.endsWith("-P")) {
+                    const top = parseInt(span.getAttribute("data-original-top"));
+                    span.style.top = (top - 10) + "px";
+                }
+            }
+
+            // FJ pozice – o 20px nahoru, R o 20px doleva, L o 20px doprava
+            if (id.includes("-FJ-")) {
+                const top = parseInt(span.getAttribute("data-original-top"));
+                const left = parseInt(span.getAttribute("data-original-left"));
+                span.style.top = (top - 20) + "px";
+                if (id.endsWith("-R")) span.style.left = (left - 20) + "px";
+                if (id.endsWith("-L")) span.style.left = (left + 20) + "px";
+            }
+        });
+    } 
+    else { // --- návrat na původní pozice ---
+        spans.forEach(span => {
+            span.style.top = span.getAttribute("data-original-top");
+            span.style.left = span.getAttribute("data-original-left");
+        });
+    }
+    // --- KONEC ÚPRAVY POZIC ---
+
+  
+ 
+    // Toto je původní volání, které přepočítá texty "Popis" a "Závěr"
+    updateTexts();
+}
 
 
 // BUTTONS CYCLING
@@ -96,13 +184,6 @@ document.getElementById('NaFskeletNewOther1').addEventListener('contextmenu', fu
   updateTexts();
 });
 
-document.getElementById('NaFskeletOther1no').addEventListener('click', function() {
-  var element = document.getElementById('NaFskeletOther1');
-  element.classList.add('hidden');
-  var button = document.getElementById('NaFskeletNewOther1');
-  button.classList.remove('toggleColorRed');
-  updateTexts();
-});
 
 // Chb clickable by right mouse
 
@@ -305,20 +386,6 @@ eval(codeForL4L5);
 eval(codeForL5S1);
 
 
-if (buttonElementNaFType.value === "C páteře") {
-  codeForT12L1 = codeForT12L1
-    .replace(/T12L1/g, 'C2C3').replace(/T12\/L1/g, 'C2/3');
-  codeForL1L2 = codeForT12L1
-    .replace(/C2C3/g, 'C3C4').replace(/C2\/3/g, 'C3/4');
-  codeForL2L3 = codeForT12L1
-    .replace(/C2C3/g, 'C4C5').replace(/C2\/3/g, 'C4/5');
-  codeForL3L4 = codeForT12L1
-    .replace(/C2C3/g, 'C5C6').replace(/C2\/3/g, 'C5/6');
-  codeForL4L5 = codeForT12L1
-    .replace(/C2C3/g, 'C6C7').replace(/C2\/3/g, 'C6/7');
-  codeForL5S1 = codeForT12L1
-    .replace(/C2C3/g, 'C7T1').replace(/C2\/3/g, 'C7/T1');
-}
 
 
 
@@ -611,20 +678,26 @@ NaFPOPText.value + "\n\n" +
 NaFRESText.value;
 
 
+// C páteř přepisy
 
+if (buttonElementNaFType.value === "C páteře") {
+  const map = {
+    "T12/L1:": "C2/3:",
+    "L1/2:": "C3/4:",
+    "L2/3:": "C4/5:",
+    "L3/4:": "C5/6:",
+    "L4/5:": "C6/7:",
+    "L5/S1:": "C7/T1:"
+  };
+
+  for (const [L, C] of Object.entries(map)) {
+    const regex = new RegExp(L, "g");
+    NaFPOPText.value = NaFPOPText.value.replace(regex, C);
+  }
 }
-updateTexts();	
 
-
-
-
-
-
-function updateSegmentsBasedOnType() {
-  const type = buttonElementNaFType.value;
-
-  // Mapování bederních → krční segmenty
-  const mapLtoC = {
+if (buttonElementNaFType.value === "C páteře") {
+  const map = {
     "T12/L1": "C2/3",
     "L1/2": "C3/4",
     "L2/3": "C4/5",
@@ -633,54 +706,14 @@ function updateSegmentsBasedOnType() {
     "L5/S1": "C7/T1"
   };
 
-  // Přepsat nadpisy v tabulce
-  const tableHeaders = document.querySelectorAll("table tr:first-child td");
-  tableHeaders.forEach((cell) => {
-    const text = cell.innerText.trim();
-    if (type === "C páteře" && mapLtoC[text]) {
-      cell.innerText = mapLtoC[text];
-    } else if (type === "L páteře") {
-      // obnovíme původní názvy
-      const original = Object.entries(mapLtoC).find(([k, v]) => v === text);
-      if (original) cell.innerText = original[0];
-    }
-  });
-
-  // Přepsat všechna ID spanů (bez regenerace)
-  const spans = document.querySelectorAll(".NaFLocation");
-  spans.forEach((span) => {
-    const id = span.id;
-    const newId = convertIdByType(id, type);
-    span.id = newId;
-  });
+  for (const [L, C] of Object.entries(map)) {
+    const regex = new RegExp(L, "g");
+    NaFRESText.value = NaFRESText.value.replace(regex, C);
+  }
 }
 
- const pelvisCell = document.getElementById("NaFPelvis");
-  if (pelvisCell) {
-    if (type === "C páteře") {
-      pelvisCell.style.display = "hidden"; // skryje pánev
-    } else {
-      pelvisCell.style.display = ""; // zobrazí pánev
-    }
-  }
 
-function convertIdByType(id, type) {
-  const mapLtoC = {
-    "T12L1": "C2C3",
-    "L1L2": "C3C4",
-    "L2L3": "C4C5",
-    "L3L4": "C5C6",
-    "L4L5": "C6C7",
-    "L5S1": "C7T1"
-  };
-  if (type === "C páteře") {
-    for (const [L, C] of Object.entries(mapLtoC)) {
-      if (id.includes(L)) return id.replace(L, C);
-    }
-  } else if (type === "L páteře") {
-    for (const [L, C] of Object.entries(mapLtoC)) {
-      if (id.includes(C)) return id.replace(C, L);
-    }
-  }
-  return id;
 }
+updateTexts();	
+
+
