@@ -123,7 +123,7 @@ function sloucitStejneRadky(textareaId) {
 	'bná': 'bné',
 	'výrazný': 'výrazné',
 	'lem': 'lemy',
-	'má': 'mají',
+	'má': 'mají'
 
     // přidej další dle potřeby
   };
@@ -204,8 +204,8 @@ function mergeBilateralSentences(textareaId) {
             }
         }
 
-        // nahraď "je" za "jsou"
         sentence = sentence.replace(/\bje\b/g, "jsou");
+		sentence = sentence.replace("má", "mají");
 
         // první písmeno velké
         sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
