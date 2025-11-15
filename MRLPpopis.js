@@ -1094,7 +1094,11 @@ MRLumbarRESText.value = MRLumbarRESText.value.replace(/,\s((?!L[1-5]|T12)[A-ZÚ]
 MRLumbarRESText.value = MRLumbarRESText.value.replace("Edém pod krycími plotnami Modic I v rámci dekompenzace degenerativních změn. Edém při facet. skloubeních v rámci dekompenzace degenerativních změn.", "Edém pod krycími plotnami Modic I a edém při facet. skloubeních v rámci dekompenzace degenerativních změn."); // combine. edém
 MRLumbarRESText.value = MRLumbarRESText.value.replace(/^\s*[\r\n]/gm, '');  // odstraní prázdné řádky
 
+MRLumbarRESText.value = MRLumbarRESText.value.replace("herniace disku centrálně","centrální herniace disku");
+MRLumbarRESText.value = MRLumbarRESText.value.replace("Herniace disku centrálně","Centrální herniace disku");
+
 sloucitStejneRadky('MRLumbarRESText');
+
 
 
 
