@@ -721,6 +721,34 @@ async function zkontrolujAI(completeText, selectedText = "") {
   }
 }
 
+async function callRenderAI(prompt, selectedText = "") {
+    const output = document.getElementById('aiOutput');
+    const resultDiv = document.getElementById('aiResult');
+  
+    if (!prompt) {
+      alert("Text je prázdný.");
+      return;
+    }
+  
+    output.innerText = "⏳ AI analyzuje...";
+    resultDiv.style.display = 'block';
+  
+    try {
+      const response = await fetch("https://radio-ai-backend.onrender.com/api/check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: prompt,
+          selected: selectedText || null
+        })
+      });
+  
+      const data = await response.json();
+      output.innerText = data.result || "⚠️ Žádná odpověď od AI.";
+    } catch (error) {
+      output.innerText = "❌ Chyba připojení: " + error.message;
+    }
+}
 
 // 📋 AI COPY – zkopíruje připravený prompt do schránky
 const btnAIcopy = document.getElementById('AIcopy');
@@ -755,13 +783,8 @@ ${selected}
 Úkol: s ohledem na ostatní dostupné informace proveď diferenciální diagnostiku s pravděpodobnostmi. Použij k tomu odbornou literaturu a servery.`;
     }
 
-    navigator.clipboard.writeText(out)
-      .then(() => {
-        console.log("✅ AI prompt zkopírován do schránky.");
-        highlightTextInTextarea("FINALCOMPLETEText", document.getElementById("FINALCOMPLETEText").value);
-        if (typeof showPopup === "function") showPopup("AI prompt zkopírován");
-      })
-      .catch(err => console.error("❌ Copy failed:", err));
+    // Zavoláme novou funkci, která komunikuje s tvým Render backendem
+    callRenderAI(complete, selected);
   });
 }
 
