@@ -2912,8 +2912,10 @@ if (ChbGallbladderEctomy) descriptionsGallbladder.push("chybí po CHCE");
 
 if (buttonGallbladderStoneText === "+") {
     descriptionsGallbladder.push("s konkrementem");
+    descriptionsOtherFindings.push("Cholecystolitiáza.");
 } else if (buttonGallbladderStoneText === "++") {
     descriptionsGallbladder.push("s vícečetnými konkrementy");
+    descriptionsOtherFindings.push("Vícečetná cholecystolitiáza.");
 }
 
 if (ChbGallbladderSludge) descriptionsGallbladder.push("s drobnými konkrementy či sludge");
@@ -3164,6 +3166,22 @@ function addHydroDescription(buttonIdR, buttonIdL, sideTextR, sideTextL) {
 				break;
 		}
 	});
+}
+
+var buttonHydroRText = document.getElementById('ChbKidneysHydroR').innerText;
+var buttonHydroLText = document.getElementById('ChbKidneysHydroL').innerText;
+
+if (buttonHydroRText !== 'R' && buttonHydroLText !== 'L') {
+    if (buttonHydroRText === buttonHydroLText) {
+        descriptionsOtherFindings.push(`Hydronefróza bilat. st. ${buttonHydroRText}.`);
+    } else {
+        if (buttonHydroRText !== 'R') descriptionsOtherFindings.push(`Hydronefróza vpravo st. ${buttonHydroRText}.`);
+        if (buttonHydroLText !== 'L') descriptionsOtherFindings.push(`Hydronefróza vlevo st. ${buttonHydroLText}.`);
+    }
+} else if (buttonHydroRText !== 'R') {
+    descriptionsOtherFindings.push(`Hydronefróza vpravo st. ${buttonHydroRText}.`);
+} else if (buttonHydroLText !== 'L') {
+    descriptionsOtherFindings.push(`Hydronefróza vlevo st. ${buttonHydroLText}.`);
 }
 addHydroDescription('ChbKidneysHydroR', 'ChbKidneysHydroL', 'vpravo', 'vlevo');
 
@@ -4337,4 +4355,3 @@ POPREMINDER
 
 }
 updateTexts();
-

@@ -4,124 +4,160 @@
   <meta charset="UTF-8">
   <title>MRWB</title>
   <style>
-    .hidden-by-ctwb { display: none !important; }
+    /* Tento styl zajistí, že se skryjí specifické prvky pro PET/CT */
+    .hidden-by-mrwb { display: none !important; }
   </style>
 </head>
 <body>
 <script>
-  fetch('FDGPET.html')
+  // Načtení základní šablony z FDGPET.html
+  fetch('FDGPET.html', { cache: 'no-cache' })
     .then(r => r.text())
     .then(html => {
-      // základní textové úpravy
-    html = html.replace(/PETCT/g, 'MRWB');
-    html = html.replace(/FDGPETpopis\.js/g, 'MRWBpopis.js');
-    html = html.replace(/PET \/ CT \(MR\)/g, 'MR');
+      // --- 1. ÚPRAVY HTML ---
+      html = html.replace(/FDG-PET\/CT trupu/g, 'MR celotělové');
+      html = html.replace(/PET \/ CT \(MR\)/g, 'MR');
 
-		// elegantní hromadné smazání popisků (včetně mezer a &nbsp;)
-		['SUVmax jater', 'aktivace tuku', 'paravazace', 'nelačnění'].forEach(txt => {
-		  const esc = txt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-		  const re  = new RegExp(esc + '(?:\\s|&nbsp;)*', 'g');
-		  html = html.replace(re, '');
-		});	  
-	
-	html = html.replace(/FDG\+ ložisko/g, 'ložisko');
-	
-	html = html.replace(/FDG\- nodul/g, 'nodul cyst.');   
-	html = html.replace(/FDG\+ nodul/g, 'nodul solid.'); 
-	
-	html = html.replace(/Recentní \(FDG\+\)/g, 'Čerstvé');
-	html = html.replace(/Starší \(FDG\-\)/g, 'Starší');
+      // Odstranění nepotřebných popisků
+      ['SUVmax jater', 'aktivace tuku', 'paravazace', 'nelačnění'].forEach(txt => {
+        const re = new RegExp(txt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:\\s|&nbsp;)*', 'g');
+        html = html.replace(re, '');
+      });
 
-	html = html.replace(
-	  /(<div id="FDGPET"[^>]*>[\s\S]*?)(<\/div>)/i,
-	  `$1
-	   <label class="CHB ultrawide">
-		 <input type="checkbox" id="MRnadpisKRK" onChange="updateTexts()">
-		 <span>KRKU</span>
-	   </label>
-	   <label class="CHB ultrawide">
-		 <input type="checkbox" id="MRnadpisHRUDNIK" onChange="updateTexts()">
-		 <span>HRUDNÍKU</span>
-	   </label>
-	   <label class="CHB ultrawide">
-		 <input type="checkbox" id="MRnadpisBRICHO" onChange="updateTexts()">
-		 <span>BŘICHA</span>
-	   </label>
-	  $2`
-	);
+      // Úprava textů pro MR
+      html = html.replace(/FDG\+ ložisko/g, 'ložisko');
+      html = html.replace(/FDG- nodul/g, 'nodul cyst.');
+      html = html.replace(/FDG\+ nodul/g, 'nodul solid.');
+      html = html.replace(/Recentní \(FDG\+\)/g, 'Čerstvé');
+      html = html.replace(/Starší \(FDG-\)/g, 'Starší');
 
+      // Přidání checkboxů pro výběr oblastí
+      html = html.replace(/(<div id="FDGPET"[^>]*>[\s\S]*?)(<\/div>)/i, `$1
+         <label class="CHB ultrawide"><input type="checkbox" id="MRnadpisKRK" onChange="updateTexts()"><span>KRKU</span></label>
+         <label class="CHB ultrawide"><input type="checkbox" id="MRnadpisHRUDNIK" onChange="updateTexts()"><span>HRUDNÍKU</span></label>
+         <label class="CHB ultrawide"><input type="checkbox" id="MRnadpisBRICHO" onChange="updateTexts()"><span>BŘICHA</span></label>
+      $2`);
 
-      // vložení CSS: schování požadovaných prvků
+      // Odstranění původního skriptu
+      html = html.replace(/<script[^>]*src=["']FDGPETpopis\.js["'][^>]*><\/script>/i, '');
+
+      // Vložení CSS pro skrytí PET-specifických prvků
       html = html.replace(
         /<\/head>/i,
         `<style>
-           /* skrytí tlačítka PETTypeButton */
-           #PETTypeButton { display:none !important; }
-
-           /* schovej všechny přímé potomky divu #obecne */
-           #obecne > * { display:none !important; }
-
-           /* ale zobraz titulek */
-           #obecne > button.title { display:inline-block !important; }
-
-           /* a zobraz label obsahující input s id="ChbRECIST" */
-           #obecne > label:has(#ChbRECIST) { display:inline-flex !important; }
-
-           /* skrytí všech elementů s id obsahujícím požadované řetězce */
-           [id*="Lesion1SUV"],
-           [id*="Lesion2SUV"],
-           [id*="Lesion3SUV"],
-           [id*="Lesion1Activity"],
-           [id*="Lesion2Activity"],
-           [id*="Lesion3Activity"] { display:none !important; }
-
-           /* NOVÉ: skryj celou tabulku, která obsahuje button s id="" */
-           table:has(#NeckVCords) { display:none !important; }
-		   table:has(#HeadTonsils) { display:none !important; }
-		   table:has(#HeadTeeth) { display:none !important; }
-		   table:has(#ThoraxLNPlus) { display:none !important; }
-		   table:has(#SkeletonJoints) { display:none !important; }
-		   
-           #NeckThyroidtable table tr:has(#ChbThyroidaviddiffuse) { display:none !important }
-		   #ThoraxThymustable table tr:has(#ChbThoraxThymusAct) { display:none !important }
-		   #AbdomenSpleentable table tr:has(#ChbSpleenActivity) { display:none !important }
-		   #AbdomenStomachtable table tr:has(#ChbStomachActivity) { display:none !important }
-		   #AbdomenAdrenaltable table tr:has(#ChbAdrenalActivityR) { display:none !important }
-		   #AbdomenWalltable table tr:has(#ChbAbdomenWallPlus) { display:none !important }
-		   #AbdomenProstatetable table tr:has(#ChbProstateLesionR) { display:none !important }
-		   #AbdomenOvariestable table tr:has(#ChbOvariesActivityR) { display:none !important }
-		   #AbdomenUterustable table tr:has(#ChbUterusActivity) { display:none !important }
-		   #SkeletonActivitytable table tr:has(#ChbSkeletonActivityPlus) { display:none !important }
-		   #SkeletonActivitytable table tr:has(#ChbSkeletonActivityMinus) { display:none !important }
-
+           #PETTypeButton, [id*="SUV"], [id*="Activity"] { display:none !important; }
+           #obecne > *:not(button.title):not(label:has(#ChbRECIST)):not(label:has(#ChbOtherFindings)) { display:none !important; }
+           table:has(#NeckVCords), table:has(#HeadTonsils), table:has(#HeadTeeth), table:has(#ThoraxLNPlus), table:has(#SkeletonJoints) { display:none !important; }
+           #NeckParotidstable tr:has(#ChbParotidRavidLesion),
+           #NeckThyroidtable tr:has(#ChbThyroidaviddiffuse),
+           #ThoraxThymustable tr:has(#ChbThoraxThymusAct),
+           #ThoraxOesophtable tr:has(#ChbOesophActDist),
+           #ThoraxOesophtable tr:has(#ChbOesophActDiff),
+           #AbdomenSpleentable tr:has(#ChbSpleenActivity),
+           #AbdomenStomachtable tr:has(#ChbStomachActivity),
+           #AbdomenAdrenaltable tr:has(#ChbAdrenalActivityR),
+           #AbdomenWalltable tr:has(#ChbAbdomenWallPlus),
+           #AbdomenProstatetable tr:has(#ChbProstateLesionR),
+           #AbdomenOvariestable tr:has(#ChbOvariesActivityR),
+           #AbdomenUterustable tr:has(#ChbUterusActivity),
+           #SkeletonActivitytable tr:has(#ChbSkeletonActivityPlus),
+           #SkeletonActivitytable tr:has(#ChbSkeletonActivityMinus) { display:none !important; }
          </style></head>`
       );
 
+      // --- 2. Vložení upraveného HTML do dokumentu ---
       document.open();
       document.write(html);
       document.close();
 
-      // pojistka: kdyby se tlačítko vytvořilo až dynamicky
-      const tryHide = () => {
-        const btn = document.getElementById('PETTypeButton');
-        if (btn) btn.classList.add('hidden-by-ctwb');
-      };
-      tryHide();
+      // --- 3. Načtení a úprava JavaScriptu ---
+      fetch('FDGPETpopis.js', { cache: 'no-cache' })
+        .then(r => r.text())
+        .then(js => {
+          // Nahrazení PET-specifických textů
+          js = js.replace(/FDG-PET\/CT trupu/g, 'MR ');
+          js = js.replace(/nemá charakter viabilní neoplázie/g, 'nemá charakter malignity');
+          js = js.replace(/suspektní z viabilní neoplázie/g, 'suspektní z malignity');
+          js = js.replace(/charakteru viabilní neoplázie/g, 'charakteru malignity');
+          js = js.replace(/Jinde se patologická hyperakumulující ložiska nezobrazují/g, 'Jinde se zřetelně patologická ložiska nezobrazují');
+          js = js.replace(/Není přítomen patologický hyperakumulující fokus, ložisko či lymfadenopatie/g, 'Nejsou patrna patologická ložiska či lymfadenopatie');
+          js = js.replace(/Není přítomen patologický hyperakumulující fokus či ložisko/g, 'Nejsou patrna patologická ložiska');
+          js = js.replace(/fotopenickými/gi, ''); js = js.replace(/Fotopenickými/gi, '');
+          js = js.replace(/fotopenický/gi, ''); js = js.replace(/Fotopenický/gi, '');
+          js = js.replace(/fotopenická/gi, ''); js = js.replace(/Fotopenická/gi, '');
+          js = js.replace(/fotopenické/gi, ''); js = js.replace(/Fotopenické/gi, '');
+          js = js.replace(/fotopenickou/gi, ''); js = js.replace(/Fotopenickou/gi, '');
+          js = js.replace(/s metabolicky aktivním nodulem k dovyšetření/g, 'se solidním nodulem k dovyšetření');
+          js = js.replace(/s metabolicky aktivními noduly k dovyšetření/g, 'se solidními noduly k dovyšetření');
+          js = js.replace(/NeckThyroidText\s*\+=\s*"nodul se zvýšenou akumulací RF/gi, 'NeckThyroidText += "solidní nodul');
+          js = js.replace(/NeckThyroidText\s*\+=\s*"noduly se zvýšenou akumulací RF/gi, 'NeckThyroidText += "solidní noduly');
+          js = js.replace(/NeckThyroidText\s*\+=\s*"nodul bez zvýšené akumulace RF/gi, 'NeckThyroidText += "cystický nodul');
+          js = js.replace(/NeckThyroidText\s*\+=\s*"noduly bez zvýšené akumulace RF/gi, 'NeckThyroidText += "cystické noduly');
+          js = js.replace(/drobný nespecifický nodul bez zvýšené akumulace RF/g, 'drobný nespecifický nodul');
+          js = js.replace(/drobné nespecifické noduly bez zvýšené akumulace RF/g, 'drobné nespecifické noduly');
+          js = js.replace(/drobný mikronodul bez zvýšené akumulace RF/g, 'drobný nespecifický mikronodul');
+          js = js.replace(/drobné mikronoduly bez zvýšené akumulace RF/g, 'drobné nespecifické mikronoduly');
+          js = js.replace(/drobná opacita bez zvýšené akumulace RF/g, 'drobná nespecifická opacita');
+          js = js.replace(/drobné opacity bez zvýšené akumulace RF/g, 'drobné nespecifické opacity');
+          js = js.replace(/konsolidace s nízkou až střední akumulací RF/g, 'konsolidace');
+          js = js.replace(/bez zvýšené akumulace RF\s*\(hemangiom/g, '(hemangiom');
+          js = js.replace(/bez zvýšené akumulace RF benigního charakteru/g, 'bez washoutu benigního charakteru');
+          js = js.replace(/bez zvýšené akumulace RF obrazu adenom/g, 'obrazu adenomu');
+          js = js.replace(/s podílem tuku a bez zvýšené akumulace RF obrazu myelolipom/g, 'tukové denzity obrazu myelolipom');
+          js = js.replace(/s vyšší denzitou a intermediární akumulací RF/g, 's vyšší denzitou');
+          js = js.replace(/bez zvýšené akumulace RF obrazu AML/g, 'obrazu AML');
+          js = js.replace(/bez zvýšené akumulace RF obrazu myom/g, 'obrazu myom');
+          js = js.replace(/bez zvýšené akumulace RF a s kalcifikacemi obrazu myomu/g, 's kalcifikacemi obrazu myomu');
+          js = js.replace(/infiltráty s mírně zvýšenou akumulací RF v.s. postinjekční/g, 'nespecifické infiltráty v.s. postinjekční');
+          js = js.replace(/se zvýšenou akumulací RF \(recentní\)/g, 's edémem / odezvou okolí (recentní)');
+          js = js.replace(/bez zvýšené akumulace RF \(staršího data\)/g, 'bez edému / odezvy okolí (staršího data)');
+          js = js.replace(/Vše bez významné akumulace RF\.\s*/g, '');
+          js = js.replace(/bez zánětlivé aktivace a bez známek aktivní sakroiliitidy či metabolicky aktivní entezopatie/g, 'bez známek chronické sakroiliitidy');
+          js = js.replace(/Bez známek přítomnosti FDG-avidní neoplázie/g, 'Bez patrné patologie');
+          js = js.replace(/Hlava\/krk/g, 'Krk');
+          js = js.replace(/Akumulace RF vztažena k referenčním játrům\./g, '');
+          js = js.replace(/Neložisková akumulace radiofarmaka[\s\S]*?nespecifický nález\./g, '');
 
-      const mo = new MutationObserver(() => tryHide());
-      mo.observe(document.documentElement, { childList: true, subtree: true });
+          // Logika pro sestavení názvu podle zaškrtnutých oblastí
+          js = js.replace(/let\s+CTparts\s*=\s*0\s*;/, `
+            (function adjustMRWBParts() {
+              const parts = [];
+              if (document.getElementById('MRnadpisKRK')?.checked)    parts.push("krku");
+              if (document.getElementById('MRnadpisHRUDNIK')?.checked) parts.push("hrudníku");
+              if (document.getElementById('MRnadpisBRICHO')?.checked)  parts.push("břicha");
 
-      // (volitelné) původní skrývání podle textu
-      const all = document.body.getElementsByTagName('*');
-      for (let el of all) {
-        const t = el.innerText || '';
-        if (t.includes('1Activity') || t.includes('FDG') || t.includes('PET / CT (MR)')) {
-          el.classList.add('hidden-by-ctwb');
-        }
-      }
+              if (typeof nazev !== 'string') { try { window.nazev = String(nazev || ''); } catch(e) { window.nazev = ''; } }
+
+              if (parts.length === 3) {
+                nazev += "celého trupu";
+              } else if (parts.length > 0) {
+                nazev += parts.join(" a ");
+              }
+            })();
+          `);
+
+          // Vložení a spuštění upraveného skriptu
+          const script = document.createElement('script');
+          script.textContent = js;
+          document.body.appendChild(script);
+          console.log("✅ FDGPETpopis.js načten a upraven pro MRWB.");
+
+          // Pojistka pro zobrazení finálních textů
+          setTimeout(() => {
+            try {
+              if (window.parent && window.parent.updateFinalTextAreas) {
+                window.parent.updateFinalTextAreas();
+                window.parent.checkAndUpdateDivVisibility();
+              }
+            } catch (e) {
+              console.warn("⚠️ Nelze automaticky aktualizovat finální texty:", e);
+            }
+          }, 100);
+        })
+        .catch(err => console.error("Chyba při načítání FDGPETpopis.js:", err));
     })
     .catch(err => {
-      document.body.innerHTML = "<p style='color:red'>Chyba při načítání FDGPET.html</p>";
+      document.body.innerHTML = "<p style='color:red'>Chyba při načítání šablony FDGPET.html</p>";
       console.error(err);
     });
 </script>
