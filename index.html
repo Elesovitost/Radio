@@ -288,7 +288,7 @@ function changePage(url) {
 				if (bg) {
 					// Načtení nového náhodného obrázku před zvýšením opacity
 					const randomIndex = Math.floor(Math.random() * 6) + 1;
-					bg.style.backgroundImage = `url('background/${randomIndex}.webp')`;
+					bg.style.backgroundImage = `url(background/${randomIndex}.webp)`;
 					bg.style.opacity = 1;
 				}
 				resetBackgroundFilter();
@@ -929,7 +929,7 @@ document.addEventListener('DOMContentLoaded', function () {
  const bgDiv = document.getElementById('random-background');
  if (bgDiv) {
 	 const randomIndex = Math.floor(Math.random() * 7) + 1;
-	 bgDiv.style.backgroundImage = `url('background/${randomIndex}.webp')`;
+	 bgDiv.style.backgroundImage = `url(background/${randomIndex}.webp)`;
  }
  console.log("Načten obrázek:", bgDiv.style.backgroundImage);
 });
@@ -1035,34 +1035,6 @@ function updateHelperDropdown() {
 // 🔹 spustí se při načtení stránky
 document.addEventListener("DOMContentLoaded", updateHelperDropdown);
 
-
-// === Otevřít obrázek jako HTML ===
-(function () {
-    // Pokud stránka nemá <html> nebo <body>, pokračuj
-    if (document.body && document.body.children.length === 1 && document.body.firstElementChild.tagName === "IMG") {
-        const img = document.body.firstElementChild;
-        const src = img.src;
-        const filename = src.split("/").pop().split("\\").pop();
-        const nameWithoutHelper = filename.replace(/^Helper\s*/i, "").replace(/\.[^/.]+$/, ""); // odstraní "Helper" a příponu
-
-        // Vytvoří nový HTML obsah
-        const htmlContent = `
-<head>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="MainDIV">
-        <div class="standardwidth mydiv0">${nameWithoutHelper}</div>
-        <img src="${src}" style="max-width:100%; display:block; margin:20px auto;">
-    </div>
-</body>`;
-
-        document.open();
-        document.write(htmlContent);
-        document.close();
-    }
-})();
-	
 </script>
 
 
@@ -1070,4 +1042,3 @@ document.addEventListener("DOMContentLoaded", updateHelperDropdown);
 </body>
 
 </html>
-

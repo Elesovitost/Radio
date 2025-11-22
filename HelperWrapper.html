@@ -1,41 +1,39 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="styles.css">
-  <title>Helper Viewer</title>
-  </style>
+    <meta charset="UTF-8">
+    <title>Helper</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-<div class="MainDIV">
-  <div id="title" class="standardwidth mydiv0"></div>
-  <div id="imageContainer"></div>
-</div>
-
 <script>
-(function () {
-    // 1️⃣ Získá jméno obrázku z parametru URL (např. HelperWrapper.html?file=Helper%20RAMP%20lesion.png)
+document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(window.location.search);
-    const imgFile = params.get("file");
+    const file = params.get('file');
 
-    if (!imgFile) {
-        document.getElementById("title").innerText = "❌ Chybí parametr ?file=...";
-        return;
+    if (file) {
+        const filename = file.split('/').pop().split('\\').pop();
+        const nameWithoutHelper = filename.replace(/^Helper\s*/i, "").replace(/\.[^/.]+$/, "");
+
+        const htmlContent = `
+            <div class="MainDIV">
+                <div class="standardwidth mydiv0">${nameWithoutHelper}</div>
+                <img src="${file}" style="max-width:100%; display:block; margin:20px auto;">
+            </div>
+        `;
+
+        document.body.innerHTML = htmlContent;
+
+        // Po vložení obsahu je potřeba aktualizovat výšku iframu
+        // Toto je signál pro rodičovskou stránku (index.html)
+        setTimeout(() => {
+            if (window.parent && typeof window.parent.updateIframeHeight === 'function') {
+                window.parent.updateIframeHeight(window.frameElement);
+            }
+        }, 100);
     }
-
-    // 2️⃣ Odstraní prefix „Helper“ a příponu
-    const fileName = decodeURIComponent(imgFile.split("/").pop());
-    const nameWithoutHelper = fileName.replace(/^Helper\s*/i, "").replace(/\.[^/.]+$/, "");
-
-    // 3️⃣ Vloží název a obrázek do DOM
-    document.getElementById("title").innerText = nameWithoutHelper;
-    const img = document.createElement("img");
-    img.src = imgFile;
-    img.alt = nameWithoutHelper;
-    document.getElementById("imageContainer").appendChild(img);
-})();
+});
 </script>
 
 </body>
