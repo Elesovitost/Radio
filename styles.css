@@ -174,7 +174,6 @@ option {color: #000000; background-color: #FFFFFF;}
 
 /* CP, TP, LP */
 
-
 #TABULKA tr td:nth-last-child(-n+3), #TABULKA tr th:last-child { display: none;}
 #TABULKA td:first-child {padding-left: 5px;}
 
@@ -187,8 +186,7 @@ option {color: #000000; background-color: #FFFFFF;}
 [id*="LISDButton"], [id*="SLButton"], [id*="HDButton"], [id*="HERPFButton"], [id*="HERPPButton"], [id*="HERCButton"], [id*="HERLPButton"], [id*="HERLFButton"], [id*="MIGButton"] { display: none;}
 
 #MRLPshape body {font-family: "Arial", sans-serif; font-size: 12px; font-weight: bold; }
-#MRLPshape table {border-collapse: collapse;border: 1px solid #000000; font-weight: bold; background-color: ;}
-#MRLPshape td {border: 1px #E8DF90;}
+#MRLPshape table {border-collapse: collapse; font-weight: bold; background-color: ;}
 
 #NADPISY0 {color:#000000;  text-align: center; font-weight: bold; border: 0px solid #000000; border-bottom: none;}
 #NADPISY {color:#000000;  text-align: center; font-weight: bold; border: 0px solid #000000; border-top: none;}
@@ -698,6 +696,7 @@ table.compact-tnm-table td {
 .CHB span, button, select, input, textarea, div, .dropdown-content a {border-radius: 10px;}
 .custom-select-native {border-radius: 10px;}
 
+
 [id*="table"] {background: transparent; border-radius: 10px;}
 [id*="table"] td {border-radius: 13px;}
 
@@ -740,6 +739,9 @@ body, button, input, textarea, select, option,
 .myButtonLesion, .myButtonLN, body.TNM th, .headerBar {
   background-color: #D3DCE9; 
 }
+
+/* tabulky páteř */
+#TABULKA {border: 0px solid #000000; }
 
 /* hover, aktivní, zvýrazněné stavy */
 .dropdown-content a:hover, .remove-button, .myButtonLesionS, .myButtonLesionXS, .myButtonLNselect, .toggleColorRed, .myButtonO {
@@ -815,6 +817,7 @@ button, .buttonRTG, .buttonCLICK, .buttonTEXT {
 table, th, td {
   border-color: #000000;
 }
+
 
 .legend, .footer, .topbar, .titleArea {
   background-color: #E9E0D3;
