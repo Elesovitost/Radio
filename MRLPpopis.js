@@ -20,7 +20,7 @@ function cycleText(event, texts, index, button) {
 
 // OSY
 
-var textsOSA = ["((", "(", "|", ")", "))"];
+var textsOSA = ["((", "(", "|", ")", "))", "S"];
 var textsLORD = ["((", "(", "|", ")"];
 var textsLSTV = ["ne", "S1", "L5"];
 
@@ -52,9 +52,9 @@ const segmentTemplates = {
     HERLF: ["F", "+"],
     MIG: ["M0", "M▲", "M▼"],
     PF: ["0", "1", "2", "3"],
-    PR: ["0", "S", "1", "2", "3", "F"],
+    PR: ["0", "1", "2", "3", "S", "F"],
     PK: ["0", "1", "2", "3"],
-    LR: ["0", "S", "1", "2", "3", "F"],
+    LR: ["0", "1", "2", "3", "S", "F"],
     LF: ["0", "1", "2", "3"]
   },
   X6: {
@@ -312,6 +312,9 @@ if (OSAText === "|") {
 } else if (OSAText === "))") {
  Osy = "Sinistrokonvexní skolióza. ";
  OsyR = "Sinistrokonvexní skolióza. ";
+} else if (OSAText === "S") {
+ Osy = "Esovitá skolióza. ";
+ OsyR = "Esovitá skolióza Lp. ";
 }
 
 if (LORDText === "(") {

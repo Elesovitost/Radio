@@ -752,7 +752,6 @@ const SphenoidLText = buttonElementSphenoidL.innerText;
 const OrbitRText = buttonElementOrbitR.innerText;
 const OrbitLText = buttonElementOrbitL.innerText;
 
-
 //Date
 let DateCompare = document.getElementById("DateCompare").value; 
 let date = new Date(DateCompare); let day = String(date.getDate()).padStart(2, '0'); let month = String(date.getMonth() + 1).padStart(2, '0'); let year = date.getFullYear(); let DateComparison = day + "." + month + "." + year + " ";
@@ -1329,17 +1328,17 @@ if (BrainLesion1Loclargest !== "") {
 var BrainLesion1additional = "";
 
 if (document.getElementById('Chb1Intraaxial').checked && !document.getElementById('Chb1Extraaxial').checked) {
-    BrainLesion1additional += "intraaxiálně";
+    BrainLesion1Location += " intraaxiálně";
 } else if (document.getElementById('Chb1Extraaxial').checked && !document.getElementById('Chb1Intraaxial').checked) {
-    BrainLesion1additional += "extraaxiálně";
+    BrainLesion1Location += " extraaxiálně";
 }
 
 if (document.getElementById('Chb1edema').checked && !document.getElementById('Chb1gliosis').checked) {
-    BrainLesion1additional += " s perifokální vysokou SI v T2W (vazogenní dém)";
+    BrainLesion1additional += ", s perifokální vysokou SI v T2W (vazogenní dém)";
 } else if (document.getElementById('Chb1gliosis').checked && !document.getElementById('Chb1edema').checked) {
-    BrainLesion1additional += " s perifokální vysokou SI v T2W (glióza)";
+    BrainLesion1additional += ", s perifokální vysokou SI v T2W (glióza)";
 } else if (document.getElementById('Chb1edema').checked && document.getElementById('Chb1gliosis').checked) {
-    BrainLesion1additional += " s perifokální vysokou SI v T2W (vazogenní edém / glióza)";
+    BrainLesion1additional += ", s perifokální vysokou SI v T2W (vazogenní edém / glióza)";
 }
 
 
@@ -1631,6 +1630,34 @@ var SinusP = combineStrings([FrontalP, MaxillarP, EthmoidP, SphenoidP]);
 var SinusR = combineStrings([FrontalR, MaxillarR, EthmoidR, SphenoidR]);
 }
 
+// další
+
+function toggleDalsiSection() {
+  const checkbox = document.getElementById('dalsiShow');
+  const fields = document.getElementById('dalsiFields');
+  fields.style.display = checkbox.checked ? 'flex' : 'none';
+}
+window.addEventListener('load', function() {
+  const checkbox = document.getElementById('dalsiShow');
+  if (checkbox) {
+    checkbox.addEventListener('change', toggleDalsiSection);
+  }
+});
+
+
+function capitalizeAndDot(text) {
+  text = text.trim();
+  if (text.length === 0) return ""; 
+  text = text[0].toUpperCase() + text.slice(1); 
+  if (!/[.!?]$/.test(text)) {  
+    text += ".";
+  }
+  return text;
+}
+
+const dalsiPopis = capitalizeAndDot(document.getElementById('dalsiPopis').value);
+const dalsiZaver = capitalizeAndDot(document.getElementById('dalsiZaver').value);
+
 // bez ložiskových změn
 POPNoLesions = "";
 
@@ -1707,7 +1734,8 @@ GCAP + " " + MTAP + " " + KoedamP + " " + lobaratrophyP + "\n" +
 ventriclesP + "\n" +
 MMKP + "\n" +
 PituitaryP + PinealP + "\n" +
-OrbitsP + MastoidyP + SinusP
+OrbitsP + MastoidyP + SinusP + "\n" +
+dalsiPopis
 ;
 
 MRbrainPOPText.value = MRbrainPOPText.value.trim(); 
@@ -1736,7 +1764,8 @@ GCAR + " " + MTAR + " " + KoedamR + " " + lobaratrophyR + "\n" +
 ventriclesR + "\n" +
 MMKR + "\n" +
 PituitaryR + PinealR + "\n" +
-MastoidyR + SinusR 
+MastoidyR + SinusR + "\n" +
+dalsiZaver
 ; 
 
 MRbrainRESText.value = MRbrainRESText.value.trim(); 

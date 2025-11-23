@@ -20,7 +20,7 @@ function cycleText(event, texts, index, button) {
 
 // OSY
 
-var textsOSA = ["((", "(", "|", ")", "))"];
+var textsOSA = ["((", "(", "|", ")", "))", "S"];
 var textsLORD = ["(", "|", ")","))" ];
 
 var buttonElementOSA = document.getElementById("myOSAButton");
@@ -325,6 +325,9 @@ if (OSAText === "|") {
 } else if (OSAText === "))") {
  Osy = "Sinistrokonvexní skolióza. ";
  OsyR = "Sinistrokonvexní skolióza. ";
+} else if (OSAText === "S") {
+ Osy = "Esovitá skolióza. ";
+ OsyR = "Esovitá skolióza Tp. ";
 }
 
 if (LORDText === "(") {
