@@ -385,6 +385,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// VEDLEJSÍ NÁLEZY CHECKBOX PERSISTENCE
+
+var chbOtherFindingsCheckbox = document.getElementById("ChbOtherFindings");
+chbOtherFindingsCheckbox.addEventListener('change', function() {
+    localStorage.setItem('ChbOtherFindings', this.checked);
+});
+
+const savedState = localStorage.getItem('ChbOtherFindings');
+if (savedState !== null) {
+    chbOtherFindingsCheckbox.checked = (savedState === 'true');
+}
 
 
 
@@ -2943,7 +2954,11 @@ updateButtonTexts({
 
 var spleenDescriptions = [];
 
-if (ChbSpleenEnlarged) spleenDescriptions.push("zvětšena");
+if (ChbSpleenEnlarged) {
+    spleenDescriptions.push("zvětšena");
+    descriptionsOtherFindings.push("Zvětšená slezina.");
+}
+
 if (ChbSpleenActivity) spleenDescriptions.push("s difuzně vysokou akumulací RF");
 if (ChbSpleenEctomy) spleenDescriptions.push("chybí po splenektomii");
 
@@ -3425,38 +3440,44 @@ if (buttonAbdomenWallPlusText === "+") {
 }
 
 if (buttonAbdomenWallHerniaSText === "+") {
-    descriptionsWall.push("s drobnou herniací v jizvě");
+    descriptionsWall.push("s drobnou herniací v jizvě"); 
 } else if (buttonAbdomenWallHerniaSText === "++") {
     descriptionsWall.push("s herniací v jizvě s obsahem střevních kliček");
+    descriptionsOtherFindings.push("Herniace v jizvě s obsahem střevních kliček.");
 }
 
 if (buttonAbdomenWallHerniaSupraSText === "+") {
     descriptionsWall.push("s drobnou herniací supraumbilikálně");
 } else if (buttonAbdomenWallHerniaSupraSText === "++") {
     descriptionsWall.push("s herniací supraumbilikálně s obsahem střevních kliček");
+    descriptionsOtherFindings.push("Herniace supraumbilikálně s obsahem střevních kliček.");
 }
 
 if (buttonAbdomenWallHerniaUmbSText === "+") {
     descriptionsWall.push("s drobnou umbilikální hernií");
 } else if (buttonAbdomenWallHerniaUmbSText === "++") {
     descriptionsWall.push("s umbilikální hernií s obsahem střevní kličky");
+    descriptionsOtherFindings.push("Herniace umbilikálně s obsahem střevních kliček.");
 }
 
 if (buttonAbdomenWallHerniaIngRSText === "+" && buttonAbdomenWallHerniaIngLSText === "+") {
     descriptionsWall.push("s bilaterální inguinální herniací");
 } else if (buttonAbdomenWallHerniaIngRSText === "++" && buttonAbdomenWallHerniaIngLSText === "++") {
     descriptionsWall.push("s bilaterální skrotální herniací");
+    descriptionsOtherFindings.push("Skrotální hernie bilat.");
 } else {
     if (buttonAbdomenWallHerniaIngRSText === "+") {
         descriptionsWall.push("s inguinální herniací vpravo");
     } else if (buttonAbdomenWallHerniaIngRSText === "++") {
         descriptionsWall.push("se skrotální herniací vpravo");
+        descriptionsOtherFindings.push("Skrotální hernie vpravo.");
     }
 
     if (buttonAbdomenWallHerniaIngLSText === "+") {
         descriptionsWall.push("s inguinální herniací vlevo");
     } else if (buttonAbdomenWallHerniaIngLSText === "++") {
         descriptionsWall.push("se skrotální herniací vlevo");
+        descriptionsOtherFindings.push("Skrotální hernie vlevo.");
     }
 }
 
@@ -4286,14 +4307,14 @@ if (containsBanned) {
 }
 
 // Ostatní nálezy
-var ChbOtherFindings = document.getElementById("ChbOtherFindings").checked;
 
-if (ChbOtherFindings && descriptionsOtherFindings.filter(t => t.trim() !== "").length > 0) {
-  OtherFindings = "Vedlejší nálezy: " + descriptionsOtherFindings.filter(t => t.trim() !== "").join(" ");
+var isChbOtherFindingsChecked = chbOtherFindingsCheckbox.checked;
+
+if (isChbOtherFindingsChecked && descriptionsOtherFindings.filter(t => t.trim() !== "").length > 0) {
+    OtherFindings = "Vedlejší nálezy: " + descriptionsOtherFindings.filter(t => t.trim() !== "").join(" ");
 } else {
-  OtherFindings = "";
+    OtherFindings = "";
 }
-
 
 
 
@@ -4355,3 +4376,6 @@ POPREMINDER
 
 }
 updateTexts();
+
+
+
