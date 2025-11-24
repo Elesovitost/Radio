@@ -286,6 +286,18 @@ Skeletální meta <label class="CHB"><input type="checkbox" id="ChbProstateSkele
 Ostatní meta <label class="CHB"><input type="checkbox" id="ChbProstateOtherMeta" onChange="updateTexts()"><span>+</span></label>
 </div>
 
+<div id="others" class="standardwidth" style="display: flex; align-items: center; gap: 5px;"><button class="title">DALŠÍ</button>
+
+  <label class="CHB" style="margin-left: 2px;">
+    <input type="checkbox" id="dalsiShow"><span>+</span>
+  </label>
+
+  <div id="dalsiFields" style="display: none; gap: 5px; flex-direction: row;">
+    <textarea id="dalsiPopis" style="width: 430px; height: 20px; overflow: hidden;" class="inputOtherFinding" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+    <textarea id="dalsiZaver" style="width: 430px; height: 20px; overflow: hidden;" class="inputOtherFinding" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+  </div>
+</div>
+
 </div>
 
 </div id="end">

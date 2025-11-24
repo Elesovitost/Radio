@@ -75,6 +75,18 @@ Orgánové meta <label class="CHB"><input type="checkbox" id="ChbRectTuMeta" onC
 Vzdálené peritoneum <label class="CHB"><input type="checkbox" id="ChbRectTuPerit" onChange="updateTexts()"><span>+</span></label> &nbsp;&nbsp;&nbsp;
 </div>
 
+<div id="others" class="standardwidth" style="display: flex; align-items: center; gap: 5px;"><button class="titleRect">DALŠÍ</button>
+
+  <label class="CHB" style="margin-left: 2px;">
+    <input type="checkbox" id="dalsiShow"><span>+</span>
+  </label>
+
+  <div id="dalsiFields" style="display: none; gap: 5px; flex-direction: row;">
+    <textarea id="dalsiPopis" style="width: 425px; height: 20px; overflow: hidden;" class="inputOtherFinding" placeholder="Do popisu..." oninput="updateTexts()"></textarea>
+    <textarea id="dalsiZaver" style="width: 425px; height: 20px; overflow: hidden;" class="inputOtherFinding" placeholder="Do závěru..." oninput="updateTexts()"></textarea>
+  </div>
+</div>
+
 </div>
 
 </div id="end">

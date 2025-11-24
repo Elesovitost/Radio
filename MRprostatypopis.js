@@ -1418,20 +1418,6 @@ ProstateOkR = lesionsR.every(lesion => lesion === "") ? "Bez známek přítomnos
 
 let ProstateSkeletonMetaP = "", ProstateSkeletonMetaR = "", ProstateOtherMetaR = "", ProstateMetaR = "";
 
-if (document.getElementById('ChbProstateSkeletonMeta').checked) {
-	ProstateSkeletonMetaP = "Přítomna meta skeletu. ";
-	ProstateMetaR += "Přítomna meta skeletu. ";
-} else {
-	ProstateSkeletonMetaP = "Bez patrných ložisek skeletu. ";
-}		
-
-if (document.getElementById('ChbProstateOtherMeta').checked) {
-	ProstateMetaR += "Přítomna orgánová meta. ";
-} 
-
-if (!document.getElementById('ChbProstateSkeletonMeta').checked && !document.getElementById('ChbProstateOtherMeta').checked && totalNodesReg === 0) {
-	ProstateMetaR += "Bez známek přítomnosti vzdálených meta ložisek. ";
-}
 
 
 
@@ -1571,7 +1557,38 @@ if (prostateRAPE.checked && !ChbProstateRecidR && !ChbProstateRecidL ) {
 	ProstateRecidP = "Bez patrných ložisek zvýšené akumulace RF v lůžku prostaty. " ;
 	ProstateRecidR = "Bez patrné recidivy v lůžku. ";
 }
-	
+
+
+// další
+
+function toggleDalsiSection() {
+  const checkbox = document.getElementById('dalsiShow');
+  const fields = document.getElementById('dalsiFields');
+  fields.style.display = checkbox.checked ? 'flex' : 'none';
+}
+window.addEventListener('load', function() {
+  const checkbox = document.getElementById('dalsiShow');
+  if (checkbox) {
+    checkbox.addEventListener('change', toggleDalsiSection);
+  }
+});
+
+
+function capitalizeAndDot(text) {
+  text = text.trim();
+  if (text.length === 0) return ""; // prázdný text nech tak
+  text = text[0].toUpperCase() + text.slice(1); // první písmeno velké
+  if (!/[.!?]$/.test(text)) {  // pokud text nekončí . ! nebo ?
+    text += ".";
+  }
+  return text;
+}
+
+const dalsiPopis = capitalizeAndDot(document.getElementById('dalsiPopis').value);
+const dalsiZaver = capitalizeAndDot(document.getElementById('dalsiZaver').value);
+
+
+
 // POPIS
 ProstateTuNAMEText.value = "MR prostaty"; if (document.getElementById('ChbProstatePSMA').checked) {ProstateTuNAMEText.value = "PSMA-PET/MR prostaty";}
 
@@ -1585,7 +1602,7 @@ ProstateLesion2P + "\n" +
 ProstateLesion3P + "\n" +
 ProstateSizeP + ProstateHyperplasiaP + ProstateSemVesP + "\n" +
 ProstateLNRegP + ProstateLNNonRegP + "\n" +
-ProstateSkeletonMetaP
+dalsiPopis 
 ;
 
 	//ProstateTuPOPText.value = ProstateTuPOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
@@ -1605,6 +1622,7 @@ ProstateLesion2R + "\n" +
 ProstateLesion3R + "\n" +
 ProstateLNRegR + " " + ProstateLNNonRegR +  "\n" +
 ProstateMetaR +  "\n" +
+dalsiZaver +  "\n" +
 ProstateTMN + ProstatemiTMN
 ;
 

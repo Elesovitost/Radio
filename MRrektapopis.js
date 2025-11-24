@@ -360,6 +360,38 @@ if (ChbRectNoRecid) {
   TMNLoc = "Bez známek recidivy tumoru";
 }
 
+
+
+// další
+
+function toggleDalsiSection() {
+  const checkbox = document.getElementById('dalsiShow');
+  const fields = document.getElementById('dalsiFields');
+  fields.style.display = checkbox.checked ? 'flex' : 'none';
+}
+window.addEventListener('load', function() {
+  const checkbox = document.getElementById('dalsiShow');
+  if (checkbox) {
+    checkbox.addEventListener('change', toggleDalsiSection);
+  }
+});
+
+
+function capitalizeAndDot(text) {
+  text = text.trim();
+  if (text.length === 0) return ""; // prázdný text nech tak
+  text = text[0].toUpperCase() + text.slice(1); // první písmeno velké
+  if (!/[.!?]$/.test(text)) {  // pokud text nekončí . ! nebo ?
+    text += ".";
+  }
+  return text;
+}
+
+const dalsiPopis = capitalizeAndDot(document.getElementById('dalsiPopis').value);
+const dalsiZaver = capitalizeAndDot(document.getElementById('dalsiZaver').value);
+
+
+
 // POPIS
 
 RectTuNAMEText.value = "MR rekta"; 
@@ -373,7 +405,8 @@ if (RectTuTypeText !== "není") {
 
 RectTuPOPText.value = 
 TumorDescription + "\n" +
-RectTuLNRegP + " " + RectTuLNNonRegP
+RectTuLNRegP + " " + RectTuLNNonRegP + "\n" +
+dalsiPopis
 ;
 
 	//RectTuPOPText.value = RectTuPOPText.value.replace(/^\s+/gm, '');  // odstraní mezery na začátku řádek
@@ -386,6 +419,7 @@ RectTuLNRegP + " " + RectTuLNNonRegP
 RectTuRESText.value = TMNLoc + TNMLength + ". " + "\n" + 
 RectTuLNRegR + "\n" + 
 RectTuLNNonRegP + "\n" + 
+dalsiZaver + "\n" +
 "TNM stage: " + RectTuInvasionTSTAGE + " " + TNMMRF + " " + TNMENVI + " " + RectTuLNRegNSTAGE + " " + RectTuMstageR + ".";
 
 ;
