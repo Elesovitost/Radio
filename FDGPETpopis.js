@@ -745,7 +745,7 @@ var descriptionsOtherFindings = [];
 
 
 if (ObecneTexts.trim() === "") {
-    ObecneNativeText = "Neložisková akumulace radiofarmaka ve svalech, v gastrointestinální traktu a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález. ";
+    ObecneNativeText = "Neložisková akumulace radiofarmaka ve svalech, v gastrointestinálním traktu a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález. ";
 } else {
     ObecneNativeText = "Jinak je neložisková akumulace radiofarmaka ve svalech, v gastrointestinální traktu a urotraktu přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález. ";
 }

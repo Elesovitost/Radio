@@ -149,7 +149,7 @@
   <div style="display: flex; gap: 4px;">
     <button id="toggleEdit" class="buttonCLICK">📝 EDIT</button>
     <button id="checkAI" class="buttonCLICK hidden">🔍 AI</button>
-	<button id="AIcopy" class="buttonCLICK">📋 AI COPY</button>
+	<button id="AIcopy" class="buttonCLICK">📋 AI</button>
 	<button id="listModelsBtn" class="buttonCLICK hidden" style="background-color: #D3DCE9;">Seznam modelů</button>
     <button id="saveButton" class="buttonCLICK hidden" style="background-color: #D3DCE9;">Seznam modelů</button>
     <button id="saveButton" class="buttonCLICK">💾 SAVE</button>
@@ -773,7 +773,7 @@ async function callRenderAI(prompt, selectedText = "") {
     }
 }
 
-// 📋 AI COPY – zkopíruje připravený prompt do schránky
+// 📋 AI  – zkopíruje připravený prompt do schránky
 const btnAIcopy = document.getElementById('AIcopy');
 if (btnAIcopy) {
   btnAIcopy.addEventListener('click', () => {
@@ -1057,6 +1057,12 @@ function updateHelperDropdown() {
   // BT-IT
   if (text.includes("fdgpet")) {
     menu.innerHTML += `<a href="#" onclick="changePage('Helper BTIT.html')">Bio a imuno sideeffects</a>`;
+    added = true;
+  }
+
+  // MKN diagnóza
+  if (text.includes("X") || text.includes("X")) {
+    menu.innerHTML += `<a href="#" onclick="changePage('Helper MKN.html')">MKN diagnózy</a>`;
     added = true;
   }
 
