@@ -788,6 +788,19 @@ window.addEventListener('load',()=>document.querySelectorAll('[id^="my"][id$="PK
       const i=Object.assign(document.createElement('input'),{type:'number',className:'numbers PHsmall',placeholder:'mm',min:0,max:10,step:1,oninput:()=>{if(i.value==="0")i.value="";updateTexts();}});
       Object.assign(i.style,{position:'absolute',left:'50%',bottom:'100%',transform:'translateX(-50%) translateY(+1px)',zIndex:10,width:'22px',textAlign:'center',caretColor:'transparent'});
       i.addEventListener('mouseenter',()=>i.focus());
+      i.addEventListener('wheel', function(e) {
+          e.preventDefault();
+          if (this.value === "") {
+              this.value = 0;
+          }
+          if (e.deltaY < 0) {
+              this.stepUp();
+          } else {
+              this.stepDown();
+              if (this.value == 0) this.value = '';
+          }
+          this.dispatchEvent(new Event('input', { bubbles: true }));
+      });
       p.style.position='relative';p.appendChild(i);
     }
   }else e?.remove();
