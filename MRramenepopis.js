@@ -565,8 +565,8 @@ if (RMinfraText === "OK") {
  RMinfraP = "Zvýšená SI šlachy m. infraspinatus "; 
  RMinfraR = "Tendinóza šlachy m. infraspinatus ";
 } else if (RMinfraText === "kalc.tend.") {
- RMinfraText = "Okrsek nízké SI na všech sekvencích při úponu šlachy m. infraspinatus "; 
- RMinfraText = "Kalfic. tendonitis úponu šlachy m. infraspinatus ";
+ RMinfraP = "Okrsek nízké SI na všech sekvencích při úponu šlachy m. infraspinatus "; 
+ RMinfraR = "Kalfic. tendonitis úponu šlachy m. infraspinatus ";
 } else if (RMinfraText === "low-grade") {
  RMinfraP = "Drobné porušení kontinuity šlachy m. infraspinatus ";
  RMinfraR = "Low-grade léze šlachy m. infraspinatus ";
