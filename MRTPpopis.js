@@ -803,24 +803,66 @@ let X01stenosisreasonALLArray = [X01listR, X01herniacePodklad, X01degenerPodklad
 
 if (X01stenosisreasonALLArray.length > 2) {
     let lastReason = X01stenosisreasonALLArray.pop();
-    X01stenosisreasonALL = X01stenosisreasonALLArray.join(", ") + " a " + lastReason + ". ";
+    X01stenosisreasonALL = X01stenosisreasonALLArray.join(", ") + " a " + lastReason;
 } else if (X01stenosisreasonALLArray.length == 2) {
     let firstReason = X01stenosisreasonALLArray[0];
     let secondReason = X01stenosisreasonALLArray[1];
-    X01stenosisreasonALL = firstReason + " a " + secondReason + ". ";
+    X01stenosisreasonALL = firstReason + " a " + secondReason;
 } else if (X01stenosisreasonALLArray.length == 1) {
-    X01stenosisreasonALL = X01stenosisreasonALLArray[0] + ". ";
+    X01stenosisreasonALL = X01stenosisreasonALLArray[0];
 } else {
     X01stenosisreasonALL = "";
 }
 
 // stenóza v závěru ano / ne a proč
-if (X01PKText === "0" && X01PRText === "0" && X01LRText === "0" && X01PFText === "0" && X01LFText === "0") {
-X01stenozyR = "";	
+let alterTextCheckbox = document.getElementById('AlterText');
+if (
+  X01PKText === "0" &&
+  (X01PRText === "0" || X01PRText === "F") &&
+  (X01LRText === "0" || X01LRText === "F") &&
+  X01PFText === "0" &&
+  X01LFText === "0"
+) {
+  if (X01PRText === "F" || X01LRText === "F") {
+    X01stenozyR = X01epifibPR + " " + X01epifibLR;
+  } else {
+    X01stenozyR = "";
+  }
 } else {
-X01stenozyR = X01stenosisALL + 
-" na podkladě " + X01stenosisreasonALL;
-X01herniaceR = ""; X01degenerdR = ""; X0listezaR = ""; // X01edemR = "";
+  let reasonText = X01stenosisreasonALL;
+  let stenosisText = X01stenosisALL;
+
+  if (alterTextCheckbox && alterTextCheckbox.checked) {
+    // Převod na 4. pád (akuzativ) pro "působící X"
+    let stenosisAccusative = X01stenosisALL
+      .replace(/Mírná/g, 'Mírnou')
+      .replace(/Spinální/g, 'Spinální') // zůstává stejné
+      .replace(/Výrazná/g, 'Výraznou')
+      .replace(/Stenóza/g, 'Stenózu')
+      .replace(/stenóza/g, 'stenózu')
+      .replace(/mírná/g, 'mírnou')
+      .replace(/výrazná/g, 'výraznou');
+    stenosisText = stenosisAccusative.charAt(0).toLowerCase() + stenosisAccusative.slice(1);
+
+    reasonText = X01stenosisreasonALL
+      .replace(/mírné/g, 'mírná')  
+      .replace(/vané/g, 'vaná')  
+      .replace(/čilé/g, 'čilá') 
+      .replace(/fytů/g, 'fyty')
+      .replace(/gingu/g, 'ging')
+      .replace(/cetové/g, 'cetová')
+      .replace(/rózy/g, 'róza')
+      .replace(/listézy/g, 'listéza');
+    
+    X01stenozyR = (reasonText.charAt(0).toUpperCase() + reasonText.slice(1)).replace(/,$/, '') + " působící " + stenosisText + ". ";
+  } else {
+    X01stenozyR = stenosisText + " na podkladě " + reasonText + ". ";
+  }
+
+  X01herniaceR = "";
+  X01degenerdR = "";
+  X0listezaR = "";
+  // X01edemR = "";
 }
 
 `;
