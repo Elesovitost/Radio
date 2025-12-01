@@ -996,7 +996,7 @@ WMLLocationR = WMLLocationP;
 
 
 if (WMLText === "ojedinělé") {
-  WMLP = WMLP.replace("T2W", "gliové T2W");
+  WMLP = WMLP.replace("T2W", "nespecifické T2W");
   WMLR = ""; WMLLocationR = ""; 
 }
 if (WMLText === "sporadické") {
