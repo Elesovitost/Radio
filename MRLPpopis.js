@@ -742,7 +742,7 @@ if (X01LRText === "0") {
  X01stenLR = "";
  X01epifibLR = "";
 } else if (X01LRText === "S") {
- X01stenozyP += "Zúžení laterálního recesu vpravo. ";
+ X01stenozyP += "Zúžení laterálního recesu vlevo. ";
  X01stenLR = "Stenóza laterálního recesu l.sin. ";
 } else if (X01LRText === "1") {
  X01stenozyP += "Mírný tlak na levostranný kořen v durálním vaku. ";
