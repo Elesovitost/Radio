@@ -585,7 +585,7 @@ if (descriptionsMkFemCondText.length > 1) {
 } else if (descriptionsMkFemCondText.length === 1) {
   MkFemCondText = "Mediální kondyl femuru " + descriptionsMkFemCondText[0] + ". ";
 } else {
-  MkFemCondText = "Mediální kondyl femuru bez výraznější patologie. ";
+  MkFemCondText = "Mediální kondyl femuru bez výraznější léze chrupavky. ";
 }
 
 

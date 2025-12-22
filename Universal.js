@@ -24,7 +24,8 @@ function processSentence(sentence) {
 		containsExactWord("tumor") || 
 		containsExactWord("okrsek") || 
 		containsExactWord("paket")) {
-        sentence = sentence.replace(/metabolické/g, "metabolický").replace(/četné /g, "četný ");
+        sentence = sentence.replace(/metabolické/g, "metabolický")
+                           .replace(/četné /g, "četný ");
     }
 
     if (containsExactWord("masa") || 
@@ -41,7 +42,8 @@ function processSentence(sentence) {
 		containsExactWord("neložisková") ||
 		containsExactWord("oblast") ||
 		containsExactWord("uzlina")) {
-        sentence = sentence.replace(/metabolické/g, "metabolická").replace(/četné /g, "četná ");
+        sentence = sentence.replace(/metabolické/g, "metabolická")
+                           .replace(/četné /g, "četná ");
     }
 
     if (containsExactWord("masy") || 
@@ -55,7 +57,11 @@ function processSentence(sentence) {
 		containsExactWord("neložiskové") ||
 		containsExactWord("oblasti") ||
 		containsExactWord("uzliny")) {
-        sentence = sentence.replace(/expanzePL/g, "expanze").replace(/infiltracePL/g, "infiltrace").replace(/konsolidacePL/g, "konsolidace").replace(/dva/g, "dvě");
+        sentence = sentence.replace(/expanzePL/g, "expanze")
+                           .replace(/infiltracePL/g, "infiltrace")
+                           .replace(/konsolidacePL/g, "konsolidace")
+                           .replace(/kolekcePL/g, "kolekce")
+                           .replace(/dva/g, "dvě");
     }
 	
 	if (containsExactWord("ložiska") || containsExactWord("sycení")) 
@@ -109,7 +115,9 @@ function sloucitStejneRadky(textareaId) {
 
   // Definice pravidel pro přepis koncovek (singulár → plurál)
   const nahrazkyKoncovek = {
+
     'disku': 'disků',
+    'óza': 'ózy',
 	'nížený disk': 'nížené disky',
 	'ulging d': 'ulgingy d',
 	'ulgingu d': 'ulgingů d',
@@ -118,12 +126,15 @@ function sloucitStejneRadky(textareaId) {
 	'snížený': 'snížené',
 	'ický': 'ické',
 	'írný': 'írné',
+    'írná': 'írné',
 	'ová': 'ové',
 	'čilá': 'čilé',
 	'bná': 'bné',
-	'výrazný': 'výrazné',
+	'ýrazný': 'ýrazné',
+    'ýrazná': 'ýrazné',
 	'lem': 'lemy',
 	'má': 'mají'
+
 
     // přidej další dle potřeby
   };
