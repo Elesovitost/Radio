@@ -35,6 +35,21 @@ table {width: auto; white-space: nowrap;}
   </table>
 </div>
 
+<!-- TALUS -->
+<div id="AnkleTalusTable" class="standardwidth">
+  <button class="titleKnee float">TALUS</button>
+  <table>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;</td>
+      <td>OCD</td>
+      <td><button id="AnkleTalusOCDButton" class="ButtonCycleText w40">0</button></td>
+      <td><input type="text" id="AnkleTalusOCDLocation" placeholder="kde..." class="hidden" style="width: 120px;" oninput="updateTexts()"></td>
+      <td>fraktura</td>
+      <td><label class="CHB"><input type="checkbox" id="checkboxAnkleTalusFracture" onChange="updateTexts()"><span>+</span></label></td>
+    </tr>
+  </table>
+</div>
+
 <!-- PŘEDNÍ KOMPARTMENT -->
 <div id="komant" class="standardwidth">
   <button class="titleKnee float">PŘEDNÍ KOM.</button>

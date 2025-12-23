@@ -91,6 +91,55 @@ if (VolnaTeliska) {
 }
 
 
+// TALUS
+ButtonCycleInnerTexts["AnkleTalusOCDButton"] = ["0", "I", "II", "III", "IV"];
+var AnkleTalusOCD = document.getElementById("AnkleTalusOCDButton").innerText;
+var AnkleTalusFracture = document.getElementById("checkboxAnkleTalusFracture").checked;
+
+var AnkleTalusOCDLocationInput = document.getElementById("AnkleTalusOCDLocation");
+if (AnkleTalusOCD !== "0") {
+    AnkleTalusOCDLocationInput.classList.remove("hidden");
+} else {
+    AnkleTalusOCDLocationInput.classList.add("hidden");
+    AnkleTalusOCDLocationInput.value = ""; // Vyčistí pole, když je skryto
+}
+var AnkleTalusOCDLocation = AnkleTalusOCDLocationInput.value;
+
+var AnkleTalusText = "";
+var AnkleTalusRes = "";
+
+if (AnkleTalusOCD !== "0") {
+    var ocdDesc = "";
+    if (AnkleTalusOCD === "I") {
+        ocdDesc = " - subchondrální léze s edémem, kloubní chrupavka je intaktní";
+    } else if (AnkleTalusOCD === "II") {
+        ocdDesc = " - osteochondrální fragment je částečně oddělený, stabilní";
+    } else if (AnkleTalusOCD === "III") {
+        ocdDesc = " - osteochondrální fragment je zcela oddělený, nedislokovaný, s tekutinou po obvodu";
+    } else if (AnkleTalusOCD === "IV") {
+        ocdDesc = " - dislokovaný fragment s defektem kloubní plochy";
+    }
+
+    var locationText = "";
+    if (AnkleTalusOCDLocation.trim() !== "") {
+        locationText = " " + AnkleTalusOCDLocation.trim();
+    }
+
+    AnkleTalusText += "Na talu patrná léze charakteru osteochondritis dissecans" + locationText + " st. " + AnkleTalusOCD + ocdDesc + ". ";
+    AnkleTalusRes += "Osteochondritis dissecans talu" + locationText + " st. " + AnkleTalusOCD + ". ";
+}
+
+if (AnkleTalusFracture) {
+    AnkleTalusText += "Fraktura talu. ";
+    AnkleTalusRes += "Fraktura talu. ";
+}
+
+var AnkleBoneText = "Kontury kortikalis jsou neporušené, kostní dřeň normálního signálu bez známek edému.\nChrupavka bez zjevných defektů.";
+
+if (AnkleTalusText !== "") {
+    AnkleBoneText = AnkleTalusText;
+}
+
 // VAZY
 
 updateButtonTexts({
@@ -399,8 +448,7 @@ MRAnkleSEKVText.value = "Hlezno vyšetřeno v PDW FS, T1W, T2W.";
 
 MRAnklePOPText.value = 
 	AnkleNaplnText + " " + AnkleVolnaDesc + "\n" + 
-	"Kontury kortikalis jsou neporušené, kostní dřeň normálního signálu bez známek edému.\n" +
-	"Chrupavka bez zjevných defektů.\n" +
+	AnkleBoneText + "\n" +
 	AnkleMLText + "\n" +
 	AnkleLLText + "\n" +
 	AnkleTendonsText + " " + AnkleACHText + "\n" +
@@ -410,6 +458,7 @@ MRAnklePOPText.value =
 
 MRAnkleRESText.value = 
 	AnkleNaplnRes + " " + AnkleVolnaDesc + "\n" +
+	AnkleTalusRes + "\n" +
 	AnkleMLRes + "\n" +
 	AnkleLLRes + "\n" +
 	AnkleTendonsRes + " " +	AnkleACHRes + "\n" +

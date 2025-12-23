@@ -3401,10 +3401,10 @@ if (ChbTestesEctomyR && ChbTestesEctomyL) {
 }
 
 if (ChbTestesHydroceleR && ChbTestesHydroceleL) {
-    descriptionsTestes.push("hydrokéla bilat.");
+    descriptionsTestes.push("hydrokéla bilat."); descriptionsOtherFindings.push("Hydrokéla bilat.");
 } else {
-    if (ChbTestesHydroceleR) {descriptionsTestes.push("hydrokéla vpravo");}
-    if (ChbTestesHydroceleL) {descriptionsTestes.push("hydrokéla vlevo");}
+    if (ChbTestesHydroceleR) {descriptionsTestes.push("hydrokéla vpravo"); descriptionsOtherFindings.push("Hydrokéla vpravo.");}
+    if (ChbTestesHydroceleL) {descriptionsTestes.push("hydrokéla vlevo"); descriptionsOtherFindings.push("Hydrokéla vlevo.");}
 }
 
 if (AbdomenTestesOther) descriptionsTestes.push(AbdomenTestesOther);
@@ -4223,6 +4223,8 @@ let CTWBcode=0;
 	POPText.value = POPText.value.replace(/ \./g, '.'); // mezera tečka = bez mezery tečka
 	POPText.value = POPText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
 	POPText.value = POPText.value.replace(/\s\)/g, ')');   // mezera závorka = jen závorka
+  POPText.value = POPText.value.replace(/ :/g, ':');  // odstraní mezeru před dvojtečkou
+  POPText.value = POPText.value.replace(/\s+,/g, ',');  // odstraní mezery před čárkou
 
 	//  Modifikátor: nastaví "minule shodného obrazu", když má ložisko teď a minule stejná měření - nyní nefunkční
     let originalPOPText = POPText.value;
@@ -4356,6 +4358,7 @@ POPREMINDER
 	RESText.value = RESText.value.replace(/ \./g, '.'); // mezera tečka = bez mezery tečka
 	RESText.value = RESText.value.replace(/\.{2,}/g, '.'); // více teček = jedna tečka
 	RESText.value = RESText.value.replace(/ :/g, ':');  // odstraní mezeru před dvojtečkou
+  RESText.value = RESText.value.replace(/\s+,/g, ','); // odstraní mezeru před čárkou
 	
 	//když je vybrán jiný RPH zněma závěru
 	if (buttonElementPETType.value === "DOTATOC") {
