@@ -209,7 +209,7 @@ js = js.replace(/Vše bez významné akumulace RF\.\s*/g, '');
 js = js.replace(/bez zánětlivé aktivace a bez známek aktivní sakroiliitidy či metabolicky aktivní entezopatie/g, 'bez známek chronické sakroiliitidy');
 
 //akumulace FDG
-js = js.replace(/Neložisková akumulace radiofarmaka ve svalech, v gastrointestinální traktu a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález.s*/g, '');
+js = js.replace(/Neložisková akumulace radiofarmaka[\s\S]*?nespecifický nález\./g, '');
 js = js.replace(/Akumulace RF vztažena k referenčním játrům.s*/g, '');
 
 //Závěr a popis
