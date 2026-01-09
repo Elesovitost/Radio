@@ -61,14 +61,9 @@
           #obecne > * { display:none !important; }
           #obecne > button.title { display:inline-block !important; }
           #obecne > label:has(#ChbRECIST) { display:inline-flex !important; }
-		  #obecne > label:has(#ChbOtherFindings) { display:inline-flex !important; }
+		      #obecne > label:has(#ChbOtherFindings) { display:inline-flex !important; }
 
-          [id*="Lesion1SUV"],
-          [id*="Lesion2SUV"],
-          [id*="Lesion3SUV"],
-          [id*="Lesion1Activity"],
-          [id*="Lesion2Activity"],
-          [id*="Lesion3Activity"] { display:none !important; }
+          #PETTypeButton, [id*="SUV"], [id*="Activity"] { display:none !important; }
 
           table:has(#NeckVCords),
           table:has(#HeadTonsils),
@@ -77,7 +72,7 @@
           table:has(#SkeletonJoints) { display:none !important; }
 
           #NeckParotidstable table tr:has(#ChbParotidRavidLesion),
-		  #NeckThyroidtable table tr:has(#ChbThyroidaviddiffuse),
+		      #NeckThyroidtable table tr:has(#ChbThyroidaviddiffuse),
           #ThoraxThymustable table tr:has(#ChbThoraxThymusAct),
           #ThoraxOesophtable table tr:has(#ChbOesophActDist),
           #ThoraxOesophtable table tr:has(#ChbOesophActDiff),
@@ -129,7 +124,7 @@ js = js.replace(/charakteru viabilní neoplázie/g, 'charakteru malignity');
 
 //Do závěru
 js = js.replace(/\['na úrovni', 'nad úrovní', 'intermed', 'střední', 'zvýšen',  'vysok',  'hyper', 'vyšší'\]/g,
-"['ožisko', 'xpanze', 'odul', 'pacita', 'onsolidace',  'olekce',  'asa',  'nfiltrace',  'asa']");
+"['ožisko', 'xpanze', 'odul', 'pacita', 'onsolidace',  'olekce',  'asa',  'nfiltrace',  'zlin']");
 
 //PETCT na CT
 js = js.replace(/FDG-PET\/CT trupu/g, 'CT ');

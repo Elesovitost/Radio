@@ -118,6 +118,12 @@
           js = js.replace(/Akumulace RF vztažena k referenčním játrům\./g, '');
           js = js.replace(/Neložisková akumulace radiofarmaka[\s\S]*?nespecifický nález\./g, '');
 
+
+          //Do závěru
+          js = js.replace(/\['na úrovni', 'nad úrovní', 'intermed', 'střední', 'zvýšen',  'vysok',  'hyper', 'vyšší'\]/g,
+          "['ožisko', 'xpanze', 'odul', 'pacita', 'onsolidace',  'olekce',  'asa',  'nfiltrace',  'zlin']");
+
+
           // Logika pro sestavení názvu podle zaškrtnutých oblastí
           js = js.replace(/let\s+CTparts\s*=\s*0\s*;/, `
             (function adjustMRWBParts() {
