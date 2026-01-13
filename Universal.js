@@ -178,7 +178,7 @@ function sloucitStejneRadky(textareaId) {
 	  textarea.value = result.join('\n');
 }
 
-// slučování mediální a Laterální
+// slučování mediální a Laterální (koleno a rameno)
 
 function mergeBilateralSentences(textareaId) {
     const field = document.getElementById(textareaId);
@@ -226,6 +226,7 @@ function mergeBilateralSentences(textareaId) {
 
     field.value = text.trim();
 }
+
 
 
 //DISABLE CONTEXT MENU

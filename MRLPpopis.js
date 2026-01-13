@@ -234,19 +234,19 @@ var FINALText = document.getElementById("FINALText");
 
 //stenozyR
 
-var X01stenPK = ""; var X01stenPR = ""; var X01stenLR = ""; var X01stenPF = ""; var X01stenLF = ""; var X01stenBF = ""; 
+var X01stenPK = ""; var X01stenPR = ""; var X01stenLR = ""; var X01stenBR = ""; var X01stenPF = ""; var X01stenLF = ""; var X01stenBF = ""; 
 var X01herniaceR = ""; var X01herniacePodklad = ""; var X01degenerPodklad = ""; var X01degenerdR = ""; var X01degenerfaR = ""; var X01listR = ""; var X01edemR = "";
 
-var X12stenPK = ""; var X12stenPR = ""; var X12stenLR = ""; var X12stenPF = ""; var X12stenLF = ""; var X12stenBF = ""; 
+var X12stenPK = ""; var X12stenPR = ""; var X12stenLR = ""; var X12stenBR = ""; var X12stenPF = ""; var X12stenLF = ""; var X12stenBF = ""; 
 var X12herniaceR = ""; var X12herniacePodklad = ""; var X12degenerPodklad = ""; var X12degenerdR = ""; var X12degenerfaR = ""; var X12listR = ""; var X12edemR = "";
 
-var X23stenPK = ""; var X23stenPR = ""; var X23stenLR = ""; var X23stenPF = ""; var X23stenLF = ""; var X23stenBF = ""; 
+var X23stenPK = ""; var X23stenPR = ""; var X23stenLR = ""; var X23stenBR = ""; var X23stenPF = ""; var X23stenLF = ""; var X23stenBF = ""; 
 var X23herniaceR = ""; var X23herniacePodklad = ""; var X23degenerPodklad = ""; var X23degenerdR = ""; var X23degenerfaR = ""; var X23listR = ""; var X23edemR = "";
 
-var X34stenPK = ""; var X34stenPR = ""; var X34stenLR = ""; var X34stenPF = ""; var X34stenLF = ""; var X34stenBF = ""; 
+var X34stenPK = ""; var X34stenPR = ""; var X34stenLR = ""; var X34stenBR = ""; var X34stenPF = ""; var X34stenLF = ""; var X34stenBF = ""; 
 var X34herniaceR = ""; var X34herniacePodklad = ""; var X34degenerPodklad = ""; var X34degenerdR = ""; var X34degenerfaR = ""; var X34listR = ""; var X34edemR = "";
 
-var X45stenPK = ""; var X45stenPR = ""; var X45stenLR = ""; var X45stenPF = ""; var X45stenLF = ""; var X45stenBF = ""; 
+var X45stenPK = ""; var X45stenPR = ""; var X45stenLR = ""; var X45stenBR = ""; var X45stenPF = ""; var X45stenLF = ""; var X45stenBF = ""; 
 var X45herniaceR = ""; var X45herniacePodklad = ""; var X45degenerPodklad = ""; var X45degenerdR = ""; var X45degenerfaR = ""; var X45listR = ""; var X45edemR = "";
 
 var X56stenPK = ""; var X56stenPR = ""; var X56stenLR = ""; var X56stenPF = ""; var X56stenLF = ""; var X56stenBF = ""; 
@@ -714,49 +714,91 @@ if (X01PKText === "0") {
 }
 
 
-if (X01PRText === "0") {
- X01stenozyP += ""; 
- X01stenPR = "";  
- X01epifibPR = "";
-} else if (X01PRText === "S") {
- X01stenozyP += "Zúžení laterálního recesu vpravo. ";
- X01stenPR = "Stenóza laterálního recesu l.dx. ";
-} else if (X01PRText === "1") {
- X01stenozyP += "Mírný tlak na pravostranný kořen. ";
- X01stenPR = "Mírný tlak na kořen Root1 l.dx. ";
-} else if (X01PRText === "2") {
- X01stenozyP += "Útlak pravostranného kořene. ";
- X01stenPR = "Útlak kořene Root1 l.dx. ";
-} else if (X01PRText === "3") {
- X01stenozyP += "Komprese pravostranného kořene. ";
- X01stenPR = "Výrazný útlak kořene Root1 l.dx. ";
-} else if (X01PRText === "F") {
- X01stenozyP += "Epidurálně vpravo okrsek nízké SI v T1W i T2W. ";
- X01stenPR = "";
- X01epifibPR = "Epidurální fibróza vpravo. ";
-}
+if (X01PRText === X01LRText) {
+  if (X01PRText === "0") {
+    X01stenozyP += "";
+    X01stenBR = "";
+    X01stenPR = "";
+    X01stenLR = "";
+    X01epifibPR = "";
+    X01epifibLR = "";
+  } else if (X01PRText === "S") {
+    X01stenozyP += "Zúžení laterálních recesů oboustranně. ";
+    X01stenBR = "Stenóza laterálních recesů l.utr. ";
+    X01stenPR = "";
+    X01stenLR = "";
+  } else if (X01PRText === "1") {
+    X01stenozyP += "Mírný tlak na kořeny oboustranně. ";
+    X01stenBR = "Mírný tlak na kořeny Root1 l.utr. ";
+    X01stenPR = "";
+    X01stenLR = "";
+  } else if (X01PRText === "2") {
+    X01stenozyP += "Útlak kořenů oboustranně. ";
+    X01stenBR = "Útlak kořenů Root1 l.utr. ";
+    X01stenPR = "";
+    X01stenLR = "";
+  } else if (X01PRText === "3") {
+    X01stenozyP += "Komprese kořenů oboustranně. ";
+    X01stenBR = "Výrazný útlak kořenů Root1 l.utr. ";
+    X01stenPR = "";
+    X01stenLR = "";
+  } else if (X01PRText === "F") {
+    X01stenozyP += "Epidurálně oboustranně okrsky nízké SI v T1W i T2W. ";
+    X01stenBR = "";
+    X01stenPR = "";
+    X01stenLR = "";
+    // Zde využijeme jednu proměnnou pro závěr, druhou vymažeme
+    X01epifibPR = "Epidurální fibróza oboustranně. ";
+    X01epifibLR = "";
+  }
+
+} else {
+  if (X01PRText === "1") {
+    X01stenozyP += "Mírný tlak na pravostranný kořen. ";
+    X01stenPR = "Mírný tlak na kořen Root1 l.dx. ";
+    X01stenBR = "";
+  } else if (X01PRText === "2") {
+    X01stenozyP += "Útlak pravostranného kořene. ";
+    X01stenPR = "Útlak kořene Root1 l.dx. ";
+    X01stenBR = "";
+  } else if (X01PRText === "3") {
+    X01stenozyP += "Komprese pravostranného kořene. ";
+    X01stenPR = "Výrazný útlak kořene Root1 l.dx. ";
+    X01stenBR = "";
+  } else if (X01PRText === "S") {
+    X01stenozyP += "Zúžení laterálního recesu vpravo. ";
+    X01stenPR = "Stenóza laterálního recesu l.dx. ";
+    X01stenBR = "";
+  } else if (X01PRText === "F") {
+    X01stenozyP += "Epidurálně vpravo okrsek nízké SI v T1W i T2W. ";
+    X01stenPR = "";
+    X01stenBR = "";
+    X01epifibPR = "Epidurální fibróza vpravo. ";
+  }
 
 
-if (X01LRText === "0") {
- X01stenozyP += "";  
- X01stenLR = "";
- X01epifibLR = "";
-} else if (X01LRText === "S") {
- X01stenozyP += "Zúžení laterálního recesu vlevo. ";
- X01stenLR = "Stenóza laterálního recesu l.sin. ";
-} else if (X01LRText === "1") {
- X01stenozyP += "Mírný tlak na levostranný kořen. ";
- X01stenLR = "Mírný tlak na kořen Root1 l.sin. ";
-} else if (X01LRText === "2") {
- X01stenozyP += "Útlak levostranného kořene. ";
- X01stenLR = "Útlak kořene Root1 l.sin. ";
-} else if (X01LRText === "3") {
- X01stenozyP += "Komprese levostranného kořene. ";
- X01stenLR = "Výrazný útlak kořene Root1 l.sin. ";
-} else if (X01LRText === "F") {
- X01stenozyP += "Epidurálně vpravo okrsek nízké SI v T1W i T2W. ";
- X01stenLR = "";
- X01epifibLR = "Epidurální fibróza vlevo. ";
+  if (X01LRText === "1") {
+    X01stenozyP += "Mírný tlak na levostranný kořen. ";
+    X01stenLR = "Mírný tlak na kořen Root1 l.sin. ";
+    X01stenBR = "";
+  } else if (X01LRText === "2") {
+    X01stenozyP += "Útlak levostranného kořene. ";
+    X01stenLR = "Útlak kořene Root1 l.sin. ";
+    X01stenBR = "";
+  } else if (X01LRText === "3") {
+    X01stenozyP += "Komprese levostranného kořene. ";
+    X01stenLR = "Výrazný útlak kořene Root1 l.sin. ";
+    X01stenBR = "";
+  } else if (X01LRText === "S") {
+    X01stenozyP += "Zúžení laterálního recesu vlevo. ";
+    X01stenLR = "Stenóza laterálního recesu l.sin. ";
+    X01stenBR = "";
+  } else if (X01LRText === "F") {
+    X01stenozyP += "Epidurálně vlevo okrsek nízké SI v T1W i T2W. ";
+    X01stenLR = "";
+    X01stenBR = "";
+    X01epifibLR = "Epidurální fibróza vlevo. ";
+  }
 }
 
 
@@ -842,7 +884,7 @@ window.addEventListener('load',()=>document.querySelectorAll('[id^="my"][id$="PK
 
 // combine texts
 
-let X01stenosisArray = [X01stenPK, X01stenPR, X01stenLR, X01stenPF, X01stenLF, X01stenBF].filter(text => text !== "");  // Filter out any empty strings
+let X01stenosisArray = [X01stenPK, X01stenPR, X01stenLR, X01stenBR, X01stenPF, X01stenLF, X01stenBF].filter(text => text !== "");  // Filter out any empty strings
 
 if (X01stenosisArray.length > 2) {
     let last = X01stenosisArray.pop();
@@ -1142,7 +1184,6 @@ MRLumbarRESText.value = MRLumbarRESText.value.replace(/^\s*[\r\n]/gm, '');  // o
 
 
 sloucitStejneRadky('MRLumbarRESText');
-
 
 
 
