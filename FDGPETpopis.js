@@ -3168,16 +3168,16 @@ function addHydroDescription(buttonIdR, buttonIdL, sideTextR, sideTextL) {
 	sides.forEach(side => {
 		switch (document.getElementById(side.id).innerText) {
 			case 'I':
-				descriptionsKidneys.push(`${side.text} hydronefróza I.st`);
+				descriptionsKidneys.push(`${side.text} mírná dilatace pánvičky`);
 				break;
 			case 'II':
-				descriptionsKidneys.push(`${side.text} hydronefróza II.st`);
+				descriptionsKidneys.push(`${side.text} dilatace pánvičky a jednoho kalichu`);
 				break;
 			case 'III':
-				descriptionsKidneys.push(`${side.text} hydronefróza III.st`);
+				descriptionsKidneys.push(`${side.text} dilatace pánvičky i kalichů`);
 				break;
 			case 'IV':
-				descriptionsKidneys.push(`${side.text} hydronefróza IV.st`);
+				descriptionsKidneys.push(`${side.text} dilatace pánvičky, kalichů a redukce parenchymu`);
 				break;
 		}
 	});
