@@ -1036,10 +1036,10 @@ if (ChbHeadMaxSinusCystR && ChbHeadMaxSinusCystL) {
 }
 
 if (ChbHeadMaxSinusFullR && ChbHeadMaxSinusFullL) {
-    descriptionsHeadMax.push("nevzdušnost bilat. pravědpodobně při chronickém zánětu");
+    descriptionsHeadMax.push("hyperplazie sliznice bilat. pravědpodobně při chronickém zánětu");
 } else {
-    if (ChbHeadMaxSinusFullR) descriptionsHeadMax.push("nevzdušnost vpravo pravědpodobně při chronickém zánětu");
-    if (ChbHeadMaxSinusFullL) descriptionsHeadMax.push("nevzdušnost vlevo pravědpodobně při chronickém zánětu");
+    if (ChbHeadMaxSinusFullR) descriptionsHeadMax.push("hyperplazie sliznice vpravo pravědpodobně při chronickém zánětu");
+    if (ChbHeadMaxSinusFullL) descriptionsHeadMax.push("hyperplazie sliznice vlevo pravědpodobně při chronickém zánětu");
 }
 
 if (ChbHeadMaxSinusFluidR && ChbHeadMaxSinusFluidL) {
