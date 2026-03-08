@@ -862,104 +862,80 @@ eval(codeForNeckLesion3);
 
 // NECK LYMPH NODES 
 
-var NeckLymphNode1selectLocationtext = "";
+// Rozšířená konfigurace o úroveň (lvl) pro snadný výpočet sousednosti
+const regionsMap = [
+    { id: '1A', label: 'Ia', lvl: 1 }, { id: '1B', label: 'Ib', lvl: 1 },
+    { id: '2A', label: 'IIa', lvl: 2 }, { id: '2B', label: 'IIb', lvl: 2 },
+    { id: '3', label: 'III', lvl: 3 },  { id: '4', label: 'IV', lvl: 4 },
+    { id: '5', label: 'V', lvl: 5 },    { id: '6', label: 'VI', lvl: 6 }
+];
 
-var ChbNeckAllR = document.getElementById("ChbNeckAllR").checked;
-var ChbNeckAllL = document.getElementById("ChbNeckAllL").checked;
-var ChbNeck1AR = document.getElementById("ChbNeck1AR").checked;
-var ChbNeck1AL = document.getElementById("ChbNeck1AL").checked;
-var ChbNeck1BR = document.getElementById("ChbNeck1BR").checked;
-var ChbNeck1BL = document.getElementById("ChbNeck1BL").checked;
-var ChbNeck2AR = document.getElementById("ChbNeck2AR").checked;
-var ChbNeck2AL = document.getElementById("ChbNeck2AL").checked;
-var ChbNeck2BR = document.getElementById("ChbNeck2BR").checked;
-var ChbNeck2BL = document.getElementById("ChbNeck2BL").checked;
-var ChbNeck3R = document.getElementById("ChbNeck3R").checked;
-var ChbNeck3L = document.getElementById("ChbNeck3L").checked;
-var ChbNeck4R = document.getElementById("ChbNeck4R").checked;
-var ChbNeck4L = document.getElementById("ChbNeck4L").checked;
-var ChbNeck5R = document.getElementById("ChbNeck5R").checked;
-var ChbNeck5L = document.getElementById("ChbNeck5L").checked;
-var ChbNeck6R = document.getElementById("ChbNeck6R").checked;
-var ChbNeck6L = document.getElementById("ChbNeck6L").checked;
+// Helper pro získání zaškrtnutých uzlin rovnou jako pole objektů
+const getChecked = (side) => regionsMap.filter(r => document.getElementById(`ChbNeck${r.id}${side}`)?.checked);
 
-var descriptions = [];
+// Optimalizovaná funkce pro formátování a slučování pomocí pomlčky
+const formatNodes = (nodes) => {
+    if (nodes.length < 3) return nodes.map(n => n.label).join(', ');
 
-if (ChbNeckAllR || ChbNeckAllL) {
-    if (ChbNeckAllR && ChbNeckAllL) descriptions.push("na krku bilat.");
-    else {
-        if (ChbNeckAllR) descriptions.push("na pravé polovině krku");
-        if (ChbNeckAllL) descriptions.push("na levé polovině krku");
+    const result = [];
+    let seq = [nodes[0]];
+
+    for (let i = 1; i <= nodes.length; i++) {
+        const curr = nodes[i];
+        const prev = nodes[i - 1];
+
+        // Pokud jsme v sekvenci (stejná nebo sousedící etáž)
+        if (curr && (curr.lvl - prev.lvl <= 1)) {
+            seq.push(curr);
+        } else {
+            // Zpracování bloku po přerušení sekvence nebo na konci
+            const uniqueLvlCount = new Set(seq.map(n => n.lvl)).size;
+            if (uniqueLvlCount >= 3) {
+                result.push(`${seq[0].label} - ${seq[seq.length - 1].label}`);
+            } else {
+                result.push(...seq.map(n => n.label));
+            }
+            if (curr) seq = [curr]; // Start nové sekvence
+        }
     }
-    NeckLymphNode1selectLocationtext = descriptions.join(', ');
+    return result.join(', ');
+};
+
+// Hlavní logika
+const isAllR = document.getElementById("ChbNeckAllR")?.checked;
+const isAllL = document.getElementById("ChbNeckAllL")?.checked;
+let desc = "";
+
+if (isAllR || isAllL) {
+    desc = (isAllR && isAllL) ? "na krku bilat." : `na ${isAllR ? 'pravé' : 'levé'} polovině krku`;
 } else {
+    const rightNodes = getChecked('R');
+    const leftNodes = getChecked('L');
+    const totalCount = rightNodes.length + leftNodes.length;
 
-if (ChbNeck1AR && ChbNeck1AL) descriptions.push("Ia bilat.");
-else {
-    if (ChbNeck1AR) descriptions.push("Ia vpravo");
-    if (ChbNeck1AL) descriptions.push("Ia vlevo");
+    if (totalCount > 0) {
+        const rStr = formatNodes(rightNodes);
+        const lStr = formatNodes(leftNodes);
+        const prefix = totalCount === 1 ? "v krčním regiu " : "v krčních regiích ";
+        let text = "";
+
+        // Specifické pravidlo pro přesně 2 uzliny (1 vpravo, 1 vlevo)
+        if (totalCount === 2 && rightNodes.length === 1 && leftNodes.length === 1) {
+            text = (rStr === lStr) ? `${rStr} bilat.` : `${rStr} vpravo, ${lStr} vlevo`;
+        } else {
+            // Univerzální složení pro 1 stranu, nebo více uzlin na obou stranách
+            const parts = [];
+            if (rStr) parts.push(`${rStr} vpravo`);
+            if (lStr) parts.push(`${lStr} vlevo`);
+            text = parts.join(' a '); // Vyřeší "vpravo", "vlevo" i "vpravo a vlevo" automaticky
+        }
+        
+        desc = prefix + text;
+    }
 }
 
-if (ChbNeck1BR && ChbNeck1BL) descriptions.push("Ib bilat.");
-else {
-    if (ChbNeck1BR) descriptions.push("Ib vpravo");
-    if (ChbNeck1BL) descriptions.push("Ib vlevo");
-}
-
-if (ChbNeck2AR && ChbNeck2AL) descriptions.push("IIa bilat.");
-else {
-    if (ChbNeck2AR) descriptions.push("IIa vpravo");
-    if (ChbNeck2AL) descriptions.push("IIa vlevo");
-}
-
-if (ChbNeck2BR && ChbNeck2BL) descriptions.push("IIb bilat.");
-else {
-    if (ChbNeck2BR) descriptions.push("IIb vpravo");
-    if (ChbNeck2BL) descriptions.push("IIb vlevo");
-}
-
-if (ChbNeck3R && ChbNeck3L) descriptions.push("III bilat.");
-else {
-    if (ChbNeck3R) descriptions.push("III vpravo");
-    if (ChbNeck3L) descriptions.push("III vlevo");
-}
-
-if (ChbNeck4R && ChbNeck4L) descriptions.push("IV bilat.");
-else {
-    if (ChbNeck4R) descriptions.push("IV vpravo");
-    if (ChbNeck4L) descriptions.push("IV vlevo");
-}
-
-if (ChbNeck5R && ChbNeck5L) descriptions.push("V bilat.");
-else {
-    if (ChbNeck5R) descriptions.push("V vpravo");
-    if (ChbNeck5L) descriptions.push("V vlevo");
-}
-
-if (ChbNeck6R && ChbNeck6L) descriptions.push("VI bilat.");
-else {
-    if (ChbNeck6R) descriptions.push("VI vpravo");
-    if (ChbNeck6L) descriptions.push("VI vlevo");
-}
-
-if (descriptions.length === 1) {
-    NeckLymphNode1selectLocationtext = "v krčním regiu " + descriptions[0];
-} else if (descriptions.length === 2) {
-    NeckLymphNode1selectLocationtext = "v krčních regiích " + descriptions.join(' a ');
-} else if (descriptions.length > 2) {
-    var lastDescription = descriptions.pop();
-    var secondLastDescription = descriptions.pop();
-    NeckLymphNode1selectLocationtext = "v krčních regiích " + descriptions.join(', ') + ', ' + secondLastDescription + ' a ' + lastDescription;
-} else {
-    NeckLymphNode1selectLocationtext = descriptions.join(', ');
-}
-
-}
-
-document.getElementById('NeckLymphNode1Location').value = NeckLymphNode1selectLocationtext;
-
-
-
+const targetInput = document.getElementById('NeckLymphNode1Location');
+if (targetInput) targetInput.value = desc;
 
 // neck lymph node popis
 
