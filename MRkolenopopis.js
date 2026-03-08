@@ -693,8 +693,11 @@ MkMenLezeR = "s rupturou";
 } else if (MkMenLeze === "obl") {
  MkMenLezeP = "s šikmo probíhající linií vysoké SI ";
  MkMenLezeR = "s šikmou rupturou ";
+} else if (MkMenLeze === "komb") {
+ MkMenLezeP = "s vícečetnými liniemi vysoké SI ";
+ MkMenLezeR = "s kombinovanou rupturou ";
 } else if (MkMenLeze === "koml") {
- MkMenLezeP = "s tvarovou defigurací, nepravidelnými okrsky vysoké SI ";
+ MkMenLezeP = "s tvarovou defigurací, nepravidelnou vysokou SI ";
  MkMenLezeR = "s komplexní rupturou ";
 } else if (MkMenLeze === "BH") {
  MkMenLezeP = "s odtržením vnitřní části a dislokací protilehle ";
@@ -791,9 +794,15 @@ LkMenLezeR = "s rupturou";
 } else if (LkMenLeze === "long") {
  LkMenLezeP = "s longitudinální linií vysoké SI ";
  LkMenLezeR = "s longitudinální rupturou ";
-} else if (MkMenLeze === "obl") {
+} else if (LkMenLeze === "obl") {
  LkMenLezeP = "s šikmo probíhající linií vysoké SI ";
  LkMenLezeR = "s šikmou rupturou ";
+} else if (LkMenLeze === "komb") {
+ LkMenLezeP = "s vícečetnými liniemi vysoké SI ";
+ LkMenLezeR = "s kombinovanou rupturou ";
+} else if (LkMenLeze === "koml") {
+ LkMenLezeP = "s tvarovou defigurací, nepravidelnou vysokou SI ";
+ LkMenLezeR = "s komplexní rupturou ";
 } else if (LkMenLeze === "koml") {
  LkMenLezeP = "s tvarovou defigurací, nepravidelnými okrsky vysoké SI ";
  LkMenLezeR = "s komplexní rupturou ";
@@ -807,6 +816,7 @@ LkMenLezeR = "s rupturou";
  LkMenLezeP = "s výraznou defigurací / destrukcí";
  LkMenLezeR = "je z větší části destruován";
 }
+
 
 if (LkMenLokace === "") {
 LkMenLokaceP = ""; 
@@ -906,7 +916,7 @@ if (LCMText === "LCM") {
  LCMP = "Mediální kolaterální vaz má zachovalou kontinuitu, přítomen edém okolí.";
  LCMR = "Mediální kolaterální vaz s distenzí / low-grade parc. lézí.";
 } else if (LCMText === "ruptura II") {
- LCMP = "Mediální kolaterální vaz je nehomogenní, s vyšší SI, kontinuita parc. zachována, přítomen edém okolí.";
+ LCMP = "Mediální kolaterální vaz je nehomogenní, s vyšší SI, kontinuita parc. porušena, přítomen edém okolí.";
  LCMR = "Mediální kolaterální vaz s parciální rupturou.";
 } else if (LCMText === "ruptura III") {
  LCMP = "Mediální kolaterální vaz má přerušenou kontinuitu, přítomen edém okolí.";
@@ -922,7 +932,7 @@ if (LCLText === "LCL") {
  LCLP = "Laterální kolaterální vaz má zachovalou kontinuitu, přítomen edém okolí.";
  LCLR = "Laterální kolaterální vaz s distenzí / low-grade parc. lézí.";
 } else if (LCLText === "ruptura II") {
- LCLP = "Laterální kolaterální vaz je nehomogenní, s vyšší SI, kontinuita parc. zachována, přítomen edém okolí.";
+ LCLP = "Laterální kolaterální vaz je nehomogenní, s vyšší SI, kontinuita parc. porušena, přítomen edém okolí.";
  LCLR = "Laterální kolaterální vaz s parciální rupturou. ";
 } else if (LCLText === "ruptura III") {
  LCLP = "Laterální kolaterální vaz má přerušenou kontinuitu, přítomen edém okolí.";

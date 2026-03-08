@@ -1,0 +1,96 @@
+<head>
+<link rel="stylesheet" href="styles.css">
+<style>
+    /* Styl pro checkbox těsně za textem */
+    .CHB {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        margin-left: 0px; /* Mezera max 5px za textem */
+        margin-right: 10px;
+    }
+
+    .CHB input {
+        cursor: pointer;
+        margin: 0;
+    }
+    
+    .CHB span {
+        margin-left: 2px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="MainDIV">
+
+<div id="MRBrainAngio" class="standardwidth mydiv0">
+    MR jater <label class="CHB"><input type="checkbox" class="mr-check" data-id="jater" value="MR jater" onChange="updateTexts()"><span>+</span></label>
+    MR pankreatu <label class="CHB"><input type="checkbox" class="mr-check" data-id="pankreatu" value="MR pankreatu" onChange="updateTexts()"><span>+</span></label>
+    MRCP <label class="CHB"><input type="checkbox" class="mr-check" data-id="mrcp" value="MRCP" onChange="updateTexts()"><span>+</span></label>
+    MR pánve <label class="CHB"><input type="checkbox" class="mr-check" data-id="panve" value="MR pánve" onChange="updateTexts()"><span>+</span></label>
+    MR skeletu <label class="CHB"><input type="checkbox" class="mr-check" data-id="skeletu" value="MR skeletu/měkkých tkání" onChange="updateTexts()"><span>+</span></label>
+</div>
+
+<div id="texty1" class="standardwidth hidden">
+NÁZEV<textarea id="MROthersNAMEText" class="medium"></textarea>
+INDIKACE<textarea id="MROthersINDText" class="medium"></textarea>
+SEKVENCE<textarea id="MROthersSEKVText" class="medium"></textarea>
+POPIS<textarea id="MROthersPOPText" class="superlarge"></textarea>
+ZÁVĚR<textarea id="MROthersRESText" class="superlarge"></textarea>
+</div>
+
+</div>
+
+<script>
+const textData = {
+    jater: {
+        popis: "Játra jsou normální velikosti, hladkých kontur, parenchym má v celém rozsahu fyziologický signál bez ložiskových změn.\nIntra- i extrahepatální žlučovody jsou štíhlé, bez známek obstrukce. \nPortální žíla je volně průchodná bez známek trombotizace. Jaterní žíly mají obvyklý průběh i kalibr.\nŽlučník je obvyklé velikosti, s homogenní náplní a bez patrných konkrementů či zesílení stěny.\nV okolí jater není volná tekutina ani známky zánětlivé infiltrace, regionální uzliny v porta hepatis nejsou zvětšeny.",
+        res: "MR jater"
+    },
+    pankreatu: {
+        popis: "Pankreas je přiměřené velikosti a normální lobulizace, parenchym vykazuje homogenní signál bez ložiskových změn.\nDuctus pancreaticus (Wirsung) štíhlý, bez intraluminálních defektů.\nPeripankreatické tukové tkáně jsou bez známek zánětu či kolekcí tekutiny.\nTělo i kauda pankreatu mají normální šířku.\nLymfatické uzliny v retroperitoneu nejsou zvětšeny, žaludek a kličky tenkého střeva jsou bez patologické dilatace.",
+        res: "MR pankreatu"
+    },
+    mrcp: {
+        popis: "Intrahepatální žlučovody nejsou dilatovány, ductus hepaticus communis a ductus choledochus štíhlé.\nV průběhu biliárního stromu nejsou patrny  defekty, ductus pancreaticus je štíhlý bez stenóz.\nŽlučník normálního vzhledu, stěna tenká, lumen bez abnormálního obsahu.\nV okolí žlučových cest není zřejmá infiltrace, volná tekutina ani kolekce.",
+        res: "MRCP"
+    },
+    panve: {
+        popis: "Močový měchýř s hladkou stěnu přiměřené šíře bez intraluminálních objektů. Orgány malé pánve bez ložisek.\nRectum a sigmoideum mají normální šířku stěny a bez infiltrace okolí. V pánvi není přítomna volná tekutina ani patologické kolekce.\nLymfatické uzliny nejsou zvětšeny, cévní svazky pánve jsou volně průchodné.\nSkelet pánve vykazuje normální signál kostní dřeně bez ložisek destrukce.\n Měkké tkáně bez infiltrace, presakrální prostor je volný.",
+        res: "MR pánve"
+    },
+    skeletu: {
+        popis: "Signál kostní dřeně v zobrazeném úseku je přiměřený, bez známek edému, nekrózy či ložiskové destrukce, kortikalis neporušena.\nSvalové skupiny mají normální vzhled a signál, bez edému. Podkožní tuk je bez infiltrace.\nV měkkých tkáních nejsou patrny ložiskové změny, kolekce či cizí tělesa. \n Lymfatické uzliny v okolí nejsou zvětšeny.\nŠlachové úpony s nízkou SI.",
+        res: "MR skeletu a měkkých tkání"
+    }
+};
+
+function updateTexts() {
+    const checkboxes = document.querySelectorAll('.mr-check');
+    const nameText = document.getElementById('MROthersNAMEText');
+    const popText = document.getElementById('MROthersPOPText');
+    const resText = document.getElementById('MROthersRESText');
+
+    const selected = Array.from(checkboxes).filter(cb => cb.checked);
+    
+    if (selected.length === 0) {
+        nameText.value = "";
+        popText.value = "";
+        resText.value = "";
+        return;
+    }
+
+    // Názvy
+    nameText.value = selected.map(cb => cb.value).join(", ");
+
+    // Popisy (všechny v jednom bloku textu)
+    popText.value = selected.map(cb => textData[cb.dataset.id].popis).join("\n\n");
+
+    // Závěr
+    const resNames = selected.map(cb => textData[cb.dataset.id].res).join(", ");
+    resText.value = resNames + " bez patrné patologie. ";
+}
+</script>
+</body>
