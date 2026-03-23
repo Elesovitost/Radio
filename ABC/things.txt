@@ -1,1 +1,0 @@
-const words = ['bota', 'holub', 'kalhoty', 'koèka', 'lednice', 'ovce', 'pes', 'trièko'];
