@@ -416,9 +416,20 @@ const RegionLSp = {
             const arthroL = ctx.isActive(`${seg.sPfx}_arthro_l`);
             
             if (arthro && arthro !== 'facets') {
-                const sRep = arthroR && !arthroL ? 'více vpravo' : (!arthroR && arthroL ? 'více vlevo' : 'bilat.');
-                const sConc = arthroR && !arthroL ? 'akcent. vpravo' : (!arthroR && arthroL ? 'akcent. vlevo' : 'bilat.');
-                
+                let sRep = '';
+                let sConc = '';
+
+                if (arthroR && arthroL) {
+                    sRep = ' bilat.';
+                    sConc = ' bilat.';
+                } else if (arthroR) {
+                    sRep = ' více vpravo';
+                    sConc = ' akcent. vpravo';
+                } else if (arthroL) {
+                    sRep = ' více vlevo';
+                    sConc = ' akcent. vlevo';
+                }
+
                 let modRep = '';
                 let modConc = '';
                 let edemRep = '';
@@ -429,10 +440,10 @@ const RegionLSp = {
                 else if (arthro === 'III') { modRep = 'výrazná '; modConc = 'výrazná '; }
                 else if (arthro === 'edém') { modRep = 'pokročilá '; modConc = 'pokročilá '; edemRep = ' s edémem'; edemConc = ' s edémem při dekompenzaci'; }
                 
-                let sentence = `${modRep}degenerace facetového skloubení ${sRep}${edemRep}`.trim();
+                let sentence = `${modRep}degenerace facetového skloubení${sRep}${edemRep}`.trim();
                 sentences.push(formatSentence(sentence));
 
-                let aTxt = `${modConc}facetová artróza ${sConc}${edemConc}`.trim();
+                let aTxt = `${modConc}facetová artróza${sConc}${edemConc}`.trim();
                 activeCauses.push({
                     type: 'other',
                     nom: aTxt,
