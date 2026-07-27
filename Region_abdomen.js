@@ -122,7 +122,7 @@ const RegionAbdomen = {
             // 6. Žaludek
             layoutNodes.push(helpers.TableMain('abdomen_zaludek_main', 'Žaludek', [
                 helpers.Table2colNormal('za_table', [
-                    [ 'Resekce', { btn: 'za_res', states: ['0', 'B-I', 'B-II', 'R-Y', 'sleeve', 'TG'] } ],
+                    [ 'Resekce', { btn: 'za_res', states: ['0', 'parc.', 'total.', 'sleeve'] } ],
                     [ 'Bariatrie', { btn: 'za_bar', states: ['0', 'bandáž', 'bypass'] } ],
                     [ 'Fundoplikace', { btn: 'za_fun', states: ['0', '+'] } ],
                     [ 'Sonda', { btn: 'za_son', states: ['0', 'PEG', 'NGS', 'NJS'] } ],
@@ -137,7 +137,7 @@ const RegionAbdomen = {
                     [ 'Atrofie', { btn: 'pa_atr', states: ['0', 'mírná', 'výrazná', 'lipomatózní'] } ],
                     [ 'Dilat. Wirsungu', { btn: 'pa_wir', states: ['0', '+'] }, { field: 'mm', id: 'pa_wir_mm', placeholder: 'mm' } ],
                     [ 'Cystoid', { btn: 'pa_cys', states: ['0', '1', 'více'] }, { field: 'mm', id: 'pa_cys_mm', placeholder: 'mm' } ],
-                    [ 'Operace', { btn: 'pa_op', states: ['0', 'Whipple', 'totální gastrekt.', 'kauda', 'nekrektomie'] } ]
+                    [ 'Operace', { btn: 'pa_op', states: ['0', 'duodenopankreat.', 'total pankreat.', 'kauda', 'nekrektomie'] } ]
                 ]),
                 helpers.Table1col('pa_ost_add', [ { field: 'text', id: 'pa_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'pa_custom_conc', placeholder: 'vlastní závěr...' } ])
             ]));
@@ -145,7 +145,7 @@ const RegionAbdomen = {
             // 8. Tračník
             layoutNodes.push(helpers.TableMain('abdomen_tracnik_main', 'Tračník', [
                 helpers.Table2colNormal('tr_table', [
-                    [ 'Resekce', { btn: 'tr_res', states: ['0', 'PHK', 'LHK', 'sigmoidea', 'NPR', 'amputace'] } ],
+                    [ 'Resekce', { btn: 'tr_res', states: ['0', 'P hemikol.', 'L hemikol.', 'sigmoidea', 'rekta', 'amputace'] } ],
                     [ 'Appendektomie', { btn: 'tr_app', states: ['0', 'APPE'] } ],
                     [ 'Stomie', { btn: 'tr_sto', states: ['0', 'kolostomie', 'ileostomie'] }, { btn: 'tr_sto_loc', states: ['0', 'vpravo', 'vlevo'] } ],
                     [ 'Fokus RF+', { btn: 'tr_fok', states: ['0', 'fokus', 'více fokusů'] }, { btn: 'tr_fok_loc', states: ['0', 'caecum', 'ascendens', 'transversum', 'descendens', 'sigmoideum', 'rektum'] } ],
@@ -573,7 +573,7 @@ const RegionAbdomen = {
 
             // 6. Žaludek
             let zaRep = [];
-            let zaRes = ctx.text('za_res'); if (zaRes && zaRes !== '0') zaRep.push(`stav po resekci typu ${zaRes === 'B-I' ? 'Billroth I' : zaRes === 'B-II' ? 'Billroth II' : zaRes === 'R-Y' ? 'Roux-en-Y' : zaRes === 'sleeve' ? 'sleeve' : 'totální gastrektomii'}`);
+            let zaRes = ctx.text('za_res'); if (zaRes && zaRes !== '0') zaRep.push(`stav po ${zaRes === 'parc.' ? 'parc. resekci s gastoenteroanastomózou' : zaRes === 'total.' ? 'totální gastrektomii s gastoenteroanastomózou' : 'tubulizaci'}`);
             let zaBar = ctx.text('za_bar'); if (zaBar && zaBar !== '0') zaRep.push(`stav po bariatrické operaci (${zaBar === 'bandáž' ? 'bandáž' : 'gastrický bypass'})`);
             if (ctx.isActive('za_fun')) zaRep.push("známky fundoplikace");
             let zaSon = ctx.text('za_son'); if (zaSon && zaSon !== '0') zaRep.push(`zavedena ${zaSon} sonda`);
@@ -587,14 +587,14 @@ const RegionAbdomen = {
             let paAtr = ctx.text('pa_atr'); if (paAtr && paAtr !== '0') { paRep.push(`${paAtr} atrofie`); concInc.push({ type: 'frame', text: "Atrofie pankreatu.", tableId: 'abdomen_pankreas_main' }); }
             if (ctx.isActive('pa_wir')) { let mm = ctx.field('pa_wir_mm'); paRep.push(`dilatace ductus Wirsungi${mm ? ' na ' + mm + ' mm' : ''}`); concMain.push({ type: 'frame', text: "Dilatace vývodu pankreatu.", tableId: 'abdomen_pankreas_main' }); }
             let paCys = ctx.text('pa_cys'); if (paCys && paCys !== '0') { let mm = ctx.field('pa_cys_mm'); paRep.push(`${paCys === '1' ? 'cystoidní léze' : 'vícečetné cystoidní léze'}${mm ? ' vel. do ' + mm + ' mm' : ''}`); concInc.push({ type: 'frame', text: `${paCys === '1' ? 'Cystoidní léze' : 'Vícečetné cystoidní léze'} pankreatu.`, tableId: 'abdomen_pankreas_main' }); }
-            let paOp = ctx.text('pa_op'); if (paOp && paOp !== '0') paRep.push(`stav po ${paOp === 'Whipple' ? 'Whippleově operaci' : paOp === 'totální gastrekt.' ? 'totální pankreatektomii' : paOp === 'kauda' ? 'resekci kaudy' : 'nekrektomii'}`);
+            let paOp = ctx.text('pa_op'); if (paOp && paOp !== '0') paRep.push(`stav po ${paOp === 'duodenopankreat.' ? 'duodenopanreatektomii' : paOp === 'totální gastrekt.' ? 'totální pankreatektomii' : paOp === 'kauda' ? 'resekci kaudy' : 'nekrektomii'}`);
             let paDesc = ctx.field('pa_custom_desc'); if (paDesc) paRep.push(paDesc);
             if (paRep.length > 0) reportOut.push({ type: 'frame', text: `- Pankreas: ${formatList(paRep)}.`, tableId: 'abdomen_pankreas_main' });
             let paConc = ctx.field('pa_custom_conc'); if (paConc) concInc.push({ type: 'frame', text: paConc, tableId: 'abdomen_pankreas_main' });
 
             // 8. Tračník
             let trRep = [];
-            let trRes = ctx.text('tr_res'); if (trRes && trRes !== '0') trRep.push(`stav po ${trRes === 'PHK' ? 'pravostranné hemikolektomii' : trRes === 'LHK' ? 'levostranné hemikolektomii' : trRes === 'sigmoidea' ? 'resekci sigmoidea' : trRes === 'NPR' ? 'nízké přední resekci rekta' : 'amputaci rekta'}`);
+            let trRes = ctx.text('tr_res'); if (trRes && trRes !== '0') trRep.push(`stav po ${trRes === 'P hemikol.' ? 'pravostranné hemikolektomii' : trRes === 'L hemikol.' ? 'levostranné hemikolektomii' : trRes === 'sigmoidea' ? 'resekci sigmoidea' : trRes === 'rekta' ? 'resekci rekta' : 'amputaci rekta'}`);
             if (ctx.isActive('tr_app')) trRep.push("stav po appendektomii");
             let trSto = ctx.text('tr_sto'), trStoLoc = ctx.text('tr_sto_loc'); if (trSto && trSto !== '0') trRep.push(`vyvedena ${trSto}${trStoLoc !== '0' ? ' ' + trStoLoc : ''}`);
             let trFok = ctx.text('tr_fok'), trFokLoc = ctx.text('tr_fok_loc'); if (trFok && trFok !== '0') { let loc = trFokLoc !== '0' ? trFokLoc : 'tračníku'; trRep.push(`ložiskově zvýšená akumulace RF v oblasti ${loc} (${trFok})`); concInc.push({ type: 'frame', text: `Fokální aktivita v oblasti ${loc} - k dovyšetření (v.s. polyp/tumor).`, tableId: 'abdomen_tracnik_main' }); }

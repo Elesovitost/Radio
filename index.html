@@ -157,7 +157,15 @@
         #spine_thoracic_main > tbody > tr:nth-child(even) > td:first-child span { color: var(--accent-hi); }
         .tbl td .row:has(> button[data-id$="_d_c"]) { gap: 2px; }
         .report-frame.frame-lesion { color: #e891af; }
-        .report-frame.frame-lymphnode { color: #e0c068; }        
+        .report-frame.frame-lymphnode { color: #e0c068; }    
+        
+        #organ-popup { position: fixed; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.8); padding: 6px; display: none; flex-direction: column; gap: 4px; z-index: 2000; }
+        #organ-popup.active { display: flex; }
+        .popup-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #c9d1d9; padding: 6px 12px; font-size: 11px; border-radius: 4px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .popup-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--dim); color: #ffffff; }
+        .popup-btn.btn-lesion { color: #ff6b6b; font-weight: bold; }
+        .popup-btn.btn-lymph { color: #feca57; font-weight: bold; }
+        .popup-title { font-size: 12px; color: var(--accent-hi); font-weight: bold; text-transform: uppercase; padding: 2px 4px; margin-bottom: 2px; border-bottom: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -283,6 +291,7 @@
 <div id="image-tooltip" style="position: fixed; display: none; z-index: 1500; pointer-events: none; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.8); border-radius: 6px; background: var(--bg); padding: 5px;">
     <img id="image-tooltip-img" src="" style="max-width: 500px; max-height: 500px; display: block; border-radius: 4px; object-fit: contain;">
 </div>
+<div id="organ-popup"></div>
 
 <script src="Region_brain.js"></script>
 <script src="Region_br_angiography.js"></script>
@@ -678,7 +687,7 @@ const ORGAN_MAP = {
     "Jícen": { name: "Jícen", table: "thorax_jicen_main", regions: ['thorax'] },
     "Nadledviny": { name: "Nadledviny", table: "abdomen_nadledviny_main", regions: ['abdomen'] },
     "Brain Lesion": { name: "Léze (Hlava)", table: "brain_lesion_main", regions: ['brain'] },
-    "Brain Hemorrhage": { name: "Krvácení / Ischemie", table: "brain_hemo_main", regions: ['brain'] },
+    "Brain Hemorrhage": { name: "Krvácení / Ischemie", table: null, regions: ['brain'] },
     "Neck Lesion": { name: "Léze (Krk)", table: "neck_lesion_main", regions: ['neck'] },
     "Thorax Lesion": { name: "Léze (Hrudník)", table: "thorax_lesion_main", regions: ['thorax'] },
     "Abdomen Lesion": { name: "Léze (Břicho)", table: "abdomen_lesion_main", regions: ['abdomen', 'prostate', 'rectum'] },
@@ -4152,6 +4161,8 @@ document.addEventListener('click', e => {
         const handler = ActionHandlers[target.dataset.action];
         if (handler) {
             handler(target, target.dataset);
+            const popup = document.getElementById('organ-popup');
+            if (popup && popup.contains(target)) popup.classList.remove('active');
             return;
         }
     }
@@ -4160,6 +4171,11 @@ document.addEventListener('click', e => {
         const organEl = e.target.closest('svg [id]');
         if (organEl && organEl.id && ORGAN_MAP[organEl.id]) {
             const organDef = ORGAN_MAP[organEl.id];
+            
+            if (organDef.table && (organDef.table.includes('_lesion_main') || organDef.table.includes('_lymphnode_main'))) {
+                return;
+            }
+
             let baseTableId = organDef.table;
             
             if (organDef.resolveTable) {
@@ -4182,7 +4198,7 @@ document.addEventListener('click', e => {
     if (Store.activeTable) {
         const isInsideOverlay = e.target.closest('#table-overlay-container');
         const isInsideViewer = e.target.closest('#standalone-slice-viewer');
-        const isInputOrInteractive = e.target.closest('.input, select, textarea');
+        const isInputOrInteractive = e.target.closest('.input, select, textarea, #organ-popup');
         if (!isInsideOverlay && !isInsideViewer && !isInputOrInteractive) {
             Store.activeTable = null;
         }
@@ -4203,25 +4219,43 @@ document.addEventListener('mousemove', e => {
     }
 
     const tooltip = document.getElementById('organ-tooltip');
+    const popup = document.getElementById('organ-popup');
     if (!tooltip) return;
 
-    // Vynutit skrytí tooltipu, pokud je otevřena tabulka (SVG ztmavlo)
     if (Store.activeTable) {
+        tooltip.style.display = 'none';
+        if (popup) popup.classList.remove('active');
+        return;
+    }
+
+    const isInsidePopup = e.target.closest('#organ-popup');
+    if (isInsidePopup) {
         tooltip.style.display = 'none';
         return;
     }
 
     const organEl = e.target.closest('svg [id]');
     if (organEl && organEl.id && ORGAN_MAP[organEl.id]) {
-        tooltip.textContent = ORGAN_MAP[organEl.id].name;
-        tooltip.style.display = 'block';
-        tooltip.style.left = `${e.clientX + 15}px`;
-        tooltip.style.top = `${e.clientY + 15}px`;
+        const organDef = ORGAN_MAP[organEl.id];
         
-        if (organEl.classList.contains('organ-dimmed')) {
-            tooltip.classList.add('tooltip-dimmed');
+        if (organDef.table && organDef.table.includes('lymphnode_main')) {
+            tooltip.style.display = 'none';
+            return; 
+        }
+
+        if (organDef.table && organDef.table.includes('_lesion_main')) {
+            tooltip.style.display = 'none'; 
         } else {
-            tooltip.classList.remove('tooltip-dimmed');
+            tooltip.textContent = organDef.name;
+            tooltip.style.display = 'block';
+            tooltip.style.left = `${e.clientX + 15}px`;
+            tooltip.style.top = `${e.clientY + 15}px`;
+            
+            if (organEl.classList.contains('organ-dimmed')) {
+                tooltip.classList.add('tooltip-dimmed');
+            } else {
+                tooltip.classList.remove('tooltip-dimmed');
+            }
         }
     } else {
         tooltip.style.display = 'none';
@@ -4381,9 +4415,139 @@ document.addEventListener('input', e => {
     if (action === 'update-custom-input') Store.customTexts = { ...Store.customTexts, [id]: e.target.value };
 });
 
+let organPopupTimeout = null;
+let currentHoveredOrganId = null;
+
+function renderOrganPopup(organDef, organId) {
+    const popup = document.getElementById('organ-popup');
+    if (!popup) return;
+    
+    const lesionTable = organDef.table;
+    const isBrain = organDef.regions && organDef.regions.includes('brain');
+    const isSkeleton = organDef.regions && organDef.regions.includes('skeleton');
+    
+    const lymphTable = lesionTable ? lesionTable.replace('_lesion_main', '_lymphnode_main') : null;
+    const hemoTable = isBrain ? 'brain_hemo_main' : null;
+    
+    let html = `<div class="popup-title">${organDef.name}</div>`;
+    
+    if (lesionTable && lesionTable.includes('_lesion_main')) {
+        html += `<button class="popup-btn" data-action="open-table" data-table="${lesionTable}">🔴 Nové ložisko</button>`;
+    }
+    
+    if (!isBrain && !isSkeleton && lymphTable) {
+        html += `<button class="popup-btn" data-action="open-table" data-table="${lymphTable}">🟡 Nová lymfadenopatie</button>`;
+    }
+    
+    if (isBrain && hemoTable) {
+        html += `<button class="popup-btn" data-action="open-table" data-table="${hemoTable}">🟣 Nové krvácení / ischemie</button>`;
+    }
+    
+    const getInstanceName = (tableId, instId, defaultType, organName) => {
+        const regionId = tableId.split('_')[0];
+        const isLN = tableId.includes('lymphnode');
+        const isHemo = tableId.includes('hemo');
+        
+        let pfx = 'l';
+        if (isHemo) pfx = 'bh';
+        else {
+            const prefixMap = { brain: 'bl', thorax: isLN ? 'tln' : 'tl', abdomen: isLN ? 'aln' : 'al', neck: isLN ? 'ln' : 'l', skeleton: 'l', prostate: isLN ? 'prln' : 'pl', rectum: isLN ? 'rtln' : 'rt' };
+            pfx = prefixMap[regionId] || (isLN ? 'ln' : 'l');
+        }
+        const p = `${pfx}_${instId}`;
+        const examId = Store.activeTab || 'default';
+        const statePrefix = `${examId}_${regionId}_${p}_k_`;
+        
+        let typeName = defaultType;
+        let isCustom = false;
+        
+        for (const key of Object.keys(Store.buttonStates)) {
+            if (key.startsWith(statePrefix) && Store.buttonStates[key]) {
+                const btnCfg = ButtonConfigs[key];
+                if (btnCfg) {
+                    if (btnCfg.custom && Store.buttonStates[key] === 'custom') {
+                        typeName = Store.customTexts[key] || defaultType;
+                        isCustom = true;
+                    } else if (btnCfg.type === 'basic') {
+                        typeName = btnCfg.text;
+                    } else if (btnCfg.type === 'standard') {
+                        typeName = btnCfg.states[Store.buttonStates[key]];
+                    }
+                }
+                break;
+            }
+        }
+        typeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
+
+        const locText = Store.fields[`${examId}_${regionId}_${p}_nej_text`];
+
+        if (locText) {
+            return `${typeName} ${locText}`;
+        } else if (isCustom) {
+            return typeName;
+        } else {
+            let cleanOrgan = organName.replace(/Léze\s*\(/i, '').replace(/Lymfadenopatie\s*\(/i, '').replace(/\)/g, '').toLowerCase();
+            return `${typeName} (${cleanOrgan})`;
+        }
+    };
+
+    if (lesionTable && lesionTable.includes('_lesion_main')) {
+        const lesionInsts = Store.instances?.[lesionTable] || [];
+        lesionInsts.forEach((instId) => {
+            const name = getInstanceName(lesionTable, instId, 'Ložisko', organDef.name);
+            html += `<button class="popup-btn btn-lesion" data-action="open-table" data-table="${lesionTable}__${instId}">🔴 ${name}</button>`;
+        });
+    }
+
+    if (!isBrain && !isSkeleton && lymphTable) {
+        const lymphInsts = Store.instances?.[lymphTable] || [];
+        lymphInsts.forEach((instId) => {
+            const name = getInstanceName(lymphTable, instId, 'Uzlina', organDef.name);
+            html += `<button class="popup-btn btn-lymph" data-action="open-table" data-table="${lymphTable}__${instId}">🟡 ${name}</button>`;
+        });
+    }
+    
+    if (isBrain && hemoTable) {
+        const hemoInsts = Store.instances?.[hemoTable] || [];
+        hemoInsts.forEach((instId) => {
+            const name = getInstanceName(hemoTable, instId, 'Krvácení / ischemie', organDef.name);
+            html += `<button class="popup-btn" style="color: #b19cd9; font-weight: bold;" data-action="open-table" data-table="${hemoTable}__${instId}">🟣 ${name}</button>`;
+        });
+    }
+    
+    popup.innerHTML = html;
+}
+
 document.addEventListener('mouseover', e => {
     if (e.target.closest && e.target.closest('[data-action="copy-all"]')) {
         document.querySelectorAll('h2[data-action="copy-text"]').forEach(el => el.classList.add('highlight-force'));
+    }
+
+    if (!Store.activeTable) {
+        const organEl = e.target.closest('svg [id]');
+        const popup = document.getElementById('organ-popup');
+        const isInsidePopup = e.target.closest('#organ-popup');
+
+        if (organEl && organEl.id && ORGAN_MAP[organEl.id]) {
+            const organDef = ORGAN_MAP[organEl.id];
+            if (organDef.table && organDef.table.includes('_lesion_main')) {
+                clearTimeout(organPopupTimeout);
+                if (currentHoveredOrganId !== organEl.id) {
+                    currentHoveredOrganId = organEl.id;
+                    renderOrganPopup(organDef, organEl.id);
+                    popup.style.left = `${e.clientX + 15}px`;
+                    popup.style.top = `${e.clientY + 15}px`;
+                    popup.classList.add('active');
+                }
+            }
+        } else if (isInsidePopup) {
+            clearTimeout(organPopupTimeout);
+        } else {
+            organPopupTimeout = setTimeout(() => {
+                if (popup) popup.classList.remove('active');
+                currentHoveredOrganId = null;
+            }, 200);
+        }
     }
 
     if (!APP_SETTINGS.showTooltips) return;
