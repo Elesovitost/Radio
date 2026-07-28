@@ -159,7 +159,7 @@
         .report-frame.frame-lesion { color: #e891af; }
         .report-frame.frame-lymphnode { color: #e0c068; }    
         
-        #organ-popup { position: fixed; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.8); padding: 6px; display: none; flex-direction: column; gap: 4px; z-index: 2000; }
+        #organ-popup { position: fixed; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.8); padding: 0px; display: none; flex-direction: column; gap: 4px; z-index: 2000; }
         #organ-popup.active { display: flex; }
         .popup-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #c9d1d9; padding: 6px 12px; font-size: 11px; border-radius: 4px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
         .popup-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--dim); color: #ffffff; }
@@ -3075,7 +3075,7 @@ const UI = {
         const idWrapper = el('div', { className: 'row', style: 'margin-left: 8px; flex-shrink: 0;' });
         const idBtn = el('button', {
             className: 'btn',
-            style: 'min-width: 30px; padding: 2px 6px;',
+            style: 'min-width: 30px; padding: 2px 2px;',
             textContent: 'ID',
             title: 'Zobrazit/skrýt ID pacienta pro historii',
             'data-action': 'toggle-id-input'
@@ -4092,7 +4092,7 @@ const ActionHandlers = {
             Store.activeTable = dataset.table;
         }
     },
-    'cycle-exam-part': (target, dataset) => {
+    'cycle-exam-part': (target, dataset, dir = 1) => {
         const oldId = dataset.payload;
         const part = dataset.part;
         const oldExam = getExamById(oldId);
@@ -4128,7 +4128,7 @@ const ActionHandlers = {
         if (candidates.length <= 1) return;
         
         let idx = candidates.indexOf(oldId);
-        idx = (idx + 1) % candidates.length;
+        idx = (idx + dir + candidates.length) % candidates.length;
         const newId = candidates[idx];
         
         const migrateObj = (obj) => {
@@ -4414,15 +4414,26 @@ document.addEventListener('mousemove', e => {
     }
 });
 
+const DIRECTIONAL_ACTIONS = ['cycle-state', 'toggle-basic', 'toggle-basic-custom', 'cycle-side', 'cycle-exam-part'];
+
+function handleDirectionalAction(btn, dir) {
+    const { action, id } = btn.dataset;
+    if (!DIRECTIONAL_ACTIONS.includes(action)) return false;
+    
+    if (action === 'cycle-state')              cycleState(id, dir);
+    else if (action === 'toggle-basic')        toggleBasic(id, dir > 0);
+    else if (action === 'toggle-basic-custom') toggleBasicCustom(id, dir > 0);
+    else if (action === 'cycle-side')          ActionHandlers['cycle-side'](btn, btn.dataset, dir);
+    else if (action === 'cycle-exam-part')     ActionHandlers['cycle-exam-part'](btn, btn.dataset, dir);
+    
+    return true;
+}
+
 document.addEventListener('contextmenu', e => {
     const btn = e.target.closest('.btn');
-    if (!btn) return;
-    e.preventDefault();
-    const { action, id } = btn.dataset;
-    if (action === 'cycle-state')         cycleState(id, -1);
-    if (action === 'toggle-basic')        toggleBasic(id, false);
-    if (action === 'toggle-basic-custom') toggleBasicCustom(id, false);
-    if (action === 'cycle-side')          ActionHandlers['cycle-side'](btn, btn.dataset, -1);
+    if (btn && handleDirectionalAction(btn, -1)) {
+        e.preventDefault();
+    }
 });
 
 document.addEventListener('wheel', e => {
@@ -4508,16 +4519,12 @@ document.addEventListener('wheel', e => {
     }
 
     const btn = t.closest('.btn');
-    if (!btn) return;
-    e.preventDefault();
-    const dir = e.deltaY < 0 ? 1 : -1;
-    const { action, id } = btn.dataset;
-    
-    if (action === 'cycle-state')         cycleState(id, dir);
-    if (action === 'toggle-basic')        toggleBasic(id, dir > 0);
-    if (action === 'toggle-basic-custom') toggleBasicCustom(id, dir > 0);
-    if (action === 'cycle-side')          ActionHandlers['cycle-side'](btn, btn.dataset, dir);
-
+    if (btn) {
+        const dir = e.deltaY < 0 ? 1 : -1;
+        if (handleDirectionalAction(btn, dir)) {
+            e.preventDefault();
+        }
+    }
 }, { passive: false });
 
 document.addEventListener('input', e => {
@@ -4583,72 +4590,82 @@ function renderOrganPopup(organDef, organId) {
     
     let html = `<div class="popup-title">${organDef.name}</div>`;
     
-    if (lesionTable && lesionTable.includes('_lesion_main')) {
-        html += `<button class="popup-btn" data-action="open-table" data-table="${lesionTable}">🔴 Nové ložisko</button>`;
-    }
-    
-    if (!isBrain && !isSkeleton && lymphTable) {
-        html += `<button class="popup-btn" data-action="open-table" data-table="${lymphTable}">🟡 Nová lymfadenopatie</button>`;
-    }
-    
-    if (isBrain && hemoTable) {
-        html += `<button class="popup-btn" data-action="open-table" data-table="${hemoTable}">🟣 Nové krvácení / ischemie</button>`;
-    }
-    
     const getInstanceName = (tableId, instId, defaultType, organName) => {
-        const regionId = tableId.split('_')[0];
-        const isLN = tableId.includes('lymphnode');
-        const isHemo = tableId.includes('hemo');
-        
-        let pfx = 'l';
-        if (isHemo) pfx = 'bh';
-        else {
-            const prefixMap = { brain: 'bl', thorax: isLN ? 'tln' : 'tl', abdomen: isLN ? 'aln' : 'al', neck: isLN ? 'ln' : 'l', skeleton: 'l', prostate: isLN ? 'prln' : 'pl', rectum: isLN ? 'rtln' : 'rt' };
-            pfx = prefixMap[regionId] || (isLN ? 'ln' : 'l');
+        // 1. Zkusit načíst vygenerovaný text z reportu (univerzálně získáme přesný druh a lokaci se správnou gramatikou)
+        const reportFrame = document.querySelector(`.report-frame[data-table="${tableId}__${instId}"]`);
+        if (reportFrame) {
+            let fullText = reportFrame.textContent.trim();
+            // Regulární výraz pro odříznutí metrik, aktivit, vzhledů a etiologií
+            const cutRegex = /\s+(diametru|velikosti|rozměru|se SUV|s nízkou|s intermediární|středně|zvýšeně|nízce|se zvýšenou|s vysokou|bez metabolické|bez PSMA|bez exprese|bez akumulace|s izovaskulárním|izovaskulární|hypervaskulární|s wash-out|s restrikcí|bez restrikce|kulat|dobře ohraničen|hůře ohraničen|neohraničen|s časným|bez časného|s invazí|s infiltrací|s extrakapsulárním|bez CT|bez sycení|se sycením|nativně|v dif\.dg\.|v\.s\.|susp\.|benigního|maligního|charakteru|etiologie|\(T1|\(T2|\(DWI|\(SWI|\(nativ|\(kontrast)/i;
+            
+            let match = fullText.match(cutRegex);
+            let result = match ? fullText.substring(0, match.index) : fullText;
+            
+            // Odstranění přebytečných znaků na konci
+            result = result.replace(/[,.]$/, '').trim();
+            if (result) return result;
         }
-        const p = `${pfx}_${instId}`;
-        const examId = Store.activeTab || 'default';
-        const statePrefix = `${examId}_${regionId}_${p}_k_`;
-        
+
+        // 2. Fallback: Vyčíst přímo ze state (funguje univerzálně pro jakoukoliv instanci v aplikaci)
         let typeName = defaultType;
-        let isCustom = false;
+        let locParts = [];
+        let instPrefix = '';
         
-        for (const key of Object.keys(Store.buttonStates)) {
-            if (key.startsWith(statePrefix) && Store.buttonStates[key]) {
-                const btnCfg = ButtonConfigs[key];
-                if (btnCfg) {
-                    if (btnCfg.custom && Store.buttonStates[key] === 'custom') {
-                        typeName = Store.customTexts[key] || defaultType;
-                        isCustom = true;
-                    } else if (btnCfg.type === 'basic') {
-                        typeName = btnCfg.text;
-                    } else if (btnCfg.type === 'standard') {
-                        typeName = btnCfg.states[Store.buttonStates[key]];
-                    }
-                }
+        const allKeys = Object.keys(Store.buttonStates);
+        for (const key of allKeys) {
+            const match = key.match(new RegExp(`_([a-zA-Z]+_${instId})_`));
+            if (match) {
+                instPrefix = match[1];
                 break;
             }
         }
-        typeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
 
-        const locText = Store.fields[`${examId}_${regionId}_${p}_nej_text`];
+        if (instPrefix) {
+            const examId = Store.activeTab || 'default';
+            const regionId = tableId.split('_')[0];
+            const searchStr = `${examId}_${regionId}_${instPrefix}_`;
 
-        if (locText) {
-            return `${typeName} ${locText}`;
-        } else if (isCustom) {
-            return typeName;
+            // Získání druhu
+            const typeKey = allKeys.find(k => k.startsWith(searchStr + 'k_') && Store.buttonStates[k]);
+            if (typeKey && ButtonConfigs[typeKey]) {
+                const btnCfg = ButtonConfigs[typeKey];
+                if (btnCfg.custom && Store.buttonStates[typeKey] === 'custom') {
+                    typeName = Store.customTexts[typeKey] || defaultType;
+                } else if (btnCfg.type === 'basic') {
+                    typeName = btnCfg.text;
+                } else if (btnCfg.type === 'standard') {
+                    typeName = btnCfg.states[Store.buttonStates[typeKey]];
+                }
+            }
+            typeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
+
+            // Získání lokace z textového pole (_nej_text)
+            const textInput = Store.fields[`${searchStr}nej_text`];
+            if (textInput) locParts.push(textInput);
+
+            // Získání lokace z tlačítek (_p_ pro uzliny)
+            const lnLocKeys = allKeys.filter(k => k.startsWith(searchStr + 'p_') && Store.buttonStates[k]);
+            lnLocKeys.forEach(k => {
+                if (ButtonConfigs[k]) locParts.push(ButtonConfigs[k].text);
+            });
+        }
+
+        if (locParts.length > 0) {
+            return `${typeName} ${locParts.join(', ')}`;
         } else {
             let cleanOrgan = organName.replace(/Léze\s*\(/i, '').replace(/Lymfadenopatie\s*\(/i, '').replace(/\)/g, '').toLowerCase();
             return `${typeName} (${cleanOrgan})`;
         }
     };
 
+    // Vykreslení tlačítek - Existující instance VŽDY před novými
     if (lesionTable && lesionTable.includes('_lesion_main')) {
         const lesionInsts = Store.instances?.[lesionTable] || [];
         lesionInsts.forEach((instId) => {
             const name = getInstanceName(lesionTable, instId, 'Ložisko', organDef.name);
             html += `<button class="popup-btn btn-lesion" data-action="open-table" data-table="${lesionTable}__${instId}">🔴 ${name}</button>`;
         });
+        html += `<button class="popup-btn" data-action="open-table" data-table="${lesionTable}">🔴 Nové ložisko</button>`;
     }
 
     if (!isBrain && !isSkeleton && lymphTable) {
@@ -4657,6 +4674,7 @@ function renderOrganPopup(organDef, organId) {
             const name = getInstanceName(lymphTable, instId, 'Uzlina', organDef.name);
             html += `<button class="popup-btn btn-lymph" data-action="open-table" data-table="${lymphTable}__${instId}">🟡 ${name}</button>`;
         });
+        html += `<button class="popup-btn" data-action="open-table" data-table="${lymphTable}">🟡 Nová lymfadenopatie</button>`;
     }
     
     if (isBrain && hemoTable) {
@@ -4665,6 +4683,7 @@ function renderOrganPopup(organDef, organId) {
             const name = getInstanceName(hemoTable, instId, 'Krvácení / ischemie', organDef.name);
             html += `<button class="popup-btn" style="color: #b19cd9; font-weight: bold;" data-action="open-table" data-table="${hemoTable}__${instId}">🟣 ${name}</button>`;
         });
+        html += `<button class="popup-btn" data-action="open-table" data-table="${hemoTable}">🟣 Nové krvácení / ischemie</button>`;
     }
     
     popup.innerHTML = html;
