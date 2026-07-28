@@ -2964,23 +2964,102 @@ const UI = {
                 'data-payload': examId
             });
             
+            const tabTitleWrapper = el('div', { style: 'display: flex; align-items: center; gap: 3px;' });
+            
             const sideConfig = APP_MANIFEST.examsWithSides[examId];
             if (sideConfig) {
                 const side = Store.fields[sideConfig.field];
-                const sideText = side === 'R' ? 'pravého' : (side === 'L' ? 'levého' : 'P / L ?');
+                const sideText = side === 'R' ? 'pravého' : (side === 'L' ? 'levého' : 'P / L');
                 const btnSide = el('button', {
                     className: 'btn btn-side-toggle',
                     textContent: sideText,
                     'data-action': 'cycle-side',
                     'data-payload': sideConfig.field
                 });
-                tabEl.appendChild(el('span', { textContent: 'MR ' }));
-                tabEl.appendChild(btnSide);
-                tabEl.appendChild(el('span', { textContent: ` ${sideConfig.label}` }));
+                tabTitleWrapper.appendChild(el('span', { textContent: 'MR' }));
+                tabTitleWrapper.appendChild(btnSide);
+                tabTitleWrapper.appendChild(el('span', { textContent: sideConfig.label }));
             } else {
-                tabEl.appendChild(el('span', { textContent: exam.title }));
+                const petMatch = exam.title.match(/^([A-Z]+)(-PET \/ )([A-Z]+)(.*)$/);
+                const tomoMatch = exam.title.match(/^(CT|MR)( )(.*)$/);
+                
+                if (petMatch) {
+                    const currentPet = petMatch[1];
+                    const currentTomo = petMatch[3];
+                    const separator = petMatch[2].replace('-', '').trim();
+                    const rest = petMatch[4].trim();
+                    
+                    let petCandidates = 0;
+                    let tomoCandidates = 0;
+                    
+                    Object.values(EXAMS).flat().forEach(e => {
+                        const m = e.title.match(/^([A-Z]+)(-PET \/ )([A-Z]+)(.*)$/);
+                        if (m && m[4] === petMatch[4]) {
+                            if (m[3] === currentTomo) petCandidates++;
+                            if (m[1] === currentPet) tomoCandidates++;
+                        }
+                    });
+                    
+                    if (petCandidates > 1) {
+                        tabTitleWrapper.appendChild(el('button', {
+                            className: 'btn btn-side-toggle',
+                            textContent: currentPet,
+                            title: 'Změnit radiofarmakum',
+                            'data-action': 'cycle-exam-part',
+                            'data-part': 'pet',
+                            'data-payload': examId
+                        }));
+                    } else {
+                        tabTitleWrapper.appendChild(el('span', { textContent: currentPet }));
+                    }
+                    
+                    tabTitleWrapper.appendChild(el('span', { textContent: separator }));
+                    
+                    if (tomoCandidates > 1) {
+                        tabTitleWrapper.appendChild(el('button', {
+                            className: 'btn btn-side-toggle',
+                            textContent: currentTomo,
+                            title: 'Změnit modalitu (CT/MR)',
+                            'data-action': 'cycle-exam-part',
+                            'data-part': 'tomo',
+                            'data-payload': examId
+                        }));
+                    } else {
+                        tabTitleWrapper.appendChild(el('span', { textContent: currentTomo }));
+                    }
+                    
+                    tabTitleWrapper.appendChild(el('span', { textContent: rest }));
+                } else if (tomoMatch && !exam.title.includes('PET')) {
+                    const currentModality = tomoMatch[1];
+                    const rest = tomoMatch[3].trim();
+                    
+                    let candidates = 0;
+                    Object.values(EXAMS).flat().forEach(e => {
+                        const m = e.title.match(/^(CT|MR)( )(.*)$/);
+                        if (m && m[3] === tomoMatch[3] && !e.title.includes('PET')) {
+                            candidates++;
+                        }
+                    });
+                    
+                    if (candidates > 1) {
+                        tabTitleWrapper.appendChild(el('button', {
+                            className: 'btn btn-side-toggle',
+                            textContent: currentModality,
+                            title: 'Změnit modalitu (CT/MR)',
+                            'data-action': 'cycle-exam-part',
+                            'data-part': 'modality',
+                            'data-payload': examId
+                        }));
+                    } else {
+                        tabTitleWrapper.appendChild(el('span', { textContent: currentModality }));
+                    }
+                    tabTitleWrapper.appendChild(el('span', { textContent: rest }));
+                } else {
+                    tabTitleWrapper.appendChild(el('span', { textContent: exam.title }));
+                }
             }
             
+            tabEl.appendChild(tabTitleWrapper);
             tabEl.appendChild(el('span', { className: 'exam-tab-close', textContent: '×', 'data-action': 'remove-exam', 'data-payload': examId }));
             tabsContainer.appendChild(tabEl);
         }
@@ -4012,6 +4091,79 @@ const ActionHandlers = {
         } else {
             Store.activeTable = dataset.table;
         }
+    },
+    'cycle-exam-part': (target, dataset) => {
+        const oldId = dataset.payload;
+        const part = dataset.part;
+        const oldExam = getExamById(oldId);
+        if (!oldExam) return;
+        
+        const petMatch = oldExam.title.match(/^([A-Z]+)(-PET \/ )([A-Z]+)(.*)$/);
+        const tomoMatch = oldExam.title.match(/^(CT|MR)( )(.*)$/);
+        
+        let candidates = [];
+        
+        if (petMatch) {
+            const currentPet = petMatch[1];
+            const currentTomo = petMatch[3];
+            const rest = petMatch[4];
+            
+            Object.values(EXAMS).flat().forEach(e => {
+                const m = e.title.match(/^([A-Z]+)(-PET \/ )([A-Z]+)(.*)$/);
+                if (m && m[4] === rest) {
+                    if (part === 'pet' && m[3] === currentTomo) candidates.push(e.id);
+                    if (part === 'tomo' && m[1] === currentPet) candidates.push(e.id);
+                }
+            });
+        } else if (tomoMatch && !oldExam.title.includes('PET')) {
+            const rest = tomoMatch[3];
+            Object.values(EXAMS).flat().forEach(e => {
+                const m = e.title.match(/^(CT|MR)( )(.*)$/);
+                if (m && m[3] === rest && !e.title.includes('PET')) {
+                    candidates.push(e.id);
+                }
+            });
+        }
+        
+        if (candidates.length <= 1) return;
+        
+        let idx = candidates.indexOf(oldId);
+        idx = (idx + 1) % candidates.length;
+        const newId = candidates[idx];
+        
+        const migrateObj = (obj) => {
+            const res = {};
+            for (const [k, v] of Object.entries(obj)) {
+                if (k.startsWith(oldId + '_')) {
+                    res[newId + '_' + k.substring(oldId.length + 1)] = v;
+                } else {
+                    res[k] = v;
+                }
+            }
+            return res;
+        };
+        
+        Store.buttonStates = migrateObj(Store.buttonStates);
+        Store.customTexts = migrateObj(Store.customTexts);
+        
+        const oldRadiofarm = Object.keys(RADIOFARM_CONFIG).find(key => oldId.toLowerCase().includes(key));
+        const newRadiofarm = Object.keys(RADIOFARM_CONFIG).find(key => newId.toLowerCase().includes(key));
+        
+        if (oldRadiofarm !== newRadiofarm) {
+            window._currentRadiofarm = null;
+        }
+        
+        Store.fields = migrateObj(Store.fields);
+        Store.expandedNotes = migrateObj(Store.expandedNotes);
+        
+        const newExams = new Set(Store.exams);
+        newExams.delete(oldId);
+        newExams.add(newId);
+        Store.exams = newExams;
+        
+        if (Store.activeTab === oldId) Store.activeTab = newId;
+        
+        UI.render('exams');
     },
     'remove-instance': (target, dataset) => {
         const [baseTableId, instId] = dataset.id.split('__');
