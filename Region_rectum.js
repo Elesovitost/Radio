@@ -237,7 +237,7 @@ const RegionRectum = {
                     if (terapie === 'velké reziduum') terStr = "Dle MR stacionární nález, trvá velké tumorózní reziduum.";
                 }
 
-                let repBase = `${dL.baseText}${locStr}${dL.vzhledText}${dL.metrikyStr}${dL.actStr}${dL.dynStr}${dL.doplneniStr}.`.replace(/\s+/g, ' ').replace(' .', '.');
+                let repBase = `${dL.baseText}${locStr}${dL.vzhledText}${dL.metrikyStr}${dL.doplneniStr}.`.replace(/\s+/g, ' ').replace(' .', '.');
                 let repDetails = [stageDesc, mrfDesc, emviDesc, tdDesc, dnoDesc, sfinDesc].filter(Boolean).join(' ');
                 
                 reportOut.push({ type: 'frame', text: `${repBase} ${repDetails}`.trim(), tableId: `rectum_lesion_main__${instId}` });
@@ -275,6 +275,9 @@ const RegionRectum = {
                 let cParts = [];
                 let titlePart = `${baseLabel} ${locSuffix}`.trim();
                 
+                if (dL.actStr) titlePart += dL.actStr;
+                if (dL.dynStr) titlePart += dL.dynStr;
+                
                 if (dL.etioStr) {
                     let isRedundant = false;
                     if (isKarcinom && (etioLower.includes('maligní') || etioLower.includes('karcinom'))) isRedundant = true;
@@ -290,7 +293,7 @@ const RegionRectum = {
                 cParts.push(`- lokální staging: ${stageArr}${extRisk}.`);
                 if (terStr) cParts.push(terStr);
 
-                concMain.push({ type: 'frame', text: cParts.join(' ').replace('  ', ' ').trim(), tableId: `rectum_lesion_main__${instId}` });
+                concMain.push({ type: 'frame', text: cParts.join(' ').replace(/\s+/g, ' ').trim(), tableId: `rectum_lesion_main__${instId}` });
             });
         }
 

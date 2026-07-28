@@ -1,5 +1,5 @@
 const RegionBrAngiography = {
-    title: 'MR Angiografie',
+    title: 'Angiografie',
     reportLayout: 'block',
     layout: (helpers) => {
         let layoutNodes = [];
@@ -36,7 +36,7 @@ const RegionBrAngiography = {
         return layoutNodes;
     },
     compile: (ctx) => {
-        let reportOut = [{ type: 'heading', text: 'MR angiografie:', action: 'open-region', regionId: 'brain_angiography' }];
+        let reportOut = [{ type: 'heading', text: 'Angiografie:', action: 'open-region', regionId: 'brain_angiography' }];
         let concMain = [];
         let concInc = [];
         let vesRep = [];
