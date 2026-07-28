@@ -175,6 +175,12 @@
         <span class="label">Vyšetření:</span>
         <div id="exams-container" class="row"></div>
         <div class="row push">
+            <div class="dropdown">
+                <button class="btn" style="min-width: 100px; border-color: var(--dim);">HISTORIE</button>
+                <div class="dropdown-menu" id="history-dropdown-menu">
+                    <!-- Bude plněno dynamicky JS -->
+                </div>
+            </div>
             <span class="label">Minulé:</span>
             <input type="date" class="input input-date" data-action="update-date">
             <button class="btn" data-action="toggle-settings" style="min-width: unset; padding: 2px 6px; font-size: 14px; line-height: 1;" title="Nastavení">⚙</button>
@@ -201,20 +207,12 @@
             <span class="label">STRIATUM:</span>
             <input class="input field_suv" data-action="update-field" data-id="suv_striata" value="2.0">
         </div>
-        <div class="row sep push">
-            <div class="dropdown" style="margin-right: auto;">
-                <button class="btn" style="min-width: 100px; margin-right: 15px; border-color: var(--dim);">HISTORIE</button>
-                <div class="dropdown-menu" id="history-dropdown-menu">
-                    <!-- Bude plněno dynamicky JS -->
-                </div>
-            </div>
-            <button class="btn" data-action="toggle-recist" style="min-width: 100px; margin-right: 5px;">RECIST</button>
-            <button class="btn" data-action="toggle-tnm" style="min-width: 100px;">TNM</button>
-        </div>
     </div>
     <!-- Settings Modal -->
-    <div id="settings-modal" class="panel" style="display: none; position: absolute; top: 38px; right: 5px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.8); width: 250px; border: 1px solid var(--accent-hi);">
+    <div id="settings-modal" class="panel" style="display: none; position: absolute; top: 38px; right: 5px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.8); width: 280px; border: 1px solid var(--accent-hi);">
         <h2 style="margin-bottom: 8px;">Nastavení</h2>
+        
+        <div class="sub-table-title" style="text-align: left; padding-left: 4px; margin-top: 0;">Textové změny</div>
         <div class="row" style="margin-bottom: 8px;">
             <span class="label" title="Slučování stran (vpravo/vlevo -> bilat.) a gramatické úpravy textu.">Gramatika (slučování):</span>
             <label class="switch">
@@ -222,6 +220,15 @@
                 <span class="slider"></span>
             </label>
         </div>
+        <div class="row" style="margin-bottom: 12px;">
+            <span class="label" title="Skryje normální nálezy. Při kopírování se ale zkopírují.">Skrýt negativní texty:</span>
+            <label class="switch">
+                <input type="checkbox" id="setting-hide-predefined" data-action="update-setting" data-setting="hidePredefined">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="sub-table-title" style="text-align: left; padding-left: 4px;">Zápis aktivit</div>
         <div class="row" style="margin-bottom: 8px;">
             <span class="label" title="Převádí číselné hodnoty SUVmax na slovní popis.">Slovně místo SUVmax:</span>
             <label class="switch">
@@ -229,13 +236,15 @@
                 <span class="slider"></span>
             </label>
         </div>
-        <div class="row" style="margin-bottom: 8px;">
-            <span class="label" title="Skryje normální nálezy. Při kopírování se ale zkopírují.">Skrýt negativní texty:</span>
+        <div class="row" style="margin-bottom: 12px;">
+            <span class="label" title="Pokročilá textová optimalizace (skloňování a přesun modifikátorů).">Optimalizovaný text závěru:</span>
             <label class="switch">
-                <input type="checkbox" id="setting-hide-predefined" data-action="update-setting" data-setting="hidePredefined">
+                <input type="checkbox" id="setting-opt-text" data-action="update-setting" data-setting="optText">
                 <span class="slider"></span>
             </label>
         </div>
+
+        <div class="sub-table-title" style="text-align: left; padding-left: 4px;">Funkce</div>
         <div class="row" style="margin-bottom: 8px;">
             <span class="label" title="Před zkopírováním otevře okno pro úpravu textu.">Náhled zprávy:</span>
             <label class="switch">
@@ -251,9 +260,9 @@
             </label>
         </div>
         <div class="row">
-            <span class="label" title="Pokročilá textová optimalizace (skloňování a přesun modifikátorů).">Opt. text:</span>
+            <span class="label" title="Zapisovat dynamiku vývoje (RECIST) do textu zpráv.">Psát RECIST:</span>
             <label class="switch">
-                <input type="checkbox" id="setting-opt-text" data-action="update-setting" data-setting="optText">
+                <input type="checkbox" id="setting-recist" data-action="update-setting" data-setting="recist">
                 <span class="slider"></span>
             </label>
         </div>
@@ -322,7 +331,8 @@ const APP_SETTINGS = {
     hidePredefined: savedConfig.hidePredefined || false,
     previewReport: savedConfig.previewReport || false,
     showTooltips: savedConfig.showTooltips !== undefined ? savedConfig.showTooltips : true,
-    optText: savedConfig.optText !== undefined ? savedConfig.optText : true
+    optText: savedConfig.optText !== undefined ? savedConfig.optText : true,
+    recist: savedConfig.recist || false
 };
 
 function saveSettings() {
@@ -332,7 +342,8 @@ function saveSettings() {
         hidePredefined: APP_SETTINGS.hidePredefined,
         previewReport: APP_SETTINGS.previewReport,
         showTooltips: APP_SETTINGS.showTooltips,
-        optText: APP_SETTINGS.optText
+        optText: APP_SETTINGS.optText,
+        recist: APP_SETTINGS.recist
     }));
     document.body.classList.toggle('hide-predefined', APP_SETTINGS.hidePredefined);
     UI.renderReport();
@@ -490,8 +501,6 @@ const Store = new Proxy(
         activeTable: null,
         activeSlice: 1,
         activeViewerKey: null,
-        recist: false,
-        tnm: false,
         instances: {},
         expandedNotes: {}
     },
@@ -556,6 +565,7 @@ const HistoryManager = {
             baseId: baseId,
             timestamp: timestamp,
             dateStr: dateStr,
+            pastDate: Store.pastDate, // Uložení datumu
             exams: Array.from(Store.exams),
             activeTab: Store.activeTab,
             indication: Store.indication,
@@ -576,16 +586,33 @@ const HistoryManager = {
             if (records[hId]) {
                 const rec = records[hId];
                 Store.reportId = rec.baseId || hId;
+                Store.pastDate = rec.pastDate || ''; // Načtení datumu
+                
                 Store.exams = new Set(rec.exams || []);
                 Store.activeTab = rec.activeTab;
                 Store.indication = rec.indication || '';
                 Store.buttonStates = rec.buttonStates || {};
                 Store.customTexts = rec.customTexts || {};
-                Store.fields = rec.fields || {};
                 Store.instances = rec.instances || {};
                 Store.expandedNotes = rec.expandedNotes || {};
                 
+                // Aktualizace UI s datem
+                const dateInput = document.querySelector('input[data-action="update-date"]');
+                if (dateInput) dateInput.value = Store.pastDate;
+
                 setTimeout(() => {
+                    // Přiřazení fieldů až po vykreslení, aby nebyly přepsány funkcí updateReferencesVisibility
+                    Store.fields = rec.fields || {};
+
+                    // Obnova referenčních hodnot do UI a zamezení jejich automatickému smazání
+                    for (const [key, val] of Object.entries(Store.fields)) {
+                        const inp = document.querySelector(`input[data-id="${key}"]`);
+                        if (inp) {
+                            inp.value = val;
+                            inp.dataset.edited = 'true';
+                        }
+                    }
+
                     const activeExam = getExamById(Store.activeTab);
                     if (activeExam) {
                         activeExam.regs.forEach(regId => {
@@ -1501,7 +1528,7 @@ function createContext(regionId, examId) {
             const cLiv = parseFloat((Store.fields['suv_jater'] || '3.0').replace(',', '.'));
             const mLiv = parseFloat((Store.fields['suv_jater_minule'] || '3.0').replace(',', '.'));
 
-            return MetricsEngine.calculateDynamics(currSize, minSize, currSuv, minSuv, cLiv, mLiv, Store.recist);
+            return MetricsEngine.calculateDynamics(currSize, minSize, currSuv, minSuv, cLiv, mLiv, APP_SETTINGS.recist);
         },
         mapStates(config) {
             const found = [];
@@ -3593,16 +3620,6 @@ const ActionHandlers = {
         
         UI.renderReport(); 
     },
-    'toggle-recist': (target) => {
-        target.classList.toggle('selected');
-        Store.recist = target.classList.contains('selected');
-        UI.renderReport();
-    },
-    'toggle-tnm': (target) => {
-        target.classList.toggle('selected');
-        Store.tnm = target.classList.contains('selected');
-        UI.renderReport();
-    },
     'cycle-state': (target, dataset) => cycleState(dataset.id, 1),
     'toggle-basic': (target, dataset) => toggleBasic(dataset.id, null),
     'toggle-basic-custom': (target, dataset) => toggleBasicCustom(dataset.id, true),
@@ -4144,6 +4161,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const optTextCheckbox = document.getElementById('setting-opt-text');
     if (optTextCheckbox) optTextCheckbox.checked = APP_SETTINGS.optText;
+    
+    const recistCheckbox = document.getElementById('setting-recist');
+    if (recistCheckbox) recistCheckbox.checked = APP_SETTINGS.recist;
     
     document.body.classList.toggle('hide-predefined', APP_SETTINGS.hidePredefined);
     
