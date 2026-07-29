@@ -186,7 +186,7 @@
         <div id="exams-container" class="row"></div>
         <div class="row push">
             <div class="dropdown">
-                <button class="btn" id="history-btn" style="min-width: 100px;">ULOŽENÁ</button>
+                <button class="btn" id="history-btn" style="min-width: 100px;">ULOŽENÁ VYŚ.</button>
                 <div class="dropdown-menu" id="history-dropdown-menu">
                     <!-- Bude plněno dynamicky JS -->
                 </div>
@@ -663,7 +663,7 @@ const HistoryManager = {
         }
 
         if (keys.length === 0) {
-            menu.innerHTML = '<span class="label" style="padding: 4px; white-space: nowrap;">Žádné</span>';
+            menu.innerHTML = '<span class="label" style="padding: 4px; white-space: nowrap;">Žádná</span>';
             return;
         }
         
