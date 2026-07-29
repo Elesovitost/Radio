@@ -161,7 +161,8 @@ const RegionLSp = {
             return valid.slice(0, -1).join(', ') + ' a ' + valid[valid.length - 1];
         };
 
-        let staticSentences = [];
+        let staticPhysio = [];
+        let staticPatho = [];
         let concStaticSentences = [];
 
         const axisState = ctx.text('lsp_axis');
@@ -178,8 +179,10 @@ const RegionLSp = {
             const axisText = axisMap[axisState];
             if (axisText) {
                 const sentence = formatSentence(axisText);
-                staticSentences.push(sentence);
-                if (axisState !== 'přímá') {
+                if (axisState === 'přímá') {
+                    staticPhysio.push(sentence);
+                } else {
+                    staticPatho.push(sentence);
                     concStaticSentences.push(sentence);
                 }
             }
@@ -196,8 +199,10 @@ const RegionLSp = {
             const lordosisText = lordosisMap[lordosisState];
             if (lordosisText) {
                 const sentence = formatSentence(lordosisText);
-                staticSentences.push(sentence);
-                if (lordosisState !== 'přiměřená') {
+                if (lordosisState === 'přiměřená') {
+                    staticPhysio.push(sentence);
+                } else {
+                    staticPatho.push(sentence);
                     concStaticSentences.push(sentence);
                 }
             }
@@ -206,7 +211,7 @@ const RegionLSp = {
         const lstvState = ctx.text('lsp_lstv');
         if (lstvState && lstvState !== 'není' && lstvState !== '0') {
             const lstvText = formatSentence(`přechodný LS obratel, počítán jako ${lstvState}`);
-            staticSentences.push(lstvText);
+            staticPatho.push(lstvText);
             concStaticSentences.push(lstvText);
         }
 
@@ -760,20 +765,25 @@ const RegionLSp = {
             mainConc.push({ type: 'frame', text: lesionSentences[lesionSentences.length - 1] });
         }
 
-        if (staticSentences.length > 0) {
-            reportBlocks.push({ type: 'frame', text: staticSentences.join(' ') });
+        if (staticPhysio.length > 0) {
+            reportBlocks.push({ type: 'frame', text: staticPhysio.join(' '), dimmed: true });
+        }
+        
+        if (staticPatho.length > 0) {
+            reportBlocks.push({ type: 'frame', text: staticPatho.join(' ') });
         }
         
         if (shapeSentences.length > 0) {
-            reportBlocks.push({ type: 'frame', text: shapeSentences.join(' ') + ' Ostatní těla přiměřených výšek.' });
+            reportBlocks.push({ type: 'frame', text: shapeSentences.join(' ') });
+            reportBlocks.push({ type: 'frame', text: 'Ostatní těla přiměřených výšek.', dimmed: true });
             mainConc.push({ type: 'frame', text: shapeSentences.join(' ') });
         } else {
-            reportBlocks.push({ type: 'frame', text: 'Obratlová těla přiměřených výšek.' });
+            reportBlocks.push({ type: 'frame', text: 'Obratlová těla přiměřených výšek.', dimmed: true });
         }
 
         if (!hasSegmentPathology) {
-            reportBlocks.push({ type: 'frame', text: 'Meziobratlové segmenty s disky přiměřených výšek bez výraznějších protruzí, bez facetových artróz.' });
-            reportBlocks.push({ type: 'frame', text: 'Páteřní kanál a foramina jsou volná.' });
+            reportBlocks.push({ type: 'frame', text: 'Meziobratlové segmenty s disky přiměřených výšek bez výraznějších protruzí, bez facetových artróz.', dimmed: true });
+            reportBlocks.push({ type: 'frame', text: 'Páteřní kanál a foramina jsou volná.', dimmed: true });
         }
 
         if (surgSentences.length > 0) {
@@ -789,16 +799,16 @@ const RegionLSp = {
         }
 
         if (hasSegmentPathology) {
-            reportBlocks.push({ type: 'frame', text: 'Ostatní meziobratlové segmenty bez výraznější morfologické patologie.' });
+            reportBlocks.push({ type: 'frame', text: 'Ostatní meziobratlové segmenty bez výraznější morfologické patologie.', dimmed: true });
             
             if (hasSpinalStenosis && hasForaminalStenosis) {
-                reportBlocks.push({ type: 'frame', text: 'V ostatních segmentech bez jiných výraznějších spinálních a foraminálních stenóz.' });
+                reportBlocks.push({ type: 'frame', text: 'V ostatních segmentech bez jiných výraznějších spinálních a foraminálních stenóz.', dimmed: true });
             } else if (hasSpinalStenosis) {
-                reportBlocks.push({ type: 'frame', text: 'V ostatních segmentech bez zřetelných spinálních stenóz. Foramina jsou volná.' });
+                reportBlocks.push({ type: 'frame', text: 'V ostatních segmentech bez zřetelných spinálních stenóz. Foramina jsou volná.', dimmed: true });
             } else if (hasForaminalStenosis) {
-                reportBlocks.push({ type: 'frame', text: 'Páteřní kanál zůstává volný. Bez jiných zřetelných foraminálních stenóz.' });
+                reportBlocks.push({ type: 'frame', text: 'Páteřní kanál zůstává volný. Bez jiných zřetelných foraminálních stenóz.', dimmed: true });
             } else {
-                reportBlocks.push({ type: 'frame', text: 'Páteřní kanál a foramina jsou volná.' });
+                reportBlocks.push({ type: 'frame', text: 'Páteřní kanál a foramina jsou volná.', dimmed: true });
             }
         }
         
@@ -819,11 +829,11 @@ const RegionLSp = {
             reportBlocks.push({ type: 'frame', text: reportMyelo });
             mainConc.push({ type: 'frame', text: concMyelo });
         } else {
-            reportBlocks.push({ type: 'frame', text: 'Přehledný úsek míchy bez signálových změn.' });
+            reportBlocks.push({ type: 'frame', text: 'Přehledný úsek míchy bez signálových změn.', dimmed: true });
         }
 
         if (mainConc.length === 0) {
-            mainConc.push({ type: 'frame', text: 'Přiměřený nález na bederní páteři.' });
+            mainConc.push({ type: 'frame', text: 'Přiměřený nález na bederní páteři.', dimmed: true });
         }
 
         const customDesc = ctx.field('lsp_custom_desc');

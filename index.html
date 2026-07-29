@@ -176,6 +176,9 @@
 
         @keyframes border-blink { 0% { border-color: var(--border); box-shadow: none; } 50% { border-color: var(--accent-hi); box-shadow: 0 0 8px var(--accent-hi); } 100% { border-color: var(--border); box-shadow: none; } }
         .blink-border { animation: border-blink 0.3s ease-out; }
+        .ai-btn { position: absolute; bottom: 8px; left: 8px; background: rgba(88,166,255,0.15); border: 1px solid var(--accent-hi); color: var(--accent-hi); padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; cursor: pointer; display: none; z-index: 100; transition: all 0.2s; }
+        .ai-btn:hover { background: var(--accent-hi); color: #fff; box-shadow: 0 0 8px var(--accent-hi); }
+        body.has-ai-data .ai-btn { display: block; }
     </style>
 </head>
 <body>
@@ -288,6 +291,7 @@
     <div class="copy-all-zone" data-action="copy-all" title="Kopírovat Report i Conclusion"></div>
     <h2 data-action="copy-text" data-target="report-container" title="Kliknutím zkopíruješ report">Report</h2>
     <div class="content-area" id="report-container"></div>
+    <button class="ai-btn" data-action="generate-ai-prompt" title="Polož dotaz AI">AI</button>
 </aside>
 
 <aside class="panel" id="panel-conclusion">
@@ -504,6 +508,8 @@ const Store = new Proxy(
         exams: new Set(), 
         activeTab: null,
         indication: '',
+        patientGender: '⚥',
+        patientAge: '',
         reportId: '', 
         pastDate: '', 
         buttonStates: {}, 
@@ -520,7 +526,10 @@ const Store = new Proxy(
             if (target[prop] === value) return true;
             target[prop] = value;
 
-            if (prop === 'exams') {
+            if (prop === 'patientGender' || prop === 'patientAge') {
+                const hasData = (target.patientGender === '♂' || target.patientGender === '♀') && target.patientAge.trim() !== '';
+                document.body.classList.toggle('has-ai-data', hasData);
+            } else if (prop === 'exams') {
                 UI.render('exams');
             } else if (prop === 'activeTab') {
                 UI.renderDetails();
@@ -578,6 +587,8 @@ const HistoryManager = {
             timestamp: timestamp,
             dateStr: dateStr,
             pastDate: Store.pastDate, // Uložení datumu
+            patientGender: Store.patientGender,
+            patientAge: Store.patientAge,
             exams: Array.from(Store.exams),
             activeTab: Store.activeTab,
             indication: Store.indication,
@@ -600,6 +611,8 @@ const HistoryManager = {
                 Store.reportId = rec.baseId || hId;
                 Store.pastDate = rec.pastDate || ''; // Načtení datumu
                 
+                Store.patientGender = rec.patientGender || '⚥';
+                Store.patientAge = rec.patientAge || '';
                 Store.exams = new Set(rec.exams || []);
                 Store.activeTab = rec.activeTab;
                 Store.indication = rec.indication || '';
@@ -876,6 +889,8 @@ const GRAMMAR_DICT = {
         'infiltrace': { rod: 'f', plural: 'infiltrace' },
         'konsolidace': { rod: 'f', plural: 'konsolidace' },
         'defekt':     { rod: 'm', plural: 'defekty' },
+        'nodul':     { rod: 'm', plural: 'noduly' },
+        'fokus':     { rod: 'm', plural: 'fokusy' },
         'kolekce':    { rod: 'f', plural: 'kolekce' },
         'lem tekutiny': { rod: 'm', plural: 'lemy tekutiny' },
         'cystické ložisko': { rod: 'n', plural: 'cystická ložiska' },
@@ -2451,6 +2466,24 @@ const UI = {
             'data-action': 'update-indication',
             placeholder: 'Indikace'
         });
+
+        const demoWrapper = el('div', { className: 'row', style: 'margin-left: 8px; flex-shrink: 0;' });
+        const genderBtn = el('button', {
+            className: 'btn',
+            style: 'min-width: 25px; padding: 2px; font-size: 14px; font-weight: bold;',
+            textContent: Store.patientGender || '⚥',
+            title: 'Pohlaví (⚥ / ♂ / ♀)',
+            'data-action': 'cycle-gender'
+        });
+        const ageInput = el('input', {
+            className: 'input field_age',
+            style: 'width: 40px; text-align: center;',
+            value: Store.patientAge || '',
+            'data-action': 'update-age',
+            placeholder: 'Věk'
+        });
+        demoWrapper.appendChild(genderBtn);
+        demoWrapper.appendChild(ageInput);
         
         const idWrapper = el('div', { className: 'row', style: 'margin-left: 8px; flex-shrink: 0;' });
         const idBtn = el('button', {
@@ -2472,6 +2505,7 @@ const UI = {
         idWrapper.appendChild(idInput);
 
         tabsContainer.appendChild(indicationInput);
+        tabsContainer.appendChild(demoWrapper);
         tabsContainer.appendChild(idWrapper);
 
         content.replaceChildren();
@@ -3024,7 +3058,8 @@ const UI = {
                         .replace(/\.{2,}/g, '.');
 
                     const classes = ['report-frame'];
-                    if (b.dimmed) classes.push('text-dim');
+                    const autoDimText = cleanText.trim();
+                    if (b.dimmed || autoDimText === "Osa přímá." || autoDimText === "Přiměřená bederní lordóza.") classes.push('text-dim');
                     if (b.hidden) classes.push('report-frame-hidden');
                     if (b.tableId && (b.tableId.includes('lesion') || b.tableId.includes('hemo'))) classes.push('frame-lesion');
                     if (b.tableId && b.tableId.includes('lymphnode')) classes.push('frame-lymphnode');
@@ -3598,6 +3633,8 @@ const ActionHandlers = {
         Store.indication = '';
         Store.pastDate = '';
         Store.reportId = '';
+        Store.patientGender = '⚥';
+        Store.patientAge = '';
         HistoryManager.clearUrl();
         const dateInput = document.querySelector('input[data-action="update-date"]');
         if (dateInput) {
@@ -3664,6 +3701,36 @@ const ActionHandlers = {
             localStorage.removeItem(HistoryManager.getKey());
             HistoryManager.renderDropdown();
         }
+    },
+    'cycle-gender': (target, dataset, dir = 1) => {
+        const states = ['⚥', '♂', '♀'];
+        let idx = states.indexOf(Store.patientGender);
+        idx = (idx + dir + states.length) % states.length;
+        Store.patientGender = states[idx];
+        target.textContent = Store.patientGender;
+    },
+    'generate-ai-prompt': (target) => {
+        const isMale = Store.patientGender === '♂';
+        const patientText = isMale ? 'Pacient' : 'Pacientka';
+        const age = Store.patientAge.trim();
+        const ind = Store.indication.trim() || 'není k dispozici';
+
+        // Vybere pouze ty elementy, které nemají třídu text-dim (předdefinované) a nejsou skryté
+        const findingsEls = document.querySelectorAll('#report-container .frame-lesion:not(.text-dim):not(.report-frame-hidden), #report-container .frame-lymphnode:not(.text-dim):not(.report-frame-hidden)');
+        const findingsText = Array.from(findingsEls).map(el => el.textContent.trim().replace(/^- /, '')).join('\n');
+        const findingsSection = findingsText ? findingsText : 'Žádná patologická ložiska ani lymfadenopatie nebyly popsány.';
+
+        const prompt = `Jsi medicínský konzultant s obrovskou praxí a statistický expert. Case: ${patientText}, ${age} let. Indikace: ${ind}.\n\nNález na zobrazovacích metodách:\n${findingsSection}\n\nUdělej diferenciálně diagnostickou rozvahu etiologie nálezů, event. s pravděpodobnostmi, vzhledem k indikaci, věku a pohlaví. Navrhni další vyšetření / postup / doporučení pro klinika.`;
+
+        navigator.clipboard.writeText(prompt).then(() => {
+            const originalText = target.textContent;
+            target.textContent = 'ZKOPÍROVÁNO!';
+            target.style.color = '#58a6ff';
+            setTimeout(() => {
+                target.textContent = originalText;
+                target.style.color = '';
+            }, 1500);
+        }).catch(err => console.error('Nelze kopírovat:', err));
     }
 };
 
@@ -3780,7 +3847,7 @@ document.addEventListener('mousemove', e => {
     }
 });
 
-const DIRECTIONAL_ACTIONS = ['cycle-state', 'toggle-basic', 'toggle-basic-custom', 'cycle-side', 'cycle-exam-part'];
+const DIRECTIONAL_ACTIONS = ['cycle-state', 'toggle-basic', 'toggle-basic-custom', 'cycle-side', 'cycle-exam-part', 'cycle-gender'];
 
 function handleDirectionalAction(btn, dir) {
     const { action, id } = btn.dataset;
@@ -3791,6 +3858,7 @@ function handleDirectionalAction(btn, dir) {
     else if (action === 'toggle-basic-custom') toggleBasicCustom(id, dir > 0);
     else if (action === 'cycle-side')          ActionHandlers['cycle-side'](btn, btn.dataset, dir);
     else if (action === 'cycle-exam-part')     ActionHandlers['cycle-exam-part'](btn, btn.dataset, dir);
+    else if (action === 'cycle-gender')        ActionHandlers['cycle-gender'](btn, btn.dataset, dir);
     
     return true;
 }
@@ -3826,71 +3894,90 @@ document.addEventListener('wheel', e => {
         return;
     }
 
-    if (t.classList.contains('input') && t.dataset.action === 'update-field') {
-        e.preventDefault();
-        const id = t.dataset.id;
-        
-        if (t.classList.contains('field_size')) {
-            let dims = t.dataset.dims ? JSON.parse(t.dataset.dims) : [null];
-            let aI = dims.length - 1;
-            let v  = dims[aI];
+    if (t.classList.contains('input')) {
+        if (t.dataset.action === 'update-field') {
+            e.preventDefault();
+            const id = t.dataset.id;
             
-            if (v === null || isNaN(v)) {
-                if (e.deltaY > 0) return;
-                v = 0;
-            } else if (e.deltaY < 0) {
-                v = Math.min(999, v + 1);
-            } else {
-                v -= 1;
-                if (v < 0) {
-                    if (aI > 0) { dims.pop(); v = dims[aI - 1]; }
-                    else v = null;
+            if (t.classList.contains('field_size')) {
+                let dims = t.dataset.dims ? JSON.parse(t.dataset.dims) : [null];
+                let aI = dims.length - 1;
+                let v  = dims[aI];
+                
+                if (v === null || isNaN(v)) {
+                    if (e.deltaY > 0) return;
+                    v = 0;
+                } else if (e.deltaY < 0) {
+                    v = Math.min(999, v + 1);
+                } else {
+                    v -= 1;
+                    if (v < 0) {
+                        if (aI > 0) { dims.pop(); v = dims[aI - 1]; }
+                        else v = null;
+                    }
                 }
+                dims[dims.length - 1] = v;
+                
+                const strVal = (!dims.length || dims[0] === null) ? '' : dims.map(x => x ?? '').join('x');
+                t.dataset.dims = JSON.stringify(dims);
+                Store.fields = { ...Store.fields, [id]: strVal, [`${id}_dims`]: t.dataset.dims };
+                t.value = strVal;
+                return;
             }
-            dims[dims.length - 1] = v;
-            
-            const strVal = (!dims.length || dims[0] === null) ? '' : dims.map(x => x ?? '').join('x');
-            t.dataset.dims = JSON.stringify(dims);
-            Store.fields = { ...Store.fields, [id]: strVal, [`${id}_dims`]: t.dataset.dims };
-            t.value = strVal;
-            return;
-        }
 
-        if (t.classList.contains('field_suv')) {
-            let textVal = t.value.replace(',', '.');
-            let v = textVal === '' ? null : parseFloat(textVal);
-            
-            if (v === null || isNaN(v)) {
-                if (e.deltaY > 0) return;
-                v = 0.0;
-            } else if (e.deltaY < 0) {
-                v = Math.min(50.0, parseFloat((v + 0.1).toFixed(1)));
-            } else {
-                v = parseFloat((v - 0.1).toFixed(1));
-                if (v < 0) v = null;
+            if (t.classList.contains('field_suv')) {
+                let textVal = t.value.replace(',', '.');
+                let v = textVal === '' ? null : parseFloat(textVal);
+                
+                if (v === null || isNaN(v)) {
+                    if (e.deltaY > 0) return;
+                    v = 0.0;
+                } else if (e.deltaY < 0) {
+                    v = Math.min(50.0, parseFloat((v + 0.1).toFixed(1)));
+                } else {
+                    v = parseFloat((v - 0.1).toFixed(1));
+                    if (v < 0) v = null;
+                }
+                
+                const strVal = v === null ? '' : v.toFixed(1);
+                Store.fields = { ...Store.fields, [id]: strVal };
+                t.value = strVal;
+                
+                MetricsEngine.updateActivityForField(id, strVal);
+                return;
             }
-            
-            const strVal = v === null ? '' : v.toFixed(1);
-            Store.fields = { ...Store.fields, [id]: strVal };
-            t.value = strVal;
-            
-            MetricsEngine.updateActivityForField(id, strVal);
-            return;
-        }
 
-        if (t.classList.contains('field_mm')) {
-            const step = parseInt(t.dataset.step) || 1;
+            if (t.classList.contains('field_mm')) {
+                const step = parseInt(t.dataset.step) || 1;
+                let v = parseInt(t.value, 10);
+                
+                if (isNaN(v)) {
+                    if (e.deltaY > 0) return;
+                    v = 0;
+                } else {
+                    v = e.deltaY < 0 ? v + step : v - step;
+                }
+                
+                const strVal = v < 0 ? '' : v.toString();
+                Store.fields = { ...Store.fields, [id]: strVal };
+                t.value = strVal;
+                return;
+            }
+        }
+        
+        if (t.dataset.action === 'update-age') {
+            e.preventDefault();
             let v = parseInt(t.value, 10);
-            
             if (isNaN(v)) {
                 if (e.deltaY > 0) return;
-                v = 0;
+                v = 50; 
             } else {
-                v = e.deltaY < 0 ? v + step : v - step;
+                v = e.deltaY < 0 ? v + 1 : v - 1;
             }
-            
-            const strVal = v < 0 ? '' : v.toString();
-            Store.fields = { ...Store.fields, [id]: strVal };
+            if (v < 0) v = 0;
+            if (v > 130) v = 130;
+            const strVal = v.toString();
+            Store.patientAge = strVal;
             t.value = strVal;
             return;
         }
@@ -3947,6 +4034,7 @@ document.addEventListener('input', e => {
     if (!target) return;
     const { action, id } = target.dataset;
     if (action === 'update-indication')   Store.indication  = e.target.value;
+    if (action === 'update-age')          Store.patientAge  = e.target.value;
     if (action === 'update-report-id')    Store.reportId    = e.target.value;
     if (action === 'update-date')         Store.pastDate    = e.target.value;
     if (action === 'update-custom-input') Store.customTexts = { ...Store.customTexts, [id]: e.target.value };

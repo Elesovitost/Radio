@@ -34,8 +34,10 @@
             const kyphosisText = kyphosisMap[kyphosisState];
             if (kyphosisText) {
                 const sentence = formatSentence(kyphosisText);
-                staticSentences.push(sentence);
-                if (kyphosisState !== 'přiměřená') {
+                if (kyphosisState === 'přiměřená') {
+                    staticPhysio.push(sentence);
+                } else {
+                    staticPatho.push(sentence);
                     concStaticSentences.push(sentence);
                 }
             }

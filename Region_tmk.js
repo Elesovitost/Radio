@@ -55,79 +55,82 @@ const RegionTmk = {
     compile: (ctx) => {
         let reportOut = [{ type: 'heading', text: 'Temporomandibulární klouby (TMK):', action: 'open-region', regionId: 'tmk' }];
         let concMain = [];
-        let concInc = []; // Zůstává prázdné pro framework, ale už do něj nic neplníme.
+        let concInc = [];
         
         const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
         const formatZaver = (arr) => arr.map(a => cap(a) + (a.endsWith('.') ? '' : '.')).join(' ');
 
         const parseSide = (pfx, label) => {
-            let rParts = [];
+            let rPatho = [];
+            let rPhysio = [];
             let cMain = [];
 
             // 1. Kloubní dutina
             const eff = ctx.text(`tmk_${pfx}_eff`);
-            if (eff === '↑') { rParts.push('mírná tekutinová náplň kloubní dutiny'); cMain.push('mírně zmnožená tekutina v kloubu'); }
-            else if (eff === '↑↑') { rParts.push('zvýšená tekutinová náplň kloubní dutiny'); cMain.push('zmnožená tekutina v kloubu'); }
-            else if (eff === '↑↑↑') { rParts.push('výrazná tekutinová náplň kloubní dutiny s napětím pouzdra'); cMain.push('výrazně zmnožená tekutina v kloubu'); }
-            else if (!eff || eff === '0') { rParts.push('bez patologické náplně kloubní dutiny'); }
+            if (eff === '↑') { rPatho.push('mírná tekutinová náplň kloubní dutiny'); cMain.push('mírně zmnožená tekutina v kloubu'); }
+            else if (eff === '↑↑') { rPatho.push('zvýšená tekutinová náplň kloubní dutiny'); cMain.push('zmnožená tekutina v kloubu'); }
+            else if (eff === '↑↑↑') { rPatho.push('výrazná tekutinová náplň kloubní dutiny s napětím pouzdra'); cMain.push('výrazně zmnožená tekutina v kloubu'); }
+            else if (!eff || eff === '0') { rPhysio.push('bez patologické náplně kloubní dutiny'); }
             
-            if (ctx.isActive(`tmk_${pfx}_syn`)) { rParts.push('synoviální ztluštění a zvýšený signál (synovitida)'); cMain.push('synovitida'); }
-            if (ctx.isActive(`tmk_${pfx}_caps`)) { rParts.push('ztluštění a sycení pouzdra (kapsulitida)'); cMain.push('kapsulitida'); }
+            if (ctx.isActive(`tmk_${pfx}_syn`)) { rPatho.push('synoviální ztluštění a zvýšený signál (synovitida)'); cMain.push('synovitida'); }
+            if (ctx.isActive(`tmk_${pfx}_caps`)) { rPatho.push('ztluštění a sycení pouzdra (kapsulitida)'); cMain.push('kapsulitida'); }
 
             // 2. Kondyl
-            if (ctx.isActive(`tmk_${pfx}_boneEdema`)) { rParts.push('subchondrální edém kondylu/eminence'); cMain.push('subchondrální edém kondylu/eminence'); }
+            if (ctx.isActive(`tmk_${pfx}_boneEdema`)) { rPatho.push('subchondrální edém kondylu/eminence'); cMain.push('subchondrální edém kondylu/eminence'); }
             
             const arthr = ctx.text(`tmk_${pfx}_arthr`);
-            if (arthr === 'mírná art.') { rParts.push('osteofytické nárůstky'); cMain.push('mírné artrotické změny'); }
-            else if (arthr === 'těžká art.') { rParts.push('výrazné degenerativní změny se sklerotizací'); cMain.push('pokročilé artrotické změny'); }
+            if (arthr === 'mírná art.') { rPatho.push('osteofytické nárůstky'); cMain.push('mírné artrotické změny'); }
+            else if (arthr === 'těžká art.') { rPatho.push('výrazné degenerativní změny se sklerotizací'); cMain.push('pokročilé artrotické změny'); }
             
             const cart = ctx.text(`tmk_${pfx}_cart`);
-            if (cart === 'thinning') { rParts.push('tenká kloubní chrupavka (thinning)'); cMain.push('ztenčení chrupavky'); }
-            else if (cart === 'chondromalacie') { rParts.push('chondromalacie chrupavky'); cMain.push('chondromalacie'); }
-            else if (cart === 'defekt') { rParts.push('ohraničený defekt chrupavky'); cMain.push('defekt chrupavky'); }
-            else if (cart === 'normální') { rParts.push('kloubní chrupavka obvyklé tloušťky a signálu'); }
+            if (cart === 'thinning') { rPatho.push('tenká kloubní chrupavka (thinning)'); cMain.push('ztenčení chrupavky'); }
+            else if (cart === 'chondromalacie') { rPatho.push('chondromalacie chrupavky'); cMain.push('chondromalacie'); }
+            else if (cart === 'defekt') { rPatho.push('ohraničený defekt chrupavky'); cMain.push('defekt chrupavky'); }
+            else if (cart === 'normální') { rPhysio.push('kloubní chrupavka obvyklé tloušťky a signálu'); }
             
             const cont = ctx.text(`tmk_${pfx}_condContour`);
-            if (cont === 'plochá') { rParts.push('zploštění kontury kondylu'); }
-            else if (cont === 'osteofytická') { rParts.push('osteofytické změny kontury kondylu'); }
-            else if (cont === 'deformovaná') { rParts.push('deformovaná kontura kondylu'); cMain.push('deformace kondylu'); }
+            if (cont === 'plochá') { rPatho.push('zploštění kontury kondylu'); }
+            else if (cont === 'osteofytická') { rPatho.push('osteofytické změny kontury kondylu'); }
+            else if (cont === 'deformovaná') { rPatho.push('deformovaná kontura kondylu'); cMain.push('deformace kondylu'); }
+            else if (cont === 'fyziologická') { rPhysio.push('fyziologická kontura kondylu'); }
             
             // 3. Disk
             const dPos = ctx.text(`tmk_${pfx}_discPos`);
             const dRed = ctx.text(`tmk_${pfx}_reduction`);
             if (dPos === 'ant. dislokace') {
-                if (dRed === 's redukcí') { rParts.push('anteriorní dislokace disku v uzavření, s redukcí při otevření'); cMain.push('anteriorní dislokace disku s redukcí při otevření'); }
-                else if (dRed === 'bez redukce') { rParts.push('anteriorní dislokace disku v uzavření, bez redukce při otevření'); cMain.push('anteriorní dislokace disku bez redukce při otevření'); }
-                else { rParts.push('anteriorní dislokace disku v uzavření'); cMain.push('anteriorní dislokace disku'); }
-            } else if (dPos === 'post. dislokace') { rParts.push('posteriorní dislokace disku'); cMain.push('posteriorní dislokace disku'); }
-            else if (dPos === 'mediální/laterální') { rParts.push('mediolaterální komponenta dislokace disku'); cMain.push('mediolaterální dislokace disku'); }
-            else { rParts.push('disk v centrální pozici v uzavření'); }
+                if (dRed === 's redukcí') { rPatho.push('anteriorní dislokace disku v uzavření, s redukcí při otevření'); cMain.push('anteriorní dislokace disku s redukcí při otevření'); }
+                else if (dRed === 'bez redukce') { rPatho.push('anteriorní dislokace disku v uzavření, bez redukce při otevření'); cMain.push('anteriorní dislokace disku bez redukce při otevření'); }
+                else { rPatho.push('anteriorní dislokace disku v uzavření'); cMain.push('anteriorní dislokace disku'); }
+            } else if (dPos === 'post. dislokace') { rPatho.push('posteriorní dislokace disku'); cMain.push('posteriorní dislokace disku'); }
+            else if (dPos === 'mediální/laterální') { rPatho.push('mediolaterální komponenta dislokace disku'); cMain.push('mediolaterální dislokace disku'); }
+            else { rPhysio.push('disk v centrální pozici v uzavření'); }
             
             const dMorph = ctx.text(`tmk_${pfx}_discMorph`);
-            if (dMorph === 'ztenčený') { rParts.push('disk je ztenčený'); cMain.push('ztenčení disku'); }
-            else if (dMorph === 'deformovaný') { rParts.push('disk deformovaný (bikonvexní tvar)'); cMain.push('deformace disku'); }
-            else if (dMorph === 'dysplastický') { rParts.push('disk dysplastického tvaru'); cMain.push('dysplazie disku'); }
+            if (dMorph === 'ztenčený') { rPatho.push('disk je ztenčený'); cMain.push('ztenčení disku'); }
+            else if (dMorph === 'deformovaný') { rPatho.push('disk deformovaný (bikonvexní tvar)'); cMain.push('deformace disku'); }
+            else if (dMorph === 'dysplastický') { rPatho.push('disk dysplastického tvaru'); cMain.push('dysplazie disku'); }
+            else if (dMorph === 'normální') { rPhysio.push('disk normální morfologie'); }
             
-            if (ctx.isActive(`tmk_${pfx}_perfor`)) { rParts.push('suspektní perforace disku'); cMain.push('suspektní perforace disku'); }
-            if (ctx.isActive(`tmk_${pfx}_retroEdema`)) { rParts.push('edém či zánětlivé sycení retrodiskální tkáně'); cMain.push('edém retrodiskální tkáně'); }
+            if (ctx.isActive(`tmk_${pfx}_perfor`)) { rPatho.push('suspektní perforace disku'); cMain.push('suspektní perforace disku'); }
+            if (ctx.isActive(`tmk_${pfx}_retroEdema`)) { rPatho.push('edém či zánětlivé sycení retrodiskální tkáně'); cMain.push('edém retrodiskální tkáně'); }
 
             // 4. Funkce
             const transl = ctx.text(`tmk_${pfx}_translation`);
-            if (transl === 'omezená') { rParts.push('omezená translace při otevření'); cMain.push('omezená translace'); }
-            else if (transl === 'hypertranslace') { rParts.push('hypertranslace při otevření'); cMain.push('hypertranslace'); }
+            if (transl === 'omezená') { rPatho.push('omezená translace při otevření'); cMain.push('omezená translace'); }
+            else if (transl === 'hypertranslace') { rPatho.push('hypertranslace při otevření'); cMain.push('hypertranslace'); }
+            else if (transl === 'normální') { rPhysio.push('normální translace kondylu'); }
             
             const mob = ctx.text(`tmk_${pfx}_mobility`);
-            if (mob === 'hypomobilita') { rParts.push('MR známky hypomobility'); cMain.push('hypomobilita'); }
-            else if (mob === 'hypermobilita') { rParts.push('MR známky hypermobility'); cMain.push('hypermobilita'); }
+            if (mob === 'hypomobilita') { rPatho.push('MR známky hypomobility'); cMain.push('hypomobilita'); }
+            else if (mob === 'hypermobilita') { rPatho.push('MR známky hypermobility'); cMain.push('hypermobilita'); }
             
             const ankyl = ctx.text(`tmk_${pfx}_ankyl`);
-            if (ankyl === 'fibrotická?') { rParts.push('možná fibrotická ankylóza'); cMain.push('suspektní fibrotická ankylóza (korelace klinicky)'); }
-            else if (ankyl === 'kostní?') { rParts.push('možná kostní ankylóza'); cMain.push('suspektní kostní ankylóza (korelace s CT)'); }
-
-            const reportStr = rParts.length ? `${label} TMK: ${cap(rParts.join('; '))}.` : null;
+            if (ankyl === 'fibrotická?') { rPatho.push('možná fibrotická ankylóza'); cMain.push('suspektní fibrotická ankylóza (korelace klinicky)'); }
+            else if (ankyl === 'kostní?') { rPatho.push('možná kostní ankylóza'); cMain.push('suspektní kostní ankylóza (korelace s CT)'); }
             
             return {
-                report: reportStr,
+                reportPatho: rPatho.length ? `${label} TMK: ${cap(rPatho.join('; '))}.` : null,
+                reportPhysio: rPhysio.length ? (rPatho.length ? `${cap(rPhysio.join('; '))}.` : `${label} TMK: ${cap(rPhysio.join('; '))}.`) : null,
                 main: cMain.length ? `${label} TMK: ${formatZaver(cMain)}` : null,
                 hasPathology: cMain.length > 0
             };
@@ -136,28 +139,31 @@ const RegionTmk = {
         const right = parseSide('r', 'Pravý');
         const left = parseSide('l', 'Levý');
 
-        // Report output (vždy se generuje pravá a levá strana zvlášť)
-        if (right.report) reportOut.push({ type: 'frame', text: right.report, tableId: 'tmk_joint_main' });
-        if (left.report) reportOut.push({ type: 'frame', text: left.report, tableId: 'tmk_joint_main' });
+        // Report output
+        if (right.reportPatho) reportOut.push({ type: 'frame', text: right.reportPatho, tableId: 'tmk_joint_main' });
+        if (right.reportPhysio) reportOut.push({ type: 'frame', text: right.reportPhysio, tableId: 'tmk_joint_main', dimmed: true });
+        
+        if (left.reportPatho) reportOut.push({ type: 'frame', text: left.reportPatho, tableId: 'tmk_joint_main' });
+        if (left.reportPhysio) reportOut.push({ type: 'frame', text: left.reportPhysio, tableId: 'tmk_joint_main', dimmed: true });
         
         const desc = ctx.field('tmk_desc');
         if (desc) reportOut.push({ type: 'frame', text: desc, tableId: 'tmk_other_main' });
 
         // Conclusion output
         if (!right.hasPathology && !left.hasPathology) {
-            concMain.push({ type: 'frame', text: 'Přiměřený nález oboustranně bez signifikantní patologie.', tableId: 'tmk_joint_main' });
+            concMain.push({ type: 'frame', text: 'Přiměřený nález oboustranně bez signifikantní patologie.', tableId: 'tmk_joint_main', dimmed: true });
         } else {
             // Pravý TMK
             if (right.hasPathology) {
                 concMain.push({ type: 'frame', text: right.main, tableId: 'tmk_joint_main' });
             } else {
-                concMain.push({ type: 'frame', text: 'Pravý TMK: bez signifikantní patologie.', tableId: 'tmk_joint_main' });
+                concMain.push({ type: 'frame', text: 'Pravý TMK: bez signifikantní patologie.', tableId: 'tmk_joint_main', dimmed: true });
             }
             // Levý TMK
             if (left.hasPathology) {
                 concMain.push({ type: 'frame', text: left.main, tableId: 'tmk_joint_main' });
             } else {
-                concMain.push({ type: 'frame', text: 'Levý TMK: bez signifikantní patologie.', tableId: 'tmk_joint_main' });
+                concMain.push({ type: 'frame', text: 'Levý TMK: bez signifikantní patologie.', tableId: 'tmk_joint_main', dimmed: true });
             }
         }
 
