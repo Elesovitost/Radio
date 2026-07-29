@@ -84,107 +84,117 @@ const RegionWrist = {
         const pushConc = (txt) => { concMain.push({ type: 'frame', text: formatZaver(txt), tableId: 'wrist_joint_main' }); hasPathology = true; };
 
         // 1. Kloubní dutina
-        let jtParts = [];
+        let jtPatho = [];
+        let jtPhysio = [];
         const fluid = ctx.text('wri_jt_fluid');
-        if (!fluid || fluid === '0') jtParts.push('Radiokarpální a mediokarpální klouby bez patologické náplně');
-        else if (fluid === 'mírná') { jtParts.push('Mírně zvýšené množství kloubní tekutiny radiokarpálně/mediokarpálně bez synoviální proliferace'); pushConc('Zmnožená tekutina v kloubních dutinách'); }
-        else if (fluid === 'střední') { jtParts.push('Zvýšené množství tekutiny v kloubních dutinách, přiměřeně napjaté pouzdro'); pushConc('Zmnožená tekutina v kloubních dutinách'); }
-        else if (fluid === 'výrazná') { jtParts.push('Výrazná náplň kloubních dutin se známkami napětí pouzdra'); pushConc('Výrazně zmnožená tekutina v kloubních dutinách'); }
+        if (!fluid || fluid === '0') jtPhysio.push('radiokarpální a mediokarpální klouby bez patologické náplně');
+        else if (fluid === 'mírná') { jtPatho.push('mírně zvýšené množství kloubní tekutiny radiokarpálně/mediokarpálně bez synoviální proliferace'); pushConc('Zmnožená tekutina v kloubních dutinách'); }
+        else if (fluid === 'střední') { jtPatho.push('zvýšené množství tekutiny v kloubních dutinách, přiměřeně napjaté pouzdro'); pushConc('Zmnožená tekutina v kloubních dutinách'); }
+        else if (fluid === 'výrazná') { jtPatho.push('výrazná náplň kloubních dutin se známkami napětí pouzdra'); pushConc('Výrazně zmnožená tekutina v kloubních dutinách'); }
 
-        if (ctx.isActive('wri_jt_syn')) { jtParts.push('synoviální ztluštění s vyšším signálem na T2/PD-FS'); pushConc('Synovitida'); }
-        if (ctx.isActive('wri_jt_loose')) { jtParts.push('v kloubu ložiskově drobná tělíska/kalcifikace (hypoT1/hypoT2 až s bloomingem), bez jasné impakce'); pushConc('Volná nitrokloubní tělíska'); }
+        if (ctx.isActive('wri_jt_syn')) { jtPatho.push('synoviální ztluštění s vyšším signálem na T2/PD-FS'); pushConc('Synovitida'); }
+        if (ctx.isActive('wri_jt_loose')) { jtPatho.push('v kloubu ložiskově drobná tělíska/kalcifikace (hypoT1/hypoT2 až s bloomingem), bez jasné impakce'); pushConc('Volná nitrokloubní tělíska'); }
         
         const gang = ctx.text('wri_jt_ganglion', true);
         if (ctx.isActive('wri_jt_ganglion')) {
             const loc = (gang && gang !== '[nevyplněno]') ? ` (${gang.replace('\u200B', '')})` : '';
-            jtParts.push(`cystická léze tekutinového signálu s tenkou stěnou${loc}`);
+            jtPatho.push(`cystická léze tekutinového signálu s tenkou stěnou${loc}`);
             pushConc(`Ganglion${loc}`);
         }
         
         const jtDesc = ctx.field('wri_jt_desc');
-        if (jtDesc) jtParts.push(jtDesc);
-        reportOut.push({ type: 'frame', text: cap(jtParts.join('. ')) + '.', tableId: 'wrist_joint_main' });
+        if (jtDesc) jtPatho.push(jtDesc);
+
+        if (jtPatho.length > 0) reportOut.push({ type: 'frame', text: cap(jtPatho.join('. ')) + '.', tableId: 'wrist_joint_main' });
+        if (jtPhysio.length > 0) reportOut.push({ type: 'frame', text: cap(jtPhysio.join('. ')) + '.', tableId: 'wrist_joint_main', dimmed: true });
         
         const jtConc = ctx.field('wri_jt_conc');
         if (jtConc) pushConc(jtConc);
 
         // 2. Kosti
-        let bnParts = [];
+        let bnPatho = [];
+        let bnPhysio = [];
         const scaph = ctx.text('wri_bn_scaphoid');
-        if (!scaph || scaph === '0') bnParts.push('Skafoideum bez linie fraktury, bez kostního edému a bez poruchy kortikalis');
-        else if (scaph === 'suspektní') { bnParts.push('V oblasti skafoidea jemná liniová nízkosignální kresba na T1 s okolním edémem na STIR/PD-FS'); pushConc('Suspektní okultní fraktura skafoidea'); }
+        if (!scaph || scaph === '0') bnPhysio.push('skafoideum bez linie fraktury, bez kostního edému a bez poruchy kortikalis');
+        else if (scaph === 'suspektní') { bnPatho.push('v oblasti skafoidea jemná liniová nízkosignální kresba na T1 s okolním edémem na STIR/PD-FS'); pushConc('Suspektní okultní fraktura skafoidea'); }
         else if (scaph.includes('fraktura')) {
             const loc = scaph.replace('fraktura ', '');
-            bnParts.push(`Zřetelná frakturní linie skafoidea v oblasti ${loc} s porušením kortikalis`);
+            bnPatho.push(`zřetelná frakturní linie skafoidea v oblasti ${loc} s porušením kortikalis`);
             pushConc(`Fraktura ${loc} skafoidea`);
         }
 
         const kien = ctx.text('wri_bn_kienbock');
-        if (kien === 'časný') { bnParts.push('Lunatum s difuzním snížením T1 signálu a kolísavým T2/STIR, bez kolapsu – obraz časné AVN (Kienböck)'); pushConc('Kienböckova choroba lunata – časná fáze'); }
-        else if (kien === 'pokročilý') { bnParts.push('Lunatum se sníženým T1 signálem, fragmentací a subchondrálním kolapsem, okolní reaktivní změny – pokročilá AVN (Kienböck)'); pushConc('Kienböckova choroba lunata – pokročilá fáze'); }
+        if (kien === 'časný') { bnPatho.push('lunatum s difuzním snížením T1 signálu a kolísavým T2/STIR, bez kolapsu – obraz časné AVN (Kienböck)'); pushConc('Kienböckova choroba lunata – časná fáze'); }
+        else if (kien === 'pokročilý') { bnPatho.push('lunatum se sníženým T1 signálem, fragmentací a subchondrálním kolapsem, okolní reaktivní změny – pokročilá AVN (Kienböck)'); pushConc('Kienböckova choroba lunata – pokročilá fáze'); }
+        else if (!kien || kien === '0') { bnPhysio.push('lunatum normálního signálu, bez kolapsu'); }
 
         if (ctx.isActive('wri_bn_uimp')) {
-            bnParts.push('Znaky ulnar impaction: plus varianta ulny, subchondrální edém/chondromalacie ulnární části lunata a triquetra, změny u ulnární hlavičky a ulnárního úponu TFCC');
+            bnPatho.push('znaky ulnar impaction: plus varianta ulny, subchondrální edém/chondromalacie ulnární části lunata a triquetra, změny u ulnární hlavičky a ulnárního úponu TFCC');
             pushConc('Ulnar impaction syndrom');
         }
 
         const edem = ctx.text('wri_bn_edema', true);
         if (ctx.isActive('wri_bn_edema')) {
             const loc = (edem && edem !== '[nevyplněno]') ? ` (${edem.replace('\u200B', '')})` : '';
-            bnParts.push(`Subchondrální edém / cysty${loc}`);
+            bnPatho.push(`subchondrální edém / cysty${loc}`);
             pushConc(`Subchondrální edém / cysty${loc}`);
         }
 
         const bnDesc = ctx.field('wri_bn_desc');
-        if (bnDesc) bnParts.push(bnDesc);
-        if (bnParts.length > 0) reportOut.push({ type: 'frame', text: cap(bnParts.join('. ')) + '.', tableId: 'wrist_bones_main' });
+        if (bnDesc) bnPatho.push(bnDesc);
+
+        if (bnPatho.length > 0) reportOut.push({ type: 'frame', text: cap(bnPatho.join('. ')) + '.', tableId: 'wrist_bones_main' });
+        if (bnPhysio.length > 0) reportOut.push({ type: 'frame', text: cap(bnPhysio.join('. ')) + '.', tableId: 'wrist_bones_main', dimmed: true });
         
         const bnConc = ctx.field('wri_bn_conc');
         if (bnConc) pushConc(bnConc);
 
         // 3. Vazy a TFCC
-        let ligParts = [];
+        let ligPatho = [];
+        let ligPhysio = [];
         const sl = ctx.text('wri_lig_sl');
-        if (!sl || sl === 'OK') ligParts.push('SL vaz intaktní, bez diskontinuity a bez tekutinové fisury');
-        else if (sl === 'parciální') { ligParts.push('SL vaz ztluštělý se zvýšeným signálem na PD-FS, bez kompletní diskontinuity (parciální léze)'); pushConc('Parciální léze scapholunátního vazu'); }
+        if (!sl || sl === 'OK') ligPhysio.push('SL vaz intaktní, bez diskontinuity a bez tekutinové fisury');
+        else if (sl === 'parciální') { ligPatho.push('SL vaz ztluštělý se zvýšeným signálem na PD-FS, bez kompletní diskontinuity (parciální léze)'); pushConc('Parciální léze scapholunátního vazu'); }
         else if (sl.includes('ruptura')) {
             const hasDisi = sl.includes('DISI+');
-            ligParts.push(`SL vaz s diskontinuitou a tekutinou v intervalu; ${hasDisi ? 'přítomny známky DISI' : 'bez jednoznačných známek DISI'}`);
+            ligPatho.push(`SL vaz s diskontinuitou a tekutinou v intervalu; ${hasDisi ? 'přítomny známky DISI' : 'bez jednoznačných známek DISI'}`);
             pushConc(`Ruptura scapholunátního vazu${hasDisi ? ' se známkami DISI' : ''}`);
         }
 
         const lt = ctx.text('wri_lig_lt');
-        if (!lt || lt === 'OK') ligParts.push('LT vaz intaktní, bez diskontinuity');
-        else if (lt === 'parciální') { ligParts.push('LT vaz s vyšším signálem na PD-FS a ztluštěním, kontinuální (parciální léze)'); pushConc('Parciální léze lunotriquetrálního vazu'); }
+        if (!lt || lt === 'OK') ligPhysio.push('LT vaz intaktní, bez diskontinuity');
+        else if (lt === 'parciální') { ligPatho.push('LT vaz s vyšším signálem na PD-FS a ztluštěním, kontinuální (parciální léze)'); pushConc('Parciální léze lunotriquetrálního vazu'); }
         else if (lt.includes('ruptura')) {
             const hasVisi = lt.includes('VISI+');
-            ligParts.push(`LT vaz přerušen, tekutina v intervalu; ${hasVisi ? 'přítomny známky VISI' : 'bez jednoznačných známek VISI'}`);
+            ligPatho.push(`LT vaz přerušen, tekutina v intervalu; ${hasVisi ? 'přítomny známky VISI' : 'bez jednoznačných známek VISI'}`);
             pushConc(`Ruptura lunotriquetrálního vazu${hasVisi ? ' se známkami VISI' : ''}`);
         }
 
         const tfcc = ctx.text('wri_lig_tfcc');
-        if (!tfcc || tfcc === 'OK') ligParts.push('TFCC normální tloušťky a signálu, bez defektu');
-        else if (tfcc === 'degenerace') { ligParts.push('TFCC ztluštělý s vyšším signálem v centrální části, bez prokazatelné komunikace – degenerativní změny'); pushConc('Degenerativní změny TFCC'); }
-        else if (tfcc === 'parciální') { ligParts.push('TFCC s intrasubstanční fisurou/zvýšeným signálem, bez kompletního defektu disku'); pushConc('Parciální léze TFCC'); }
-        else if (tfcc === 'foveální rpt.') { ligParts.push('Diskontinuita u foveálního ulnárního úponu TFCC s tekutinovou komunikací do DRUJ, přidružené změny u ulnární hlavičky možné'); pushConc('Ruptura TFCC u foveálního úponu'); }
+        if (!tfcc || tfcc === 'OK') ligPhysio.push('TFCC normální tloušťky a signálu, bez defektu');
+        else if (tfcc === 'degenerace') { ligPatho.push('TFCC ztluštělý s vyšším signálem v centrální části, bez prokazatelné komunikace – degenerativní změny'); pushConc('Degenerativní změny TFCC'); }
+        else if (tfcc === 'parciální') { ligPatho.push('TFCC s intrasubstanční fisurou/zvýšeným signálem, bez kompletního defektu disku'); pushConc('Parciální léze TFCC'); }
+        else if (tfcc === 'foveální rpt.') { ligPatho.push('diskontinuita u foveálního ulnárního úponu TFCC s tekutinovou komunikací do DRUJ, přidružené změny u ulnární hlavičky možné'); pushConc('Ruptura TFCC u foveálního úponu'); }
 
         const druj = ctx.text('wri_lig_druj');
-        if (!druj || druj === 'stabilní') ligParts.push('DRUJ morfologicky přiměřený, bez známek subluxace');
-        else if (druj === 'instabilita') { ligParts.push('DRUJ s jemnou ventrální/dorzální předsazeností ulnární hlavičky a asymetrií štěrbiny – MR známky laxity; korelace klinicky'); pushConc('MR známky instability DRUJ'); }
+        if (!druj || druj === 'stabilní') ligPhysio.push('DRUJ morfologicky přiměřený, bez známek subluxace');
+        else if (druj === 'instabilita') { ligPatho.push('DRUJ s jemnou ventrální/dorzální předsazeností ulnární hlavičky a asymetrií štěrbiny – MR známky laxity; korelace klinicky'); pushConc('MR známky instability DRUJ'); }
 
         const ligDesc = ctx.field('wri_lig_desc');
-        if (ligDesc) ligParts.push(ligDesc);
-        reportOut.push({ type: 'frame', text: cap(ligParts.join('. ')) + '.', tableId: 'wrist_lig_main' });
+        if (ligDesc) ligPatho.push(ligDesc);
+
+        if (ligPatho.length > 0) reportOut.push({ type: 'frame', text: cap(ligPatho.join('. ')) + '.', tableId: 'wrist_lig_main' });
+        if (ligPhysio.length > 0) reportOut.push({ type: 'frame', text: cap(ligPhysio.join('. ')) + '.', tableId: 'wrist_lig_main', dimmed: true });
         
         const ligConc = ctx.field('wri_lig_conc');
         if (ligConc) pushConc(ligConc);
 
         // 4. Šlachy a nervy
         let snParts = [];
-        if (ctx.isActive('wri_sn_dq')) { snParts.push('Obraz De Quervain: zbytnění retinakula 1. kompartmentu, tekutina v pochvě APL/EPB a ztluštění šlach'); pushConc('Tendovaginitida De Quervain'); }
+        if (ctx.isActive('wri_sn_dq')) { snParts.push('obraz De Quervain: zbytnění retinakula 1. kompartmentu, tekutina v pochvě APL/EPB a ztluštění šlach'); pushConc('Tendovaginitida De Quervain'); }
         if (ctx.isActive('wri_sn_ecu')) { snParts.push('ECU: excentrická poloha v sulcus ulnaris s tekutinou v pochvě, známky porušeného subsheath – odpovídá subluxaci'); pushConc('Subluxace šlachy ECU'); }
-        if (ctx.isActive('wri_sn_flex')) { snParts.push('Flexory s tenosynovitidou – tekutina v pochvách, ztluštění synovie, zvýšený signál šlach na PD-FS'); pushConc('Tenosynovitida flexorů'); }
-        if (ctx.isActive('wri_sn_cts')) { snParts.push('Karpální tunel: ztluštění n. medianus proximálně s T2 hyperintenzitou a zploštěním pod retinakulem, částečná obliterace tukového lemu'); pushConc('MR známky syndromu karpálního tunelu'); }
+        if (ctx.isActive('wri_sn_flex')) { snParts.push('flexory s tenosynovitidou – tekutina v pochvách, ztluštění synovie, zvýšený signál šlach na PD-FS'); pushConc('Tenosynovitida flexorů'); }
+        if (ctx.isActive('wri_sn_cts')) { snParts.push('karpální tunel: ztluštění n. medianus proximálně s T2 hyperintenzitou a zploštěním pod retinakulem, částečná obliterace tukového lemu'); pushConc('MR známky syndromu karpálního tunelu'); }
         
         const snDesc = ctx.field('wri_sn_desc');
         if (snDesc) snParts.push(snDesc);
@@ -205,7 +215,7 @@ const RegionWrist = {
         if (otherConc) pushConc(otherConc);
 
         if (!hasPathology) {
-            concMain.push({ type: 'frame', text: 'MR zápěstí bez průkazu závažné patologie.', tableId: 'wrist_joint_main' });
+            concMain.push({ type: 'frame', text: 'MR zápěstí bez průkazu závažné patologie.', tableId: 'wrist_joint_main', dimmed: true });
         }
 
         return { report: reportOut, conclusion: { main: concMain, incidental: [] } };
