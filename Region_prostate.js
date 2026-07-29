@@ -112,8 +112,8 @@ const RegionProstate = {
                     helpers.Table1col(`${p}_r2_excl`, [ [ 'Druh:', { btn: `${p}_k_loz`, type: 'basic', text: 'ložisko'}, { btn: `${p}_k_nod`, type: 'basic', text: 'nodul' }, { btn: `${p}_k_inf`, type: 'basic', text: 'infiltrace' }, { btn: `${p}_k_cust`, states: ['vlastní', 'custom'] } ] ], 'prostate'),
                     locContainer,
                     helpers.Table1col(`${p}_r4`, [ [ 'Vzhled MR:', 
-                        { btn: `${p}_t2`, states: ['T2', 'T2 score 1', 'T2 score 2', 'T2 score 3', 'T2 score 4'] }, 
-                        { btn: `${p}_dwi`, states: ['DWI', 'DWI score 1', 'DWI score 2', 'DWI score 3', 'DWI score 4'] }, 
+                        { btn: `${p}_t2`, states: ['T2', 'T2 score 1', 'T2 score 2', 'T2 score 3', 'T2 score 4-5'] }, 
+                        { btn: `${p}_dwi`, states: ['DWI', 'DWI score 1', 'DWI score 2', 'DWI score 3', 'DWI score 4-5'] }, 
                         { btn: `${p}_ce`, states: ['kontrast', 'kontrast -', 'kontrast +'] }, 
                         { btn: `${p}_inv`, states: ['invaze', 'kapsula', 'váčky', 'orgán'] } 
                     ] ], 'prostate'),
@@ -357,7 +357,14 @@ const RegionProstate = {
                 else if (inv === 'orgán') { invTextRep = 's infiltrací okolních struktur'; invTextConc = 's infiltrací okolních struktur'; hasECE = true; }
 
                 let d = LESIONS_DEFINITION.parseDetails(ctx, examId, 'prostate', p, `${p}_met`, null, false);
-                let sizeMm = d.sizeMm || 0;
+                
+                let manualSizeMm = 0;
+                let sizeValRaw = ctx.field(`${p}_met_size`);
+                if (sizeValRaw) {
+                    let dims = sizeValRaw.split(/[xX*×]/).map(s => parseFloat(s.replace(',', '.'))).filter(n => !isNaN(n));
+                    if (dims.length > 0) manualSizeMm = Math.max(...dims);
+                }
+                let sizeMm = d.sizeMm || manualSizeMm || 0;
 
                 const orderKey = `${examId}_prostate_${p}_loc_order`;
                 let zone = 'unknown';
@@ -371,11 +378,12 @@ const RegionProstate = {
                 } else {
                     zone = isPZ ? 'PZ' : (isTZ ? 'TZ' : (isCZ ? 'CZ' : 'unknown'));
                 }
+                
                 let big = (sizeMm >= 15) || hasECE;
                 let pi = 0;
 
-                let effDwi = (dwiScore === 4 && big) ? 5 : dwiScore;
-                let effT2 = (t2Score === 4 && big) ? 5 : t2Score;
+                let effDwi = (dwiScore >= 4 && big) ? 5 : dwiScore;
+                let effT2 = (t2Score >= 4 && big) ? 5 : t2Score;
 
                 if (zone === 'PZ' && effDwi > 0) {
                     if (effDwi <= 1) pi = 1;
