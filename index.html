@@ -21,6 +21,12 @@
         h2 { font-size: 0.75rem; color: var(--dim); letter-spacing: 1px; text-transform: uppercase; text-align: center; padding-bottom: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--border); }
         /* [COPY ALL STYLES] */
         h2[data-action="copy-text"] { cursor: pointer; transition: color 0.2s, text-shadow 0.2s; }
+        h2[data-action="copy-text"]::after { content: " (COPY)"; display: none; }
+        body.has-report-id h2[data-action="copy-text"]::after { content: " (COPY+SAVE)"; }
+        body.has-preview h2[data-action="copy-text"]::after { content: ""; }
+        body.has-preview.has-report-id h2[data-action="copy-text"]::after { content: " (SAVE)"; }
+        h2[data-action="copy-text"]:not(.is-copied):hover::after, h2.highlight-force:not(.is-copied)::after { display: inline; }
+        body.has-preview:not(.has-report-id) h2[data-action="copy-text"]:hover::after, body.has-preview:not(.has-report-id) h2.highlight-force::after { display: none; }
         h2[data-action="copy-text"]:hover, h2.highlight-force { color: #fff; text-shadow: 0 0 5px var(--accent-hi); }
         .copy-all-zone { position: absolute; top: 0; right: -30px; width: 60px; height: 40px; cursor: pointer; z-index: 50; background: transparent; }
         .copy-all-zone:hover::after { content: '⧉'; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); font-size: 16px; color: var(--accent-hi); pointer-events: none; }
@@ -167,6 +173,9 @@
         .popup-btn.btn-lesion { color: #ff6b6b; font-weight: bold; }
         .popup-btn.btn-lymph { color: #feca57; font-weight: bold; }
         .popup-title { font-size: 12px; color: var(--accent-hi); font-weight: bold; text-transform: uppercase; padding: 2px 4px; margin-bottom: 2px; border-bottom: 1px solid var(--border); }
+
+        @keyframes border-blink { 0% { border-color: var(--border); box-shadow: none; } 50% { border-color: var(--accent-hi); box-shadow: 0 0 8px var(--accent-hi); } 100% { border-color: var(--border); box-shadow: none; } }
+        .blink-border { animation: border-blink 0.3s ease-out; }
     </style>
 </head>
 <body>
@@ -177,7 +186,7 @@
         <div id="exams-container" class="row"></div>
         <div class="row push">
             <div class="dropdown">
-                <button class="btn" style="min-width: 100px; border-color: var(--dim);">HISTORIE</button>
+                <button class="btn" id="history-btn" style="min-width: 100px;">ULOŽENÁ</button>
                 <div class="dropdown-menu" id="history-dropdown-menu">
                     <!-- Bude plněno dynamicky JS -->
                 </div>
@@ -231,7 +240,7 @@
 
         <div class="sub-table-title-settings" style="text-align: left;">Zápis závěru</div>
         <div class="row" style="margin-bottom: 8px;">
-            <span class="label" title="Převádí číselné hodnoty SUVmax na slovní popis.">Slovně místo SUVmax:</span>
+            <span class="label" title="Převádí číselné hodnoty SUVmax na slovní popis.">Aktivita slovně místo SUVmax:</span>
             <label class="switch">
                 <input type="checkbox" id="setting-suv-word" data-action="update-setting" data-setting="suvWord">
                 <span class="slider"></span>
@@ -291,8 +300,8 @@
     <div class="row" style="border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px;">
         <h2 style="margin: 0; border: none; padding: 0; color: #fff;">Náhled zprávy před zkopírováním</h2>
         <div class="push row">
-            <button class="btn selected" data-action="preview-copy" style="font-weight: bold; min-width: 150px; padding: 6px;">Zkopírovat do schránky</button>
-            <button class="btn" data-action="preview-close" style="padding: 6px;">Zavřít</button>
+            <button class="btn selected" data-action="preview-copy" style="font-weight: bold; min-width: 150px; padding: 6px;">COPY + CLOSE</button>
+            <button class="btn" data-action="preview-close" style="padding: 6px;">CLOSE</button>
         </div>
     </div>
     <textarea id="preview-textarea" style="width: 100%; flex: 1; background: #000; color: #d1d5db; border: 1px solid var(--border); border-radius: 4px; padding: 15px; font-family: Consolas, monospace; font-size: 14px; line-height: 1.5; resize: none; outline: none; box-sizing: border-box; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);"></textarea>
@@ -347,6 +356,7 @@ function saveSettings() {
         recist: APP_SETTINGS.recist
     }));
     document.body.classList.toggle('hide-predefined', APP_SETTINGS.hidePredefined);
+    document.body.classList.toggle('has-preview', APP_SETTINGS.previewReport);
     UI.renderReport();
 }
 
@@ -525,6 +535,7 @@ const Store = new Proxy(
                     inp.value = value;
                     inp.style.display = value ? 'block' : 'none';
                 }
+                document.body.classList.toggle('has-report-id', !!(value && value.trim()));
             } else if (prop === 'activeTable') {
                 if (value === null) {
                     const newExpanded = { ...target.expandedNotes };
@@ -638,11 +649,21 @@ const HistoryManager = {
     },
     renderDropdown: () => {
         const menu = document.getElementById('history-dropdown-menu');
+        const historyBtn = document.getElementById('history-btn');
         if (!menu) return;
         const records = HistoryManager.getRecords();
         const keys = Object.keys(records).sort((a,b) => records[b].timestamp - records[a].timestamp);
+        
+        if (historyBtn) {
+            if (keys.length > 0) {
+                historyBtn.classList.add('selected');
+            } else {
+                historyBtn.classList.remove('selected');
+            }
+        }
+
         if (keys.length === 0) {
-            menu.innerHTML = '<span class="label" style="padding: 8px; white-space: nowrap;">Žádná historie</span>';
+            menu.innerHTML = '<span class="label" style="padding: 4px; white-space: nowrap;">Žádné</span>';
             return;
         }
         
@@ -803,12 +824,16 @@ const EXAMS = {
         { id: 'ct_plic', title: 'CT plic', regs: ['thorax'] },
         { id: 'ct_bricho', title: 'CT břicha', regs: ['abdomen'] },
         { id: 'ct_trup', title: 'CT trupu', regs: ['neck','thorax','abdomen'] },
-        { id: 'ct_hrudnik_bricho', title: 'CT hrudníku a břicha', regs: ['thorax', 'abdomen'] }
+        { id: 'ct_hrudnik_bricho', title: 'CT hrudníku a břicha', regs: ['thorax', 'abdomen'] },
+        { id: 'ct_c_patere', title: 'CT C páteře', regs: ['c_spine'] },
+        { id: 'ct_t_patere', title: 'CT T páteře', regs: ['t_spine'] },
+        { id: 'ct_ls_patere', title: 'CT L páteře', regs: ['ls_spine'] }
     ],
     MR: [
         { id: 'mr_mozek', title: 'MR mozku', regs: ['brain'] },
         { id: 'mr_angio_mozku', title: 'MR angiografie', regs: ['br_angiography'] },
         { id: 'mr_krk', title: 'MR krku', regs: ['neck'] },
+        { id: 'mr_tmk', title: 'MR TMK', regs: ['tmk'] },
         { id: 'mr_prostata', title: 'MR prostaty', regs: ['prostate'] },
         { id: 'mr_rekta', title: 'MR rekta', regs: ['rectum'] },
         { id: 'mr_bricho', title: 'MR břicha', regs: ['abdomen'] },
@@ -818,8 +843,7 @@ const EXAMS = {
         { id: 'mr_hlezna', title: 'MR hlezna', regs: ['ankle'] },
         { id: 'mr_c_patere', title: 'MR C páteře', regs: ['c_spine'] },
         { id: 'mr_t_patere', title: 'MR T páteře', regs: ['t_spine'] },
-        { id: 'mr_ls_patere', title: 'MR L páteře', regs: ['ls_spine'] },
-        { id: 'mr_tmk', title: 'MR TMK', regs: ['tmk'] }
+        { id: 'mr_ls_patere', title: 'MR L páteře', regs: ['ls_spine'] }
     ]
 };
 
@@ -3316,15 +3340,15 @@ function executeCopyFlow(textToCopy, target, isAll) {
         } else {
             navigator.clipboard.writeText(textToCopy).then(() => {
                 if (isAll) {
-                    const h2s = document.querySelectorAll('h2[data-action="copy-text"]');
-                    const originals = Array.from(h2s).map(h2 => h2.textContent);
-                    h2s.forEach(h2 => { h2.textContent = 'Zkopírováno!'; h2.style.color = '#58a6ff'; });
-                    setTimeout(() => { h2s.forEach((h2, i) => { h2.textContent = originals[i]; h2.style.color = ''; }); }, 1200);
+                    const panels = document.querySelectorAll('#panel-report, #panel-conclusion');
+                    panels.forEach(panel => panel.classList.add('blink-border'));
+                    setTimeout(() => { panels.forEach(panel => panel.classList.remove('blink-border')); }, 300);
                 } else if (target) {
-                    const origText = target.textContent;
-                    target.textContent = 'Zkopírováno!';
-                    target.style.color = '#58a6ff';
-                    setTimeout(() => { target.textContent = origText; target.style.color = ''; }, 1200);
+                    const panel = target.closest('.panel');
+                    if (panel) {
+                        panel.classList.add('blink-border');
+                        setTimeout(() => { panel.classList.remove('blink-border'); }, 300);
+                    }
                 }
             }).catch(err => console.error('Nelze kopírovat:', err));
         }
@@ -3408,29 +3432,25 @@ const ActionHandlers = {
     'preview-copy': () => {
         const text = document.getElementById('preview-textarea').value;
         navigator.clipboard.writeText(text).then(() => {
-            const btn = document.querySelector('button[data-action="preview-copy"]');
-            const orig = btn.textContent;
-            btn.textContent = 'Zkopírováno!';
-            btn.style.background = 'var(--accent-hi)';
-            btn.style.color = '#000';
+            const modal = document.getElementById('preview-modal');
+            modal.classList.add('blink-border');
             
             if (Store.previewIsAll) {
-                const h2s = document.querySelectorAll('h2[data-action="copy-text"]');
-                const originals = Array.from(h2s).map(h2 => h2.textContent);
-                h2s.forEach(h2 => { h2.textContent = 'Zkopírováno!'; h2.style.color = '#58a6ff'; });
-                setTimeout(() => { h2s.forEach((h2, i) => { h2.textContent = originals[i]; h2.style.color = ''; }); }, 1200);
+                const panels = document.querySelectorAll('#panel-report, #panel-conclusion');
+                panels.forEach(panel => panel.classList.add('blink-border'));
+                setTimeout(() => { panels.forEach(panel => panel.classList.remove('blink-border')); }, 300);
             } else if (Store.previewTarget) {
-                 Store.previewTarget.textContent = 'Zkopírováno!';
-                 Store.previewTarget.style.color = '#58a6ff';
-                 setTimeout(() => { Store.previewTarget.textContent = Store.previewTargetOrigText; Store.previewTarget.style.color = ''; }, 1200);
+                 const panel = Store.previewTarget.closest('.panel');
+                 if (panel) {
+                     panel.classList.add('blink-border');
+                     setTimeout(() => { panel.classList.remove('blink-border'); }, 300);
+                 }
             }
 
             setTimeout(() => { 
-                btn.textContent = orig; 
-                btn.style.background = '';
-                btn.style.color = '';
+                modal.classList.remove('blink-border');
                 ActionHandlers['preview-close'](); 
-            }, 800);
+            }, 300);
         }).catch(err => console.error('Nelze kopírovat:', err));
     },
     'open-region': (target, dataset) => {
@@ -3779,6 +3799,18 @@ document.addEventListener('contextmenu', e => {
     const btn = e.target.closest('.btn');
     if (btn && handleDirectionalAction(btn, -1)) {
         e.preventDefault();
+        return;
+    }
+    
+    const reportItem = e.target.closest('.report-frame, .report-heading');
+    if (reportItem) {
+        e.preventDefault();
+        navigator.clipboard.writeText(reportItem.textContent.trim()).then(() => {
+            reportItem.classList.add('blink-border');
+            setTimeout(() => {
+                reportItem.classList.remove('blink-border');
+            }, 300);
+        }).catch(err => console.error('Chyba při kopírování do schránky:', err));
     }
 });
 
@@ -4167,6 +4199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (recistCheckbox) recistCheckbox.checked = APP_SETTINGS.recist;
     
     document.body.classList.toggle('hide-predefined', APP_SETTINGS.hidePredefined);
+    document.body.classList.toggle('has-preview', APP_SETTINGS.previewReport);
     
     UI.render('exams');
 });
