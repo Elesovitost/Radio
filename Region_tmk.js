@@ -5,7 +5,7 @@ const RegionTmk = {
         return [
             // --- KLOUBNÍ DUTINA ---
             helpers.TableMain('tmk_joint_main', 'Kloubní dutina a Synovie', [
-                helpers.Table3colRCL('tmk_jt_table', '', [
+                helpers.Table3colRL('tmk_jt_table', '', [
                     [ { btn: 'tmk_r_eff', states: ['0', '↑', '↑↑', '↑↑↑'] }, 'Náplň dutiny', { btn: 'tmk_l_eff', states: ['0', '↑', '↑↑', '↑↑↑'] } ],
                     [ { btn: 'tmk_r_syn', type: 'basic', text: '+' }, 'Synovitida', { btn: 'tmk_l_syn', type: 'basic', text: '+' } ],
                     [ { btn: 'tmk_r_caps', type: 'basic', text: '+' }, 'Kapsulitida', { btn: 'tmk_l_caps', type: 'basic', text: '+' } ]
@@ -14,7 +14,7 @@ const RegionTmk = {
 
             // --- KONDYL ---
             helpers.TableMain('tmk_condyle_main', 'Kondyl a Chrupavka', [
-                helpers.Table3colRCL('tmk_cond_table', '', [
+                helpers.Table3colRL('tmk_cond_table', '', [
                     [ { btn: 'tmk_r_boneEdema', type: 'basic', text: '+' }, 'Subchondr. edém', { btn: 'tmk_l_boneEdema', type: 'basic', text: '+' } ],
                     [ { btn: 'tmk_r_arthr', states: ['0', 'mírná art.', 'těžká art.'] }, 'Artróza', { btn: 'tmk_l_arthr', states: ['0', 'mírná art.', 'těžká art.'] } ],
                     [ { btn: 'tmk_r_cart', states: ['normální', 'thinning', 'chondromalacie', 'defekt'] }, 'Chrupavka', { btn: 'tmk_l_cart', states: ['normální', 'thinning', 'chondromalacie', 'defekt'] } ],
@@ -24,7 +24,7 @@ const RegionTmk = {
 
             // --- DISK ---
             helpers.TableMain('tmk_disc_main', 'Disk', [
-                helpers.Table3colRCL('tmk_disc_table', '', [
+                helpers.Table3colRL('tmk_disc_table', '', [
                     [ { btn: 'tmk_r_discPos', states: ['centrická', 'ant. dislokace', 'post. dislokace', 'mediální/laterální'] }, 'Poloha (zavřeno)', { btn: 'tmk_l_discPos', states: ['centrická', 'ant. dislokace', 'post. dislokace', 'mediální/laterální'] } ],
                     [ { btn: 'tmk_r_reduction', states: ['neprovedeno', 's redukcí', 'bez redukce'] }, 'Redukce (otevření)', { btn: 'tmk_l_reduction', states: ['neprovedeno', 's redukcí', 'bez redukce'] } ],
                     [ { btn: 'tmk_r_discMorph', states: ['normální', 'ztenčený', 'deformovaný', 'dysplastický'] }, 'Morfologie', { btn: 'tmk_l_discMorph', states: ['normální', 'ztenčený', 'deformovaný', 'dysplastický'] } ],
@@ -35,7 +35,7 @@ const RegionTmk = {
 
             // --- FUNKCE ---
             helpers.TableMain('tmk_func_main', 'Funkce a Translace', [
-                helpers.Table3colRCL('tmk_func_table', '', [
+                helpers.Table3colRL('tmk_func_table', '', [
                     [ { btn: 'tmk_r_translation', states: ['normální', 'omezená', 'hypertranslace'] }, 'Translace', { btn: 'tmk_l_translation', states: ['normální', 'omezená', 'hypertranslace'] } ],
                     [ { btn: 'tmk_r_mobility', states: ['0', 'hypomobilita', 'hypermobilita'] }, 'Hyper/hypomob.', { btn: 'tmk_l_mobility', states: ['0', 'hypomobilita', 'hypermobilita'] } ],
                     [ { btn: 'tmk_r_ankyl', states: ['0', 'fibrotická?', 'kostní?'] }, 'Ankylóza', { btn: 'tmk_l_ankyl', states: ['0', 'fibrotická?', 'kostní?'] } ]

@@ -155,6 +155,7 @@
 <script src="Region_rectum.js"></script>
 <script src="Region_prostate.js"></script>
 <script src="Region_tmk.js"></script>
+<script src="Region_SIS.js"></script>
 <script src="Region_wrist.js"></script>
 
 <script>
@@ -680,7 +681,8 @@ const EXAMS = {
         { id: 'mr_hlezna', title: 'MR hlezna', regs: ['ankle'] },
         { id: 'mr_c_patere', title: 'MR C páteře', regs: ['c_spine'] },
         { id: 'mr_t_patere', title: 'MR T páteře', regs: ['t_spine'] },
-        { id: 'mr_ls_patere', title: 'MR L páteře', regs: ['ls_spine'] }
+        { id: 'mr_ls_patere', title: 'MR L páteře', regs: ['ls_spine'] },
+        { id: 'mr_sis', title: 'MR SIS', regs: ['sis'] }
     ]
 };
 
@@ -1255,6 +1257,7 @@ const REGIONS = {
     prostate: typeof RegionProstate !== 'undefined' ? RegionProstate : null,
     rectum: typeof RegionRectum !== 'undefined' ? RegionRectum : null,
     tmk: typeof RegionTmk !== 'undefined' ? RegionTmk : null,
+    sis: typeof RegionSis !== 'undefined' ? RegionSis : null,
     c_spine: typeof RegionCp !== 'undefined' ? RegionCp : null,
     t_spine: typeof RegionTp !== 'undefined' ? RegionTp : null,
     l_spine: typeof RegionTp !== 'undefined' ? RegionTp : null
