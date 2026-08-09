@@ -37,7 +37,8 @@ const RegionKnee = {
                 const makeCondyleTable = (title, prefix) => helpers.Table2colNormal(`${prefix}_table`, title, [
                     [ 'Chrupavka:', [ { btn: `${prefix}_chr_gr`, states: ['GR 0', 'GR 1', 'GR 2', 'GR 3', 'GR 4'] }, { btn: `${prefix}_chr_lez`, states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delaminace'] }, { btn: `${prefix}_chr_edem`, states: ['edém 0', 'edém +', 'edém ++'] } ] ],
                     [ 'Subchondr. kost:', [ { btn: `${prefix}_sub_sifk`, states: ['SIFK 0', 'SIFK +', 'SIFK ++'] }, { btn: `${prefix}_sub_ocl`, states: ['OCL 0', 'OCL I', 'OCL II', 'OCL III', 'OCL IV'] }, { btn: `${prefix}_sub_bml`, states: ['BML 0', 'BML +', 'BML ++', 'BML +++'] } ] ],
-                    [ 'Fraktura:', { btn: `${prefix}_frac`, states: ['0', 'impakční', 'vertikální', 'komin.'] } ]
+                    [ 'Fraktura:', { btn: `${prefix}_frac`, states: ['0', 'impakční', 'vertikální', 'komin.'] } ],
+                    [ 'Osteofyty:', { btn: `${prefix}_ost`, states: ['0', '+', '++', '+++'] } ]
                 ]);
 
                 const makeMeniscus = (id, title, prefix) => helpers.TableMain(id, title, [
@@ -503,6 +504,14 @@ const RegionKnee = {
                 struct.frac = fracMapConc[frac];
             }
 
+            const ost = ctx.text(`${prefix}_ost`);
+            if (ost && ost !== '0') {
+                hasPathology = true;
+                const ostMapRep = { '+': 'drobné marginální osteofyty', '++': 'marginální osteofyty', '+++': 'výrazné marginální osteofyty' };
+                repParts.push(ostMapRep[ost] || 'marginální osteofyty');
+                struct.osteo = 'gonartrózou';
+            }
+
             if (struct.frac) pathologies.push(struct.frac);
             if (struct.sifk) pathologies.push(struct.sifk);
             if (struct.ocl) pathologies.push(struct.ocl);
@@ -513,6 +522,7 @@ const RegionKnee = {
                 pathologies.push(p);
             }
             if (struct.edem) pathologies.push(struct.edem);
+            if (struct.osteo) pathologies.push(struct.osteo);
 
             let repText = "";
             let concsToPush = [];
@@ -742,6 +752,7 @@ const RegionKnee = {
                 if (struct.ocl) items.push(struct.ocl);
                 if (struct.chrLez) items.push(struct.chrLez);
                 if (struct.edem) items.push(struct.edem);
+                if (struct.osteo) items.push(struct.osteo);
 
                 if (items.length === 0) return '';
                 return addS(joinWithS(normalizeArr(items)));
@@ -758,6 +769,7 @@ const RegionKnee = {
                 
                 if (struct.chrLez) items.push(struct.chrLez);
                 if (struct.edem) items.push(struct.edem);
+                if (struct.osteo) items.push(struct.osteo);
 
                 if (items.length === 0) return '';
                 return addS(joinWithS(normalizeArr(items)));
