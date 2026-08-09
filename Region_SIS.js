@@ -6,11 +6,13 @@ const RegionSis = {
             helpers.TableMain('sis_main', 'Sakroiliakální skloubení', [
                 helpers.Table3colRL('sis_table', '', [
                     [ { btn: 'sis_r_space', states: ['norma', 'zúžena', 'zaniklá'] }, 'Šíře štěrbiny', { btn: 'sis_l_space', states: ['norma', 'zúžena', 'zaniklá'] } ],
-                    [ { btn: 'sis_r_erosions', states: ['0', 'ojedinělé', 'vícečetné'] }, 'Eroze', { btn: 'sis_l_erosions', states: ['0', 'ojedinělé', 'vícečetné'] } ],
+                    [ '', '\u00A0', '' ],
                     [ { btn: 'sis_r_edema', states: ['0', '+', '++', '+++'] }, 'Edém', { btn: 'sis_l_edema', states: ['0', '+', '++', '+++'] } ],
-                    [ { btn: 'sis_r_edema_bone', states: ['sakra', 'ilicky', 'oboje'] }, 'Edém - skelet', { btn: 'sis_l_edema_bone', states: ['sakra', 'ilicky', 'oboje'] } ],
-                    [ { btn: 'sis_r_edema_loc', states: ['lokace...', 'difuzně', 'kraniálně', 'kaudálně', 'ventrálně', 'dorzálně'] }, 'Edém - pozice', { btn: 'sis_l_edema_loc', states: ['lokace...', 'difuzně', 'kraniálně', 'kaudálně', 'ventrálně', 'dorzálně'] } ],
-                    [ { field: 'mm', id: 'sis_r_edema_size', placeholder: 'mm' }, 'Edém - velikost', { field: 'mm', id: 'sis_l_edema_size', placeholder: 'mm' } ],
+                    [ { field: 'mm', id: 'sis_r_edema_size', placeholder: 'mm' }, '', { field: 'mm', id: 'sis_l_edema_size', placeholder: 'mm' } ],
+                    [ { btn: 'sis_r_edema_bone', states: ['obě strany', 'sakra', 'ilicky'] }, '', { btn: 'sis_l_edema_bone', states: ['obě strany', 'sakra', 'ilicky'] } ],
+                    [ { btn: 'sis_r_edema_loc', states: ['upřesnit...', 'difuzně', 'kraniálně', 'kaudálně', 'ventrálně', 'dorzálně'] }, '', { btn: 'sis_l_edema_loc', states: ['upřesnit...', 'difuzně', 'kraniálně', 'kaudálně', 'ventrálně', 'dorzálně'] } ],
+                    [ '', '\u00A0', '' ],
+                    [ { btn: 'sis_r_erosions', states: ['0', 'ojedinělé', 'vícečetné'] }, 'Eroze', { btn: 'sis_l_erosions', states: ['0', 'ojedinělé', 'vícečetné'] } ],
                     [ { btn: 'sis_r_fat', type: 'basic', text: '+' }, 'Tuková metaplazie', { btn: 'sis_l_fat', type: 'basic', text: '+' } ],
                     [ { btn: 'sis_r_sclerosis', type: 'basic', text: '+' }, 'Sklerotizace', { btn: 'sis_l_sclerosis', type: 'basic', text: '+' } ],
                     [ { btn: 'sis_r_osteophytes', type: 'basic', text: '+' }, 'Osteofyty', { btn: 'sis_l_osteophytes', type: 'basic', text: '+' } ]
@@ -59,9 +61,9 @@ const RegionSis = {
 
                 if (bone === 'sakra') edemaStr += ' na straně sakra';
                 else if (bone === 'ilicky') edemaStr += ' na straně ilické kosti';
-                else if (bone === 'oboje') edemaStr += ' na straně sakra i ilické kosti';
+                else if (bone === 'obě strany') edemaStr += ' na straně sakra i ilické kosti';
 
-                if (loc && loc !== 'lokace...') edemaStr += ` ${loc}`;
+                if (loc && loc !== 'upřesnit...') edemaStr += ` ${loc}`;
                 if (size) edemaStr += ` do hloubky ${size} mm`;
                 
                 marrowArr.push(edemaStr);
