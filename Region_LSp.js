@@ -87,21 +87,39 @@ const RegionLSp = {
             return group;
         };
 
+        const aGroup = (id) => {
+            const val = Store.buttonStates[`${examId}_ls_spine_${id}_arthro`];
+            const isActive = val !== undefined && val !== 0;
+
+            const group = [
+                { btn: 'arthrosis', id: `${id}_arthro` }
+            ];
+
+            if (isActive) {
+                group.push(
+                    { btn: 'arthro_r', id: `${id}_arthro_r` },
+                    { btn: 'arthro_l', id: `${id}_arthro_l` }
+                );
+            }
+
+            return group;
+        };
+
         const table = helpers.TableGrid('spine_lumbar_main', [
             [ 'T11', { btn: 'shape', id: 't11_shape' }, { btn: 'lesion', id: 't11_lesion' }, sGroup('t11'), '', '', '', opV('t11_surgery') ],
-            [ 'T11/12', { btn: 'degen', id: 't11_12_degen' }, { btn: 'modic', id: 't11_12_modic' }, pGroup('t11_12'), [ { btn: 'sten_f', id: 't11_12_f_r' }, { btn: 'sten_p', id: 't11_12_p_r' }, { btn: 'sten_c', id: 't11_12_c' }, { btn: 'sten_p', id: 't11_12_p_l' }, { btn: 'sten_f', id: 't11_12_f_l' } ], [ { field: 'size', id: 't11_12_size', placeholder: 'dur.vak mm' } ], [ { btn: 'arthrosis', id: 't11_12_arthro' }, { btn: 'arthro_r', id: 't11_12_arthro_r' }, { btn: 'arthro_l', id: 't11_12_arthro_l' } ], opD('t11_12_disc_surgery', 't11_12_lamin') ],
+            [ 'T11/12', { btn: 'degen', id: 't11_12_degen' }, { btn: 'modic', id: 't11_12_modic' }, pGroup('t11_12'), [ { btn: 'sten_f', id: 't11_12_f_r' }, { btn: 'sten_p', id: 't11_12_p_r' }, { btn: 'sten_c', id: 't11_12_c' }, { btn: 'sten_p', id: 't11_12_p_l' }, { btn: 'sten_f', id: 't11_12_f_l' } ], [ { field: 'size', id: 't11_12_size', placeholder: 'dur.vak mm' } ], aGroup('t11_12'), opD('t11_12_disc_surgery', 't11_12_lamin') ],
             [ 'T12', { btn: 'shape', id: 't12_shape' }, { btn: 'lesion', id: 't12_lesion' }, sGroup('t12'), '', '', '', opV('t12_surgery') ],
-            [ 'T12/L1', { btn: 'degen', id: 't12_l1_degen' }, { btn: 'modic', id: 't12_l1_modic' }, pGroup('t12_l1'), [ { btn: 'sten_f', id: 't12_l1_f_r' }, { btn: 'sten_p', id: 't12_l1_p_r' }, { btn: 'sten_c', id: 't12_l1_c' }, { btn: 'sten_p', id: 't12_l1_p_l' }, { btn: 'sten_f', id: 't12_l1_f_l' } ], [ { field: 'size', id: 't12_l1_size', placeholder: 'dur.vak mm' } ], [ { btn: 'arthrosis', id: 't12_l1_arthro' }, { btn: 'arthro_r', id: 't12_l1_arthro_r' }, { btn: 'arthro_l', id: 't12_l1_arthro_l' } ], opD('t12_l1_disc_surgery', 't12_l1_lamin') ],
+            [ 'T12/L1', { btn: 'degen', id: 't12_l1_degen' }, { btn: 'modic', id: 't12_l1_modic' }, pGroup('t12_l1'), [ { btn: 'sten_f', id: 't12_l1_f_r' }, { btn: 'sten_p', id: 't12_l1_p_r' }, { btn: 'sten_c', id: 't12_l1_c' }, { btn: 'sten_p', id: 't12_l1_p_l' }, { btn: 'sten_f', id: 't12_l1_f_l' } ], [ { field: 'size', id: 't12_l1_size', placeholder: 'dur.vak mm' } ], aGroup('t12_l1'), opD('t12_l1_disc_surgery', 't12_l1_lamin') ],
             [ 'L1', { btn: 'shape', id: 'l1_shape' }, { btn: 'lesion', id: 'l1_lesion' }, sGroup('l1'), '', '', '', opV('l1_surgery') ],
-            [ 'L1/2', { btn: 'degen', id: 'l1_2_degen' }, { btn: 'modic', id: 'l1_2_modic' }, pGroup('l1_2'), [ { btn: 'sten_f', id: 'l1_2_f_r' }, { btn: 'sten_p', id: 'l1_2_p_r' }, { btn: 'sten_c', id: 'l1_2_c' }, { btn: 'sten_p', id: 'l1_2_p_l' }, { btn: 'sten_f', id: 'l1_2_f_l' } ], [ { field: 'size', id: 'l1_2_size', placeholder: 'dur.vak mm' } ], [ { btn: 'arthrosis', id: 'l1_2_arthro' }, { btn: 'arthro_r', id: 'l1_2_arthro_r' }, { btn: 'arthro_l', id: 'l1_2_arthro_l' } ], opD('l1_2_disc_surgery', 'l1_2_lamin') ],
+            [ 'L1/2', { btn: 'degen', id: 'l1_2_degen' }, { btn: 'modic', id: 'l1_2_modic' }, pGroup('l1_2'), [ { btn: 'sten_f', id: 'l1_2_f_r' }, { btn: 'sten_p', id: 'l1_2_p_r' }, { btn: 'sten_c', id: 'l1_2_c' }, { btn: 'sten_p', id: 'l1_2_p_l' }, { btn: 'sten_f', id: 'l1_2_f_l' } ], [ { field: 'size', id: 'l1_2_size', placeholder: 'dur.vak mm' } ], aGroup('l1_2'), opD('l1_2_disc_surgery', 'l1_2_lamin') ],
             [ 'L2', { btn: 'shape', id: 'l2_shape' }, { btn: 'lesion', id: 'l2_lesion' }, sGroup('l2'), '', '', '', opV('l2_surgery') ],
-            [ 'L2/3', { btn: 'degen', id: 'l2_3_degen' }, { btn: 'modic', id: 'l2_3_modic' }, pGroup('l2_3'), [ { btn: 'sten_f', id: 'l2_3_f_r' }, { btn: 'sten_p', id: 'l2_3_p_r' }, { btn: 'sten_c', id: 'l2_3_c' }, { btn: 'sten_p', id: 'l2_3_p_l' }, { btn: 'sten_f', id: 'l2_3_f_l' } ], [ { field: 'size', id: 'l2_3_size', placeholder: 'dur.vak mm' } ], [ { btn: 'arthrosis', id: 'l2_3_arthro' }, { btn: 'arthro_r', id: 'l2_3_arthro_r' }, { btn: 'arthro_l', id: 'l2_3_arthro_l' } ], opD('l2_3_disc_surgery', 'l2_3_lamin') ],
+            [ 'L2/3', { btn: 'degen', id: 'l2_3_degen' }, { btn: 'modic', id: 'l2_3_modic' }, pGroup('l2_3'), [ { btn: 'sten_f', id: 'l2_3_f_r' }, { btn: 'sten_p', id: 'l2_3_p_r' }, { btn: 'sten_c', id: 'l2_3_c' }, { btn: 'sten_p', id: 'l2_3_p_l' }, { btn: 'sten_f', id: 'l2_3_f_l' } ], [ { field: 'size', id: 'l2_3_size', placeholder: 'dur.vak mm' } ], aGroup('l2_3'), opD('l2_3_disc_surgery', 'l2_3_lamin') ],
             [ 'L3', { btn: 'shape', id: 'l3_shape' }, { btn: 'lesion', id: 'l3_lesion' }, sGroup('l3'), '', '', '', opV('l3_surgery') ],
-            [ 'L3/4', { btn: 'degen', id: 'l3_4_degen' }, { btn: 'modic', id: 'l3_4_modic' }, pGroup('l3_4'), [ { btn: 'sten_f', id: 'l3_4_f_r' }, { btn: 'sten_p', id: 'l3_4_p_r' }, { btn: 'sten_c', id: 'l3_4_c' }, { btn: 'sten_p', id: 'l3_4_p_l' }, { btn: 'sten_f', id: 'l3_4_f_l' } ], [ { field: 'size', id: 'l3_4_size', placeholder: 'dur.vak mm' } ], [ { btn: 'arthrosis', id: 'l3_4_arthro' }, { btn: 'arthro_r', id: 'l3_4_arthro_r' }, { btn: 'arthro_l', id: 'l3_4_arthro_l' } ], opD('l3_4_disc_surgery', 'l3_4_lamin') ],
+            [ 'L3/4', { btn: 'degen', id: 'l3_4_degen' }, { btn: 'modic', id: 'l3_4_modic' }, pGroup('l3_4'), [ { btn: 'sten_f', id: 'l3_4_f_r' }, { btn: 'sten_p', id: 'l3_4_p_r' }, { btn: 'sten_c', id: 'l3_4_c' }, { btn: 'sten_p', id: 'l3_4_p_l' }, { btn: 'sten_f', id: 'l3_4_f_l' } ], [ { field: 'size', id: 'l3_4_size', placeholder: 'dur.vak mm' } ], aGroup('l3_4'), opD('l3_4_disc_surgery', 'l3_4_lamin') ],
             [ 'L4', { btn: 'shape', id: 'l4_shape' }, { btn: 'lesion', id: 'l4_lesion' }, sGroup('l4'), '', '', '', opV('l4_surgery') ],
-            [ 'L4/5', { btn: 'degen', id: 'l4_5_degen' }, { btn: 'modic', id: 'l4_5_modic' }, pGroup('l4_5'), [ { btn: 'sten_f', id: 'l4_5_f_r' }, { btn: 'sten_p', id: 'l4_5_p_r' }, { btn: 'sten_c', id: 'l4_5_c' }, { btn: 'sten_p', id: 'l4_5_p_l' }, { btn: 'sten_f', id: 'l4_5_f_l' } ], [ { field: 'size', id: 'l4_5_size', placeholder: 'dur.vak mm' } ], [ { btn: 'arthrosis', id: 'l4_5_arthro' }, { btn: 'arthro_r', id: 'l4_5_arthro_r' }, { btn: 'arthro_l', id: 'l4_5_arthro_l' } ], opD('l4_5_disc_surgery', 'l4_5_lamin') ],
+            [ 'L4/5', { btn: 'degen', id: 'l4_5_degen' }, { btn: 'modic', id: 'l4_5_modic' }, pGroup('l4_5'), [ { btn: 'sten_f', id: 'l4_5_f_r' }, { btn: 'sten_p', id: 'l4_5_p_r' }, { btn: 'sten_c', id: 'l4_5_c' }, { btn: 'sten_p', id: 'l4_5_p_l' }, { btn: 'sten_f', id: 'l4_5_f_l' } ], [ { field: 'size', id: 'l4_5_size', placeholder: 'dur.vak mm' } ], aGroup('l4_5'), opD('l4_5_disc_surgery', 'l4_5_lamin') ],
             [ 'L5', { btn: 'shape', id: 'l5_shape' }, { btn: 'lesion', id: 'l5_lesion' }, sGroup('l5'), '', '', '', opV('l5_surgery') ],
-            [ 'L5/S1', { btn: 'degen', id: 'l5_s1_degen' }, { btn: 'modic', id: 'l5_s1_modic' }, pGroup('l5_s1'), [ { btn: 'sten_f', id: 'l5_s1_f_r' }, { btn: 'sten_p', id: 'l5_s1_p_r' }, { btn: 'sten_c', id: 'l5_s1_c' }, { btn: 'sten_p', id: 'l5_s1_p_l' }, { btn: 'sten_f', id: 'l5_s1_f_l' } ], [ { field: 'size', id: 'l5_s1_size', placeholder: 'dur.vak mm' } ], [ { btn: 'arthrosis', id: 'l5_s1_arthro' }, { btn: 'arthro_r', id: 'l5_s1_arthro_r' }, { btn: 'arthro_l', id: 'l5_s1_arthro_l' } ], opD('l5_s1_disc_surgery', 'l5_s1_lamin') ],
+            [ 'L5/S1', { btn: 'degen', id: 'l5_s1_degen' }, { btn: 'modic', id: 'l5_s1_modic' }, pGroup('l5_s1'), [ { btn: 'sten_f', id: 'l5_s1_f_r' }, { btn: 'sten_p', id: 'l5_s1_p_r' }, { btn: 'sten_c', id: 'l5_s1_c' }, { btn: 'sten_p', id: 'l5_s1_p_l' }, { btn: 'sten_f', id: 'l5_s1_f_l' } ], [ { field: 'size', id: 'l5_s1_size', placeholder: 'dur.vak mm' } ], aGroup('l5_s1'), opD('l5_s1_disc_surgery', 'l5_s1_lamin') ],
             [ 'S1', { btn: 'shape', id: 's1_shape' }, { btn: 'lesion', id: 's1_lesion' }, '', '', '', '', opV('s1_surgery') ],
         ]);
 

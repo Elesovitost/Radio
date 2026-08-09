@@ -157,7 +157,7 @@
         #spine_thoracic_main.tbl-center td .row { justify-content: flex-start; }
         #spine_thoracic_main > tbody > tr:nth-child(even) > td:first-child span { color: var(--accent-hi); }
         .tbl td .row:has(> button[data-id$="_d_c"]) { gap: 2px; }
-        .tbl td .row:has([data-id$="_protrusion_mm"]), .tbl td .row:has([id$="_protrusion_mm"]), .tbl td .row:has([data-id$="_shift_mm"]), .tbl td .row:has([id$="_shift_mm"]) { background-color: var(--border); border: 0px solid var(--accent-hi) !important; border-radius: 1px !important; padding: 1px !important; width: fit-content; transition: all 0.3s ease; }
+        .tbl td .row:has([data-id$="_protrusion_mm"]), .tbl td .row:has([id$="_protrusion_mm"]), .tbl td .row:has([data-id$="_shift_mm"]), .tbl td .row:has([id$="_shift_mm"]), .tbl td .row:has([data-id$="_arthro_r"]), .tbl td .row:has([data-id$="_arthro_l"]) { background-color: var(--border); border: 0px solid var(--accent-hi) !important; border-radius: 1px !important; padding: 1px !important; width: fit-content; transition: all 0.3s ease; }
 
         .report-frame.frame-lesion { color: #e891af; }
         .report-frame.frame-lymphnode { color: #e0c068; }    
