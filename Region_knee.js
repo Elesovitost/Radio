@@ -3,13 +3,12 @@ const RegionKnee = {
     reportLayout: 'block',
     layout: (helpers) => {
         return [
-            helpers.TableMain('knee_acl_main', 'Přední zkřížený vaz (ACL)', [
-                helpers.Table2colNormal('kn_acl_table', '', [
-                    [ 'Ruptura:', [ { btn: 'kn_acl_rupt', states: ['0', 'low-grade', 'parciální', 'high-grade', 'kompletní'] }, { btn: 'kn_acl_bml', states: ['skelet 0', 'kont. edém', '+ fr. F', '+ fr. T', '+ fr. F+T'] } ] ],
-                    [ 'Morfologie:', { btn: 'kn_acl_morf', states: ['0', 'zvlnění', 'elongace', 'mukoid. deg.', 'ganglion'] } ],
-                    [ 'Náhrada (štěp):', [ { btn: 'kn_acl_plast', states: ['0', 'intaktní', 'parc. léze', 'kompl. rupt.'] }, { btn: 'kn_acl_vzhled', states: ['orientace OK', 'laxita', 'vertikální', 'horizontální', 'impingement'] } ] ],
-                    [ '', { btn: 'kn_acl_tunel', states: ['tunely', 'širší F', 'širší T', 'ventrální T'] } ],
-                    [ 'Kyklop léze:', { btn: 'kn_acl_kyklop', states: ['0', '+', '+/-'] } ]
+            helpers.TableMain('knee_joint_main', 'Kloubní dutina', [
+                helpers.Table2colNormal('kn_joint_table', '', [
+                    [ 'Náplň:', { btn: 'kn_napln', states: ['0', '+', '++', '+++'] } ],
+                    [ 'Bakerova cysta:', { btn: 'kn_baker', states: ['0', '+', '++', '+++'] } ],
+                    [ 'Synovitida:', { btn: 'kn_synov', states: ['0', '+', '++', 'PVS'] } ],
+                    [ 'Volná tělíska:', { btn: 'kn_teliska', states: ['0', '+ [field:field_text:loc:kde...]', '++ [field:field_text:loc:kde...]', 'Syn. Chon.'] } ]
                 ])
             ]),
             helpers.TableMain('knee_patella_main', 'Patella a Přední kompartment', [
@@ -86,7 +85,8 @@ const RegionKnee = {
                     [ 'Ruptura:', [ { btn: 'kn_acl_rupt', states: ['0', 'low-grade', 'parciální', 'high-grade', 'kompletní'] }, { btn: 'kn_acl_bml', states: ['skelet 0', 'kont. edém', '+ fr. F', '+ fr. T', '+ fr. F+T'] } ] ],
                     [ 'Morfologie:', { btn: 'kn_acl_morf', states: ['0', 'zvlnění', 'elongace', 'mukoid. deg.', 'ganglion'] } ],
                     [ 'Náhrada (štěp):', [ { btn: 'kn_acl_plast', states: ['0', 'intaktní', 'parc. léze', 'kompl. rupt.'] }, { btn: 'kn_acl_vzhled', states: ['orientace OK', 'laxita', 'vertikální', 'horizontální', 'impingement'] } ] ],
-                    [ '', { btn: 'kn_acl_tunel', states: ['tunely', 'širší F', 'širší T', 'ventrální T'] } ]
+                    [ '', { btn: 'kn_acl_tunel', states: ['tunely', 'širší F', 'širší T', 'ventrální T'] } ],
+                    [ 'Kyklop léze:', { btn: 'kn_acl_kyklop', states: ['0', '+', '+/-'] } ]
                 ])
             ]),
             helpers.TableMain('knee_pcl_main', 'Zadní zkřížený vaz (PCL)', [
