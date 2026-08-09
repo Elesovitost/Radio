@@ -3,12 +3,13 @@ const RegionKnee = {
     reportLayout: 'block',
     layout: (helpers) => {
         return [
-            helpers.TableMain('knee_joint_main', 'Kloubní dutina', [
-                helpers.Table2colNormal('kn_joint_table', '', [
-                    [ 'Náplň:', { btn: 'kn_napln', states: ['0', '+', '++', '+++'] } ],
-                    [ 'Bakerova cysta:', { btn: 'kn_baker', states: ['0', '+', '++', '+++'] } ],
-                    [ 'Synovitida:', { btn: 'kn_synov', states: ['0', '+', '++', 'PVS'] } ],
-                    [ 'Volná tělíska:', { btn: 'kn_teliska', states: ['0', '+ [field:field_text:loc:kde...]', '++ [field:field_text:loc:kde...]', 'Syn. Chon.'] } ]
+            helpers.TableMain('knee_acl_main', 'Přední zkřížený vaz (ACL)', [
+                helpers.Table2colNormal('kn_acl_table', '', [
+                    [ 'Ruptura:', [ { btn: 'kn_acl_rupt', states: ['0', 'low-grade', 'parciální', 'high-grade', 'kompletní'] }, { btn: 'kn_acl_bml', states: ['skelet 0', 'kont. edém', '+ fr. F', '+ fr. T', '+ fr. F+T'] } ] ],
+                    [ 'Morfologie:', { btn: 'kn_acl_morf', states: ['0', 'zvlnění', 'elongace', 'mukoid. deg.', 'ganglion'] } ],
+                    [ 'Náhrada (štěp):', [ { btn: 'kn_acl_plast', states: ['0', 'intaktní', 'parc. léze', 'kompl. rupt.'] }, { btn: 'kn_acl_vzhled', states: ['orientace OK', 'laxita', 'vertikální', 'horizontální', 'impingement'] } ] ],
+                    [ '', { btn: 'kn_acl_tunel', states: ['tunely', 'širší F', 'širší T', 'ventrální T'] } ],
+                    [ 'Kyklop léze:', { btn: 'kn_acl_kyklop', states: ['0', '+', '+/-'] } ]
                 ])
             ]),
             helpers.TableMain('knee_patella_main', 'Patella a Přední kompartment', [
@@ -821,6 +822,7 @@ const RegionKnee = {
         const aclPlast = ctx.text('kn_acl_plast');
         const aclVzhled = ctx.text('kn_acl_vzhled');
         const aclTunel = ctx.text('kn_acl_tunel');
+        const aclKyklop = ctx.text('kn_acl_kyklop');
 
         const isAclPlastika = aclPlast && aclPlast !== '0';
         const isNativNormal = (!aclRupt || aclRupt === '0') && (!aclMorf || aclMorf === '0');
@@ -830,13 +832,13 @@ const RegionKnee = {
             let pConc = [];
 
             if (aclPlast === 'intaktní') {
-                pRep.push('Štěp předního zkříženého vazu vykazuje zachovalou kontinuitu, pravidelnou šíři, nízký signál');
+                pRep.push('Náhrada předního zkříženého vazu vykazuje zachovalou kontinuitu, pravidelnou šíři, nízký signál');
                 pConc.push('Intaktní plastika ACL');
             } else if (aclPlast === 'parc. léze') {
-                pRep.push('Štěp ACL se zvýšením intrasubstanciálního signálu a částečným defektem vláken');
-                pConc.push('Parciální léze štěpu ACL');
+                pRep.push('Náhrada ACL se zvýšením intrasubstanciálního signálu a částečným defektem vláken');
+                pConc.push('Parciální léze náhrady ACL');
             } else if (aclPlast === 'kompl. rupt.') {
-                pRep.push('Štěp ACL s úplnou diskontinuitou a dezintegrací vláken');
+                pRep.push('Náhrada ACL s úplnou diskontinuitou a dezintegrací vláken');
                 pConc.push('Kompletní ruptura plastiky ACL');
             }
 
@@ -851,6 +853,16 @@ const RegionKnee = {
                 if (aclTunel === 'širší F') pRep.push('femorální kostní tunel je mírně rozšířený');
                 else if (aclTunel === 'širší T') pRep.push('tibiální kostní tunel je rozšířený');
                 else if (aclTunel === 'ventrální T') { pRep.push('ústí tibiálního tunelu je uloženo ventrálně (před Blumensaatovou linií)'); pConc.push('ventrální umístění T tunelu'); }
+            }
+
+            if (aclKyklop && aclKyklop !== '0') {
+                if (aclKyklop === '+') {
+                    pRep.push('oválný okrsek nízké SI před tib. okrajem náhrady');
+                    pConc.push('kyklop léze');
+                } else if (aclKyklop === '+/-') {
+                    pRep.push('nepravidelný okrsek smíšené SI před tib. okrajem náhrady');
+                    pConc.push('vazivový nepravidelný okrsek při tibiálním okraji náhrady: v dif.dg. porušená vlákna či kyklop léze');
+                }
             }
 
             reportOut.push({ type: 'frame', text: pRep.join(', ') + '.', tableId: 'knee_acl_main' });
@@ -907,16 +919,16 @@ const RegionKnee = {
 
                 if (aclMorf && aclMorf !== '0') {
                     if (aclMorf === 'zvlnění') { 
-                        nRep.push('průběh vazu je ochablý a zvlněný'); 
+                        nRep.push('ochablého a zvlněného průběhu'); 
                         if (!isRuptured) concParts.push('se zvlněným průběhem (insuficience)'); 
                     } else if (aclMorf === 'elongace') { 
-                        nRep.push('vaz má elongovaný průběh'); 
+                        nRep.push('elongovaný průběh'); 
                         if (!isRuptured) concParts.push('s elongací'); 
                     } else if (aclMorf === 'mukoid. deg.') {
-                        nRep.push('vaz je difuzně ztluštělý s longitudinálním prosáknutím při zachované kontinuitě');
+                        nRep.push('difuzně ztluštělý s longitudinálním prosáknutím při zachované kontinuitě');
                         concParts.push('s mukoidní degenerací');
                     } else if (aclMorf === 'ganglion') {
-                        nRep.push('uvnitř vazu je přítomna tekutinová formace roztlačující vlákna');
+                        nRep.push('uvnitř s tekutinovou formací roztlačující vlákna');
                         concParts.push('s intraligamentózní gangliovou cystou');
                     }
                 }
