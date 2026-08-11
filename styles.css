@@ -93,7 +93,7 @@
         .tbl.tbl-full .tbl-full-cell .row { width: 100%; display: flex; }
         .tbl.tbl-full .tbl-full-cell .row .input { flex: 1; width: auto; }
         .table-wrapper { display: flex; flex-direction: column; width: fit-content; }
-        .sub-table-title { font-size: 10px; font-weight: bold; color: #526778; padding: 4px 0 2px 0; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; width: 100%; text-align: center; }
+        .sub-table-title { font-size: 11px; font-weight: bold; color: #526778; padding: 4px 0 2px 0; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; width: 100%; text-align: center; }
         .sub-table-title-settings { font-size: 11px; font-weight: bold; color: var(--accent-hi); padding: 4px 0 10px 0; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; width: 100%; text-align: center; }
         .organ-wrapper { position: relative; width: 100%; height: 100%; display: flex; align-items: flex-start; }
         .organ-svg { width: 90%; opacity: 0.7; transform: translateY(40px); transition: opacity 0.3s; display: block; stroke: #000000; stroke-width: 1.0px; stroke-linejoin: round;}
@@ -164,7 +164,7 @@
         
         #organ-popup { position: fixed; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.8); padding: 0px; display: none; flex-direction: column; gap: 4px; z-index: 2000; }
         #organ-popup.active { display: flex; }
-        .popup-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #c9d1d9; padding: 6px 12px; font-size: 11px; border-radius: 4px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .popup-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #c9d1d9; padding: 6px 12px; font-size: 11px; text-transform: uppercase; border-radius: 4px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
         .popup-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--dim); color: #ffffff; }
         .popup-btn.btn-lesion { color: #ff6b6b; font-weight: bold; }
         .popup-btn.btn-lymph { color: #feca57; font-weight: bold; }

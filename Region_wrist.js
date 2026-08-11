@@ -35,8 +35,15 @@ const RegionWrist = {
             helpers.TableMain('wrist_lig_main', 'Vazy & TFCC', [
                 helpers.Table2colNormal('wri_lig_table', '', [
                     [ 'SL vaz:', { btn: 'wri_lig_sl', states: ['OK', 'parciální', 'ruptura (DISI-)', 'ruptura (DISI+)'] } ],
-                    [ 'LT vaz:', { btn: 'wri_lig_lt', states: ['OK', 'parciální', 'ruptura (VISI-)', 'ruptura (VISI+)'] } ],
-                    [ 'TFCC:', { btn: 'wri_lig_tfcc', states: ['OK', 'degenerace', 'parciální', 'foveální rpt.'] } ],
+                    [ 'LT vaz:', { btn: 'wri_lig_lt', states: ['OK', 'parciální', 'ruptura (VISI-)', 'ruptura (VISI+)'] } ]
+                ]),
+                helpers.Table2colNormal('wri_tfcc_table', 'TFCC', [
+                    [ 'Disk:', { btn: 'wri_tfcc_disk', states: ['norma', 'degenerace', 'centr. perforace', 'rad. odtržení'] } ],
+                    [ 'Ulnární úpon:', { btn: 'wri_tfcc_uln', states: ['intaktní', 'parciální', 'foveální rpt.', 'styloidní rpt.'] } ],
+                    [ 'Ulnokarp. vazy:', { btn: 'wri_tfcc_uc', states: ['OK', 'UL', 'UT', 'UL+UT'] } ],
+                    [ 'Přidružené:', { btn: 'wri_tfcc_add', states: ['0', 'edém styloidu', 'neunion styloidu', 'ECU tenosyn.'] } ]
+                ]),
+                helpers.Table2colNormal('wri_druj_table', '', [
                     [ 'DRUJ stabilita:', { btn: 'wri_lig_druj', states: ['stabilní', 'instabilita'] } ]
                 ]),
                 helpers.Table1col('wrist_lig_add', [
@@ -77,6 +84,7 @@ const RegionWrist = {
 
         let reportOut = [{ type: 'heading', text: sideTitle, action: 'open-region', regionId: 'wrist' }];
         let concMain = [];
+        let concInc = [];
         let hasPathology = false;
         
         const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
@@ -152,33 +160,96 @@ const RegionWrist = {
         // 3. Vazy a TFCC
         let ligPatho = [];
         let ligPhysio = [];
+        const pushLigConc = (txt, incidental = false) => {
+            const item = { type: 'frame', text: formatZaver(txt), tableId: 'wrist_lig_main' };
+            if (incidental) concInc.push(item);
+            else { concMain.push(item); hasPathology = true; }
+        };
+
         const sl = ctx.text('wri_lig_sl');
         if (!sl || sl === 'OK') ligPhysio.push('SL vaz intaktní, bez diskontinuity a bez tekutinové fisury');
-        else if (sl === 'parciální') { ligPatho.push('SL vaz ztluštělý se zvýšeným signálem na PD-FS, bez kompletní diskontinuity (parciální léze)'); pushConc('Parciální léze scapholunátního vazu'); }
+        else if (sl === 'parciální') { ligPatho.push('SL vaz ztluštělý se zvýšeným signálem na PD-FS, bez kompletní diskontinuity (parciální léze)'); pushLigConc('Parciální léze scapholunátního vazu'); }
         else if (sl.includes('ruptura')) {
             const hasDisi = sl.includes('DISI+');
             ligPatho.push(`SL vaz s diskontinuitou a tekutinou v intervalu; ${hasDisi ? 'přítomny známky DISI' : 'bez jednoznačných známek DISI'}`);
-            pushConc(`Ruptura scapholunátního vazu${hasDisi ? ' se známkami DISI' : ''}`);
+            pushLigConc(`Ruptura scapholunátního vazu${hasDisi ? ' se známkami DISI' : ''}`);
         }
 
         const lt = ctx.text('wri_lig_lt');
         if (!lt || lt === 'OK') ligPhysio.push('LT vaz intaktní, bez diskontinuity');
-        else if (lt === 'parciální') { ligPatho.push('LT vaz s vyšším signálem na PD-FS a ztluštěním, kontinuální (parciální léze)'); pushConc('Parciální léze lunotriquetrálního vazu'); }
+        else if (lt === 'parciální') { ligPatho.push('LT vaz s vyšším signálem na PD-FS a ztluštěním, kontinuální (parciální léze)'); pushLigConc('Parciální léze lunotriquetrálního vazu'); }
         else if (lt.includes('ruptura')) {
             const hasVisi = lt.includes('VISI+');
             ligPatho.push(`LT vaz přerušen, tekutina v intervalu; ${hasVisi ? 'přítomny známky VISI' : 'bez jednoznačných známek VISI'}`);
-            pushConc(`Ruptura lunotriquetrálního vazu${hasVisi ? ' se známkami VISI' : ''}`);
+            pushLigConc(`Ruptura lunotriquetrálního vazu${hasVisi ? ' se známkami VISI' : ''}`);
         }
 
-        const tfcc = ctx.text('wri_lig_tfcc');
-        if (!tfcc || tfcc === 'OK') ligPhysio.push('TFCC normální tloušťky a signálu, bez defektu');
-        else if (tfcc === 'degenerace') { ligPatho.push('TFCC ztluštělý s vyšším signálem v centrální části, bez prokazatelné komunikace – degenerativní změny'); pushConc('Degenerativní změny TFCC'); }
-        else if (tfcc === 'parciální') { ligPatho.push('TFCC s intrasubstanční fisurou/zvýšeným signálem, bez kompletního defektu disku'); pushConc('Parciální léze TFCC'); }
-        else if (tfcc === 'foveální rpt.') { ligPatho.push('diskontinuita u foveálního ulnárního úponu TFCC s tekutinovou komunikací do DRUJ, přidružené změny u ulnární hlavičky možné'); pushConc('Ruptura TFCC u foveálního úponu'); }
+        // TFCC – strukturovaně (Palmer)
+        const tfccDisk = ctx.text('wri_tfcc_disk');
+        const tfccUln = ctx.text('wri_tfcc_uln');
+        const tfccUc = ctx.text('wri_tfcc_uc');
+        const tfccAdd = ctx.text('wri_tfcc_add');
+
+        const tfccNormal =
+            (!tfccDisk || tfccDisk === 'norma') &&
+            (!tfccUln || tfccUln === 'intaktní') &&
+            (!tfccUc || tfccUc === 'OK') &&
+            (!tfccAdd || tfccAdd === '0');
+
+        if (tfccNormal) {
+            ligPhysio.push('TFCC přiměřené tloušťky a signálu, disk i ulnární úpon bez defektu, ulnokarpální vazy intaktní');
+        } else {
+            let tfccRep = [];
+
+            if (tfccDisk === 'degenerace') {
+                tfccRep.push('disk TFCC se zvýšeným intrasubstanciálním signálem a neostrými konturami bez průkazu plné tloušťkové perforace');
+                pushLigConc('Degenerativní změny TFCC', true);
+            } else if (tfccDisk === 'centr. perforace') {
+                tfccRep.push('centrální perforace diskové části TFCC s tekutinovou komunikací mezi radiokarpálním prostorem a DRUJ (Palmer 1A/2C)');
+                pushLigConc('Centrální perforace TFCC');
+            } else if (tfccDisk === 'rad. odtržení') {
+                tfccRep.push('odtržení radiálního úponu TFCC od ulnární chrupavky distalního radia s lokální tekutinou (Palmer 1D)');
+                pushLigConc('Radiální odtržení TFCC (Palmer 1D)');
+            }
+
+            if (tfccUln === 'parciální') {
+                tfccRep.push('ulnární periferie TFCC se zvýšeným signálem a částečnou diskontinuitou vláken bez kompletního odtržení');
+                pushLigConc('Parciální léze ulnárního úponu TFCC');
+            } else if (tfccUln === 'foveální rpt.') {
+                tfccRep.push('kompletní diskontinuita hlubokého foveálního úponu TFCC s tekutinou u fovea ulnaris, povrchní styloidní lamela může být zachována (Palmer 1B)');
+                pushLigConc('Ruptura foveálního úponu TFCC (Palmer 1B)');
+            } else if (tfccUln === 'styloidní rpt.') {
+                tfccRep.push('přerušení povrchního styloidního úponu TFCC u báze ulnárního styloidu s lokální tekutinou');
+                pushLigConc('Ruptura styloidního úponu TFCC');
+            }
+
+            if (tfccUc === 'UL') {
+                tfccRep.push('ulnolunátní vaz ztluštělý se zvýšeným signálem, suspektní parciální léze');
+                pushLigConc('Léze ulnolunátního vazu');
+            } else if (tfccUc === 'UT') {
+                tfccRep.push('ulnotriquetrální vaz se zvýšeným signálem a neostrou konturou');
+                pushLigConc('Léze ulnotriquetrálního vazu');
+            } else if (tfccUc === 'UL+UT') {
+                tfccRep.push('ulnolunátní i ulnotriquetrální vaz se známkami léze (Palmer 1C)');
+                pushLigConc('Léze distálních ulnokarpálních vazů TFCC (Palmer 1C)');
+            }
+
+            if (tfccAdd === 'edém styloidu') {
+                tfccRep.push('kostní edém ulnárního styloidu');
+            } else if (tfccAdd === 'neunion styloidu') {
+                tfccRep.push('neunion/pseudoartróza ulnárního styloidu s okolním edémem');
+                pushLigConc('Neunion ulnárního styloidu', true);
+            } else if (tfccAdd === 'ECU tenosyn.') {
+                tfccRep.push('tekutina v pochvě ECU a ztluštění subsheath v návaznosti na ulnární komplex');
+                pushLigConc('Tenosynovitida ECU', true);
+            }
+
+            if (tfccRep.length > 0) ligPatho.push(`TFCC: ${tfccRep.join('; ')}`);
+        }
 
         const druj = ctx.text('wri_lig_druj');
         if (!druj || druj === 'stabilní') ligPhysio.push('DRUJ morfologicky přiměřený, bez známek subluxace');
-        else if (druj === 'instabilita') { ligPatho.push('DRUJ s jemnou ventrální/dorzální předsazeností ulnární hlavičky a asymetrií štěrbiny – MR známky laxity; korelace klinicky'); pushConc('MR známky instability DRUJ'); }
+        else if (druj === 'instabilita') { ligPatho.push('DRUJ s jemnou ventrální/dorzální předsazeností ulnární hlavičky a asymetrií štěrbiny – MR známky laxity; korelace klinicky'); pushLigConc('MR známky instability DRUJ'); }
 
         const ligDesc = ctx.field('wri_lig_desc');
         if (ligDesc) ligPatho.push(ligDesc);
@@ -187,7 +258,7 @@ const RegionWrist = {
         if (ligPhysio.length > 0) reportOut.push({ type: 'frame', text: cap(ligPhysio.join('. ')) + '.', tableId: 'wrist_lig_main', dimmed: true });
         
         const ligConc = ctx.field('wri_lig_conc');
-        if (ligConc) pushConc(ligConc);
+        if (ligConc) pushLigConc(ligConc);
 
         // 4. Šlachy a nervy
         let snParts = [];
@@ -218,6 +289,11 @@ const RegionWrist = {
             concMain.push({ type: 'frame', text: 'MR zápěstí bez průkazu závažné patologie.', tableId: 'wrist_joint_main', dimmed: true });
         }
 
-        return { report: reportOut, conclusion: { main: concMain, incidental: [] } };
+        return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };
     }
 };
+
+window.HOVER_IMAGES = window.HOVER_IMAGES || {};
+Object.assign(window.HOVER_IMAGES, {
+    'TFCC': 'picothers/TFCC.jpg'
+});

@@ -4032,39 +4032,49 @@ document.addEventListener('mouseover', e => {
     if (!APP_SETTINGS.showTooltips) return;
 
     const btn = e.target.closest('.btn');
+    const titleEl = e.target.closest('.sub-table-title');
+    let imgConfig = null;
+    let anchorEl = null;
+
     if (btn && btn.dataset.id) {
-        let imgConfig = null;
         for (const key in window.HOVER_IMAGES) {
             if (btn.dataset.id.endsWith(`_${key}`) || btn.dataset.id === key) {
                 imgConfig = window.HOVER_IMAGES[key];
+                anchorEl = btn;
                 break;
             }
         }
+    } else if (titleEl) {
+        const titleKey = (titleEl.textContent || '').trim();
+        if (titleKey && window.HOVER_IMAGES[titleKey]) {
+            imgConfig = window.HOVER_IMAGES[titleKey];
+            anchorEl = titleEl;
+        }
+    }
 
-        if (imgConfig) {
-            const tooltip = document.getElementById('image-tooltip');
-            const img = document.getElementById('image-tooltip-img');
-            if (tooltip && img) {
-                const isObj = typeof imgConfig === 'object' && imgConfig !== null;
-                const url = isObj ? imgConfig.url : imgConfig;
-                const size = isObj && imgConfig.size ? imgConfig.size : '500px';
-                const numericSize = parseInt(size, 10) || 500;
+    if (imgConfig && anchorEl) {
+        const tooltip = document.getElementById('image-tooltip');
+        const img = document.getElementById('image-tooltip-img');
+        if (tooltip && img) {
+            const isObj = typeof imgConfig === 'object' && imgConfig !== null;
+            const url = isObj ? imgConfig.url : imgConfig;
+            const size = isObj && imgConfig.size ? imgConfig.size : '500px';
+            const numericSize = parseInt(size, 10) || 500;
 
-                img.src = url;
-                img.style.maxWidth = size;
-                img.style.maxHeight = size;
-                tooltip.style.display = 'block';
-                
-                const rect = btn.getBoundingClientRect();
-                let leftPos = rect.right + 10;
-                let topPos = rect.top;
-                
-                if (leftPos + numericSize > window.innerWidth) leftPos = rect.left - (numericSize + 10);
-                if (topPos + numericSize > window.innerHeight) topPos = window.innerHeight - (numericSize + 10);
-                
-                tooltip.style.left = `${leftPos}px`;
-                tooltip.style.top = `${topPos}px`;
-            }
+            img.src = url;
+            img.style.maxWidth = size;
+            img.style.maxHeight = size;
+            tooltip.style.display = 'block';
+
+            const rect = anchorEl.getBoundingClientRect();
+            let leftPos = rect.right + 10;
+            let topPos = rect.top;
+
+            if (leftPos + numericSize > window.innerWidth) leftPos = rect.left - (numericSize + 10);
+            if (topPos + numericSize > window.innerHeight) topPos = window.innerHeight - (numericSize + 10);
+
+            tooltip.style.left = `${leftPos}px`;
+            tooltip.style.top = `${topPos}px`;
         }
     }
 });
@@ -4075,7 +4085,8 @@ document.addEventListener('mouseout', e => {
     }
 
     const btn = e.target.closest('.btn');
-    if (btn && btn.dataset.id) {
+    const titleEl = e.target.closest('.sub-table-title');
+    if ((btn && btn.dataset.id) || titleEl) {
         const tooltip = document.getElementById('image-tooltip');
         if (tooltip) tooltip.style.display = 'none';
     }

@@ -134,7 +134,7 @@ const RegionAbdomen = {
             // 7. Pankreas
             layoutNodes.push(helpers.TableMain('abdomen_pankreas_main', 'Pankreas', [
                 helpers.Table2colNormal('pa_table', [
-                    [ 'Atrofie', { btn: 'pa_atr', states: ['0', 'mírná', 'výrazná', 'lipomatózní'] } ],
+                    [ 'Atrofie', { btn: 'pa_atr', states: ['0', 'mírná', 'výrazná', 'lipomatózní', 'kalcifikace'] } ],
                     [ 'Dilat. Wirsungu', { btn: 'pa_wir', states: ['0', '+'] }, { field: 'mm', id: 'pa_wir_mm', placeholder: 'mm' } ],
                     [ 'Cystoid', { btn: 'pa_cys', states: ['0', '1', 'více'] }, { field: 'mm', id: 'pa_cys_mm', placeholder: 'mm' } ],
                     [ 'Operace', { btn: 'pa_op', states: ['0', 'duodenopankreat.', 'total pankreat.', 'kauda', 'nekrektomie'] } ]
@@ -584,10 +584,19 @@ const RegionAbdomen = {
 
             // 7. Pankreas
             let paRep = [];
-            let paAtr = ctx.text('pa_atr'); if (paAtr && paAtr !== '0') { paRep.push(`${paAtr} atrofie`); concInc.push({ type: 'frame', text: "Atrofie pankreatu.", tableId: 'abdomen_pankreas_main' }); }
-            if (ctx.isActive('pa_wir')) { let mm = ctx.field('pa_wir_mm'); paRep.push(`dilatace ductus Wirsungi${mm ? ' na ' + mm + ' mm' : ''}`); concMain.push({ type: 'frame', text: "Dilatace vývodu pankreatu.", tableId: 'abdomen_pankreas_main' }); }
+            let paAtr = ctx.text('pa_atr');
+            if (paAtr && paAtr !== '0') {
+                if (paAtr === 'kalcifikace') {
+                    paRep.push('atrofie s mnohočetnými kalcifikacemi');
+                    concInc.push({ type: 'frame', text: "Chronická pankreatitis s kalcifikacemi.", tableId: 'abdomen_pankreas_main' });
+                } else {
+                    paRep.push(`${paAtr} atrofie`);
+                    concInc.push({ type: 'frame', text: "Atrofie pankreatu.", tableId: 'abdomen_pankreas_main' });
+                }
+            }
+            if (ctx.isActive('pa_wir')) { let mm = ctx.field('pa_wir_mm'); paRep.push(`dilatace ductus Wirsungi${mm ? ' na ' + mm + ' mm' : ''}`); concInc.push({ type: 'frame', text: "Dilatace vývodu pankreatu.", tableId: 'abdomen_pankreas_main' }); }
             let paCys = ctx.text('pa_cys'); if (paCys && paCys !== '0') { let mm = ctx.field('pa_cys_mm'); paRep.push(`${paCys === '1' ? 'cystoidní léze' : 'vícečetné cystoidní léze'}${mm ? ' vel. do ' + mm + ' mm' : ''}`); concInc.push({ type: 'frame', text: `${paCys === '1' ? 'Cystoidní léze' : 'Vícečetné cystoidní léze'} pankreatu.`, tableId: 'abdomen_pankreas_main' }); }
-            let paOp = ctx.text('pa_op'); if (paOp && paOp !== '0') paRep.push(`stav po ${paOp === 'duodenopankreat.' ? 'duodenopanreatektomii' : paOp === 'totální gastrekt.' ? 'totální pankreatektomii' : paOp === 'kauda' ? 'resekci kaudy' : 'nekrektomii'}`);
+            let paOp = ctx.text('pa_op'); if (paOp && paOp !== '0') paRep.push(`stav po ${paOp === 'duodenopankreat.' ? 'duodenopankreatektomii' : paOp === 'total pankreat.' ? 'totální pankreatektomii' : paOp === 'kauda' ? 'resekci kaudy' : 'nekrektomii'}`);
             let paDesc = ctx.field('pa_custom_desc'); if (paDesc) paRep.push(paDesc);
             if (paRep.length > 0) reportOut.push({ type: 'frame', text: `- Pankreas: ${formatList(paRep)}.`, tableId: 'abdomen_pankreas_main' });
             let paConc = ctx.field('pa_custom_conc'); if (paConc) concInc.push({ type: 'frame', text: paConc, tableId: 'abdomen_pankreas_main' });
