@@ -21,7 +21,7 @@ const RegionKnee = {
                 helpers.Table2colNormal('kn_fp_table', 'FP skloubení a chondropatie', [
                     [ 'Patelární:', [ { btn: 'kn_fp_pat_chp', states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: 'kn_fp_pat_lez', states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty'] }, { btn: 'kn_fp_pat_edem', states: ['bez edému', 'edém +', 'edém ++'] } ] ],
                     [ 'Femorální:', [ { btn: 'kn_fp_fem_chp', states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: 'kn_fp_fem_lez', states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty'] }, { btn: 'kn_fp_fem_edem', states: ['bez edému', 'edém +', 'edém ++'] } ] ],
-                    [ 'Artróza:', { btn: 'kn_fp_art', states: ['0', 'I', 'II', 'III'] } ]
+                    [ 'Osteofyty:', { btn: 'kn_fp_art', states: ['0', 'I', 'II', 'III'] } ]
                 ]),
                 helpers.Table2colNormal('kn_ant_comp_table', 'Ostatní přední kompartment', [
                     [ 'Jumpers knee:', { btn: 'kn_ant_jump', states: ['0', '+', 'S-L-J'] } ],
@@ -38,7 +38,7 @@ const RegionKnee = {
                     [ 'Chrupavka:', [ { btn: `${prefix}_chr_gr`, states: ['GR 0', 'GR 1', 'GR 2', 'GR 3', 'GR 4'] }, { btn: `${prefix}_chr_lez`, states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delaminace'] }, { btn: `${prefix}_chr_edem`, states: ['edém 0', 'edém +', 'edém ++'] } ] ],
                     [ 'Subchondr. kost:', [ { btn: `${prefix}_sub_sifk`, states: ['SIFK 0', 'SIFK +', 'SIFK ++'] }, { btn: `${prefix}_sub_ocl`, states: ['OCL 0', 'OCL I', 'OCL II', 'OCL III', 'OCL IV'] }, { btn: `${prefix}_sub_bml`, states: ['BML 0', 'BML +', 'BML ++', 'BML +++'] } ] ],
                     [ 'Fraktura:', { btn: `${prefix}_frac`, states: ['0', 'impakční', 'vertikální', 'komin.'] } ],
-                    [ 'Osteofyty:', { btn: `${prefix}_ost`, states: ['0', '+', '++', '+++'] } ]
+                    // osteofyty (dříve `${prefix}_ost`) byly odstraněny
                 ]);
 
                 const makeMeniscus = (id, title, prefix) => helpers.TableMain(id, title, [
@@ -66,7 +66,10 @@ const RegionKnee = {
                 return [
                     helpers.TableMain('knee_lat_comp_main', 'Laterální kompartment', [
                         makeCondyleTable('Laterální kondyl femuru (LFC)', 'kn_lfc'),
-                        makeCondyleTable('Laterální plato tibie (LTC)', 'kn_ltc')
+                        makeCondyleTable('Laterální plato tibie (LTC)', 'kn_ltc'),
+                        helpers.Table2colNormal('kn_lat_shared_ost_table', 'SPOLEČNÉ', [
+                            [ 'Osteofyty:', { btn: 'kn_lat_shared_ost', states: ['0', 'I', 'II', 'III'] } ]
+                        ])
                     ]),
                     makeMeniscus('knee_lm_main', 'Laterální meniskus (LM)', 'kn_lm'),
                     makeCollateralLigament('knee_lcl_main', 'Laterální kolaterální vaz', 'kn_lcl'),
@@ -74,7 +77,10 @@ const RegionKnee = {
                     // --- MEDIÁLNÍ KOMPARTMENT ---
                     helpers.TableMain('knee_med_comp_main', 'Mediální kompartment', [
                         makeCondyleTable('Mediální kondyl femuru (MFC)', 'kn_mfc'),
-                        makeCondyleTable('Mediální plato tibie (MTC)', 'kn_mtc')
+                        makeCondyleTable('Mediální plato tibie (MTC)', 'kn_mtc'),
+                        helpers.Table2colNormal('kn_med_shared_ost_table', 'SPOLEČNÉ', [
+                            [ 'Osteofyty:', { btn: 'kn_med_shared_ost', states: ['0', 'I', 'II', 'III'] } ]
+                        ])
                     ]),
                     makeMeniscus('knee_mm_main', 'Mediální meniskus (MM)', 'kn_mm'),
                     makeCollateralLigament('knee_mcl_main', 'Mediální kolaterální vaz', 'kn_mcl')
@@ -504,14 +510,6 @@ const RegionKnee = {
                 struct.frac = fracMapConc[frac];
             }
 
-            const ost = ctx.text(`${prefix}_ost`);
-            if (ost && ost !== '0') {
-                hasPathology = true;
-                const ostMapRep = { '+': 'drobné marginální osteofyty', '++': 'marginální osteofyty', '+++': 'výrazné marginální osteofyty' };
-                repParts.push(ostMapRep[ost] || 'marginální osteofyty');
-                struct.osteo = 'gonartrózou';
-            }
-
             if (struct.frac) pathologies.push(struct.frac);
             if (struct.sifk) pathologies.push(struct.sifk);
             if (struct.ocl) pathologies.push(struct.ocl);
@@ -522,7 +520,6 @@ const RegionKnee = {
                 pathologies.push(p);
             }
             if (struct.edem) pathologies.push(struct.edem);
-            if (struct.osteo) pathologies.push(struct.osteo);
 
             let repText = "";
             let concsToPush = [];
@@ -697,14 +694,21 @@ const RegionKnee = {
         };
 
         // ═══ EXEKUCE LATERÁLNÍHO A MEDIÁLNÍHO KOMPARTMENTU ═══
-        const processCompartment = (femPrefix, tibPrefix, compName, tableId) => {
+        const processCompartment = (femPrefix, tibPrefix, compName, tableId, sharedOstBtnId) => {
             const fem = parseKneeCondyle(femPrefix, '', '', tableId);
             const tib = parseKneeCondyle(tibPrefix, '', '', tableId);
+            const ostShared = ctx.text(sharedOstBtnId);
+            const ostSharedTailMap = {
+                'I': 'přihrocení okrajových ploch skeletu',
+                'II': 'drobné marginální osteofyty',
+                'III': 'výrazné marginální osteofyty'
+            };
+            const ostSharedTail = (ostShared && ostShared !== '0') ? ostSharedTailMap[ostShared] : '';
             
             const isFemNormal = fem.dimmed;
             const isTibNormal = tib.dimmed;
 
-            if (isFemNormal && isTibNormal) {
+            if (isFemNormal && isTibNormal && !ostSharedTail) {
                 reportOut.push({ type: 'frame', text: `${compName} bez výraznější léze chrupavek či skeletu.`, tableId: tableId, dimmed: true });
                 return;
             }
@@ -713,12 +717,20 @@ const RegionKnee = {
             const tibTextClean = tib.text.replace(/\.$/, '');
 
             if (femTextClean === tibTextClean && !isFemNormal) {
-                reportOut.push({ type: 'frame', text: `${compName}: ${femTextClean}.`, tableId: tableId });
+                const extra = ostSharedTail ? `, ${ostSharedTail}` : '';
+                reportOut.push({ type: 'frame', text: `${compName}: ${femTextClean}${extra}.`, tableId: tableId });
             } else {
                 let parts = [];
                 if (!isFemNormal) parts.push(`femorálně ${femTextClean}`);
                 if (!isTibNormal) parts.push(`tibiálně ${tibTextClean}`);
-                reportOut.push({ type: 'frame', text: `${compName}: ${parts.join(', ')}.`, tableId: tableId });
+                const core = parts.join(', ');
+                if (core) {
+                    const extra = ostSharedTail ? `, ${ostSharedTail}` : '';
+                    reportOut.push({ type: 'frame', text: `${compName}: ${core}${extra}.`, tableId: tableId });
+                } else {
+                    // jen společné osteofyty (bez další kondylové léze)
+                    reportOut.push({ type: 'frame', text: `${compName}: ${ostSharedTail}.`, tableId: tableId });
+                }
             }
 
             const normalizeArr = (arr) => arr.map(i => i.startsWith('s ') ? i.substring(2) : (i.startsWith('se ') ? i.substring(3) : i));
@@ -752,7 +764,6 @@ const RegionKnee = {
                 if (struct.ocl) items.push(struct.ocl);
                 if (struct.chrLez) items.push(struct.chrLez);
                 if (struct.edem) items.push(struct.edem);
-                if (struct.osteo) items.push(struct.osteo);
 
                 if (items.length === 0) return '';
                 return addS(joinWithS(normalizeArr(items)));
@@ -769,7 +780,6 @@ const RegionKnee = {
                 
                 if (struct.chrLez) items.push(struct.chrLez);
                 if (struct.edem) items.push(struct.edem);
-                if (struct.osteo) items.push(struct.osteo);
 
                 if (items.length === 0) return '';
                 return addS(joinWithS(normalizeArr(items)));
@@ -819,13 +829,32 @@ const RegionKnee = {
             }
         };
 
-        processCompartment('kn_lfc', 'kn_ltc', 'Laterální kompartment', 'knee_lat_comp_main');
+        processCompartment('kn_lfc', 'kn_ltc', 'Laterální kompartment', 'knee_lat_comp_main', 'kn_lat_shared_ost');
         parseMeniscus('kn_lm', 'Laterální meniskus', 'laterálního menisku', 'LM', 'knee_lm_main');
         parseCollateralLigament('kn_lcl', 'Laterální kolaterální vaz', 'knee_lcl_main');
 
-        processCompartment('kn_mfc', 'kn_mtc', 'Mediální kompartment', 'knee_med_comp_main');
+        processCompartment('kn_mfc', 'kn_mtc', 'Mediální kompartment', 'knee_med_comp_main', 'kn_med_shared_ost');
         parseMeniscus('kn_mm', 'Mediální meniskus', 'mediálního menisku', 'MM', 'knee_mm_main');
         parseCollateralLigament('kn_mcl', 'Mediální kolaterální vaz', 'knee_mcl_main');
+
+        // Jednotná věta pro gonartrózu dle osteofytů v mediálním/laterálním kompartmentu
+        const ostLat = ctx.text('kn_lat_shared_ost');
+        const ostMed = ctx.text('kn_med_shared_ost');
+        const osteoRank = { '0': 0, 'I': 1, 'II': 2, 'III': 3 };
+        const osteoSeverity = { 'I': 'Mírná gonartróza', 'II': 'Gonartróza', 'III': 'Pokročilá gonartróza' };
+        if ((osteoRank[ostLat] || 0) > 0 || (osteoRank[ostMed] || 0) > 0) {
+            const rLat = osteoRank[ostLat] || 0;
+            const rMed = osteoRank[ostMed] || 0;
+            let sentence = '';
+            if (rLat > 0 && rMed > 0 && rLat === rMed) {
+                sentence = `${osteoSeverity[ostLat]} oboustranně.`;
+            } else if (rMed >= rLat && rMed > 0) {
+                sentence = `${osteoSeverity[ostMed]} s převahou mediálně.`;
+            } else {
+                sentence = `${osteoSeverity[ostLat]} s převahou laterálně.`;
+            }
+            concMain.push({ type: 'frame', text: sentence, tableId: 'knee_joint_main' });
+        }
 
         // ═══ KOMPILÁTOR PRO PŘEDNÍ ZKŘÍŽENÝ VAZ (ACL) ═══
         const aclRupt = ctx.text('kn_acl_rupt');

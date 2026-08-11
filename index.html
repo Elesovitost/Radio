@@ -2949,18 +2949,6 @@ function getExclusiveStates(globalId, nextVal) {
     return { block: false, states };
 }
 
-function getLinkedButtonIds(globalId) {
-    const pairs = [
-        ['_kn_lfc_ost', '_kn_ltc_ost'],
-        ['_kn_mfc_ost', '_kn_mtc_ost']
-    ];
-    for (const [a, b] of pairs) {
-        if (globalId.endsWith(a)) return [globalId.slice(0, -a.length) + b];
-        if (globalId.endsWith(b)) return [globalId.slice(0, -b.length) + a];
-    }
-    return [];
-}
-
 function cycleState(globalId, dir = 1) {
     const cfg = ButtonConfigs[globalId];
     if (!cfg || cfg.type !== 'standard') return;
@@ -2971,11 +2959,7 @@ function cycleState(globalId, dir = 1) {
     const excl = getExclusiveStates(globalId, next);
     if (excl.block) return;
     
-    const nextStates = { ...(excl.states || Store.buttonStates), [globalId]: next };
-    getLinkedButtonIds(globalId).forEach(linkedId => {
-        nextStates[linkedId] = next;
-    });
-    Store.buttonStates = nextStates;
+    Store.buttonStates = { ...(excl.states || Store.buttonStates), [globalId]: next };
     
     const nextStateStr = cfg.states[next];
     if (nextStateStr === 'custom') {
