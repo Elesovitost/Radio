@@ -534,9 +534,16 @@ const RegionAbdomen = {
 
             // 3. Játra
             let jaRep = [];
-            let jaCys = checkSide('ja_cys'); if (jaCys) jaRep.push(`${jaCys.isPlural ? 'prosté cysty' : 'prostá cysta'} ${jaCys.p !== '0' && jaCys.l !== '0' ? 'v obou lalocích' : jaCys.isP ? 'v pravém laloku' : 'v levém laloku'}`);
-            let jaInc = checkSide('ja_inc'); if (jaInc) { jaRep.push(`${jaInc.isPlural ? 'necharakteristická ložiska' : 'necharakteristické ložisko'} ${jaInc.p !== '0' && jaInc.l !== '0' ? 'v obou lalocích' : jaInc.isP ? 'v pravém laloku' : 'v levém laloku'}`); concInc.push({ type: 'frame', text: `${jaInc.isPlural ? 'Incidentalomy' : 'Incidentalom'} ${jaInc.p !== '0' && jaInc.l !== '0' ? 'v obou lalocích' : jaInc.isP ? 'v pravém laloku jater' : 'v levém laloku jater'} k dovyšetření.`, tableId: 'abdomen_jatra_main' }); }
-            let jaHem = checkSide('ja_hem'); if (jaHem) jaRep.push(`${jaHem.isPlural ? 'ložiska' : 'ložisko'} s periferním sycením (${jaHem.isPlural ? 'hemangiomy' : 'hemangiom'}) ${jaHem.p !== '0' && jaHem.l !== '0' ? 'v obou lalocích' : jaHem.isP ? 'v pravém laloku' : 'v levém laloku'}`);
+            const jaFocalText = (side, one, many, manyVicetne) => {
+                const both = side.p !== '0' && side.l !== '0';
+                const vicetne = side.p === 'více' || side.l === 'více';
+                if (both) return vicetne ? manyVicetne : many;
+                const loc = side.isP ? ' v pravém laloku' : ' v levém laloku';
+                return (vicetne ? manyVicetne : one) + loc;
+            };
+            let jaCys = checkSide('ja_cys'); if (jaCys) jaRep.push(jaFocalText(jaCys, 'prostá cysta', 'prosté cysty', 'vícečetné prosté cysty'));
+            let jaInc = checkSide('ja_inc'); if (jaInc) { jaRep.push(jaFocalText(jaInc, 'necharakteristické ložisko', 'necharakteristická ložiska', 'vícečetná necharakteristická ložiska')); const both = jaInc.p !== '0' && jaInc.l !== '0'; const vicetne = jaInc.p === 'více' || jaInc.l === 'více'; const incConc = both ? (vicetne ? 'Vícečetné incidentalomy k dovyšetření.' : 'Incidentalomy k dovyšetření.') : (vicetne ? `Vícečetné incidentalomy ${jaInc.isP ? 'v pravém laloku' : 'v levém laloku'} jater k dovyšetření.` : `Incidentalom ${jaInc.isP ? 'v pravém laloku' : 'v levém laloku'} jater k dovyšetření.`); concInc.push({ type: 'frame', text: incConc, tableId: 'abdomen_jatra_main' }); }
+            let jaHem = checkSide('ja_hem'); if (jaHem) jaRep.push(jaFocalText(jaHem, 'ložisko s periferním sycením (hemangiom)', 'ložiska s periferním sycením (hemangiomy)', 'vícečetná ložiska s periferním sycením (hemangiomy)'));
             let jaDil = checkSide('ja_dil'); if (jaDil) { jaRep.push(`dilatace intrahepatálních žlučovodů ${jaDil.p !== '0' && jaDil.l !== '0' ? 'v obou lalocích' : jaDil.isP ? 'v pravém laloku' : 'v levém laloku'}`); concInc.push({ type: 'frame', text: `Dilatace intrahepatálních žlučovodů ${jaDil.p !== '0' && jaDil.l !== '0' ? 'v obou lalocích' : jaDil.isP ? 'v pravém laloku' : 'v levém laloku'}.`, tableId: 'abdomen_jatra_main' }); }
             let jaZvet = ctx.text('ja_zvet'); if (jaZvet && jaZvet !== '0') { jaRep.push(`${jaZvet} zvětšení`); concInc.push({ type: 'frame', text: `${cap(jaZvet)} hepatomegalie.`, tableId: 'abdomen_jatra_main' }); }
             let jaDif = ctx.text('ja_dif'); if (jaDif === 'fibróza') jaRep.push("parenchym mírně nehomogenní"); else if (jaDif === 'cirhóza') { jaRep.push("zmenšení s laločnatým povrchem"); concMain.push({ type: 'frame', text: "Známky jaterní cirhózy.", tableId: 'abdomen_jatra_main' }); }

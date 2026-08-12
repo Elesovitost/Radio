@@ -332,11 +332,15 @@ const RegionNeck = {
             if (ctx.isActive('thyr_enl')) thyroidParts.push('štítná žláza je difuzně zvětšená');
             if (ctx.isActive('thyr_rf'))  thyroidParts.push('štítná žláza s difuzně zvýšenou akumulací RF');
 
+            const thyrResR = ctx.isActive('thyr_res_r');
+            const thyrResL = ctx.isActive('thyr_res_l');
+            if (thyrResR && thyrResL) thyroidParts.push('chybí po TTE');
+            else if (thyrResR) thyroidParts.push('chybí pravý lalok po resekci');
+            else if (thyrResL) thyroidParts.push('chybí levý lalok po resekci');
+
             let thyroidStates = ctx.mapStates({
                 separator: ', ',
                 items: [
-                    { id: 'thyr_res_r', 1: 'stav po resekci vpravo' },
-                    { id: 'thyr_res_l', 1: 'stav po resekci vlevo' },
                     { id: 'thyr_nod_r', 1: 'nespecifický drobný nodul vpravo', 2: 'nespecifické drobné noduly vpravo' },
                     { id: 'thyr_nod_l', 1: 'nespecifický drobný nodul vlevo', 2: 'nespecifické drobné noduly vlevo' },
                     { id: 'thyr_nod_rf_r', 1: 'RF aktivní nodul vpravo', 2: 'RF aktivní noduly vpravo' },
