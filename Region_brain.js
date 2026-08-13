@@ -789,7 +789,7 @@ const RegionBrain = {
         if (cpaConc) concInc.push({ type: 'frame', text: cpaConc, tableId: 'brain_cpa_main' });
 
         if (cpaRep.length === 0 && !hasMmkLesion) {
-            reportOut.push({ type: 'frame', text: 'Struktury v MMK a vnitřních zvukovodech bez patrné patologie.', tableId: 'brain_cpa_main', dimmed: true });
+            reportOut.push({ type: 'frame', text: 'Oblast MMK a vnitřních zvukovodů bez patrné patologie.', tableId: 'brain_cpa_main', dimmed: true });
         } else if (cpaRep.length > 0) {
             reportOut.push({ type: 'frame', text: cap(formatCzechList(cpaRep)) + '.', tableId: 'brain_cpa_main' });
         }
@@ -1159,6 +1159,10 @@ const RegionBrain = {
 
         if (concMain.length === 0 && concInc.length === 0) {
             concMain.push({ type: 'frame', text: 'Přiměřený nález bez patrné ložiskové patologie.' });
+        }
+
+        if ((examId || '').toLowerCase().startsWith('ct')) {
+            reportOut.forEach(b => { if (b.text) b.text = b.text.replaceAll('T2W+ FLAIR+', 'hypodenzní'); });
         }
 
         return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };
