@@ -19,8 +19,8 @@ const RegionKnee = {
                     [ 'St.p. luxaci:', { btn: 'kn_pat_lux', states: ['0', '+', '+ fr'] } ]
                 ]),
                 helpers.Table2colNormal('kn_fp_table', 'FP skloubení a chondropatie', [
-                    [ 'Patelární:', [ { btn: 'kn_fp_pat_chp', states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: 'kn_fp_pat_lez', states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty'] }, { btn: 'kn_fp_pat_edem', states: ['bez edému', 'edém +', 'edém ++'] } ] ],
-                    [ 'Femorální:', [ { btn: 'kn_fp_fem_chp', states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: 'kn_fp_fem_lez', states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty'] }, { btn: 'kn_fp_fem_edem', states: ['bez edému', 'edém +', 'edém ++'] } ] ],
+                    [ 'Patelární:', [ { btn: 'kn_fp_pat_chp', states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: 'kn_fp_pat_lez', states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delaminace'] }, { btn: 'kn_fp_pat_edem', states: ['bez edému', 'edém +', 'edém ++'] } ] ],
+                    [ 'Femorální:', [ { btn: 'kn_fp_fem_chp', states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: 'kn_fp_fem_lez', states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delaminace'] }, { btn: 'kn_fp_fem_edem', states: ['bez edému', 'edém +', 'edém ++'] } ] ],
                     [ 'Osteofyty:', { btn: 'kn_fp_art', states: ['0', 'I', 'II', 'III'] } ]
                 ]),
                 helpers.Table2colNormal('kn_ant_comp_table', 'Ostatní přední kompartment', [
@@ -35,10 +35,9 @@ const RegionKnee = {
             // --- KONDYLY A MENISKY ---
             ...(() => {
                 const makeCondyleTable = (title, prefix) => helpers.Table2colNormal(`${prefix}_table`, title, [
-                    [ 'Chrupavka:', [ { btn: `${prefix}_chr_gr`, states: ['GR 0', 'GR 1', 'GR 2', 'GR 3', 'GR 4'] }, { btn: `${prefix}_chr_lez`, states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delaminace'] }, { btn: `${prefix}_chr_edem`, states: ['edém 0', 'edém +', 'edém ++'] } ] ],
+                    [ 'Chrupavka:', [ { btn: `${prefix}_chr_gr`, states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: `${prefix}_chr_lez`, states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delaminace'] }, { btn: `${prefix}_chr_edem`, states: ['edém 0', 'edém +', 'edém ++'] } ] ],
                     [ 'Subchondr. kost:', [ { btn: `${prefix}_sub_sifk`, states: ['SIFK 0', 'SIFK +', 'SIFK ++'] }, { btn: `${prefix}_sub_ocl`, states: ['OCL 0', 'OCL I', 'OCL II', 'OCL III', 'OCL IV'] }, { btn: `${prefix}_sub_bml`, states: ['BML 0', 'BML +', 'BML ++', 'BML +++'] } ] ],
-                    [ 'Fraktura:', { btn: `${prefix}_frac`, states: ['0', 'impakční', 'vertikální', 'komin.'] } ],
-                    // osteofyty (dříve `${prefix}_ost`) byly odstraněny
+                    [ 'Fraktura:', { btn: `${prefix}_frac`, states: ['0', 'impakční', 'vertikální', 'komin.'] } ]
                 ]);
 
                 const makeMeniscus = (id, title, prefix) => helpers.TableMain(id, title, [
@@ -145,6 +144,85 @@ const RegionKnee = {
         const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
         const examId = ctx.examId || 'default';
         
+        // --- HELPERY PRO CHRUPAVKY A SKELET ---
+        const getChondroRep = (grade, lesion, edema, nameRep) => {
+            if ((!grade || grade === 'GR 0') && (!lesion || lesion === 'Léze 0') && (!edema || edema === 'edém 0' || edema === 'bez edému')) return null;
+
+            let cRep = `Chrupavka ${nameRep}`;
+            const lezMapGrammar = { 'Fisura': 'fisurou', 'Fisury': 'fisurami', 'Defekt': 'defektem', 'Defekty': 'defekty', 'Delaminace': 'delaminací' };
+            let hasLez = lesion && lesion !== 'Léze 0';
+            let lesionText = hasLez ? lezMapGrammar[lesion] : '';
+
+            if (grade && grade !== 'GR 0') {
+                if (grade === 'GR I') {
+                    cRep += hasLez ? ` se signálovými změnami, ${lesionText}` : ` se signálovými změnami`;
+                } else if (grade === 'GR II') {
+                    cRep += hasLez ? ` s ${lesionText} do zevní poloviny` : ` snížena do poloviny tloušťky`;
+                } else if (grade === 'GR III') {
+                    cRep += hasLez ? ` s ${lesionText} do vnitřní poloviny` : ` snížena o více jak polovinu tloušťky`;
+                } else if (grade === 'GR IV') {
+                    cRep += hasLez ? ` s ${lesionText} až ke kosti` : ` prakticky chybí`;
+                }
+            } else if (hasLez) {
+                cRep += ` s ${lesionText}`;
+            } else {
+                cRep += ` normální šíře`;
+            }
+
+            if (edema && edema !== 'edém 0' && edema !== 'bez edému') {
+                const edemText = (edema === 'edém +') ? 'mírným subchondrálním edémem' : 'výrazným subchondrálním edémem';
+                cRep += (cRep.includes(' s ') || cRep.includes(' se ')) ? ' a ' + edemText : ' s ' + edemText;
+            }
+            return cRep;
+        };
+
+        const getChondroConc = (grade, lesion, edema, nameConc) => {
+            if ((!grade || grade === 'GR 0') && (!lesion || lesion === 'Léze 0') && (!edema || edema === 'edém 0' || edema === 'bez edému')) return null;
+
+            const lezMapConc = { 'Fisura': 'fisurou', 'Fisury': 'fisurami', 'Defekt': 'defektem', 'Defekty': 'defekty', 'Delaminace': 'delaminací' };
+            let hasLez = lesion && lesion !== 'Léze 0';
+            let lesionText = hasLez ? lezMapConc[lesion] : '';
+            let gradeText = (grade && grade !== 'GR 0') ? grade.replace('GR ', 'gr.') : '';
+
+            let res = gradeText ? `${gradeText} ${nameConc}` : `${nameConc}`;
+            res = res.trim();
+
+            let modifiers = [];
+            if (hasLez) modifiers.push(lesionText);
+            if (edema && edema !== 'edém 0' && edema !== 'bez edému') {
+                modifiers.push(edema === 'edém +' ? 'mírným subchondrálním edémem' : 'subchondrálním edémem');
+            }
+
+            if (modifiers.length > 0) {
+                res += ` s ${modifiers.join(' a ')}`;
+            }
+            return res;
+        };
+
+        const getBonePathologies = (prefix) => {
+            let frac = ctx.text(`${prefix}_frac`);
+            let sifk = ctx.text(`${prefix}_sub_sifk`);
+            let ocl = ctx.text(`${prefix}_sub_ocl`);
+            let bml = ctx.text(`${prefix}_sub_bml`);
+
+            let paths = [];
+            if (frac && frac !== '0') {
+                const fracMap = { 'impakční': 'impakční frakturou', 'vertikální': 'vertikální frakturou', 'komin.': 'kominutivní frakturou' };
+                paths.push(fracMap[frac]);
+            }
+            if (sifk && sifk !== 'SIFK 0') {
+                paths.push(sifk === 'SIFK +' ? 'SIFK' : 'SIFK s fokálním kolapsem');
+            }
+            if (ocl && ocl !== 'OCL 0') {
+                paths.push(`osteochondrální lézí ${ocl.replace('OCL ', '')}. st.`);
+            }
+            if (bml && bml !== 'BML 0') {
+                const bmlMap = { 'BML +': 'mírným edémem dřeně', 'BML ++': 'středním edémem dřeně', 'BML +++': 'výrazným edémem dřeně' };
+                paths.push(bmlMap[bml]);
+            }
+            return paths;
+        };
+
         // ═══ KLOUBNÍ DUTINA ═══
         let jointRep = [];
         
@@ -189,358 +267,135 @@ const RegionKnee = {
 
         // ═══ PATELLA A FP SKLOUBENÍ ═══
         let patRep = [];
-        let fpRep = [];
         let antRep = [];
-        let patConc = [];
-        let fpConc = [];
-        let antConc = [];
         let hasPatellaPathology = false;
 
         let wib = ctx.text('kn_pat_wib');
-        if (wib && wib !== '0') {
-            patRep.push(`patella tvaru Wiberg ${wib}`);
-            hasPatellaPathology = true;
-        }
-
+        if (wib && wib !== '0') { patRep.push(`patella tvaru Wiberg ${wib}`); hasPatellaPathology = true; }
         let bip = ctx.text('kn_pat_bip');
-        if (bip && bip !== '0') {
-            patRep.push('patella bipartita');
-            patConc.push('Patella bipartita');
-            hasPatellaPathology = true;
-        }
-
+        if (bip && bip !== '0') { patRep.push('patella bipartita'); concMain.push({ type: 'frame', text: 'Patella bipartita.', tableId: 'knee_patella_main' }); hasPatellaPathology = true; }
         let tilt = ctx.text('kn_pat_tilt');
         if (tilt === '+') {
             let deg = ctx.field('kn_pat_tilt_deg');
             patRep.push(`laterální tilt patelly${deg ? ` ${deg}°` : ''}`);
-            if (deg && parseInt(deg) > 15) patConc.push('Laterální tilt patelly');
+            if (deg && parseInt(deg) > 15) concMain.push({ type: 'frame', text: 'Laterální tilt patelly.', tableId: 'knee_patella_main' });
             hasPatellaPathology = true;
         }
-
         let lux = ctx.text('kn_pat_lux');
         if (lux && lux !== '0') {
             let isFr = lux === '+ fr';
             patRep.push(`ložiska edému kostní dřeně mediální hrany patelly ${isFr ? '(s frakturou) ' : ''}a ventrolaterálního kondylu femuru. Vysoká SI v oblasti rozšířeného MPFL`);
-            patConc.push(`St.p. laterální luxaci patelly a odpovídajícím postkontuzním edémem patelly ${isFr ? '(s frakturou med. hrany) ' : ''}a later. femuru a porušením MPFL`);
+            concMain.push({ type: 'frame', text: `St.p. laterální luxaci patelly a odpovídajícím postkontuzním edémem patelly ${isFr ? '(s frakturou med. hrany) ' : ''}a later. femuru a porušením MPFL.`, tableId: 'knee_patella_main' });
             hasPatellaPathology = true;
-        }
-
-        const parseChp = (chp, lez, edem, locRep, locConc) => {
-            if ((!chp || chp === 'GR 0') && (!lez || lez === 'Léze 0') && (!edem || edem === 'bez edému')) return null;
-            hasPatellaPathology = true;
-            
-            let repText = `chrupavka ${locRep}`;
-            let concText = '';
-
-            const gradeMapConc = { 'GR I': 'gr.I', 'GR II': 'gr.II', 'GR III': 'gr.III', 'GR IV': 'gr.IV' };
-            let hasChp = chp && chp !== 'GR 0';
-            let hasLez = lez && lez !== 'Léze 0';
-
-            const lMap = {'Fisura': 'fisurou', 'Fisury': 'fisurami', 'Defekt': 'defektem', 'Defekty': 'defekty'};
-            let lezWord = hasLez ? lMap[lez] : '';
-
-            if (hasChp) {
-                if (chp === 'GR I') {
-                    repText += hasLez ? ` se signálovými změnami a ${lezWord}` : ` se signálovými změnami`;
-                } else if (chp === 'GR II') {
-                    repText += hasLez ? ` s ${lezWord} do zevní poloviny` : ` snížena do poloviny tloušťky`;
-                } else if (chp === 'GR III') {
-                    repText += hasLez ? ` s ${lezWord} do vnitřní poloviny` : ` snížena o více jak polovinu tloušťky`;
-                } else if (chp === 'GR IV') {
-                    repText += hasLez ? ` s ${lezWord} až ke kosti` : ` prakticky chybí`;
-                }
-                concText = `${gradeMapConc[chp]} ${locConc}`;
-            } else {
-                if (hasLez) {
-                    repText += ` s ${lezWord}`;
-                } else {
-                    repText += ` normální šíře`; 
-                }
-            }
-            
-            if (edem && edem !== 'bez edému') {
-                repText += (repText.includes(' s ') || repText.includes(' se ')) ? ' a ' : ' s ';
-                repText += (edem === 'edém +' ? 'mírným subchondrálním edémem' : 'výrazným subchondrálním edémem');
-            }
-            
-            return { rep: repText, conc: concText };
-        };
-
-        let patChp = parseChp(ctx.text('kn_fp_pat_chp'), ctx.text('kn_fp_pat_lez'), ctx.text('kn_fp_pat_edem'), 'patelly', 'patelárně');
-        let femChp = parseChp(ctx.text('kn_fp_fem_chp'), ctx.text('kn_fp_fem_lez'), ctx.text('kn_fp_fem_edem'), 'ventr. femuru', 'femorálně');
-
-        let fpChpConc = [];
-        if (patChp) { fpRep.push(patChp.rep); if (patChp.conc) fpChpConc.push(patChp.conc); }
-        if (femChp) { fpRep.push(femChp.rep); if (femChp.conc) fpChpConc.push(femChp.conc); }
-
-        let art = ctx.text('kn_fp_art');
-        if (art && art !== '0') {
-            hasPatellaPathology = true;
-            const artMapRep = { 'I': 'počínající marginální osteofyty', 'II': 'marginální osteofyty', 'III': 'výrazné marginální osteofyty' };
-            fpRep.push(artMapRep[art]);
-            fpConc.push(`FP artróza ${art}.st.`);
         }
 
         let jump = ctx.text('kn_ant_jump');
         if (jump && jump !== '0') {
             hasPatellaPathology = true;
-            if (jump === '+') {
-                antRep.push('zvýšená SI prox. úponu patelární šlachy a okolních měkkých tkání');
-                antConc.push('Edém prox. úponu patelární šlachy a okolí obrazu skokanského kolena (Jumper\'s knee)');
-            } else if (jump === 'S-L-J') {
-                antRep.push('zvýšená SI prox. úponu patelární šlachy, okolních měkkých tkání a apexu patelly');
-                antConc.push('Edém prox. úponu patelární šlachy a okolí obrazu Sinding-Larsen-Johansson syndromu');
-            }
+            if (jump === '+') { antRep.push('zvýšená SI prox. úponu patelární šlachy a okolních měkkých tkání'); concMain.push({ type: 'frame', text: 'Edém prox. úponu patelární šlachy a okolí obrazu skokanského kolena (Jumper\'s knee).', tableId: 'knee_patella_main' }); }
+            else if (jump === 'S-L-J') { antRep.push('zvýšená SI prox. úponu patelární šlachy, okolních měkkých tkání a apexu patelly'); concMain.push({ type: 'frame', text: 'Edém prox. úponu patelární šlachy a okolí obrazu Sinding-Larsen-Johansson syndromu.', tableId: 'knee_patella_main' }); }
         }
-
         let osg = ctx.text('kn_ant_osg');
         if (osg && osg !== '0') {
             hasPatellaPathology = true;
-            if (osg === 'st.p.') {
-                antRep.push('nepravidelnosti a prominence distálního úponu patelární šlachy na tuberositas tibiae');
-                antConc.push('Stav po Osgood-Schlatterově chorobě');
-            } else if (osg === 'aktivní') {
-                antRep.push('prominence a fragmentace tuberositas tibiae se subchondrálním edémem kostní dřeně a zvýšenou SI distálního úponu patelární šlachy');
-                antConc.push('Aktivní Osgood-Schlatterova choroba');
-            }
+            if (osg === 'st.p.') { antRep.push('nepravidelnosti a prominence distálního úponu patelární šlachy na tuberositas tibiae'); concMain.push({ type: 'frame', text: 'Stav po Osgood-Schlatterově chorobě.', tableId: 'knee_patella_main' }); }
+            else if (osg === 'aktivní') { antRep.push('prominence a fragmentace tuberositas tibiae se subchondrálním edémem kostní dřeně a zvýšenou SI distálního úponu patelární šlachy'); concMain.push({ type: 'frame', text: 'Aktivní Osgood-Schlatterova choroba.', tableId: 'knee_patella_main' }); }
         }
-
         let plica = ctx.text('kn_ant_plica');
-        if (plica === '+') {
-            hasPatellaPathology = true;
-            antRep.push('zbytnělá mediální patelární plika');
-            antConc.push('Zbytnělá plica medialis patellaris');
-        }
-
+        if (plica === '+') { hasPatellaPathology = true; antRep.push('zbytnělá mediální patelární plika'); concMain.push({ type: 'frame', text: 'Zbytnělá plica medialis patellaris.', tableId: 'knee_patella_main' }); }
         let hoffa = ctx.text('kn_ant_hoffa');
-        if (hoffa === '+') {
-            hasPatellaPathology = true;
-            antRep.push('edém Hoffova tukového tělesa');
-            antConc.push('Edém Hoffova tukového tělesa (Hoffitis)');
-        }
-
+        if (hoffa === '+') { hasPatellaPathology = true; antRep.push('edém Hoffova tukového tělesa'); concMain.push({ type: 'frame', text: 'Edém Hoffova tukového tělesa (Hoffitis).', tableId: 'knee_patella_main' }); }
         let imp = ctx.text('kn_ant_imp');
-        if (imp === '+') {
-            hasPatellaPathology = true;
-            antRep.push('vysoká SI suprapatelárního tukového tělesa');
-            antConc.push('Suprapatelární fat pad impingement syndrom');
-        }
+        if (imp === '+') { hasPatellaPathology = true; antRep.push('vysoká SI suprapatelárního tukového tělesa'); concMain.push({ type: 'frame', text: 'Suprapatelární fat pad impingement syndrom.', tableId: 'knee_patella_main' }); }
+
+        let fpPatRep = getChondroRep(ctx.text('kn_fp_pat_chp'), ctx.text('kn_fp_pat_lez'), ctx.text('kn_fp_pat_edem'), 'patelly');
+        let fpFemRep = getChondroRep(ctx.text('kn_fp_fem_chp'), ctx.text('kn_fp_fem_lez'), ctx.text('kn_fp_fem_edem'), 'ventr. femuru');
+        let fpPatConc = getChondroConc(ctx.text('kn_fp_pat_chp'), ctx.text('kn_fp_pat_lez'), ctx.text('kn_fp_pat_edem'), 'patelárně');
+        let fpFemConc = getChondroConc(ctx.text('kn_fp_fem_chp'), ctx.text('kn_fp_fem_lez'), ctx.text('kn_fp_fem_edem'), 'femorálně');
+        let art = ctx.text('kn_fp_art');
+
+        if (fpPatRep || fpFemRep || (art && art !== '0')) hasPatellaPathology = true;
 
         if (!hasPatellaPathology) {
             reportOut.push({ type: 'frame', text: 'Patella obvyklého vzhledu, FP chrupavky nesníženy bez výraznější léze.', tableId: 'knee_patella_main', dimmed: true });
         } else {
-            let combinedReport = [];
-            
-            if (patRep.length > 0) combinedReport.push(cap(patRep.join(', ').replace(/, ([^,]*)$/, ' a $1')) + '.');
-            if (fpRep.length > 0) combinedReport.push(cap(fpRep.join(', ').replace(/, ([^,]*)$/, ' a $1')) + '.');
-            if (antRep.length > 0) combinedReport.push(cap(antRep.join(', ').replace(/, ([^,]*)$/, ' a $1')) + '.');
-            
-            if (combinedReport.length > 0) {
-                reportOut.push({ type: 'frame', text: combinedReport.join(' '), tableId: 'knee_patella_main' });
+            if (patRep.length > 0) reportOut.push({ type: 'frame', text: cap(patRep.join(', ').replace(/, ([^,]*)$/, ' a $1')) + '.', tableId: 'knee_patella_main' });
+
+            let fpReportParts = [];
+            if (fpPatRep) fpReportParts.push(fpPatRep + '.');
+            if (fpFemRep) fpReportParts.push(fpFemRep + '.');
+            if (art && art !== '0') {
+                const artMapRep = { 'I': 'Počínající marginální osteofyty.', 'II': 'Marginální osteofyty.', 'III': 'Výrazné marginální osteofyty.' };
+                fpReportParts.push(artMapRep[art]);
+                concMain.push({ type: 'frame', text: `FP artróza ${art}.st.`, tableId: 'knee_patella_main' });
             }
-            
-            patConc.forEach(c => concMain.push({ type: 'frame', text: c + '.', tableId: 'knee_patella_main' }));
-            antConc.forEach(c => concMain.push({ type: 'frame', text: c + '.', tableId: 'knee_patella_main' }));
-            
-            // FP chondropatie kompilátor
-            const patChpVal = ctx.text('kn_fp_pat_chp');
-            const femChpVal = ctx.text('kn_fp_fem_chp');
-            const patLezVal = ctx.text('kn_fp_pat_lez');
-            const femLezVal = ctx.text('kn_fp_fem_lez');
-            const patEdemVal = ctx.text('kn_fp_pat_edem');
-            const femEdemVal = ctx.text('kn_fp_fem_edem');
-
-            const gradeMap = { 'GR I': 'gr.I', 'GR II': 'gr.II', 'GR III': 'gr.III', 'GR IV': 'gr.IV' };
-            const gradeMapAdj = { 'GR I': 'Grade I', 'GR II': 'Grade II', 'GR III': 'Grade III', 'GR IV': 'Grade IV' };
-            const lezMapConc = { 'Fisura': 'fisurou', 'Fisury': 'fisurami', 'Defekt': 'defektem', 'Defekty': 'defekty' };
-            const edemMapConc = { 'edém +': 'mírným subchondrálním edémem', 'edém ++': 'subchondrálním edémem' };
-
-            let hasPatChp = patChpVal && patChpVal !== 'GR 0';
-            let hasFemChp = femChpVal && femChpVal !== 'GR 0';
-            let hasPatPath = (patLezVal && patLezVal !== 'Léze 0') || (patEdemVal && patEdemVal !== 'bez edému');
-            let hasFemPath = (femLezVal && femLezVal !== 'Léze 0') || (femEdemVal && femEdemVal !== 'bez edému');
-
-            if (hasPatChp || hasFemChp || hasPatPath || hasFemPath) {
-                let concText = '';
-                const formatS = (arr) => {
-                    if (arr.length === 0) return '';
-                    const joined = arr.join(' a ');
-                    return joined.startsWith('subchondrálním') ? `se ${joined}` : `s ${joined}`;
-                };
-
-                if (hasPatChp && hasFemChp && patChpVal === femChpVal) {
-                    concText = `${gradeMapAdj[patChpVal]} FP chondropatie`;
-                    if (patLezVal === femLezVal && patEdemVal === femEdemVal) {
-                        let commonAdd = [];
-                        if (patLezVal && patLezVal !== 'Léze 0') commonAdd.push(lezMapConc[patLezVal]);
-                        if (patEdemVal && patEdemVal !== 'bez edému') commonAdd.push(edemMapConc[patEdemVal]);
-                        if (commonAdd.length > 0) concText += `, ${formatS(commonAdd)}`;
-                    } else {
-                        let specs = [];
-                        let patAdd = [];
-                        if (patLezVal && patLezVal !== 'Léze 0') patAdd.push(lezMapConc[patLezVal]);
-                        if (patEdemVal && patEdemVal !== 'bez edému') patAdd.push(edemMapConc[patEdemVal]);
-                        if (patAdd.length > 0) specs.push(`patelárně ${formatS(patAdd)}`);
-
-                        let femAdd = [];
-                        if (femLezVal && femLezVal !== 'Léze 0') femAdd.push(lezMapConc[femLezVal]);
-                        if (femEdemVal && femEdemVal !== 'bez edému') femAdd.push(edemMapConc[femEdemVal]);
-                        if (femAdd.length > 0) specs.push(`femorálně ${formatS(femAdd)}`);
-
-                        if (specs.length > 0) concText += `, ${specs.join(', ')}`;
-                    }
-                } else {
-                    concText = 'FP chondropatie: ';
-                    let parts = [];
-                    if (hasPatChp || hasPatPath) {
-                        let pStr = hasPatChp ? gradeMap[patChpVal] : 'lokální';
-                        pStr += ' patelárně';
-                        let patAdd = [];
-                        if (patLezVal && patLezVal !== 'Léze 0') patAdd.push(lezMapConc[patLezVal]);
-                        if (patEdemVal && patEdemVal !== 'bez edému') patAdd.push(edemMapConc[patEdemVal]);
-                        if (patAdd.length > 0) pStr += ` ${formatS(patAdd)}`;
-                        parts.push(pStr);
-                    }
-                    if (hasFemChp || hasFemPath) {
-                        let fStr = hasFemChp ? gradeMap[femChpVal] : 'lokální';
-                        fStr += ' femorálně';
-                        let femAdd = [];
-                        if (femLezVal && femLezVal !== 'Léze 0') femAdd.push(lezMapConc[femLezVal]);
-                        if (femEdemVal && femEdemVal !== 'bez edému') femAdd.push(edemMapConc[femEdemVal]);
-                        if (femAdd.length > 0) fStr += ` ${formatS(femAdd)}`;
-                        parts.push(fStr);
-                    }
-                    concText += parts.join(', ');
-                }
-                concMain.push({ type: 'frame', text: concText + '.', tableId: 'knee_patella_main' });
+            if (fpReportParts.length > 0) {
+                reportOut.push({ type: 'frame', text: `FP kompartment: ${fpReportParts.join(' ')}`, tableId: 'knee_patella_main' });
             }
-            fpConc.forEach(c => concMain.push({ type: 'frame', text: c, tableId: 'knee_patella_main' }));
+
+            if (antRep.length > 0) reportOut.push({ type: 'frame', text: cap(antRep.join(', ').replace(/, ([^,]*)$/, ' a $1')) + '.', tableId: 'knee_patella_main' });
+
+            if (fpPatConc || fpFemConc) {
+                let concs = [];
+                if (fpPatConc) concs.push(fpPatConc);
+                if (fpFemConc) concs.push(fpFemConc);
+                concMain.push({ type: 'frame', text: `FP chondropatie ${concs.join(', ')}.`, tableId: 'knee_patella_main' });
+            }
         }
 
-        // ═══ KOMPILÁTOR PRO FEMORÁLNÍ A TIBIÁLNÍ KONDYLY ═══
-        const parseKneeCondyle = (prefix, nameTitle, nameConc, tableId) => {
-            let hasPathology = false;
+        // ═══ EXEKUCE LATERÁLNÍHO A MEDIÁLNÍHO KOMPARTMENTU ═══
+        const buildCompartment = (compName, femPrefix, tibPrefix, femBoneName, tibBoneName, tableId, ostBtnId) => {
+            let femBones = getBonePathologies(femPrefix);
+            let tibBones = getBonePathologies(tibPrefix);
+
+            let femChrRep = getChondroRep(ctx.text(`${femPrefix}_chr_gr`), ctx.text(`${femPrefix}_chr_lez`), ctx.text(`${femPrefix}_chr_edem`), 'femuru');
+            let tibChrRep = getChondroRep(ctx.text(`${tibPrefix}_chr_gr`), ctx.text(`${tibPrefix}_chr_lez`), ctx.text(`${tibPrefix}_chr_edem`), 'tibie');
+
+            let femChrConc = getChondroConc(ctx.text(`${femPrefix}_chr_gr`), ctx.text(`${femPrefix}_chr_lez`), ctx.text(`${femPrefix}_chr_edem`), 'femorálně');
+            let tibChrConc = getChondroConc(ctx.text(`${tibPrefix}_chr_gr`), ctx.text(`${tibPrefix}_chr_lez`), ctx.text(`${tibPrefix}_chr_edem`), 'tibiálně');
+
+            let ost = ctx.text(ostBtnId);
+            let ostRep = '';
+            if (ost && ost !== '0') {
+                 const ostMap = { 'I': 'počínající marginální osteofyty', 'II': 'drobné marginální osteofyty', 'III': 'výrazné marginální osteofyty' };
+                 ostRep = ostMap[ost];
+            }
+
             let repParts = [];
-            let pathologies = [];
-            let struct = { frac: '', sifk: '', ocl: '', chrBase: '', chrGrade: '', chrLez: '', edem: '' };
-
-            const chrGr = ctx.text(`${prefix}_chr_gr`);
-            const chrLez = ctx.text(`${prefix}_chr_lez`);
-            const chrEdem = ctx.text(`${prefix}_chr_edem`);
-
-            const isChrNormal = (!chrGr || chrGr === 'GR 0') && (!chrLez || chrLez === 'Léze 0') && (!chrEdem || chrEdem === 'edém 0');
-
-            if (!isChrNormal) {
-                hasPathology = true;
-                let cRep = 'chrupavka';
-                
-                const lezMapGrammar = { 'Fisura': 'fisurou', 'Fisury': 'fisurami', 'Defekt': 'defektem', 'Defekty': 'defekty', 'Delaminace': 'delaminací' };
-                let hasLez = chrLez && chrLez !== 'Léze 0';
-                let lesionText = hasLez ? lezMapGrammar[chrLez] : '';
-
-                if (chrGr && chrGr !== 'GR 0') {
-                    if (chrGr === 'GR 1') {
-                        cRep += hasLez ? ` s ložiskovými změnami signálu a ${lesionText}` : ` s ložiskovými změnami signálu`;
-                    } else if (chrGr === 'GR 2') {
-                        cRep += hasLez ? ` s ${lesionText} do zevní poloviny` : ` snížena do poloviny tloušťky`;
-                    } else if (chrGr === 'GR 3') {
-                        cRep += hasLez ? ` s ${lesionText} do vnitřní poloviny` : ` snížena o více jak polovinu tloušťky`;
-                    } else if (chrGr === 'GR 4') {
-                        cRep += hasLez ? ` s ${lesionText} až ke kosti` : ` prakticky chybí`;
-                    }
-                } else if (hasLez) {
-                    cRep += ` s ${lesionText}`;
-                } else {
-                    cRep += ` normální šíře`; 
-                }
-
-                if (chrEdem && chrEdem !== 'edém 0') {
-                    const edemText = chrEdem === 'edém +' ? 'mírným subchondrálním edémem' : 'výrazným subchondrálním edémem';
-                    cRep += (cRep.includes(' s ') || cRep.includes(' se ')) ? ' a ' + edemText : ' s ' + edemText;
-                }
-                repParts.push(cRep);
-
-                struct.chrBase = hasLez ? 'fokální chondropatií' : 'chondropatií';
-                const gradeMapConc = { 'GR 1': 'gr. I', 'GR 2': 'gr. II', 'GR 3': 'gr. III', 'GR 4': 'gr. IV' };
-                
-                if (chrGr && chrGr !== 'GR 0') struct.chrGrade = gradeMapConc[chrGr];
-                
-                if (hasLez) {
-                    const lezMapInstr = { 'Fisura': 's fisurou', 'Fisury': 's fisurami', 'Defekt': 's defektem', 'Defekty': 's vícečetnými defekty', 'Delaminace': 's delaminací' };
-                    struct.chrLez = lezMapInstr[chrLez];
-                }
-                
-                if (chrEdem && chrEdem !== 'edém 0') {
-                    struct.edem = chrEdem === 'edém +' ? 'mírným reaktivním edémem dřeně' : 'výrazným reaktivním edémem dřeně';
-                }
+            if (femBones.length > 0) {
+                let prep = (femBones[0].startsWith('SIFK') || femBones[0].startsWith('středním') || femBones[0].startsWith('výrazným')) ? 'se' : 's';
+                repParts.push(`${femBoneName} ${prep} ${femBones.join(' a ')}.`);
+            }
+            if (tibBones.length > 0) {
+                let prep = (tibBones[0].startsWith('SIFK') || tibBones[0].startsWith('středním') || tibBones[0].startsWith('výrazným')) ? 'se' : 's';
+                repParts.push(`${tibBoneName} ${prep} ${tibBones.join(' a ')}.`);
             }
 
-            const bml = ctx.text(`${prefix}_sub_bml`);
-            const sifk = ctx.text(`${prefix}_sub_sifk`);
-            const ocl = ctx.text(`${prefix}_sub_ocl`);
+            if (femChrRep) repParts.push(femChrRep + '.');
+            if (tibChrRep) repParts.push(tibChrRep + '.');
+            if (ostRep) repParts.push(ostRep.charAt(0).toUpperCase() + ostRep.slice(1) + '.');
 
-            if (sifk && sifk !== 'SIFK 0') {
-                hasPathology = true;
-                if (sifk === 'SIFK +') { repParts.push("v subchondrální kosti lineární hypointenzita"); struct.sifk = "SIFK"; }
-                else if (sifk === 'SIFK ++') { repParts.push("subchondrální kost s fokálním kolapsem"); struct.sifk = "SIFK s fokálním kolapsem"; }
-            }
-
-            if (ocl && ocl !== 'OCL 0') {
-                hasPathology = true;
-                const oclMapRep = { 'OCL I': 'subchondrální ložiskové prosáknutí bez strukturální deformace', 'OCL II': 'parciální separace osteochondrálního fragmentu in situ', 'OCL III': 'kompletní separace osteochondrálního fragmentu bez dislokace', 'OCL IV': 'dislokovaný osteochondrální fragment s obnažením subchondrálního lůžka vyplněného tekutinou' };
-                const oclMapConc = { 'OCL I': 'osteochondrální lézí I. st.', 'OCL II': 'osteochondrální lézí II. st.', 'OCL III': 'osteochondrální lézí III. st.', 'OCL IV': 'osteochondrální lézí IV. st.' };
-                repParts.push(oclMapRep[ocl] || `osteochondrální léze stupně ${ocl}`);
-                struct.ocl = oclMapConc[ocl] || `osteochondrální lézí stupně ${ocl}`;
-            }
-
-            if (bml && bml !== 'BML 0') {
-                hasPathology = true;
-                const bmlMapRep = { 'BML +': 'mírný edém kostní dřeně', 'BML ++': 'střední edém kostní dřeně', 'BML +++': 'výrazný edém kostní dřeně' };
-                const bmlMapConc = { 'BML +': 'mírným subchondrálním edémem', 'BML ++': 'středním subchondrálním edémem', 'BML +++': 'výrazným subchondrálním edémem' };
-                repParts.push(bmlMapRep[bml]);
-                if (!struct.edem) struct.edem = bmlMapConc[bml];
-            }
-
-            const frac = ctx.text(`${prefix}_frac`);
-            if (frac && frac !== '0') {
-                hasPathology = true;
-                const fracMapRep = { 'impakční': 'impakční fraktura', 'vertikální': 'vertikální fraktura', 'komin.': 'kominutivní fraktura' };
-                const fracMapConc = { 'impakční': 'impakční frakturou', 'vertikální': 'vertikální frakturou', 'komin.': 'kominutivní frakturou' };
-                repParts.unshift(fracMapRep[frac]);
-                struct.frac = fracMapConc[frac];
-            }
-
-            if (struct.frac) pathologies.push(struct.frac);
-            if (struct.sifk) pathologies.push(struct.sifk);
-            if (struct.ocl) pathologies.push(struct.ocl);
-            if (struct.chrBase || struct.chrGrade || struct.chrLez) {
-                let p = struct.chrBase || 'chondropatií';
-                if (struct.chrGrade) p += ` ${struct.chrGrade}`;
-                if (struct.chrLez) p += ` (${struct.chrLez})`;
-                pathologies.push(p);
-            }
-            if (struct.edem) pathologies.push(struct.edem);
-
-            let repText = "";
-            let concsToPush = [];
-            
-            if (!hasPathology) {
-                repText = nameTitle ? `${nameTitle} bez výraznější léze.` : `bez výraznější léze.`;
+            if (repParts.length > 0) {
+                reportOut.push({ type: 'frame', text: `${compName}: ${repParts.join(' ')}`, tableId: tableId });
             } else {
-                const joinCzech = (arr) => {
-                    if (arr.length === 0) return '';
-                    if (arr.length === 1) return arr[0];
-                    return arr.slice(0, -1).join(', ') + ' a ' + arr[arr.length - 1];
-                };
-
-                repText = nameTitle ? `${nameTitle}: ${joinCzech(repParts)}.` : `${joinCzech(repParts)}.`;
-
-                const firstPat = pathologies[0];
-                const preposition = (firstPat.startsWith('SIFK') || firstPat.startsWith('středním') || firstPat.startsWith('subchondrální')) ? 'se' : 's';
-                const concSentence = nameTitle ? `${nameTitle} ${preposition} ${joinCzech(pathologies)}.` : `${preposition} ${joinCzech(pathologies)}.`;
-                concsToPush.push({ type: 'frame', text: concSentence, tableId: tableId });
+                reportOut.push({ type: 'frame', text: `${compName} bez výraznější léze chrupavek či skeletu.`, tableId: tableId, dimmed: true });
             }
-            return { text: repText, concs: concsToPush, pathologies: pathologies, struct: struct, dimmed: !hasPathology };
+
+            if (femBones.length > 0) {
+                let prep = (femBones[0].startsWith('SIFK') || femBones[0].startsWith('středním') || femBones[0].startsWith('výrazným')) ? 'se' : 's';
+                concMain.push({ type: 'frame', text: `${femBoneName} ${prep} ${femBones.join(' a ')}.`, tableId: tableId });
+            }
+            if (tibBones.length > 0) {
+                let prep = (tibBones[0].startsWith('SIFK') || tibBones[0].startsWith('středním') || tibBones[0].startsWith('výrazným')) ? 'se' : 's';
+                concMain.push({ type: 'frame', text: `${tibBoneName} ${prep} ${tibBones.join(' a ')}.`, tableId: tableId });
+            }
+
+            if (femChrConc || tibChrConc) {
+                let concs = [];
+                if (femChrConc) concs.push(femChrConc);
+                if (tibChrConc) concs.push(tibChrConc);
+                concMain.push({ type: 'frame', text: `${compName} s chondropatií ${concs.join(', ')}.`, tableId: tableId });
+            }
         };
 
         // ═══ KOMPILÁTOR PRO MENISKY (LM, MM) ═══
@@ -693,151 +548,16 @@ const RegionKnee = {
             }
         };
 
-        // ═══ EXEKUCE LATERÁLNÍHO A MEDIÁLNÍHO KOMPARTMENTU ═══
-        const processCompartment = (femPrefix, tibPrefix, compName, tableId, sharedOstBtnId) => {
-            const fem = parseKneeCondyle(femPrefix, '', '', tableId);
-            const tib = parseKneeCondyle(tibPrefix, '', '', tableId);
-            const ostShared = ctx.text(sharedOstBtnId);
-            const ostSharedTailMap = {
-                'I': 'přihrocení okrajových ploch skeletu',
-                'II': 'drobné marginální osteofyty',
-                'III': 'výrazné marginální osteofyty'
-            };
-            const ostSharedTail = (ostShared && ostShared !== '0') ? ostSharedTailMap[ostShared] : '';
-            
-            const isFemNormal = fem.dimmed;
-            const isTibNormal = tib.dimmed;
-
-            if (isFemNormal && isTibNormal && !ostSharedTail) {
-                reportOut.push({ type: 'frame', text: `${compName} bez výraznější léze chrupavek či skeletu.`, tableId: tableId, dimmed: true });
-                return;
-            }
-
-            const femTextClean = fem.text.replace(/\.$/, '');
-            const tibTextClean = tib.text.replace(/\.$/, '');
-
-            if (femTextClean === tibTextClean && !isFemNormal) {
-                const extra = ostSharedTail ? `, ${ostSharedTail}` : '';
-                reportOut.push({ type: 'frame', text: `${compName}: ${femTextClean}${extra}.`, tableId: tableId });
-            } else {
-                let parts = [];
-                if (!isFemNormal) parts.push(`femorálně ${femTextClean}`);
-                if (!isTibNormal) parts.push(`tibiálně ${tibTextClean}`);
-                const core = parts.join(', ');
-                if (core) {
-                    const extra = ostSharedTail ? `, ${ostSharedTail}` : '';
-                    reportOut.push({ type: 'frame', text: `${compName}: ${core}${extra}.`, tableId: tableId });
-                } else {
-                    // jen společné osteofyty (bez další kondylové léze)
-                    reportOut.push({ type: 'frame', text: `${compName}: ${ostSharedTail}.`, tableId: tableId });
-                }
-            }
-
-            const normalizeArr = (arr) => arr.map(i => i.startsWith('s ') ? i.substring(2) : (i.startsWith('se ') ? i.substring(3) : i));
-
-            const joinWithS = (arr) => {
-                if (arr.length === 0) return '';
-                if (arr.length === 1) return arr[0];
-                let res = arr[0];
-                for (let i = 1; i < arr.length; i++) {
-                    let prep = (arr[i].startsWith('SIFK') || arr[i].startsWith('středním') || arr[i].startsWith('subchondrální')) ? 'se' : 's';
-                    res += ` ${prep} ${arr[i]}`;
-                }
-                return res;
-            };
-
-            const addS = (str) => {
-                if (!str) return '';
-                if (str.startsWith('s ') || str.startsWith('se ')) return str;
-                return (str.startsWith('SIFK') || str.startsWith('středním') || str.startsWith('subchondrální')) ? `se ${str}` : `s ${str}`;
-            };
-
-            const getChrStr = (struct) => {
-                if (!struct.chrBase && !struct.chrGrade) return '';
-                return `${struct.chrBase || 'chondropatií'} ${struct.chrGrade}`.trim();
-            };
-
-            const buildDetails = (struct) => {
-                let items = [];
-                if (struct.frac) items.push(struct.frac);
-                if (struct.sifk) items.push(struct.sifk);
-                if (struct.ocl) items.push(struct.ocl);
-                if (struct.chrLez) items.push(struct.chrLez);
-                if (struct.edem) items.push(struct.edem);
-
-                if (items.length === 0) return '';
-                return addS(joinWithS(normalizeArr(items)));
-            };
-
-            const buildFull = (struct) => {
-                let items = [];
-                if (struct.frac) items.push(struct.frac);
-                if (struct.sifk) items.push(struct.sifk);
-                if (struct.ocl) items.push(struct.ocl);
-                
-                let chr = getChrStr(struct);
-                if (chr) items.push(chr);
-                
-                if (struct.chrLez) items.push(struct.chrLez);
-                if (struct.edem) items.push(struct.edem);
-
-                if (items.length === 0) return '';
-                return addS(joinWithS(normalizeArr(items)));
-            };
-
-            let femChr = getChrStr(fem.struct);
-            let tibChr = getChrStr(tib.struct);
-            const hasFemChr = !!femChr;
-            const hasTibChr = !!tibChr;
-            const sameGrade = hasFemChr && hasTibChr && fem.struct.chrGrade === tib.struct.chrGrade;
-
-            let concParts = [];
-
-            if (sameGrade) {
-                let baseChr = (fem.struct.chrBase === 'fokální chondropatií' || tib.struct.chrBase === 'fokální chondropatií') ? 'fokální chondropatií' : 'chondropatií';
-                let sharedChr = `${baseChr} ${fem.struct.chrGrade}`.trim();
-                
-                let femDet = buildDetails(fem.struct);
-                let tibDet = buildDetails(tib.struct);
-
-                if (femDet === tibDet && femDet !== '') {
-                     concParts.push(`${addS(sharedChr)} ${femDet}`);
-                } else {
-                     let res = addS(sharedChr);
-                     let locs = [];
-                     if (femDet) locs.push(`femorálně ${femDet}`);
-                     if (tibDet) locs.push(`tibiálně ${tibDet}`);
-                     if (locs.length > 0) res += `, ${locs.join(', ')}`;
-                     concParts.push(res);
-                }
-            } else {
-                let femFull = buildFull(fem.struct);
-                let tibFull = buildFull(tib.struct);
-
-                if (femFull === tibFull && femFull !== '') {
-                    concParts.push(femFull);
-                } else {
-                    let locs = [];
-                    if (femFull) locs.push(`femorálně ${femFull}`);
-                    if (tibFull) locs.push(`tibiálně ${tibFull}`);
-                    if (locs.length > 0) concParts.push(locs.join(', '));
-                }
-            }
-
-            if (concParts.length > 0) {
-                concMain.push({ type: 'frame', text: `${compName} ${concParts[0]}.`, tableId: tableId });
-            }
-        };
-
-        processCompartment('kn_lfc', 'kn_ltc', 'Laterální kompartment', 'knee_lat_comp_main', 'kn_lat_shared_ost');
+        // Generování kompartmentů
+        buildCompartment('Laterální kompartment', 'kn_lfc', 'kn_ltc', 'Laterální kondyl femuru', 'Laterální plato tibie', 'knee_lat_comp_main', 'kn_lat_shared_ost');
         parseMeniscus('kn_lm', 'Laterální meniskus', 'laterálního menisku', 'LM', 'knee_lm_main');
         parseCollateralLigament('kn_lcl', 'Laterální kolaterální vaz', 'knee_lcl_main');
 
-        processCompartment('kn_mfc', 'kn_mtc', 'Mediální kompartment', 'knee_med_comp_main', 'kn_med_shared_ost');
+        buildCompartment('Mediální kompartment', 'kn_mfc', 'kn_mtc', 'Mediální kondyl femuru', 'Mediální plato tibie', 'knee_med_comp_main', 'kn_med_shared_ost');
         parseMeniscus('kn_mm', 'Mediální meniskus', 'mediálního menisku', 'MM', 'knee_mm_main');
         parseCollateralLigament('kn_mcl', 'Mediální kolaterální vaz', 'knee_mcl_main');
 
-        // Jednotná věta pro gonartrózu dle osteofytů v mediálním/laterálním kompartmentu
+        // Jednotná věta pro gonartrózu dle osteofytů
         const ostLat = ctx.text('kn_lat_shared_ost');
         const ostMed = ctx.text('kn_med_shared_ost');
         const osteoRank = { '0': 0, 'I': 1, 'II': 2, 'III': 3 };

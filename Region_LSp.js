@@ -863,7 +863,7 @@ const RegionLSp = {
             
             reportBlocks.push({ type: 'frame', text: reportMyelo });
             mainConc.push({ type: 'frame', text: concMyelo });
-        } else {
+        } else if (!(ctx.examId || '').toLowerCase().startsWith('ct')) {
             reportBlocks.push({ type: 'frame', text: 'Přehledný úsek míchy bez signálových změn.', dimmed: true });
         }
 
