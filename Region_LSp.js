@@ -393,7 +393,7 @@ const RegionLSp = {
             const migration = ctx.text(`${seg.sPfx}_migration`);
             
             if (protr && protr !== 'protruze') {
-                const protrMap = { 'bulging': `bulging ${degenModifier}disku`.trim(), 'herniace': `herniace ${degenModifier}disku`.trim(), 'spondylofyty': 'spondylofyty okrajů krycích ploch', 'kombinace': `kombinace spondylofytů a protruze ${degenModifier}disku`.trim() };
+                const protrMap = { 'bulging': `bulging ${degenModifier}disku`.trim(), 'herniace': `herniace ${degenModifier}disku`.trim(), 'spondylofyty': 'spondylofyty okrajů krycích ploch', 'kombinace': `kombinace spondylofytů a bulgingu ${degenModifier}disku`.trim() };
                 let baseProtr = protrMap[protr] || protr;
                 
                 if (protr === 'spondylofyty' && degenDesc) {
@@ -405,7 +405,7 @@ const RegionLSp = {
 
                 if (protrMm) baseProtr += ` o ${protrMm} mm`;
 
-                const protrMapConc = { 'bulging': 'bulging disku', 'herniace': 'herniace disku', 'spondylofyty': 'spondylofyty', 'kombinace': 'kombinace spondylofytů a protruze disku' };
+                const protrMapConc = { 'bulging': 'bulging disku', 'herniace': 'herniace disku', 'spondylofyty': 'spondylofyty', 'kombinace': 'kombinace spondylofytů a bulgingu disku' };
                 let pTxt = protrMapConc[protr] || protr;
 
                 if (dirLocStr) {
