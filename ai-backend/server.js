@@ -6,7 +6,6 @@ const app = express();
 const PORT = process.env.PORT || 8787;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-// Aktuální Flash (2.5 už pro nové účty není). Alias mapuje staré názvy.
 const DEFAULT_MODEL = 'gemini-3.6-flash';
 const MODEL_ALIASES = {
   'gemini-flash': DEFAULT_MODEL,
@@ -16,6 +15,15 @@ const MODEL_ALIASES = {
 };
 const rawModel = (process.env.GEMINI_MODEL || DEFAULT_MODEL).trim();
 const GEMINI_MODEL = MODEL_ALIASES[rawModel] || rawModel;
+
+// Pořadí při 503 / high demand
+const FALLBACK_MODELS = [
+  GEMINI_MODEL,
+  'gemini-3.5-flash',
+  'gemini-3.7-flash',
+  'gemini-3.5-flash-lite',
+  'gemini-3.1-flash-lite'
+].filter((m, i, arr) => arr.indexOf(m) === i);
 
 const ai = GEMINI_API_KEY ? new GoogleGenAI({ apiKey: GEMINI_API_KEY }) : null;
 
@@ -39,12 +47,89 @@ function stripHtmlFence(text) {
     .trim();
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function errText(error) {
+  if (!error) return '';
+  if (typeof error === 'string') return error;
+  return [
+    error.message,
+    error.status,
+    error.code,
+    typeof error.error === 'string' ? error.error : '',
+    error.error?.message,
+    JSON.stringify(error)
+  ].filter(Boolean).join(' ');
+}
+
+function isBusyError(error) {
+  const t = errText(error).toLowerCase();
+  return (
+    t.includes('503') ||
+    t.includes('unavailable') ||
+    t.includes('high demand') ||
+    t.includes('resource_exhausted') ||
+    t.includes('429') ||
+    t.includes('try again later')
+  );
+}
+
+async function generateOnce(model, prompt, useSearch) {
+  const args = {
+    model,
+    contents: prompt
+  };
+  if (useSearch) {
+    args.config = { tools: [{ googleSearch: {} }] };
+  }
+  return ai.models.generateContent(args);
+}
+
+async function generateWithRetries(prompt) {
+  let lastError = null;
+
+  for (const model of FALLBACK_MODELS) {
+    for (const useSearch of [true, false]) {
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          const response = await generateOnce(model, prompt, useSearch);
+          return {
+            response,
+            model,
+            mode: useSearch ? 'gemini_sdk_search' : 'gemini_sdk_no_search',
+            attempt
+          };
+        } catch (error) {
+          lastError = error;
+          const busy = isBusyError(error);
+          console.warn(
+            `[analyze] model=${model} search=${useSearch} attempt=${attempt} busy=${busy}:`,
+            errText(error).slice(0, 240)
+          );
+
+          if (busy && attempt < 3) {
+            await sleep(1200 * attempt);
+            continue;
+          }
+          // non-busy → zkus další režim/model; busy po 3 pokusech → další model
+          break;
+        }
+      }
+    }
+  }
+
+  throw lastError || new Error('Generování selhalo u všech modelů.');
+}
+
 app.get('/health', (_req, res) => {
   res.json({
     ok: true,
     hasKey: Boolean(GEMINI_API_KEY),
     model: GEMINI_MODEL,
-    requestedModel: rawModel
+    requestedModel: rawModel,
+    fallbacks: FALLBACK_MODELS
   });
 });
 
@@ -63,22 +148,7 @@ app.post('/api/analyze', async (req, res) => {
     }
 
     const prompt = buildPrompt(patology);
-    let response;
-    try {
-      response = await ai.models.generateContent({
-        model: GEMINI_MODEL,
-        contents: prompt,
-        config: {
-          tools: [{ googleSearch: {} }]
-        }
-      });
-    } catch (searchErr) {
-      console.warn('[analyze] googleSearch failed, retry without tools:', searchErr.message);
-      response = await ai.models.generateContent({
-        model: GEMINI_MODEL,
-        contents: prompt
-      });
-    }
+    const { response, model, mode, attempt } = await generateWithRetries(prompt);
 
     let html = response.text || '';
     html = stripHtmlFence(html);
@@ -86,17 +156,21 @@ app.post('/api/analyze', async (req, res) => {
     if (!html || !/<html[\s>]/i.test(html)) {
       return res.status(502).json({
         error: 'Model nevrátil platné HTML.',
-        model: GEMINI_MODEL,
+        model,
         preview: String(html).slice(0, 400)
       });
     }
 
-    res.json({ html, mode: 'gemini_sdk_search', model: GEMINI_MODEL, patology });
+    res.json({ html, mode, model, attempt, patology });
   } catch (error) {
     console.error('[analyze]', error);
-    res.status(500).json({
-      error: error.message || 'Neznámá chyba backendu.',
-      model: GEMINI_MODEL
+    const busy = isBusyError(error);
+    res.status(busy ? 503 : 500).json({
+      error: busy
+        ? 'Gemini je teď přetížený (high demand). Zkus to za chvíli znovu — backend už automaticky zkouší více modelů.'
+        : (error.message || 'Neznámá chyba backendu.'),
+      model: GEMINI_MODEL,
+      detail: errText(error).slice(0, 500)
     });
   }
 });
