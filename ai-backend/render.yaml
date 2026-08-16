@@ -9,6 +9,8 @@ services:
     envVars:
       - key: GEMINI_API_KEY
         sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
       - key: GEMINI_MODEL
         value: gemini-3.6-flash
       - key: NODE_VERSION

@@ -80,11 +80,6 @@
             border-color: var(--accent-color);
         }
 
-        .btn-group {
-            display: flex;
-            gap: var(--spacing-sm);
-        }
-
         button {
             background-color: var(--accent-color);
             color: #0d1117;
@@ -95,21 +90,6 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.2s ease, transform 0.1s ease;
-            flex: 1;
-        }
-
-        button.btn-secondary {
-            background-color: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            font-weight: normal;
-            font-size: 0.85rem;
-            padding: 8px 12px;
-            flex: 0 0 auto;
-        }
-
-        button.btn-secondary:hover:not(:disabled) {
-            background-color: var(--border-color);
         }
 
         button:hover:not(:disabled) {
@@ -136,42 +116,6 @@
         .status-message.error { color: var(--error-color); }
         .status-message.success { color: var(--success-color); }
 
-        /* --- DEBUG PANEL STYLES --- */
-        details.debug-panel {
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: var(--spacing-sm);
-            background-color: rgba(0, 0, 0, 0.2);
-            font-size: 0.85rem;
-        }
-
-        details.debug-panel summary {
-            cursor: pointer;
-            color: var(--accent-color);
-            font-weight: 600;
-            user-select: none;
-        }
-
-        .debug-content {
-            margin-top: var(--spacing-sm);
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-sm);
-        }
-
-        .debug-log {
-            background: #000;
-            color: #00ff66;
-            font-family: monospace;
-            padding: var(--spacing-sm);
-            border-radius: 4px;
-            max-height: 150px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            word-break: break-all;
-            font-size: 0.75rem;
-        }
-
         .note {
             font-size: 0.75rem;
             color: var(--text-secondary);
@@ -186,81 +130,48 @@
             <h1>AI Radiopaedia</h1>
         </header>
 
-        <!-- DEBUGGER PANEL -->
-        <details class="debug-panel" id="debugPanel">
-            <summary>🛠️ Debug & Nastavení API</summary>
-            <div class="debug-content">
-                <div class="form-group">
-                    <label for="apiSelect">Cílový Backend API:</label>
-                    <div style="display: flex; gap: 8px;">
-                        <input type="text" id="apiUrlInput" style="flex: 1; font-size: 0.85rem; padding: 6px 10px;">
-                        <button type="button" id="pingBtn" class="btn-secondary">Test /health</button>
-                    </div>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size: 0.75rem; color: var(--text-secondary);">Konzole požadavků:</span>
-                    <button type="button" id="clearLogBtn" class="btn-secondary" style="padding: 2px 6px; font-size: 0.7rem;">Vyčistit</button>
-                </div>
-                <div id="debugLog" class="debug-log">Log prázdný...</div>
-            </div>
-        </details>
+        <div class="form-group">
+            <label for="modelSelect">AI model</label>
+            <select id="modelSelect">
+                <option value="gemini:gemini-3.6-flash">Gemini 3.6 Flash</option>
+                <option value="deepseek:deepseek-v4-flash">DeepSeek V4 Flash</option>
+                <option value="deepseek:deepseek-v4-pro">DeepSeek V4 Pro</option>
+            </select>
+        </div>
 
         <div class="form-group">
             <label for="patology">Hledaná patologie</label>
-            <input type="text" id="patology" placeholder="patologie..." autocomplete="off" autofocus>
+            <input type="text" id="patology" placeholder="např. meniscus tear MRI" autocomplete="off" autofocus>
         </div>
 
         <button id="submitBtn" type="button">Generovat a otevřít</button>
 
         <div id="status" class="status-message" aria-live="polite"></div>
-        <p class="note">Text generuje Gemini. Obrázky backend stáhne z otevřených zdrojů (Wikimedia / Open-i) a zobrazí přes proxy.</p>
+        <p class="note">Text generuje zvolený model. Obrázky backend stáhne z otevřených zdrojů a zobrazí přes proxy.</p>
     </main>
 
     <script>
-        const DEFAULT_LOCAL_API = 'http://localhost:8787';
+        const DEFAULT_API = 'https://radiology-ai-search.onrender.com';
+        const MODEL_KEY = 'medApp_ai_model';
 
-        const getEl = id => document.getElementById(id);
+        const getEl = (id) => document.getElementById(id);
         const params = new URLSearchParams(location.search);
-
-        // Získání uložené URL nebo výchozí hodnoty
-        let currentApiBase = (
-            params.get('api') ||
-            localStorage.getItem('medApp_ai_api') ||
-            DEFAULT_LOCAL_API
-        ).replace(/\/$/, '');
+        const apiBase = (params.get('api') || DEFAULT_API).replace(/\/$/, '');
 
         const ui = {
             patologyInp: getEl('patology'),
+            modelSelect: getEl('modelSelect'),
             submitBtn: getEl('submitBtn'),
-            statusDiv: getEl('status'),
-            apiUrlInput: getEl('apiUrlInput'),
-            pingBtn: getEl('pingBtn'),
-            debugLog: getEl('debugLog'),
-            clearLogBtn: getEl('clearLogBtn')
+            statusDiv: getEl('status')
         };
 
-        ui.apiUrlInput.value = currentApiBase;
+        const savedModel = localStorage.getItem(MODEL_KEY);
+        if (savedModel && [...ui.modelSelect.options].some((o) => o.value === savedModel)) {
+            ui.modelSelect.value = savedModel;
+        }
 
-        // Pomocná logovací funkce
-        const logDebug = (msg, obj = null) => {
-            const time = new Date().toLocaleTimeString();
-            let text = `[${time}] ${msg}`;
-            if (obj) text += `\n${JSON.stringify(obj, null, 2)}`;
-            
-            if (ui.debugLog.textContent === 'Log prázdný...') ui.debugLog.textContent = '';
-            ui.debugLog.textContent += text + '\n---\n';
-            ui.debugLog.scrollTop = ui.debugLog.scrollHeight;
-        };
-
-        ui.clearLogBtn.addEventListener('click', () => {
-            ui.debugLog.textContent = 'Log prázdný...';
-        });
-
-        // Uložení změny API URL
-        ui.apiUrlInput.addEventListener('change', () => {
-            currentApiBase = ui.apiUrlInput.value.trim().replace(/\/$/, '');
-            localStorage.setItem('medApp_ai_api', currentApiBase);
-            logDebug(`API URL změněna na: ${currentApiBase}`);
+        ui.modelSelect.addEventListener('change', () => {
+            localStorage.setItem(MODEL_KEY, ui.modelSelect.value);
         });
 
         const setStatus = (message, type = '') => {
@@ -271,6 +182,7 @@
         const setLoading = (isLoading) => {
             ui.submitBtn.disabled = isLoading;
             ui.patologyInp.disabled = isLoading;
+            ui.modelSelect.disabled = isLoading;
         };
 
         const escapeHtml = (s) => String(s)
@@ -279,91 +191,60 @@
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
 
-        // Test přípojení /health
-        ui.pingBtn.addEventListener('click', async () => {
-            const url = `${currentApiBase}/health`;
-            logDebug(`Odesílám PING na: ${url}`);
-            setStatus('Testuji připojení...');
-            
-            try {
-                const res = await fetch(url);
-                const data = await res.json().catch(() => ({}));
-                logDebug(`Odpověď z /health (Status ${res.status}):`, data);
-                
-                if (res.ok && data.ok) {
-                    setStatus(`Backend je dostupný! (Klíč nastaven: ${data.hasKey})`, 'success');
-                } else {
-                    setStatus(`Backend odpovídá s chybou.`, 'error');
-                }
-            } catch (err) {
-                logDebug(`PING Selhal: ${err.message}`);
-                setStatus(`Backend nedostupný: ${err.message}`, 'error');
-            }
-        });
+        const parseModelChoice = (value) => {
+            const [provider, model] = String(value || '').split(':');
+            return { provider: provider || 'gemini', model: model || 'gemini-3.6-flash' };
+        };
 
-        // Hlavní odeslání
         const handleSubmit = async () => {
             const patology = ui.patologyInp.value.trim();
             if (!patology) return setStatus('Zadejte hledanou patologii.', 'error');
 
+            const { provider, model } = parseModelChoice(ui.modelSelect.value);
+            localStorage.setItem(MODEL_KEY, ui.modelSelect.value);
+
             setLoading(true);
-            setStatus('Generuji interaktivní HTML (může trvat 30s+)...');
-            logDebug(`Zahajuji požadavek /api/analyze pro entitu: "${patology}" na URL: ${currentApiBase}`);
+            setStatus(`Generuji přes ${provider}… (může trvat 30s+)`);
 
             const resultWin = window.open('', '_blank');
             if (!resultWin) {
                 setStatus('Prohlížeč zablokoval vyskakovací okno. Povolte pop-ups.', 'error');
-                logDebug('Chyba: Prohlížeč zablokoval pop-up window.');
                 setLoading(false);
                 return;
             }
 
             resultWin.document.write(`
-                <body style="background:#121212; color:#e0e0e0; font-family:system-ui, sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; margin:0;">
-                    <h2>Analýza entity: ${escapeHtml(patology)}</h2>
-                    <p>Komunikuji s backendem (${escapeHtml(currentApiBase)})...</p>
+                <body style="background:#121212;color:#e0e0e0;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">
+                    <h2>Analýza: ${escapeHtml(patology)}</h2>
+                    <p>Model: ${escapeHtml(provider)} / ${escapeHtml(model)}</p>
                 </body>
             `);
 
             try {
-                const endpoint = `${currentApiBase}/api/analyze`;
-                const response = await fetch(endpoint, {
+                const response = await fetch(`${apiBase}/api/analyze`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ patology })
+                    body: JSON.stringify({ patology, provider, model })
                 });
 
                 const data = await response.json().catch(() => ({}));
-                logDebug(`Odpověď ze serveru (HTTP ${response.status}):`, data);
-
-                if (!response.ok) {
-                    throw new Error(data.error || `HTTP ${response.status}`);
-                }
-
-                const htmlContent = data.html;
-                if (!htmlContent) throw new Error('Backend nevrátil pole "html".');
+                if (!response.ok) throw new Error(data.error || `HTTP ${response.status}`);
+                if (!data.html) throw new Error('Backend nevrátil pole "html".');
 
                 resultWin.document.open();
-                resultWin.document.write(htmlContent);
+                resultWin.document.write(data.html);
                 resultWin.document.close();
 
-                const imgInfo = typeof data.imagesFound === 'number'
-                    ? ` · obrázky: ${data.imagesFound}`
-                    : '';
-                setStatus(`Hotovo${data.mode ? ` (${data.mode})` : ''}${imgInfo}.`, 'success');
+                const imgInfo = typeof data.imagesFound === 'number' ? ` · obrázky: ${data.imagesFound}` : '';
+                setStatus(`Hotovo (${data.provider || provider} / ${data.model || model})${imgInfo}.`, 'success');
             } catch (error) {
                 const msg = error.message || 'Neznámá chyba';
-                logDebug(`CHYBA při zpracování: ${msg}`);
                 setStatus(`Chyba: ${msg}`, 'error');
-                
                 resultWin.document.open();
                 resultWin.document.write(`
-                    <body style="background:#121212; color:#ff4444; font-family:system-ui, sans-serif; padding:2rem;">
+                    <body style="background:#121212;color:#ff4444;font-family:system-ui,sans-serif;padding:2rem;">
                         <h2>Chyba při generování</h2>
-                        <p><strong>Zpráva:</strong> ${escapeHtml(msg)}</p>
-                        <p style="color:#8b949e; font-size:0.9rem;"><strong>Target API:</strong> ${escapeHtml(currentApiBase)}</p>
-                        <hr style="border-color:#333;">
-                        <p style="color:#8b949e; font-size:0.8rem;">Zkontrolujte záložku Debug v hlavní aplikaci nebo vývojářskou konzoli (F12).</p>
+                        <p>${escapeHtml(msg)}</p>
                     </body>
                 `);
                 resultWin.document.close();

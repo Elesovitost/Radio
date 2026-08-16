@@ -4151,7 +4151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key.toLowerCase() === 'f') {
         e.preventDefault();
-        const popup = window.open('ai_search.html', 'AISearchWindow', 'width=600,height=400,top=200,left=200');
+        const popup = window.open('ai_search.html', 'AISearchWindow', 'width=600,height=480,top=200,left=200');
         if (!popup) {
             alert('Prohlížeč zablokoval vyskakovací okno. Povolte pop-ups pro tuto stránku.');
         } else {

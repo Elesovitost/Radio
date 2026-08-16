@@ -5,18 +5,42 @@ const { GoogleGenAI } = require('@google/genai');
 const app = express();
 const PORT = process.env.PORT || 8787;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
+const DEEPSEEK_BASE_URL = (process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com').replace(/\/$/, '');
 
-const DEFAULT_MODEL = 'gemini-3.6-flash';
-const MODEL_ALIASES = {
-  'gemini-flash': DEFAULT_MODEL,
-  'flash': DEFAULT_MODEL,
-  'gemini-2.0-flash': DEFAULT_MODEL,
-  'gemini-2.5-flash': DEFAULT_MODEL
+const DEFAULT_GEMINI_MODEL = 'gemini-3.6-flash';
+const DEFAULT_DEEPSEEK_MODEL = 'deepseek-v4-flash';
+
+const GEMINI_ALIASES = {
+  'gemini-flash': DEFAULT_GEMINI_MODEL,
+  flash: DEFAULT_GEMINI_MODEL,
+  'gemini-2.0-flash': DEFAULT_GEMINI_MODEL,
+  'gemini-2.5-flash': DEFAULT_GEMINI_MODEL
 };
-const rawModel = (process.env.GEMINI_MODEL || DEFAULT_MODEL).trim();
-const GEMINI_MODEL = MODEL_ALIASES[rawModel] || rawModel;
 
-const FALLBACK_MODELS = [
+const DEEPSEEK_ALIASES = {
+  'deepseek-chat': DEFAULT_DEEPSEEK_MODEL,
+  'deepseek-reasoner': DEFAULT_DEEPSEEK_MODEL,
+  deepseek: DEFAULT_DEEPSEEK_MODEL
+};
+
+const ALLOWED_GEMINI = new Set([
+  'gemini-3.6-flash',
+  'gemini-3.5-flash',
+  'gemini-3.7-flash',
+  'gemini-3.5-flash-lite',
+  'gemini-3.1-flash-lite'
+]);
+
+const ALLOWED_DEEPSEEK = new Set([
+  'deepseek-v4-flash',
+  'deepseek-v4-pro'
+]);
+
+const rawGeminiDefault = (process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL).trim();
+const GEMINI_MODEL = GEMINI_ALIASES[rawGeminiDefault] || rawGeminiDefault;
+
+const FALLBACK_GEMINI_MODELS = [
   GEMINI_MODEL,
   'gemini-3.5-flash',
   'gemini-3.7-flash',
@@ -404,22 +428,53 @@ function injectGallery(html, galleryHtml) {
   return out;
 }
 
+function resolveProvider(raw) {
+  const p = String(raw || 'gemini').trim().toLowerCase();
+  if (p === 'deepseek' || p === 'ds') return 'deepseek';
+  return 'gemini';
+}
+
+function resolveModel(provider, rawModel) {
+  const raw = String(rawModel || '').trim();
+  if (provider === 'deepseek') {
+    const mapped = DEEPSEEK_ALIASES[raw] || raw || DEFAULT_DEEPSEEK_MODEL;
+    if (!ALLOWED_DEEPSEEK.has(mapped)) {
+      throw new Error(`Nepovolený DeepSeek model: ${mapped}. Povoleno: ${[...ALLOWED_DEEPSEEK].join(', ')}`);
+    }
+    return mapped;
+  }
+  const mapped = GEMINI_ALIASES[raw] || raw || GEMINI_MODEL;
+  if (!ALLOWED_GEMINI.has(mapped)) {
+    throw new Error(`Nepovolený Gemini model: ${mapped}. Povoleno: ${[...ALLOWED_GEMINI].join(', ')}`);
+  }
+  return mapped;
+}
+
 async function generateOnce(model, prompt, useSearch) {
   const args = { model, contents: prompt };
   if (useSearch) args.config = { tools: [{ googleSearch: {} }] };
   return ai.models.generateContent(args);
 }
 
-async function generateWithRetries(prompt) {
+async function generateWithGemini(prompt, preferredModel) {
+  if (!GEMINI_API_KEY || !ai) {
+    throw new Error('GEMINI_API_KEY není nastaven na serveru.');
+  }
+
+  const models = [preferredModel, ...FALLBACK_GEMINI_MODELS]
+    .filter(Boolean)
+    .filter((m, i, arr) => arr.indexOf(m) === i);
+
   let lastError = null;
-  for (const model of FALLBACK_MODELS) {
+  for (const model of models) {
     for (const useSearch of [true, false]) {
       for (let attempt = 1; attempt <= 3; attempt++) {
         try {
           const response = await generateOnce(model, prompt, useSearch);
           return {
-            response,
+            text: response.text || '',
             model,
+            provider: 'gemini',
             mode: useSearch ? 'gemini_sdk_search' : 'gemini_sdk_no_search',
             attempt
           };
@@ -428,7 +483,7 @@ async function generateWithRetries(prompt) {
           const quota = isQuotaError(error);
           const busy = isBusyError(error);
           console.warn(
-            `[analyze] model=${model} search=${useSearch} attempt=${attempt} quota=${quota} busy=${busy}:`,
+            `[analyze/gemini] model=${model} search=${useSearch} attempt=${attempt} quota=${quota} busy=${busy}:`,
             errText(error).slice(0, 240)
           );
           if (quota) throw error;
@@ -441,16 +496,123 @@ async function generateWithRetries(prompt) {
       }
     }
   }
-  throw lastError || new Error('Generování selhalo u všech modelů.');
+  throw lastError || new Error('Generování přes Gemini selhalo.');
+}
+
+async function generateWithDeepSeek(prompt, model) {
+  if (!DEEPSEEK_API_KEY) {
+    throw new Error('DEEPSEEK_API_KEY není nastaven na serveru.');
+  }
+
+  const url = `${DEEPSEEK_BASE_URL}/chat/completions`;
+  const payloads = [
+    {
+      model,
+      messages: [
+        {
+          role: 'system',
+          content:
+            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů a bez <img> tagů.'
+        },
+        { role: 'user', content: prompt }
+      ],
+      temperature: 0.4,
+      thinking: { type: 'disabled' }
+    },
+    // fallback bez thinking (starší API / neznámý parametr)
+    {
+      model,
+      messages: [
+        {
+          role: 'system',
+          content:
+            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů a bez <img> tagů.'
+        },
+        { role: 'user', content: prompt }
+      ],
+      temperature: 0.4
+    }
+  ];
+
+  let lastError = null;
+
+  for (let p = 0; p < payloads.length; p++) {
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${DEEPSEEK_API_KEY}`
+          },
+          body: JSON.stringify(payloads[p])
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          const msg =
+            data?.error?.message ||
+            data?.message ||
+            `DeepSeek HTTP ${res.status}`;
+          const err = new Error(msg);
+          err.status = res.status;
+          // neznámý parametr thinking → zkus další payload
+          if (res.status === 400 && /thinking/i.test(msg) && p < payloads.length - 1) {
+            lastError = err;
+            break;
+          }
+          throw err;
+        }
+
+        const text =
+          data?.choices?.[0]?.message?.content ||
+          data?.choices?.[0]?.message?.reasoning_content ||
+          '';
+
+        if (!text) throw new Error('DeepSeek nevrátil text.');
+
+        return {
+          text,
+          model: data?.model || model,
+          provider: 'deepseek',
+          mode: p === 0 ? 'deepseek_chat_no_think' : 'deepseek_chat',
+          attempt
+        };
+      } catch (error) {
+        lastError = error;
+        const quota = isQuotaError(error) || Number(error.status) === 429;
+        const busy = isBusyError(error) || Number(error.status) === 503;
+        console.warn(
+          `[analyze/deepseek] model=${model} payload=${p} attempt=${attempt} quota=${quota} busy=${busy}:`,
+          errText(error).slice(0, 240)
+        );
+        if (quota) throw error;
+        if ((busy || Number(error.status) >= 500) && attempt < 3) {
+          await sleep(1200 * attempt);
+          continue;
+        }
+        break;
+      }
+    }
+  }
+
+  throw lastError || new Error('Generování přes DeepSeek selhalo.');
+}
+
+async function generateContent({ provider, model, prompt }) {
+  if (provider === 'deepseek') {
+    return generateWithDeepSeek(prompt, model);
+  }
+  return generateWithGemini(prompt, model);
 }
 
 app.get('/health', (_req, res) => {
   res.json({
     ok: true,
-    hasKey: Boolean(GEMINI_API_KEY),
-    model: GEMINI_MODEL,
-    requestedModel: rawModel,
-    fallbacks: FALLBACK_MODELS,
+    hasGeminiKey: Boolean(GEMINI_API_KEY),
+    hasDeepseekKey: Boolean(DEEPSEEK_API_KEY),
+    geminiModel: GEMINI_MODEL,
+    deepseekModels: [...ALLOWED_DEEPSEEK],
     images: 'wikimedia+openi+proxy'
   });
 });
@@ -501,25 +663,37 @@ app.get('/api/proxy-image', async (req, res) => {
 
 app.post('/api/analyze', async (req, res) => {
   try {
-    if (!GEMINI_API_KEY || !ai) {
-      return res.status(500).json({ error: 'GEMINI_API_KEY není nastaven na serveru.' });
-    }
-
     const patology = String(req.body?.patology || req.body?.pathology || '').trim();
     if (!patology) return res.status(400).json({ error: 'Chybí pole patology.' });
     if (patology.length > 200) {
       return res.status(400).json({ error: 'Text patologie je příliš dlouhý (max 200 znaků).' });
     }
 
+    let provider;
+    let model;
+    try {
+      provider = resolveProvider(req.body?.provider);
+      model = resolveModel(provider, req.body?.model);
+    } catch (e) {
+      return res.status(400).json({ error: e.message });
+    }
+
+    if (provider === 'gemini' && (!GEMINI_API_KEY || !ai)) {
+      return res.status(500).json({ error: 'GEMINI_API_KEY není nastaven na serveru.' });
+    }
+    if (provider === 'deepseek' && !DEEPSEEK_API_KEY) {
+      return res.status(500).json({ error: 'DEEPSEEK_API_KEY není nastaven na serveru.' });
+    }
+
     const prompt = buildPrompt(patology);
     const publicBase = getPublicBase(req);
 
     const [genResult, gallery] = await Promise.all([
-      generateWithRetries(prompt),
+      generateContent({ provider, model, prompt }),
       fetchMedicalGallery(patology, publicBase)
     ]);
 
-    let html = genResult.response.text || '';
+    let html = genResult.text || '';
     html = stripHtmlFence(html);
     html = sanitizeGeneratedHtml(html);
     html = injectGallery(html, buildGalleryHtml(patology, gallery));
@@ -527,6 +701,7 @@ app.post('/api/analyze', async (req, res) => {
     if (!html || !/<html[\s>]/i.test(html)) {
       return res.status(502).json({
         error: 'Model nevrátil platné HTML.',
+        provider: genResult.provider,
         model: genResult.model,
         preview: String(html).slice(0, 400)
       });
@@ -535,6 +710,7 @@ app.post('/api/analyze', async (req, res) => {
     res.json({
       html,
       mode: genResult.mode,
+      provider: genResult.provider,
       model: genResult.model,
       attempt: genResult.attempt,
       patology,
@@ -544,20 +720,24 @@ app.post('/api/analyze', async (req, res) => {
     });
   } catch (error) {
     console.error('[analyze]', error);
-    const quota = isQuotaError(error);
-    const busy = isBusyError(error);
+    const quota = isQuotaError(error) || Number(error.status) === 429;
+    const busy = isBusyError(error) || Number(error.status) === 503;
+    const providerHint = String(req.body?.provider || 'gemini').toLowerCase();
     res.status(quota ? 429 : busy ? 503 : 500).json({
       error: quota
-        ? 'Vyčerpaná kvóta Gemini API (429). Zkontroluj plán/billing na https://aistudio.google.com/.'
+        ? providerHint === 'deepseek'
+          ? 'Vyčerpaná kvóta DeepSeek API (429). Zkontroluj kredit na https://platform.deepseek.com/.'
+          : 'Vyčerpaná kvóta Gemini API (429). Zkontroluj plán/billing na https://aistudio.google.com/.'
         : busy
-          ? 'Gemini je teď přetížený (high demand). Zkus to za chvíli znovu.'
+          ? 'AI poskytovatel je teď přetížený. Zkus to za chvíli znovu.'
           : error.message || 'Neznámá chyba backendu.',
-      model: GEMINI_MODEL,
       detail: errText(error).slice(0, 500)
     });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`AI search backend listening on :${PORT} (model=${GEMINI_MODEL})`);
+  console.log(
+    `AI search backend listening on :${PORT} (gemini=${Boolean(GEMINI_API_KEY)}, deepseek=${Boolean(DEEPSEEK_API_KEY)})`
+  );
 });
