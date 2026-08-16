@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const { GoogleGenAI } = require('@google/genai');
 
 const app = express();
 const PORT = process.env.PORT || 8787;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-// Použití dynamického aliasu 'gemini-flash' (Google jej vždy nasměruje na aktuální nejnovější model)
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-flash';
+// Inicializace oficiálního SDK
+const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
@@ -28,34 +29,10 @@ function stripHtmlFence(text) {
     .trim();
 }
 
-async function callGemini(prompt) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
-  
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      tools: [{ google_search: {} }]
-    })
-  });
-
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const err = new Error(data.error?.message || `Gemini API error (${response.status})`);
-    err.status = response.status;
-    err.payload = data;
-    throw err;
-  }
-
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-}
-
 app.get('/health', (_req, res) => {
   res.json({
     ok: true,
-    hasKey: Boolean(GEMINI_API_KEY),
-    model: GEMINI_MODEL
+    hasKey: Boolean(GEMINI_API_KEY)
   });
 });
 
@@ -71,9 +48,19 @@ app.post('/api/analyze', async (req, res) => {
     }
 
     const prompt = buildPrompt(patology);
-    let html = await callGemini(prompt);
 
+    // Volání přes oficiální knihovnu včetně Google Search grounding
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        tools: [{ googleSearch: {} }]
+      }
+    });
+
+    let html = response.text || '';
     html = stripHtmlFence(html);
+
     if (!html || !/<html[\s>]/i.test(html)) {
       return res.status(502).json({
         error: 'Model nevrátil platné HTML.',
@@ -81,10 +68,10 @@ app.post('/api/analyze', async (req, res) => {
       });
     }
 
-    res.json({ html, mode: 'gemini_google_search', patology });
+    res.json({ html, mode: 'gemini_sdk_search', patology });
   } catch (error) {
-    console.error('[analyze]', error.message);
-    res.status(error.status || 500).json({
+    console.error('[analyze]', error);
+    res.status(500).json({
       error: error.message || 'Neznámá chyba backendu.'
     });
   }
