@@ -6,8 +6,16 @@ const app = express();
 const PORT = process.env.PORT || 8787;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-// Inicializace oficiálního SDK
-const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+// Platné ID modelu (ne "gemini-flash" – to API nezná)
+const MODEL_ALIASES = {
+  'gemini-flash': 'gemini-2.5-flash',
+  'flash': 'gemini-2.5-flash',
+  'gemini-2.0-flash': 'gemini-2.5-flash'
+};
+const rawModel = (process.env.GEMINI_MODEL || 'gemini-2.5-flash').trim();
+const GEMINI_MODEL = MODEL_ALIASES[rawModel] || rawModel;
+
+const ai = GEMINI_API_KEY ? new GoogleGenAI({ apiKey: GEMINI_API_KEY }) : null;
 
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
@@ -32,13 +40,15 @@ function stripHtmlFence(text) {
 app.get('/health', (_req, res) => {
   res.json({
     ok: true,
-    hasKey: Boolean(GEMINI_API_KEY)
+    hasKey: Boolean(GEMINI_API_KEY),
+    model: GEMINI_MODEL,
+    requestedModel: rawModel
   });
 });
 
 app.post('/api/analyze', async (req, res) => {
   try {
-    if (!GEMINI_API_KEY) {
+    if (!GEMINI_API_KEY || !ai) {
       return res.status(500).json({ error: 'GEMINI_API_KEY není nastaven na serveru.' });
     }
 
@@ -46,17 +56,27 @@ app.post('/api/analyze', async (req, res) => {
     if (!patology) {
       return res.status(400).json({ error: 'Chybí pole patology.' });
     }
+    if (patology.length > 200) {
+      return res.status(400).json({ error: 'Text patologie je příliš dlouhý (max 200 znaků).' });
+    }
 
     const prompt = buildPrompt(patology);
-
-    // Volání přes oficiální knihovnu včetně Google Search grounding
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-      config: {
-        tools: [{ googleSearch: {} }]
-      }
-    });
+    let response;
+    try {
+      response = await ai.models.generateContent({
+        model: GEMINI_MODEL,
+        contents: prompt,
+        config: {
+          tools: [{ googleSearch: {} }]
+        }
+      });
+    } catch (searchErr) {
+      console.warn('[analyze] googleSearch failed, retry without tools:', searchErr.message);
+      response = await ai.models.generateContent({
+        model: GEMINI_MODEL,
+        contents: prompt
+      });
+    }
 
     let html = response.text || '';
     html = stripHtmlFence(html);
@@ -64,19 +84,21 @@ app.post('/api/analyze', async (req, res) => {
     if (!html || !/<html[\s>]/i.test(html)) {
       return res.status(502).json({
         error: 'Model nevrátil platné HTML.',
+        model: GEMINI_MODEL,
         preview: String(html).slice(0, 400)
       });
     }
 
-    res.json({ html, mode: 'gemini_sdk_search', patology });
+    res.json({ html, mode: 'gemini_sdk_search', model: GEMINI_MODEL, patology });
   } catch (error) {
     console.error('[analyze]', error);
     res.status(500).json({
-      error: error.message || 'Neznámá chyba backendu.'
+      error: error.message || 'Neznámá chyba backendu.',
+      model: GEMINI_MODEL
     });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`AI search backend listening on :${PORT}`);
+  console.log(`AI search backend listening on :${PORT} (model=${GEMINI_MODEL})`);
 });
