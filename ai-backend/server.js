@@ -6,13 +6,15 @@ const app = express();
 const PORT = process.env.PORT || 8787;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-// Platné ID modelu (ne "gemini-flash" – to API nezná)
+// Aktuální Flash (2.5 už pro nové účty není). Alias mapuje staré názvy.
+const DEFAULT_MODEL = 'gemini-3.6-flash';
 const MODEL_ALIASES = {
-  'gemini-flash': 'gemini-2.5-flash',
-  'flash': 'gemini-2.5-flash',
-  'gemini-2.0-flash': 'gemini-2.5-flash'
+  'gemini-flash': DEFAULT_MODEL,
+  'flash': DEFAULT_MODEL,
+  'gemini-2.0-flash': DEFAULT_MODEL,
+  'gemini-2.5-flash': DEFAULT_MODEL
 };
-const rawModel = (process.env.GEMINI_MODEL || 'gemini-2.5-flash').trim();
+const rawModel = (process.env.GEMINI_MODEL || DEFAULT_MODEL).trim();
 const GEMINI_MODEL = MODEL_ALIASES[rawModel] || rawModel;
 
 const ai = GEMINI_API_KEY ? new GoogleGenAI({ apiKey: GEMINI_API_KEY }) : null;
