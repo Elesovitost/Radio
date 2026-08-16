@@ -78,18 +78,76 @@ function escapeHtml(s) {
 }
 
 function buildPrompt(patology) {
-  return `Chci analyzovat radiologickou entitu ${patology}. Využij znalosti z Radiopaedia a odborné literatury. Výstup vrať jako kompletní HTML stránku.
+  return `Chci analyzovat radiologickou entitu „${patology}“ (může být česky nebo anglicky).
+Využij znalosti z Radiopaedia a odborné literatury. Výstup vrať jako kompletní HTML stránku.
 
 Stránka musí obsahovat:
-1) Stručný popis a typický obraz (MR/CT sekvence, klíčové znaky)
-2) Klasifikace – tabulka stupňů, pokud existuje
-3) Diferenciální diagnostika – stručně
-4) Sekci galerie s přesně tímto placeholderem (NEMĚŇ ID):
+1) Nadpis s oficiálním anglickým názvem entity
+2) Stručný popis a typický obraz (MR/CT sekvence, klíčové znaky)
+3) Klasifikace – tabulka stupňů, pokud existuje
+4) Diferenciální diagnostika – stručně
+5) Sekci galerie s přesně tímto placeholderem (NEMĚŇ ID):
 <div id="radiology-gallery"></div>
 Pod placeholder dej krátké textové popisky typických snímků (bez <img> tagů) – obrázky doplní backend.
 
+NA KONCI HTML (těsně před </body>) povinně vlož přesně tento komentář (JSON na 1 řádek, anglicky):
+<!--RADIO_IMAGES{"englishName":"...","queries":["...","...","..."],"related":["...","..."],"radiopaedia":["https://radiopaedia.org/..."]}RADIO_IMAGES-->
+
+Pravidla pro RADIO_IMAGES:
+- englishName = standardní anglický radiologický název (např. „meniscal ramp lesion“)
+- queries = 3–6 anglických frází pro hledání typických MRI/CT/RTG snímků TÉTO entity (vždy přidej modality: MRI/CT)
+- related = 2–4 širší, ale stále relevantní fráze, pokud je konkrétních snímků málo (např. „medial meniscus tear MRI“)
+- radiopaedia = 1–5 reálných URL článků/kazuistik na radiopaedia.org k tématu (pokud znáš)
+- NIKDY nepiš česky do queries/related
+
 ZAKÁZÁNO: <img>, via.placeholder.com, placehold.co, onerror smyčky.
 DŮLEŽITÉ: Vrať POUZE čistý HTML kód od <!DOCTYPE html>... bez markdown plotů.`;
+}
+
+function extractRadioImagesMeta(html) {
+  const empty = { englishName: '', queries: [], related: [], radiopaedia: [] };
+  const text = String(html || '');
+  const m =
+    text.match(/<!--\s*RADIO_IMAGES\s*([\s\S]*?)\s*RADIO_IMAGES\s*-->/i) ||
+    text.match(/<!--\s*RADIO_IMAGES\s*(\{[\s\S]*?\})\s*-->/i);
+  if (!m) return { ...empty, html: text };
+
+  let meta = { ...empty };
+  try {
+    const raw = m[1].trim().replace(/^RADIO_IMAGES/i, '').trim();
+    const parsed = JSON.parse(raw);
+    meta = {
+      englishName: String(parsed.englishName || parsed.english || '').trim(),
+      queries: [].concat(parsed.queries || []).map((q) => String(q || '').trim()).filter(Boolean),
+      related: [].concat(parsed.related || []).map((q) => String(q || '').trim()).filter(Boolean),
+      radiopaedia: [].concat(parsed.radiopaedia || parsed.links || [])
+        .map((u) => String(u || '').trim())
+        .filter((u) => /^https?:\/\/(www\.)?radiopaedia\.org\//i.test(u))
+    };
+  } catch {
+    // ignore malformed meta
+  }
+
+  return {
+    ...meta,
+    html: text.replace(m[0], '').replace(/\n{3,}/g, '\n\n')
+  };
+}
+
+function uniqQueries(...lists) {
+  const out = [];
+  const seen = new Set();
+  for (const list of lists) {
+    for (const q of list || []) {
+      const cleaned = String(q || '').replace(/\s+/g, ' ').trim();
+      if (!cleaned) continue;
+      const key = cleaned.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(cleaned);
+    }
+  }
+  return out;
 }
 
 function stripHtmlFence(text) {
@@ -230,12 +288,18 @@ async function fetchJson(url, { headers = {}, timeoutMs = 12000 } = {}) {
   }
 }
 
-async function searchWikimedia(query, limit = 6, base = '') {
-  const queries = [
-    `${query} MRI`,
-    `${query} CT`,
-    `${query} radiograph`
-  ];
+async function searchWikimedia(queryOrQueries, limit = 6, base = '') {
+  const seed = Array.isArray(queryOrQueries) ? queryOrQueries : [queryOrQueries];
+  const queries = uniqQueries(
+    seed,
+    seed.flatMap((q) => {
+      const s = String(q || '').trim();
+      if (!s) return [];
+      if (/\b(MRI|CT|radiograph|X-?ray|ultrasound|US)\b/i.test(s)) return [s];
+      return [`${s} MRI`, `${s} CT`];
+    })
+  ).slice(0, 10);
+
   const out = [];
   const seen = new Set();
 
@@ -277,14 +341,15 @@ async function searchWikimedia(query, limit = 6, base = '') {
       const desc =
         meta.ImageDescription?.value?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ||
         page.title?.replace(/^File:/, '') ||
-        query;
+        q;
       out.push({
         source: 'wikimedia',
         title: page.title?.replace(/^File:/, '') || 'Wikimedia',
         description: desc.slice(0, 280),
         pageUrl: page.canonicalurl || info.descriptionurl || imageUrl,
         imageUrl,
-        displayUrl: proxyUrl(imageUrl, base)
+        displayUrl: proxyUrl(imageUrl, base),
+        matchedQuery: q
       });
     }
   }
@@ -371,7 +436,7 @@ async function searchRadiopaediaCases(query, limit = 5) {
   }
 }
 
-async function fetchMedicalGallery(patology, base = '') {
+async function fetchMedicalGallery(patology, base = '', imageMeta = {}) {
   const errors = [];
   const soft = (label, p) =>
     p.catch((e) => {
@@ -379,11 +444,40 @@ async function fetchMedicalGallery(patology, base = '') {
       return [];
     });
 
-  const [wiki, openi, radioLinks] = await Promise.all([
-    soft('wikimedia', searchWikimedia(patology, 6, base)),
-    soft('openi', searchOpenI(patology, 4, base)),
-    soft('radiopaedia', searchRadiopaediaCases(patology, 5))
+  const englishName = String(imageMeta.englishName || '').trim();
+  const primary = uniqQueries(
+    imageMeta.queries,
+    englishName ? [englishName] : [],
+    // český vstup sem NEDÁVEJ – Commons podle něj nic nenajde
+    /^[\x00-\x7F]+$/.test(patology) ? [patology] : []
+  );
+  const related = uniqQueries(imageMeta.related).filter(
+    (q) => !primary.some((p) => p.toLowerCase() === q.toLowerCase())
+  );
+
+  const searchTerm = primary[0] || englishName || patology;
+  const llmRadio = (imageMeta.radiopaedia || []).map((url) => ({
+    url,
+    title: englishName || patology
+  }));
+
+  const [wikiPrimary, openi, radioLinks] = await Promise.all([
+    soft('wikimedia', searchWikimedia(primary.length ? primary : [searchTerm], 8, base)),
+    soft('openi', searchOpenI(searchTerm, 3, base)),
+    soft('radiopaedia', searchRadiopaediaCases(searchTerm, 5))
   ]);
+
+  let wiki = wikiPrimary;
+  if (wiki.length < 4 && related.length) {
+    const more = await soft('wikimedia-related', searchWikimedia(related, 6, base));
+    const seen = new Set(wiki.map((i) => i.imageUrl));
+    for (const img of more) {
+      if (seen.has(img.imageUrl)) continue;
+      seen.add(img.imageUrl);
+      wiki.push(img);
+      if (wiki.length >= 8) break;
+    }
+  }
 
   const results = [];
   const seen = new Set();
@@ -410,7 +504,20 @@ async function fetchMedicalGallery(patology, base = '') {
     })
   );
 
-  return { images, radiopaediaLinks: radioLinks, errors };
+  const mergedLinks = [];
+  const seenLink = new Set();
+  for (const l of [...llmRadio, ...radioLinks]) {
+    if (!l?.url || seenLink.has(l.url)) continue;
+    seenLink.add(l.url);
+    mergedLinks.push(l);
+  }
+
+  return {
+    images,
+    radiopaediaLinks: mergedLinks,
+    errors,
+    searchQueries: uniqQueries(primary, related)
+  };
 }
 
 function buildGalleryHtml(patology, gallery) {
@@ -453,8 +560,8 @@ function buildGalleryHtml(patology, gallery) {
 
   if (!images.length && !links.length) {
     return `<div style="padding:16px;border:1px dashed #475569;border-radius:8px;color:#94a3b8;">
-      Nepodařilo se dohledat otevřené snímky pro „${escapeHtml(patology)}“. Zkus přesnější anglický název (např. „ACL tear MRI“).
-      <div style="margin-top:8px;"><a href="https://radiopaedia.org/search?q=${encodeURIComponent(patology)}" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;">Otevřít Radiopaedia search</a></div>
+      Pro tuto entitu se zatím nepodařilo stáhnout otevřené snímky.
+      <div style="margin-top:8px;"><a href="https://radiopaedia.org/search?q=${encodeURIComponent(patology)}" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;">Radiopaedia</a></div>
     </div>`;
   }
 
@@ -464,7 +571,7 @@ function buildGalleryHtml(patology, gallery) {
     </div>
     ${radioList}
     <p style="margin-top:12px;font-size:12px;color:#64748b;">
-      Náhledy jsou vložené přímo do HTML (Wikimedia Commons). Radiopaedia obrázky neumožňuje vkládat, proto jen odkazy.
+      Související snímky podle anglických výrazů z AI (Wikimedia Commons). Radiopaedia jen jako odkazy.
     </p>`;
 }
 
@@ -574,7 +681,7 @@ async function generateWithDeepSeek(prompt, model) {
         {
           role: 'system',
           content:
-            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů a bez <img> tagů.'
+            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů a bez <img> tagů. Na konci HTML vždy vlož komentář <!--RADIO_IMAGES{...}RADIO_IMAGES--> s anglickými image queries.'
         },
         { role: 'user', content: prompt }
       ],
@@ -588,7 +695,7 @@ async function generateWithDeepSeek(prompt, model) {
         {
           role: 'system',
           content:
-            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů a bez <img> tagů.'
+            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů a bez <img> tagů. Na konci HTML vždy vlož komentář <!--RADIO_IMAGES{...}RADIO_IMAGES--> s anglickými image queries.'
         },
         { role: 'user', content: prompt }
       ],
@@ -675,7 +782,7 @@ app.get('/health', (_req, res) => {
     hasDeepseekKey: Boolean(DEEPSEEK_API_KEY),
     geminiModel: GEMINI_MODEL,
     deepseekModels: [...ALLOWED_DEEPSEEK],
-    images: 'wikimedia+inline-data-uri'
+    images: 'llm-queries+wikimedia+inline'
   });
 });
 
@@ -750,15 +857,16 @@ app.post('/api/analyze', async (req, res) => {
     const prompt = buildPrompt(patology);
     const publicBase = getPublicBase(req);
 
-    const [genResult, gallery] = await Promise.all([
-      generateContent({ provider, model, prompt }),
-      fetchMedicalGallery(patology, publicBase)
-    ]);
+    // Nejdřív LLM (anglické názvy + image queries), teprve potom galerie
+    const genResult = await generateContent({ provider, model, prompt });
 
-    let html = genResult.text || '';
-    html = stripHtmlFence(html);
-    html = sanitizeGeneratedHtml(html);
-    html = injectGallery(html, buildGalleryHtml(patology, gallery));
+    let html = stripHtmlFence(genResult.text || '');
+    const imageMeta = extractRadioImagesMeta(html);
+    html = sanitizeGeneratedHtml(imageMeta.html);
+
+    const galleryLabel = imageMeta.englishName || patology;
+    const gallery = await fetchMedicalGallery(patology, publicBase, imageMeta);
+    html = injectGallery(html, buildGalleryHtml(galleryLabel, gallery));
 
     if (!html || !/<html[\s>]/i.test(html)) {
       return res.status(502).json({
@@ -776,6 +884,8 @@ app.post('/api/analyze', async (req, res) => {
       model: genResult.model,
       attempt: genResult.attempt,
       patology,
+      englishName: imageMeta.englishName || '',
+      imageQueries: gallery.searchQueries || [],
       imagesFound: gallery.images.length,
       imagesEmbedded: gallery.images.filter((img) => img.embedded).length,
       radiopaediaLinks: gallery.radiopaediaLinks.length,

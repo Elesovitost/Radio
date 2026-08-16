@@ -147,7 +147,7 @@
         <button id="submitBtn" type="button">Generovat a otevřít</button>
 
         <div id="status" class="status-message" aria-live="polite"></div>
-        <p class="note">Text generuje zvolený model. Náhledy bere prohlížeč z Wikimedia Commons a vkládá je přímo do stránky.</p>
+        <p class="note">Text i anglické image queries dodá model; snímky se vytáhnou z otevřených zdrojů do HTML.</p>
     </main>
 
     <script>
@@ -224,42 +224,70 @@
                 </p>`;
         };
 
-        const searchWikimediaBrowser = async (query, limit = 8) => {
-            const url = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
-                action: 'query',
-                format: 'json',
-                origin: '*',
-                generator: 'search',
-                gsrsearch: `${query} MRI CT radiology`,
-                gsrnamespace: '6',
-                gsrlimit: String(limit),
-                prop: 'imageinfo|info',
-                inprop: 'url',
-                iiprop: 'url|mime|size|extmetadata',
-                iiurlwidth: '720'
-            });
-            const data = await fetch(url).then((r) => r.json());
+        const searchWikimediaBrowser = async (queries, limit = 8) => {
+            const list = (Array.isArray(queries) ? queries : [queries])
+                .map((q) => String(q || '').trim())
+                .filter(Boolean)
+                .slice(0, 6);
+            if (!list.length) return [];
+
             const out = [];
-            for (const page of Object.values(data?.query?.pages || {})) {
-                const info = page.imageinfo?.[0];
-                if (!info) continue;
-                if (!/^image\/(jpeg|png|gif|webp)$/i.test(info.mime || '')) continue;
-                const imageUrl = String(info.thumburl || info.url || '').replace(/\?utm_.*$/, '');
-                if (!imageUrl) continue;
-                const desc = (info.extmetadata?.ImageDescription?.value || '')
-                    .replace(/<[^>]+>/g, ' ')
-                    .replace(/\s+/g, ' ')
-                    .trim();
-                out.push({
-                    source: 'wikimedia',
-                    title: (page.title || '').replace(/^File:/, '') || query,
-                    description: (desc || query).slice(0, 280),
-                    pageUrl: page.canonicalurl || info.descriptionurl || imageUrl,
-                    imageUrl
-                });
+            const seen = new Set();
+            for (const query of list) {
                 if (out.length >= limit) break;
+                const url = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
+                    action: 'query',
+                    format: 'json',
+                    origin: '*',
+                    generator: 'search',
+                    gsrsearch: /\b(MRI|CT|radiograph)\b/i.test(query) ? query : `${query} MRI`,
+                    gsrnamespace: '6',
+                    gsrlimit: String(Math.max(limit, 6)),
+                    prop: 'imageinfo|info',
+                    inprop: 'url',
+                    iiprop: 'url|mime|size|extmetadata',
+                    iiurlwidth: '720'
+                });
+                let data;
+                try {
+                    data = await fetch(url).then((r) => r.json());
+                } catch {
+                    continue;
+                }
+                for (const page of Object.values(data?.query?.pages || {})) {
+                    if (out.length >= limit) break;
+                    const info = page.imageinfo?.[0];
+                    if (!info) continue;
+                    if (!/^image\/(jpeg|png|gif|webp)$/i.test(info.mime || '')) continue;
+                    const imageUrl = String(info.thumburl || info.url || '').replace(/\?utm_.*$/, '');
+                    if (!imageUrl || seen.has(imageUrl)) continue;
+                    seen.add(imageUrl);
+                    const desc = (info.extmetadata?.ImageDescription?.value || '')
+                        .replace(/<[^>]+>/g, ' ')
+                        .replace(/\s+/g, ' ')
+                        .trim();
+                    out.push({
+                        source: 'wikimedia',
+                        title: (page.title || '').replace(/^File:/, '') || query,
+                        description: (desc || query).slice(0, 280),
+                        pageUrl: page.canonicalurl || info.descriptionurl || imageUrl,
+                        imageUrl
+                    });
+                }
             }
             return out;
+        };
+
+        const extractEnglishFromDoc = (doc) => {
+            const h1 = (doc.querySelector('h1')?.textContent || '').replace(/\s+/g, ' ').trim();
+            const title = (doc.title || '').replace(/\s+/g, ' ').trim();
+            const candidate = h1 || title;
+            if (!candidate) return '';
+            // Preferuj anglický nadpis (ASCII + typická radiologická slova)
+            if (/[áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.test(candidate) && !/\b(MRI|CT|lesion|tear|meniscus|fracture)\b/i.test(candidate)) {
+                return '';
+            }
+            return candidate.replace(/^Analýza:\s*/i, '').slice(0, 120);
         };
 
         const ensureGalleryHost = (doc) => {
@@ -302,7 +330,7 @@
             });
         };
 
-        const fillGallery = async (doc, patology, backendImages, wikiImages) => {
+        const fillGallery = async (doc, patology, data = {}) => {
             const gallery = ensureGalleryHost(doc);
             const isDirectSrc = (src) =>
                 String(src || '').startsWith('data:image') ||
@@ -312,30 +340,36 @@
                 isDirectSrc(img.getAttribute('src') || '')
             );
 
-            let images = Array.isArray(backendImages) ? backendImages.filter((img) => img.imageUrl) : [];
-            if (!images.length && Array.isArray(wikiImages)) images = wikiImages;
-            if (!hasUsableImg && !images.length) {
-                try {
-                    images = await searchWikimediaBrowser(patology);
-                } catch {
-                    images = [];
-                }
-            }
+            let images = Array.isArray(data.images) ? data.images.filter((img) => img.imageUrl) : [];
 
-            if (!hasUsableImg && images.length) {
-                const radioHeading = [...gallery.querySelectorAll('h3')].find((h) => /radiopaedia/i.test(h.textContent || ''));
-                const radioHtml = radioHeading?.parentElement ? radioHeading.parentElement.outerHTML : '';
-                gallery.innerHTML = buildGalleryCards(images) + radioHtml;
-            } else if (!hasUsableImg && !gallery.querySelector('a[href*="radiopaedia"]')) {
-                gallery.insertAdjacentHTML('afterbegin', `
-                    <div style="padding:16px;border:1px dashed #475569;border-radius:8px;color:#94a3b8;">
-                        Nepodařilo se dohledat otevřené snímky. Zkus anglický název (např. „ACL tear MRI“).
-                        <div style="margin-top:8px;">
-                            <a href="https://radiopaedia.org/search?q=${encodeURIComponent(patology)}" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;">Otevřít Radiopaedia</a>
-                            ·
-                            <a href="https://commons.wikimedia.org/w/index.php?search=${encodeURIComponent(patology)}&title=Special:MediaSearch" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;">Wikimedia Commons</a>
-                        </div>
-                    </div>`);
+            if (!hasUsableImg) {
+                const english = data.englishName || extractEnglishFromDoc(doc);
+                const queries = [
+                    ...(Array.isArray(data.imageQueries) ? data.imageQueries : []),
+                    english,
+                    english ? `${english} MRI` : ''
+                ].filter(Boolean);
+
+                if (!images.length && queries.length) {
+                    try {
+                        images = await searchWikimediaBrowser(queries);
+                    } catch {
+                        images = [];
+                    }
+                }
+
+                if (images.length) {
+                    const radioHeading = [...gallery.querySelectorAll('h3')].find((h) => /radiopaedia/i.test(h.textContent || ''));
+                    const radioHtml = radioHeading?.parentElement ? radioHeading.parentElement.outerHTML : '';
+                    gallery.innerHTML = buildGalleryCards(images) + radioHtml;
+                } else {
+                    // Odstraň staré „zkus anglický název“ hlášky z backendu
+                    [...gallery.querySelectorAll('div')].forEach((el) => {
+                        if (/Nepodařilo se dohledat|přesnější anglický název/i.test(el.textContent || '')) {
+                            el.remove();
+                        }
+                    });
+                }
             }
 
             attachImageFallback(doc);
@@ -363,11 +397,9 @@
                 <body style="background:#121212;color:#e0e0e0;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">
                     <h2>Analýza: ${escapeHtml(patology)}</h2>
                     <p>Model: ${escapeHtml(provider)} / ${escapeHtml(model)}</p>
-                    <p style="color:#8b949e;">Hledám náhledy na Wikimedia Commons…</p>
+                    <p style="color:#8b949e;">AI připravuje text a související snímky…</p>
                 </body>
             `);
-
-            const wikiPromise = searchWikimediaBrowser(patology).catch(() => []);
 
             try {
                 const response = await fetch(`${apiBase}/api/analyze`, {
@@ -384,12 +416,10 @@
                 resultWin.document.write(data.html);
                 resultWin.document.close();
 
-                const wikiImages = await wikiPromise;
-                const shown = await fillGallery(resultWin.document, patology, data.images, wikiImages);
-                const imgInfo = shown
-                    ? ` · náhledy: ${shown}`
-                    : (typeof data.imagesFound === 'number' ? ` · obrázky: ${data.imagesFound}` : '');
-                setStatus(`Hotovo (${data.provider || provider} / ${data.model || model})${imgInfo}.`, 'success');
+                const shown = await fillGallery(resultWin.document, patology, data);
+                const label = data.englishName ? ` · ${data.englishName}` : '';
+                const imgInfo = shown ? ` · náhledy: ${shown}` : '';
+                setStatus(`Hotovo (${data.provider || provider} / ${data.model || model})${label}${imgInfo}.`, 'success');
             } catch (error) {
                 const msg = error.message || 'Neznámá chyba';
                 setStatus(`Chyba: ${msg}`, 'error');
