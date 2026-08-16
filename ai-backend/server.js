@@ -5,8 +5,8 @@ const app = express();
 const PORT = process.env.PORT || 8787;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-// Aktualizovaný podporovaný model
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+// Použití dynamického aliasu 'gemini-flash' (Google jej vždy nasměruje na aktuální nejnovější model)
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-flash';
 
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
