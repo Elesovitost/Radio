@@ -64,14 +64,23 @@ function errText(error) {
   ].filter(Boolean).join(' ');
 }
 
+function isQuotaError(error) {
+  const t = errText(error).toLowerCase();
+  return (
+    t.includes('"code":429') ||
+    t.includes('exceeded your current quota') ||
+    t.includes('quota') && t.includes('billing') ||
+    t.includes('resource_exhausted')
+  );
+}
+
 function isBusyError(error) {
+  if (isQuotaError(error)) return false; // kvóta ≠ dočasné přetížení
   const t = errText(error).toLowerCase();
   return (
     t.includes('503') ||
     t.includes('unavailable') ||
     t.includes('high demand') ||
-    t.includes('resource_exhausted') ||
-    t.includes('429') ||
     t.includes('try again later')
   );
 }
@@ -103,11 +112,15 @@ async function generateWithRetries(prompt) {
           };
         } catch (error) {
           lastError = error;
+          const quota = isQuotaError(error);
           const busy = isBusyError(error);
           console.warn(
-            `[analyze] model=${model} search=${useSearch} attempt=${attempt} busy=${busy}:`,
+            `[analyze] model=${model} search=${useSearch} attempt=${attempt} quota=${quota} busy=${busy}:`,
             errText(error).slice(0, 240)
           );
+
+          // Hard quota → okamžitě konec (retry nepomůže)
+          if (quota) throw error;
 
           if (busy && attempt < 3) {
             await sleep(1200 * attempt);
@@ -164,11 +177,14 @@ app.post('/api/analyze', async (req, res) => {
     res.json({ html, mode, model, attempt, patology });
   } catch (error) {
     console.error('[analyze]', error);
+    const quota = isQuotaError(error);
     const busy = isBusyError(error);
-    res.status(busy ? 503 : 500).json({
-      error: busy
-        ? 'Gemini je teď přetížený (high demand). Zkus to za chvíli znovu — backend už automaticky zkouší více modelů.'
-        : (error.message || 'Neznámá chyba backendu.'),
+    res.status(quota ? 429 : busy ? 503 : 500).json({
+      error: quota
+        ? 'Vyčerpaná kvóta Gemini API (429). Zkontroluj plán/billing na https://aistudio.google.com/ (Usage / Billing), nebo počkej na reset free tier limitu.'
+        : busy
+          ? 'Gemini je teď přetížený (high demand). Zkus to za chvíli znovu.'
+          : (error.message || 'Neznámá chyba backendu.'),
       model: GEMINI_MODEL,
       detail: errText(error).slice(0, 500)
     });
