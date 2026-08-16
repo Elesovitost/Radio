@@ -737,7 +737,7 @@ const RegionAbdomen = {
             let lRes = checkSide('le_res'); if (lRes) { let gp = (v) => v === 'horní' ? 'horního' : v === 'střední' ? 'středního' : 'dolního'; let t = lRes.sideText === 'bilat.' && lRes.p === lRes.l ? `stav po parciální resekci ${gp(lRes.p)} pólu bilat.` : `${lRes.isP ? 'stav po parciální resekci ' + gp(lRes.p) + ' pólu vpravo' : ''}${lRes.isP && lRes.isL ? ' a ' : ''}${lRes.isL ? 'stav po parciální resekci ' + gp(lRes.l) + ' pólu vlevo' : ''}`; leRep.push(t); }
             let lNek = checkSide('le_nek'); if (lNek) leRep.push(`stav po nefrektomii ${lNek.sideText}`);
             let leDesc = ctx.field('le_custom_desc'); if (leDesc) leRep.push(leDesc);
-            const leNormal = emitOrgan('le_ost_add', leRep, '- Ledviny', 'abdomen_ledviny_main', 'přiměřené velikosti a šíře parenchymu, bez ložisek, bez dilatace dutého systému, bez patrné litiázy', 'Přiměřený nález na ledvinách, bez ložiskové léze a bez hydronefrózy.');
+            const leNormal = emitOrgan('le_ost_add', leRep, '- Ledviny', 'abdomen_ledviny_main', 'přiměřené velikosti a šíře parenchymu, bez ložisek, bez dilatace dutého systému, bez patrné litiázy', 'Přiměřený nález na ledvinách, bez ložiskové léze, hydronefrózy či litiázy.');
             let leConc = ctx.field('le_custom_conc'); if (leConc) concInc.push({ type: 'frame', text: leConc, tableId: 'abdomen_ledviny_main' });
 
             // 12. Močový měchýř

@@ -36,8 +36,8 @@ const RegionKnee = {
             ...(() => {
                 const makeCondyleTable = (title, prefix) => helpers.Table2colNormal(`${prefix}_table`, title, [
                     [ 'Chrupavka:', [ { btn: `${prefix}_chr_gr`, states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: `${prefix}_chr_lez`, states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delamin.'] }, { btn: `${prefix}_chr_edem`, states: ['edém 0', 'edém +', 'edém ++'] } ] ],
-                    [ 'Subchondr. kost:', [ { btn: `${prefix}_sub_sifk`, states: ['SIFK 0', 'SIFK +', 'SIFK ++'] }, { btn: `${prefix}_sub_ocl`, states: ['OCL 0', 'OCL I', 'OCL II', 'OCL III', 'OCL IV'] }, { btn: `${prefix}_sub_bml`, states: ['BML 0', 'BML +', 'BML ++', 'BML +++'] } ] ],
-                    [ 'Fraktura:', { btn: `${prefix}_frac`, states: ['0', 'impakční', 'vertikální', 'komin.'] } ]
+                    [ 'Subchondr. kost:', [ { btn: `${prefix}_sub_sifk`, states: ['SIFK 0', 'SIFK +', 'SIFK ++'] }, { btn: `${prefix}_sub_ocd`, states: ['OCD 0', 'OCD I', 'OCD II', 'OCD III', 'OCD IV'] }, { btn: `${prefix}_sub_bml`, states: ['BML 0', 'BML +', 'BML ++', 'BML +++'] } ] ],
+                    [ 'Fraktura:', { btn: `${prefix}_frac`, states: ['0', 'OC', 'impakční', 'vertikální', 'komin.'] } ]
                 ]);
 
                 const makeMeniscus = (id, title, prefix) => helpers.TableMain(id, title, [
@@ -199,28 +199,52 @@ const RegionKnee = {
             return res;
         };
 
+        const bonePrep = (items) => (/^[sšzž]/i.test(items[0]) ? 'se' : 's');
+
         const getBonePathologies = (prefix) => {
             let frac = ctx.text(`${prefix}_frac`);
             let sifk = ctx.text(`${prefix}_sub_sifk`);
-            let ocl = ctx.text(`${prefix}_sub_ocl`);
+            let ocd = ctx.text(`${prefix}_sub_ocd`);
             let bml = ctx.text(`${prefix}_sub_bml`);
 
-            let paths = [];
+            let rep = [];
+            let conc = [];
             if (frac && frac !== '0') {
-                const fracMap = { 'impakční': 'impakční frakturou', 'vertikální': 'vertikální frakturou', 'komin.': 'kominutivní frakturou' };
-                paths.push(fracMap[frac]);
+                if (frac === 'OC') {
+                    rep.push('osteochondrální frakturou s přerušením artikulárního povrchu a okolním edémem kostní dřeně');
+                    conc.push('osteochondrální frakturou (OCF)');
+                } else {
+                    const fracMap = { 'impakční': 'impakční frakturou', 'vertikální': 'vertikální frakturou', 'komin.': 'kominutivní frakturou' };
+                    rep.push(fracMap[frac]);
+                    conc.push(fracMap[frac]);
+                }
             }
             if (sifk && sifk !== 'SIFK 0') {
-                paths.push(sifk === 'SIFK +' ? 'SIFK' : 'SIFK s fokálním kolapsem');
+                if (sifk === 'SIFK +') {
+                    rep.push('subchondrální lineární hypointenzní frakturou a okolním edémem kostní dřeně');
+                    conc.push('SIFK');
+                } else {
+                    rep.push('subchondrální lineární hypointenzní frakturou, okolním edémem kostní dřeně a fokálním kolapsem artikulárního povrchu');
+                    conc.push('SIFK s fokálním kolapsem');
+                }
             }
-            if (ocl && ocl !== 'OCL 0') {
-                paths.push(`osteochondrální lézí ${ocl.replace('OCL ', '')}. st.`);
+            if (ocd && ocd !== 'OCD 0') {
+                const stage = ocd.replace('OCD ', '');
+                const ocdRepMap = {
+                    'I': 'subchondrálním edémem a změnou signálu bez přerušení chrupavky',
+                    'II': 'osteochondrální lézí s částečně uvolněným fragmentem',
+                    'III': 'osteochondrální lézí s uvolněným nestabilním fragmentem in situ',
+                    'IV': 'osteochondrálním defektem s dislokovaným fragmentem'
+                };
+                rep.push(ocdRepMap[stage] || `osteochondrální lézí ${stage}. st.`);
+                conc.push(`osteochondrální lézí (OCD) ${stage}. st.`);
             }
             if (bml && bml !== 'BML 0') {
                 const bmlMap = { 'BML +': 'mírným edémem dřeně', 'BML ++': 'středním edémem dřeně', 'BML +++': 'výrazným edémem dřeně' };
-                paths.push(bmlMap[bml]);
+                rep.push(bmlMap[bml]);
+                conc.push(bmlMap[bml]);
             }
-            return paths;
+            return { rep, conc };
         };
 
         // ═══ KLOUBNÍ DUTINA ═══
@@ -362,13 +386,11 @@ const RegionKnee = {
             }
 
             let repParts = [];
-            if (femBones.length > 0) {
-                let prep = (femBones[0].startsWith('SIFK') || femBones[0].startsWith('středním') || femBones[0].startsWith('výrazným')) ? 'se' : 's';
-                repParts.push(`${femBoneName} ${prep} ${femBones.join(' a ')}.`);
+            if (femBones.rep.length > 0) {
+                repParts.push(`${femBoneName} ${bonePrep(femBones.rep)} ${femBones.rep.join(' a ')}.`);
             }
-            if (tibBones.length > 0) {
-                let prep = (tibBones[0].startsWith('SIFK') || tibBones[0].startsWith('středním') || tibBones[0].startsWith('výrazným')) ? 'se' : 's';
-                repParts.push(`${tibBoneName} ${prep} ${tibBones.join(' a ')}.`);
+            if (tibBones.rep.length > 0) {
+                repParts.push(`${tibBoneName} ${bonePrep(tibBones.rep)} ${tibBones.rep.join(' a ')}.`);
             }
 
             if (femChrRep) repParts.push(femChrRep + '.');
@@ -381,13 +403,11 @@ const RegionKnee = {
                 reportOut.push({ type: 'frame', text: `${compName} bez výraznější léze chrupavek či skeletu.`, tableId: tableId, dimmed: true });
             }
 
-            if (femBones.length > 0) {
-                let prep = (femBones[0].startsWith('SIFK') || femBones[0].startsWith('středním') || femBones[0].startsWith('výrazným')) ? 'se' : 's';
-                concMain.push({ type: 'frame', text: `${femBoneName} ${prep} ${femBones.join(' a ')}.`, tableId: tableId });
+            if (femBones.conc.length > 0) {
+                concMain.push({ type: 'frame', text: `${femBoneName} ${bonePrep(femBones.conc)} ${femBones.conc.join(' a ')}.`, tableId: tableId });
             }
-            if (tibBones.length > 0) {
-                let prep = (tibBones[0].startsWith('SIFK') || tibBones[0].startsWith('středním') || tibBones[0].startsWith('výrazným')) ? 'se' : 's';
-                concMain.push({ type: 'frame', text: `${tibBoneName} ${prep} ${tibBones.join(' a ')}.`, tableId: tableId });
+            if (tibBones.conc.length > 0) {
+                concMain.push({ type: 'frame', text: `${tibBoneName} ${bonePrep(tibBones.conc)} ${tibBones.conc.join(' a ')}.`, tableId: tableId });
             }
 
             if (femChrConc || tibChrConc) {
