@@ -50,11 +50,17 @@ const FALLBACK_GEMINI_MODELS = [
 
 const ai = GEMINI_API_KEY ? new GoogleGenAI({ apiKey: GEMINI_API_KEY }) : null;
 
+const FETCH_UA =
+  'RadioPathologySearch/1.1 (https://github.com; educational radiology viewer)';
+
 const ALLOWED_IMAGE_HOSTS = [
   'upload.wikimedia.org',
   'commons.wikimedia.org',
   'openi.nlm.nih.gov',
   'www.ncbi.nlm.nih.gov',
+  'cdn.ncbi.nlm.nih.gov',
+  'europepmc.org',
+  'www.ebi.ac.uk',
   'prod-images-static.radiopaedia.org',
   'cases.radiopaedia.org',
   'radiopaedia.org'
@@ -165,6 +171,46 @@ function proxyUrl(absoluteUrl, base) {
   return base ? `${base}${path}` : path;
 }
 
+function sniffImageMime(buf) {
+  if (!buf || buf.length < 12) return null;
+  if (buf[0] === 0xff && buf[1] === 0xd8) return 'image/jpeg';
+  if (buf[0] === 0x89 && buf[1] === 0x50) return 'image/png';
+  if (buf[0] === 0x47 && buf[1] === 0x49) return 'image/gif';
+  if (buf[0] === 0x52 && buf[1] === 0x49 && buf.toString('ascii', 8, 12) === 'WEBP') {
+    return 'image/webp';
+  }
+  return null;
+}
+
+async function fetchImageAsDataUrl(url, { maxBytes = 800000, timeoutMs = 8000 } = {}) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, {
+      signal: ctrl.signal,
+      redirect: 'follow',
+      headers: {
+        'User-Agent': FETCH_UA,
+        Accept: 'image/jpeg,image/png,image/webp,image/gif,image/*;q=0.8',
+        Referer: 'https://commons.wikimedia.org/'
+      }
+    });
+    if (!res.ok) return null;
+    const buf = Buffer.from(await res.arrayBuffer());
+    if (buf.length < 64 || buf.length > maxBytes) return null;
+    const headerType = (res.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
+    const mime = /^image\/(jpeg|jpg|png|gif|webp)$/i.test(headerType)
+      ? headerType.replace('image/jpg', 'image/jpeg')
+      : sniffImageMime(buf);
+    if (!mime) return null;
+    return `data:${mime};base64,${buf.toString('base64')}`;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function fetchJson(url, { headers = {}, timeoutMs = 12000 } = {}) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
@@ -172,7 +218,7 @@ async function fetchJson(url, { headers = {}, timeoutMs = 12000 } = {}) {
     const res = await fetch(url, {
       signal: ctrl.signal,
       headers: {
-        'User-Agent': 'RadioAppImageFetcher/1.0 (educational radiology tool)',
+        'User-Agent': FETCH_UA,
         Accept: 'application/json',
         ...headers
       }
@@ -208,7 +254,7 @@ async function searchWikimedia(query, limit = 6, base = '') {
         prop: 'imageinfo|info',
         inprop: 'url',
         iiprop: 'url|mime|size|extmetadata',
-        iiurlwidth: '900'
+        iiurlwidth: '720'
       });
 
     let data;
@@ -224,9 +270,9 @@ async function searchWikimedia(query, limit = 6, base = '') {
       if (!info) continue;
       const mime = info.mime || '';
       if (!/^image\/(jpeg|png|gif|webp)$/i.test(mime)) continue;
-      const thumb = info.thumburl || info.url;
-      if (!thumb || seen.has(thumb)) continue;
-      seen.add(thumb);
+      const imageUrl = String(info.thumburl || info.url || '').replace(/\?utm_.*$/, '');
+      if (!imageUrl || seen.has(imageUrl)) continue;
+      seen.add(imageUrl);
       const meta = info.extmetadata || {};
       const desc =
         meta.ImageDescription?.value?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ||
@@ -236,9 +282,9 @@ async function searchWikimedia(query, limit = 6, base = '') {
         source: 'wikimedia',
         title: page.title?.replace(/^File:/, '') || 'Wikimedia',
         description: desc.slice(0, 280),
-        pageUrl: page.canonicalurl || info.descriptionurl || thumb,
-        imageUrl: thumb,
-        displayUrl: proxyUrl(thumb, base)
+        pageUrl: page.canonicalurl || info.descriptionurl || imageUrl,
+        imageUrl,
+        displayUrl: proxyUrl(imageUrl, base)
       });
     }
   }
@@ -255,8 +301,8 @@ async function searchOpenI(query, limit = 6, base = '') {
       n: String(Math.min(limit, 12))
     });
 
-  // Open-i bývá pomalé – krátký timeout, ať neblokuje odpověď
-  const data = await fetchJson(url, { timeoutMs: 9000 });
+  // Open-i často visí – krátký timeout, ať neblokuje galerii
+  const data = await fetchJson(url, { timeoutMs: 4000 });
   const list = data?.list || [];
   const out = [];
 
@@ -301,7 +347,7 @@ async function searchRadiopaediaCases(query, limit = 5) {
       signal: ctrl.signal,
       headers: {
         Accept: 'application/xml',
-        'User-Agent': 'RadioAppImageFetcher/1.0 (educational radiology tool)'
+        'User-Agent': FETCH_UA
       }
     });
     if (!res.ok) return [];
@@ -348,7 +394,23 @@ async function fetchMedicalGallery(patology, base = '') {
     if (results.length >= 8) break;
   }
 
-  return { images: results, radiopaediaLinks: radioLinks, errors };
+  const images = await Promise.all(
+    results.map(async (img) => {
+      const dataUrl = await fetchImageAsDataUrl(img.imageUrl);
+      const fallback =
+        img.source === 'wikimedia'
+          ? img.imageUrl
+          : proxyUrl(img.imageUrl, base) || img.imageUrl;
+      return {
+        ...img,
+        dataUrl: dataUrl || '',
+        displayUrl: dataUrl || fallback,
+        embedded: Boolean(dataUrl)
+      };
+    })
+  );
+
+  return { images, radiopaediaLinks: radioLinks, errors };
 }
 
 function buildGalleryHtml(patology, gallery) {
@@ -361,6 +423,8 @@ function buildGalleryHtml(patology, gallery) {
       <figure style="margin:0;background:#0f172a;border:1px solid #334155;border-radius:10px;overflow:hidden;">
         <a href="${escapeHtml(img.pageUrl)}" target="_blank" rel="noopener noreferrer">
           <img src="${escapeHtml(img.displayUrl)}" alt="${escapeHtml(img.title)}"
+               data-origin="${escapeHtml(img.imageUrl)}"
+               data-embedded="${img.embedded ? '1' : '0'}"
                loading="lazy" referrerpolicy="no-referrer"
                style="width:100%;height:220px;object-fit:contain;background:#020617;display:block;" />
         </a>
@@ -400,17 +464,15 @@ function buildGalleryHtml(patology, gallery) {
     </div>
     ${radioList}
     <p style="margin-top:12px;font-size:12px;color:#64748b;">
-      Obrázky stáhl backend z otevřených zdrojů (Wikimedia Commons / Open-i NLM) a zobrazuje je přes vlastní proxy.
+      Náhledy jsou vložené přímo do HTML (Wikimedia Commons). Radiopaedia obrázky neumožňuje vkládat, proto jen odkazy.
     </p>`;
 }
 
 function injectGallery(html, galleryHtml) {
   let out = String(html || '');
-  if (/id=["']radiology-gallery["']/i.test(out)) {
-    out = out.replace(
-      /(<div[^>]*id=["']radiology-gallery["'][^>]*>)([\s\S]*?)(<\/div>)/i,
-      `$1${galleryHtml}$3`
-    );
+  const openRe = /<div[^>]*id=["']radiology-gallery["'][^>]*>/i;
+  if (openRe.test(out)) {
+    out = out.replace(openRe, (openTag) => `${openTag}${galleryHtml}`);
   } else if (/<\/body>/i.test(out)) {
     out = out.replace(
       /<\/body>/i,
@@ -421,7 +483,7 @@ function injectGallery(html, galleryHtml) {
   }
 
   if (!/data-img-guard="1"/.test(out)) {
-    const guard = `<script data-img-guard="1">document.addEventListener('error',function(e){var t=e.target;if(!t||t.tagName!=='IMG')return;if(t.dataset.failHandled)return;t.dataset.failHandled='1';t.style.display='none';},true);</script>`;
+    const guard = `<script data-img-guard="1">document.addEventListener('error',function(e){var t=e.target;if(!t||t.tagName!=='IMG'||t.dataset.failHandled)return;t.dataset.failHandled='1';var origin=t.getAttribute('data-origin')||'';var box=document.createElement('div');box.style.cssText='padding:28px 16px;text-align:center;color:#94a3b8;background:#020617;font-size:13px;';box.innerHTML=origin?'Náhled se nenačetl. <a href=\"'+origin+'\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:#38bdf8;\">Otevřít zdroj</a>':'Náhled se nenačetl.';t.replaceWith(box);},true);</script>`;
     if (/<\/body>/i.test(out)) out = out.replace(/<\/body>/i, `${guard}</body>`);
     else out += guard;
   }
@@ -613,7 +675,7 @@ app.get('/health', (_req, res) => {
     hasDeepseekKey: Boolean(DEEPSEEK_API_KEY),
     geminiModel: GEMINI_MODEL,
     deepseekModels: [...ALLOWED_DEEPSEEK],
-    images: 'wikimedia+openi+proxy'
+    images: 'wikimedia+inline-data-uri'
   });
 });
 
@@ -636,7 +698,7 @@ app.get('/api/proxy-image', async (req, res) => {
 
     const upstream = await fetch(parsed.toString(), {
       headers: {
-        'User-Agent': 'RadioAppImageFetcher/1.0 (educational radiology tool)',
+        'User-Agent': FETCH_UA,
         Accept: 'image/*,*/*;q=0.8',
         Referer: parsed.origin + '/'
       }
@@ -715,8 +777,18 @@ app.post('/api/analyze', async (req, res) => {
       attempt: genResult.attempt,
       patology,
       imagesFound: gallery.images.length,
+      imagesEmbedded: gallery.images.filter((img) => img.embedded).length,
       radiopaediaLinks: gallery.radiopaediaLinks.length,
-      imageErrors: gallery.errors
+      imageErrors: gallery.errors,
+      images: gallery.images.map((img) => ({
+        source: img.source,
+        title: img.title,
+        description: img.description,
+        pageUrl: img.pageUrl,
+        imageUrl: img.imageUrl,
+        embedded: img.embedded
+      })),
+      radiopaedia: gallery.radiopaediaLinks
     });
   } catch (error) {
     console.error('[analyze]', error);

@@ -147,7 +147,7 @@
         <button id="submitBtn" type="button">Generovat a otevřít</button>
 
         <div id="status" class="status-message" aria-live="polite"></div>
-        <p class="note">Text generuje zvolený model. Obrázky backend stáhne z otevřených zdrojů a zobrazí přes proxy.</p>
+        <p class="note">Text generuje zvolený model. Náhledy bere prohlížeč z Wikimedia Commons a vkládá je přímo do stránky.</p>
     </main>
 
     <script>
@@ -196,6 +196,152 @@
             return { provider: provider || 'gemini', model: model || 'gemini-3.6-flash' };
         };
 
+        const buildGalleryCards = (images) => {
+            const cards = (images || []).map((img) => {
+                const src = img.imageUrl || img.displayUrl || '';
+                if (!src) return '';
+                return `
+                    <figure style="margin:0;background:#0f172a;border:1px solid #334155;border-radius:10px;overflow:hidden;">
+                        <a href="${escapeHtml(img.pageUrl || src)}" target="_blank" rel="noopener noreferrer">
+                            <img src="${escapeHtml(src)}" alt="${escapeHtml(img.title || '')}"
+                                 data-origin="${escapeHtml(img.imageUrl || src)}"
+                                 loading="lazy" referrerpolicy="no-referrer"
+                                 style="width:100%;height:220px;object-fit:contain;background:#020617;display:block;" />
+                        </a>
+                        <figcaption style="padding:10px 12px;color:#cbd5e1;font-size:13px;line-height:1.4;">
+                            <strong style="color:#e2e8f0;">${escapeHtml(img.title || 'Náhled')}</strong><br/>
+                            ${escapeHtml(img.description || '')}
+                            <div style="margin-top:6px;font-size:11px;color:#64748b;">Zdroj: ${escapeHtml(img.source || 'wikimedia')}</div>
+                        </figcaption>
+                    </figure>`;
+            }).join('');
+            return `
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;">
+                    ${cards}
+                </div>
+                <p style="margin-top:12px;font-size:12px;color:#64748b;">
+                    Náhledy z Wikimedia Commons. Radiopaedia snímky nejde vkládat (blokují vložení), proto jen odkazy.
+                </p>`;
+        };
+
+        const searchWikimediaBrowser = async (query, limit = 8) => {
+            const url = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
+                action: 'query',
+                format: 'json',
+                origin: '*',
+                generator: 'search',
+                gsrsearch: `${query} MRI CT radiology`,
+                gsrnamespace: '6',
+                gsrlimit: String(limit),
+                prop: 'imageinfo|info',
+                inprop: 'url',
+                iiprop: 'url|mime|size|extmetadata',
+                iiurlwidth: '720'
+            });
+            const data = await fetch(url).then((r) => r.json());
+            const out = [];
+            for (const page of Object.values(data?.query?.pages || {})) {
+                const info = page.imageinfo?.[0];
+                if (!info) continue;
+                if (!/^image\/(jpeg|png|gif|webp)$/i.test(info.mime || '')) continue;
+                const imageUrl = String(info.thumburl || info.url || '').replace(/\?utm_.*$/, '');
+                if (!imageUrl) continue;
+                const desc = (info.extmetadata?.ImageDescription?.value || '')
+                    .replace(/<[^>]+>/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                out.push({
+                    source: 'wikimedia',
+                    title: (page.title || '').replace(/^File:/, '') || query,
+                    description: (desc || query).slice(0, 280),
+                    pageUrl: page.canonicalurl || info.descriptionurl || imageUrl,
+                    imageUrl
+                });
+                if (out.length >= limit) break;
+            }
+            return out;
+        };
+
+        const ensureGalleryHost = (doc) => {
+            let gallery = doc.getElementById('radiology-gallery');
+            if (gallery) return gallery;
+            const section = doc.createElement('section');
+            section.style.cssText = 'padding:20px;';
+            section.innerHTML = '<h2 style="color:#93c5fd;">Radiologická galerie</h2>';
+            gallery = doc.createElement('div');
+            gallery.id = 'radiology-gallery';
+            section.appendChild(gallery);
+            (doc.body || doc.documentElement).appendChild(section);
+            return gallery;
+        };
+
+        const attachImageFallback = (doc) => {
+            doc.querySelectorAll('#radiology-gallery img').forEach((img) => {
+                if (img.dataset.fallbackBound) return;
+                img.dataset.fallbackBound = '1';
+                img.addEventListener('error', () => {
+                    const origin = img.getAttribute('data-origin') || '';
+                    const tried = img.dataset.retry || '0';
+                    if (tried === '0' && origin && img.src !== origin) {
+                        img.dataset.retry = '1';
+                        img.src = origin;
+                        return;
+                    }
+                    if (tried !== '2' && origin) {
+                        img.dataset.retry = '2';
+                        img.src = `${apiBase}/api/proxy-image?u=${encodeURIComponent(origin)}`;
+                        return;
+                    }
+                    const box = doc.createElement('div');
+                    box.style.cssText = 'padding:28px 16px;text-align:center;color:#94a3b8;background:#020617;font-size:13px;';
+                    box.innerHTML = origin
+                        ? `Náhled se nenačetl. <a href="${escapeHtml(origin)}" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;">Otevřít zdroj</a>`
+                        : 'Náhled se nenačetl.';
+                    img.replaceWith(box);
+                });
+            });
+        };
+
+        const fillGallery = async (doc, patology, backendImages, wikiImages) => {
+            const gallery = ensureGalleryHost(doc);
+            const isDirectSrc = (src) =>
+                String(src || '').startsWith('data:image') ||
+                /upload\.wikimedia\.org/i.test(src || '') ||
+                /commons\.wikimedia\.org/i.test(src || '');
+            const hasUsableImg = [...gallery.querySelectorAll('img')].some((img) =>
+                isDirectSrc(img.getAttribute('src') || '')
+            );
+
+            let images = Array.isArray(backendImages) ? backendImages.filter((img) => img.imageUrl) : [];
+            if (!images.length && Array.isArray(wikiImages)) images = wikiImages;
+            if (!hasUsableImg && !images.length) {
+                try {
+                    images = await searchWikimediaBrowser(patology);
+                } catch {
+                    images = [];
+                }
+            }
+
+            if (!hasUsableImg && images.length) {
+                const radioHeading = [...gallery.querySelectorAll('h3')].find((h) => /radiopaedia/i.test(h.textContent || ''));
+                const radioHtml = radioHeading?.parentElement ? radioHeading.parentElement.outerHTML : '';
+                gallery.innerHTML = buildGalleryCards(images) + radioHtml;
+            } else if (!hasUsableImg && !gallery.querySelector('a[href*="radiopaedia"]')) {
+                gallery.insertAdjacentHTML('afterbegin', `
+                    <div style="padding:16px;border:1px dashed #475569;border-radius:8px;color:#94a3b8;">
+                        Nepodařilo se dohledat otevřené snímky. Zkus anglický název (např. „ACL tear MRI“).
+                        <div style="margin-top:8px;">
+                            <a href="https://radiopaedia.org/search?q=${encodeURIComponent(patology)}" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;">Otevřít Radiopaedia</a>
+                            ·
+                            <a href="https://commons.wikimedia.org/w/index.php?search=${encodeURIComponent(patology)}&title=Special:MediaSearch" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;">Wikimedia Commons</a>
+                        </div>
+                    </div>`);
+            }
+
+            attachImageFallback(doc);
+            return gallery.querySelectorAll('img').length;
+        };
+
         const handleSubmit = async () => {
             const patology = ui.patologyInp.value.trim();
             if (!patology) return setStatus('Zadejte hledanou patologii.', 'error');
@@ -217,8 +363,11 @@
                 <body style="background:#121212;color:#e0e0e0;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">
                     <h2>Analýza: ${escapeHtml(patology)}</h2>
                     <p>Model: ${escapeHtml(provider)} / ${escapeHtml(model)}</p>
+                    <p style="color:#8b949e;">Hledám náhledy na Wikimedia Commons…</p>
                 </body>
             `);
+
+            const wikiPromise = searchWikimediaBrowser(patology).catch(() => []);
 
             try {
                 const response = await fetch(`${apiBase}/api/analyze`, {
@@ -235,7 +384,11 @@
                 resultWin.document.write(data.html);
                 resultWin.document.close();
 
-                const imgInfo = typeof data.imagesFound === 'number' ? ` · obrázky: ${data.imagesFound}` : '';
+                const wikiImages = await wikiPromise;
+                const shown = await fillGallery(resultWin.document, patology, data.images, wikiImages);
+                const imgInfo = shown
+                    ? ` · náhledy: ${shown}`
+                    : (typeof data.imagesFound === 'number' ? ` · obrázky: ${data.imagesFound}` : '');
                 setStatus(`Hotovo (${data.provider || provider} / ${data.model || model})${imgInfo}.`, 'success');
             } catch (error) {
                 const msg = error.message || 'Neznámá chyba';
