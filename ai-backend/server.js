@@ -4,7 +4,9 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 8787;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+
+// Aktualizovaný podporovaný model
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
 
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
