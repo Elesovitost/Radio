@@ -213,7 +213,7 @@
         <button id="submitBtn" type="button">Generovat a otevřít</button>
 
         <div id="status" class="status-message" aria-live="polite"></div>
-        <p class="note">Volá backend. API klíč zůstává na serveru.</p>
+        <p class="note">Text generuje Gemini. Obrázky backend stáhne z otevřených zdrojů (Wikimedia / Open-i) a zobrazí přes proxy.</p>
     </main>
 
     <script>
@@ -347,7 +347,10 @@
                 resultWin.document.write(htmlContent);
                 resultWin.document.close();
 
-                setStatus(`Hotovo${data.mode ? ` (${data.mode})` : ''}.`, 'success');
+                const imgInfo = typeof data.imagesFound === 'number'
+                    ? ` · obrázky: ${data.imagesFound}`
+                    : '';
+                setStatus(`Hotovo${data.mode ? ` (${data.mode})` : ''}${imgInfo}.`, 'success');
             } catch (error) {
                 const msg = error.message || 'Neznámá chyba';
                 logDebug(`CHYBA při zpracování: ${msg}`);
