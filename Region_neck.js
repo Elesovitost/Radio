@@ -59,7 +59,7 @@ const RegionNeck = {
                     helpers.Table1col('neck_sinus_add', [
                         { field: 'text', id: 'sinus_custom_desc', placeholder: 'vlastní...popis...' },
                         { field: 'text', id: 'sinus_custom_conc', placeholder: 'vlastní...závěr...' }
-                    ])
+                    ], { normal: true })
                 ]),
                 helpers.TableMain('neck_salivary_main', 'Slinné žlázy', [
                     helpers.Table3colRL('neck_parotis_table', 'Parotické', [
@@ -77,7 +77,7 @@ const RegionNeck = {
                     helpers.Table1col('neck_salivary_add', [
                         { field: 'text', id: 'salivary_custom_desc', placeholder: 'vlastní...popis...' },
                         { field: 'text', id: 'salivary_custom_conc', placeholder: 'vlastní...závěr...' }
-                    ])
+                    ], { normal: true })
                 ]),
                 helpers.TableMain('neck_pharynx_main', 'Farynx', [
                     helpers.Table3colRL('neck_pharynx_table', [
@@ -88,7 +88,7 @@ const RegionNeck = {
                     helpers.Table1col('neck_pharynx_add', [
                         { field: 'text', id: 'pharynx_custom_desc', placeholder: 'vlastní...popis...' },
                         { field: 'text', id: 'pharynx_custom_conc', placeholder: 'vlastní...závěr...' }
-                    ])
+                    ], { normal: true })
                 ]),
                 helpers.TableMain('neck_thyroid_main', 'Thyroidea', [
                     helpers.Table3colRL('neck_thyroid_table', [
@@ -102,7 +102,13 @@ const RegionNeck = {
                     helpers.Table1col('neck_thyroid_add', [
                         { field: 'text', id: 'thyroid_custom_desc', placeholder: 'vlastní...popis...' },
                         { field: 'text', id: 'thyroid_custom_conc', placeholder: 'vlastní...závěr...' }
-                    ])
+                    ], { normal: true })
+                ]),
+                helpers.TableMain('neck_ostatni_main', 'Ostatní nálezy', [
+                    helpers.Table1col('neck_ostatni_add', [
+                        { field: 'text', id: 'neck_ostatni_custom_desc', placeholder: 'vlastní...popis...' },
+                        { field: 'text', id: 'neck_ostatni_custom_conc', placeholder: 'vlastní...závěr...' }
+                    ], { normal: true })
                 ])
             );
 
@@ -227,7 +233,14 @@ const RegionNeck = {
             let sinyParts = [];
             if (sinyStates) sinyParts.push(sinyStates);
             if (sinyCustomDesc) sinyParts.push(sinyCustomDesc);
-            if (sinyParts.length > 0) reportOut.push({ type: 'frame', text: `- Siny: ${formatCzechList(sinyParts)}.`, tableId: 'neck_sinus_main' });
+            const sinyNormal = ctx.isActive('neck_sinus_add_normal');
+            if (sinyNormal || sinyParts.length > 0) {
+                let body;
+                if (sinyNormal && sinyParts.length > 0) body = `vzdušné, bez patologického obsahu. Jinak pouze ${formatList(sinyParts)}.`;
+                else if (sinyNormal) body = 'vzdušné, bez patologického obsahu.';
+                else body = `${formatList(sinyParts)}.`;
+                reportOut.push({ type: 'frame', text: `- Siny: ${body}`, tableId: 'neck_sinus_main' });
+            }
 
             const sinusItems = [
                 { id: 'sinus_front_r', text: 've frontálním sinu vpravo' },
@@ -248,6 +261,9 @@ const RegionNeck = {
             if (sinyConcStr || customSinusConc) {
                 let s = [sinyConcStr, customSinusConc].filter(Boolean).join('\n');
                 concInc.push({ type: 'frame', text: s, tableId: 'neck_sinus_main' });
+            }
+            if (sinyNormal) {
+                concMain.push({ type: 'frame', text: 'Přiměřený nález v oblasti sinů.', tableId: 'neck_sinus_main' });
             }
 
             let salivaryStates = ctx.mapStates({
@@ -275,7 +291,14 @@ const RegionNeck = {
             let salivaryParts = [];
             if (salivaryStates) salivaryParts.push(salivaryStates);
             if (salivaryCustomDesc) salivaryParts.push(salivaryCustomDesc);
-            if (salivaryParts.length > 0) reportOut.push({ type: 'frame', text: `- Slinné žlázy: ${formatCzechList(salivaryParts)}.`, tableId: 'neck_salivary_main' });
+            const salivaryNormal = ctx.isActive('neck_salivary_add_normal');
+            if (salivaryNormal || salivaryParts.length > 0) {
+                let body;
+                if (salivaryNormal && salivaryParts.length > 0) body = `obvyklé velikosti a struktury, bez ložiskových změn. Jinak pouze ${formatList(salivaryParts)}.`;
+                else if (salivaryNormal) body = 'obvyklé velikosti a struktury, bez ložiskových změn.';
+                else body = `${formatList(salivaryParts)}.`;
+                reportOut.push({ type: 'frame', text: `- Slinné žlázy: ${body}`, tableId: 'neck_salivary_main' });
+            }
 
             let salConcStr = ctx.mapStates({
                 separator: '\n', suffix: '',
@@ -290,6 +313,9 @@ const RegionNeck = {
             if (salConcStr || customSalivaryConc) {
                 let s = [salConcStr, customSalivaryConc].filter(Boolean).join('\n');
                 concInc.push({ type: 'frame', text: s, tableId: 'neck_salivary_main' });
+            }
+            if (salivaryNormal) {
+                concMain.push({ type: 'frame', text: 'Přiměřený nález na slinných žlázách, bez ložiskové léze.', tableId: 'neck_salivary_main' });
             }
 
             let farRep = [];
@@ -319,13 +345,21 @@ const RegionNeck = {
             let farDesc = ctx.field('pharynx_custom_desc');
             if (farDesc) farRep.push(farDesc);
 
-            if (farRep.length > 0) {
-                reportOut.push({ type: 'frame', text: `- Farynx: ${(formatCzechList(farRep))}.`, tableId: 'neck_pharynx_main' });
+            const pharynxNormal = ctx.isActive('neck_pharynx_add_normal');
+            if (pharynxNormal || farRep.length > 0) {
+                let body;
+                if (pharynxNormal && farRep.length > 0) body = `symetrický, bez ložiskového ztluštění stěny. Jinak pouze ${formatList(farRep)}.`;
+                else if (pharynxNormal) body = 'symetrický, bez ložiskového ztluštění stěny.';
+                else body = `${formatList(farRep)}.`;
+                reportOut.push({ type: 'frame', text: `- Farynx: ${body}`, tableId: 'neck_pharynx_main' });
             }
 
             let pharynxCustomConc = ctx.field('pharynx_custom_conc');
             if (pharynxCustomConc) {
                 concInc.push({ type: 'frame', text: pharynxCustomConc, tableId: 'neck_pharynx_main' });
+            }
+            if (pharynxNormal) {
+                concMain.push({ type: 'frame', text: 'Přiměřený nález na faryngu, bez ložiskové léze.', tableId: 'neck_pharynx_main' });
             }
 
             let thyroidParts = [];
@@ -352,7 +386,14 @@ const RegionNeck = {
             if (thyroidStates) thyroidParts.push(thyroidStates);
             let thyroidCustomDesc = ctx.field('thyroid_custom_desc');
             if (thyroidCustomDesc) thyroidParts.push(thyroidCustomDesc);
-            if (thyroidParts.length > 0) reportOut.push({ type: 'frame', text: `- Thyroidea: ${formatCzechList(thyroidParts)}.`, tableId: 'neck_thyroid_main' });
+            const thyroidNormal = ctx.isActive('neck_thyroid_add_normal');
+            if (thyroidNormal || thyroidParts.length > 0) {
+                let body;
+                if (thyroidNormal && thyroidParts.length > 0) body = `normální velikosti, parenchym bez zřetelných cyst či ložisek. Jinak pouze ${formatList(thyroidParts)}.`;
+                else if (thyroidNormal) body = 'normální velikosti, parenchym bez zřetelných cyst či ložisek.';
+                else body = `${formatList(thyroidParts)}.`;
+                reportOut.push({ type: 'frame', text: `- Thyroidea: ${body}`, tableId: 'neck_thyroid_main' });
+            }
 
             let thyrConcArr = [];
             if (ctx.isActive('thyr_enl')) thyrConcArr.push('Nespecifická struma.');
@@ -370,6 +411,33 @@ const RegionNeck = {
             
             if (thyrConcArr.length > 0) {
                 concInc.push({ type: 'frame', text: thyrConcArr.join('\n'), tableId: 'neck_thyroid_main' });
+            }
+            if (thyroidNormal) {
+                concMain.push({ type: 'frame', text: 'Přiměřený nález na štítné žláze, bez ložiskové léze.', tableId: 'neck_thyroid_main' });
+            }
+
+            let ostDesc = ctx.field('neck_ostatni_custom_desc');
+            let ostParts = [];
+            if (ostDesc) {
+                let txt = ostDesc.trim();
+                if (txt.endsWith('.')) txt = txt.slice(0, -1);
+                if (txt) ostParts.push(txt);
+            }
+            const ostatniNormal = ctx.isActive('neck_ostatni_add_normal');
+            if (ostatniNormal || ostParts.length > 0) {
+                let text;
+                if (ostatniNormal && ostParts.length > 0) text = `Bez dalších významných nálezů. Jinak pouze ${formatList(ostParts)}.`;
+                else if (ostatniNormal) text = 'Bez dalších významných nálezů.';
+                else text = `${capitalize(formatList(ostParts))}.`;
+                reportOut.push({ type: 'frame', text: text, tableId: 'neck_ostatni_main' });
+            }
+
+            let ostConc = ctx.field('neck_ostatni_custom_conc');
+            if (ostConc) {
+                concInc.push({ type: 'frame', text: ostConc, tableId: 'neck_ostatni_main' });
+            }
+            if (ostatniNormal) {
+                concMain.push({ type: 'frame', text: 'Bez dalších významných nálezů na krku.', tableId: 'neck_ostatni_main' });
             }
 
             return { 

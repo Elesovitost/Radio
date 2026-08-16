@@ -44,6 +44,9 @@
         .btn:hover { border-color: var(--dim); color: #fff; }
         .btn.selected { background: var(--accent); border-color: var(--accent-hi); color: #fff; font-weight: 700; }
         .btn.modified { background: rgba(88,166,255,0.15); border-color: var(--accent-hi); color: #fff; font-weight: 700; }
+        .btn.btn-green { width: fit-content; }
+        .btn.btn-green:not(.modified):not(.selected) { background: var(--btn-bg); border-color: rgba(63, 185, 80, 0.28); color: #6a9a72; }
+        .btn.btn-green:not(.modified):not(.selected):hover { border-color: rgba(63, 185, 80, 0.45); color: #8fbf97; }
         .btn-state { display: inline-grid; place-items: center; min-width: 0; position: relative; }
         .btn-state::after { content: attr(data-longest); visibility: hidden; grid-area: 1 / 1; pointer-events: none; white-space: nowrap; font-weight: 700; }
         .btn-state span { grid-area: 1 / 1; white-space: nowrap; }
@@ -79,6 +82,8 @@
         .tbl td .row { justify-content: center; flex-wrap: nowrap; }
         .tbl .btn { min-width: 25px; color: var(--dim); flex-shrink: 0; }
         .tbl .btn:hover, .tbl .btn.selected, .tbl .btn.modified { color: #fff; }
+        .tbl .btn.btn-green:not(.modified):not(.selected) { color: #6a9a72; }
+        .tbl .btn.btn-green:not(.modified):not(.selected):hover { color: #8fbf97; }
         .tbl-main { border-collapse: collapse; width: fit-content; margin-bottom: 10px; border: none; }
         .tbl-main > tbody > tr > td { padding: 4px 8px; }
         .tbl-main-head { padding: 3px 0 3px 0; font-weight: 700; font-size: 11px; color: var(--accent-hi); text-transform: uppercase; letter-spacing: 1px; border: none; border-bottom: 1px solid var(--border) !important; text-align: center; }

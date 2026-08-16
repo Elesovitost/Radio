@@ -19,8 +19,8 @@ const RegionKnee = {
                     [ 'St.p. luxaci:', { btn: 'kn_pat_lux', states: ['0', '+', '+ fr'] } ]
                 ]),
                 helpers.Table2colNormal('kn_fp_table', 'FP skloubení a chondropatie', [
-                    [ 'Patelární:', [ { btn: 'kn_fp_pat_chp', states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: 'kn_fp_pat_lez', states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delaminace'] }, { btn: 'kn_fp_pat_edem', states: ['bez edému', 'edém +', 'edém ++'] } ] ],
-                    [ 'Femorální:', [ { btn: 'kn_fp_fem_chp', states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: 'kn_fp_fem_lez', states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delaminace'] }, { btn: 'kn_fp_fem_edem', states: ['bez edému', 'edém +', 'edém ++'] } ] ],
+                    [ 'Patelární:', [ { btn: 'kn_fp_pat_chp', states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: 'kn_fp_pat_lez', states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delamin.'] }, { btn: 'kn_fp_pat_edem', states: ['bez edému', 'edém +', 'edém ++'] } ] ],
+                    [ 'Femorální:', [ { btn: 'kn_fp_fem_chp', states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: 'kn_fp_fem_lez', states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delamin.'] }, { btn: 'kn_fp_fem_edem', states: ['bez edému', 'edém +', 'edém ++'] } ] ],
                     [ 'Osteofyty:', { btn: 'kn_fp_art', states: ['0', 'I', 'II', 'III'] } ]
                 ]),
                 helpers.Table2colNormal('kn_ant_comp_table', 'Ostatní přední kompartment', [
@@ -35,7 +35,7 @@ const RegionKnee = {
             // --- KONDYLY A MENISKY ---
             ...(() => {
                 const makeCondyleTable = (title, prefix) => helpers.Table2colNormal(`${prefix}_table`, title, [
-                    [ 'Chrupavka:', [ { btn: `${prefix}_chr_gr`, states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: `${prefix}_chr_lez`, states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delaminace'] }, { btn: `${prefix}_chr_edem`, states: ['edém 0', 'edém +', 'edém ++'] } ] ],
+                    [ 'Chrupavka:', [ { btn: `${prefix}_chr_gr`, states: ['GR 0', 'GR I', 'GR II', 'GR III', 'GR IV'] }, { btn: `${prefix}_chr_lez`, states: ['Léze 0', 'Fisura', 'Fisury', 'Defekt', 'Defekty', 'Delamin.'] }, { btn: `${prefix}_chr_edem`, states: ['edém 0', 'edém +', 'edém ++'] } ] ],
                     [ 'Subchondr. kost:', [ { btn: `${prefix}_sub_sifk`, states: ['SIFK 0', 'SIFK +', 'SIFK ++'] }, { btn: `${prefix}_sub_ocl`, states: ['OCL 0', 'OCL I', 'OCL II', 'OCL III', 'OCL IV'] }, { btn: `${prefix}_sub_bml`, states: ['BML 0', 'BML +', 'BML ++', 'BML +++'] } ] ],
                     [ 'Fraktura:', { btn: `${prefix}_frac`, states: ['0', 'impakční', 'vertikální', 'komin.'] } ]
                 ]);
@@ -149,7 +149,7 @@ const RegionKnee = {
             if ((!grade || grade === 'GR 0') && (!lesion || lesion === 'Léze 0') && (!edema || edema === 'edém 0' || edema === 'bez edému')) return null;
 
             let cRep = `Chrupavka ${nameRep}`;
-            const lezMapGrammar = { 'Fisura': 'fisurou', 'Fisury': 'fisurami', 'Defekt': 'defektem', 'Defekty': 'defekty', 'Delaminace': 'delaminací' };
+            const lezMapGrammar = { 'Fisura': 'fisurou', 'Fisury': 'fisurami', 'Defekt': 'defektem', 'Defekty': 'defekty', 'Delamin.': 'delaminací' };
             let hasLez = lesion && lesion !== 'Léze 0';
             let lesionText = hasLez ? lezMapGrammar[lesion] : '';
 
@@ -179,7 +179,7 @@ const RegionKnee = {
         const getChondroConc = (grade, lesion, edema, nameConc) => {
             if ((!grade || grade === 'GR 0') && (!lesion || lesion === 'Léze 0') && (!edema || edema === 'edém 0' || edema === 'bez edému')) return null;
 
-            const lezMapConc = { 'Fisura': 'fisurou', 'Fisury': 'fisurami', 'Defekt': 'defektem', 'Defekty': 'defekty', 'Delaminace': 'delaminací' };
+            const lezMapConc = { 'Fisura': 'fisurou', 'Fisury': 'fisurami', 'Defekt': 'defektem', 'Defekty': 'defekty', 'Delamin.': 'delaminací' };
             let hasLez = lesion && lesion !== 'Léze 0';
             let lesionText = hasLez ? lezMapConc[lesion] : '';
             let gradeText = (grade && grade !== 'GR 0') ? grade.replace('GR ', 'gr.') : '';

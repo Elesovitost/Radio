@@ -1988,36 +1988,45 @@ function Table2rowNormal(id, layoutData, regionId) {
     return table;
 }
 
-function Table1col(id, cells, regionId) {
+function Table1col(id, cells, regionId, opts = {}) {
     const longest = _tableLongest([cells], regionId);
     const table = el('table', { id: id, className: 'tbl tbl-full' });
     const tbody = el('tbody');
     
     const isAddTable = id.endsWith('_add');
-    const examId = Store.activeTab || 'default';
-    const tableKey = `${examId}_${id}`;
-    
-    let hasValue = false;
+
     if (isAddTable) {
-        for (const cell of cells) {
-            const items = Array.isArray(cell) ? cell : [cell];
-            for (const item of items) {
-                if (item && (item.field || item.id)) {
-                    const fieldGlobalId = `${examId}_${regionId}_${item.id || item.field}`;
-                    const val = Store.fields[fieldGlobalId];
-                    if (val && typeof val === 'string' && val.trim() !== '') hasValue = true;
-                }
+        const customConfig = getButtonBase(regionId, { btn: `${id}_custom`, id: `${id}_custom`, type: 'basic', text: 'custom' });
+        const isExpanded = !!Store.buttonStates[customConfig.globalId];
+
+        const customTr = el('tr');
+        const customTd = el('td', { className: 'tbl-full-cell' });
+        const customBtn = makeBasicButton(customConfig);
+        customBtn.classList.add('btn-green');
+        customTd.appendChild(customBtn);
+        customTr.appendChild(customTd);
+        tbody.appendChild(customTr);
+
+        if (isExpanded) {
+            for (const cell of cells) {
+                const fieldTr = el('tr');
+                const fieldTd = el('td', { className: 'tbl-full-cell' });
+                _renderCell(fieldTd, cell, longest, regionId);
+                fieldTr.appendChild(fieldTd);
+                tbody.appendChild(fieldTr);
             }
         }
-    }
-    
-    const isExpanded = Store.expandedNotes[tableKey] || hasValue;
 
-    if (isAddTable && !isExpanded) {
-        const tr = el('tr');
-        const td = el('td', { className: 'tbl-full-cell expand-notes-btn', textContent: '...', 'data-action': 'expand-notes', 'data-payload': tableKey });
-        tr.appendChild(td);
-        tbody.appendChild(tr);
+        if (opts.normal) {
+            const normalConfig = getButtonBase(regionId, { btn: `${id}_normal`, id: `${id}_normal`, type: 'basic', text: 'normal' });
+            const normalTr = el('tr');
+            const normalTd = el('td', { className: 'tbl-full-cell' });
+            const normalBtn = makeBasicButton(normalConfig);
+            normalBtn.classList.add('btn-green');
+            normalTd.appendChild(normalBtn);
+            normalTr.appendChild(normalTd);
+            tbody.appendChild(normalTr);
+        }
     } else {
         for (const cell of cells) {
             const tr = el('tr');
@@ -2463,7 +2472,16 @@ const UI = {
             Table3colRCL:       (id, arg2, arg3) => handleArgs(Table3colRCL, id, arg2, arg3),
             Table2colNormal:    (id, arg2, arg3) => handleArgs(Table2colNormal, id, arg2, arg3),
             Table2rowNormal:    (id, arg2, arg3) => handleArgs(Table2rowNormal, id, arg2, arg3),
-            Table1col:          (id, arg2, arg3) => handleArgs(Table1col, id, arg2, arg3),
+            Table1col: (id, arg2, arg3) => {
+                if (typeof arg2 === 'string') {
+                    const wrap = el('div', { className: 'table-wrapper', id: id });
+                    wrap.appendChild(el('div', { className: 'sub-table-title', textContent: arg2 }));
+                    wrap.appendChild(Table1col(id + '_tbl', arg3, regionId, {}));
+                    return wrap;
+                }
+                const opts = (arg3 && typeof arg3 === 'object' && !Array.isArray(arg3)) ? arg3 : {};
+                return Table1col(id, arg2, regionId, opts);
+            },
             TableGrid:          (id, arg2, arg3) => handleArgs(TableGrid, id, arg2, arg3)
         };
         return region.layout(helpers);

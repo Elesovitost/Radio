@@ -91,7 +91,7 @@ const RegionAbdomen = {
                     [ { btn: 'ja_res_r', states: ['0', '+'] }, 'Resekce', { btn: 'ja_res_l', states: ['0', '+'] } ],
                     [ { btn: 'ja_rfa_r', states: ['0', '+'] }, 'RFA', { btn: 'ja_rfa_l', states: ['0', '+'] } ]
                 ]),
-                helpers.Table1col('ja_ost_add', [ { field: 'text', id: 'ja_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'ja_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('ja_ost_add', [ { field: 'text', id: 'ja_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'ja_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 4. Žlučník
@@ -102,7 +102,7 @@ const RegionAbdomen = {
                     [ 'Dilatace d. choledochus', { btn: 'zl_chod', states: ['0', 'mírná', 'výrazná'] } ],
                     [ 'CHCE', { btn: 'zl_chce', states: ['0', '+'] } ]
                 ]),
-                helpers.Table1col('zl_ost_add', [ { field: 'text', id: 'zl_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'zl_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('zl_ost_add', [ { field: 'text', id: 'zl_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'zl_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 5. Slezina
@@ -116,7 +116,7 @@ const RegionAbdomen = {
                     [ 'Splenektomie', { btn: 'sl_spl', states: ['0', '+'] } ],
                     [ 'Regenerát', { btn: 'sl_reg', states: ['0', '+'] } ]
                 ]),
-                helpers.Table1col('sl_ost_add', [ { field: 'text', id: 'sl_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'sl_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('sl_ost_add', [ { field: 'text', id: 'sl_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'sl_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 6. Žaludek
@@ -128,7 +128,7 @@ const RegionAbdomen = {
                     [ 'Sonda', { btn: 'za_son', states: ['0', 'PEG', 'NGS', 'NJS'] } ],
                     [ 'Zesílení stěny', { btn: 'za_zes', states: ['0', 'mírné', 'výrazné'] }, { btn: 'za_zes_loc', states: ['0', 'difuzně', 'kardie', 'korpus', 'antrum', 'pylorus'] } ]
                 ]),
-                helpers.Table1col('za_ost_add', [ { field: 'text', id: 'za_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'za_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('za_ost_add', [ { field: 'text', id: 'za_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'za_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 7. Pankreas
@@ -139,7 +139,7 @@ const RegionAbdomen = {
                     [ 'Cystoid', { btn: 'pa_cys', states: ['0', '1', 'více'] }, { field: 'mm', id: 'pa_cys_mm', placeholder: 'mm' } ],
                     [ 'Operace', { btn: 'pa_op', states: ['0', 'duodenopankreat.', 'total pankreat.', 'kauda', 'nekrektomie'] } ]
                 ]),
-                helpers.Table1col('pa_ost_add', [ { field: 'text', id: 'pa_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'pa_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('pa_ost_add', [ { field: 'text', id: 'pa_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'pa_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 8. Tračník
@@ -152,7 +152,7 @@ const RegionAbdomen = {
                     [ 'Zesílení stěny', { btn: 'tr_zes', states: ['0', 'mírné', 'výrazné'] }, { btn: 'tr_zes_loc', states: ['0', 'tračník', 'rektum'] } ],
                     [ 'Divertikulóza', { btn: 'tr_div', states: ['0', '+', 'divertikulitida'] }, { btn: 'tr_div_loc', states: ['0', 'sigmoideum', 'descendens', 'difuzně'] } ]
                 ]),
-                helpers.Table1col('tr_ost_add', [ { field: 'text', id: 'tr_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'tr_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('tr_ost_add', [ { field: 'text', id: 'tr_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'tr_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 9. Peritoneum
@@ -162,7 +162,7 @@ const RegionAbdomen = {
                     [ 'Ascites', { btn: 'pe_asc', states: ['0', 'diskrétně', 'malý', 'střední', 'výrazný'] } ],
                     [ 'Ascites minule', { btn: 'pe_asc_old', states: ['0', 'diskrétně', 'malý', 'střední', 'výrazný'] } ]
                 ]),
-                helpers.Table1col('pe_ost_add', [ { field: 'text', id: 'pe_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'pe_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('pe_ost_add', [ { field: 'text', id: 'pe_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'pe_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 10. Nadledviny
@@ -174,7 +174,7 @@ const RegionAbdomen = {
                     [ { btn: 'na_mye_r', states: ['0', '+'] }, 'Myelolipom', { btn: 'na_mye_l', states: ['0', '+'] } ],
                     [ { btn: 'na_adr_r', states: ['0', '+'] }, 'Adrenalektomie', { btn: 'na_adr_l', states: ['0', '+'] } ]
                 ]),
-                helpers.Table1col('na_ost_add', [ { field: 'text', id: 'na_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'na_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('na_ost_add', [ { field: 'text', id: 'na_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'na_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 11. Ledviny (Obsahuje podsekce, ponechán titulek)
@@ -194,7 +194,7 @@ const RegionAbdomen = {
                     [ { btn: 'le_res_r', states: ['0', 'horní', 'střední', 'dolní'] }, 'Resekce', { btn: 'le_res_l', states: ['0', 'horní', 'střední', 'dolní'] } ],
                     [ { btn: 'le_nek_r', states: ['0', '+'] }, 'Nefrektomie', { btn: 'le_nek_l', states: ['0', '+'] } ]
                 ]),
-                helpers.Table1col('le_ost_add', [ { field: 'text', id: 'le_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'le_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('le_ost_add', [ { field: 'text', id: 'le_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'le_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 12. Močový měchýř
@@ -205,7 +205,7 @@ const RegionAbdomen = {
                     [ 'Stomie', { btn: 'mm_sto', states: ['0', 'urostomie', 'Bricker'] } ],
                     [ 'Operace', { btn: 'mm_op', states: ['0', 'TURB', 'cystektomie'] } ]
                 ]),
-                helpers.Table1col('mm_ost_add', [ { field: 'text', id: 'mm_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'mm_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('mm_ost_add', [ { field: 'text', id: 'mm_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'mm_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 13. Děloha
@@ -217,7 +217,7 @@ const RegionAbdomen = {
                     [ 'IUD', { btn: 'de_iud', states: ['0', '+'] } ],
                     [ 'Hysterektomie', { btn: 'de_hys', states: ['0', '+'] } ]
                 ]),
-                helpers.Table1col('de_ost_add', [ { field: 'text', id: 'de_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'de_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('de_ost_add', [ { field: 'text', id: 'de_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'de_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 14. Ovária
@@ -229,7 +229,7 @@ const RegionAbdomen = {
                     [ { btn: 'ov_akt_r', states: ['0', '+'] }, 'RF+', { btn: 'ov_akt_l', states: ['0', '+'] } ],
                     [ { btn: 'ov_adn_r', states: ['0', '+'] }, 'Adnexektomie', { btn: 'ov_adn_l', states: ['0', '+'] } ]
                 ]),
-                helpers.Table1col('ov_ost_add', [ { field: 'text', id: 'ov_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'ov_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('ov_ost_add', [ { field: 'text', id: 'ov_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'ov_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 15. Prostata
@@ -240,7 +240,7 @@ const RegionAbdomen = {
                     [ 'TURP', { btn: 'pr_tur', states: ['0', '+'] } ],
                     [ 'RAPE', { btn: 'pr_rap', states: ['0', '+'] } ]
                 ]),
-                helpers.Table1col('pr_ost_add', [ { field: 'text', id: 'pr_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'pr_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('pr_ost_add', [ { field: 'text', id: 'pr_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'pr_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 16. Testes
@@ -250,7 +250,7 @@ const RegionAbdomen = {
                     [ { btn: 'te_var_r', states: ['0', '+'] }, 'Varikokéla', { btn: 'te_var_l', states: ['0', '+'] } ],
                     [ { btn: 'te_orc_r', states: ['0', '+'] }, 'Orchiektomie', { btn: 'te_orc_l', states: ['0', '+'] } ]
                 ]),
-                helpers.Table1col('te_ost_add', [ { field: 'text', id: 'te_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'te_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('te_ost_add', [ { field: 'text', id: 'te_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'te_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 17. Velké cévy
@@ -282,7 +282,7 @@ const RegionAbdomen = {
                     [ { btn: 'vc_by_if_r', states: ['0', '+'] }, 'Iliofemorální', { btn: 'vc_by_if_l', states: ['0', '+'] } ],
                     [ { btn: 'vc_by_ff_r', states: ['0', '+'] }, 'Femorofemorální', { btn: 'vc_by_ff_l', states: ['0', '+'] } ]
                 ]),
-                helpers.Table1col('vc_ost_add', [ { field: 'text', id: 'vc_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'vc_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('vc_ost_add', [ { field: 'text', id: 'vc_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'vc_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             // 18. Břišní stěna
@@ -297,14 +297,14 @@ const RegionAbdomen = {
                     [ '', { btn: 'aw_her_umb', states: ['0', 'malá', 'střední', 'velká'] }, '' ],
                     [ { btn: 'aw_her_ing_r', states: ['0', 'malá', 'střední', 'velká'] }, 'Inguinální', { btn: 'aw_her_ing_l', states: ['0', 'malá', 'střední', 'velká'] } ]
                 ]),
-                helpers.Table1col('aw_ost_add', [ { field: 'text', id: 'aw_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'aw_custom_conc', placeholder: 'vlastní závěr...' } ])
+                helpers.Table1col('aw_ost_add', [ { field: 'text', id: 'aw_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'aw_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
             layoutNodes.push(helpers.TableMain('abdomen_ostatni_main', 'Ostatní nálezy', [
                 helpers.Table1col('ostatni_ost_add', [
                     { field: 'text', id: 'ostatni_custom_desc', placeholder: 'vlastní popis...' },
                     { field: 'text', id: 'ostatni_custom_conc', placeholder: 'vlastní závěr...' }
-                ])
+                ], { normal: true })
             ]));
 
             return layoutNodes;
@@ -318,6 +318,18 @@ const RegionAbdomen = {
             const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
             const formatList = formatCzechList;
             const examId = ctx.examId || 'default';
+            const emitOrgan = (addId, parts, label, tableId, normRep, normConc) => {
+                const isNorm = ctx.isActive(`${addId}_normal`);
+                if (isNorm || parts.length > 0) {
+                    let body;
+                    if (isNorm && parts.length > 0) body = `${normRep}. Jinak pouze ${formatList(parts)}.`;
+                    else if (isNorm) body = `${normRep}.`;
+                    else body = `${formatList(parts)}.`;
+                    reportOut.push({ type: 'frame', text: `${label}: ${body}`, tableId });
+                }
+                if (isNorm) concMain.push({ type: 'frame', text: normConc, tableId });
+                return isNorm;
+            };
 
             const isPET = (examId || '').toLowerCase().includes('pet');
 
@@ -552,7 +564,7 @@ const RegionAbdomen = {
             ['hemi', 'res', 'rfa'].forEach(op => { let o = checkSide(`ja_${op}`); if (o) jaOps.push(`${op === 'hemi' ? 'hemihepatektomii' : op === 'res' ? 'resekci' : 'RFA'} ${o.sideText}`); });
             if (jaOps.length) jaRep.push(`stav po ${formatList(jaOps)}`);
             let jaDesc = ctx.field('ja_custom_desc'); if (jaDesc) jaRep.push(jaDesc);
-            if (jaRep.length > 0) reportOut.push({ type: 'frame', text: `- Játra: ${formatList(jaRep)}.`, tableId: 'abdomen_jatra_main' });
+            const jaNormal = emitOrgan('ja_ost_add', jaRep, '- Játra', 'abdomen_jatra_main', 'přiměřené velikosti, parenchym homogení, bez ložisek a bez dilatace intrahepatálních žlučovodů', 'Přiměřený nález na játrech, bez ložiskové léze.');
             let jaConc = ctx.field('ja_custom_conc'); if (jaConc) concInc.push({ type: 'frame', text: jaConc, tableId: 'abdomen_jatra_main' });
 
             // 4. Žlučník
@@ -562,7 +574,7 @@ const RegionAbdomen = {
             let zlChod = ctx.text('zl_chod'); if (zlChod && zlChod !== '0') { zlRep.push(`${zlChod} dilatace d. choledochus`); concInc.push({ type: 'frame', text: `${cap(zlChod)} dilatace d. choledochus.`, tableId: 'abdomen_zlucnik_main' }); }
             if (ctx.isActive('zl_chce')) zlRep.push("stav po cholecystektomii");
             let zlDesc = ctx.field('zl_custom_desc'); if (zlDesc) zlRep.push(zlDesc);
-            if (zlRep.length > 0) reportOut.push({ type: 'frame', text: `- Žlučník: ${formatList(zlRep)}.`, tableId: 'abdomen_zlucnik_main' });
+            const zlNormal = emitOrgan('zl_ost_add', zlRep, '- Žlučník', 'abdomen_zlucnik_main', 'bez konkrementů a bez zesílení stěny, d. choledochus přiměřené šíře', 'Přiměřený nález na žlučníku a žlučových cestách.');
             let zlConc = ctx.field('zl_custom_conc'); if (zlConc) concInc.push({ type: 'frame', text: zlConc, tableId: 'abdomen_zlucnik_main' });
 
             // 5. Slezina
@@ -575,7 +587,7 @@ const RegionAbdomen = {
             if (ctx.isActive('sl_spl')) slRep.push("po splenektomii");
             if (ctx.isActive('sl_reg')) slRep.push("nodulus charakteru regenerátu");
             let slDesc = ctx.field('sl_custom_desc'); if (slDesc) slRep.push(slDesc);
-            if (slRep.length > 0) reportOut.push({ type: 'frame', text: `- Slezina: ${formatList(slRep)}.`, tableId: 'abdomen_slezina_main' });
+            const slNormal = emitOrgan('sl_ost_add', slRep, '- Slezina', 'abdomen_slezina_main', 'přiměřené velikosti, parenchym bez ložiskových změn', 'Přiměřený nález na slezině, bez ložiskové léze.');
             let slConc = ctx.field('sl_custom_conc'); if (slConc) concInc.push({ type: 'frame', text: slConc, tableId: 'abdomen_slezina_main' });
 
             // 6. Žaludek
@@ -586,7 +598,7 @@ const RegionAbdomen = {
             let zaSon = ctx.text('za_son'); if (zaSon && zaSon !== '0') zaRep.push(`zavedena ${zaSon} sonda`);
             let zaZes = ctx.text('za_zes'), zaZesLoc = ctx.text('za_zes_loc'); if (zaZes && zaZes !== '0') { let zloc = zaZesLoc !== '0' ? ` v oblasti ${zaZesLoc}` : ''; zaRep.push(`${zaZes} zesílení stěny${zloc}`); if (zaZes === 'výrazné') concInc.push({ type: 'frame', text: `Zesílení stěny žaludku${zloc}.`, tableId: 'abdomen_zaludek_main' }); }
             let zaDesc = ctx.field('za_custom_desc'); if (zaDesc) zaRep.push(zaDesc);
-            if (zaRep.length > 0) reportOut.push({ type: 'frame', text: `- Žaludek: ${formatList(zaRep)}.`, tableId: 'abdomen_zaludek_main' });
+            const zaNormal = emitOrgan('za_ost_add', zaRep, '- Žaludek', 'abdomen_zaludek_main', 'stěna bez ložiskového ztluštění, bez zřetelných patologických změn', 'Přiměřený nález na žaludku.');
             let zaConc = ctx.field('za_custom_conc'); if (zaConc) concInc.push({ type: 'frame', text: zaConc, tableId: 'abdomen_zaludek_main' });
 
             // 7. Pankreas
@@ -605,7 +617,7 @@ const RegionAbdomen = {
             let paCys = ctx.text('pa_cys'); if (paCys && paCys !== '0') { let mm = ctx.field('pa_cys_mm'); paRep.push(`${paCys === '1' ? 'cystoidní léze' : 'vícečetné cystoidní léze'}${mm ? ' vel. do ' + mm + ' mm' : ''}`); concInc.push({ type: 'frame', text: `${paCys === '1' ? 'Cystoidní léze' : 'Vícečetné cystoidní léze'} pankreatu.`, tableId: 'abdomen_pankreas_main' }); }
             let paOp = ctx.text('pa_op'); if (paOp && paOp !== '0') paRep.push(`stav po ${paOp === 'duodenopankreat.' ? 'duodenopankreatektomii' : paOp === 'total pankreat.' ? 'totální pankreatektomii' : paOp === 'kauda' ? 'resekci kaudy' : 'nekrektomii'}`);
             let paDesc = ctx.field('pa_custom_desc'); if (paDesc) paRep.push(paDesc);
-            if (paRep.length > 0) reportOut.push({ type: 'frame', text: `- Pankreas: ${formatList(paRep)}.`, tableId: 'abdomen_pankreas_main' });
+            const paNormal = emitOrgan('pa_ost_add', paRep, '- Pankreas', 'abdomen_pankreas_main', 'přiměřené velikosti a struktury, bez ložiskových změn, ductus Wirsungi nedilatovaný', 'Přiměřený nález na pankreatu, bez ložiskové léze.');
             let paConc = ctx.field('pa_custom_conc'); if (paConc) concInc.push({ type: 'frame', text: paConc, tableId: 'abdomen_pankreas_main' });
 
             // 8. Tračník
@@ -617,7 +629,7 @@ const RegionAbdomen = {
             let trZes = ctx.text('tr_zes'), trZesLoc = ctx.text('tr_zes_loc'); if (trZes && trZes !== '0') { let loc = trZesLoc !== '0' ? trZesLoc : 'střeva'; trRep.push(`${trZes} zesílení stěny v oblasti ${loc}`); if (trZes === 'výrazné') concInc.push({ type: 'frame', text: `Zesílení stěny v oblasti ${loc}.`, tableId: 'abdomen_tracnik_main' }); }
             let trDiv = ctx.text('tr_div'), trDivLoc = ctx.text('tr_div_loc'); if (trDiv && trDiv !== '0') { let loc = trDivLoc !== '0' ? ` v oblasti ${trDivLoc}` : ''; trRep.push(`divertikulóza${loc}${trDiv === 'divertikulitida' ? ' se známkami zánětlivé iritace okolí' : ''}`); if (trDiv === 'divertikulitida') concInc.push({ type: 'frame', text: `Známky divertikulitidy${loc}.`, tableId: 'abdomen_tracnik_main' }); }
             let trDesc = ctx.field('tr_custom_desc'); if (trDesc) trRep.push(trDesc);
-            if (trRep.length > 0) reportOut.push({ type: 'frame', text: `- Tračník: ${formatList(trRep)}.`, tableId: 'abdomen_tracnik_main' });
+            const trNormal = emitOrgan('tr_ost_add', trRep, '- Tračník', 'abdomen_tracnik_main', 'bez ložiskového ztluštění stěny a bez známek divertikulitidy', 'Přiměřený nález na tračníku.');
             let trConc = ctx.field('tr_custom_conc'); if (trConc) concInc.push({ type: 'frame', text: trConc, tableId: 'abdomen_tracnik_main' });
 
             // 9. Peritoneum
@@ -645,7 +657,7 @@ const RegionAbdomen = {
                 }
             }
             let peDesc = ctx.field('pe_custom_desc'); if (peDesc) peRep.push(peDesc);
-            if (peRep.length > 0) reportOut.push({ type: 'frame', text: `- Peritoneum a mesenterium: ${formatList(peRep)}.`, tableId: 'abdomen_peritoneum_main' });
+            const peNormal = emitOrgan('pe_ost_add', peRep, '- Peritoneum a mesenterium', 'abdomen_peritoneum_main', 'bez volné tekutiny, mesenterium bez zastření, bez zřetelných patologických změn', 'Bez ascites a bez zřetelné peritoneální patologie.');
             let peConc = ctx.field('pe_custom_conc'); if (peConc) concInc.push({ type: 'frame', text: peConc, tableId: 'abdomen_peritoneum_main' });
 
             // 10. Nadledviny
@@ -710,7 +722,7 @@ const RegionAbdomen = {
             }
 
             let naDesc = ctx.field('na_custom_desc'); if (naDesc) naRep.push(naDesc);
-            if (naRep.length > 0) reportOut.push({ type: 'frame', text: `- Nadledviny: ${formatList(naRep)}.`, tableId: 'abdomen_nadledviny_main' });
+            const naNormal = emitOrgan('na_ost_add', naRep, '- Nadledviny', 'abdomen_nadledviny_main', 'obvyklého tvaru a velikosti, bez ložiskových změn', 'Přiměřený nález na nadledvinách, bez ložiskové léze.');
             let naConc = ctx.field('na_custom_conc'); if (naConc) concInc.push({ type: 'frame', text: naConc, tableId: 'abdomen_nadledviny_main' });
 
             // 11. Ledviny
@@ -725,7 +737,7 @@ const RegionAbdomen = {
             let lRes = checkSide('le_res'); if (lRes) { let gp = (v) => v === 'horní' ? 'horního' : v === 'střední' ? 'středního' : 'dolního'; let t = lRes.sideText === 'bilat.' && lRes.p === lRes.l ? `stav po parciální resekci ${gp(lRes.p)} pólu bilat.` : `${lRes.isP ? 'stav po parciální resekci ' + gp(lRes.p) + ' pólu vpravo' : ''}${lRes.isP && lRes.isL ? ' a ' : ''}${lRes.isL ? 'stav po parciální resekci ' + gp(lRes.l) + ' pólu vlevo' : ''}`; leRep.push(t); }
             let lNek = checkSide('le_nek'); if (lNek) leRep.push(`stav po nefrektomii ${lNek.sideText}`);
             let leDesc = ctx.field('le_custom_desc'); if (leDesc) leRep.push(leDesc);
-            if (leRep.length > 0) reportOut.push({ type: 'frame', text: `- Ledviny: ${formatList(leRep)}.`, tableId: 'abdomen_ledviny_main' });
+            const leNormal = emitOrgan('le_ost_add', leRep, '- Ledviny', 'abdomen_ledviny_main', 'přiměřené velikosti a šíře parenchymu, bez ložisek, bez dilatace dutého systému, bez patrné litiázy', 'Přiměřený nález na ledvinách, bez ložiskové léze a bez hydronefrózy.');
             let leConc = ctx.field('le_custom_conc'); if (leConc) concInc.push({ type: 'frame', text: leConc, tableId: 'abdomen_ledviny_main' });
 
             // 12. Močový měchýř
@@ -735,7 +747,7 @@ const RegionAbdomen = {
             let mmSto = ctx.text('mm_sto'); if (mmSto && mmSto !== '0') mmRep.push(`vyvedena ${mmSto === 'urostomie' ? 'urostomie' : 'urostomie dle Brickera'}`);
             let mmOp = ctx.text('mm_op'); if (mmOp && mmOp !== '0') mmRep.push(`stav po ${mmOp === 'TURB' ? 'TURB' : 'cystektomii'}`);
             let mmDesc = ctx.field('mm_custom_desc'); if (mmDesc) mmRep.push(mmDesc);
-            if (mmRep.length > 0) reportOut.push({ type: 'frame', text: `- Močový měchýř: ${formatList(mmRep)}.`, tableId: 'abdomen_moc_mechyr_main' });
+            const mmNormal = emitOrgan('mm_ost_add', mmRep, '- Močový měchýř', 'abdomen_moc_mechyr_main', 'stěna bez ložiskového ztluštění, bez divertiklů', 'Přiměřený nález na močovém měchýři.');
             let mmConc = ctx.field('mm_custom_conc'); if (mmConc) concInc.push({ type: 'frame', text: mmConc, tableId: 'abdomen_moc_mechyr_main' });
 
             // 13. Děloha
@@ -746,7 +758,7 @@ const RegionAbdomen = {
             if (ctx.isActive('de_iud')) deRep.push("IUD in situ");
             if (ctx.isActive('de_hys')) deRep.push("stav po hysterektomii");
             let deDesc = ctx.field('de_custom_desc'); if (deDesc) deRep.push(deDesc);
-            if (deRep.length > 0) reportOut.push({ type: 'frame', text: `- Děloha: ${formatList(deRep)}.`, tableId: 'abdomen_deloha_main' });
+            const deNormal = emitOrgan('de_ost_add', deRep, '- Děloha', 'abdomen_deloha_main', 'přiměřené velikosti, bez myomů a bez patologického zesílení endometria', 'Přiměřený nález na děloze.');
             let deConc = ctx.field('de_custom_conc'); if (deConc) concInc.push({ type: 'frame', text: deConc, tableId: 'abdomen_deloha_main' });
 
             // 14. Ovária
@@ -756,7 +768,7 @@ const RegionAbdomen = {
             let ovAkt = checkSide('ov_akt'); if (ovAkt) ovRep.push(`zvýšená ložisková akumulace RF v ovariu ${ovAkt.sideText} fyziologického charakteru (ovulační projev)`);
             let ovAdn = checkSide('ov_adn'); if (ovAdn) ovRep.push(`stav po adnexektomii ${ovAdn.sideText}`);
             let ovDesc = ctx.field('ov_custom_desc'); if (ovDesc) ovRep.push(ovDesc);
-            if (ovRep.length > 0) reportOut.push({ type: 'frame', text: `- Ovária a adnexa: ${formatList(ovRep)}.`, tableId: 'abdomen_ovaria_main' });
+            const ovNormal = emitOrgan('ov_ost_add', ovRep, '- Ovária a adnexa', 'abdomen_ovaria_main', 'bez ložiskových a bez komplexních cystických změn', 'Přiměřený nález na ovariích a adnexech, bez ložiskové léze.');
             let ovConc = ctx.field('ov_custom_conc'); if (ovConc) concInc.push({ type: 'frame', text: ovConc, tableId: 'abdomen_ovaria_main' });
 
             // 15. Prostata
@@ -766,15 +778,15 @@ const RegionAbdomen = {
             if (ctx.isActive('pr_tur')) prRep.push("stav po TURP");
             if (ctx.isActive('pr_rap')) prRep.push("stav po radikální prostatektomii");
             let prDesc = ctx.field('pr_custom_desc'); if (prDesc) prRep.push(prDesc);
-            if (prRep.length > 0) reportOut.push({ type: 'frame', text: `- Prostata: ${formatList(prRep)}.`, tableId: 'abdomen_prostata_main' });
+            const prNormal = emitOrgan('pr_ost_add', prRep, '- Prostata', 'abdomen_prostata_main', 'přiměřené velikosti, kontury hladké, bez ložiskových změn', 'Přiměřený nález na prostatě.');
             let prConc = ctx.field('pr_custom_conc'); if (prConc) concInc.push({ type: 'frame', text: prConc, tableId: 'abdomen_prostata_main' });
 
 
             // Ostatní břisní orgány předdef. text - shrnutí
             let hasSig = (lesInsts.length > 0 || lnInsts.length > 0 || concMain.length > 0 || concInc.length > 0);
-            let hasAnyOrganRep = (jaRep.length > 0 || zlRep.length > 0 || slRep.length > 0 || zaRep.length > 0 || 
-                                  paRep.length > 0 || trRep.length > 0 || peRep.length > 0 || naRep.length > 0 || 
-                                  leRep.length > 0 || mmRep.length > 0 || deRep.length > 0 || ovRep.length > 0 || prRep.length > 0);
+            let hasAnyOrganRep = (jaNormal || jaRep.length > 0 || zlNormal || zlRep.length > 0 || slNormal || slRep.length > 0 || zaNormal || zaRep.length > 0 ||
+                                  paNormal || paRep.length > 0 || trNormal || trRep.length > 0 || peNormal || peRep.length > 0 || naNormal || naRep.length > 0 ||
+                                  leNormal || leRep.length > 0 || mmNormal || mmRep.length > 0 || deNormal || deRep.length > 0 || ovNormal || ovRep.length > 0 || prNormal || prRep.length > 0);
             let orgSummaryTxt = "";
             if (hasSig) {
                 orgSummaryTxt = "Ostatní hodnotitelné orgány bez zřetelné signifikantní patologie.";
@@ -793,7 +805,7 @@ const RegionAbdomen = {
             let teVar = checkSide('te_var'); if (teVar) { teRep.push(`varikokéla ${teVar.sideText}`); concInc.push({ type: 'frame', text: `Varikokéla ${teVar.sideText}.`, tableId: 'abdomen_testes_main' }); }
             let teOrc = checkSide('te_orc'); if (teOrc) teRep.push(`stav po orchiektomii ${teOrc.sideText}`);
             let teDesc = ctx.field('te_custom_desc'); if (teDesc) teRep.push(teDesc);
-            if (teRep.length > 0) reportOut.push({ type: 'frame', text: `- Testes a skrotum: ${formatList(teRep)}.`, tableId: 'abdomen_testes_main' });
+            emitOrgan('te_ost_add', teRep, '- Testes a skrotum', 'abdomen_testes_main', 'bez hydrokély, bez varikokély a bez ložiskových změn', 'Přiměřený nález na varlatech.');
             let teConc = ctx.field('te_custom_conc'); if (teConc) concInc.push({ type: 'frame', text: teConc, tableId: 'abdomen_testes_main' });
 
             // 17. Velké cévy - sekce Aneurysma
@@ -863,7 +875,7 @@ const RegionAbdomen = {
             if (bypassLocs.length > 0) vcRep.push(`vytvořen bypass ${formatList(bypassLocs)}`);
             
             let vcDesc = ctx.field('vc_custom_desc'); if (vcDesc) vcRep.push(vcDesc);
-            if (vcRep.length > 0) reportOut.push({ type: 'frame', text: `- Velké cévy: ${formatList(vcRep)}.`, tableId: 'abdomen_velke_cevy_main' });
+            emitOrgan('vc_ost_add', vcRep, '- Velké cévy', 'abdomen_velke_cevy_main', 'abdominální aorta a iliaky přiměřené šíře, bez aneurysmatu', 'Přiměřený nález na abdominální aortě a pánevních tepnách.');
             let vcConc = ctx.field('vc_custom_conc'); if (vcConc) concInc.push({ type: 'frame', text: vcConc, tableId: 'abdomen_velke_cevy_main' });
 
             // 18. Břišní stěna
@@ -912,29 +924,38 @@ const RegionAbdomen = {
             processHernia('aw_her_ing', 'inguinálně', 'Inguinální hernie');
 
             let awDesc = ctx.field('aw_custom_desc'); if (awDesc) awRep.push(awDesc);
-            if (awRep.length > 0) reportOut.push({ type: 'frame', text: `- Břišní stěna: ${formatList(awRep)}.`, tableId: 'abdomen_wall_main' });
+            emitOrgan('aw_ost_add', awRep, '- Břišní stěna', 'abdomen_wall_main', 'bez herniace a bez patologických infiltrátů v podkoží', 'Přiměřený nález na břišní stěně, bez hernie.');
             let awConc = ctx.field('aw_custom_conc'); if (awConc) concInc.push({ type: 'frame', text: awConc, tableId: 'abdomen_wall_main' });
 
             let finalAscCurr = ctx.text('pe_asc');
             let finalAscMin = ctx.text('pe_asc_old');
             let finalHasPastDate = !!document.body.classList.contains('has-past-date');
-            if (!(finalAscCurr && finalAscCurr !== '0') && !(finalHasPastDate && finalAscMin && finalAscMin !== '0')) {
+            if (!peNormal && !(finalAscCurr && finalAscCurr !== '0') && !(finalHasPastDate && finalAscMin && finalAscMin !== '0')) {
                 reportOut.push({ type: 'frame', text: 'Bez volné tekutiny.', tableId: 'abdomen_peritoneum_main', dimmed: true });
             }
 
             let ostDesc = ctx.field('ostatni_custom_desc');
+            let ostParts = [];
             if (ostDesc) {
                 let txt = ostDesc.trim();
-                if (txt) {
-                    txt = txt.charAt(0).toUpperCase() + txt.slice(1);
-                    if (!txt.endsWith('.')) txt += '.';
-                    reportOut.push({ type: 'frame', text: txt, tableId: 'abdomen_ostatni_main' });
-                }
+                if (txt.endsWith('.')) txt = txt.slice(0, -1);
+                if (txt) ostParts.push(txt);
+            }
+            const ostatniNormal = ctx.isActive('ostatni_ost_add_normal');
+            if (ostatniNormal || ostParts.length > 0) {
+                let text;
+                if (ostatniNormal && ostParts.length > 0) text = `Bez dalších významných nálezů. Jinak pouze ${formatList(ostParts)}.`;
+                else if (ostatniNormal) text = 'Bez dalších významných nálezů.';
+                else text = `${cap(formatList(ostParts))}.`;
+                reportOut.push({ type: 'frame', text: text, tableId: 'abdomen_ostatni_main' });
             }
 
             let ostConc = ctx.field('ostatni_custom_conc');
             if (ostConc) {
                 concInc.push({ type: 'frame', text: ostConc, tableId: 'abdomen_ostatni_main' });
+            }
+            if (ostatniNormal) {
+                concMain.push({ type: 'frame', text: 'Bez dalších významných nálezů v dutině břišní.', tableId: 'abdomen_ostatni_main' });
             }
 
             return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };
