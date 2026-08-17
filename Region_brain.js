@@ -136,7 +136,7 @@ const RegionBrain = {
         });
 
         layoutNodes.push(
-            helpers.TableMain('brain_wml_main', 'WML a Demyelinizace', [
+            helpers.TableMain('brain_wml_main', 'Mozkový parenchym', [
                 helpers.Table2colNormal('br_svd_table', 'SVD, PVS a glióza', [
                     [ 'Fazekas:', { btn: 'br_faz', states: ['0', '1', '2', '3'] } ],
                     [ 'Lakuny:', [ { btn: 'br_lak', states: ['0', 'difuzně', 'CSO', 'BG', 'talamus'] }, { btn: 'br_lak_lat', states: ['bilat.', 'R', 'L'] } ] ],
@@ -157,7 +157,7 @@ const RegionBrain = {
         );
 
         layoutNodes.push(
-            helpers.TableMain('brain_atr_main', 'Kortex, atrofie, komory', [
+            helpers.TableMain('brain_atr_main', 'Komory, extra-axiální prostory', [
                 helpers.Table2colNormal('br_atr_table', 'Kortex a atrofie', [
                     [ 'GCA (Globální):', { btn: 'br_gca', states: ['0', '1', '2', '3'] } ],
                     [ 'MTA (Mediotemporální):', { btn: 'br_mta', states: ['0', '1', '2', '3', '4'] } ],
@@ -176,11 +176,11 @@ const RegionBrain = {
         );
 
         layoutNodes.push(
-            helpers.TableMain('brain_cpa_main', 'Mostomozečkový kout', [
+            helpers.TableMain('brain_cpa_main', 'Kraniální nervy, IAC', [
                 helpers.Table3colRL('br_cpa_table', 'Expanze a konflikty', [
                     [ { btn: 'br_cpa_exp_r', states: ['0', 'schwanom', 'meningeom', 'cysta'] }, 'Expanze', { btn: 'br_cpa_exp_l', states: ['0', 'schwanom', 'meningeom', 'cysta'] } ],
-                    [ { btn: 'br_cpa_kon_r', states: ['0', 'I', 'II', 'III'] }, 'NV konflikt wI.', { btn: 'br_cpa_kon_l', states: ['0', 'I', 'II', 'III'] } ],
-                    [ { btn: 'br_cpa_kon5_r', states: ['0', '+', '++'] }, 'NV konflikt V.', { btn: 'br_cpa_kon5_l', states: ['0', '+', '++'] } ]
+                    [ { btn: 'br_cpa_kon_r', states: ['0', 'I', 'II', 'III'] }, 'konflikt VIII.', { btn: 'br_cpa_kon_l', states: ['0', 'I', 'II', 'III'] } ],
+                    [ { btn: 'br_cpa_kon5_r', states: ['0', '+', '++'] }, 'konflikt V.', { btn: 'br_cpa_kon5_l', states: ['0', '+', '++'] } ]
                 ]),
                 helpers.Table1col('br_cpa_ost_add', [ 
                     { field: 'text', id: 'br_cpa_custom_desc', placeholder: 'vlastní popis MMK...' }, 
@@ -190,7 +190,7 @@ const RegionBrain = {
         );
 
         layoutNodes.push(
-            helpers.TableMain('brain_sella_main', 'Sella a hypofýza', [
+            helpers.TableMain('brain_sella_main', 'Sella, hypofýza', [
                 helpers.Table2colNormal('br_sella_table', 'Sella a epifýza', [
                     [ 'Sella:', { btn: 'br_sella', states: ['0', 'cysta', 'partial', 'empty'] } ],
                     [ 'Epifýza:', { btn: 'br_epi', states: ['0', 'cysta [field:field_mm:mm]', 'ložisko [field:field_mm:mm]'] } ]
@@ -204,7 +204,7 @@ const RegionBrain = {
 
         /* --- WILLISŮV OKRUH A ARTERIE --- */
         layoutNodes.push(
-            helpers.TableMain('brain_vessels_main', 'Willis, arterie', [
+            helpers.TableMain('brain_vessels_main', 'Cévy', [
                 helpers.Table2colNormal('br_ves_pat_table', '', [
                     [ 'Typ patologie:', [ { btn: 'br_ves_pat', states: ['0', 'aneurysma', 'stenóza', 'uzávěr'] }, { field: 'size', id: 'br_ves_size', placeholder: 'mm' } ] ]
                 ]),
@@ -258,7 +258,7 @@ const RegionBrain = {
         );
 
         layoutNodes.push(
-            helpers.TableMain('brain_sinus_main', 'VDN, středouší, mastoidy', [
+            helpers.TableMain('brain_sinus_main', 'VDN, baze', [
                 helpers.Table3colRL('br_sinus_table', [
                     [ { btn: 'sinus_front_r', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] }, 'frontální', { btn: 'sinus_front_l', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] } ],
                     [ { btn: 'sinus_ethmo_r', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] }, 'ethmoidální', { btn: 'sinus_ethmo_l', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] } ],
@@ -284,7 +284,6 @@ const RegionBrain = {
         let concInc = [];
         
         const examId = ctx.examId || 'default';
-        const isPET = (examId || '').toLowerCase().includes('pet');
         const isMR = (examId || '').toLowerCase().includes('mr');
         const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -543,17 +542,15 @@ const RegionBrain = {
         }
 
         // --- 1. LÉZE ---
-        if (parsedLesions.length === 0) {
-            reportOut.push({ type: 'frame', text: isPET ? 'Není patrné ložisko se zvýšenou akumulací RF v mozku.' : 'Bez patologických ložiskových změn.', tableId: 'brain_lesion_main', dimmed: true });
-        } else {
+        if (parsedLesions.length > 0) {
             parsedLesions.forEach(les => {
                 reportOut.push({ type: 'frame', text: cap(les.repText), tableId: les.tableId });
                 concMain.push({ type: 'frame', text: cap(les.concText), tableId: les.tableId });
             });
         }
 
-        // --- 2. RESTRIKCE DIFUZE (Pouze MR) ---
-        if (isMR && !hasDwiPlus) {
+        // --- 2. RESTRIKCE DIFUZE (Pouze MR, pokud už je ložisko / krvácení / ischemie) ---
+        if (parsedLesions.length > 0 && isMR && !hasDwiPlus) {
             reportOut.push({ type: 'frame', text: 'Bez zvýšené restrikce difuze.', tableId: 'brain_lesion_main', dimmed: true });
         }
 
@@ -650,10 +647,15 @@ const RegionBrain = {
         let wmlConc = ctx.field('br_wml_custom_conc');
         if (wmlConc) concInc.push({ type: 'frame', text: wmlConc, tableId: 'brain_wml_main' });
 
-        if (bilaHmotaRep.length === 0) {
-            reportOut.push({ type: 'frame', text: 'Bez lézí v bílé hmotě.', tableId: 'brain_wml_main', dimmed: true });
-        } else {
+        if (bilaHmotaRep.length > 0) {
             reportOut.push({ type: 'frame', text: cap(formatCzechList(bilaHmotaRep)) + '.', tableId: 'brain_wml_main' });
+        }
+
+        if (parsedLesions.length === 0) {
+            const intensita = isMR ? 'signálová intenzita' : 'denzita';
+            let normalTxt = `Normální ${intensita} a morfologie parenchymu. Bez akutní ischemie, hemorrhagie, ložisek, mass efektu.`;
+            if (bilaHmotaRep.length === 0) normalTxt += ' Bez lézí v bílé hmotě.';
+            reportOut.splice(1, 0, { type: 'frame', text: normalTxt, tableId: 'brain_lesion_main', dimmed: true });
         }
 
         // --- 2. KORTEX, ATROFIE A KOMORY ---
@@ -726,11 +728,15 @@ const RegionBrain = {
 
         let atrDesc = ctx.field('br_atr_custom_desc');
         let atrCombinedRep = [];
-        if (atrofieSaRep.length === 0) atrCombinedRep.push('Subarachnoidální prostory oboustranně šířkou přiměřené k věku.');
-        else atrCombinedRep.push(cap(formatCzechList(atrofieSaRep)) + '.');
-        
-        if (komoryRep.length === 0) atrCombinedRep.push('Komorový systém obvyklé konfigurace, nedilatován.');
-        else atrCombinedRep.push(cap(formatCzechList(komoryRep)) + '.');
+        if (atrofieSaRep.length === 0 && komoryRep.length === 0) {
+            atrCombinedRep.push('Přiměřená šíře komor a extra-axiálních prostorů odpovídající věku.');
+        } else {
+            if (atrofieSaRep.length === 0) atrCombinedRep.push('Subarachnoidální prostory oboustranně šířkou přiměřené k věku.');
+            else atrCombinedRep.push(cap(formatCzechList(atrofieSaRep)) + '.');
+
+            if (komoryRep.length === 0) atrCombinedRep.push('Komorový systém obvyklé konfigurace, nedilatován.');
+            else atrCombinedRep.push(cap(formatCzechList(komoryRep)) + '.');
+        }
         
         if (atrDesc) atrCombinedRep.push(cap(atrDesc) + (atrDesc.endsWith('.') ? '' : '.'));
 

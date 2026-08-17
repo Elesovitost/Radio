@@ -3322,6 +3322,7 @@ const ClipboardService = {
         const container = document.getElementById('conclusion-container');
         if (!container) return "";
         let mainParts = [], incidentalParts = [], state = "none";
+        const seen = new Set();
 
         if (Store.pastDate) {
             const [y, m, d] = Store.pastDate.split('-');
@@ -3332,8 +3333,12 @@ const ClipboardService = {
             const txt = el.textContent.trim();
             if (txt === "Závěr:") { state = "main"; return; }
             if (txt === "Vedlejší nálezy:") { state = "incidental"; return; }
-            if (state === "main" && el.classList.contains('report-frame')) mainParts.push(txt);
-            if (state === "incidental" && el.classList.contains('report-frame')) incidentalParts.push(txt);
+            if ((state === "main" || state === "incidental") && el.classList.contains('report-frame')) {
+                if (seen.has(txt)) return;
+                seen.add(txt);
+                if (state === "main") mainParts.push(txt);
+                else incidentalParts.push(txt);
+            }
         });
 
         let out = mainParts.join('\n');
