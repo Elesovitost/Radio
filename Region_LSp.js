@@ -129,6 +129,7 @@ const RegionLSp = {
                 el('input', { 
                     type: 'checkbox', 
                     id: 'ls_spine_conc_mode_toggle',
+                    checked: Store.fields['ls_spine_conc_mode'] === 'stenosis',
                     onchange: (e) => { 
                         Store.fields['ls_spine_conc_mode'] = e.target.checked ? 'stenosis' : 'pathology'; 
                         UI.renderReport(); 
@@ -138,11 +139,6 @@ const RegionLSp = {
             ]),
             el('span', { className: 'label', style: 'font-size: 10px;', textContent: 'První stenózy' })
         ]);
-
-        setTimeout(() => {
-            const cb = document.getElementById('ls_spine_conc_mode_toggle');
-            if (cb) cb.checked = Store.fields['ls_spine_conc_mode'] === 'stenosis';
-        }, 0);
 
         const expTable = helpers.TableGrid('spine_lumbar_exp', [
             [ { btn: 'exp_segment', id: 'exp_segment' }, [ { btn: 'expansion', id: 'exp_type' }, { btn: 'exp_side', id: 'exp_side' }, { field: 'size', id: 'exp_size', placeholder: 'rozměr' } ] ],
@@ -199,6 +195,7 @@ const RegionLSp = {
         let staticPhysio = [];
         let staticPatho = [];
         let concStaticSentences = [];
+        let concAxisLordosis = [];
 
         const axisState = ctx.text('lsp_axis');
         if (axisState && axisState !== '0') {
@@ -218,7 +215,7 @@ const RegionLSp = {
                     staticPhysio.push(sentence);
                 } else {
                     staticPatho.push(sentence);
-                    concStaticSentences.push(sentence);
+                    concAxisLordosis.push(sentence);
                 }
             }
         }
@@ -238,7 +235,7 @@ const RegionLSp = {
                     staticPhysio.push(sentence);
                 } else {
                     staticPatho.push(sentence);
-                    concStaticSentences.push(sentence);
+                    concAxisLordosis.push(sentence);
                 }
             }
         }
@@ -264,6 +261,8 @@ const RegionLSp = {
         let collLamin = {};
         let collModic = {};
         let collDegenNahrada = [];
+        let dddIIPlusCount = 0;
+        let dddIIPlusWithStenosis = 0;
 
         const isOpActive = ctx.isActive('lsp_op');
 
@@ -311,8 +310,8 @@ const RegionLSp = {
                     degenDesc = 'mírně snížený disk'; 
                 }
                 else if (degen === 'DDD II') { 
-                    degenModifier = 'středně sníženého '; 
-                    degenDesc = 'středně snížený disk'; 
+                    degenModifier = 'sníženého '; 
+                    degenDesc = 'snížený disk'; 
                 }
                 else if (degen === 'DDD III') { 
                     degenModifier = 'výrazně sníženého '; 
@@ -560,7 +559,7 @@ const RegionLSp = {
                     }
                 } else if (type === 'P') {
                     if (val === '0') reportStr = `bez tlaku na kořen ${seg.root} ${side}`;
-                    else if (val === '1') { nom = `kontakt s kořenem ${seg.root} ${side}`; dat = `kontaktu s kořenem ${seg.root} ${side}`; reportStr = nom; }
+                    else if (val === '1') { nom = `naléhání na kořen ${seg.root} ${side}`; dat = `naléhání na kořen ${seg.root} ${side}`; reportStr = nom; }
                     else if (val === '2') { nom = `útlak kořene ${seg.root} ${side}`; dat = `útlaku kořene ${seg.root} ${side}`; reportStr = nom; }
                     else if (val === '3') { nom = `útlak kořene ${seg.root} ${side}`; dat = `kompresi kořene ${seg.root} ${side}`; reportStr = `komprese kořene ${seg.root} ${side}`; }
                     else if (val === 'S') { nom = `stenóza laterálního recesu ${side}`; dat = `stenóze laterálního recesu ${side}`; reportStr = nom; }
@@ -615,7 +614,7 @@ const RegionLSp = {
                         reportStr = val === '1' ? `mírné zúžení obou foramin` : `zúžení obou foramin`;
                     }
                 } else if (type === 'P') {
-                    if (val === '1') { nom = `kontakt s kořeny ${seg.root} bilat.`; dat = `kontaktu s kořeny ${seg.root} bilat.`; reportStr = nom; }
+                    if (val === '1') { nom = `naléhání na kořeny ${seg.root} bilat.`; dat = `naléhání na kořeny ${seg.root} bilat.`; reportStr = nom; }
                     else if (val === '2') { nom = `útlak kořenů ${seg.root} bilat.`; dat = `útlaku kořenů ${seg.root} bilat.`; reportStr = nom; }
                     else if (val === '3') { nom = `útlak kořenů ${seg.root} bilat.`; dat = `kompresi kořenů ${seg.root} bilat.`; reportStr = `komprese kořenů ${seg.root} bilat.`; }
                     else if (val === 'S') { nom = `stenóza laterálních recesů bilat.`; dat = `stenóze laterálních recesů bilat.`; reportStr = nom; }
@@ -661,9 +660,16 @@ const RegionLSp = {
             }
 
             mappedEffects.sort((a, b) => {
-                if (b.sev !== a.sev) return b.sev - a.sev;
-                return a.typeOrder - b.typeOrder;
+                // Řazení stenóz jen podle typu (spinální -> paracentrální -> foraminální),
+                // případně pak podle závažnosti.
+                if (a.typeOrder !== b.typeOrder) return a.typeOrder - b.typeOrder;
+                return b.sev - a.sev;
             });
+
+            if (degen === 'DDD II' || degen === 'DDD III') {
+                dddIIPlusCount++;
+                if (mappedEffects.length > 0) dddIIPlusWithStenosis++;
+            }
 
             const size = ctx.field(`${seg.sPfx}_size`);
             if (size && !(['1', '2', '3'].includes(valC))) {
@@ -676,65 +682,34 @@ const RegionLSp = {
                 segmentBlocks.push({ type: 'frame', text: `${seg.label}: ${sentences.join(' ')}` });
             }
 
-            let linkedPairs = [];
-            let unlinkedEffects = [...mappedEffects];
-            let specificCauses = activeCauses.filter(c => c.type === 'specific');
-            let otherCauses = activeCauses.filter(c => c.type === 'other');
-            let specificUnlinked = [];
-
-            specificCauses.forEach(cause => {
-                let matchedEffs = unlinkedEffects.filter(eff => cause.match(eff));
-                if (matchedEffs.length > 0) {
-                    linkedPairs.push({ causes: [cause], effects: matchedEffs });
-                    unlinkedEffects = unlinkedEffects.filter(eff => !cause.match(eff));
-                } else {
-                    specificUnlinked.push(cause);
-                }
-            });
-
-            let remainingCauses = [...otherCauses, ...specificUnlinked];
-
-            if (unlinkedEffects.length > 0 && remainingCauses.length > 0) {
-                linkedPairs.push({ causes: remainingCauses, effects: unlinkedEffects });
-                unlinkedEffects = [];
-                remainingCauses = [];
-            }
-
             let concLines = [];
             const isStenosisFirst = Store.fields['ls_spine_conc_mode'] === 'stenosis';
+            const fibrosisGenArr = fibrosisArr.map((s) => String(s).replace('fibróza', 'fibrózy'));
+            const structuralNomParts = [...activeCauses.map((c) => c.nom), ...fibrosisArr, ...adhesionArr].filter(Boolean);
+            const structuralGenParts = [...activeCauses.map((c) => c.gen), ...fibrosisGenArr, ...adhesionArr].filter(Boolean);
 
-            linkedPairs.forEach(pair => {
-                let causeStrNom = joinCzech(pair.causes.map(c => c.nom));
-                let causeStrGen = joinCzech(pair.causes.map(c => c.gen));
-                let effectStrNom = joinCzech(pair.effects.map(e => e.nom));
-                let effectStrDat = joinCzech(pair.effects.map(e => e.dat));
-                let prep = /^(s[bcdfghjklmnpqrstvwxz]|z[bcdfghjklmnpqrstvwxz]|š[bcdfghjklmnpqrstvwxz]|ž[bcdfghjklmnpqrstvwxz]|k|g)/i.test(effectStrDat) ? 'ke' : 'k';
+            if (mappedEffects.length > 0) {
+                const structuralNom = structuralNomParts.length ? joinCzech(structuralNomParts) : 'Strukturální změny';
+                const structuralGen = structuralGenParts.length ? joinCzech(structuralGenParts) : 'Strukturálních změn';
+
+                const effectStrNom = joinCzech(mappedEffects.map((e) => e.nom));
+                const effectStrDat = joinCzech(mappedEffects.map((e) => e.dat));
+
+                const prep = /^(s[bcdfghjklmnpqrstvwxz]|z[bcdfghjklmnpqrstvwxz]|š[bcdfghjklmnpqrstvwxz]|ž[bcdfghjklmnpqrstvwxz]|k|g)/i.test(effectStrDat)
+                    ? 'ke'
+                    : 'k';
 
                 if (!isStenosisFirst) {
-                    concLines.push(`${causeStrNom} vedoucí ${prep} ${effectStrDat}.`);
+                    concLines.push(`${structuralNom} vedoucí ${prep} ${effectStrDat}.`);
                 } else {
-                    concLines.push(`${effectStrNom} na podkladě ${causeStrGen}.`);
+                    concLines.push(`${effectStrNom} na podkladě ${structuralGen}.`);
                 }
-            });
-
-            remainingCauses.forEach(cause => {
-                if (hasZero) concLines.push(`${cause.nom} bez útlaku nervových struktur.`);
-                else concLines.push(`${cause.nom}.`);
-            });
-
-            unlinkedEffects.forEach(eff => {
-                let str = eff.nom.charAt(0).toUpperCase() + eff.nom.slice(1);
-                concLines.push(`Současně ${str.toLowerCase()}.`);
-            });
-
-            if (fibrosisArr.length > 0) {
-                let fStr = joinCzech(fibrosisArr);
-                concLines.push(fStr.charAt(0).toUpperCase() + fStr.slice(1) + '.');
-            }
-
-            if (adhesionArr.length > 0) {
-                let aStr = joinCzech(adhesionArr);
-                concLines.push(aStr.charAt(0).toUpperCase() + aStr.slice(1) + '.');
+            } else {
+                const structuralParts = [...activeCauses.map((c) => c.nom), ...fibrosisArr, ...adhesionArr].filter(Boolean);
+                structuralParts.forEach((txt) => {
+                    if (!txt) return;
+                    concLines.push(hasZero ? `${txt} bez útlaku nervových struktur.` : `${txt}.`);
+                });
             }
 
             if (concLines.length > 0) {
@@ -865,6 +840,16 @@ const RegionLSp = {
             mainConc.push({ type: 'frame', text: concMyelo });
         } else if (!(ctx.examId || '').toLowerCase().startsWith('ct')) {
             reportBlocks.push({ type: 'frame', text: 'Přehledný úsek míchy bez signálových změn.', dimmed: true });
+        }
+
+        if (concAxisLordosis.length > 0) {
+            mainConc.push({ type: 'frame', text: concAxisLordosis.join(' ') });
+        }
+
+        if (dddIIPlusCount >= 4 && dddIIPlusWithStenosis >= 3) {
+            mainConc.unshift({ type: 'frame', text: 'Multietážové degenerativní změny bederní páteře:' });
+        } else if (dddIIPlusCount >= 3 && dddIIPlusWithStenosis >= 2) {
+            mainConc.unshift({ type: 'frame', text: 'Víceetážové degenerativní změny bederní páteře:' });
         }
 
         if (mainConc.length === 0) {
