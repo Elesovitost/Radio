@@ -44,6 +44,10 @@
             <span class="label">STRIATUM:</span>
             <input class="input field_suv" data-action="update-field" data-id="suv_striata" value="2.0">
         </div>
+        <div class="row ref-group sep" data-ref="akumulace" style="display: none;">
+            <span class="label">Akumulační obraz:</span>
+            <div id="fmm-akum-btn-slot"></div>
+        </div>
     </div>
     <!-- Settings Modal -->
     <div id="settings-modal" class="panel" style="display: none; position: absolute; top: 38px; right: 5px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.8); width: 280px; border: 1px solid var(--accent-hi);">
@@ -645,6 +649,7 @@ const EXAMS = {
         { id: 'petct_psma_trup', title: 'PSMA-PET / CT trupu', regs: ['neck','thorax','abdomen','skeleton'] },
         { id: 'petct_dotatoc_trup', title: 'DOTATOC-PET / CT trupu', regs: ['neck','thorax','abdomen','skeleton'] },
         { id: 'petct_dopa_mozek', title: 'DOPA-PET / CT mozku', regs: ['brain'] },
+        { id: 'petct_fmm_mozek', title: 'FMM-PET / CT mozku', regs: ['brain'] },
         { id: 'petct_dopa_trup', title: 'DOPA-PET / CT trupu', regs: ['neck','thorax','abdomen','skeleton'] }
     ],
     "PET / MR": [
@@ -652,6 +657,7 @@ const EXAMS = {
         { id: 'petmr_psma_prostata', title: 'PSMA-PET / MR prostaty', regs: ['prostate'] },
         { id: 'petmr_fdg_mozek', title: 'FDG-PET / MR mozku', regs: ['brain'] },
         { id: 'petmr_dopa_mozek', title: 'DOPA-PET / MR mozku', regs: ['brain'] },
+        { id: 'petmr_fmm_mozek', title: 'FMM-PET / MR mozku', regs: ['brain'] },
         { id: 'petmr_fdg_orl', title: 'FDG-PET / MR ORL', regs: ['neck'] },
         { id: 'petmr_fdg_rekta', title: 'FDG-PET / MR rekta', regs: ['rectum'] }
     ],
@@ -691,8 +697,25 @@ const RADIOFARM_CONFIG = {
     dotatoc: { defaultSuvJater: '7.0', showGroups: ['jatra', 'jatra_minule', 'slezina'], defaults: { suv_jater_minule: '7.0', suv_sleziny: '20.0' } },
     dopa_mozek: { defaultSuvJater: '3.0', showGroups: ['striatum'], defaults: { suv_jater_minule: '3.0', suv_striata: '2.0' } },
     dopa_trup: { defaultSuvJater: '3.0', showGroups: ['jatra', 'jatra_minule'], defaults: { suv_jater_minule: '3.0' } },
-    fdg: { defaultSuvJater: '3.0', showGroups: ['jatra', 'jatra_minule'], defaults: { suv_jater_minule: '3.0' } }
+    fdg: { defaultSuvJater: '3.0', showGroups: ['jatra', 'jatra_minule'], defaults: { suv_jater_minule: '3.0' } },
+    fmm: { defaultSuvJater: '3.0', showGroups: ['akumulace'], defaults: {} }
 };
+
+const FMM_AKUM_STATES = ['-', '+', '++'];
+const FMM_AKUM_TEXTS = [
+    {
+        report: 'Na tomografických řezech nacházíme v amyloidové fázi fyziologickou distribuci radiofarmaka s maximem v bílé hmotě mozkové. V žádné z kritických hodnocených oblastí frontální kůry, předního a zadního cingula a precuneu, temporo-parietální kůry včetně insuly a laterální temporální kůry nenacházíme patologicky zvýšenou akumulaci radiofarmaka.',
+        conc: 'Beta-amyloidové plaky nebyly nalezeny. Nález není konzistentní s diagnózou Alzheimerovy choroby.'
+    },
+    {
+        report: 'Na tomografických řezech nacházíme v amyloidové fázi výrazně zvýšenou akumulaci radiofarmaka v šedé kůře mozkové, která přesahuje svojí intenzitou fyziologickou akumulaci v bílé hmotě mozkové - v kritických hodnocených oblastech, tj. ve frontální kůře, předním a zadním cingulu a precuneu, v temporo-parietální kůře včetně insuly a v laterální temporální kůře nacházíme patologicky zvýšenou akumulaci radiofarmaka.',
+        conc: 'Pozitivní nález z hlediska přítomnosti beta-amyloidu v šedé kůře mozkové (bez striata) je konzistentní s vaší suspekcí na Alzheimerovu chorobu.'
+    },
+    {
+        report: 'Na tomografických řezech nacházíme v amyloidové fázi výrazně zvýšenou akumulaci radiofarmaka v šedé kůře mozkové, která přesahuje svojí intenzitou fyziologickou akumulaci v bílé hmotě mozkové - v kritických hodnocených oblastech, tj. ve frontální kůře, předním a zadním cingulu a precuneu, v temporo-parietální kůře včetně insuly, v laterální temporální kůře i ve striatu nacházíme patologicky zvýšenou akumulaci radiofarmaka.',
+        conc: 'Pozitivní nález z hlediska přítomnosti beta-amyloidu v šedé kůře mozkové včetně striata je konzistentní s vaší suspekcí na Alzheimerovu chorobu.'
+    }
+];
 
 
 /* ═══════════════════════════════════════════════
@@ -2129,6 +2152,35 @@ const UI = {
         Object.entries(config.defaults).forEach(([id, val]) => setField(id, val));
         
         window._currentRadiofarm = configKey;
+        this.syncFmmAkumButton();
+    },
+
+    syncFmmAkumButton() {
+        const slot = document.getElementById('fmm-akum-btn-slot');
+        if (!slot) return;
+        const examId = Store.activeTab || '';
+        if (!examId.toLowerCase().includes('fmm')) {
+            slot.replaceChildren();
+            return;
+        }
+        const globalId = `${examId}_fmm_akum`;
+        ButtonConfigs[globalId] = { type: 'standard', states: FMM_AKUM_STATES };
+        const idx = Store.buttonStates[globalId] || 0;
+        let btn = slot.querySelector('button');
+        if (!btn || btn.dataset.id !== globalId) {
+            btn = el('button', {
+                className: 'btn btn-state',
+                'data-action': 'cycle-state',
+                'data-id': globalId,
+                'data-longest': '++',
+                style: 'min-width: 0;'
+            }, [el('span')]);
+            slot.replaceChildren(btn);
+        }
+        btn.classList.toggle('modified', idx > 0);
+        btn.setAttribute('aria-pressed', String(idx > 0));
+        const span = btn.querySelector('span');
+        if (span) span.textContent = FMM_AKUM_STATES[idx] || '-';
     },
 
     render(prop) {
@@ -2143,6 +2195,7 @@ const UI = {
             }
         }
         this.renderReport();
+        this.syncFmmAkumButton();
     },
 
     renderExams() {
@@ -2794,9 +2847,17 @@ const UI = {
             const isFdg = eIdLower.includes('fdg');
             const isPsma = eIdLower.includes('psma');
             const isDotatoc = eIdLower.includes('dotatoc');
-            const isDopa = eIdLower.includes('dopa'); // Nově přidána detekce DOPA
+            const isDopa = eIdLower.includes('dopa');
+            const isFmm = eIdLower.includes('fmm');
 
-            if (isFdg || isPsma || isDotatoc || isDopa) { // Rozšířená podmínka
+            if (isFmm) {
+                const akumIdx = Store.buttonStates[`${examId}_fmm_akum`] || 0;
+                const akum = FMM_AKUM_TEXTS[akumIdx] || FMM_AKUM_TEXTS[0];
+                examRepBlocks.unshift({ type: 'frame', text: akum.report, tableId: null, examId, dimmed: akumIdx === 0 });
+                examConcMainBlocks.unshift({ type: 'frame', text: akum.conc, tableId: null, examId, dimmed: akumIdx === 0 });
+            }
+
+            if (isFdg || isPsma || isDotatoc || isDopa) {
                 // 1. Detekce přes tlačítka: Hledá stav aktivity >= 3 (zvýšená, vysoká)
                 const hasHighActivity = Object.keys(Store.buttonStates).some(k => 
                     k.startsWith(examId) && k.endsWith('_act') && Store.buttonStates[k] >= 3
