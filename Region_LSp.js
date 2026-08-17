@@ -264,10 +264,20 @@ const RegionLSp = {
         let dddIIPlusCount = 0;
         let dddIIPlusWithStenosis = 0;
         let hasUncomplicatedDegen = false;
+        let segmentConcItems = [];
+        let segmentLesionItems = [];
+
+        const effectRank = (e) => {
+            const t = e.typeOrder;
+            const s = e.sev;
+            if (t === 1) return s === 3 ? 100 : (s === 2 ? 70 : 50);
+            if (t === 2) return s === 3 ? 95 : (s === 2 ? 80 : 30);
+            return s === 3 ? 90 : (s === 2 ? 60 : 40);
+        };
 
         const isOpActive = ctx.isActive('lsp_op');
 
-        segments.forEach(seg => {
+        segments.forEach((seg, segIndex) => {
             let sentences = [];
             let activeCauses = [];
             let mappedEffects = [];
@@ -278,6 +288,11 @@ const RegionLSp = {
             if (shape && shape !== 'obr. tělo') {
                 if (shape === 'propagace') {
                     sentences.push(formatSentence('propagace zadní hrany obratl. těla dorzálně'));
+                    activeCauses.push({
+                        type: 'other',
+                        nom: `výrazná komprese těla ${seg.vLabel} s propagací dorzálně`,
+                        gen: `výrazné komprese těla ${seg.vLabel} s propagací dorzálně`
+                    });
                 }
                 if (!collShapes[shape]) collShapes[shape] = []; 
                 collShapes[shape].push(seg.vLabel);
@@ -330,8 +345,10 @@ const RegionLSp = {
                 const modicMap = { 'Modic I': 'STIR+ signál pod krycími plotnami', 'Modic II': 'T1+ signál pod krycími plotnami', 'Modic III': 'skleróza pod krycími plotnami', 'destrukce': 'destrukce krycích ploten' };
                 sentences.push(formatSentence(modicMap[modic] || modic));
                 
-                if (!collModic[modic]) collModic[modic] = [];
-                collModic[modic].push(seg.label);
+                if (modic !== 'Modic I') {
+                    if (!collModic[modic]) collModic[modic] = [];
+                    collModic[modic].push(seg.label);
+                }
             }
 
             const shift = ctx.text(`${seg.vPfx}_shift`);
@@ -580,9 +597,9 @@ const RegionLSp = {
                     if (c_size && val !== '0') sizeText = c_size.includes('x') ? `(který rozměrů ${c_size} mm)` : `(který diametru ${c_size} mm AP)`;
                     
                     if (val === '0') reportStr = 'bez tlaku na durální vak';
-                    else if (val === '1') { nom = `mírná spinální stenóza`; dat = `mírné spinální stenóze`; reportStr = `mírná imprese durálního vaku ${sizeText}`.trim(); }
-                    else if (val === '2') { nom = `spinální stenóza`; dat = `spinální stenóze`; reportStr = `útlak durálního vaku ${sizeText}`.trim(); }
-                    else if (val === '3') { nom = `výrazná spinální stenóza s agregací kaudy`; dat = `výrazné spinální stenóze s agregací kaudy`; reportStr = `výrazný útlak durálního vaku ${sizeText} s agregací kaudy`.trim(); }
+                    else if (val === '1') { nom = `mírná spinální stenóza`; dat = `mírné spinální stenóze`; reportStr = `mírný tlak na durální vak ${sizeText}`.trim(); }
+                    else if (val === '2') { nom = `spinální stenóza`; dat = `spinální stenóze`; reportStr = `zúžení durálního vaku ${sizeText}`.trim(); }
+                    else if (val === '3') { nom = `výrazná spinální stenóza s agregací kaudy`; dat = `výrazné spinální stenóze s agregací kaudy`; reportStr = `výrazné zúžení durálního vaku ${sizeText} s agregací kaudy`.trim(); }
                 }
                 
                 if (reportStr) {
@@ -706,13 +723,13 @@ const RegionLSp = {
                     concLines.push(`${effectStrNom} na podkladě ${structuralGen}.`);
                 }
             } else {
-                const significantCauses = activeCauses.filter(c => 
-                    !c.nom.match(/bulging|artróza|spondylofyty|diskopatie/i)
-                );
-                
-                const insignificantCauses = activeCauses.filter(c => 
-                    c.nom.match(/bulging|artróza|spondylofyty|diskopatie/i)
-                );
+                const isInsignificantCause = (c) => {
+                    const nom = c.nom || '';
+                    if (/artróza/i.test(nom) && /pokročilá|výrazná|edém|dekompenzac/i.test(nom)) return false;
+                    return /bulging|artróza|spondylofyty|diskopatie/i.test(nom);
+                };
+                const significantCauses = activeCauses.filter(c => !isInsignificantCause(c));
+                const insignificantCauses = activeCauses.filter(isInsignificantCause);
 
                 significantCauses.forEach((c) => {
                     if (c && c.nom) {
@@ -730,6 +747,10 @@ const RegionLSp = {
                 });
             }
 
+            if (modic === 'Modic I') {
+                concLines.push('Edém krycích ploten Modic I.');
+            }
+
             if (concLines.length > 0) {
                 let combined = concLines.map((line, idx) => {
                     let str = line.trim();
@@ -738,7 +759,10 @@ const RegionLSp = {
                     }
                     return str;
                 }).join(' ');
-                mainConc.push({ type: 'frame', text: `${seg.label}: ${combined}` });
+                const rank = mappedEffects.length
+                    ? Math.max(...mappedEffects.map(effectRank))
+                    : 0;
+                segmentConcItems.push({ label: seg.label, text: combined, rank, segIndex });
             }
 
             let iParts = [];
@@ -746,12 +770,32 @@ const RegionLSp = {
             
             if (iParts.length > 0) {
                 let text = iParts.join(', ') + '.';
-                mainConc.push({ type: 'frame', text: text.charAt(0).toUpperCase() + text.slice(1) });
+                segmentLesionItems.push({ type: 'frame', text: text.charAt(0).toUpperCase() + text.slice(1) });
             }
         });
 
+        segmentConcItems.sort((a, b) => b.rank - a.rank || a.segIndex - b.segIndex);
+        const mergedSegConc = [];
+        segmentConcItems.forEach((item) => {
+            const last = mergedSegConc[mergedSegConc.length - 1];
+            if (last && last.text === item.text) {
+                last.labels.push(item.label);
+            } else {
+                mergedSegConc.push({ labels: [item.label], text: item.text });
+            }
+        });
+        mergedSegConc.forEach((group) => {
+            let body = group.text;
+            if (group.labels.length > 1 && typeof pluralizeGrammar === 'function') {
+                body = pluralizeGrammar(body, 'spine');
+            }
+            mainConc.push({ type: 'frame', text: `${group.labels.join(', ')}: ${body}` });
+        });
+        if (segmentLesionItems.length > 0) {
+            mainConc.push(...segmentLesionItems);
+        }
+
         let modicConcSentences = [];
-        if (collModic['Modic I']) modicConcSentences.push(`Edém krycích ploten ${joinCzech(collModic['Modic I'])} Modic I.`);
         if (collModic['Modic II']) modicConcSentences.push(`Tuková degenerace krycích ploten ${joinCzech(collModic['Modic II'])} Modic II.`);
         if (collModic['Modic III']) modicConcSentences.push(`Skleróza krycích ploten ${joinCzech(collModic['Modic III'])} Modic III.`);
         if (collModic['destrukce']) modicConcSentences.push(`Destrukce krycích ploten ${joinCzech(collModic['destrukce'])}.`);
@@ -767,12 +811,35 @@ const RegionLSp = {
         }
 
         let shapeSentences = [];
-        if (collShapes['schmorl']) shapeSentences.push(collShapes['schmorl'].length > 1 ? `Schmorlovy uzly ${collShapes['schmorl'].join(', ')}.` : `Schmorlův uzel ${collShapes['schmorl'].join(', ')}.`);
-        if (collShapes['H plotna']) shapeSentences.push(`Imprese horní krycí plotny ${collShapes['H plotna'].join(', ')}.`);
-        if (collShapes['D plotna']) shapeSentences.push(`Imprese dolní krycí plotny ${collShapes['D plotna'].join(', ')}.`);
-        if (collShapes['klínovitá']) shapeSentences.push(`Klínovitá komprese ${collShapes['klínovitá'].join(' - ')}.`);
-        if (collShapes['výrazná']) shapeSentences.push(`Výrazná komprese těla ${collShapes['výrazná'].join(', ')}.`);
-        if (collShapes['propagace']) shapeSentences.push(`Výrazná komprese těla ${collShapes['propagace'].join(', ')} s propagací dorzálně.`);
+        let concShapeSentences = [];
+        if (collShapes['schmorl']) {
+            const txt = collShapes['schmorl'].length > 1 ? `Schmorlovy uzly ${collShapes['schmorl'].join(', ')}.` : `Schmorlův uzel ${collShapes['schmorl'].join(', ')}.`;
+            shapeSentences.push(txt);
+            concShapeSentences.push(txt);
+        }
+        if (collShapes['H plotna']) {
+            const txt = `Imprese horní krycí plotny ${collShapes['H plotna'].join(', ')}.`;
+            shapeSentences.push(txt);
+            concShapeSentences.push(txt);
+        }
+        if (collShapes['D plotna']) {
+            const txt = `Imprese dolní krycí plotny ${collShapes['D plotna'].join(', ')}.`;
+            shapeSentences.push(txt);
+            concShapeSentences.push(txt);
+        }
+        if (collShapes['klínovitá']) {
+            const txt = `Klínovitá komprese ${collShapes['klínovitá'].join(' - ')}.`;
+            shapeSentences.push(txt);
+            concShapeSentences.push(txt);
+        }
+        if (collShapes['výrazná']) {
+            const txt = `Výrazná komprese těla ${collShapes['výrazná'].join(', ')}.`;
+            shapeSentences.push(txt);
+            concShapeSentences.push(txt);
+        }
+        if (collShapes['propagace']) {
+            shapeSentences.push(`Výrazná komprese těla ${collShapes['propagace'].join(', ')} s propagací dorzálně.`);
+        }
 
         let surgSentences = [];
         if (collSurgeries['stabilizace']) surgSentences.push(`Zadní stabilizace ${collSurgeries['stabilizace'].join('-')}.`);
@@ -804,7 +871,9 @@ const RegionLSp = {
         if (shapeSentences.length > 0) {
             reportBlocks.push({ type: 'frame', text: shapeSentences.join(' ') });
             reportBlocks.push({ type: 'frame', text: 'Ostatní těla přiměřených výšek.', dimmed: true });
-            mainConc.push({ type: 'frame', text: shapeSentences.join(' ') });
+            if (concShapeSentences.length > 0) {
+                mainConc.push({ type: 'frame', text: concShapeSentences.join(' ') });
+            }
         } else {
             reportBlocks.push({ type: 'frame', text: 'Obratlová těla přiměřených výšek.', dimmed: true });
         }
