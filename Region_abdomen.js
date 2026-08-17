@@ -731,7 +731,19 @@ const RegionAbdomen = {
             let lAml = checkSide('le_aml'); if (lAml) leRep.push(`${lAml.isPlural ? 'ložiska tukové denzity (angiomyolipomy)' : 'ložisko tukové denzity (angiomyolipom)'} ${lAml.sideText}`);
             let lJiz = checkSide('le_jiz'); if (lJiz) leRep.push(`${lJiz.isPlural ? 'jizevnaté okrsky' : 'jizevnatý okrsek'} ${lJiz.sideText}`);
             let lHyd = checkSide('le_hyd'); if (lHyd) { let mapH = {'I':'mírná dilatace pánvičky', 'II':'dilatace pánvičky a některých kalichů', 'III':'dilatace pánvičky a všech kalichů', 'IV':'těžká dilatace dutého systému'}; let t = lHyd.sideText === 'bilat.' && lHyd.p === lHyd.l ? `${mapH[lHyd.p]} bilat.` : `${lHyd.isP ? mapH[lHyd.p] + ' vpravo' : ''}${lHyd.isP && lHyd.isL ? ' a ' : ''}${lHyd.isL ? mapH[lHyd.l] + ' vlevo' : ''}`; leRep.push(t); concMain.push({ type: 'frame', text: `Hydronefróza ${lHyd.sideText}.`, tableId: 'abdomen_ledviny_main' }); }
-            let lLit = checkSide('le_lit'); if (lLit) { let getLoc = (v) => ({ 'kaliko': 'v kalichu', 'pelvi': 'v pánvičce', 'pu junkce': 'v pyelo-ureterální junkci', 'ureter': 'v ureteru', 'vu junkce': 'v uretero-vezikální junkci' }[v] || v); let t = lLit.sideText === 'bilat.' && lLit.p === lLit.l ? `litiáza ${getLoc(lLit.p)} bilat.` : `${lLit.isP ? 'litiáza ' + getLoc(lLit.p) + ' vpravo' : ''}${lLit.isP && lLit.isL ? ' a ' : ''}${lLit.isL ? 'litiáza ' + getLoc(lLit.l) + ' vlevo' : ''}`; leRep.push(t); concInc.push({ type: 'frame', text: `Urolitiáza ${lLit.sideText}.`, tableId: 'abdomen_ledviny_main' }); }
+            let lLit = checkSide('le_lit'); if (lLit) {
+                const litKey = (v) => String(v || '').toLowerCase();
+                const getLoc = (v) => ({ 'kaliko': 'v kalichu', 'pelvi': 'v pánvičce', 'pu junkce': 'v pyelo-ureterální junkci', 'ureter': 'v ureteru', 'vu junkce': 'v uretero-vezikální junkci' }[litKey(v)] || v);
+                const getLit = (v) => ({ 'kaliko': 'kalikolitiáza', 'pelvi': 'pelviolitiáza', 'pu junkce': 'litiáza pyeloureterální junkce', 'ureter': 'ureterolitiáza', 'vu junkce': 'litiáza uretero-vezikální junkce' }[litKey(v)] || 'urolitiáza');
+                let t = lLit.sideText === 'bilat.' && lLit.p === lLit.l
+                    ? `litiáza ${getLoc(lLit.p)} bilat.`
+                    : `${lLit.isP ? 'litiáza ' + getLoc(lLit.p) + ' vpravo' : ''}${lLit.isP && lLit.isL ? ' a ' : ''}${lLit.isL ? 'litiáza ' + getLoc(lLit.l) + ' vlevo' : ''}`;
+                leRep.push(t);
+                let concT = lLit.sideText === 'bilat.' && lLit.p === lLit.l
+                    ? `${getLit(lLit.p)} bilat.`
+                    : `${lLit.isP ? getLit(lLit.p) + ' vpravo' : ''}${lLit.isP && lLit.isL ? ' a ' : ''}${lLit.isL ? getLit(lLit.l) + ' vlevo' : ''}.`;
+                concInc.push({ type: 'frame', text: cap(concT.endsWith('.') ? concT : concT + '.'), tableId: 'abdomen_ledviny_main' });
+            }
             let lSte = checkSide('le_ste'); if (lSte) { let gs = (v) => v === 'správně' ? 've správné pozici' : 's dislokací'; let t = lSte.sideText === 'bilat.' && lSte.p === lSte.l ? `ureterální stent ${gs(lSte.p)} bilat.` : `${lSte.isP ? 'ureterální stent ' + gs(lSte.p) + ' vpravo' : ''}${lSte.isP && lSte.isL ? ' a ' : ''}${lSte.isL ? 'ureterální stent ' + gs(lSte.l) + ' vlevo' : ''}`; leRep.push(t); if (lSte.p === 'dislokace' || lSte.l === 'dislokace') concMain.push({ type: 'frame', text: `Dislokace stentu ${lSte.sideText}.`, tableId: 'abdomen_ledviny_main' }); }
             let lNef = checkSide('le_nef'); if (lNef) leRep.push(`zavedena nefrostomie ${lNef.sideText}`);
             let lRes = checkSide('le_res'); if (lRes) { let gp = (v) => v === 'horní' ? 'horního' : v === 'střední' ? 'středního' : 'dolního'; let t = lRes.sideText === 'bilat.' && lRes.p === lRes.l ? `stav po parciální resekci ${gp(lRes.p)} pólu bilat.` : `${lRes.isP ? 'stav po parciální resekci ' + gp(lRes.p) + ' pólu vpravo' : ''}${lRes.isP && lRes.isL ? ' a ' : ''}${lRes.isL ? 'stav po parciální resekci ' + gp(lRes.l) + ' pólu vlevo' : ''}`; leRep.push(t); }
