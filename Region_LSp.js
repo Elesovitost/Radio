@@ -129,7 +129,7 @@ const RegionLSp = {
                 el('input', { 
                     type: 'checkbox', 
                     id: 'ls_spine_conc_mode_toggle',
-                    checked: Store.fields['ls_spine_conc_mode'] === 'stenosis',
+                    checked: Store.fields['ls_spine_conc_mode'] !== 'pathology',
                     onchange: (e) => { 
                         Store.fields['ls_spine_conc_mode'] = e.target.checked ? 'stenosis' : 'pathology'; 
                         UI.renderReport(); 
@@ -263,6 +263,7 @@ const RegionLSp = {
         let collDegenNahrada = [];
         let dddIIPlusCount = 0;
         let dddIIPlusWithStenosis = 0;
+        let hasUncomplicatedDegen = false;
 
         const isOpActive = ctx.isActive('lsp_op');
 
@@ -705,10 +706,27 @@ const RegionLSp = {
                     concLines.push(`${effectStrNom} na podkladě ${structuralGen}.`);
                 }
             } else {
-                const structuralParts = [...activeCauses.map((c) => c.nom), ...fibrosisArr, ...adhesionArr].filter(Boolean);
-                structuralParts.forEach((txt) => {
-                    if (!txt) return;
-                    concLines.push(hasZero ? `${txt} bez útlaku nervových struktur.` : `${txt}.`);
+                const significantCauses = activeCauses.filter(c => 
+                    !c.nom.match(/bulging|artróza|spondylofyty|diskopatie/i)
+                );
+                
+                const insignificantCauses = activeCauses.filter(c => 
+                    c.nom.match(/bulging|artróza|spondylofyty|diskopatie/i)
+                );
+
+                significantCauses.forEach((c) => {
+                    if (c && c.nom) {
+                        concLines.push(hasZero ? `${c.nom} bez útlaku nervových struktur.` : `${c.nom}.`);
+                    }
+                });
+
+                if (insignificantCauses.length > 0) {
+                    hasUncomplicatedDegen = true;
+                }
+
+                const otherParts = [...fibrosisArr, ...adhesionArr].filter(Boolean);
+                otherParts.forEach((txt) => {
+                    if (txt) concLines.push(`${txt}.`);
                 });
             }
 
@@ -850,6 +868,14 @@ const RegionLSp = {
             mainConc.unshift({ type: 'frame', text: 'Multietážové degenerativní změny bederní páteře:' });
         } else if (dddIIPlusCount >= 3 && dddIIPlusWithStenosis >= 2) {
             mainConc.unshift({ type: 'frame', text: 'Víceetážové degenerativní změny bederní páteře:' });
+        }
+
+        if (hasUncomplicatedDegen) {
+            if (mainConc.length > 0) {
+                mainConc.push({ type: 'frame', text: 'Jinak nevýrazné degenerativní změny bez stenóz a útlaku durálního vaku / kořenů.' });
+            } else {
+                mainConc.push({ type: 'frame', text: 'Nevýrazné degenerativní změny bederní páteře bez stenóz a útlaku durálního vaku / kořenů.' });
+            }
         }
 
         if (mainConc.length === 0) {

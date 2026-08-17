@@ -348,12 +348,18 @@ const Store = new Proxy(
         activeSlice: 1,
         activeViewerKey: null,
         instances: {},
-        expandedNotes: {}
+        expandedNotes: {},
+        _silent: false
     },
     {
         set(target, prop, value) {
+            if (prop === '_silent') {
+                target._silent = value;
+                return true;
+            }
             if (target[prop] === value) return true;
             target[prop] = value;
+            if (target._silent) return true;
 
             if (prop === 'patientGender' || prop === 'patientAge') {
                 const hasData = (target.patientGender === '♂' || target.patientGender === '♀') && target.patientAge.trim() !== '';
@@ -362,6 +368,7 @@ const Store = new Proxy(
                 UI.render('exams');
             } else if (prop === 'activeTab') {
                 UI.renderDetails();
+                UI.renderReport();
             } else if (prop === 'pastDate') {
                 UI.updatePastDateVisibility(value);
                 UI.renderReport();
@@ -1108,7 +1115,8 @@ const LESIONS_DEFINITION = {
         
         const pocetIds = [`${pfx}_c_soli`, `${pfx}_c_dve`, `${pfx}_c_vice`, `${pfx}_c_mnoho`];
         let pocetRawId = pocetIds.find(id => ctx.isActive(id));
-        let pocetText = pocetRawId ? ButtonConfigs[`${examId}_${regionId}_${pocetRawId}`].text : 'solitární';
+        let pocetCfg = pocetRawId ? resolveButtonConfig(examId, regionId, pocetRawId) : null;
+        let pocetText = pocetCfg?.text || 'solitární';
 
         const druhIds = isLN ? [`${pfx}_k_uzl`, `${pfx}_k_pak`, `${pfx}_k_cust`] : [`${pfx}_k_les`, `${pfx}_k_cys`, `${pfx}_k_exp`, `${pfx}_k_inf`, `${pfx}_k_def`, `${pfx}_k_kol`, `${pfx}_k_cust`];
         let druhRawId = druhIds.find(id => ctx.isActive(id));
@@ -1117,12 +1125,12 @@ const LESIONS_DEFINITION = {
         if (druhRawId === `${pfx}_k_cust`) {
             druhRaw = Store.customTexts[`${examId}_${regionId}_${pfx}_k_cust`] || defaultDruh;
         } else if (druhRawId) {
-            const btnCfg = ButtonConfigs[`${examId}_${regionId}_${druhRawId}`];
-            if (btnCfg.type === 'standard') {
+            const btnCfg = resolveButtonConfig(examId, regionId, druhRawId);
+            if (btnCfg?.type === 'standard') {
                 const stateVal = ctx.text(druhRawId);
                 const stateMap = { 'sklerotické': 'sklerotické ložisko', 'lytické': 'lytické ložisko', 'smíšené': 'smíšené ložisko', 'dřeňové': 'ložisko kostní dřeně', 'cystické': 'cystické ložisko' };
                 druhRaw = stateMap[stateVal] || stateVal;
-            } else {
+            } else if (btnCfg) {
                 druhRaw = btnCfg.text === 'cysta' ? 'cystické ložisko' : btnCfg.text;
             }
         }
@@ -1344,6 +1352,25 @@ function focusInput(id) {
    CONTEXT HELPER FOR REPORTS
 ═══════════════════════════════════════════════ */
 
+function resolveButtonConfig(examId, regionId, localId) {
+    const exact = `${examId}_${regionId}_${localId}`;
+    if (ButtonConfigs[exact]) return ButtonConfigs[exact];
+    const suffix = `_${regionId}_${localId}`;
+    for (const key in ButtonConfigs) {
+        if (key.endsWith(suffix)) return ButtonConfigs[key];
+    }
+    return null;
+}
+
+function migrateButtonConfigs(oldId, newId) {
+    Object.keys(ButtonConfigs).forEach((key) => {
+        if (key.startsWith(oldId + '_')) {
+            ButtonConfigs[newId + key.substring(oldId.length)] = ButtonConfigs[key];
+            delete ButtonConfigs[key];
+        }
+    });
+}
+
 function createContext(regionId, examId) {
     const isPET = examId.includes('pet');
     const isPetOnly = (id) => !isPET && (id.includes('_suv') || id.includes('_act') || id.includes('_akt') || id.includes('_neakt') || id.includes('_fok') || id.includes('_poly') || id.includes('ji_aktdist') || id.includes('ji_aktdif'));
@@ -1357,8 +1384,11 @@ function createContext(regionId, examId) {
             if (isPetOnly(localId)) return false;
             const globalId = `${examId}_${regionId}_${localId}`;
             const val = this._val(localId);
-            const cfg = ButtonConfigs[globalId];
-            if (!cfg) return false;
+            const cfg = resolveButtonConfig(examId, regionId, localId);
+            if (!cfg) {
+                if (statesArray) return statesArray.includes(val || 0);
+                return val === true || val === 'custom' || (typeof val === 'number' && val > 0);
+            }
             
             if (cfg.type === 'standard') {
                 if (statesArray) return statesArray.includes(val || 0);
@@ -1370,7 +1400,7 @@ function createContext(regionId, examId) {
             if (isPetOnly(localId)) return '';
             const globalId = `${examId}_${regionId}_${localId}`;
             const val = Store.buttonStates[globalId] || 0;
-            const cfg = ButtonConfigs[globalId];
+            const cfg = resolveButtonConfig(examId, regionId, localId);
             if (!cfg) return '';
             
             let txt = '';
@@ -3459,27 +3489,25 @@ const ActionHandlers = {
             }
             return res;
         };
-        
+
+        Store._silent = true;
         Store.buttonStates = migrateObj(Store.buttonStates);
         Store.customTexts = migrateObj(Store.customTexts);
-        
-        const oldRadiofarm = Object.keys(RADIOFARM_CONFIG).find(key => oldId.toLowerCase().includes(key));
-        const newRadiofarm = Object.keys(RADIOFARM_CONFIG).find(key => newId.toLowerCase().includes(key));
-        
-        if (oldRadiofarm !== newRadiofarm) {
-            window._currentRadiofarm = null;
-        }
-        
         Store.fields = migrateObj(Store.fields);
         Store.expandedNotes = migrateObj(Store.expandedNotes);
-        
+        migrateButtonConfigs(oldId, newId);
+        if (Store.activeTab === oldId) Store.activeTab = newId;
         const newExams = new Set(Store.exams);
         newExams.delete(oldId);
         newExams.add(newId);
         Store.exams = newExams;
-        
-        if (Store.activeTab === oldId) Store.activeTab = newId;
-        
+
+        const oldRadiofarm = Object.keys(RADIOFARM_CONFIG).find(key => oldId.toLowerCase().includes(key));
+        const newRadiofarm = Object.keys(RADIOFARM_CONFIG).find(key => newId.toLowerCase().includes(key));
+        if (oldRadiofarm !== newRadiofarm) window._currentRadiofarm = null;
+
+        Store._silent = false;
+
         UI.render('exams');
     },
     'remove-instance': (target, dataset) => {
