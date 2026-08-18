@@ -77,6 +77,40 @@ function escapeHtml(s) {
     .replace(/"/g, '&quot;');
 }
 
+function buildCaseStudyPrompt({ findings, age, gender, indication, patientText }) {
+  const who = String(patientText || '').trim() || 'Pacient';
+  const ageBit = String(age || '').trim() ? `, ${String(age).trim()} let` : '';
+  const ind = String(indication || '').trim();
+  const indBit = ind ? ` Indikace: ${ind}.` : '';
+  return `Jsi medicínský konzultant s obrovskou praxí a statistický expert. Case: ${who}${ageBit}.${indBit}
+
+Nález (závěr zobrazovacího vyšetření):
+${String(findings || '').trim()}
+
+Udělej diferenciálně diagnostickou rozvahu etiologie nálezů, event. s pravděpodobnostmi, vzhledem k indikaci, věku a pohlaví. Navrhni další vyšetření / postup / doporučení pro klinika.
+
+Výstup vrať jako kompletní samostatnou HTML stránku (tmavý vzhled, čitelná, lékařsky strukturovaná).
+Stránka musí obsahovat:
+1) Nadpis: Case study — diferenciální rozvaha
+2) Stručné shrnutí nálezu
+3) Diferenciální diagnostika s pravděpodobnostmi (tabulka nebo přehledný seznam)
+4) Doporučený další postup / vyšetření pro klinika
+5) Krátké upozornění, že jde o konzultační návrh, nikoli o diagnózu
+
+Styl: pozadí #121212, text #e0e0e0, akcent #58a6ff, systémový font, max-width 880px, padding 24px, line-height 1.55.
+Tabulky a seznamy přehledné, bez zbytečných ozdob.
+ZAKÁZÁNO: <img>, markdown ploty, javascript.
+DŮLEŽITÉ: Vrať POUZE čistý HTML kód od <!DOCTYPE html>... bez markdown.`;
+}
+
+function ensureHtmlDocument(html, title) {
+  const text = String(html || '').trim();
+  if (/<html[\s>]/i.test(text)) return text;
+  return `<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"><title>${escapeHtml(title)}</title>
+<style>body{background:#121212;color:#e0e0e0;font-family:system-ui,sans-serif;padding:24px;max-width:880px;margin:0 auto;line-height:1.55}</style>
+</head><body>${text}</body></html>`;
+}
+
 function buildPrompt(patology) {
   return `Chci analyzovat radiologickou entitu „${patology}“ (může být česky nebo anglicky).
 Využij znalosti z Radiopaedia a odborné literatury. Výstup vrať jako kompletní HTML stránku.
@@ -902,6 +936,76 @@ app.post('/api/analyze', async (req, res) => {
     });
   } catch (error) {
     console.error('[analyze]', error);
+    const quota = isQuotaError(error) || Number(error.status) === 429;
+    const busy = isBusyError(error) || Number(error.status) === 503;
+    const providerHint = String(req.body?.provider || 'gemini').toLowerCase();
+    res.status(quota ? 429 : busy ? 503 : 500).json({
+      error: quota
+        ? providerHint === 'deepseek'
+          ? 'Vyčerpaná kvóta DeepSeek API (429). Zkontroluj kredit na https://platform.deepseek.com/.'
+          : 'Vyčerpaná kvóta Gemini API (429). Zkontroluj plán/billing na https://aistudio.google.com/.'
+        : busy
+          ? 'AI poskytovatel je teď přetížený. Zkus to za chvíli znovu.'
+          : error.message || 'Neznámá chyba backendu.',
+      detail: errText(error).slice(0, 500)
+    });
+  }
+});
+
+app.post('/api/case-study', async (req, res) => {
+  try {
+    const findings = String(req.body?.findings || req.body?.conclusion || '').trim();
+    if (!findings) return res.status(400).json({ error: 'Chybí pole findings (závěr).' });
+    if (findings.length > 20000) {
+      return res.status(400).json({ error: 'Závěr je příliš dlouhý (max 20000 znaků).' });
+    }
+
+    let provider;
+    let model;
+    try {
+      provider = resolveProvider(req.body?.provider);
+      model = resolveModel(provider, req.body?.model);
+    } catch (e) {
+      return res.status(400).json({ error: e.message });
+    }
+
+    if (provider === 'gemini' && (!GEMINI_API_KEY || !ai)) {
+      return res.status(500).json({ error: 'GEMINI_API_KEY není nastaven na serveru.' });
+    }
+    if (provider === 'deepseek' && !DEEPSEEK_API_KEY) {
+      return res.status(500).json({ error: 'DEEPSEEK_API_KEY není nastaven na serveru.' });
+    }
+
+    const prompt = buildCaseStudyPrompt({
+      findings,
+      age: req.body?.age,
+      gender: req.body?.gender,
+      indication: req.body?.indication,
+      patientText: req.body?.patientText
+    });
+
+    const genResult = await generateContent({ provider, model, prompt });
+    let html = ensureHtmlDocument(stripHtmlFence(genResult.text || ''), 'Case study');
+    html = sanitizeGeneratedHtml(html);
+
+    if (!html || !/<html[\s>]/i.test(html)) {
+      return res.status(502).json({
+        error: 'Model nevrátil platné HTML.',
+        provider: genResult.provider,
+        model: genResult.model,
+        preview: String(html).slice(0, 400)
+      });
+    }
+
+    res.json({
+      html,
+      mode: genResult.mode,
+      provider: genResult.provider,
+      model: genResult.model,
+      attempt: genResult.attempt
+    });
+  } catch (error) {
+    console.error('[case-study]', error);
     const quota = isQuotaError(error) || Number(error.status) === 429;
     const busy = isBusyError(error) || Number(error.status) === 503;
     const providerHint = String(req.body?.provider || 'gemini').toLowerCase();

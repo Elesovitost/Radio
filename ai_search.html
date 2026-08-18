@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Radiopaedia Vyhledávání</title>
+    <title>LLM help</title>
     <style>
         :root {
             --bg-color: #121212;
@@ -65,19 +65,44 @@
             color: var(--text-secondary);
         }
 
-        input, select {
+        input, select, textarea {
             background-color: var(--bg-color);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
             padding: 12px;
             border-radius: var(--border-radius);
             font-size: 1rem;
+            font-family: inherit;
             transition: border-color 0.2s ease;
         }
 
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--accent-color);
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+            line-height: 1.45;
+        }
+
+        .action-row {
+            display: flex;
+            gap: var(--spacing-sm);
+            align-items: stretch;
+        }
+
+        .action-row button {
+            flex: 0 0 168px;
+            padding: 12px 10px;
+            font-size: 0.92rem;
+        }
+
+        .action-row input,
+        .action-row textarea {
+            flex: 1;
+            min-width: 0;
         }
 
         button {
@@ -127,7 +152,7 @@
 <body>
     <main>
         <header>
-            <h1>AI Radiopaedia</h1>
+            <h1>LLM help</h1>
         </header>
 
         <div class="form-group">
@@ -139,15 +164,18 @@
             </select>
         </div>
 
-        <div class="form-group">
-            <label for="patology">Hledaná patologie</label>
-            <input type="text" id="patology" placeholder="např. meniscus tear MRI" autocomplete="off" autofocus>
+        <div class="action-row">
+            <button id="caseBtn" type="button">Case study</button>
+            <textarea id="caseFindings" placeholder="Závěr vyšetření…"></textarea>
         </div>
 
-        <button id="submitBtn" type="button">Generovat a otevřít</button>
+        <div class="action-row">
+            <button id="pathBtn" type="button">Patologie / entita</button>
+            <input type="text" id="patology" placeholder="např. meniscus tear MRI" autocomplete="off">
+        </div>
 
         <div id="status" class="status-message" aria-live="polite"></div>
-        <p class="note">Text i anglické image queries dodá model; snímky se vytáhnou z otevřených zdrojů do HTML.</p>
+        <p class="note">Case study rozebere závěr. Patologie / entita vyhledá entitu a snímky z otevřených zdrojů.</p>
     </main>
 
     <script>
@@ -160,10 +188,14 @@
 
         const ui = {
             patologyInp: getEl('patology'),
+            caseFindings: getEl('caseFindings'),
+            caseBtn: getEl('caseBtn'),
+            pathBtn: getEl('pathBtn'),
             modelSelect: getEl('modelSelect'),
-            submitBtn: getEl('submitBtn'),
             statusDiv: getEl('status')
         };
+
+        let caseMeta = { age: '', gender: '', patientText: 'Pacient', indication: '' };
 
         const savedModel = localStorage.getItem(MODEL_KEY);
         if (savedModel && [...ui.modelSelect.options].some((o) => o.value === savedModel)) {
@@ -180,10 +212,42 @@
         };
 
         const setLoading = (isLoading) => {
-            ui.submitBtn.disabled = isLoading;
+            ui.caseBtn.disabled = isLoading;
+            ui.pathBtn.disabled = isLoading;
             ui.patologyInp.disabled = isLoading;
+            ui.caseFindings.disabled = isLoading;
             ui.modelSelect.disabled = isLoading;
         };
+
+        const applyPrefill = (ctx) => {
+            if (!ctx || typeof ctx !== 'object') return;
+            if (typeof ctx.conclusion === 'string') ui.caseFindings.value = ctx.conclusion;
+            caseMeta = {
+                age: ctx.age || '',
+                gender: ctx.gender || '',
+                patientText: ctx.patientText || 'Pacient',
+                indication: ctx.indication || ''
+            };
+        };
+
+        const loadPrefill = () => {
+            try {
+                if (window.opener && !window.opener.closed && typeof window.opener.getLlmHelpContext === 'function') {
+                    applyPrefill(window.opener.getLlmHelpContext());
+                    return;
+                }
+            } catch (_) { /* ignore */ }
+            try {
+                const raw = sessionStorage.getItem('medApp_llm_case');
+                if (raw) applyPrefill(JSON.parse(raw));
+            } catch (_) { /* ignore */ }
+        };
+
+        loadPrefill();
+        window.addEventListener('message', (e) => {
+            if (e.origin !== location.origin) return;
+            if (e.data && e.data.type === 'llm-help-prefill') applyPrefill(e.data);
+        });
 
         const escapeHtml = (s) => String(s)
             .replace(/&/g, '&amp;')
@@ -437,7 +501,72 @@
             }
         };
 
-        ui.submitBtn.addEventListener('click', handleSubmit);
+        const handleCaseStudy = async () => {
+            const findings = ui.caseFindings.value.trim();
+            if (!findings) return setStatus('Doplňte závěr pro Case study.', 'error');
+
+            const { provider, model } = parseModelChoice(ui.modelSelect.value);
+            localStorage.setItem(MODEL_KEY, ui.modelSelect.value);
+
+            setLoading(true);
+            setStatus(`Case study přes ${provider}… (může trvat 30s+)`);
+
+            const resultWin = window.open('', '_blank');
+            if (!resultWin) {
+                setStatus('Prohlížeč zablokoval vyskakovací okno. Povolte pop-ups.', 'error');
+                setLoading(false);
+                return;
+            }
+
+            resultWin.document.write(`
+                <body style="background:#121212;color:#e0e0e0;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">
+                    <h2>Case study</h2>
+                    <p>Model: ${escapeHtml(provider)} / ${escapeHtml(model)}</p>
+                    <p style="color:#8b949e;">AI připravuje diferenciální rozvahu…</p>
+                </body>
+            `);
+
+            try {
+                const response = await fetch(`${apiBase}/api/case-study`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        findings,
+                        provider,
+                        model,
+                        age: caseMeta.age,
+                        gender: caseMeta.gender,
+                        patientText: caseMeta.patientText,
+                        indication: caseMeta.indication
+                    })
+                });
+
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) throw new Error(data.error || `HTTP ${response.status}`);
+                if (!data.html) throw new Error('Backend nevrátil pole "html".');
+
+                resultWin.document.open();
+                resultWin.document.write(data.html);
+                resultWin.document.close();
+                setStatus(`Hotovo (${data.provider || provider} / ${data.model || model}).`, 'success');
+            } catch (error) {
+                const msg = error.message || 'Neznámá chyba';
+                setStatus(`Chyba: ${msg}`, 'error');
+                resultWin.document.open();
+                resultWin.document.write(`
+                    <body style="background:#121212;color:#ff4444;font-family:system-ui,sans-serif;padding:2rem;">
+                        <h2>Chyba při Case study</h2>
+                        <p>${escapeHtml(msg)}</p>
+                    </body>
+                `);
+                resultWin.document.close();
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        ui.pathBtn.addEventListener('click', handleSubmit);
+        ui.caseBtn.addEventListener('click', handleCaseStudy);
         ui.patologyInp.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') handleSubmit();
         });

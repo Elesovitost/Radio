@@ -177,6 +177,3 @@
 
         @keyframes border-blink { 0% { border-color: var(--border); box-shadow: none; } 50% { border-color: var(--accent-hi); box-shadow: 0 0 8px var(--accent-hi); } 100% { border-color: var(--border); box-shadow: none; } }
         .blink-border { animation: border-blink 0.3s ease-out; }
-        .ai-btn { position: absolute; bottom: 8px; left: 8px; background: rgba(88,166,255,0.15); border: 1px solid var(--accent-hi); color: var(--accent-hi); padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; cursor: pointer; display: none; z-index: 100; transition: all 0.2s; }
-        .ai-btn:hover { background: var(--accent-hi); color: #fff; box-shadow: 0 0 8px var(--accent-hi); }
-        body.has-ai-data .ai-btn { display: block; }

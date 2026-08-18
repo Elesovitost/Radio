@@ -119,7 +119,6 @@
     <div class="copy-all-zone" data-action="copy-all" title="Kopírovat Report i Conclusion"></div>
     <h2 data-action="copy-text" data-target="report-container" title="Kliknutím zkopíruješ report">Report</h2>
     <div class="content-area" id="report-container"></div>
-    <button class="ai-btn" data-action="generate-ai-prompt" title="Polož dotaz AI">AI</button>
 </aside>
 
 <aside class="panel" id="panel-conclusion">
@@ -362,8 +361,7 @@ const Store = new Proxy(
             if (target._silent) return true;
 
             if (prop === 'patientGender' || prop === 'patientAge') {
-                const hasData = (target.patientGender === '♂' || target.patientGender === '♀') && target.patientAge.trim() !== '';
-                document.body.classList.toggle('has-ai-data', hasData);
+                // demografická data se čtou v LLM help; žádné extra UI
             } else if (prop === 'exams') {
                 UI.render('exams');
             } else if (prop === 'activeTab') {
@@ -3358,6 +3356,19 @@ const ClipboardService = {
     }
 };
 
+function getLlmHelpContext() {
+    const gender = Store.patientGender || '⚥';
+    const isFemale = gender === '♀';
+    const isMale = gender === '♂';
+    return {
+        conclusion: ClipboardService.formatConclusion(true) || '',
+        age: (Store.patientAge || '').trim(),
+        gender,
+        patientText: isFemale ? 'Pacientka' : (isMale ? 'Pacient' : 'Pacient'),
+        indication: (Store.indication || '').trim()
+    };
+}
+
 function validateTextForSingleWords(text) {
     let warnings = [];
     let currentSection = "Neznámá sekce";
@@ -3744,29 +3755,6 @@ const ActionHandlers = {
         idx = (idx + dir + states.length) % states.length;
         Store.patientGender = states[idx];
         target.textContent = Store.patientGender;
-    },
-    'generate-ai-prompt': (target) => {
-        const isMale = Store.patientGender === '♂';
-        const patientText = isMale ? 'Pacient' : 'Pacientka';
-        const age = Store.patientAge.trim();
-        const ind = Store.indication.trim() || 'není k dispozici';
-
-        // Vybere pouze ty elementy, které nemají třídu text-dim (předdefinované) a nejsou skryté
-        const findingsEls = document.querySelectorAll('#report-container .frame-lesion:not(.text-dim):not(.report-frame-hidden), #report-container .frame-lymphnode:not(.text-dim):not(.report-frame-hidden)');
-        const findingsText = Array.from(findingsEls).map(el => el.textContent.trim().replace(/^- /, '')).join('\n');
-        const findingsSection = findingsText ? findingsText : 'Žádná patologická ložiska ani lymfadenopatie nebyly popsány.';
-
-        const prompt = `Jsi medicínský konzultant s obrovskou praxí a statistický expert. Case: ${patientText}, ${age} let. Indikace: ${ind}.\n\nNález na zobrazovacích metodách:\n${findingsSection}\n\nUdělej diferenciálně diagnostickou rozvahu etiologie nálezů, event. s pravděpodobnostmi, vzhledem k indikaci, věku a pohlaví. Navrhni další vyšetření / postup / doporučení pro klinika.`;
-
-        navigator.clipboard.writeText(prompt).then(() => {
-            const originalText = target.textContent;
-            target.textContent = 'ZKOPÍROVÁNO!';
-            target.style.color = '#58a6ff';
-            setTimeout(() => {
-                target.textContent = originalText;
-                target.style.color = '';
-            }, 1500);
-        }).catch(err => console.error('Nelze kopírovat:', err));
     }
 };
 
@@ -4342,11 +4330,20 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key.toLowerCase() === 'f') {
         e.preventDefault();
-        const popup = window.open('ai_search.html', 'AISearchWindow', 'width=600,height=480,top=200,left=200');
+        const ctx = getLlmHelpContext();
+        try {
+            sessionStorage.setItem('medApp_llm_case', JSON.stringify(ctx));
+        } catch (_) { /* ignore */ }
+        const popup = window.open('ai_search.html', 'LLMHelpWindow', 'width=680,height=720,top=120,left=160');
         if (!popup) {
             alert('Prohlížeč zablokoval vyskakovací okno. Povolte pop-ups pro tuto stránku.');
         } else {
             popup.focus();
+            setTimeout(() => {
+                try {
+                    popup.postMessage({ type: 'llm-help-prefill', ...ctx }, location.origin);
+                } catch (_) { /* ignore */ }
+            }, 250);
         }
     }
 });
