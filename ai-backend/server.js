@@ -135,6 +135,8 @@ Pravidla pro odkazy:
 - Pokud není 5 kvalitních plných textů, uveď jen tolik, kolik opravdu existuje. Nikdy nevymýšlej URL.
 - Žádná galerie, žádné obrázky.
 
+Styl: pozadí #121212, text #e0e0e0, akcent #58a6ff, systémový font, max-width 880px, padding 24px, line-height 1.55.
+Tabulky a seznamy přehledné, bez zbytečných ozdob.
 ZAKÁZÁNO: <img>, galerie, via.placeholder.com, markdown ploty, falešné URL.
 DŮLEŽITÉ: Vrať POUZE čistý HTML kód od <!DOCTYPE html>... bez markdown plotů.`;
 }
