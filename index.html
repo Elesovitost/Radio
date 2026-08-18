@@ -892,8 +892,8 @@ const LESIONS_DEFINITION = {
     ],
     getLesionRowsPost: (helpers, prefix, metPfx, etioPfx) => [
         helpers.Table1col(`${prefix}_r4`, [ [ { btn: `${prefix}_doplneni`, type: 'basic_custom', text: 'doplnění:' } ] ]),
-        helpers.Table1col(`${prefix}_r5`, [ [ 'Vzhled MR:', { btn: `${prefix}_mr_t1`, states: ['T1', 'T1 hypo', 'T1 izo', 'T1 hyper'] }, { btn: `${prefix}_mr_t2`, states: ['T2', 'T2 hypo', 'T2 izo', 'T2 hyper'] }, { btn: `${prefix}_mr_dwi`, states: ['DWI', 'DWI -', 'DWI +'] }, { btn: `${prefix}_mr_swi`, states: ['SWI', 'SWI -', 'SWI +'] }, { btn: `${prefix}_mr_t1c`, states: ['kontrast', 'bez sycení', 'sycení', 'izovaskulární', 'hypervaskulární', 'progresivní', 'wash-out'] } ] ]),
-        helpers.Table1col(`${prefix}_r6`, [ [ 'Vzhled CT:', { btn: `${prefix}_ct_nat`, states: ['nativ', 'nativ hypo', 'nativ izo', 'nativ hyper'] }, { btn: `${prefix}_ct_syc`, states: ['kontrast', 'bez sycení', 'sycení', 'izovaskulární', 'hypervaskulární', 'progresivní', 'wash-out'] }, { btn: `${prefix}_ct_nek`, states: ['nekróza', 'centrální'] }, { btn: `${prefix}_ct_kal`, states: ['kalcif.', 'centrální', 'periferní', 'nepravid.'] }, { btn: `${prefix}_ct_bez`, type: 'basic', text: 'bez korelátu' } ] ]),
+        helpers.Table1col(`${prefix}_r5`, [ [ 'Vzhled MR:', { btn: `${prefix}_mr_t1`, states: ['T1', 'T1 hypo', 'T1 izo', 'T1 hyper'] }, { btn: `${prefix}_mr_t2`, states: ['T2', 'T2 hypo', 'T2 izo', 'T2 hyper'] }, { btn: `${prefix}_mr_dwi`, states: ['DWI', 'DWI -', 'DWI +'] }, { btn: `${prefix}_mr_swi`, states: ['SWI', 'SWI -', 'SWI +'] }, { btn: `${prefix}_mr_t1c`, states: ['kontrast', 'bez sycení', 'sycení', 'izo', 'hyper', 'progresivní', 'wash-out'] } ] ]),
+        helpers.Table1col(`${prefix}_r6`, [ [ 'Vzhled CT:', { btn: `${prefix}_ct_nat`, states: ['nativ', 'nativ hypo', 'nativ izo', 'nativ hyper'] }, { btn: `${prefix}_ct_syc`, states: ['kontrast', 'bez sycení', 'sycení', 'izo', 'hyper', 'progresivní', 'wash-out'] }, { btn: `${prefix}_ct_nek`, states: ['nekróza', 'centrální'] }, { btn: `${prefix}_ct_kal`, states: ['kalcif.', 'centrální', 'periferní', 'nepravid.'] }, { btn: `${prefix}_ct_bez`, type: 'basic', text: 'bez korelátu' } ] ]),
         helpers.Table1col(`${prefix}_r7`, [ [ 'Největší:',  { field: 'text', id: `${prefix}_nej_text`, placeholder: 'Kde...' }] ]),
         LESIONS_DEFINITION.getLesionMetricsRow(helpers, `${prefix}_r8`, metPfx),
         LESIONS_DEFINITION.getLesionEtiologyRow(helpers, `${prefix}_r9`, etioPfx)
@@ -1066,8 +1066,8 @@ const LESIONS_DEFINITION = {
     ],
     getLymphNodeRowsPost: (helpers, prefix, metPfx, etioPfx) => [
         helpers.Table1col(`${prefix}_r4`, [ [ { btn: `${prefix}_doplneni`, type: 'basic_custom', text: 'doplnění:' } ] ]),
-        helpers.Table1col(`${prefix}_r5`, [ [ 'Vzhled MR:', { btn: `${prefix}_mr_t1`, states: ['T1', 'T1 hypo', 'T1 izo', 'T1 hyper'] }, { btn: `${prefix}_mr_t2`, states: ['T2', 'T2 hypo', 'T2 izo', 'T2 hyper'] }, { btn: `${prefix}_mr_dwi`, states: ['DWI', 'DWI -', 'DWI +'] }, { btn: `${prefix}_mr_swi`, states: ['SWI', 'SWI -', 'SWI +'] }, { btn: `${prefix}_mr_t1c`, states: ['kontrast', 'bez sycení', 'sycení', 'izovaskulární', 'hypervaskulární', 'progresivní', 'wash-out'] } ] ]),
-        helpers.Table1col(`${prefix}_r6`, [ [ 'Vzhled CT:', { btn: `${prefix}_ct_nat`, states: ['nativ', 'nativ hypo', 'nativ izo', 'nativ hyper'] }, { btn: `${prefix}_ct_syc`, states: ['kontrast', 'bez sycení', 'sycení', 'izovaskulární', 'hypervaskulární', 'progresivní', 'wash-out'] }, { btn: `${prefix}_ct_nek`, states: ['nekróza', 'centrální'] }, { btn: `${prefix}_ct_kal`, states: ['kalcif.', 'centrální', 'periferní', 'nepravid.'] }, { btn: `${prefix}_ct_bez`, type: 'basic', text: 'bez korelátu' } ] ]),
+        helpers.Table1col(`${prefix}_r5`, [ [ 'Vzhled MR:', { btn: `${prefix}_mr_t1`, states: ['T1', 'T1 hypo', 'T1 izo', 'T1 hyper'] }, { btn: `${prefix}_mr_t2`, states: ['T2', 'T2 hypo', 'T2 izo', 'T2 hyper'] }, { btn: `${prefix}_mr_dwi`, states: ['DWI', 'DWI -', 'DWI +'] }, { btn: `${prefix}_mr_swi`, states: ['SWI', 'SWI -', 'SWI +'] }, { btn: `${prefix}_mr_t1c`, states: ['kontrast', 'bez sycení', 'sycení', 'izo', 'hyper', 'progresivní', 'wash-out'] } ] ]),
+        helpers.Table1col(`${prefix}_r6`, [ [ 'Vzhled CT:', { btn: `${prefix}_ct_nat`, states: ['nativ', 'nativ hypo', 'nativ izo', 'nativ hyper'] }, { btn: `${prefix}_ct_syc`, states: ['kontrast', 'bez sycení', 'sycení', 'izo', 'hyper', 'progresivní', 'wash-out'] }, { btn: `${prefix}_ct_nek`, states: ['nekróza', 'centrální'] }, { btn: `${prefix}_ct_kal`, states: ['kalcif.', 'centrální', 'periferní', 'nepravid.'] }, { btn: `${prefix}_ct_bez`, type: 'basic', text: 'bez korelátu' } ] ]),
         helpers.Table1col(`${prefix}_r7`, [ [ 'Největší:',  { field: 'text', id: `${prefix}_nej_text`, placeholder: 'Kde...' }] ]),
         LESIONS_DEFINITION.getLymphNodeMetricsRow(helpers, `${prefix}_r8`, metPfx),
         LESIONS_DEFINITION.getLymphNodeEtiologyRow(helpers, `${prefix}_r9`, etioPfx)
@@ -1257,8 +1257,8 @@ const LESIONS_DEFINITION = {
         let mrT1c = ctx.text(`${pfx}_mr_t1c`);
         if (mrT1c === 'bez sycení') vzhledy.push('bez sycení po k.l.');
         else if (mrT1c === 'sycení') vzhledy.push('se sycením po k.l.');
-        else if (mrT1c === 'izovaskulární') vzhledy.push('izovaskulární');
-        else if (mrT1c === 'hypervaskulární') vzhledy.push('hypervaskulární bez washoutu');
+        else if (mrT1c === 'izo' || mrT1c === 'izovaskulární') vzhledy.push('izovaskulární');
+        else if (mrT1c === 'hyper' || mrT1c === 'hypervaskulární') vzhledy.push('hypervaskulární bez washoutu');
         else if (mrT1c === 'progresivní') vzhledy.push('s progresivním sycením');
         else if (mrT1c === 'wash-out') vzhledy.push('s wash-out fenoménem');
 
@@ -1274,8 +1274,8 @@ const LESIONS_DEFINITION = {
             let ctSyc = ctx.text(`${pfx}_ct_syc`);
             if (ctSyc === 'bez sycení') vzhledy.push('bez sycení');
             else if (ctSyc === 'sycení') vzhledy.push('se sycením');
-            else if (ctSyc === 'izovaskulární') vzhledy.push('izovaskulární');
-            else if (ctSyc === 'hypervaskulární') vzhledy.push('hypervaskulární bez washoutu');
+            else if (ctSyc === 'izo' || ctSyc === 'izovaskulární') vzhledy.push('izovaskulární');
+            else if (ctSyc === 'hyper' || ctSyc === 'hypervaskulární') vzhledy.push('hypervaskulární bez washoutu');
             else if (ctSyc === 'progresivní') vzhledy.push('s progresivním sycením');
             else if (ctSyc === 'wash-out') vzhledy.push('s wash-out fenoménem');
 
@@ -2891,7 +2891,7 @@ const UI = {
 
                     const metaRegex = /\s*:\s*charakteru metastázy/i;
 
-                    out = out.split('. ').map(veta => {
+                    out = out.split(/\.\s+(?=[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ])/).map(veta => {
                         let upravena = veta;
                         let maMetu = metaRegex.test(upravena);
                         let nalezenaAkt = aktivityPravidla.find(p => p.find.test(upravena));
@@ -4154,7 +4154,7 @@ function renderOrganPopup(organDef, organId) {
             const name = getInstanceName(lesionTable, instId, 'Ložisko', organDef.name);
             html += `<button class="popup-btn btn-lesion" data-action="open-table" data-table="${lesionTable}__${instId}">🔴 ${name}</button>`;
         });
-        html += `<button class="popup-btn" data-action="open-table" data-table="${lesionTable}">🔴 Nové ložisko</button>`;
+        html += `<button class="popup-btn btn-lesion" data-action="open-table" data-table="${lesionTable}">Nové ložisko</button>`;
     }
 
     if (!isBrain && !isSkeleton && lymphTable) {
@@ -4163,7 +4163,7 @@ function renderOrganPopup(organDef, organId) {
             const name = getInstanceName(lymphTable, instId, 'Uzlina', organDef.name);
             html += `<button class="popup-btn btn-lymph" data-action="open-table" data-table="${lymphTable}__${instId}">🟡 ${name}</button>`;
         });
-        html += `<button class="popup-btn" data-action="open-table" data-table="${lymphTable}">🟡 Nová lymfadenopatie</button>`;
+        html += `<button class="popup-btn btn-lymph" data-action="open-table" data-table="${lymphTable}">Nová lymfadenopatie</button>`;
     }
     
     if (isBrain && hemoTable) {
