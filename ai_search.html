@@ -175,7 +175,7 @@
         </div>
 
         <div id="status" class="status-message" aria-live="polite"></div>
-        <p class="note">Case study rozebere závěr. Patologie / entita vyhledá entitu a snímky z otevřených zdrojů.</p>
+        <p class="note">Case study rozebere závěr. Patologie / entita popíše entitu a dá odkazy na plné články.</p>
     </main>
 
     <script>
@@ -461,7 +461,7 @@
                 <body style="background:#121212;color:#e0e0e0;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">
                     <h2>Analýza: ${escapeHtml(patology)}</h2>
                     <p>Model: ${escapeHtml(provider)} / ${escapeHtml(model)}</p>
-                    <p style="color:#8b949e;">AI připravuje text a související snímky…</p>
+                    <p style="color:#8b949e;">AI připravuje text a odkazy na články…</p>
                 </body>
             `);
 
@@ -480,10 +480,8 @@
                 resultWin.document.write(data.html);
                 resultWin.document.close();
 
-                const shown = await fillGallery(resultWin.document, patology, data);
                 const label = data.englishName ? ` · ${data.englishName}` : '';
-                const imgInfo = shown ? ` · náhledy: ${shown}` : '';
-                setStatus(`Hotovo (${data.provider || provider} / ${data.model || model})${label}${imgInfo}.`, 'success');
+                setStatus(`Hotovo (${data.provider || provider} / ${data.model || model})${label}.`, 'success');
             } catch (error) {
                 const msg = error.message || 'Neznámá chyba';
                 setStatus(`Chyba: ${msg}`, 'error');

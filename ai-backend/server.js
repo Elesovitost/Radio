@@ -93,13 +93,17 @@ Výstup vrať jako kompletní samostatnou HTML stránku (tmavý vzhled, čiteln�
 Stránka musí obsahovat:
 1) Nadpis: Case study — diferenciální rozvaha
 2) Stručné shrnutí nálezu
-3) Diferenciální diagnostika s pravděpodobnostmi (tabulka nebo přehledný seznam)
-4) Doporučený další postup / vyšetření pro klinika
-5) Krátké upozornění, že jde o konzultační návrh, nikoli o diagnózu
+3) Diferenciální diagnostika s pravděpodobnostmi (tabulka nebo přehledný seznam).
+   U nejpravděpodobnějších možností uveď odkazy na články, které se věnují právě těmto diagnózám — maximálně 3 odkazy celkem.
+   První odkaz pokud možno Radiopaedia; další z respektovaných žurnálů / PMC / odborných stránek.
+   Pouze plné volně dostupné texty (open access). Žádné paywally, náhledy, uzamčené PDF. URL nevymýšlej.
+   Každý odkaz jako klikací <a href="..." target="_blank" rel="noopener">s názvem a zdrojem</a>.
+4) Údaje které nebyly uvedeny, ale mohly by zásadně upřesnit diagnózu (např. typ obrazu, změny v okolí, atd.)
+5) Doporučený další postup / vyšetření pro klinika
 
 Styl: pozadí #121212, text #e0e0e0, akcent #58a6ff, systémový font, max-width 880px, padding 24px, line-height 1.55.
 Tabulky a seznamy přehledné, bez zbytečných ozdob.
-ZAKÁZÁNO: <img>, markdown ploty, javascript.
+ZAKÁZÁNO: <img>, galerie, markdown ploty, javascript, falešné URL.
 DŮLEŽITÉ: Vrať POUZE čistý HTML kód od <!DOCTYPE html>... bez markdown.`;
 }
 
@@ -119,22 +123,19 @@ Stránka musí obsahovat:
 1) Nadpis s oficiálním anglickým názvem entity
 2) Stručný popis a typický obraz (MR/CT sekvence, klíčové znaky)
 3) Klasifikace – tabulka stupňů, pokud existuje
-4) Diferenciální diagnostika – stručně
-5) Sekci galerie s přesně tímto placeholderem (NEMĚŇ ID):
-<div id="radiology-gallery"></div>
-Pod placeholder dej krátké textové popisky typických snímků (bez <img> tagů) – obrázky doplní backend.
+4) Diferenciální diagnostika – s vysvětlením odlišností od podobných diagnóz
+5) Sekci „Literatura a odkazy“ — vždy 5 položek, pokud existují. Pořadí:
+   - 1. článek z Radiopaedia přesně k této entitě (https://radiopaedia.org/...)
+   - 2.–5. respektované publikace / žurnály / odborné stránky (RadioGraphics, Radiology, AJR, European Radiology, Insights into Imaging, PubMed Central, RSNA, ESR, NIH)
+   Každá položka: klikací <a href="..." target="_blank" rel="noopener">název článku — zdroj</a> a jedna věta, proč je relevantní.
 
-NA KONCI HTML (těsně před </body>) povinně vlož přesně tento komentář (JSON na 1 řádek, anglicky):
-<!--RADIO_IMAGES{"englishName":"...","queries":["...","...","..."],"related":["...","..."],"radiopaedia":["https://radiopaedia.org/..."]}RADIO_IMAGES-->
+Pravidla pro odkazy:
+- Články se musí zabývat PŘESNĚ touto entitou, ne obecným nadřazeným tématem.
+- Pouze plně dostupné texty (open access / volně čitelné). ŽÁDNÉ paywally, náhledy, uzamčené PDF, „preview only“.
+- Pokud není 5 kvalitních plných textů, uveď jen tolik, kolik opravdu existuje. Nikdy nevymýšlej URL.
+- Žádná galerie, žádné obrázky.
 
-Pravidla pro RADIO_IMAGES:
-- englishName = standardní anglický radiologický název (např. „meniscal ramp lesion“)
-- queries = 3–6 anglických frází pro hledání typických MRI/CT/RTG snímků TÉTO entity (vždy přidej modality: MRI/CT)
-- related = 2–4 širší, ale stále relevantní fráze, pokud je konkrétních snímků málo (např. „medial meniscus tear MRI“)
-- radiopaedia = 1–5 reálných URL článků/kazuistik na radiopaedia.org k tématu (pokud znáš)
-- NIKDY nepiš česky do queries/related
-
-ZAKÁZÁNO: <img>, via.placeholder.com, placehold.co, onerror smyčky.
+ZAKÁZÁNO: <img>, galerie, via.placeholder.com, markdown ploty, falešné URL.
 DŮLEŽITÉ: Vrať POUZE čistý HTML kód od <!DOCTYPE html>... bez markdown plotů.`;
 }
 
@@ -715,7 +716,7 @@ async function generateWithDeepSeek(prompt, model) {
         {
           role: 'system',
           content:
-            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů a bez <img> tagů. Na konci HTML vždy vlož komentář <!--RADIO_IMAGES{...}RADIO_IMAGES--> s anglickými image queries.'
+            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů, bez <img> tagů a bez galerie. Odkazy jen na reálné volně dostupné plné texty; URL nevymýšlej.'
         },
         { role: 'user', content: prompt }
       ],
@@ -729,7 +730,7 @@ async function generateWithDeepSeek(prompt, model) {
         {
           role: 'system',
           content:
-            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů a bez <img> tagů. Na konci HTML vždy vlož komentář <!--RADIO_IMAGES{...}RADIO_IMAGES--> s anglickými image queries.'
+            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů, bez <img> tagů a bez galerie. Odkazy jen na reálné volně dostupné plné texty; URL nevymýšlej.'
         },
         { role: 'user', content: prompt }
       ],
@@ -889,18 +890,12 @@ app.post('/api/analyze', async (req, res) => {
     }
 
     const prompt = buildPrompt(patology);
-    const publicBase = getPublicBase(req);
 
-    // Nejdřív LLM (anglické názvy + image queries), teprve potom galerie
     const genResult = await generateContent({ provider, model, prompt });
 
     let html = stripHtmlFence(genResult.text || '');
     const imageMeta = extractRadioImagesMeta(html);
     html = sanitizeGeneratedHtml(imageMeta.html);
-
-    const galleryLabel = imageMeta.englishName || patology;
-    const gallery = await fetchMedicalGallery(patology, publicBase, imageMeta);
-    html = injectGallery(html, buildGalleryHtml(galleryLabel, gallery));
 
     if (!html || !/<html[\s>]/i.test(html)) {
       return res.status(502).json({
@@ -918,21 +913,7 @@ app.post('/api/analyze', async (req, res) => {
       model: genResult.model,
       attempt: genResult.attempt,
       patology,
-      englishName: imageMeta.englishName || '',
-      imageQueries: gallery.searchQueries || [],
-      imagesFound: gallery.images.length,
-      imagesEmbedded: gallery.images.filter((img) => img.embedded).length,
-      radiopaediaLinks: gallery.radiopaediaLinks.length,
-      imageErrors: gallery.errors,
-      images: gallery.images.map((img) => ({
-        source: img.source,
-        title: img.title,
-        description: img.description,
-        pageUrl: img.pageUrl,
-        imageUrl: img.imageUrl,
-        embedded: img.embedded
-      })),
-      radiopaedia: gallery.radiopaediaLinks
+      englishName: imageMeta.englishName || ''
     });
   } catch (error) {
     console.error('[analyze]', error);
