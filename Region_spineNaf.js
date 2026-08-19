@@ -275,7 +275,7 @@ const RegionSpineNaf = {
                 if (group === 'facet') head = `ve facetových skloubeních ${segList}`;
                 else if (group === 'spinous') head = `v processus spinosus ${segList}`;
                 else head = `v krycích plotnách ${segList}`;
-                if (cause) head += ` na podkladě ${cause}`;
+                if (cause) head += ` v terénu ${cause}`;
                 parts.push(head);
             });
             return nafJoin(parts);
