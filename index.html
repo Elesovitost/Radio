@@ -152,6 +152,7 @@
 <script src="Region_Cp.js"></script>
 <script src="Region_Tp.js"></script>
 <script src="Region_LSp.js"></script>
+<script src="Region_spineNaf.js"></script>
 <script src="Region_shoulder.js"></script>
 <script src="Region_knee.js"></script>
 <script src="Region_ankle.js"></script>
@@ -655,6 +656,7 @@ const EXAMS = {
         { id: 'petct_dotatoc_trup', title: 'DOTATOC-PET / CT trupu', regs: ['neck','thorax','abdomen','skeleton'] },
         { id: 'petct_dopa_mozek', title: 'DOPA-PET / CT mozku', regs: ['brain'] },
         { id: 'petct_fmm_mozek', title: 'FMM-PET / CT mozku', regs: ['brain'] },
+        { id: 'petct_naf_pater', title: 'NaF-PET / CT páteře', regs: ['spine_naf'] },
         { id: 'petct_dopa_trup', title: 'DOPA-PET / CT trupu', regs: ['neck','thorax','abdomen','skeleton'] }
     ],
     "PET / MR": [
@@ -1386,7 +1388,8 @@ const REGIONS = {
     sis: typeof RegionSis !== 'undefined' ? RegionSis : null,
     c_spine: typeof RegionCp !== 'undefined' ? RegionCp : null,
     t_spine: typeof RegionTp !== 'undefined' ? RegionTp : null,
-    l_spine: typeof RegionTp !== 'undefined' ? RegionTp : null
+    l_spine: typeof RegionTp !== 'undefined' ? RegionTp : null,
+    spine_naf: typeof RegionSpineNaf !== 'undefined' ? RegionSpineNaf : null
 };
         
 
