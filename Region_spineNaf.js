@@ -8,7 +8,7 @@ const NAF_SEGMENTS_CAUDAL = [...NAF_SEGMENTS_CRANIAL].reverse();
 
 const NAF_RF_STATES = ['0', '+', '++'];
 const NAF_KRY_STATES = ['Krycí plotny', 'osteofyty', 'osteochondróza', 'cement'];
-const NAF_FAC_STATES = ['facety', 'artróza I', 'artróza II', 'artróza III'];
+const NAF_FAC_STATES = ['facety', 'artróza I', 'artróza II', 'artróza III', 'istmy'];
 
 const NAF_RF_SPOTS = [
     { id: 'ant',   group: 'endplate', side: '',       x: 50, y: 14, report: 'ventrálně' },
@@ -29,6 +29,10 @@ const NAF_MENUS = [
 
 function nafSegKey(label) {
     return String(label || '').toLowerCase().replace(/\//g, '_');
+}
+
+function nafSegIdx(label) {
+    return NAF_SEGMENTS_CRANIAL.indexOf(label);
 }
 
 function nafEnsureStyles() {
@@ -66,6 +70,33 @@ function nafCap(s) {
 function nafReadNamed(examId, localId, states) {
     const idx = Store.buttonStates[`${examId}_spine_naf_${localId}`] || 0;
     return states[idx] || states[0];
+}
+
+function nafCompactSegs(entries) {
+    if (!entries.length) return '';
+    const sorted = [...entries].sort((a, b) => nafSegIdx(a.label) - nafSegIdx(b.label));
+
+    const runs = [];
+    let runStart = sorted[0], runEnd = sorted[0];
+    for (let i = 1; i < sorted.length; i++) {
+        const prev = nafSegIdx(runEnd.label);
+        const cur = nafSegIdx(sorted[i].label);
+        if (cur === prev + 1 && sorted[i].sideStr === runEnd.sideStr) {
+            runEnd = sorted[i];
+        } else {
+            runs.push({ start: runStart, end: runEnd });
+            runStart = sorted[i];
+            runEnd = sorted[i];
+        }
+    }
+    runs.push({ start: runStart, end: runEnd });
+
+    return runs.map(r => {
+        const seg = r.start.label === r.end.label
+            ? r.start.label
+            : `${r.start.label} - ${r.end.label}`;
+        return `${seg}${r.start.sideStr}`;
+    }).join(', ');
 }
 
 const RegionSpineNaf = {
@@ -136,6 +167,7 @@ const RegionSpineNaf = {
                 if (fac === 'artróza III') return 'pokročilých facetových artróz';
                 if (fac === 'artróza II') return 'středních facetových artróz';
                 if (fac === 'artróza I') return 'mírných facetových artróz';
+                if (fac === 'istmy') return 'istmické lýzy při spondylolistéze';
             }
             if (group === 'endplate') {
                 if (kry === 'cement') return 'cementoplastiky';
@@ -153,6 +185,7 @@ const RegionSpineNaf = {
             if (seg.fac === 'artróza I') parts.push('mírná facetová degenerace');
             if (seg.fac === 'artróza II') parts.push('střední facetová degenerace');
             if (seg.fac === 'artróza III') parts.push('pokročilá facetová degenerace');
+            if (seg.fac === 'istmy') parts.push('istmická lýza');
             return parts;
         };
 
@@ -211,6 +244,32 @@ const RegionSpineNaf = {
             };
         };
 
+        const segSideStr = (group, list) => {
+            if (group === 'facet') {
+                const sides = new Set(list.map(x => x.side).filter(Boolean));
+                if (sides.has('vpravo') && sides.has('vlevo')) return ' bilat.';
+                if (sides.size === 1) return ` ${[...sides][0]}`;
+                return '';
+            }
+            if (group === 'endplate') {
+                const ids = new Set(list.map(x => x.id));
+                if (ids.size >= 3) return ' difuzně';
+                if (ids.has('lat_l') && ids.has('lat_r') && ids.size === 2) return ' po obou stranách';
+                if (ids.size === 2) {
+                    const locs = [...list]
+                        .sort((a, b) => NAF_ENDPLATE_ORDER.indexOf(a.id) - NAF_ENDPLATE_ORDER.indexOf(b.id))
+                        .map(x => NAF_RF_SPOTS.find(s => s.id === x.id)?.report || '')
+                        .filter(Boolean);
+                    return ` ${nafJoin(locs)}`;
+                }
+                if (ids.has('lat_l')) return ' vlevo';
+                if (ids.has('lat_r')) return ' vpravo';
+                if (ids.has('ant')) return ' ventrálně';
+                if (ids.has('cen')) return ' dorzálně';
+            }
+            return '';
+        };
+
         const mergeHits = (hits) => {
             const byGroup = new Map();
             hits.forEach((h) => {
@@ -226,41 +285,23 @@ const RegionSpineNaf = {
             const parts = [];
             groups.forEach(([group, arr]) => {
                 const cause = resolveGroupCause(arr, group);
-                const bySeg = new Map();
+
+                const bySide = new Map();
                 arr.forEach((h) => {
-                    if (!bySeg.has(h.label)) bySeg.set(h.label, []);
-                    bySeg.get(h.label).push(h);
+                    const bySeg = bySide.get(h.label) || [];
+                    bySeg.push(h);
+                    bySide.set(h.label, bySeg);
                 });
 
-                const segs = [];
-                bySeg.forEach((list, label) => {
-                    let sideStr = '';
-                    if (group === 'facet') {
-                        const sides = new Set(list.map(x => x.side).filter(Boolean));
-                        if (sides.has('vpravo') && sides.has('vlevo')) sideStr = ' bilat.';
-                        else if (sides.size === 1) sideStr = ` ${[...sides][0]}`;
-                    } else if (group === 'endplate') {
-                        const ids = new Set(list.map(x => x.id));
-                        if (ids.size >= 3) sideStr = ' difuzně';
-                        else if (ids.has('lat_l') && ids.has('lat_r') && ids.size === 2) sideStr = ' po obou stranách';
-                        else if (ids.size === 2) {
-                            const locs = [...list]
-                                .sort((a, b) => NAF_ENDPLATE_ORDER.indexOf(a.id) - NAF_ENDPLATE_ORDER.indexOf(b.id))
-                                .map(x => NAF_RF_SPOTS.find(s => s.id === x.id)?.report || '')
-                                .filter(Boolean);
-                            sideStr = ` ${nafJoin(locs)}`;
-                        } else if (ids.has('lat_l')) sideStr = ' vlevo';
-                        else if (ids.has('lat_r')) sideStr = ' vpravo';
-                        else if (ids.has('ant')) sideStr = ' ventrálně';
-                        else if (ids.has('cen')) sideStr = ' dorzálně';
-                    }
-                    segs.push(`${label}${sideStr}`);
+                const entries = [];
+                bySide.forEach((list, label) => {
+                    entries.push({ label, sideStr: segSideStr(group, list) });
                 });
 
-                const segList = nafJoin(segs);
+                const segList = nafCompactSegs(entries);
                 let head = '';
                 if (group === 'facet') head = `ve facetových skloubeních ${segList}`;
-                else if (group === 'spinous') head = `interspinózně ${segList}`;
+                else if (group === 'spinous') head = `interspinózně v ${segList}`;
                 else head = `v krycích plotnách ${segList}`;
                 if (cause) head += ` v terénu ${cause}`;
                 parts.push(head);
@@ -274,6 +315,7 @@ const RegionSpineNaf = {
         const lowHits = [];
         let anyRf = false;
 
+        const segResults = [];
         NAF_SEGMENTS_CRANIAL.forEach((label) => {
             const seg = readSeg(label);
             if (seg.rf.length === 0) return;
@@ -292,8 +334,8 @@ const RegionSpineNaf = {
             addIntensity(plus, 'mírná');
             pathologyReport(seg).forEach(p => sentences.push(p));
 
-            const line = `${label}: ${sentences.map(nafCap).join('. ')}.`.replace(/\.\./g, '.');
-            reportBlocks.push({ type: 'frame', text: line, tableId: 'spine_naf_seg' });
+            const lineText = sentences.map(nafCap).join('. ') + '.';
+            segResults.push({ label, text: lineText.replace(/\.\./g, '.') });
 
             plusPlus.forEach((s) => {
                 highHits.push({
@@ -314,6 +356,22 @@ const RegionSpineNaf = {
                 });
             });
         });
+
+        // Merge identical report lines into ranges
+        const mergedReport = [];
+        let i = 0;
+        while (i < segResults.length) {
+            const text = segResults[i].text;
+            const groupLabels = [segResults[i].label];
+            let j = i + 1;
+            while (j < segResults.length && segResults[j].text === text) {
+                groupLabels.push(segResults[j].label);
+                j++;
+            }
+            const labelStr = nafCompactSegs(groupLabels.map(l => ({ label: l, sideStr: '' })));
+            reportBlocks.push({ type: 'frame', text: `${labelStr}: ${text}`, tableId: 'spine_naf_seg' });
+            i = j;
+        }
 
         if (!anyRf) {
             reportBlocks.push({
