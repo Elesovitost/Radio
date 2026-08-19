@@ -7,8 +7,7 @@ const NAF_SEGMENTS_CRANIAL = [
 const NAF_SEGMENTS_CAUDAL = [...NAF_SEGMENTS_CRANIAL].reverse();
 
 const NAF_RF_STATES = ['0', '+', '++'];
-const NAF_ALT_STATES = ['alterace', 'stabilizace', 'cement horní', 'cement dolní', 'cement mezi', 'fraktura horní', 'fraktura dolní'];
-const NAF_KRY_STATES = ['krycí', 'osteofyty', 'osteochondróza'];
+const NAF_KRY_STATES = ['Krycí plotny', 'osteofyty', 'osteochondróza', 'cement'];
 const NAF_FAC_STATES = ['facety', 'artróza I', 'artróza II', 'artróza III'];
 
 const NAF_RF_SPOTS = [
@@ -18,13 +17,12 @@ const NAF_RF_SPOTS = [
     { id: 'cen',   group: 'endplate', side: '',       x: 50, y: 34, report: 'dorzálně' },
     { id: 'fac_l', group: 'facet',    side: 'vlevo',  x: 30, y: 64, report: 've facetovém skloubení vlevo' },
     { id: 'fac_r', group: 'facet',    side: 'vpravo', x: 70, y: 64, report: 've facetovém skloubení vpravo' },
-    { id: 'sp',    group: 'spinous',  side: '',       x: 50, y: 80, report: 'v processus spinosus' }
+    { id: 'sp',    group: 'spinous',  side: '',       x: 50, y: 80, report: 'interspinózně' }
 ];
 
 const NAF_ENDPLATE_ORDER = ['ant', 'lat_l', 'lat_r', 'cen'];
 
 const NAF_MENUS = [
-    { id: 'alt', btn: 'alt', x: 50, y: 96 },
     { id: 'kry', btn: 'kry', x: 50, y: 24 },
     { id: 'fac', btn: 'fac', x: 50, y: 56 }
 ];
@@ -76,7 +74,6 @@ const RegionSpineNaf = {
     buttons: {
         seg: { states: ['segment', ...NAF_SEGMENTS_CAUDAL] },
         rf: { states: NAF_RF_STATES },
-        alt: { states: NAF_ALT_STATES },
         kry: { states: NAF_KRY_STATES },
         fac: { states: NAF_FAC_STATES }
     },
@@ -134,20 +131,17 @@ const RegionSpineNaf = {
     compile: (ctx) => {
         const examId = ctx.examId;
 
-        const causeOf = (group, alt, kry, fac) => {
+        const causeOf = (group, kry, fac) => {
             if (group === 'facet' && fac) {
                 if (fac === 'artróza III') return 'pokročilých facetových artróz';
                 if (fac === 'artróza II') return 'středních facetových artróz';
                 if (fac === 'artróza I') return 'mírných facetových artróz';
             }
             if (group === 'endplate') {
+                if (kry === 'cement') return 'cementoplastiky';
                 if (kry === 'osteochondróza') return 'osteochondrózy';
                 if (kry === 'osteofyty') return 'spondylofytů';
-                if (alt && alt.startsWith('cement')) return 'cementoplastiky';
-                if (alt === 'fraktura horní') return 'fraktury horní krycí plotny';
-                if (alt === 'fraktura dolní') return 'fraktury dolní krycí plotny';
             }
-            if (alt === 'stabilizace') return 'stabilizace';
             return '';
         };
 
@@ -155,15 +149,10 @@ const RegionSpineNaf = {
             const parts = [];
             if (seg.kry === 'osteofyty') parts.push('okrajové spondylofyty');
             if (seg.kry === 'osteochondróza') parts.push('osteochondrotická degenerace krycích ploten');
+            if (seg.kry === 'cement') parts.push('materiál vysoké denzity v MO prostoru');
             if (seg.fac === 'artróza I') parts.push('mírná facetová degenerace');
             if (seg.fac === 'artróza II') parts.push('střední facetová degenerace');
             if (seg.fac === 'artróza III') parts.push('pokročilá facetová degenerace');
-            if (seg.alt === 'stabilizace') parts.push('stabilizační materiál');
-            if (seg.alt === 'cement horní') parts.push('cementace horní krycí plotny');
-            if (seg.alt === 'cement dolní') parts.push('cementace dolní krycí plotny');
-            if (seg.alt === 'cement mezi') parts.push('intrakorporální cementace těla obratle');
-            if (seg.alt === 'fraktura horní') parts.push('fraktura horní krycí plotny');
-            if (seg.alt === 'fraktura dolní') parts.push('fraktura dolní krycí plotny');
             return parts;
         };
 
@@ -192,7 +181,7 @@ const RegionSpineNaf = {
             if (facets.length === 2) parts.push('ve facetových skloubeních bilat.');
             else facets.forEach(f => parts.push(f.report));
 
-            if (spin.length) parts.push('v processus spinosus');
+            if (spin.length) parts.push('interspinózně');
             return nafJoin(parts);
         };
 
@@ -212,14 +201,12 @@ const RegionSpineNaf = {
                 const val = nafReadNamed(examId, `${pfx}_rf_${spot.id}`, NAF_RF_STATES);
                 if (val && val !== '0') rf.push({ ...spot, val });
             });
-            const alt = nafReadNamed(examId, `${pfx}_alt`, NAF_ALT_STATES);
             const kry = nafReadNamed(examId, `${pfx}_kry`, NAF_KRY_STATES);
             const fac = nafReadNamed(examId, `${pfx}_fac`, NAF_FAC_STATES);
             return {
                 label,
                 rf,
-                alt: alt && alt !== 'alterace' ? alt : '',
-                kry: kry && kry !== 'krycí' ? kry : '',
+                kry: kry && kry !== 'Krycí plotny' ? kry : '',
                 fac: fac && fac !== 'facety' ? fac : ''
             };
         };
@@ -273,7 +260,7 @@ const RegionSpineNaf = {
                 const segList = nafJoin(segs);
                 let head = '';
                 if (group === 'facet') head = `ve facetových skloubeních ${segList}`;
-                else if (group === 'spinous') head = `v processus spinosus ${segList}`;
+                else if (group === 'spinous') head = `interspinózně ${segList}`;
                 else head = `v krycích plotnách ${segList}`;
                 if (cause) head += ` v terénu ${cause}`;
                 parts.push(head);
@@ -314,7 +301,7 @@ const RegionSpineNaf = {
                     group: s.group,
                     side: s.side,
                     id: s.id,
-                    cause: causeOf(s.group, seg.alt, seg.kry, seg.fac)
+                    cause: causeOf(s.group, seg.kry, seg.fac)
                 });
             });
             plus.forEach((s) => {
@@ -323,7 +310,7 @@ const RegionSpineNaf = {
                     group: s.group,
                     side: s.side,
                     id: s.id,
-                    cause: causeOf(s.group, seg.alt, seg.kry, seg.fac)
+                    cause: causeOf(s.group, seg.kry, seg.fac)
                 });
             });
         });
