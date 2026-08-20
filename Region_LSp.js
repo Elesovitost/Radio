@@ -494,7 +494,7 @@ const RegionLSp = {
                 
                 if (arthro === 'I') { modRep = 'mírná '; modConc = 'mírná '; }
                 else if (arthro === 'II') { modRep = 'střední '; modConc = 'střední '; }
-                else if (arthro === 'III') { modRep = 'výrazná '; modConc = 'výrazná '; }
+                else if (arthro === 'III') { modRep = 'výrazná '; modConc = 'pokročilá '; }
                 else if (arthro === 'edém') { modRep = 'pokročilá '; modConc = 'pokročilá '; edemRep = ' s edémem'; edemConc = ' s edémem při dekompenzaci'; }
                 
                 let sentence = `${modRep}degenerace facetového skloubení${sRep}${edemRep}`.trim();
