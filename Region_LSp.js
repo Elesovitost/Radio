@@ -597,7 +597,7 @@ const RegionLSp = {
                     if (c_size && val !== '0') sizeText = c_size.includes('x') ? `(který rozměrů ${c_size} mm)` : `(který diametru ${c_size} mm AP)`;
                     
                     if (val === '0') reportStr = 'bez tlaku na durální vak';
-                    else if (val === '1') { nom = `mírná spinální stenóza`; dat = `mírné spinální stenóze`; reportStr = `mírný tlak na durální vak ${sizeText}`.trim(); }
+                    else if (val === '1') { nom = `mírná spinální stenóza`; dat = `mírné spinální stenóze`; reportStr = `mírné zúžení durálního vaku ${sizeText}`.trim(); }
                     else if (val === '2') { nom = `spinální stenóza`; dat = `spinální stenóze`; reportStr = `zúžení durálního vaku ${sizeText}`.trim(); }
                     else if (val === '3') { nom = `výrazná spinální stenóza s agregací kaudy`; dat = `výrazné spinální stenóze s agregací kaudy`; reportStr = `výrazné zúžení durálního vaku ${sizeText} s agregací kaudy`.trim(); }
                 }

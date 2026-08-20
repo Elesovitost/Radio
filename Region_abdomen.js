@@ -83,7 +83,7 @@ const RegionAbdomen = {
                 ]),
                 helpers.Table2colNormal('ja_difuz_table', 'Difuzní změny', [
                     [ 'Zvětšení', { btn: 'ja_zvet', states: ['0', 'mírné', 'výrazné'] } ],
-                    [ 'Difuzní léze', { btn: 'ja_dif', states: ['0', 'fibróza', 'cirhóza'] } ],
+                    [ 'Difuzní léze', { btn: 'ja_dif', states: ['0', 'steatóza', 'fibróza', 'cirhóza'] } ],
                     [ 'Portální hypertenze', { btn: 'ja_port', states: ['0', '+'] } ]
                 ]),
                 helpers.Table3colRL('ja_op_table', 'Operace', [
@@ -558,7 +558,7 @@ const RegionAbdomen = {
             let jaHem = checkSide('ja_hem'); if (jaHem) jaRep.push(jaFocalText(jaHem, 'ložisko s periferním sycením (hemangiom)', 'ložiska s periferním sycením (hemangiomy)', 'vícečetná ložiska s periferním sycením (hemangiomy)'));
             let jaDil = checkSide('ja_dil'); if (jaDil) { jaRep.push(`dilatace intrahepatálních žlučovodů ${jaDil.p !== '0' && jaDil.l !== '0' ? 'v obou lalocích' : jaDil.isP ? 'v pravém laloku' : 'v levém laloku'}`); concInc.push({ type: 'frame', text: `Dilatace intrahepatálních žlučovodů ${jaDil.p !== '0' && jaDil.l !== '0' ? 'v obou lalocích' : jaDil.isP ? 'v pravém laloku' : 'v levém laloku'}.`, tableId: 'abdomen_jatra_main' }); }
             let jaZvet = ctx.text('ja_zvet'); if (jaZvet && jaZvet !== '0') { jaRep.push(`${jaZvet} zvětšení`); concInc.push({ type: 'frame', text: `${cap(jaZvet)} hepatomegalie.`, tableId: 'abdomen_jatra_main' }); }
-            let jaDif = ctx.text('ja_dif'); if (jaDif === 'fibróza') jaRep.push("parenchym mírně nehomogenní"); else if (jaDif === 'cirhóza') { jaRep.push("zmenšení s laločnatým povrchem"); concMain.push({ type: 'frame', text: "Známky jaterní cirhózy.", tableId: 'abdomen_jatra_main' }); }
+            let jaDif = ctx.text('ja_dif'); if (jaDif === 'steatóza') jaRep.push("difuzní steatóza"); else if (jaDif === 'fibróza') jaRep.push("parenchym mírně nehomogenní"); else if (jaDif === 'cirhóza') { jaRep.push("zmenšení s laločnatým povrchem"); concMain.push({ type: 'frame', text: "Známky jaterní cirhózy.", tableId: 'abdomen_jatra_main' }); }
             if (ctx.isActive('ja_port')) { jaRep.push("rozšířená v. portae a kolaterály"); concMain.push({ type: 'frame', text: "Známky portální hypertenze.", tableId: 'abdomen_jatra_main' }); }
             let jaOps = [];
             ['hemi', 'res', 'rfa'].forEach(op => { let o = checkSide(`ja_${op}`); if (o) jaOps.push(`${op === 'hemi' ? 'hemihepatektomii' : op === 'res' ? 'resekci' : 'RFA'} ${o.sideText}`); });
