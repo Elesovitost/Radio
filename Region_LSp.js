@@ -124,7 +124,7 @@ const RegionLSp = {
         ]);
 
         const slider = el('div', { className: 'row', style: 'margin: 10px 0 15px 0; justify-content: flex-start; width: 100%; padding-left: 5px;' }, [
-            el('span', { className: 'label', style: 'font-size: 10px;', textContent: 'V závěru:  První patologie' }),
+            el('span', { className: 'label', style: 'font-size: 10px;', textContent: 'text závěru:  První strukturální změny' }),
             el('label', { className: 'switch', style: 'margin: 0 0px;' }, [
                 el('input', { 
                     type: 'checkbox', 
@@ -701,7 +701,7 @@ const RegionLSp = {
             }
 
             let concLines = [];
-            const isStenosisFirst = Store.fields['ls_spine_conc_mode'] === 'stenosis';
+            const isStenosisFirst = Store.fields['ls_spine_conc_mode'] !== 'pathology';
             const fibrosisGenArr = fibrosisArr.map((s) => String(s).replace('fibróza', 'fibrózy'));
             const structuralNomParts = [...activeCauses.map((c) => c.nom), ...fibrosisArr, ...adhesionArr].filter(Boolean);
             const structuralGenParts = [...activeCauses.map((c) => c.gen), ...fibrosisGenArr, ...adhesionArr].filter(Boolean);
