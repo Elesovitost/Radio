@@ -182,10 +182,9 @@ const RegionKnee = {
             const lezMapConc = { 'Fisura': 'fisurou', 'Fisury': 'fisurami', 'Defekt': 'defektem', 'Defekty': 'defekty', 'Delamin.': 'delaminací' };
             let hasLez = lesion && lesion !== 'Léze 0';
             let lesionText = hasLez ? lezMapConc[lesion] : '';
-            let gradeText = (grade && grade !== 'GR 0') ? grade.replace('GR ', 'gr.') : '';
+            let gradeText = (grade && grade !== 'GR 0') ? grade.replace('GR ', 'gr. ') : '';
 
-            let res = gradeText ? `${gradeText} ${nameConc}` : `${nameConc}`;
-            res = res.trim();
+            let res = [gradeText, nameConc].filter(Boolean).join(' ').trim();
 
             let modifiers = [];
             if (hasLez) modifiers.push(lesionText);
@@ -197,6 +196,25 @@ const RegionKnee = {
                 res += ` s ${modifiers.join(' a ')}`;
             }
             return res;
+        };
+
+        const sameChondro = (g1, l1, e1, g2, l2, e2) => {
+            const normEdem = (e) => (!e || e === 'edém 0' || e === 'bez edému') ? '' : e;
+            return (g1 || 'GR 0') === (g2 || 'GR 0')
+                && (l1 || 'Léze 0') === (l2 || 'Léze 0')
+                && normEdem(e1) === normEdem(e2);
+        };
+
+        const mergeChondroConc = (g1, l1, e1, n1, g2, l2, e2, n2) => {
+            const a = getChondroConc(g1, l1, e1, n1);
+            const b = getChondroConc(g2, l2, e2, n2);
+            if (!a && !b) return null;
+            if (!a) return b;
+            if (!b) return a;
+            if (sameChondro(g1, l1, e1, g2, l2, e2)) {
+                return getChondroConc(g1, l1, e1, '');
+            }
+            return `${a}, ${b}`;
         };
 
         const bonePrep = (items) => (/^[sšzž]/i.test(items[0]) ? 'se' : 's');
@@ -334,8 +352,8 @@ const RegionKnee = {
 
         let fpPatRep = getChondroRep(ctx.text('kn_fp_pat_chp'), ctx.text('kn_fp_pat_lez'), ctx.text('kn_fp_pat_edem'), 'patelly');
         let fpFemRep = getChondroRep(ctx.text('kn_fp_fem_chp'), ctx.text('kn_fp_fem_lez'), ctx.text('kn_fp_fem_edem'), 'ventr. femuru');
-        let fpPatConc = getChondroConc(ctx.text('kn_fp_pat_chp'), ctx.text('kn_fp_pat_lez'), ctx.text('kn_fp_pat_edem'), 'patelárně');
-        let fpFemConc = getChondroConc(ctx.text('kn_fp_fem_chp'), ctx.text('kn_fp_fem_lez'), ctx.text('kn_fp_fem_edem'), 'femorálně');
+        let fpPatG = ctx.text('kn_fp_pat_chp'), fpPatL = ctx.text('kn_fp_pat_lez'), fpPatE = ctx.text('kn_fp_pat_edem');
+        let fpFemG = ctx.text('kn_fp_fem_chp'), fpFemL = ctx.text('kn_fp_fem_lez'), fpFemE = ctx.text('kn_fp_fem_edem');
         let art = ctx.text('kn_fp_art');
 
         if (fpPatRep || fpFemRep || (art && art !== '0')) hasPatellaPathology = true;
@@ -359,11 +377,9 @@ const RegionKnee = {
 
             if (antRep.length > 0) reportOut.push({ type: 'frame', text: cap(antRep.join(', ').replace(/, ([^,]*)$/, ' a $1')) + '.', tableId: 'knee_patella_main' });
 
-            if (fpPatConc || fpFemConc) {
-                let concs = [];
-                if (fpPatConc) concs.push(fpPatConc);
-                if (fpFemConc) concs.push(fpFemConc);
-                concMain.push({ type: 'frame', text: `FP chondropatie ${concs.join(', ')}.`, tableId: 'knee_patella_main' });
+            const fpMerged = mergeChondroConc(fpPatG, fpPatL, fpPatE, 'patelárně', fpFemG, fpFemL, fpFemE, 'femorálně');
+            if (fpMerged) {
+                concMain.push({ type: 'frame', text: `FP chondropatie ${fpMerged}.`, tableId: 'knee_patella_main' });
             }
         }
 
@@ -375,8 +391,8 @@ const RegionKnee = {
             let femChrRep = getChondroRep(ctx.text(`${femPrefix}_chr_gr`), ctx.text(`${femPrefix}_chr_lez`), ctx.text(`${femPrefix}_chr_edem`), 'femuru');
             let tibChrRep = getChondroRep(ctx.text(`${tibPrefix}_chr_gr`), ctx.text(`${tibPrefix}_chr_lez`), ctx.text(`${tibPrefix}_chr_edem`), 'tibie');
 
-            let femChrConc = getChondroConc(ctx.text(`${femPrefix}_chr_gr`), ctx.text(`${femPrefix}_chr_lez`), ctx.text(`${femPrefix}_chr_edem`), 'femorálně');
-            let tibChrConc = getChondroConc(ctx.text(`${tibPrefix}_chr_gr`), ctx.text(`${tibPrefix}_chr_lez`), ctx.text(`${tibPrefix}_chr_edem`), 'tibiálně');
+            let femG = ctx.text(`${femPrefix}_chr_gr`), femL = ctx.text(`${femPrefix}_chr_lez`), femE = ctx.text(`${femPrefix}_chr_edem`);
+            let tibG = ctx.text(`${tibPrefix}_chr_gr`), tibL = ctx.text(`${tibPrefix}_chr_lez`), tibE = ctx.text(`${tibPrefix}_chr_edem`);
 
             let ost = ctx.text(ostBtnId);
             let ostRep = '';
@@ -410,11 +426,9 @@ const RegionKnee = {
                 concMain.push({ type: 'frame', text: `${tibBoneName} ${bonePrep(tibBones.conc)} ${tibBones.conc.join(' a ')}.`, tableId: tableId });
             }
 
-            if (femChrConc || tibChrConc) {
-                let concs = [];
-                if (femChrConc) concs.push(femChrConc);
-                if (tibChrConc) concs.push(tibChrConc);
-                concMain.push({ type: 'frame', text: `${compName} s chondropatií ${concs.join(', ')}.`, tableId: tableId });
+            const chrMerged = mergeChondroConc(femG, femL, femE, 'femorálně', tibG, tibL, tibE, 'tibiálně');
+            if (chrMerged) {
+                concMain.push({ type: 'frame', text: `${compName} s chondropatií ${chrMerged}.`, tableId: tableId });
             }
         };
 
