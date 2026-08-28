@@ -653,7 +653,7 @@ const RegionBrain = {
 
         if (parsedLesions.length === 0) {
             const intensita = isMR ? 'signálová intenzita' : 'denzita';
-            let normalTxt = `Normální ${intensita} a morfologie parenchymu. Bez ložisek, akutní ischemie, hemorrhagie, mass efektu.`;
+            let normalTxt = `Normální ${intensita} a morfologie parenchymu. Bez ložisek, akutní ischemie, hemorhagie, mass efektu.`;
             if (bilaHmotaRep.length === 0) normalTxt += ' Bez lézí v bílé hmotě.';
             reportOut.splice(1, 0, { type: 'frame', text: normalTxt, tableId: 'brain_lesion_main', dimmed: true });
         }
