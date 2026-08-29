@@ -447,7 +447,7 @@ const RegionLSp = {
                 activeCauses.push({
                     type: 'specific',
                     nom: pTxt,
-                    gen: pTxt.replace('bulging', 'bulgingu').replace('spondylofyty', 'spondylofytů'),
+                    gen: pTxt.replace(/\bbulging\b/g, 'bulgingu').replace(/\bspondylofyty\b/g, 'spondylofytů'),
                     match: (eff) => {
                         if (dirsArr.length === 0) return true; 
                         const m = dirsArr.map(d => d.id);
