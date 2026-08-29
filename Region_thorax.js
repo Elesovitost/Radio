@@ -1,3 +1,415 @@
+/* ═══════════════════════════════════════════════
+   ILD / HRCT rozhodovací strom (v2)
+═══════════════════════════════════════════════ */
+const ILD_OUTCOMES = {
+    cpfe: {
+        report: 'emfyzém/buly v horních lalocích v kombinaci s fibrotickými změnami v dolních lalocích (obraz CPFE)',
+        conc: 'Obraz kombinované plicní fibrózy a emfyzému (CPFE). Klinická korelace s kuřáckou anamnézou.',
+        recommend: ''
+    },
+    uip: {
+        report: 'subpleurální a bazální retikulace s pravým plástvovatěním (honeycombing) a trakčními bronchiektáziemi bez znaků inkonzistentních s UIP',
+        conc: 'Vzorec UIP. Dif. dg.: IPF (nejpravděpodobněji), CTD-ILD (např. RA), méně často fibrotizující HP imitující UIP. Nutná klinicko-laboratorní korelace.',
+        recommend: 'Doporučena MDT korelace (revmatologický panel, expozice, léky, kouření).'
+    },
+    probable_uip: {
+        report: 'subpleurální a bazální retikulace s trakčními bronchiektáziemi bez honeycombing a bez znaků inkonzistentních s UIP (probable UIP)',
+        conc: 'Vzorec Probable UIP. Dif. dg.: IPF, CTD-ILD, fibrotizující HP, idiopatická fibrotická NSIP.',
+        recommend: 'Doporučena MDT korelace. Není-li jasný air-trapping, zvážit HRCT v hlubokém exspiriu; k odlišení dependentní atelektázy sken v prone poloze.'
+    },
+    fhp: {
+        report: 'fibrotické změny s three-density pattern a/nebo kraniokaudální predominancí ve středních/horních polích (kombinace normálního parenchymu, GGO a mozaikové atenuace)',
+        conc: 'Vzorec fibrotizující hypersenzitivní pneumonitidy (fHP). Dif. dg.: fHP (ptáci, peří, farmářská plíce), CTD-ILD s postižením malých cest, sarkoidóza st. IV.',
+        recommend: 'MDT korelace s důrazem na expoziční anamnézu. Indikovat exspirační HRCT k průkazu air-trappingu.'
+    },
+    nsip_fib: {
+        report: 'fibrotické změny s relativním šetřením bezprostředního subpleurálního prostoru, axiálně podél peribronchovaskulárních svazků, často s GGO (fibrotická NSIP)',
+        conc: 'Vzorec fibrotické NSIP. Dif. dg.: sklerodermie/CTD-ILD, idiopatická NSIP, poléková pneumonitida (amiodaron, nitrofurantoin, MTX).',
+        recommend: 'Doporučena MDT korelace včetně revmatologického panelu a lékové anamnézy.'
+    },
+    asbest: {
+        report: 'pleurální pláty v kombinaci s bazálními/subpleurálními retikulacemi',
+        conc: 'Nález kompatibilní s azbestózou (v.s. historická profesní expozice).',
+        recommend: 'Korelace s expoziční anamnézou (průmysl, stavebnictví).'
+    },
+    indeterminate: {
+        report: 'nespecifické jemné retikulace bez jasné distribuce (indeterminate for UIP)',
+        conc: 'Vzorec Indeterminate for UIP. Nutná klinicko-patologická korelace.',
+        recommend: 'Doporučena MDT diskuse; zvážit další klinické a případně histologické došetření.'
+    },
+    sarcoid: {
+        report: 'perilymfatické uzlíky podél interlobulárních sept, fisur a subpleurálně',
+        conc: 'Perilymfatický nodulární vzorec. Dif. dg.: sarkoidóza, silikóza/pneumokonióza, lymphangitis carcinomatosa.',
+        recommend: ''
+    },
+    tib_inf: {
+        report: 'centrilobulární uzlíky s obrazem tree-in-bud',
+        conc: 'Tree-in-bud: bronchiogenní šíření infekce. Dif. dg.: bakteriální bronchopneumonie/aspirace, NTM/TBC.',
+        recommend: 'Korelace s klinikou a mikrobiologií.'
+    },
+    nfhp_rb: {
+        report: 'centrilobulární „fuzzy“ GGO uzlíky bez tree-in-bud',
+        conc: 'Centrilobulární GGO uzlíky. Dif. dg.: nefibrotizující HP (nfHP), RB-ILD u kuřáků.',
+        recommend: 'Korelace s kuřáctvím a expoziční anamnézou.'
+    },
+    random_nod: {
+        report: 'náhodně (random) distribuované uzlíky zasahující i pleuru',
+        conc: 'Random nodulární vzorec. Dif. dg.: hematogenní metastázy, miliární TBC, vzácněji mykotické infekce.',
+        recommend: 'Korelace s onkologickou anamnézou a infekčními markery.'
+    },
+    op: {
+        report: 'plošné konsolidace (často peribronchovaskulárně/subpleurálně), migrující charakter, event. reversed halo (atoll) sign',
+        conc: 'Vzorec organizující pneumonie (OP). Dif. dg.: sekundární OP (léky, radioterapie, postinfekční), COP, chronická eozinofilní pneumonie.',
+        recommend: ''
+    },
+    ggo_cell: {
+        report: 'čisté GGO bez trakčních bronchiektázií (difuzně či se šetřením pleury)',
+        conc: 'Celulární/exsudativní vzorec GGO. Dif. dg.: akutní virová pneumonie/ARDS/AE-ILD, nfHP, celulární NSIP, DIP u kuřáků.',
+        recommend: 'Korelace s akutností kliniky a imunitním stavem.'
+    },
+    crazy: {
+        report: 'crazy-paving – plošné GGO s výrazně ztluštělými interlobulárními septy',
+        conc: 'Crazy-paving. Dif. dg.: oportunní infekce (PJP)/těžké virózy, PAP, mucinózní adenokarcinom/lipoidní pneumonie.',
+        recommend: ''
+    },
+    plch: {
+        report: 'nepravidelné bizardní cysty s noduly, predominancí v horních lalocích (u kuřáka)',
+        conc: 'Cystický vzorec kompatibilní s plicní Langerhansocelulární histiocytózou (PLCH).',
+        recommend: 'Korelace s kuřáckou anamnézou.'
+    },
+    lam: {
+        report: 'uniformní tenkostěnné okrouhlé cysty difuzně ve všech polích',
+        conc: 'Cystický vzorec kompatibilní s lymfangioleiomyomatózou (LAM), typicky u žen.',
+        recommend: 'Klinická korelace (pohlaví, TSC).'
+    },
+    lip: {
+        report: 'cysty v zónách GGO s perivaskulárním vztahem',
+        conc: 'Obraz kompatibilní s LIP (často Sjögrenův sy / HIV).',
+        recommend: 'Korelace s autoimunitou a HIV statusem.'
+    },
+    bhd: {
+        report: 'paramediastinální a bazální cysty často lentiformního tvaru',
+        conc: 'Distribuce cyst suspektní z Birt-Hogg-Dubé syndromu.',
+        recommend: 'Korelace s familiární anamnézou pneumotoraxů / kožními lézemi; zvážit genetické došetření.'
+    },
+    ila: {
+        report: 'nevýrazné retikulace či GGO bez podezření na ILD',
+        conc: 'ILA (nefibrotizující intersticiální plicní abnormality) jako náhodný nález.',
+        recommend: ''
+    }
+};
+
+function ildIsOn(examId, localId) {
+    return !!Store.buttonStates[`${examId}_thorax_${localId}`];
+}
+
+function ildChoice(examId, prefix, options) {
+    for (const opt of options) {
+        if (ildIsOn(examId, `${prefix}_${opt.id}`)) return opt.id;
+    }
+    return null;
+}
+
+function resolveIldTree(examId) {
+    const fib = ildChoice(examId, 'ild_fib', [{ id: 'ano' }, { id: 'ne' }]);
+    if (!fib) return null;
+
+    if (fib === 'ano') {
+        const cpfe = ildChoice(examId, 'ild_cpfe', [{ id: 'ano' }, { id: 'ne' }]);
+        if (!cpfe) return null;
+        if (cpfe === 'ano') return ILD_OUTCOMES.cpfe;
+
+        const uipHc = ildChoice(examId, 'ild_uip', [{ id: 'ano' }, { id: 'ne' }]);
+        if (!uipHc) return null;
+        if (uipHc === 'ano') return ILD_OUTCOMES.uip;
+
+        const prob = ildChoice(examId, 'ild_prob', [{ id: 'ano' }, { id: 'ne' }]);
+        if (!prob) return null;
+        if (prob === 'ano') return ILD_OUTCOMES.probable_uip;
+
+        const morph = ildChoice(examId, 'ild_morph', [
+            { id: 'fhp' }, { id: 'nsip' }, { id: 'asbest' }, { id: 'indet' }
+        ]);
+        if (!morph) return null;
+        if (morph === 'fhp') return ILD_OUTCOMES.fhp;
+        if (morph === 'nsip') return ILD_OUTCOMES.nsip_fib;
+        if (morph === 'asbest') return ILD_OUTCOMES.asbest;
+        if (morph === 'indet') return ILD_OUTCOMES.indeterminate;
+        return null;
+    }
+
+    const pattern = ildChoice(examId, 'ild_pat', [
+        { id: 'nod' }, { id: 'dens' }, { id: 'cyst' }, { id: 'ila' }
+    ]);
+    if (!pattern) return null;
+
+    if (pattern === 'ila') return ILD_OUTCOMES.ila;
+
+    if (pattern === 'nod') {
+        const dist = ildChoice(examId, 'ild_nod', [
+            { id: 'peri' }, { id: 'cent' }, { id: 'rand' }
+        ]);
+        if (!dist) return null;
+        if (dist === 'peri') return ILD_OUTCOMES.sarcoid;
+        if (dist === 'rand') return ILD_OUTCOMES.random_nod;
+        if (dist === 'cent') {
+            const tib = ildChoice(examId, 'ild_tib', [{ id: 'ano' }, { id: 'ne' }]);
+            if (!tib) return null;
+            return tib === 'ano' ? ILD_OUTCOMES.tib_inf : ILD_OUTCOMES.nfhp_rb;
+        }
+        return null;
+    }
+
+    if (pattern === 'dens') {
+        const ch = ildChoice(examId, 'ild_dens', [
+            { id: 'op' }, { id: 'ggo' }, { id: 'crazy' }
+        ]);
+        if (!ch) return null;
+        if (ch === 'op') return ILD_OUTCOMES.op;
+        if (ch === 'ggo') return ILD_OUTCOMES.ggo_cell;
+        if (ch === 'crazy') return ILD_OUTCOMES.crazy;
+        return null;
+    }
+
+    if (pattern === 'cyst') {
+        const c = ildChoice(examId, 'ild_cyst', [
+            { id: 'plch' }, { id: 'lam' }, { id: 'lip' }, { id: 'bhd' }
+        ]);
+        if (!c) return null;
+        return ILD_OUTCOMES[c] || null;
+    }
+
+    return null;
+}
+
+function ildStepBlock(helpers, { section, question, exclId, options }) {
+    const wrap = el('div', { style: 'width: 100%; margin-bottom: 10px;' });
+
+    if (section) {
+        wrap.appendChild(el('div', {
+            className: 'label',
+            style: 'text-transform: none; font-weight: 700; color: var(--accent-hi); white-space: normal; max-width: 480px; line-height: 1.3; margin: 10px 0 4px 0;',
+            textContent: section
+        }));
+    }
+
+    wrap.appendChild(el('div', {
+        className: 'label',
+        style: 'text-transform: none; font-weight: 600; color: #c9d1d9; white-space: normal; max-width: 480px; line-height: 1.35; margin: 4px 0 6px 0;',
+        textContent: question
+    }));
+
+    // A–D se popisem pod sebou; ANO/NE vedle sebe, obojí vlevo.
+    const hasDesc = options.some(o => o.desc);
+    const rows = hasDesc
+        ? options.map(o => [
+            { btn: `${exclId}_${o.id}`, id: `${exclId}_${o.id}`, type: 'basic', text: o.label },
+            o.desc
+        ])
+        : [options.map(o => ({ btn: `${exclId}_${o.id}`, id: `${exclId}_${o.id}`, type: 'basic', text: o.label }))];
+
+    wrap.appendChild(helpers.Table1col(`${exclId}_excl`, rows));
+    const tbl = wrap.querySelector('table');
+    if (tbl) {
+        tbl.style.width = '100%';
+        tbl.querySelectorAll('td').forEach(td => {
+            td.style.textAlign = 'left';
+            td.style.verticalAlign = 'top';
+            td.style.whiteSpace = 'normal';
+            const row = td.querySelector('.row');
+            if (row) {
+                row.style.justifyContent = 'flex-start';
+                row.style.alignItems = 'flex-start';
+                row.style.gap = '8px';
+                row.style.flexWrap = 'nowrap';
+            }
+        });
+        tbl.querySelectorAll('button.btn').forEach(btn => {
+            btn.style.minWidth = hasDesc ? '42px' : '48px';
+            btn.style.width = hasDesc ? '42px' : '48px';
+            btn.style.flexShrink = '0';
+            btn.style.justifyContent = 'center';
+        });
+        tbl.querySelectorAll('td span').forEach(sp => {
+            if (sp.closest('button')) return;
+            sp.style.whiteSpace = 'normal';
+            sp.style.display = 'inline-block';
+            sp.style.lineHeight = '1.35';
+            sp.style.color = '#9da5b0';
+            sp.style.fontSize = '11px';
+            sp.style.maxWidth = '420px';
+            sp.style.textAlign = 'left';
+        });
+    }
+    return wrap;
+}
+
+function buildIldTreeTable(helpers, examId) {
+    const blocks = [];
+
+    blocks.push(ildStepBlock(helpers, {
+        section: null,
+        question: 'Jsou přítomny známky plicní fibrózy? (Retikulace, trakční bronchiektázie/bronchiolektázie, ztráta objemu plic, plástvovatění/honeycombing)',
+        exclId: 'ild_fib',
+        options: [{ id: 'ano', label: 'ANO' }, { id: 'ne', label: 'NE' }]
+    }));
+
+    const fib = ildChoice(examId, 'ild_fib', [{ id: 'ano' }, { id: 'ne' }]);
+
+    if (fib === 'ano') {
+        blocks.push(ildStepBlock(helpers, {
+            section: 'Fibrotizující procesy',
+            question: 'Je přítomen syndrom CPFE? (Emfyzém/buly v horních lalocích + fibrotické změny v dolních lalocích u kuřáka)',
+            exclId: 'ild_cpfe',
+            options: [{ id: 'ano', label: 'ANO' }, { id: 'ne', label: 'NE' }]
+        }));
+
+        const cpfe = ildChoice(examId, 'ild_cpfe', [{ id: 'ano' }, { id: 'ne' }]);
+        if (cpfe === 'ne') {
+            blocks.push(ildStepBlock(helpers, {
+                section: 'Fibrotizující procesy',
+                question: 'Je přítomno pravé plástvovatění (honeycombing) se subpleurální a bazální predominancí BEZ znaků inkonzistentních s UIP (kraniokaudální distribuce, nodulace, výrazné GGO, konsolidace, mozaika, cysty, pleurální pláty)?',
+                exclId: 'ild_uip',
+                options: [{ id: 'ano', label: 'ANO' }, { id: 'ne', label: 'NE' }]
+            }));
+
+            const uip = ildChoice(examId, 'ild_uip', [{ id: 'ano' }, { id: 'ne' }]);
+            if (uip === 'ne') {
+                blocks.push(ildStepBlock(helpers, {
+                    section: 'Fibrotizující bez honeycombingu',
+                    question: 'Jsou přítomny retikulace a trakční bronchiektázie v subpleurální a bazální distribuci BEZ znaků inkonzistentních s UIP?',
+                    exclId: 'ild_prob',
+                    options: [{ id: 'ano', label: 'ANO' }, { id: 'ne', label: 'NE' }]
+                }));
+
+                const prob = ildChoice(examId, 'ild_prob', [{ id: 'ano' }, { id: 'ne' }]);
+                if (prob === 'ne') {
+                    blocks.push(ildStepBlock(helpers, {
+                        section: 'Fibrotizující – jiné vzorce / Inkonzistentní s UIP',
+                        question: 'Jaká je distribuce a průvodní morfologie?',
+                        exclId: 'ild_morph',
+                        options: [
+                            {
+                                id: 'fhp',
+                                label: 'A',
+                                desc: 'Vzorec tří denzit (Three-density pattern) NEBO kraniokaudální dominance ve středních/horních polích. (Kombinace normálního parenchymu, GGO a mozaikové atenuace/air-trappingu).'
+                            },
+                            {
+                                id: 'nsip',
+                                label: 'B',
+                                desc: 'Relativní šetření (sparing) bezprostředního subpleurálního prostoru, axiálně podél peribronchovaskulárních svazků, často s GGO.'
+                            },
+                            {
+                                id: 'asbest',
+                                label: 'C',
+                                desc: 'Pleurální pláty v kombinaci s retikulacemi bazálně/subpleurálně.'
+                            },
+                            {
+                                id: 'indet',
+                                label: 'D',
+                                desc: 'Nespecifické jemné retikulace bez jasné distribuce.'
+                            }
+                        ]
+                    }));
+                }
+            }
+        }
+    } else if (fib === 'ne') {
+        blocks.push(ildStepBlock(helpers, {
+            section: 'Nefibrotizující procesy',
+            question: 'Jaký je dominantní morfologický vzorec?',
+            exclId: 'ild_pat',
+            options: [
+                { id: 'nod', label: 'A', desc: 'Nodulární vzorec.' },
+                { id: 'dens', label: 'B', desc: 'Zvýšení denzity (GGO, konsolidace, crazy-paving).' },
+                { id: 'cyst', label: 'C', desc: 'Cystický vzorec (dutiny s tenkou stěnou < 2 mm, nesouvisející s emfyzémem).' },
+                { id: 'ila', label: 'D', desc: 'Nevýrazné retikulace či GGO bez podezření na ILD.' }
+            ]
+        }));
+
+        const pat = ildChoice(examId, 'ild_pat', [{ id: 'nod' }, { id: 'dens' }, { id: 'cyst' }, { id: 'ila' }]);
+        if (pat === 'nod') {
+            blocks.push(ildStepBlock(helpers, {
+                section: 'Nodulární vzorec',
+                question: 'Jaká je distribuce uzlíků vůči sekundárnímu plicnímu lalůčku a pleuře?',
+                exclId: 'ild_nod',
+                options: [
+                    { id: 'peri', label: 'A', desc: 'Perilymfatická (podél interlobulárních sept, fisur, subpleurálně).' },
+                    { id: 'cent', label: 'B', desc: 'Centrilobulární (uzlíky šetří pleuru, > 2 mm od kraje lalůčku).' },
+                    { id: 'rand', label: 'C', desc: 'Random / náhodná (uzlíky difuzně, asymetrické, zasahují pleuru bez preference).' }
+                ]
+            }));
+            if (ildChoice(examId, 'ild_nod', [{ id: 'cent' }]) === 'cent') {
+                blocks.push(ildStepBlock(helpers, {
+                    section: 'Centrilobulární uzlíky',
+                    question: 'Je přítomen „tree-in-bud“?',
+                    exclId: 'ild_tib',
+                    options: [{ id: 'ano', label: 'ANO' }, { id: 'ne', label: 'NE' }]
+                }));
+            }
+        } else if (pat === 'dens') {
+            blocks.push(ildStepBlock(helpers, {
+                section: 'Zvýšení denzity',
+                question: 'Jaký je charakter opacit?',
+                exclId: 'ild_dens',
+                options: [
+                    { id: 'op', label: 'A', desc: 'Plošné konsolidace (často peribronchovaskulárně/subpleurálně), migrující charakter, „reversed halo sign“ (atoll sign).' },
+                    { id: 'ggo', label: 'B', desc: 'Čisté GGO bez trakčních bronchiektázií (často difuzně nebo se šetřením pleury).' },
+                    { id: 'crazy', label: 'C', desc: 'Crazy-paving (výrazné plošné GGO protkané ztluštělými septy).' }
+                ]
+            }));
+        } else if (pat === 'cyst') {
+            blocks.push(ildStepBlock(helpers, {
+                section: 'Cystický vzorec',
+                question: 'Jaký je tvar, rozložení cyst a fenotyp pacienta?',
+                exclId: 'ild_cyst',
+                options: [
+                    { id: 'plch', label: 'A', desc: 'Nepravidelné, bizardní cysty s noduly, v horních lalocích u kuřáků.' },
+                    { id: 'lam', label: 'B', desc: 'Uniformní, pravidelné, tenkostěnné okrouhlé cysty difuzně ve všech polích u žen.' },
+                    { id: 'lip', label: 'C', desc: 'Cysty v zónách GGO, úzký vztah k cévám (perivaskulární).' },
+                    { id: 'bhd', label: 'D', desc: 'Paramediastinální a bazálně uložené cysty, často čočkovitého (lentiformního) tvaru.' }
+                ]
+            }));
+        }
+    }
+
+    const outcome = resolveIldTree(examId);
+    if (outcome) {
+        blocks.push(el('div', {
+            className: 'label',
+            style: 'text-transform: none; margin-top: 12px; color: var(--accent-hi); font-weight: 700; white-space: normal; max-width: 480px; line-height: 1.4;',
+            textContent: outcome.conc
+        }));
+        if (outcome.recommend) {
+            blocks.push(el('div', {
+                className: 'label',
+                style: 'text-transform: none; margin-top: 6px; color: #8b949e; white-space: normal; max-width: 480px; line-height: 1.35;',
+                textContent: outcome.recommend
+            }));
+        }
+    }
+
+    const table = helpers.TableMain('thorax_ild_main', 'ILD - strom', blocks);
+    const headTd = table.querySelector('.tbl-main-head');
+    if (headTd) {
+        headTd.replaceChildren();
+        headTd.appendChild(el('div', {
+            style: 'display: flex; align-items: center; justify-content: center; position: relative; min-height: 22px;'
+        }, [
+            el('span', { textContent: 'ILD - strom' }),
+            el('button', {
+                className: 'btn exam-tab-close',
+                style: 'position: absolute; right: 0; top: 50%; transform: translateY(-50%); min-width: 22px; padding: 0 6px;',
+                textContent: '×',
+                title: 'Zavřít',
+                'data-action': 'open-table',
+                'data-table': 'thorax_plice_main'
+            })
+        ]));
+    }
+    return table;
+}
+
 const RegionThorax = {
         title: 'Hrudník',
         layout: (helpers) => {
@@ -55,10 +467,6 @@ const RegionThorax = {
 
             layoutNodes.push(
                 helpers.TableMain('thorax_plice_main', 'Plíce a Pleura', [
-                    helpers.Table2colNormal('plice_difuz_table', 'Difuzní změny',[
-                        [ 'Fibróza:', { btn: 'pl_fib', states: ['0', 'mírná', 'střední', 'výrazná'] }, { btn: 'pl_fib_loc', states: ['distr.', 'apikálně', 'všude', 'bazálně'] } ],
-                        [ 'Emfyzém:', { btn: 'pl_emf', states: ['0', 'parasept.', 'centrilob.', 'panacin.'] }, { btn: 'pl_emf_loc', states: ['distr.', 'apikálně', 'všude', 'bazálně'] } ]
-                    ]),
                     helpers.Table3colRL('plice_fokal_table', 'Fokální změny', [
                         [ { btn: 'pl_mikro_r', states: ['0', '1', 'více'] }, 'mikronodul', { btn: 'pl_mikro_l', states: ['0', '1', 'více'] } ],
                         [ { btn: 'pl_nodul_r', states: ['0', '1', 'více'] }, 'nodul', { btn: 'pl_nodul_l', states: ['0', '1', 'více'] } ],
@@ -67,6 +475,10 @@ const RegionThorax = {
                         [ { btn: 'pl_hypo_r', states: ['0', '1', 'více'] }, 'hypoventilace', { btn: 'pl_hypo_l', states: ['0', '1', 'více'] } ],
                         [ { btn: 'pl_jizva_r', states: ['0', '1', 'více'] }, 'jizva', { btn: 'pl_jizva_l', states: ['0', '1', 'více'] } ],
                         [ { btn: 'pl_rad_r', states: ['0', '+'] }, 'poradiační', { btn: 'pl_rad_l', states: ['0', '+'] } ]
+                    ]),
+                    helpers.Table2colNormal('plice_difuz_table', 'Difuzní změny',[
+                        [ 'Fibróza:', { btn: 'pl_fib', states: ['0', 'ANO'] } ],
+                        [ 'Emfyzém:', { btn: 'pl_emf', states: ['0', 'parasept.', 'centrilob.', 'panacin.'] }, { btn: 'pl_emf_loc', states: ['distr.', 'apikálně', 'všude', 'bazálně'] } ]
                     ]),
                     helpers.Table3colRL('plice_op_table', 'Operace plic', [
                         [ { btn: 'pl_op_pulm_r', states: ['0', '+'] }, 'pulmonektomie', { btn: 'pl_op_pulm_l', states: ['0', '+'] } ],
@@ -87,7 +499,13 @@ const RegionThorax = {
                         { field: 'text', id: 'plice_custom_desc', placeholder: 'vlastní...popis...' },
                         { field: 'text', id: 'plice_custom_conc', placeholder: 'vlastní...závěr...' }
                     ], { normal: true })
-                ]),
+                ])
+            );
+            // ILD jen když je aktivní overlay — ne při otevření celého regionu Plíce
+            if (Store.activeTable === 'thorax_ild_main') {
+                layoutNodes.push(buildIldTreeTable(helpers, Store.activeTab || 'default'));
+            }
+            layoutNodes.push(
                 helpers.TableMain('thorax_mamma_main', 'Mamma', [
                     helpers.Table3colRL('mamma_table', [
                         [ { btn: 'ma_mast_r', states: ['0', '+'] }, 'mastektomie', { btn: 'ma_mast_l', states: ['0', '+'] } ],
@@ -337,28 +755,7 @@ const RegionThorax = {
                 return { rep: ` ${loc}`, conc: ` ${loc}`, isDifuzni: false };
             };
 
-            let fib = ctx.text('pl_fib'), fibLoc = ctx.text('pl_fib_loc');
-            if (fib && fib !== '0') {
-                let loc = getLocText(fibLoc);
-                let fibRep = "";
-                let fibConc = "";
-
-                if (fib === 'mírná') {
-                    fibRep = loc.isDifuzni ? "mírné difuzní retikulární intersticiální změny" : `mírné retikulární intersticiální změny${loc.rep}`;
-                    fibConc = `Mírné intersticiální fibrotické změny${loc.conc}.`;
-                } else if (fib === 'střední') {
-                    fibRep = loc.isDifuzni ? "difuzní fibrotické pruhovité změny s iniciálními trakčními bronchiektáziemi" : `fibrotické pruhovité změny s iniciálními trakčními bronchiektáziemi${loc.rep}`;
-                    fibConc = `Středně pokročilá plicní fibróza${loc.conc}.`;
-                } else if (fib === 'výrazná') {
-                    fibRep = loc.isDifuzni ? "difuzní rozsáhlá plicní fibróza s obrazem voštinovité přestavby" : `rozsáhlá plicní fibróza s obrazem voštinovité přestavby${loc.rep}`;
-                    fibConc = `Pokročilá plicní fibróza (honeycombing)${loc.conc}.`;
-                }
-
-                if (fibRep) {
-                    difuzniRep.push(fibRep);
-                    concInc.push({ type: 'frame', text: fibConc, tableId: 'thorax_plice_main' });
-                }
-            }
+            let fib = ctx.text('pl_fib');
 
             let emf = ctx.text('pl_emf'), emfLoc = ctx.text('pl_emf_loc');
             if (emf && emf !== '0') {
@@ -406,10 +803,12 @@ const RegionThorax = {
             }
 
             let pliceDesc = ctx.field('plice_custom_desc');
+            const ildOutcome = (fib === 'ANO') ? resolveIldTree(examId) : null;
             
             let plicePhrases = [];
-            if (difuzniRep.length > 0) plicePhrases.push(formatList(difuzniRep));
             if (fokalniRep.length > 0) plicePhrases.push(formatList(fokalniRep));
+            if (difuzniRep.length > 0) plicePhrases.push(formatList(difuzniRep));
+            if (ildOutcome) plicePhrases.push(ildOutcome.report);
             if (allOps.length > 0) plicePhrases.push(`stav po ${formatList(allOps)}`);
             if (pliceDesc) {
                 let descText = pliceDesc.trim();
@@ -427,6 +826,11 @@ const RegionThorax = {
             }
             if (pliceNormal) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález na plicích, bez ložiskové léze.', tableId: 'thorax_plice_main' });
+            }
+            if (ildOutcome) {
+                let concTxt = ildOutcome.conc;
+                if (ildOutcome.recommend) concTxt += ' ' + ildOutcome.recommend;
+                concMain.push({ type: 'frame', text: concTxt, tableId: 'thorax_ild_main' });
             }
 
             let pleuraRep = [];
@@ -482,7 +886,7 @@ const RegionThorax = {
             }
 
             /* --- AUTO-HODNOCENÍ VZDUŠNOSTI PLIC A PLEURY --- */
-            let noFE = (!fib || fib === '0') && (!emf || emf === '0');
+            let noFE = (!fib || fib === '0') && (!emf || emf === '0') && !ildOutcome;
             let noTek = !(tekR || tekL || minR || minL);
             let txt = "", top = false;
 
@@ -760,3 +1164,33 @@ const RegionThorax = {
             return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };
         }
     };
+
+// Otevření / zavření ILD stromu při cyklu Fibrózy (bez zásahu do index.html).
+// Nelze wrapovat cycleState — je lexikálně vázaný ve skriptu index.html.
+(function installThoraxIldOpenHook() {
+    function syncFromFibButton(btn) {
+        if (!btn || btn.dataset.action !== 'cycle-state') return;
+        const globalId = btn.dataset.id || '';
+        if (!globalId.endsWith('_thorax_pl_fib')) return;
+        const cfg = ButtonConfigs[globalId];
+        const idx = Store.buttonStates[globalId] || 0;
+        const state = cfg?.states?.[idx];
+        if (state === 'ANO') Store.activeTable = 'thorax_ild_main';
+        else if (state === '0' && Store.activeTable === 'thorax_ild_main') Store.activeTable = 'thorax_plice_main';
+    }
+
+    function onUiEvent(e) {
+        const btn = e.target?.closest?.('button[data-action="cycle-state"]');
+        if (btn) syncFromFibButton(btn);
+    }
+
+    const install = () => {
+        // Bubble fáze po handlerech v index.html (ty se registrují dřív při parsování skriptu)
+        document.addEventListener('click', onUiEvent);
+        document.addEventListener('contextmenu', onUiEvent);
+        document.addEventListener('wheel', onUiEvent, { passive: true });
+    };
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', install);
+    else install();
+})();
