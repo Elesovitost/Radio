@@ -869,10 +869,16 @@ function pluralizeGrammar(text, dictKey = 'spine') {
    LESIONS DEFINITION
 ═══════════════════════════════════════════════ */
 const LESIONS_DEFINITION = {
+    getMinuleRowCells: (prefix) => [
+        'Minule:',
+        'Rozměry:', { field: 'size', id: `${prefix}_size_old`, placeholder: 'mm' },
+        'SUVmax:', { field: 'suv', id: `${prefix}_suv_old`, placeholder: '...' },
+        'Počet:', { btn: `${prefix}_cnt_old`, states: ['vyber', '0', 'méně', 'více', 'kolísání'] }
+    ],
     getLesionMetricsRow: (helpers, rowId, prefix) => {
         return helpers.Table2rowNormal(rowId, [
             ['Metriky:', 'Rozměry:', { field: 'size', id: `${prefix}_size`, placeholder: 'mm' }, 'SUVmax:', { field: 'suv', id: `${prefix}_suv`, placeholder: '...' }, 'Aktivita:', { btn: `${prefix}_act`, states: ['0', 'není', 'nízká', 'intermediární', 'zvýšená', 'vysoká'] }],
-            ['Minule:',  'Rozměry:', { field: 'size', id: `${prefix}_size_old`, placeholder: 'mm' }, 'SUVmax:', { field: 'suv', id: `${prefix}_suv_old`, placeholder: '...' }],
+            LESIONS_DEFINITION.getMinuleRowCells(prefix),
         ]);
     },
     getLesionEtiologyRow: (helpers, rowId, prefix) => {
@@ -901,30 +907,16 @@ const LESIONS_DEFINITION = {
         LESIONS_DEFINITION.getLesionEtiologyRow(helpers, `${prefix}_r9`, etioPfx)
     ],
 
-    parseLesionMetrics: (ctx, metPfx, pocetText, nejText) => {
-        let size = ctx.field(`${metPfx}_size`);
-        let suv = ctx.field(`${metPfx}_suv`);
+    buildPastStr: (ctx, metPfx, size, suv) => {
+        if (!Store.pastDate) return '';
+        const cntOld = ctx.isActive(`${metPfx}_cnt_old`) ? ctx.text(`${metPfx}_cnt_old`) : '';
+        if (cntOld === '0') return ' (nově)';
+
         let sizeOld = ctx.field(`${metPfx}_size_old`);
         let suvOld = ctx.field(`${metPfx}_suv_old`);
-        
-        let prefixNej = '';
-        if (nejText && pocetText !== 'solitární') {
-            prefixNej = (pocetText === 'dvě') ? `, větší ${nejText}` : `, největší ${nejText}`;
-        }
-
         let pastArr = [];
-        let isZeroOldSize = false;
-        if (sizeOld) {
-            isZeroOldSize = parseFloat(sizeOld) === 0;
-            if (!isZeroOldSize) {
-                if (size && size.trim() === sizeOld.trim()) {
-                    pastArr.push(`shodného rozměru`);
-                } else {
-                    pastArr.push(`${sizeOld} mm`);
-                }
-            }
-        }
-        if (suvOld && !isZeroOldSize) {
+        if (sizeOld) pastArr.push((size && size.trim() === sizeOld.trim()) ? 'shodného rozměru' : `${sizeOld} mm`);
+        if (suvOld) {
             if (APP_SETTINGS.suvWord && suv) {
                 const cLiv = parseFloat((Store.fields['suv_jater'] || '3.0').replace(',', '.'));
                 const mLiv = parseFloat((Store.fields['suv_jater_minule'] || '3.0').replace(',', '.'));
@@ -933,15 +925,22 @@ const LESIONS_DEFINITION = {
                 pastArr.push(`SUVmax ${suvOld}`);
             }
         }
+        if (cntOld === 'méně') pastArr.push('počet menší');
+        else if (cntOld === 'více') pastArr.push('počet větší');
+        else if (cntOld === 'kolísání') pastArr.push('část vymizela, část přibyla');
+        return pastArr.length ? ` (minule ${pastArr.join(', ')})` : '';
+    },
+
+    parseLesionMetrics: (ctx, metPfx, pocetText, nejText) => {
+        let size = ctx.field(`${metPfx}_size`);
+        let suv = ctx.field(`${metPfx}_suv`);
         
-        let pastStr = '';
-        if (Store.pastDate) {
-            if (isZeroOldSize) {
-                pastStr = ' (nově)';
-            } else if (pastArr.length > 0) {
-                pastStr = ` (minule ${pastArr.join(', ')})`;
-            }
+        let prefixNej = '';
+        if (nejText && pocetText !== 'solitární') {
+            prefixNej = (pocetText === 'dvě') ? `, větší ${nejText}` : `, největší ${nejText}`;
         }
+
+        let pastStr = LESIONS_DEFINITION.buildPastStr(ctx, metPfx, size, suv);
 
         let suvText = suv ? MetricsEngine.getSuvText(suv) : '';
         let metrikyStr = '';
@@ -1047,7 +1046,7 @@ const LESIONS_DEFINITION = {
     getLymphNodeMetricsRow: (helpers, rowId, prefix) => {
         return helpers.Table2rowNormal(rowId, [
             ['Metriky:', 'Rozměry:', { field: 'size', id: `${prefix}_size`, placeholder: 'mm' }, 'SUVmax:', { field: 'suv', id: `${prefix}_suv`, placeholder: '...' }, 'Aktivita:', { btn: `${prefix}_act`, states: ['0', 'není', 'nízká', 'intermediární', 'zvýšená', 'vysoká'] }],
-            ['Minule:',  'Rozměry:', { field: 'size', id: `${prefix}_size_old`, placeholder: 'mm' }, 'SUVmax:', { field: 'suv', id: `${prefix}_suv_old`, placeholder: '...' }],
+            LESIONS_DEFINITION.getMinuleRowCells(prefix),
         ]);
     },
     getLymphNodeEtiologyRow: (helpers, rowId, prefix) => {
@@ -1078,44 +1077,13 @@ const LESIONS_DEFINITION = {
     parseLymphNodeMetrics: (ctx, metPfx, pocetText, nejText) => {
         let size = ctx.field(`${metPfx}_size`);
         let suv = ctx.field(`${metPfx}_suv`);
-        let sizeOld = ctx.field(`${metPfx}_size_old`);
-        let suvOld = ctx.field(`${metPfx}_suv_old`);
         
         let prefixNej = '';
         if (nejText && pocetText !== 'solitární') {
             prefixNej = (pocetText === 'dvě') ? `, větší ${nejText}` : `, největší ${nejText}`;
         }
 
-        let pastArr = [];
-        let isZeroOldSize = false;
-        if (sizeOld) {
-            isZeroOldSize = parseFloat(sizeOld) === 0;
-            if (!isZeroOldSize) {
-                if (size && size.trim() === sizeOld.trim()) {
-                    pastArr.push(`shodného rozměru`);
-                } else {
-                    pastArr.push(`${sizeOld} mm`);
-                }
-            }
-        }
-        if (suvOld && !isZeroOldSize) {
-            if (APP_SETTINGS.suvWord && suv) {
-                const cLiv = parseFloat((Store.fields['suv_jater'] || '3.0').replace(',', '.'));
-                const mLiv = parseFloat((Store.fields['suv_jater_minule'] || '3.0').replace(',', '.'));
-                pastArr.push(MetricsEngine.getSuvDynamicsWord(suv, suvOld, cLiv, mLiv));
-            } else {
-                pastArr.push(`SUVmax ${suvOld}`);
-            }
-        }
-        
-        let pastStr = '';
-        if (Store.pastDate) {
-            if (isZeroOldSize) {
-                pastStr = ' (nově)';
-            } else if (pastArr.length > 0) {
-                pastStr = ` (minule ${pastArr.join(', ')})`;
-            }
-        }
+        let pastStr = LESIONS_DEFINITION.buildPastStr(ctx, metPfx, size, suv);
 
         let suvText = suv ? MetricsEngine.getSuvText(suv) : '';
         let metrikyStr = '';
@@ -1338,10 +1306,10 @@ const LESIONS_DEFINITION = {
             actStr = ` bez ${term.without}`;
         }
         
-        let dynStr = ctx.getDynamics(`${metPfx}_size`, `${metPfx}_size_old`, `${metPfx}_suv`, `${metPfx}_suv_old`);
+        let dynStr = ctx.getDynamics(`${metPfx}_size`, `${metPfx}_size_old`, `${metPfx}_suv`, `${metPfx}_suv_old`, `${metPfx}_cnt_old`);
         if (dynStr) dynStr = `, ${dynStr}`;
 
-        let hasAny = !!(pocetRawId || druhRawId || ctx.field(`${metPfx}_size`) || ctx.field(`${metPfx}_suv`) || vzhledy.length > 0 || etioStr !== "");
+        let hasAny = !!(pocetRawId || druhRawId || ctx.field(`${metPfx}_size`) || ctx.field(`${metPfx}_suv`) || ctx.isActive(`${metPfx}_cnt_old`) || vzhledy.length > 0 || etioStr !== "");
 
         return { hasAny, baseText, vzhledText, metrikyStr, doplneniStr, etioStr, actStr, dynStr };
     }
@@ -1535,18 +1503,19 @@ function createContext(regionId, examId) {
             }
             return val;
         },
-        getDynamics(sizeId, sizeOldId, suvId, suvOldId) {
+        getDynamics(sizeId, sizeOldId, suvId, suvOldId, cntOldId) {
             if (!Store.pastDate) return "";
 
             const currSize = this.field(sizeId);
             const minSize = this.field(sizeOldId);
             const currSuv = this.field(suvId);
             const minSuv = this.field(suvOldId);
+            const cntOld = cntOldId && this.isActive(cntOldId) ? this.text(cntOldId) : '';
             
             const cLiv = parseFloat((Store.fields['suv_jater'] || '3.0').replace(',', '.'));
             const mLiv = parseFloat((Store.fields['suv_jater_minule'] || '3.0').replace(',', '.'));
 
-            return MetricsEngine.calculateDynamics(currSize, minSize, currSuv, minSuv, cLiv, mLiv, APP_SETTINGS.recist);
+            return MetricsEngine.calculateDynamics(currSize, minSize, currSuv, minSuv, cLiv, mLiv, APP_SETTINGS.recist, cntOld);
         },
         mapStates(config) {
             const found = [];
@@ -1724,29 +1693,24 @@ const MetricsEngine = {
         return pct > 0 ? `akumulace byla ${mod}nižší` : `akumulace byla ${mod}vyšší`;
     },
 
-    calculateDynamics: function(currSize, minSize, currSuv, minSuv, cLiv, mLiv, isRecistActive) {
+    calculateDynamics: function(currSize, minSize, currSuv, minSuv, cLiv, mLiv, isRecistActive, cntOld) {
+        if (cntOld === '0') return "nově";
+
         let sState = null, aState = null;
-        let isNew = false;
+        const getMax = (s) => { const n = String(s).match(/\d+(\.\d+)?/g); return n ? Math.max(...n.map(Number)) : null; };
         
         if (currSize && minSize) {
-            const getMax = (s) => { const n = String(s).match(/\d+(\.\d+)?/g); return n ? Math.max(...n.map(Number)) : null; };
             const cVal = getMax(currSize), mVal = getMax(minSize);
-            if (cVal !== null && mVal !== null) {
-                if (mVal === 0 && cVal > 0) {
-                    isNew = true;
-                } else if (mVal > 0) {
-                    const pct = this.getPctChange(cVal, mVal), absPct = Math.abs(pct);
-                    sState = { trend: 0, mod: "", pctStr: "" };
-                    if (absPct > 10) {
-                        sState.trend = pct > 0 ? 1 : -1;
-                        sState.mod = absPct < 20 ? "mírné" : absPct <= 50 ? "" : "výrazné";
-                        if (absPct >= 20 && isRecistActive) sState.pctStr = ` (${pct > 0 ? '+' : '-'}${Math.round(pct / 10) * 10}%)`;
-                    }
+            if (cVal !== null && mVal !== null && mVal > 0) {
+                const pct = this.getPctChange(cVal, mVal), absPct = Math.abs(pct);
+                sState = { trend: 0, mod: "", pctStr: "" };
+                if (absPct > 10) {
+                    sState.trend = pct > 0 ? 1 : -1;
+                    sState.mod = absPct < 20 ? "mírné" : absPct <= 50 ? "" : "výrazné";
+                    if (absPct >= 20 && isRecistActive) sState.pctStr = ` (${pct > 0 ? '+' : '-'}${Math.round(pct / 10) * 10}%)`;
                 }
             }
         }
-        
-        if (isNew) return "nově";
 
         if (currSuv && minSuv) {
             const cSuv = parseFloat(String(currSuv).replace(',', '.')), mSuv = parseFloat(String(minSuv).replace(',', '.'));
@@ -1767,18 +1731,25 @@ const MetricsEngine = {
             if (st.trend === 0) return isSize ? "rozměrově stacionární" : "akumulačně přibližně stacionární";
             return `${st.mod ? 'v(e) ' + st.mod : 'v'} ${isSize ? 'rozměrové' + st.pctStr : 'akumulační'} ${st.trend === 1 ? 'progresi' : 'regresi'}`.replace('v(e) v', 've v').replace('v(e)', 'v');
         };
-        
+
+        let result = "";
         if (sState && aState) {
-            if (sState.trend === 0 && aState.trend === 0) return "rozměrově i akumulačně přibližně stacionární";
-            if (sState.trend === aState.trend && sState.trend !== 0) {
+            if (sState.trend === 0 && aState.trend === 0) result = "rozměrově i akumulačně přibližně stacionární";
+            else if (sState.trend === aState.trend && sState.trend !== 0) {
                 const tW = sState.trend === 1 ? 'progresi' : 'regresi';
-                return sState.mod === aState.mod 
+                result = sState.mod === aState.mod 
                     ? `${sState.mod ? 'v(e) '+sState.mod : 'v'} rozměrové${sState.pctStr} i akumulační ${tW}`.replace('v(e) v', 've v').replace('v(e)', 'v') 
                     : `${sState.mod ? 'v(e) '+sState.mod : 'v'} rozměrové${sState.pctStr} a ${aState.mod} akumulační ${tW}`.replace('v(e) v', 've v').replace('v(e)', 'v');
-            }
-            return `${format(sState, true)} a ${format(aState, false)}`;
+            } else result = `${format(sState, true)} a ${format(aState, false)}`;
+        } else {
+            result = sState ? format(sState, true) : aState ? format(aState, false) : "";
         }
-        return sState ? format(sState, true) : aState ? format(aState, false) : "";
+
+        const countPhrase = { méně: 'v početní progresi', více: 'v početní regresi', kolísání: 'se smíšenou odpovědí - část regredovala, část progredovala' }[cntOld] || '';
+        if (!countPhrase) return result;
+        if (!result) return countPhrase;
+        if (cntOld === 'kolísání') return `${result}, ${countPhrase}`;
+        return `${countPhrase} a ${result}`;
     }
 };
 
@@ -3067,7 +3038,7 @@ const UI = {
             incidentalBlocks.push(...examConcIncBlocks);
         }
 
-        const buildNodes = (blocks) => {
+        const buildNodes = (blocks, { prefixNove = false } = {}) => {
             return blocks.map(b => {
                 if (b.type === 'heading' || b.type === 'heading-gray') {
                     const node = el('div', { className: b.type === 'heading-gray' ? 'report-heading heading-gray' : 'report-heading', textContent: b.text });
@@ -3082,10 +3053,15 @@ const UI = {
                     return el('div', { className: 'report-exam-heading', textContent: b.text });
                 }
                 if (b.type === 'frame') {
-                    let cleanText = (b.text || '')
-                        .replace(/^([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ])(.*?)(?:,\s*nově|\(\s*nově\s*\))(.*)$/g, (match, firstChar, middle, rest) => {
-                            return "Nově " + firstChar.toLowerCase() + middle + rest;
-                        })
+                    let cleanText = b.text || '';
+                    if (prefixNove && /(?:,\s*nově|\(\s*nově\s*\))/.test(cleanText)) {
+                        cleanText = cleanText.replace(/(?:,\s*nově|\(\s*nově\s*\))/g, '');
+                        cleanText = cleanText.replace(/\s+/g, ' ').trim();
+                        if (cleanText) {
+                            cleanText = 'Nově ' + cleanText.charAt(0).toLowerCase() + cleanText.slice(1);
+                        }
+                    }
+                    cleanText = cleanText
                         .replace(/bilat\.\./gi, 'bilat.')
                         .replace(/\s+\./g, '.')
                         .replace(/,\s*\./g, '.')
@@ -3119,11 +3095,11 @@ const UI = {
         let concNodes = [];
         if (mainConclusionBlocks.length > 0) {
             concNodes.push(el('div', { className: 'report-heading', textContent: 'Závěr:' }));
-            concNodes.push(...buildNodes(mainConclusionBlocks));
+            concNodes.push(...buildNodes(mainConclusionBlocks, { prefixNove: true }));
         }
         if (incidentalBlocks.length > 0) {
             concNodes.push(el('div', { className: 'report-heading', textContent: 'Vedlejší nálezy:' }));
-            concNodes.push(...buildNodes(incidentalBlocks));
+            concNodes.push(...buildNodes(incidentalBlocks, { prefixNove: true }));
         }
         concContainer.replaceChildren(...concNodes);
     }
@@ -3933,12 +3909,12 @@ document.addEventListener('wheel', e => {
                 
                 if (v === null || isNaN(v)) {
                     if (e.deltaY > 0) return;
-                    v = 0;
+                    v = 1;
                 } else if (e.deltaY < 0) {
                     v = Math.min(999, v + 1);
                 } else {
                     v -= 1;
-                    if (v < 0) {
+                    if (v < 1) {
                         if (aI > 0) { dims.pop(); v = dims[aI - 1]; }
                         else v = null;
                     }
@@ -4035,13 +4011,20 @@ document.addEventListener('input', e => {
         const sEnd = e.target.selectionEnd;
 
         if (e.target.classList.contains('field_suv')) val = val.replace(',', '.');
-        
-        Store.fields = { ...Store.fields, [id]: val };
-        
+
         if (e.target.classList.contains('field_size')) {
-            const dims = e.target.value.split('x').map(d => { const n = parseInt(d); return isNaN(n) ? null : n; });
-            Store.fields[`${id}_dims`] = JSON.stringify(dims);
+            val = val.split('x').map(d => {
+                if (d === '') return d;
+                const n = parseInt(d, 10);
+                if (isNaN(n)) return d;
+                return n < 1 ? '1' : d;
+            }).join('x');
+            e.target.value = val;
+            const dims = val.split('x').map(d => { const n = parseInt(d, 10); return isNaN(n) ? null : Math.max(1, n); });
+            Store.fields = { ...Store.fields, [id]: val, [`${id}_dims`]: JSON.stringify(dims) };
             e.target.dataset.dims = JSON.stringify(dims);
+        } else {
+            Store.fields = { ...Store.fields, [id]: val };
         }
         
         MetricsEngine.updateActivityForField(id, val);
