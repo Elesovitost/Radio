@@ -67,9 +67,9 @@ const RegionShoulder = {
             // --- LABRUM A LIGAMENTA ---
             helpers.TableMain('shoulder_labrum_main', 'Glenoidální labrum', [
                 helpers.Table2colNormal('sh_lab_table', '', [
-                    [ 'Horní labrum:', { btn: 'sh_lab_sup', states: ['0', 'degenerace', 'SLAP I', 'SLAP II', 'komplexní SLAP'] } ],
-                    [ 'Přední labrum:', { btn: 'sh_lab_ant', states: ['0', 'degenerace', 'Bankart', 'ALPSA', 'Perthes'] } ],
-                    [ 'Zadní labrum:', { btn: 'sh_lab_pos', states: ['0', 'degenerace', 'Reverse Bankart'] } ],
+                    [ 'Horní labrum:', { btn: 'sh_lab_sup', states: ['0', 'degenerace', 'léze', 'SLAP I', 'SLAP II', 'komplexní SLAP'] } ],
+                    [ 'Přední labrum:', { btn: 'sh_lab_ant', states: ['0', 'degenerace', 'léze', 'Bankart', 'ALPSA', 'Perthes'] } ],
+                    [ 'Zadní labrum:', { btn: 'sh_lab_pos', states: ['0', 'degenerace', 'léze', 'Reverse Bankart'] } ],
                     [ 'Paralabrální cysta:', { btn: 'sh_lab_cysta', states: ['0', 'spinoglenoidní', 'supraskapulární'] } ]
                 ])
             ]),
@@ -486,11 +486,15 @@ const RegionShoulder = {
         } else {
             let labrep = [];
             let labconc = [];
+            let labLeze = [];
 
             if (labSup && labSup !== '0') {
                 if (labSup === 'degenerace') {
                     labrep.push('intrasubstanciální hyperintenzita a nehomogenita horního labra bez zřetelné trhliny');
                     labconc.push('Degenerace horního labra');
+                } else if (labSup === 'léze') {
+                    labrep.push('hyperintenzita horního labra v kontaktu s artik. prostorem');
+                    labLeze.push('horního');
                 } else if (labSup === 'SLAP I') {
                     labrep.push('povrchové roztřepení a nepravidelnost volného okraje horního labra bez jeho odtržení (SLAP I)');
                     labconc.push('SLAP I léze horního labra');
@@ -505,6 +509,7 @@ const RegionShoulder = {
 
             if (labAnt && labAnt !== '0') {
                 if (labAnt === 'degenerace') { labrep.push('změny signálu a tvaru předního labra'); }
+                else if (labAnt === 'léze') { labrep.push('hyperintenzita předního labra v kontaktu s artik. prostorem'); labLeze.push('předního'); }
                 else if (labAnt === 'Bankart') { labrep.push('odtržení předního a dolního labra vč. periostu (Bankartova léze)'); labconc.push('Bankartova léze (přední instabilita)'); }
                 else if (labAnt === 'ALPSA') { labrep.push('odtržení předního labra s periostem, labrum je mediálně dislokováno (ALPSA)'); labconc.push('ALPSA léze předního labra'); }
                 else if (labAnt === 'Perthes') { labrep.push('částečné odtržení předního labra bez dislokace, s intaktním periostem (Perthes)'); labconc.push('Perthesova léze labra'); }
@@ -512,7 +517,13 @@ const RegionShoulder = {
 
             if (labPos && labPos !== '0') {
                 if (labPos === 'degenerace') labrep.push('degenerativní změny zadního labra');
+                else if (labPos === 'léze') { labrep.push('hyperintenzita zadního labra v kontaktu s artik. prostorem'); labLeze.push('zadního'); }
                 else if (labPos === 'Reverse Bankart') { labrep.push('odtržení zadního labra (Reverse Bankart)'); labconc.push('Reverse Bankart léze zadního labra'); }
+            }
+
+            if (labLeze.length) {
+                const locStr = labLeze.length === 1 ? labLeze[0] : labLeze.length === 2 ? labLeze.join(' a ') : labLeze.slice(0, -1).join(', ') + ' a ' + labLeze[labLeze.length - 1];
+                labconc.push(`Léze ${locStr} labra`);
             }
 
             if (labCysta && labCysta !== '0') {
