@@ -19,9 +19,9 @@ const RegionShoulder = {
             // --- GH KLOUB A BURZY ---
             helpers.TableMain('shoulder_bursa_main', 'GH kloub a Burzy', [
                 helpers.Table2colNormal('shoulder_bursa_table', '', [
-                    [ 'GH náplň:', { btn: 'sh_gh_napln', states: ['0', '+', '++', '+++'] } ],
-                    [ 'SASD burza:', { btn: 'sh_gh_sasd', states: ['0', 'mírná tekutina', 'bursitida', 'výrazná bursitida'] } ],
+                    [ 'SASD burza:', { btn: 'sh_gh_sasd', states: ['0', 'mírná náplň', 'náplň', 'bursitida', 'výrazná bursitida'] } ],
                     [ 'Subkorak. burza:', { btn: 'sh_gh_subcor', states: ['0', 'tekutina', 'bursitida'] } ],
+                    [ 'GH náplň:', { btn: 'sh_gh_napln', states: ['0', '+', '++', '+++'] } ],
                     [ 'Synovitida:', { btn: 'sh_gh_synov', states: ['0', '+', '++', 'Chondromatóza'] } ]
                 ])
             ]),
@@ -191,13 +191,15 @@ const RegionShoulder = {
         const ghNapln = ctx.text('sh_gh_napln');
         if (ghNapln && ghNapln !== '0') {
             const mapNapln = { '+': 'mírně zvýšené', '++': 'středně zvýšené', '+++': 'výrazně zvýšené' };
+            const mapNaplnConc = { '+': 'Mírně zvýšená GH náplň', '++': 'Středně zvýšená GH náplň', '+++': 'Výrazně zvýšená GH náplň' };
             bursaParts.push(`${mapNapln[ghNapln]} množství tekutiny v GH kloubu`);
-            bursaConc.push(`${mapNapln[ghNapln]} GH efuze`);
+            bursaConc.push(mapNaplnConc[ghNapln]);
         }
 
         const ghSasd = ctx.text('sh_gh_sasd');
         if (ghSasd && ghSasd !== '0') {
-            if (ghSasd === 'mírná tekutina') bursaParts.push('mírná tekutina v SASD burze');
+            if (ghSasd === 'mírná náplň') bursaParts.push('mírná náplň SASD burzy');
+            else if (ghSasd === 'náplň') { bursaParts.push('zvýšená náplň SASD burzy'); bursaConc.push('Zvýšená náplň SASD burzy'); }
             else if (ghSasd === 'bursitida') { bursaParts.push('náplň a edém stěn SASD burzy'); bursaConc.push('SASD bursitida'); }
             else if (ghSasd === 'výrazná bursitida') { bursaParts.push('výrazná náplň a zesílení stěn SASD burzy'); bursaConc.push('Výrazná SASD bursitida'); }
         }
