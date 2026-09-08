@@ -107,26 +107,67 @@ ZAKÁZÁNO: <img>, galerie, markdown ploty, javascript, falešné URL.
 DŮLEŽITÉ: Vrať POUZE čistý HTML kód od <!DOCTYPE html>... bez markdown.`;
 }
 
-function buildImpressionPrompt({ findings, age, gender, indication, patientText }) {
+const IMPRESSION_SYSTEM =
+  'Jsi zkušený radiolog specializovaný na moderní strukturovaný reporting. ' +
+  'Z indikace a popisu vyšetření (findings) vytváříš radiologický závěr (Impression). ' +
+  'Impression je syntéza a interpretace nálezů, NE přepis popisu: neopakuje, jak ložiska či jiné entity vypadají, ' +
+  'ale sděluje diagnózu (nebo odstupňovanou diferenciální diagnózu), klinický dopad, změny oproti minulému vyšetření a konkrétní doporučení. ' +
+  'Píšeš česky, věcně, stručně. Vracíš POUZE čistý text závěru – žádné HTML, žádný markdown, žádné nadpisy ani úvodní formulace.';
+
+function buildImpressionPrompt({ findings, age, gender, indication, patientText, exams, comparisonDate }) {
   const who = String(patientText || '').trim() || 'Pacient';
   const ageBit = String(age || '').trim() ? `, ${String(age).trim()} let` : '';
   const ind = String(indication || '').trim();
-  const indBit = ind ? ` Indikace: ${ind}.` : '';
-  return `Jsi zkušený radiolog. Ze zadané indikace a popisu vyšetření (findings) vytvoř moderní radiologický závěr (Impression).
 
-${who}${ageBit}.${indBit}
+  const examTitles = Array.isArray(exams)
+    ? exams.map((e) => String(e || '').trim()).filter(Boolean)
+    : [];
+  const examBit = examTitles.length
+    ? examTitles.join(', ')
+    : '(není v datech; případně ji poznej z nadpisů v textu popisu)';
 
-Popis vyšetření (findings):
+  const compBit = String(comparisonDate || '').trim()
+    ? `ano (${String(comparisonDate).trim()})`
+    : '(v textu popisu případně zmíněno jako „Srovnáno s vyšetřením z …“)';
+
+  return `Jsi zkušený radiolog s praxí v moderním strukturovaném reportingu. Z klinické indikace a popisu vyšetření (findings) vytvoř radiologický závěr (Impression) na úrovni špičkového pracoviště.
+
+KONTEXT
+Pacient: ${who}${ageBit}.
+Vyšetření: ${examBit}.
+Indikace / klinická otázka: ${ind || '(neuvedena)'}
+Srovnání s předchozím vyšetřením: ${compBit}
+
+POPIS VYŠETŘENÍ (FINDINGS)
 ${String(findings || '').trim()}
 
-Požadavky na závěr:
-1. Stručný a věcný, celý v češtině, bez zbytečných formulací.
-2. Seřaď nálezy podle klinické závažnosti (nejvýznamnější jako první).
-3. Shrň patologické a klinicky relevantní nálezy; normální/fyziologické nálezy zmiň jen stručně, pokud je to podstatné.
-4. Pokud je k dispozici srovnání s minulým vyšetřením, zdůrazni změny (nově / progrese / regrese / beze změny).
-5. Na konec případně krátce uveď doporučení (např. korelace s klinikou, biopsie, další zobrazení), jen pokud vyplývá z nálezu.
-6. Nevysvětluj postup, nepiš úvod, nekomentuj samotný popis; výstupem je hotový závěr připravený k použití.
-7. Vrať POUZE čistý text závěru – bez nadpisů, bez číslování, bez HTML a bez markdownu.`;
+CO JE IMPRESSION
+Impression je interpretace, nikoli přepis popisu. Popis odpovídá na otázku „co vidím“, Impression na otázky „co to znamená“, „jak je to závažné“ a „co má klinik udělat“. Je to část zprávy, kterou ošetřující lékař čte jako první – musí obstát samostatně a být akční.
+
+Do Impression NEPŘEPISUJ:
+- vzhled ložisek a jiných entit (signál na MR sekvencích, denzitu, morfologii, tvar, okraje, vnitřní strukturu, sycení po kontrastu apod.);
+- technické detaily a měření (SUVmax, přesné rozměry v mm), pokud nemění rozhodnutí;
+- normální nálezy orgán po orgánu;
+- název vyšetření ani použité sekvence/protokol.
+
+Z popisu převezmi jen podstatu: CO to je (diagnóza / nejpravděpodobnější entita), KDE (lokalizace, lateralita, segment), JAK se to chová oproti minulému vyšetření (nově / progrese / regrese / stacionární) a CO TO ZNAMENÁ pro pacienta (závažnost, riziko, doporučený postup).
+
+PRAVIDLA MODERNÍHO IMPRESSION
+1. Odpověz na klinickou otázku z indikace. Řekni explicitně, zda nález suspektní diagnózu potvrzuje, podporuje, nebo vylučuje. Není-li otázka zodpověditelná, označ to a navrhni, čím ji dořešit.
+2. Začni hlavní diagnózou či nejzávažnějším závěrem; další položky řaď sestupně podle klinického dopadu. Urgentní nálezy (krvácení, herniace, akutní ischemie, obstrukce, disekce, perforace, masivní embolie apod.) musí být na prvním místě.
+3. Míru jistoty vyjadřuj přesně a střídmě: „jednoznačně / svědčí pro / kompatibilní s / odpovídá“, „v.s.“ (velmi suspektní), „susp.“, „nelze zcela vyloučit“. U nejednoznačného nálezu uveď krátkou seřazenou diferenciální diagnózu a případně jeden klíčový rozdílový znak.
+4. Normální nálezy zmiň jen jako relevantní negativa ve vztahu ke klinické otázce (např. „bez známek krvácení“, „bez ložiskové léze v játrech“). Při zcela negativním vyšetření napiš jednu jasnou větu typu „Přiměřený nález, bez známek …“ a skonči.
+5. Je-li k dispozici srovnání, explicitně popiš změny u všech klinicky důležitých nálezů: „oproti (datu) nově / v progresi / v regresi / beze změny / vymizelo“. Číselné hodnoty (RECIST, velikosti, SUVmax) uveď, jen pokud jsou pro rozhodnutí podstatné.
+6. Doporučení uváděj konkrétní, adresná a pokud možno s časovým rámcem, typicky podle uznávaných doporučení (Fleischner, PI-RADS / BI-RADS / LI-RADS, RECIST apod.), např. „Doporučuji kontrolní CT hrudníku za 3 měsíce“. Vyhni se prázdným frázím typu „doporučena klinická korelace“ / „if clinically indicated“ – pokud nic nedoporučuješ, žádné doporučení nepiš.
+7. Klinicky nevýznamné, benigní či jasně vedlejší nálezy do hlavního závěru nepatří. Je-li třeba je zmínit, uveď je na konci na jednom řádku začínajícím „Vedlejší nálezy: “.
+8. Buď stručný: výsledný závěr má být řádově kratší než popis. Každá položka = jedna krátká věta. Celkem nanejvýš 3–6 položek (u jednoduchého vyšetření i jen jedna věta).
+9. Obsahuje-li text více vyšetření oddělených nadpisy (např. PET/CT a MR), respektuj jejich rozdělení a před závěry každého vyšetření uveď jeho název velkými písmeny na samostatném řádku.
+
+FORMÁT VÝSTUPU
+- Čistý text v češtině, odborný, gramaticky korektní (správné skloňování a rod).
+- Jednotlivé závěry na samostatných řádcích v pořadí podle klinické důležitosti – bez číslování, bez odrážek, bez nadpisů sekcí.
+- Žádné HTML, žádný markdown, žádné uvozovací věty („V závěru lze říci…“, „Na základě výše uvedeného…“), žádné vysvětlování postupu a žádný komentář k popisu.
+- Výstupem je hotový závěr připravený k použití.`;
 }
 
 function ensureHtmlDocument(html, title) {
@@ -727,7 +768,10 @@ async function generateWithGemini(prompt, preferredModel) {
   throw lastError || new Error('Generování přes Gemini selhalo.');
 }
 
-async function generateWithDeepSeek(prompt, model) {
+const DEEPSEEK_HTML_SYSTEM =
+  'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů, bez <img> tagů a bez galerie. Odkazy jen na reálné volně dostupné plné texty; URL nevymýšlej.';
+
+async function generateWithDeepSeek(prompt, model, system = DEEPSEEK_HTML_SYSTEM) {
   if (!DEEPSEEK_API_KEY) {
     throw new Error('DEEPSEEK_API_KEY není nastaven na serveru.');
   }
@@ -739,8 +783,7 @@ async function generateWithDeepSeek(prompt, model) {
       messages: [
         {
           role: 'system',
-          content:
-            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů, bez <img> tagů a bez galerie. Odkazy jen na reálné volně dostupné plné texty; URL nevymýšlej.'
+          content: system
         },
         { role: 'user', content: prompt }
       ],
@@ -753,8 +796,7 @@ async function generateWithDeepSeek(prompt, model) {
       messages: [
         {
           role: 'system',
-          content:
-            'Jsi radiologický asistent. Vracíš POUZE kompletní HTML dokument bez markdown plotů, bez <img> tagů a bez galerie. Odkazy jen na reálné volně dostupné plné texty; URL nevymýšlej.'
+          content: system
         },
         { role: 'user', content: prompt }
       ],
@@ -827,9 +869,9 @@ async function generateWithDeepSeek(prompt, model) {
   throw lastError || new Error('Generování přes DeepSeek selhalo.');
 }
 
-async function generateContent({ provider, model, prompt }) {
+async function generateContent({ provider, model, prompt, system }) {
   if (provider === 'deepseek') {
-    return generateWithDeepSeek(prompt, model);
+    return generateWithDeepSeek(prompt, model, system);
   }
   return generateWithGemini(prompt, model);
 }
@@ -1056,10 +1098,12 @@ app.post('/api/impression', async (req, res) => {
       age: req.body?.age,
       gender: req.body?.gender,
       indication: req.body?.indication,
-      patientText: req.body?.patientText
+      patientText: req.body?.patientText,
+      exams: Array.isArray(req.body?.exams) ? req.body.exams : undefined,
+      comparisonDate: req.body?.comparisonDate
     });
 
-    const genResult = await generateContent({ provider, model, prompt });
+    const genResult = await generateContent({ provider, model, prompt, system: IMPRESSION_SYSTEM });
 
     const text = String(genResult.text || '')
       .replace(/^\s*```(?:text)?\s*/i, '')

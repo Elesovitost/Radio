@@ -3424,6 +3424,21 @@ function getLlmHelpContext() {
     };
 }
 
+function getLlmExamTitles() {
+    const ids = (Store.exams && Store.exams.size) ? Array.from(Store.exams) : [Store.activeTab];
+    return ids.map(id => {
+        const exam = getExamById(id);
+        if (!exam) return '';
+        const sideConfig = APP_MANIFEST.examsWithSides[id];
+        if (sideConfig) {
+            const side = Store.fields[sideConfig.field];
+            if (side === 'R') return `MR pravého ${sideConfig.label}`;
+            if (side === 'L') return `MR levého ${sideConfig.label}`;
+        }
+        return exam.title;
+    }).filter(Boolean);
+}
+
 /* ═══════════════════════════════════════════════
    LLM PANEL (Impression / Case study / Patologie)
 ═══════════════════════════════════════════════ */
@@ -3518,7 +3533,9 @@ async function llmSendImpression() {
                 age: meta.age,
                 gender: meta.gender,
                 patientText: meta.patientText,
-                indication: meta.indication
+                indication: meta.indication,
+                exams: getLlmExamTitles(),
+                comparisonDate: Store.pastDate || ''
             })
         });
         const data = await res.json().catch(() => ({}));
