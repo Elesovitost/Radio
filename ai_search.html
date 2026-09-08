@@ -457,13 +457,13 @@
                 return;
             }
 
-            resultWin.document.write(`
-                <body style="background:#121212;color:#e0e0e0;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">
-                    <h2>Analýza: ${escapeHtml(patology)}</h2>
-                    <p>Model: ${escapeHtml(provider)} / ${escapeHtml(model)}</p>
-                    <p style="color:#8b949e;">AI připravuje text a odkazy na články…</p>
-                </body>
-            `);
+            resultWin.document.write(
+                '<body style="background:#121212;color:#e0e0e0;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">' +
+                '<h2>Analýza: ' + escapeHtml(patology) + '</h2>' +
+                '<p>Model: ' + escapeHtml(provider) + ' / ' + escapeHtml(model) + '</p>' +
+                '<p style="color:#8b949e;">AI připravuje text a odkazy na články…</p>' +
+                '<' + '/body>'
+            );
 
             try {
                 const response = await fetch(`${apiBase}/api/analyze`, {
@@ -486,12 +486,12 @@
                 const msg = error.message || 'Neznámá chyba';
                 setStatus(`Chyba: ${msg}`, 'error');
                 resultWin.document.open();
-                resultWin.document.write(`
-                    <body style="background:#121212;color:#ff4444;font-family:system-ui,sans-serif;padding:2rem;">
-                        <h2>Chyba při generování</h2>
-                        <p>${escapeHtml(msg)}</p>
-                    </body>
-                `);
+                resultWin.document.write(
+                    '<body style="background:#121212;color:#ff4444;font-family:system-ui,sans-serif;padding:2rem;">' +
+                    '<h2>Chyba při generování</h2>' +
+                    '<p>' + escapeHtml(msg) + '</p>' +
+                    '<' + '/body>'
+                );
                 resultWin.document.close();
             } finally {
                 setLoading(false);
@@ -516,13 +516,13 @@
                 return;
             }
 
-            resultWin.document.write(`
-                <body style="background:#121212;color:#e0e0e0;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">
-                    <h2>Case study</h2>
-                    <p>Model: ${escapeHtml(provider)} / ${escapeHtml(model)}</p>
-                    <p style="color:#8b949e;">AI připravuje diferenciální rozvahu…</p>
-                </body>
-            `);
+            resultWin.document.write(
+                '<body style="background:#121212;color:#e0e0e0;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">' +
+                '<h2>Case study</h2>' +
+                '<p>Model: ' + escapeHtml(provider) + ' / ' + escapeHtml(model) + '</p>' +
+                '<p style="color:#8b949e;">AI připravuje diferenciální rozvahu…</p>' +
+                '<' + '/body>'
+            );
 
             try {
                 const response = await fetch(`${apiBase}/api/case-study`, {
@@ -551,12 +551,12 @@
                 const msg = error.message || 'Neznámá chyba';
                 setStatus(`Chyba: ${msg}`, 'error');
                 resultWin.document.open();
-                resultWin.document.write(`
-                    <body style="background:#121212;color:#ff4444;font-family:system-ui,sans-serif;padding:2rem;">
-                        <h2>Chyba při Case study</h2>
-                        <p>${escapeHtml(msg)}</p>
-                    </body>
-                `);
+                resultWin.document.write(
+                    '<body style="background:#121212;color:#ff4444;font-family:system-ui,sans-serif;padding:2rem;">' +
+                    '<h2>Chyba při Case study</h2>' +
+                    '<p>' + escapeHtml(msg) + '</p>' +
+                    '<' + '/body>'
+                );
                 resultWin.document.close();
             } finally {
                 setLoading(false);
