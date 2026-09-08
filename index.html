@@ -20,6 +20,7 @@
             </div>
             <span class="label">Minulé:</span>
             <input type="date" class="input input-date" data-action="update-date">
+            <button class="btn" data-action="toggle-llm" style="min-width: unset; padding: 2px 8px; font-size: 12px; line-height: 1;" title="LLM pomocníci">LLM</button>
             <button class="btn" data-action="toggle-settings" style="min-width: unset; padding: 2px 6px; font-size: 14px; line-height: 1;" title="Nastavení">⚙</button>
         </div>
     </div>
@@ -107,6 +108,28 @@
                 <span class="slider"></span>
             </label>
         </div>
+    </div>
+    <!-- LLM Modal -->
+    <div id="llm-modal" class="panel" style="display: none; position: absolute; top: 38px; right: 5px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.8); width: 310px; border: 1px solid var(--accent-hi);">
+        <h2 style="margin-bottom: 8px;">LLM</h2>
+
+        <div class="sub-table-title-settings" style="text-align: left; margin-top: 0;">AI model</div>
+        <select id="llm-model-select" style="width: 100%; background: #0d1117; color: #e6edf3; border: 1px solid var(--border); border-radius: 3px; padding: 4px; font-size: 12px; margin-bottom: 12px; outline: none;">
+            <option value="gemini:gemini-3.6-flash">Gemini 3.6 Flash</option>
+            <option value="deepseek:deepseek-v4-flash">DeepSeek V4 Flash</option>
+            <option value="deepseek:deepseek-v4-pro">DeepSeek V4 Pro</option>
+        </select>
+
+        <button class="btn" id="llm-impression-btn" data-action="llm-impression" style="width: 100%; min-width: unset; justify-content: center; padding: 6px; margin-bottom: 8px;" title="Z Findings vytvoří moderní radiologický závěr">Impression</button>
+
+        <button class="btn" id="llm-case-btn" data-action="llm-case-study" style="width: 100%; min-width: unset; justify-content: center; padding: 6px; margin-bottom: 8px;" title="Diferenciální rozvaha ze závěru (nová záložka)">Case study</button>
+
+        <div class="row" style="align-items: stretch;">
+            <button class="btn" id="llm-path-btn" data-action="llm-pathology" style="flex: 0 0 118px; min-width: unset; justify-content: center; padding: 6px;" title="Popis entity a odkazy (nová záložka)">Patologie / entita</button>
+            <input class="input" id="llm-patology-input" style="flex: 1; min-width: 0;" placeholder="např. meniscus tear MRI" autocomplete="off">
+        </div>
+
+        <div id="llm-status" style="margin-top: 10px; font-size: 11px; color: var(--dim); min-height: 14px; text-align: center; line-height: 1.4;"></div>
     </div>
 </header>
 
@@ -3154,6 +3177,7 @@ const UI = {
             concNodes.push(...buildNodes(incidentalBlocks, { prefixNove: true }));
         }
         concContainer.replaceChildren(...concNodes);
+        appendLlmImpressionSection(concContainer);
     }
 };
 
@@ -3400,6 +3424,239 @@ function getLlmHelpContext() {
     };
 }
 
+/* ═══════════════════════════════════════════════
+   LLM PANEL (Impression / Case study / Patologie)
+═══════════════════════════════════════════════ */
+const LLM_DEFAULT_API = 'https://radiology-ai-search.onrender.com';
+const LLM_MODEL_KEY = 'medApp_ai_model';
+const llmApiBase = (new URLSearchParams(location.search).get('api') || LLM_DEFAULT_API).replace(/\/$/, '');
+
+let LlmImpression = { text: '', error: '', loading: false };
+
+function escHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function parseModelChoice(value) {
+    const [provider, model] = String(value || '').split(':');
+    return { provider: provider || 'gemini', model: model || 'gemini-3.6-flash' };
+}
+
+function llmModelValue() {
+    const s = document.getElementById('llm-model-select');
+    return s ? s.value : 'gemini:gemini-3.6-flash';
+}
+
+function llmSetLoading(isLoading) {
+    ['llm-impression-btn', 'llm-case-btn', 'llm-path-btn', 'llm-patology-input', 'llm-model-select'].forEach(id => {
+        const n = document.getElementById(id);
+        if (n) n.disabled = isLoading;
+    });
+}
+
+function llmSetStatus(message, isError = false) {
+    const st = document.getElementById('llm-status');
+    if (!st) return;
+    st.textContent = message || '';
+    st.style.color = isError ? '#ff6b6b' : 'var(--dim)';
+}
+
+function llmOpenBlank(heading, note) {
+    const win = window.open('', '_blank');
+    if (!win) {
+        llmSetStatus('Prohlížeč zablokoval vyskakovací okno. Povolte pop-ups.', true);
+        return null;
+    }
+    win.document.write(
+        '<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"><title>' + escHtml(heading) + '</title></head>' +
+        '<body style="background:#121212;color:#e0e0e0;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">' +
+        '<h2>' + escHtml(heading) + '</h2><p style="color:#8b949e;">' + escHtml(note) + '</p></body></html>'
+    );
+    win.document.close();
+    return win;
+}
+
+function llmWriteHtml(win, html) {
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+}
+
+function llmWriteBlankError(win, heading, msg) {
+    win.document.open();
+    win.document.write(
+        '<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"><title>' + escHtml(heading) + '</title></head>' +
+        '<body style="background:#121212;color:#ff6b6b;font-family:system-ui,sans-serif;padding:2rem;line-height:1.5;">' +
+        '<h2>' + escHtml(heading) + '</h2><p>' + escHtml(msg) + '</p></body></html>'
+    );
+    win.document.close();
+}
+
+async function llmSendImpression() {
+    const findings = ClipboardService.formatReport(false) || '';
+    if (!findings) {
+        llmSetStatus('Nejprve doplň Findings.', true);
+        return;
+    }
+    const { provider, model } = parseModelChoice(llmModelValue());
+    localStorage.setItem(LLM_MODEL_KEY, llmModelValue());
+    const meta = getLlmHelpContext();
+
+    llmSetLoading(true);
+    llmSetStatus(`Generuji Impression přes ${provider}… (30s+)`);
+    LlmImpression = { text: '', error: '', loading: true };
+    UI.renderReport();
+    try {
+        const res = await fetch(`${llmApiBase}/api/impression`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                findings,
+                provider,
+                model,
+                age: meta.age,
+                gender: meta.gender,
+                patientText: meta.patientText,
+                indication: meta.indication
+            })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+        if (!data.text) throw new Error('Backend nevrátil pole "text".');
+        LlmImpression = { text: String(data.text).trim(), error: '', loading: false };
+        llmSetStatus(`Hotovo (${data.provider || provider} / ${data.model || model}).`, false);
+    } catch (error) {
+        LlmImpression = { text: '', error: error.message || 'Neznámá chyba', loading: false };
+        llmSetStatus(`Chyba: ${LlmImpression.error}`, true);
+    } finally {
+        UI.renderReport();
+        llmSetLoading(false);
+    }
+}
+
+async function llmSendCaseStudy() {
+    const conclusion = ClipboardService.formatConclusion(true) || '';
+    if (!conclusion) {
+        llmSetStatus('Nejprve doplň závěr (Impression).', true);
+        return;
+    }
+    const { provider, model } = parseModelChoice(llmModelValue());
+    localStorage.setItem(LLM_MODEL_KEY, llmModelValue());
+    const meta = getLlmHelpContext();
+
+    llmSetLoading(true);
+    llmSetStatus(`Case study přes ${provider}… (30s+)`);
+    const win = llmOpenBlank('Case study', `Model: ${provider} / ${model} — AI připravuje diferenciální rozvahu…`);
+    if (!win) {
+        llmSetLoading(false);
+        return;
+    }
+    try {
+        const res = await fetch(`${llmApiBase}/api/case-study`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                findings: conclusion,
+                provider,
+                model,
+                age: meta.age,
+                gender: meta.gender,
+                patientText: meta.patientText,
+                indication: meta.indication
+            })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+        if (!data.html) throw new Error('Backend nevrátil pole "html".');
+        llmWriteHtml(win, data.html);
+        llmSetStatus(`Hotovo (${data.provider || provider} / ${data.model || model}).`, false);
+    } catch (error) {
+        llmWriteBlankError(win, 'Chyba při Case study', error.message || 'Neznámá chyba');
+        llmSetStatus(`Chyba: ${error.message || 'Neznámá chyba'}`, true);
+    } finally {
+        llmSetLoading(false);
+    }
+}
+
+async function llmSendPathology() {
+    const inp = document.getElementById('llm-patology-input');
+    const patology = (inp ? inp.value : '').trim();
+    if (!patology) {
+        llmSetStatus('Zadejte hledanou patologii / entitu.', true);
+        return;
+    }
+    const { provider, model } = parseModelChoice(llmModelValue());
+    localStorage.setItem(LLM_MODEL_KEY, llmModelValue());
+
+    llmSetLoading(true);
+    llmSetStatus(`Generuji přes ${provider}… (30s+)`);
+    const win = llmOpenBlank('Analýza: ' + patology, `Model: ${provider} / ${model} — AI připravuje text a odkazy na články…`);
+    if (!win) {
+        llmSetLoading(false);
+        return;
+    }
+    try {
+        const res = await fetch(`${llmApiBase}/api/analyze`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ patology, provider, model })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+        if (!data.html) throw new Error('Backend nevrátil pole "html".');
+        llmWriteHtml(win, data.html);
+        llmSetStatus(`Hotovo (${data.provider || provider} / ${data.model || model}).`, false);
+    } catch (error) {
+        llmWriteBlankError(win, 'Chyba při generování', error.message || 'Neznámá chyba');
+        llmSetStatus(`Chyba: ${error.message || 'Neznámá chyba'}`, true);
+    } finally {
+        llmSetLoading(false);
+        if (inp) inp.focus();
+    }
+}
+
+function appendLlmImpressionSection(container) {
+    const old = container.querySelector('.llm-impression-section');
+    if (old) old.remove();
+    if (!LlmImpression.text && !LlmImpression.error && !LlmImpression.loading) return;
+
+    const sec = el('div', { className: 'llm-impression-section' });
+
+    const headRow = el('div', { className: 'llm-impression-head-row' });
+    const head = el('div', {
+        className: 'report-heading llm-impression-head',
+        'data-action': 'copy-llm-impression',
+        title: 'Kliknutím zkopíruješ závěr LLM',
+        textContent: 'Impression LLM'
+    });
+    headRow.appendChild(head);
+    if (LlmImpression.text) {
+        headRow.appendChild(el('button', {
+            className: 'btn llm-clear-btn',
+            'data-action': 'llm-clear-impression',
+            title: 'Smazat závěr LLM',
+            textContent: '✕'
+        }));
+    }
+    sec.appendChild(headRow);
+
+    let bodyCls = 'llm-impression-frame';
+    let bodyTxt = '';
+    if (LlmImpression.loading) {
+        bodyCls += ' llm-loading';
+        bodyTxt = 'Generuji Impression LLM…';
+    } else if (LlmImpression.error) {
+        bodyCls += ' llm-error';
+        bodyTxt = 'Chyba: ' + LlmImpression.error;
+    } else if (LlmImpression.text) {
+        bodyTxt = LlmImpression.text;
+    } else {
+        return;
+    }
+    sec.appendChild(el('div', { className: bodyCls, textContent: bodyTxt }));
+    container.appendChild(sec);
+}
+
 function validateTextForSingleWords(text) {
     let warnings = [];
     let currentSection = "Neznámá sekce";
@@ -3504,7 +3761,45 @@ function executeCopyFlow(textToCopy, target, isAll) {
 const ActionHandlers = {
     'toggle-settings': () => {
         const modal = document.getElementById('settings-modal');
-        if (modal) modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
+        if (modal) {
+            const show = modal.style.display === 'none';
+            if (show) {
+                const llm = document.getElementById('llm-modal');
+                if (llm) llm.style.display = 'none';
+            }
+            modal.style.display = show ? 'block' : 'none';
+        }
+    },
+    'toggle-llm': () => {
+        const modal = document.getElementById('llm-modal');
+        if (modal) {
+            const show = modal.style.display === 'none';
+            if (show) {
+                const settings = document.getElementById('settings-modal');
+                if (settings) settings.style.display = 'none';
+            }
+            modal.style.display = show ? 'block' : 'none';
+        }
+    },
+    'llm-impression': () => llmSendImpression(),
+    'llm-case-study': () => llmSendCaseStudy(),
+    'llm-pathology': () => llmSendPathology(),
+    'copy-llm-impression': (target) => {
+        if (!LlmImpression.text) return;
+        navigator.clipboard.writeText(LlmImpression.text).then(() => {
+            if (!target) return;
+            const orig = target.textContent;
+            target.textContent = 'Zkopírováno!';
+            target.classList.add('llm-copied');
+            setTimeout(() => {
+                target.textContent = orig;
+                target.classList.remove('llm-copied');
+            }, 1200);
+        }).catch(err => console.error('Nelze kopírovat:', err));
+    },
+    'llm-clear-impression': () => {
+        LlmImpression = { text: '', error: '', loading: false };
+        UI.renderReport();
     },
     'copy-text': (target) => {
         const isReport = target.dataset.target === 'report-container';
@@ -3794,6 +4089,12 @@ document.addEventListener('click', e => {
     const isSettingsBtn = e.target.closest('[data-action="toggle-settings"]');
     if (modal && modal.style.display === 'block' && !modal.contains(e.target) && !isSettingsBtn) {
         modal.style.display = 'none';
+    }
+
+    const llmModal = document.getElementById('llm-modal');
+    const isLlmBtn = e.target.closest('[data-action="toggle-llm"]');
+    if (llmModal && llmModal.style.display === 'block' && !llmModal.contains(e.target) && !isLlmBtn) {
+        llmModal.style.display = 'none';
     }
 
     const target = e.target.closest('[data-action]');
@@ -4384,31 +4685,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const recistCheckbox = document.getElementById('setting-recist');
     if (recistCheckbox) recistCheckbox.checked = APP_SETTINGS.recist;
     
+    const llmModelSelect = document.getElementById('llm-model-select');
+    if (llmModelSelect) {
+        const savedModel = localStorage.getItem(LLM_MODEL_KEY);
+        if (savedModel && [...llmModelSelect.options].some(o => o.value === savedModel)) {
+            llmModelSelect.value = savedModel;
+        }
+        llmModelSelect.addEventListener('change', () => {
+            localStorage.setItem(LLM_MODEL_KEY, llmModelSelect.value);
+        });
+    }
+    const llmPatologyInput = document.getElementById('llm-patology-input');
+    if (llmPatologyInput) {
+        llmPatologyInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                llmSendPathology();
+            }
+        });
+    }
+    
     document.body.classList.toggle('hide-predefined', APP_SETTINGS.hidePredefined);
     document.body.classList.toggle('has-preview', APP_SETTINGS.previewReport);
     
     UI.render('exams');
-});
-
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key.toLowerCase() === 'f') {
-        e.preventDefault();
-        const ctx = getLlmHelpContext();
-        try {
-            sessionStorage.setItem('medApp_llm_case', JSON.stringify(ctx));
-        } catch (_) { /* ignore */ }
-        const popup = window.open('ai_search.html', 'LLMHelpWindow', 'width=680,height=720,top=120,left=160');
-        if (!popup) {
-            alert('Prohlížeč zablokoval vyskakovací okno. Povolte pop-ups pro tuto stránku.');
-        } else {
-            popup.focus();
-            setTimeout(() => {
-                try {
-                    popup.postMessage({ type: 'llm-help-prefill', ...ctx }, location.origin);
-                } catch (_) { /* ignore */ }
-            }, 250);
-        }
-    }
 });
 </script>
 </body>

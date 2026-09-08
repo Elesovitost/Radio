@@ -107,6 +107,28 @@ ZAKÁZÁNO: <img>, galerie, markdown ploty, javascript, falešné URL.
 DŮLEŽITÉ: Vrať POUZE čistý HTML kód od <!DOCTYPE html>... bez markdown.`;
 }
 
+function buildImpressionPrompt({ findings, age, gender, indication, patientText }) {
+  const who = String(patientText || '').trim() || 'Pacient';
+  const ageBit = String(age || '').trim() ? `, ${String(age).trim()} let` : '';
+  const ind = String(indication || '').trim();
+  const indBit = ind ? ` Indikace: ${ind}.` : '';
+  return `Jsi zkušený radiolog. Ze zadané indikace a popisu vyšetření (findings) vytvoř moderní radiologický závěr (Impression).
+
+${who}${ageBit}.${indBit}
+
+Popis vyšetření (findings):
+${String(findings || '').trim()}
+
+Požadavky na závěr:
+1. Stručný a věcný, celý v češtině, bez zbytečných formulací.
+2. Seřaď nálezy podle klinické závažnosti (nejvýznamnější jako první).
+3. Shrň patologické a klinicky relevantní nálezy; normální/fyziologické nálezy zmiň jen stručně, pokud je to podstatné.
+4. Pokud je k dispozici srovnání s minulým vyšetřením, zdůrazni změny (nově / progrese / regrese / beze změny).
+5. Na konec případně krátce uveď doporučení (např. korelace s klinikou, biopsie, další zobrazení), jen pokud vyplývá z nálezu.
+6. Nevysvětluj postup, nepiš úvod, nekomentuj samotný popis; výstupem je hotový závěr připravený k použití.
+7. Vrať POUZE čistý text závěru – bez nadpisů, bez číslování, bez HTML a bez markdownu.`;
+}
+
 function ensureHtmlDocument(html, title) {
   const text = String(html || '').trim();
   if (/<html[\s>]/i.test(text)) return text;
@@ -989,6 +1011,78 @@ app.post('/api/case-study', async (req, res) => {
     });
   } catch (error) {
     console.error('[case-study]', error);
+    const quota = isQuotaError(error) || Number(error.status) === 429;
+    const busy = isBusyError(error) || Number(error.status) === 503;
+    const providerHint = String(req.body?.provider || 'gemini').toLowerCase();
+    res.status(quota ? 429 : busy ? 503 : 500).json({
+      error: quota
+        ? providerHint === 'deepseek'
+          ? 'Vyčerpaná kvóta DeepSeek API (429). Zkontroluj kredit na https://platform.deepseek.com/.'
+          : 'Vyčerpaná kvóta Gemini API (429). Zkontroluj plán/billing na https://aistudio.google.com/.'
+        : busy
+          ? 'AI poskytovatel je teď přetížený. Zkus to za chvíli znovu.'
+          : error.message || 'Neznámá chyba backendu.',
+      detail: errText(error).slice(0, 500)
+    });
+  }
+});
+
+app.post('/api/impression', async (req, res) => {
+  try {
+    const findings = String(req.body?.findings || req.body?.report || '').trim();
+    if (!findings) return res.status(400).json({ error: 'Chybí pole findings (popis vyšetření).' });
+    if (findings.length > 50000) {
+      return res.status(400).json({ error: 'Findings je příliš dlouhý (max 50000 znaků).' });
+    }
+
+    let provider;
+    let model;
+    try {
+      provider = resolveProvider(req.body?.provider);
+      model = resolveModel(provider, req.body?.model);
+    } catch (e) {
+      return res.status(400).json({ error: e.message });
+    }
+
+    if (provider === 'gemini' && (!GEMINI_API_KEY || !ai)) {
+      return res.status(500).json({ error: 'GEMINI_API_KEY není nastaven na serveru.' });
+    }
+    if (provider === 'deepseek' && !DEEPSEEK_API_KEY) {
+      return res.status(500).json({ error: 'DEEPSEEK_API_KEY není nastaven na serveru.' });
+    }
+
+    const prompt = buildImpressionPrompt({
+      findings,
+      age: req.body?.age,
+      gender: req.body?.gender,
+      indication: req.body?.indication,
+      patientText: req.body?.patientText
+    });
+
+    const genResult = await generateContent({ provider, model, prompt });
+
+    const text = String(genResult.text || '')
+      .replace(/^\s*```(?:text)?\s*/i, '')
+      .replace(/\s*```\s*$/i, '')
+      .trim();
+
+    if (!text) {
+      return res.status(502).json({
+        error: 'Model nevrátil text.',
+        provider: genResult.provider,
+        model: genResult.model
+      });
+    }
+
+    res.json({
+      text,
+      mode: genResult.mode,
+      provider: genResult.provider,
+      model: genResult.model,
+      attempt: genResult.attempt
+    });
+  } catch (error) {
+    console.error('[impression]', error);
     const quota = isQuotaError(error) || Number(error.status) === 429;
     const busy = isBusyError(error) || Number(error.status) === 503;
     const providerHint = String(req.body?.provider || 'gemini').toLowerCase();
