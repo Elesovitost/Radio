@@ -798,11 +798,27 @@ const GRAMMAR_DICT = {
         },
         'bulging disku': {
             pad1: 'bulging disku', pad1pl: 'bulgingy disků',
-            pad2: 'bulgingu disku', pad2pl: 'bulgingu disků'
+            pad2: 'bulgingu disku', pad2pl: 'bulgingů disků'
         },
         'herniace disku': {
             pad1: 'herniace disku', pad1pl: 'herniace disků',
             pad2: 'herniace disku', pad2pl: 'herniace disků'
+        },
+        'mírná facetová artróza': {
+            pad1: 'mírná facetová artróza', pad1pl: 'mírné facetové artrózy',
+            pad2: 'mírné facetové artrózy', pad2pl: 'mírných facetových artróz'
+        },
+        'střední facetová artróza': {
+            pad1: 'střední facetová artróza', pad1pl: 'střední facetové artrózy',
+            pad2: 'střední facetové artrózy', pad2pl: 'středních facetových artróz'
+        },
+        'pokročilá facetová artróza': {
+            pad1: 'pokročilá facetová artróza', pad1pl: 'pokročilé facetové artrózy',
+            pad2: 'pokročilé facetové artrózy', pad2pl: 'pokročilých facetových artróz'
+        },
+        'facetová artróza': {
+            pad1: 'facetová artróza', pad1pl: 'facetové artrózy',
+            pad2: 'facetové artrózy', pad2pl: 'facetových artróz'
         },
         'bulging': {
             pad1: 'bulging', pad1pl: 'bulgingy',
@@ -4063,8 +4079,12 @@ function renderOrganPopup(organDef, organId) {
     
     const lymphTable = lesionTable ? lesionTable.replace('_lesion_main', '_lymphnode_main') : null;
     const hemoTable = isBrain ? 'brain_hemo_main' : null;
+
+    const locMatch = (organDef.name || '').match(/\(([^)]+)\)/);
+    const locLabel = locMatch ? locMatch[1].toUpperCase() : '';
+    const withLoc = (base) => locLabel ? `${base} (${locLabel})` : base;
     
-    let html = `<div class="popup-title">${organDef.name}</div>`;
+    let html = '';
     
     const getInstanceName = (tableId, instId, defaultType, organName) => {
         const reportFrame = document.querySelector(`.report-frame[data-table="${tableId}__${instId}"]`);
@@ -4133,14 +4153,15 @@ function renderOrganPopup(organDef, organId) {
         }
     };
 
-    // Vykreslení tlačítek - Existující instance VŽDY před novými
+    // Vykreslení tlačítek - Existující instance VŽDY před novými / dalšími
     if (lesionTable && lesionTable.includes('_lesion_main')) {
         const lesionInsts = Store.instances?.[lesionTable] || [];
         lesionInsts.forEach((instId) => {
             const name = getInstanceName(lesionTable, instId, 'Ložisko', organDef.name);
             html += `<button class="popup-btn btn-lesion" data-action="open-table" data-table="${lesionTable}__${instId}">🔴 ${name}</button>`;
         });
-        html += `<button class="popup-btn btn-lesion" data-action="open-table" data-table="${lesionTable}">Nové ložisko</button>`;
+        const lesionAddLabel = lesionInsts.length > 0 ? withLoc('DALŠÍ LOŽISKO') : withLoc('LOŽISKO');
+        html += `<button class="popup-btn btn-lesion" data-action="open-table" data-table="${lesionTable}">${lesionAddLabel}</button>`;
     }
 
     if (!isBrain && !isSkeleton && lymphTable) {
@@ -4149,7 +4170,8 @@ function renderOrganPopup(organDef, organId) {
             const name = getInstanceName(lymphTable, instId, 'Uzlina', organDef.name);
             html += `<button class="popup-btn btn-lymph" data-action="open-table" data-table="${lymphTable}__${instId}">🟡 ${name}</button>`;
         });
-        html += `<button class="popup-btn btn-lymph" data-action="open-table" data-table="${lymphTable}">Nová lymfadenopatie</button>`;
+        const lymphAddLabel = lymphInsts.length > 0 ? withLoc('DALŠÍ UZLINY') : withLoc('UZLINY');
+        html += `<button class="popup-btn btn-lymph" data-action="open-table" data-table="${lymphTable}">${lymphAddLabel}</button>`;
     }
     
     if (isBrain && hemoTable) {
@@ -4158,7 +4180,8 @@ function renderOrganPopup(organDef, organId) {
             const name = getInstanceName(hemoTable, instId, 'Krvácení / ischemie', organDef.name);
             html += `<button class="popup-btn" style="color: #b19cd9; font-weight: bold;" data-action="open-table" data-table="${hemoTable}__${instId}">🟣 ${name}</button>`;
         });
-        html += `<button class="popup-btn" data-action="open-table" data-table="${hemoTable}">🟣 Nové krvácení / ischemie</button>`;
+        const hemoAddLabel = hemoInsts.length > 0 ? withLoc('DALŠÍ KRVÁCENÍ / ISCHEMIE') : withLoc('KRVÁCENÍ / ISCHEMIE');
+        html += `<button class="popup-btn" data-action="open-table" data-table="${hemoTable}">🟣 ${hemoAddLabel}</button>`;
     }
     
     popup.innerHTML = html;

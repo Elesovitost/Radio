@@ -565,15 +565,16 @@ const RegionLSp = {
                 let reportStr = '';
 
                 if (type === 'F') {
+                    const sideConc = side === 'l.dx.' ? 'vpravo' : (side === 'l.sin.' ? 'vlevo' : side);
                     if (val === '0') reportStr = `bez zúžení foramina ${side}`;
                     else if (val === '3') { 
-                        nom = `výrazná stenóza foramina ${side} s útlakem kořene ${seg.vLabel} ${side}`; 
-                        dat = `výrazné stenóze foramina ${side} s útlakem kořene ${seg.vLabel} ${side}`; 
-                        reportStr = nom;
+                        nom = `výrazná stenóza foramina ${sideConc} s útlakem kořene ${seg.vLabel} ${sideConc}`; 
+                        dat = `výrazné stenóze foramina ${sideConc} s útlakem kořene ${seg.vLabel} ${sideConc}`; 
+                        reportStr = `výrazná stenóza foramina ${side} s útlakem kořene ${seg.vLabel} ${side}`;
                     } else { 
-                        nom = val === '1' ? `mírná stenóza foramina ${side}` : `stenóza foramina ${side}`; 
-                        dat = val === '1' ? `mírné stenóze foramina ${side}` : `stenóze foramina ${side}`;
-                        reportStr = nom;
+                        nom = val === '1' ? `mírná stenóza foramina ${sideConc}` : `stenóza foramina ${sideConc}`; 
+                        dat = val === '1' ? `mírné stenóze foramina ${sideConc}` : `stenóze foramina ${sideConc}`;
+                        reportStr = val === '1' ? `mírná stenóza foramina ${side}` : `stenóza foramina ${side}`;
                     }
                 } else if (type === 'P') {
                     if (val === '0') reportStr = `bez tlaku na kořen ${seg.root} ${side}`;
@@ -623,12 +624,12 @@ const RegionLSp = {
 
                 if (type === 'F') {
                     if (val === '3') { 
-                        nom = `výrazná stenóza obou foramin s útlakem kořenů ${seg.vLabel} bilat.`; 
-                        dat = `výrazné stenóze obou foramin s útlakem kořenů ${seg.vLabel} bilat.`; 
-                        reportStr = nom;
+                        nom = `výrazná stenóza foramin bilat. s útlakem kořenů ${seg.vLabel} bilat.`; 
+                        dat = `výrazné stenóze foramin bilat. s útlakem kořenů ${seg.vLabel} bilat.`; 
+                        reportStr = `výrazná stenóza obou foramin s útlakem kořenů ${seg.vLabel} bilat.`;
                     } else { 
-                        nom = val === '1' ? `mírná stenóza obou foramin` : `stenóza obou foramin`; 
-                        dat = val === '1' ? `mírné stenóze obou foramin` : `stenóze obou foramin`; 
+                        nom = val === '1' ? `mírná stenóza foramin bilat.` : `stenóza foramin bilat.`; 
+                        dat = val === '1' ? `mírné stenóze foramin bilat.` : `stenóze foramin bilat.`; 
                         reportStr = val === '1' ? `mírné zúžení obou foramin` : `zúžení obou foramin`;
                     }
                 } else if (type === 'P') {
@@ -707,8 +708,8 @@ const RegionLSp = {
             const structuralGenParts = [...activeCauses.map((c) => c.gen), ...fibrosisGenArr, ...adhesionArr].filter(Boolean);
 
             if (mappedEffects.length > 0) {
-                const structuralNom = structuralNomParts.length ? joinCzech(structuralNomParts) : 'Strukturální změny';
-                const structuralGen = structuralGenParts.length ? joinCzech(structuralGenParts) : 'Strukturálních změn';
+                const structuralNom = structuralNomParts.length ? joinCzech(structuralNomParts) : 'strukturální změny';
+                const structuralGen = structuralGenParts.length ? joinCzech(structuralGenParts) : 'strukturálních změn';
 
                 const effectStrNom = joinCzech(mappedEffects.map((e) => e.nom));
                 const effectStrDat = joinCzech(mappedEffects.map((e) => e.dat));
