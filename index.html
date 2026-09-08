@@ -4232,10 +4232,10 @@ function renderOrganPopup(organDef, organId) {
         const hemoInsts = Store.instances?.[hemoTable] || [];
         hemoInsts.forEach((instId) => {
             const name = getInstanceName(hemoTable, instId, 'Krvácení / ischemie', organDef.name);
-            html += `<button class="popup-btn" style="color: #b19cd9; font-weight: bold;" data-action="open-table" data-table="${hemoTable}__${instId}">🟣 ${name}</button>`;
+            html += `<button class="popup-btn btn-hemo" data-action="open-table" data-table="${hemoTable}__${instId}">🟣 ${name}</button>`;
         });
         const hemoAddLabel = hemoInsts.length > 0 ? withLoc('DALŠÍ KRVÁCENÍ / ISCHEMIE') : withLoc('KRVÁCENÍ / ISCHEMIE');
-        html += `<button class="popup-btn" data-action="open-table" data-table="${hemoTable}">🟣 ${hemoAddLabel}</button>`;
+        html += `<button class="popup-btn btn-hemo" data-action="open-table" data-table="${hemoTable}">${hemoAddLabel}</button>`;
     }
     
     popup.innerHTML = html;

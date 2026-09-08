@@ -428,7 +428,7 @@ const RegionBrain = {
 
                 const pocetIds = [`${p}_c_soli`, `${p}_c_dve`, `${p}_c_vice`, `${p}_c_mnoho`];
                 let pocetRawId = pocetIds.find(id => ctx.isActive(id));
-                let pocetText = pocetRawId ? ButtonConfigs[`${examId}_brain_${pocetRawId}`].text : 'solitární';
+                let pocetText = (pocetRawId ? resolveButtonConfig(examId, 'brain', pocetRawId)?.text : null) || 'solitární';
 
                 const druhIds = [`${p}_k_lez`, `${p}_k_kol`, `${p}_k_lem`, `${p}_k_cust`];
                 let druhRawId = druhIds.find(id => ctx.isActive(id));
@@ -445,14 +445,14 @@ const RegionBrain = {
 
                 const phaseIds = ['hyp', 'ak', 'sub', 'chr'];
                 let phaseMRId = phaseIds.find(id => ctx.isActive(`${p}_mr_${id}`));
-                let phaseMR = phaseMRId ? ButtonConfigs[`${examId}_brain_${p}_mr_${phaseMRId}`].text : null;
+                let phaseMR = phaseMRId ? resolveButtonConfig(examId, 'brain', `${p}_mr_${phaseMRId}`)?.text || null : null;
 
                 let phaseCTId = phaseIds.find(id => ctx.isActive(`${p}_ct_${id}`));
-                let phaseCT = phaseCTId ? ButtonConfigs[`${examId}_brain_${p}_ct_${phaseCTId}`].text : null;
+                let phaseCT = phaseCTId ? resolveButtonConfig(examId, 'brain', `${p}_ct_${phaseCTId}`)?.text || null : null;
 
                 const etioIds = ['isc', 'ick', 'sdh', 'edh', 'sak', 'ivh'];
                 let etioId = etioIds.find(id => ctx.isActive(`${p}_e_${id}`));
-                let etio = etioId ? ButtonConfigs[`${examId}_brain_${p}_e_${etioId}`].text : null;
+                let etio = etioId ? resolveButtonConfig(examId, 'brain', `${p}_e_${etioId}`)?.text || null : null;
 
                 let isBleed = etio && etio !== 'ischemie';
                 let vzhledArr = [];
