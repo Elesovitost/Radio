@@ -55,23 +55,37 @@ const UI = {
         });
     },
 
-    // Seskupený seznam kategorií: pro každou aktivní část těla (hlava, krk, hrudník,
-    // břicho, skeleton) nadpis - klikatelný - a pod ním položky, které k ní patří.
-    // Kliknutí na nadpis otevře všechny tabulky regionu, kliknutí na položku danou tabulku.
+    // Seskupený seznam kategorií: pro každou aktivní část těla nadpis - klikatelný -
+    // a pod ním položky, které k ní patří. Kliknutí na nadpis otevře všechny tabulky
+    // regionu, kliknutí na položku danou tabulku.
     buildOrganCategoryNav(activeRegions) {
-        const regionOrder = ['brain', 'neck', 'thorax', 'abdomen', 'skeleton'];
-        const groups = regionOrder
-            .filter(r => activeRegions.includes(r))
+        const WB_REGIONS = ['brain', 'neck', 'thorax', 'abdomen', 'skeleton'];
+        const DEDICATED = ['prostate', 'rectum', 'shoulder', 'knee', 'ankle'];
+
+        // Celotělové schéma (hlava/krk/hrudník/břicho/skeleton) vs. dedikovaná mapa regionu
+        const wbActive = WB_REGIONS.filter(r => activeRegions.includes(r));
+        const dedicatedActive = DEDICATED.filter(r => activeRegions.includes(r));
+        const ordered = wbActive.length
+            ? [...wbActive, ...activeRegions.filter(r => !WB_REGIONS.includes(r))]
+            : dedicatedActive;
+
+        const groups = ordered
             .map(r => ({ id: r, title: (REGIONS[r] && REGIONS[r].title) || r, items: [] }));
 
         const usedTables = new Set();
         for (const group of groups) {
+            const isWbGroup = WB_REGIONS.includes(group.id);
             for (const organId of Object.keys(ORGAN_MAP)) {
                 const def = ORGAN_MAP[organId];
                 if (!def.regions || !def.regions.includes(group.id)) continue;
-                // položku přiřaď do první aktivní skupiny (aby se nezdvojovala)
-                const primary = groups.find(g => def.regions.includes(g.id));
-                if (primary !== group) continue;
+                // Na dedikované mapě (prostata, rektum, rameno, koleno, hlezno) se zobrazí
+                // jen položky náležející výhradně tomuto regionu – obecné (břišní) duplicity přeskoč
+                if (!wbActive.length && def.regions.length > 1) continue;
+                // Na celotělovém schématu položku přiřaď do první aktivní skupiny
+                if (wbActive.length) {
+                    const primary = groups.find(g => def.regions.includes(g.id));
+                    if (primary !== group) continue;
+                }
                 let table = def.table;
                 if (!table) continue;
                 if (def.resolveTable) table = def.resolveTable([group.id]);
@@ -434,8 +448,8 @@ const UI = {
             const svgContainer = el('div', { className: 'organ-svg', id: 'organ-svg-container' });
             body.appendChild(svgContainer);
 
-            // Klikatelný seznam kategorií vlevo od SVG (jen pro WB části těla)
-            if (hasWBSvg) {
+            // Klikatelný seznam kategorií vlevo od SVG (všechna vyšetření se schématem)
+            if (usesSvg) {
                 const nav = this.buildOrganCategoryNav(activeRegions);
                 if (nav) {
                     wrapper.classList.add('has-organ-nav');
