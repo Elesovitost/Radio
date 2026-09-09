@@ -36,6 +36,24 @@ function sizeDimsFromValue(val) {
     return String(val).split('x').map(part => {
         const { num } = parseAffixedNumber(part);
         if (num === null || Number.isNaN(num)) return null;
-        return Math.max(1, Math.round(num));
+        return Math.max(0, Math.round(num));
     });
+}
+
+/** Max. číselný rozměr z size pole; null = prázdné / neparsovatelné. */
+function sizeMaxDim(val) {
+    if (val === '' || val == null) return null;
+    const nums = String(val).match(/\d+(?:\.\d+)?/g);
+    if (!nums) return null;
+    return Math.max(...nums.map(Number));
+}
+
+function isSizeNonZero(val) {
+    const m = sizeMaxDim(val);
+    return m !== null && m > 0;
+}
+
+function isSizeExplicitZero(val) {
+    const m = sizeMaxDim(val);
+    return m === 0;
 }

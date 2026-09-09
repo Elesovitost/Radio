@@ -142,7 +142,7 @@ const UI = {
             // znění a na konci řádek „další …" (klik = vytvoří další). Vše na stejné úrovni.
             const blocks = wbActive.length ? (WB_LESION_BLOCKS[group.id] || []) : [];
             blocks.forEach(([table, kind, label, defaultType, organName]) => {
-                const addLabel = kind === 'lymph' ? 'další uzliny' : kind === 'lesion' ? 'další ložisko' : 'další krvácení / ischemie';
+                const addLabel = kind === 'lymph' ? 'další uzliny' : kind === 'lesion' ? 'Další ložisko' : 'Další krvácení / ischemie';
                 const cat = el('div', {
                     className: 'organ-nav-lecat',
                     'data-table': table,
@@ -178,7 +178,7 @@ const UI = {
         const defaultType = cat.dataset.default || 'Ložisko';
         const organName = cat.dataset.organ || '';
         const firstLabel = cat.dataset.label || (kind === 'lymph' ? 'Uzliny' : kind === 'hemo' ? 'Krvácení / ischemie' : 'Ložisko');
-        const addLabel = cat.dataset.add || (kind === 'lymph' ? 'další uzliny' : kind === 'hemo' ? 'další krvácení / ischemie' : 'další ložisko');
+        const addLabel = cat.dataset.add || (kind === 'lymph' ? 'Další uzliny' : kind === 'hemo' ? 'Další krvácení / ischemie' : 'Další ložisko');
         const insts = (Store.instances && Store.instances[table]) || [];
 
         const children = insts.map(instId => {
@@ -1061,8 +1061,8 @@ const UI = {
                 }
                 if (b.type === 'frame') {
                     let cleanText = b.text || '';
-                    if (prefixNove && /(?:,\s*nově|\(\s*nově\s*\))/.test(cleanText)) {
-                        cleanText = cleanText.replace(/(?:,\s*nově|\(\s*nově\s*\))/g, '');
+                    if (prefixNove && /(?:,\s*nově!?|\(\s*nově!?\s*\))/.test(cleanText)) {
+                        cleanText = cleanText.replace(/(?:,\s*nově!?|\(\s*nově!?\s*\))/g, '');
                         cleanText = cleanText.replace(/\s+/g, ' ').trim();
                         if (cleanText) {
                             cleanText = 'Nově ' + cleanText.charAt(0).toLowerCase() + cleanText.slice(1);

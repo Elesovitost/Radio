@@ -12,7 +12,7 @@ const LESIONS_DEFINITION = {
         'Minule:',
         'Rozměry:', { field: 'size', id: `${prefix}_size_old`, placeholder: 'mm' },
         'SUVmax:', { field: 'suv', id: `${prefix}_suv_old`, placeholder: '...' },
-        'Počet:', { btn: `${prefix}_cnt_old`, states: ['vyber', '0', 'méně', 'více', 'kolísání'] }
+        'Počet:', { btn: `${prefix}_cnt_old`, states: ['vyber', 'méně', 'více', 'kolísání'] }
     ],
     getLesionMetricsRow: (helpers, rowId, prefix) => {
         return helpers.Table2rowNormal(rowId, [
@@ -49,12 +49,15 @@ const LESIONS_DEFINITION = {
     buildPastStr: (ctx, metPfx, size, suv) => {
         if (!Store.pastDate) return '';
         const cntOld = ctx.isActive(`${metPfx}_cnt_old`) ? ctx.text(`${metPfx}_cnt_old`) : '';
-        if (cntOld === '0') return ' (nově)';
-
         let sizeOld = ctx.field(`${metPfx}_size_old`);
+
+        if (isSizeNonZero(size) && isSizeExplicitZero(sizeOld)) return ' (nově!)';
+
         let suvOld = ctx.field(`${metPfx}_suv_old`);
         let pastArr = [];
-        if (sizeOld) pastArr.push((size && size.trim() === sizeOld.trim()) ? 'shodného rozměru' : `${sizeOld} mm`);
+        if (sizeOld && !isSizeExplicitZero(sizeOld)) {
+            pastArr.push((size && size.trim() === sizeOld.trim()) ? 'shodného rozměru' : `${sizeOld} mm`);
+        }
         if (suvOld) {
             if (APP_SETTINGS.suvWord && suv) {
                 const cLiv = extractNumber(Store.fields['suv_jater'] || '3.0');
@@ -72,6 +75,7 @@ const LESIONS_DEFINITION = {
 
     parseLesionMetrics: (ctx, metPfx, pocetText, nejText) => {
         let size = ctx.field(`${metPfx}_size`);
+        let sizeOld = ctx.field(`${metPfx}_size_old`);
         let suv = ctx.field(`${metPfx}_suv`);
         
         let prefixNej = '';
@@ -83,8 +87,12 @@ const LESIONS_DEFINITION = {
 
         let suvText = suv ? MetricsEngine.getSuvText(suv) : '';
         let metrikyStr = '';
-        
-        if (size) {
+        const sizeAbsent = !isSizeNonZero(size);
+        const sizeOldPresent = isSizeNonZero(sizeOld);
+
+        if (Store.pastDate && sizeAbsent && sizeOldPresent) {
+            metrikyStr = `${prefixNej} dnes absentující (minule ${sizeOld} mm)${suv ? ' ' + suvText : ''}`;
+        } else if (isSizeNonZero(size)) {
             let dimLabel = size.includes('x') ? 'rozměru' : 'max. diametru';
             metrikyStr = `${prefixNej} ${dimLabel} ${size} mm${suv ? ' ' + suvText : ''}${pastStr}`;
         } else if (suv) {
@@ -215,6 +223,7 @@ const LESIONS_DEFINITION = {
 
     parseLymphNodeMetrics: (ctx, metPfx, pocetText, nejText) => {
         let size = ctx.field(`${metPfx}_size`);
+        let sizeOld = ctx.field(`${metPfx}_size_old`);
         let suv = ctx.field(`${metPfx}_suv`);
         
         let prefixNej = '';
@@ -226,8 +235,12 @@ const LESIONS_DEFINITION = {
 
         let suvText = suv ? MetricsEngine.getSuvText(suv) : '';
         let metrikyStr = '';
-        
-        if (size) {
+        const sizeAbsent = !isSizeNonZero(size);
+        const sizeOldPresent = isSizeNonZero(sizeOld);
+
+        if (Store.pastDate && sizeAbsent && sizeOldPresent) {
+            metrikyStr = `${prefixNej} dnes absentující (minule ${sizeOld} mm)${suv ? ' ' + suvText : ''}`;
+        } else if (isSizeNonZero(size)) {
             let is1D = !size.includes('x');
             let dimLabel = is1D ? 'diametru' : 'rozměru';
             let osaSufix = is1D ? ' v krátké ose' : '';
@@ -448,7 +461,7 @@ const LESIONS_DEFINITION = {
         let dynStr = ctx.getDynamics(`${metPfx}_size`, `${metPfx}_size_old`, `${metPfx}_suv`, `${metPfx}_suv_old`, `${metPfx}_cnt_old`);
         if (dynStr) dynStr = `, ${dynStr}`;
 
-        let hasAny = !!(pocetRawId || druhRawId || ctx.field(`${metPfx}_size`) || ctx.field(`${metPfx}_suv`) || ctx.isActive(`${metPfx}_cnt_old`) || vzhledy.length > 0 || etioStr !== "");
+        let hasAny = !!(pocetRawId || druhRawId || ctx.field(`${metPfx}_size`) || ctx.field(`${metPfx}_size_old`) || ctx.field(`${metPfx}_suv`) || ctx.isActive(`${metPfx}_cnt_old`) || vzhledy.length > 0 || etioStr !== "");
 
         return { hasAny, baseText, vzhledText, metrikyStr, doplneniStr, etioStr, actStr, dynStr };
     }

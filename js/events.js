@@ -183,14 +183,14 @@ document.addEventListener('wheel', e => {
                 
                 if (v === null) {
                     if (e.deltaY > 0) return;
-                    v = 1;
+                    v = 0;
                     parts[aI] = formatAffixedNumber(parsed.prefix, v, parsed.suffix);
                 } else if (e.deltaY < 0) {
                     v = Math.min(999, v + 1);
                     parts[aI] = formatAffixedNumber(parsed.prefix, v, parsed.suffix);
                 } else {
                     v -= 1;
-                    if (v < 1) {
+                    if (v < 0) {
                         if (aI > 0) parts.pop();
                         else parts = [''];
                     } else {
@@ -307,7 +307,7 @@ document.addEventListener('input', e => {
                 if (d === '') return d;
                 const parsed = parseAffixedNumber(d);
                 if (parsed.num === null || Number.isNaN(parsed.num)) return d;
-                if (parsed.num < 1) return formatAffixedNumber(parsed.prefix, 1, parsed.suffix);
+                if (parsed.num < 0) return formatAffixedNumber(parsed.prefix, 0, parsed.suffix);
                 return d;
             }).join('x');
             e.target.value = val;

@@ -148,7 +148,13 @@ const MetricsEngine = {
     },
 
     calculateDynamics: function(currSize, minSize, currSuv, minSuv, cLiv, mLiv, isRecistActive, cntOld) {
-        if (cntOld === '0') return "nově";
+        const currPresent = isSizeNonZero(currSize);
+        const minPresent = isSizeNonZero(minSize);
+        const minZero = isSizeExplicitZero(minSize);
+        const currAbsent = !currPresent;
+
+        if (currPresent && minZero) return "nově";
+        if (currAbsent && minPresent) return "v kompletní regresi";
 
         let sState = null, aState = null;
         const getMax = (s) => { const n = String(s).match(/\d+(\.\d+)?/g); return n ? Math.max(...n.map(Number)) : null; };
