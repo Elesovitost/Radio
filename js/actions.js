@@ -157,7 +157,7 @@ const ClipboardService = {
         const hasMultipleHeadings = Array.from(container.children).filter(el => el.classList.contains('report-heading')).length > 1;
 
         Array.from(container.children).forEach(el => {
-            const text = el.textContent.trim();
+            const text = ((el.dataset.label || '') + el.textContent).trim();
             if (el.classList.contains('report-exam-heading')) {
                 if (currentLine) {
                     lines.push(currentLine.trim());

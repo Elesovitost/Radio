@@ -82,6 +82,7 @@ h2[data-action="copy-text"]:hover, h2.highlight-force { color: #fff; text-shadow
 .text-dim { color: var(--dim) !important; font-style: italic; }
 .report-frame.frame-lesion { color: #e891af; }
 .report-frame.frame-lymphnode { color: #e0c068; }
+.report-frame[data-label]::before { content: attr(data-label); color: var(--accent-hi); }
 body.hide-predefined .report-frame.text-dim { display: none !important; }
 body:not(.has-past-date) .tbl > tbody > tr:has([data-id*="_old"]), body:not(.has-past-date) .row:has(> [data-id*="_minule"]) { display: none !important; }
 .report-exam-heading { color: #d4af37; font-weight: 700; font-size: 11px; margin-top: 6px; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 1px; border-bottom: 1px solid rgba(184, 134, 11, 0.3); }

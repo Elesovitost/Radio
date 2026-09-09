@@ -916,7 +916,9 @@ const UI = {
                     if (b.tableId && (b.tableId.includes('lesion') || b.tableId.includes('hemo'))) classes.push('frame-lesion');
                     if (b.tableId && b.tableId.includes('lymphnode')) classes.push('frame-lymphnode');
 
-                    const node = el('div', { className: classes.join(' '), textContent: cleanText });
+                    const organLabel = (cleanText.match(/^(- [^:\n]+:)/) || [])[1];
+                    const node = el('div', { className: classes.join(' '), textContent: organLabel ? cleanText.slice(organLabel.length) : cleanText });
+                    if (organLabel) node.dataset.label = organLabel;
                     if (b.tableId) {
                         node.dataset.action = 'open-table';
                         node.dataset.table = b.tableId;
