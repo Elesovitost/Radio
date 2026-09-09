@@ -149,9 +149,6 @@
         .report-frame.no-prefix::before { content: ""; }
         body.hide-ct .tbl > tbody > tr:has([data-id*="_ct_"]) { display: none !important; }
         body.hide-mr .tbl > tbody > tr:has([data-id*="_mr_"]) { display: none !important; }
-
-        .expand-notes-btn { text-align: center; cursor: pointer; color: var(--dim); padding: 4px; font-weight: bold; font-size: 16px; transition: color 0.2s; letter-spacing: 2px; }
-        .expand-notes-btn:hover { color: #fff; }
         #spine_lumbar_main.tbl-center td { text-align: left; }
         #spine_lumbar_main.tbl-center td .row { justify-content: flex-start; }
         #spine_lumbar_main > tbody > tr:nth-child(even) > td:first-child span { color: var(--accent-hi); }

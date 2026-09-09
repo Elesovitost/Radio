@@ -300,6 +300,11 @@ const RegionAbdomen = {
                 helpers.Table1col('aw_ost_add', [ { field: 'text', id: 'aw_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'aw_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
             ]));
 
+            // 19. Tenké střevo
+            layoutNodes.push(helpers.TableMain('abdomen_tenke_strevo_main', 'Tenké střevo', [
+                helpers.Table1col('ts_ost_add', [ { field: 'text', id: 'ts_custom_desc', placeholder: 'vlastní popis...' }, { field: 'text', id: 'ts_custom_conc', placeholder: 'vlastní závěr...' } ], { normal: true })
+            ]));
+
             layoutNodes.push(helpers.TableMain('abdomen_ostatni_main', 'Ostatní nálezy', [
                 helpers.Table1col('ostatni_ost_add', [
                     { field: 'text', id: 'ostatni_custom_desc', placeholder: 'vlastní popis...' },
@@ -945,6 +950,17 @@ const RegionAbdomen = {
             if (!peNormal && !(finalAscCurr && finalAscCurr !== '0') && !(finalHasPastDate && finalAscMin && finalAscMin !== '0')) {
                 reportOut.push({ type: 'frame', text: 'Bez volné tekutiny.', tableId: 'abdomen_peritoneum_main', dimmed: true });
             }
+
+            // Tenké střevo
+            let tsRep = [];
+            let tsDesc = ctx.field('ts_custom_desc');
+            if (tsDesc) {
+                let txt = tsDesc.trim();
+                if (txt.endsWith('.')) txt = txt.slice(0, -1);
+                if (txt) tsRep.push(txt);
+            }
+            emitOrgan('ts_ost_add', tsRep, '- Tenké střevo', 'abdomen_tenke_strevo_main', 'bez patrných ložiskových změn stěny', 'Přiměřený nález na tenkém střevě, bez ložiskové léze.');
+            let tsConc = ctx.field('ts_custom_conc'); if (tsConc) concInc.push({ type: 'frame', text: tsConc, tableId: 'abdomen_tenke_strevo_main' });
 
             let ostDesc = ctx.field('ostatni_custom_desc');
             let ostParts = [];

@@ -1,0 +1,105 @@
+/* =============================================================
+   organ-maps.js
+   Module extracted from index.html inline <script>.
+   Edit this file - NOT index.html - to change this part.
+   ============================================================= */
+
+/* ═══════════════════════════════════════════════
+   ORGAN MAP & SVG DIMMING CONF
+═══════════════════════════════════════════════ */
+const ORGAN_MAP = {
+    "Mozek": { name: "Mozek", table: "group:brain_wml_main,brain_atr_main,brain_cpa_main,brain_sella_main", regions: ['brain'] },
+    "Cévy hlavy": { name: "Cévní zásobení", table: "brain_vessels_main", regions: ['brain'] },
+    "Eyebulb": { name: "Orbity", table: "brain_orbits_main", regions: ['brain'] },
+    "Siny": { 
+        name: "Siny", 
+        resolveTable: (activeRegions) => activeRegions.includes('brain') ? 'brain_sinus_main' : 'neck_sinus_main', 
+        regions: ['brain', 'neck'] 
+    },
+    "Thyroidea": { name: "Štítná žláza", table: "neck_thyroid_main", regions: ['neck'] },
+    "Pharynx": { name: "Hltan", table: "neck_pharynx_main", regions: ['neck'] },
+    "Slinné": { name: "Slinné žlázy", table: "neck_salivary_main", regions: ['neck'] },
+    "Játra": { name: "Játra", table: "abdomen_jatra_main", regions: ['abdomen'] },
+    "Žlučník": { name: "Žlučník", table: "abdomen_zlucnik_main", regions: ['abdomen'] },
+    "Thymus": { name: "Thymus", table: "thorax_thymus_main", regions: ['thorax'] },
+    "Srdce": { name: "Srdce", table: "thorax_srdce_main", regions: ['thorax'] },
+    "Plíce": { name: "Plíce", table: "thorax_plice_main", regions: ['thorax'] },
+    "Devices": { name: "Devices", table: "thorax_devices_main", regions: ['thorax'] },
+    "Slezina": { name: "Slezina", table: "abdomen_slezina_main", regions: ['abdomen'] },
+    "Ledviny": { name: "Ledviny", table: "abdomen_ledviny_main", regions: ['abdomen'] },
+    "Žaludek": { name: "Žaludek", table: "abdomen_zaludek_main", regions: ['abdomen'] },
+    "Pankreas": { name: "Pankreas", table: "abdomen_pankreas_main", regions: ['abdomen'] },
+    "Tračník": { name: "Tračník", table: "abdomen_tracnik_main", regions: ['abdomen', 'prostate', 'rectum'] },
+    "Peritoneum": { name: "Peritoneum", table: "abdomen_peritoneum_main", regions: ['abdomen'] },
+    "Tenké střevo": { name: "Tenké střevo", table: "abdomen_tenke_strevo_main", regions: ['abdomen'] },
+    "Močový měchýř": { name: "Močový měchýř", table: "abdomen_moc_mechyr_main", regions: ['abdomen', 'prostate', 'rectum'] },
+    "Ovária": { name: "Ovária", table: "abdomen_ovaria_main", regions: ['abdomen', 'rectum'] },
+    "Děloha": { name: "Děloha", table: "abdomen_deloha_main", regions: ['abdomen', 'rectum'] },
+    "Testes": { name: "Testes", table: "abdomen_testes_main", regions: ['abdomen', 'prostate'] },
+    "Prostata": { name: "Prostata", table: "abdomen_prostata_main", regions: ['abdomen', 'prostate', 'rectum'] },
+    "Skelet": { name: "Kosti / Klouby", table: "region:skeleton", regions: ['skeleton',] },
+    "Svaly": { name: "Svaly / Měkké tkáně", table: "skeleton_soft_main", regions: ['skeleton'] },
+    "Aorta": { name: "Velké cévy", table: "abdomen_velke_cevy_main", regions: ['thorax', 'abdomen'] },
+    "Cévy": { name: "Velké cévy", table: "abdomen_velke_cevy_main", regions: ['abdomen'] },
+    "Jícen": { name: "Jícen", table: "thorax_jicen_main", regions: ['thorax'] },
+    "Nadledviny": { name: "Nadledviny", table: "abdomen_nadledviny_main", regions: ['abdomen'] },
+    "Brain Lesion": { name: "Léze (Hlava)", table: "brain_lesion_main", regions: ['brain'] },
+    "Brain Hemorrhage": { name: "Krvácení / Ischemie", table: null, regions: ['brain'] },
+    "Neck Lesion": { name: "Léze (Krk)", table: "neck_lesion_main", regions: ['neck'] },
+    "Thorax Lesion": { name: "Léze (Hrudník)", table: "thorax_lesion_main", regions: ['thorax'] },
+    "Abdomen Lesion": { name: "Léze (Břicho)", table: "abdomen_lesion_main", regions: ['abdomen', 'prostate', 'rectum'] },
+    "Soft Tissues Lesion": { name: "Léze (Skelet / Měkké tkáně)", table: "skeleton_lesion_main", regions: ['skeleton'] },
+    "Neck Lymph Node": { name: "Lymfadenopatie (Krk)", table: "neck_lymphnode_main", regions: ['neck'] },
+    "Thorax Lymph Node": { name: "Lymfadenopatie (Hrudník)", table: "thorax_lymphnode_main", regions: ['thorax'] },
+    "Abdomen Lymph Node": { name: "Lymfadenopatie (Břicho)", table: "abdomen_lymphnode_main", regions: ['abdomen', 'prostate', 'rectum'] },
+    "Chest Wall": { name: "Hrudní stěna / Prsa", table: "thorax_mamma_main", regions: ['thorax'] },
+    "Abdominal Wall": { name: "Břišní stěna", table: "abdomen_wall_main", regions: ['abdomen'] },
+    "Neck Tissues": { name: "Krk měkké tkáně", table: "neck_soft_main", regions: ['neck'] },
+
+    "LFC": { name: "Laterální kondyl femuru", table: "knee_lat_comp_main", regions: ['knee'] },
+    "LTC": { name: "Laterální tibiální kondyl", table: "knee_lat_comp_main", regions: ['knee'] },
+    "MFC": { name: "Mediální kondyl femuru", table: "knee_med_comp_main", regions: ['knee'] },
+    "MTC": { name: "Mediální tibiální kondyl", table: "knee_med_comp_main", regions: ['knee'] },
+    "Fibula": { name: "Hlavička fibuly", table: "knee_bones_main", regions: ['knee'] },
+    "LCL": { name: "Laterální kolaterální vaz (LCL)", table: "knee_lcl_main", regions: ['knee'] },
+    "MCL": { name: "Mediální kolaterální vaz (LCM)", table: "knee_mcl_main", regions: ['knee'] },
+    "LCA": { name: "Přední zkřížený vaz (LCA)", table: "knee_acl_main", regions: ['knee'] },
+    "LCP": { name: "Zadní zkřížený vaz (LCP)", table: "knee_pcl_main", regions: ['knee'] },
+    "L_men": { name: "Laterální meniskus", table: "knee_lm_main", regions: ['knee'] },
+    "M_men": { name: "Mediální meniskus", table: "knee_mm_main", regions: ['knee'] },
+    "Patella": { name: "Patella", table: "knee_patella_main", regions: ['knee'] },
+    "Knee_bones": { name: "Ostatní skelet", table: "knee_bones_main", regions: ['knee'] },
+    "Knee_muscles": { name: "Měkké tkáně", table: "knee_soft_main", regions: ['knee'] },
+    "Knee_joint": { name: "Kloubní dutina", table: "knee_joint_main", regions: ['knee'] },
+
+    "Shoulder_joint": { name: "Kloubní dutina", table: "shoulder_bursa_main", regions: ['shoulder'] },
+    "GH_joint": { name: "GH kloub", table: "shoulder_bones_main", regions: ['shoulder'] },
+    "AC_joint": { name: "AC kloub", table: "shoulder_ac_main", regions: ['shoulder'] },
+    "Rotator_cuff": { name: "Rotátorová manžeta", table: "shoulder_rm_main", regions: ['shoulder'] },
+    "Glenoid_labrum": { name: "Labrum", table: "shoulder_labrum_main", regions: ['shoulder'] },
+    "Biceps": { name: "Šlacha LHB", table: "shoulder_lhb_main", regions: ['shoulder'] },
+
+    "vL5": { name: "L5", table: "L5/S1_main", regions: ['ls_spine'] },
+    "dL5/S1": { name: "L5/S1", table: "L5/S1_main", regions: ['ls_spine'] },
+
+    "Prostate_urinary": { name: "Močový měchýř", table: "prostate_urinary_main", regions: ['prostate'] },
+    "Prostate_prostate": { name: "Prostata", table: "prostate_prostata_main", regions: ['prostate'] },
+    "Prostate_seminal": { name: "Semenné váčky", table: "prostate_seminal_main", regions: ['prostate'] },
+    "Prostate_lymphnode": { name: "Lymfatické uzliny", table: "prostate_lymphnode_main", regions: ['prostate'] },
+    "Prostate_lesion": { name: "Léze (Prostata)", table: "prostate_lesion_main", regions: ['prostate'] },
+
+    "Rectum_rectum": { name: "Rektum", table: "rectum_rectum_main", regions: ['rectum'] },
+    "Rectum_mesorectalfat": { name: "Mezorektum", table: "rectum_lymphnode_main", regions: ['rectum'] },
+    "Rectum_lesion": { name: "Léze (Rektum)", table: "rectum_lesion_main", regions: ['rectum'] },
+    "Rectum_lymphnode": { name: "Lymfatické uzliny", table: "rectum_lymphnode_main", regions: ['rectum'] },
+    
+    "ankle_comp_lat": { name: "Laterální kompartment", table: "group:ankle_lat_lig_main,ankle_lat_tendon_main", regions: ['ankle'] },
+    "ankle_comp_med": { name: "Mediální kompartment", table: "group:ankle_med_lig_main,ankle_med_tendon_main", regions: ['ankle'] },
+    "ankle_comp_ant": { name: "Přední kompartment", table: "ankle_ant_tendon_main", regions: ['ankle'] },
+    "ankle_comp_post": { name: "Zadní kompartment", table: "group:ankle_achilles_main,ankle_post_other_main", regions: ['ankle'] },
+    "ankle_joint_fluid": { name: "Kloubní dutina", table: "ankle_joint_main", regions: ['ankle'] },
+    "ankle_achilles": { name: "Achillova šlacha", table: "ankle_achilles_main", regions: ['ankle'] },
+    "ankle_bones": { name: "Skelet", table: "ankle_bones_main", regions: ['ankle'] },
+    "ankle_ligaments": { name: "Vazy", table: "group:ankle_lat_lig_main,ankle_med_lig_main", regions: ['ankle'] },
+    "ankle_tendons": { name: "Šlachy", table: "group:ankle_lat_tendon_main,ankle_med_tendon_main,ankle_ant_tendon_main", regions: ['ankle'] }
+};

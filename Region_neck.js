@@ -104,6 +104,12 @@ const RegionNeck = {
                         { field: 'text', id: 'thyroid_custom_conc', placeholder: 'vlastní...závěr...' }
                     ], { normal: true })
                 ]),
+                helpers.TableMain('neck_soft_main', 'Měkké tkáně', [
+                    helpers.Table1col('neck_soft_add', [
+                        { field: 'text', id: 'neck_soft_custom_desc', placeholder: 'vlastní...popis...' },
+                        { field: 'text', id: 'neck_soft_custom_conc', placeholder: 'vlastní...závěr...' }
+                    ], { normal: true })
+                ]),
                 helpers.TableMain('neck_ostatni_main', 'Ostatní nálezy', [
                     helpers.Table1col('neck_ostatni_add', [
                         { field: 'text', id: 'neck_ostatni_custom_desc', placeholder: 'vlastní...popis...' },
@@ -414,6 +420,30 @@ const RegionNeck = {
             }
             if (thyroidNormal) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález na štítné žláze, bez ložiskové léze.', tableId: 'neck_thyroid_main' });
+            }
+
+            // --- Měkké tkáně krku (vlastní nálezy) ---
+            let softParts = [];
+            let softDesc = ctx.field('neck_soft_custom_desc');
+            if (softDesc) {
+                let txt = softDesc.trim();
+                if (txt.endsWith('.')) txt = txt.slice(0, -1);
+                if (txt) softParts.push(txt);
+            }
+            const neckSoftNormal = ctx.isActive('neck_soft_add_normal');
+            if (neckSoftNormal || softParts.length > 0) {
+                let text;
+                if (neckSoftNormal && softParts.length > 0) text = `bez ložiskových změn. Jinak pouze ${formatList(softParts)}.`;
+                else if (neckSoftNormal) text = 'bez ložiskových změn.';
+                else text = `${formatList(softParts)}.`;
+                reportOut.push({ type: 'frame', text: `- Měkké tkáně: ${text}`, tableId: 'neck_soft_main' });
+            }
+            let softConc = ctx.field('neck_soft_custom_conc');
+            if (softConc) {
+                concInc.push({ type: 'frame', text: softConc, tableId: 'neck_soft_main' });
+            }
+            if (neckSoftNormal) {
+                concMain.push({ type: 'frame', text: 'Přiměřený nález v měkkých tkáních krku, bez ložiskové léze.', tableId: 'neck_soft_main' });
             }
 
             let ostDesc = ctx.field('neck_ostatni_custom_desc');
