@@ -903,7 +903,7 @@ const RegionThorax = {
                 if (!hFok && !hKon && !hOp && !hPl) { txt = "Adekvátní plicní objem a vzdušnost."; top = true; }
                 else if (!hKon && !hOp && !hPl && hFok) txt = "Jinak adekvátní plicní objem a vzdušnost.";
                 else if ((kon.r || op.r || pl.r) && !(kon.l || op.l || pl.l)) txt = "Jinak vlevo adekvátní plicní objem a vzdušnost.";
-                else if ((kon.l || op.l || pl.l) && !(kon.r || op.r || pl.r)) txt = "JInak vpravo adekvátní plicní objem a vzdušnost.";
+                else if ((kon.l || op.l || pl.l) && !(kon.r || op.r || pl.r)) txt = "Jinak vpravo adekvátní plicní objem a vzdušnost.";
             }
 
             if (txt && !pliceNormal) {
