@@ -482,16 +482,14 @@ const RegionThorax = {
                     ]),
                     helpers.Table3colRL('plice_op_table', 'Operace plic', [
                         [ { btn: 'pl_op_pulm_r', states: ['0', '+'] }, 'pulmonektomie', { btn: 'pl_op_pulm_l', states: ['0', '+'] } ],
-                        [ { btn: 'pl_op_lob_h_r', states: ['0', '+'] }, 'lobektomie horní', { btn: 'pl_op_lob_h_l', states: ['0', '+'] } ],
-                        [ { btn: 'pl_op_lob_s_r', states: ['0', '+'] }, 'lobektomie střední', '' ],
-                        [ { btn: 'pl_op_lob_d_r', states: ['0', '+'] }, 'lobektomie dolní', { btn: 'pl_op_lob_d_l', states: ['0', '+'] } ],
-                        [ { btn: 'pl_op_res_h_r', states: ['0', '+'] }, 'resekce horní', { btn: 'pl_op_res_h_l', states: ['0', '+'] } ],
-                        [ { btn: 'pl_op_res_s_r', states: ['0', '+'] }, 'resekce střed./lingula', { btn: 'pl_op_res_s_l', states: ['0', '+'] } ],
-                        [ { btn: 'pl_op_res_d_r', states: ['0', '+'] }, 'resekce dolní', { btn: 'pl_op_res_d_l', states: ['0', '+'] } ]
+                        [ { btn: 'pl_op_lob_r', states: ['0', 'H', 'S', 'D'] }, 'lobektomie', { btn: 'pl_op_lob_l', states: ['0', 'H', 'D'] } ],
+                        [ { btn: 'pl_op_res_r', states: ['0', 'H', 'S', 'D'] }, 'resekce', { btn: 'pl_op_res_l', states: ['0', 'H', 'D'] } ]
                     ]),
                     helpers.Table3colRL('pleura_ost_table', 'Pleura',[
                         [ { field: 'mm', id: 'pl_tek_r', placeholder: 'mm', step: 5 }, 'tekutina:', { field: 'mm', id: 'pl_tek_l', placeholder: 'mm', step: 5 }],
                         [ { field: 'mm', id: 'pl_tek_old_r', placeholder: 'mm', step: 5 }, 'minule:', { field: 'mm', id: 'pl_tek_old_l', placeholder: 'mm', step: 5 } ],
+                        [ { field: 'mm', id: 'pl_vzd_r', placeholder: 'mm', step: 5 }, 'vzduch:', { field: 'mm', id: 'pl_vzd_l', placeholder: 'mm', step: 5 }],
+                        [ { field: 'mm', id: 'pl_vzd_old_r', placeholder: 'mm', step: 5 }, 'minule:', { field: 'mm', id: 'pl_vzd_old_l', placeholder: 'mm', step: 5 } ],
                         [ { btn: 'pl_akt_r', states: ['0', '+'] }, 'RF+', { btn: 'pl_akt_l', states: ['0', '+'] } ],
                         [ { btn: 'pl_talk_r', states: ['0', '+'] }, 'talkáž', { btn: 'pl_talk_l', states: ['0', '+'] } ]
                     ]),
@@ -795,12 +793,22 @@ const RegionThorax = {
                 }
             }
             
-            let opMap = { pl_op_pulm: 'pulmonektomii', pl_op_lob_h: 'lobektomii horního laloku', pl_op_lob_s: 'lobektomii', pl_op_lob_d: 'lobektomii dolního laloku', pl_op_res_h: 'resekci v horním laloku', pl_op_res_s: 'resekci', pl_op_res_d: 'resekci v dolním laloku' };
             let allOps = [];
-            for (let k in opMap) {
-                if (ctx.isActive(`${k}_r`)) allOps.push(`${k.includes('_s') ? opMap[k] + ' středního laloku' : opMap[k]} pravé plíce`);
-                if (ctx.isActive(`${k}_l`)) allOps.push(`${k.includes('_s') ? opMap[k] + ' v lingule' : opMap[k]} levé plíce`);
-            }
+            if (ctx.isActive('pl_op_pulm_r')) allOps.push('pulmonektomii pravé plíce');
+            if (ctx.isActive('pl_op_pulm_l')) allOps.push('pulmonektomii levé plíce');
+
+            const lobMapR = { H: 'lobektomii horního laloku pravé plíce', S: 'lobektomii středního laloku pravé plíce', D: 'lobektomii dolního laloku pravé plíce' };
+            const lobMapL = { H: 'lobektomii horního laloku levé plíce', D: 'lobektomii dolního laloku levé plíce' };
+            const resMapR = { H: 'resekci v horním laloku pravé plíce', S: 'resekci ve středním laloku pravé plíce', D: 'resekci v dolním laloku pravé plíce' };
+            const resMapL = { H: 'resekci v horním laloku levé plíce', D: 'resekci v dolním laloku levé plíce' };
+
+            let lobR = ctx.text('pl_op_lob_r'), lobL = ctx.text('pl_op_lob_l');
+            if (lobR && lobMapR[lobR]) allOps.push(lobMapR[lobR]);
+            if (lobL && lobMapL[lobL]) allOps.push(lobMapL[lobL]);
+
+            let resR = ctx.text('pl_op_res_r'), resL = ctx.text('pl_op_res_l');
+            if (resR && resMapR[resR]) allOps.push(resMapR[resR]);
+            if (resL && resMapL[resL]) allOps.push(resMapL[resL]);
 
             let pliceDesc = ctx.field('plice_custom_desc');
             const ildOutcome = (fib === 'ANO') ? resolveIldTree(examId) : null;
@@ -837,12 +845,15 @@ const RegionThorax = {
             let pleuraRep = [];
             let tekR = parseInt(ctx.field('pl_tek_r')) || 0, tekL = parseInt(ctx.field('pl_tek_l')) || 0;
             let minR = parseInt(ctx.field('pl_tek_old_r')) || 0, minL = parseInt(ctx.field('pl_tek_old_l')) || 0;
+            let vzdR = parseInt(ctx.field('pl_vzd_r')) || 0, vzdL = parseInt(ctx.field('pl_vzd_l')) || 0;
+            let vzdMinR = parseInt(ctx.field('pl_vzd_old_r')) || 0, vzdMinL = parseInt(ctx.field('pl_vzd_old_l')) || 0;
             const hasMin = !!document.body.classList.contains('has-past-date');
-            
-            if (tekR || tekL || minR || minL) {
+
+            const emitPleuraMm = (curR, curL, oldR, oldL, noun, nounBilat, nounConc) => {
+                if (!(curR || curL || oldR || oldL)) return;
                 const getSide = (v, m, s) => {
                     if (!v && !m) return null;
-                    if (!v) return { r: `${s} tekutina zcela regredovala (minule šíře ${m} mm)`, c: `fluidothorax ${s} zcela regredoval`, reg: 1 };
+                    if (!v) return { r: `${s} ${noun} zcela regredoval${noun.endsWith('a') ? 'a' : ''} (minule šíře ${m} mm)`, c: `${nounConc} ${s} zcela regredoval`, reg: 1 };
                     let dynState = "";
                     if (m && hasMin) {
                         if (v > m + 5) dynState = "v progresi";
@@ -850,23 +861,26 @@ const RegionThorax = {
                         else dynState = "stacionární";
                     }
                     const mod = v >= 40 ? "výrazný " : (v <= 15 ? "malý " : "");
-                    return { r: `šíře ${v} mm ${s}${(m && hasMin) ? ` (minule šíře ${m} mm)` : ''}`, c: `${mod}fluidothorax ${s}${dynState ? ' ' + dynState : ''}`.trim(), reg: 0, mod, dynState };
+                    return { r: `šíře ${v} mm ${s}${(m && hasMin) ? ` (minule šíře ${m} mm)` : ''}`, c: `${mod}${nounConc} ${s}${dynState ? ' ' + dynState : ''}`.trim(), reg: 0, mod, dynState };
                 };
-                let R = getSide(tekR, minR, 'vpravo'), L = getSide(tekL, minL, 'vlevo');
+                let R = getSide(curR, oldR, 'vpravo'), L = getSide(curL, oldL, 'vlevo');
                 let concl = '';
                 if (R && L && R.reg && L.reg) {
-                    pleuraRep.push(`tekutina bilat. zcela regredovala (minule vpravo šíře ${minR} mm, vlevo šíře ${minL} mm)`);
-                    concl = "fluidothorax bilat. zcela regredoval";
+                    pleuraRep.push(`${nounBilat} bilat. zcela regredoval${nounBilat.endsWith('a') ? 'a' : ''} (minule vpravo šíře ${oldR} mm, vlevo šíře ${oldL} mm)`);
+                    concl = `${nounConc} bilat. zcela regredoval`;
                 } else if (R && L && !R.reg && !L.reg) {
-                    pleuraRep.push(`tekutina ${R.r} a ${L.r}`);
-                    concl = (R.mod === L.mod && R.dynState === L.dynState) ? `${R.mod}fluidothorax bilat.${R.dynState ? ' ' + R.dynState : ''}`.trim() : `${R.c}, ${L.c}`;
+                    pleuraRep.push(`${noun} ${R.r} a ${L.r}`);
+                    concl = (R.mod === L.mod && R.dynState === L.dynState) ? `${R.mod}${nounConc} bilat.${R.dynState ? ' ' + R.dynState : ''}`.trim() : `${R.c}, ${L.c}`;
                 } else {
-                    let fmt = X => X.reg ? X.r : `tekutina ${X.r}`;
+                    let fmt = X => X.reg ? X.r : `${noun} ${X.r}`;
                     pleuraRep.push(R && L ? `${fmt(R)}, ${fmt(L)}` : fmt(R || L));
                     concl = [R?.c, L?.c].filter(Boolean).join(', ');
                 }
                 concMain.push({ type: 'frame', text: `${cap(concl)}.`.replace('..', '.'), tableId: 'thorax_plice_main' });
-            }
+            };
+
+            emitPleuraMm(tekR, tekL, minR, minL, 'tekutina', 'tekutina', 'fluidothorax');
+            emitPleuraMm(vzdR, vzdL, vzdMinR, vzdMinL, 'vzduch', 'vzduch', 'PNO');
             
             ['pl_akt', 'pl_talk'].forEach(k => {
                 let p = ctx.isActive(`${k}_r`), l = ctx.isActive(`${k}_l`);
@@ -889,14 +903,18 @@ const RegionThorax = {
             /* --- AUTO-HODNOCENÍ VZDUŠNOSTI PLIC A PLEURY --- */
             let noFE = (!fib || fib === '0') && (!emf || emf === '0') && !ildOutcome;
             let noTek = !(tekR || tekL || minR || minL);
+            let noVzd = !(vzdR || vzdL || vzdMinR || vzdMinL);
             let txt = "", top = false;
 
             if (noFE) {
                 let s = (k) => ({ r: ctx.isActive(`${k}_r`), l: ctx.isActive(`${k}_l`) });
                 let fok = ['pl_mikro', 'pl_nodul', 'pl_opac', 'pl_hypo', 'pl_jizva', 'pl_rad'].reduce((a,k)=>{ let x=s(k); return {r:a.r||x.r, l:a.l||x.l}; }, {r:false,l:false});
                 let kon = s('pl_kons');
-                let op = ['pl_op_pulm', 'pl_op_lob_h', 'pl_op_lob_s', 'pl_op_lob_d', 'pl_op_res_h', 'pl_op_res_s', 'pl_op_res_d'].reduce((a,k)=>{ let x=s(k); return {r:a.r||x.r, l:a.l||x.l}; }, {r:false,l:false});
-                let pl = { r: tekR > 0 || minR > 0 || ctx.isActive('pl_akt_r') || ctx.isActive('pl_talk_r'), l: tekL > 0 || minL > 0 || ctx.isActive('pl_akt_l') || ctx.isActive('pl_talk_l') };
+                let op = ['pl_op_pulm', 'pl_op_lob', 'pl_op_res'].reduce((a,k)=>{ let x=s(k); return {r:a.r||x.r, l:a.l||x.l}; }, {r:false,l:false});
+                let pl = {
+                    r: tekR > 0 || minR > 0 || vzdR > 0 || vzdMinR > 0 || ctx.isActive('pl_akt_r') || ctx.isActive('pl_talk_r'),
+                    l: tekL > 0 || minL > 0 || vzdL > 0 || vzdMinL > 0 || ctx.isActive('pl_akt_l') || ctx.isActive('pl_talk_l')
+                };
 
                 let hFok = fok.r || fok.l, hKon = kon.r || kon.l, hOp = op.r || op.l, hPl = pl.r || pl.l;
 
@@ -918,6 +936,9 @@ const RegionThorax = {
 
             if (noTek) {
                 reportOut.push({ type: 'frame', text: "Bez výpotků.", tableId: 'thorax_plice_main', dimmed: true });
+            }
+            if (noVzd) {
+                reportOut.push({ type: 'frame', text: "Bez PNO.", tableId: 'thorax_plice_main', dimmed: true });
             }
 
             let pliceConc = ctx.field('plice_custom_conc');
