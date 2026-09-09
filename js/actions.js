@@ -34,7 +34,8 @@ function getExclusiveStates(globalId, nextVal) {
 function cycleState(globalId, dir = 1) {
     const cfg = ButtonConfigs[globalId];
     if (!cfg || cfg.type !== 'standard') return;
-    const cur = Store.buttonStates[globalId] || 0;
+    let cur = Store.buttonStates[globalId] || 0;
+    if (cur === true) cur = 2;
     const next = Math.max(0, Math.min(cfg.states.length - 1, cur + dir));
     if (next === cur) return;
 

@@ -230,8 +230,13 @@ function Table1col(id, cells, regionId, opts = {}) {
         if (opts.normal) {
             const btnRow = el('div', { className: 'row' });
             btnRow.appendChild(customBtn);
-            const normalConfig = getButtonBase(regionId, { btn: `${id}_normal`, id: `${id}_normal`, type: 'basic', text: 'normal' });
-            const normalBtn = makeBasicButton(normalConfig);
+            const normalConfig = getButtonBase(regionId, {
+                btn: `${id}_normal`,
+                id: `${id}_normal`,
+                type: 'standard',
+                states: ['normal', 'normal', 'normal!']
+            });
+            const normalBtn = makeStandardButton(normalConfig);
             normalBtn.classList.add('btn-green');
             btnRow.appendChild(normalBtn);
             customTd.appendChild(btnRow);

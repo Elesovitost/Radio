@@ -324,7 +324,8 @@ const RegionAbdomen = {
             const formatList = formatCzechList;
             const examId = ctx.examId || 'default';
             const emitOrgan = (addId, parts, label, tableId, normRep, normConc) => {
-                const isNorm = ctx.isActive(`${addId}_normal`);
+                const lvl = ctx.normalLevel(`${addId}_normal`);
+                const isNorm = lvl > 0;
                 if (isNorm || parts.length > 0) {
                     let body;
                     if (isNorm && parts.length > 0) body = `${normRep}. Jinak pouze ${formatList(parts)}.`;
@@ -332,7 +333,7 @@ const RegionAbdomen = {
                     else body = `${formatList(parts)}.`;
                     reportOut.push({ type: 'frame', text: `${label}: ${body}`, tableId });
                 }
-                if (isNorm) concMain.push({ type: 'frame', text: normConc, tableId });
+                if (lvl >= 2) concMain.push({ type: 'frame', text: normConc, tableId });
                 return isNorm;
             };
 
@@ -969,7 +970,8 @@ const RegionAbdomen = {
                 if (txt.endsWith('.')) txt = txt.slice(0, -1);
                 if (txt) ostParts.push(txt);
             }
-            const ostatniNormal = ctx.isActive('ostatni_ost_add_normal');
+            const ostatniLvl = ctx.normalLevel('ostatni_ost_add_normal');
+            const ostatniNormal = ostatniLvl > 0;
             if (ostatniNormal || ostParts.length > 0) {
                 let text;
                 if (ostatniNormal && ostParts.length > 0) text = `Bez dalších významných nálezů. Jinak pouze ${formatList(ostParts)}.`;
@@ -982,7 +984,7 @@ const RegionAbdomen = {
             if (ostConc) {
                 concInc.push({ type: 'frame', text: ostConc, tableId: 'abdomen_ostatni_main' });
             }
-            if (ostatniNormal) {
+            if (ostatniLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Bez dalších významných nálezů v dutině břišní.', tableId: 'abdomen_ostatni_main' });
             }
 

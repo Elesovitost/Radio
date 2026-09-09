@@ -72,7 +72,9 @@ function makeBasicCustomButton(config) {
 }
 
 function makeStandardButton(config) {
-    const idx = Store.buttonStates[config.globalId] || 0;
+    let idx = Store.buttonStates[config.globalId] || 0;
+    // Starý basic normal (true) → normal! (zachová impression)
+    if (idx === true && config.states && config.states.includes('normal!')) idx = 2;
     const rawStateStr = config.states && config.states[idx] !== undefined ? config.states[idx] : 'N/A';
     const isActive = Boolean(idx > 0);
     

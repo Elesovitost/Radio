@@ -240,7 +240,8 @@ const RegionNeck = {
             let sinyParts = [];
             if (sinyStates) sinyParts.push(sinyStates);
             if (sinyCustomDesc) sinyParts.push(sinyCustomDesc);
-            const sinyNormal = ctx.isActive('neck_sinus_add_normal');
+            const sinyNormalLvl = ctx.normalLevel('neck_sinus_add_normal');
+            const sinyNormal = sinyNormalLvl > 0;
             if (sinyNormal || sinyParts.length > 0) {
                 let body;
                 if (sinyNormal && sinyParts.length > 0) body = `vzdušné, bez patologického obsahu. Jinak pouze ${formatList(sinyParts)}.`;
@@ -269,7 +270,7 @@ const RegionNeck = {
                 let s = [sinyConcStr, customSinusConc].filter(Boolean).join('\n');
                 concInc.push({ type: 'frame', text: s, tableId: 'neck_sinus_main' });
             }
-            if (sinyNormal) {
+            if (sinyNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález v oblasti sinů.', tableId: 'neck_sinus_main' });
             }
 
@@ -298,7 +299,8 @@ const RegionNeck = {
             let salivaryParts = [];
             if (salivaryStates) salivaryParts.push(salivaryStates);
             if (salivaryCustomDesc) salivaryParts.push(salivaryCustomDesc);
-            const salivaryNormal = ctx.isActive('neck_salivary_add_normal');
+            const salivaryNormalLvl = ctx.normalLevel('neck_salivary_add_normal');
+            const salivaryNormal = salivaryNormalLvl > 0;
             if (salivaryNormal || salivaryParts.length > 0) {
                 let body;
                 if (salivaryNormal && salivaryParts.length > 0) body = `obvyklé velikosti a struktury, bez ložiskových změn. Jinak pouze ${formatList(salivaryParts)}.`;
@@ -321,7 +323,7 @@ const RegionNeck = {
                 let s = [salConcStr, customSalivaryConc].filter(Boolean).join('\n');
                 concInc.push({ type: 'frame', text: s, tableId: 'neck_salivary_main' });
             }
-            if (salivaryNormal) {
+            if (salivaryNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález na slinných žlázách, bez ložiskové léze.', tableId: 'neck_salivary_main' });
             }
 
@@ -362,7 +364,8 @@ const RegionNeck = {
             let farDesc = ctx.field('pharynx_custom_desc');
             if (farDesc) farRep.push(farDesc);
 
-            const pharynxNormal = ctx.isActive('neck_pharynx_add_normal');
+            const pharynxNormalLvl = ctx.normalLevel('neck_pharynx_add_normal');
+            const pharynxNormal = pharynxNormalLvl > 0;
             if (pharynxNormal || farRep.length > 0) {
                 let body;
                 if (pharynxNormal && farRep.length > 0) body = `symetrický, bez ložiskového ztluštění stěny. Jinak pouze ${formatList(farRep)}.`;
@@ -375,7 +378,7 @@ const RegionNeck = {
             if (pharynxCustomConc) {
                 concInc.push({ type: 'frame', text: pharynxCustomConc, tableId: 'neck_pharynx_main' });
             }
-            if (pharynxNormal) {
+            if (pharynxNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález na faryngu, bez ložiskové léze.', tableId: 'neck_pharynx_main' });
             }
 
@@ -403,7 +406,8 @@ const RegionNeck = {
             if (thyroidStates) thyroidParts.push(thyroidStates);
             let thyroidCustomDesc = ctx.field('thyroid_custom_desc');
             if (thyroidCustomDesc) thyroidParts.push(thyroidCustomDesc);
-            const thyroidNormal = ctx.isActive('neck_thyroid_add_normal');
+            const thyroidNormalLvl = ctx.normalLevel('neck_thyroid_add_normal');
+            const thyroidNormal = thyroidNormalLvl > 0;
             if (thyroidNormal || thyroidParts.length > 0) {
                 let body;
                 if (thyroidNormal && thyroidParts.length > 0) body = `normální velikosti, parenchym bez zřetelných cyst či ložisek. Jinak pouze ${formatList(thyroidParts)}.`;
@@ -429,7 +433,7 @@ const RegionNeck = {
             if (thyrConcArr.length > 0) {
                 concInc.push({ type: 'frame', text: thyrConcArr.join('\n'), tableId: 'neck_thyroid_main' });
             }
-            if (thyroidNormal) {
+            if (thyroidNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález na štítné žláze, bez ložiskové léze.', tableId: 'neck_thyroid_main' });
             }
 
@@ -441,7 +445,8 @@ const RegionNeck = {
                 if (txt.endsWith('.')) txt = txt.slice(0, -1);
                 if (txt) softParts.push(txt);
             }
-            const neckSoftNormal = ctx.isActive('neck_soft_add_normal');
+            const neckSoftNormalLvl = ctx.normalLevel('neck_soft_add_normal');
+            const neckSoftNormal = neckSoftNormalLvl > 0;
             if (neckSoftNormal || softParts.length > 0) {
                 let text;
                 if (neckSoftNormal && softParts.length > 0) text = `bez ložiskových změn. Jinak pouze ${formatList(softParts)}.`;
@@ -453,7 +458,7 @@ const RegionNeck = {
             if (softConc) {
                 concInc.push({ type: 'frame', text: softConc, tableId: 'neck_soft_main' });
             }
-            if (neckSoftNormal) {
+            if (neckSoftNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález v měkkých tkáních krku, bez ložiskové léze.', tableId: 'neck_soft_main' });
             }
 
@@ -464,7 +469,8 @@ const RegionNeck = {
                 if (txt.endsWith('.')) txt = txt.slice(0, -1);
                 if (txt) ostParts.push(txt);
             }
-            const ostatniNormal = ctx.isActive('neck_ostatni_add_normal');
+            const ostatniNormalLvl = ctx.normalLevel('neck_ostatni_add_normal');
+            const ostatniNormal = ostatniNormalLvl > 0;
             if (ostatniNormal || ostParts.length > 0) {
                 let text;
                 if (ostatniNormal && ostParts.length > 0) text = `Bez dalších významných nálezů. Jinak pouze ${formatList(ostParts)}.`;
@@ -477,7 +483,7 @@ const RegionNeck = {
             if (ostConc) {
                 concInc.push({ type: 'frame', text: ostConc, tableId: 'neck_ostatni_main' });
             }
-            if (ostatniNormal) {
+            if (ostatniNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Bez dalších významných nálezů na krku.', tableId: 'neck_ostatni_main' });
             }
 

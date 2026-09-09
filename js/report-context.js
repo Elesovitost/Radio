@@ -48,14 +48,24 @@ function createContext(regionId, examId) {
             
             if (cfg.type === 'standard') {
                 if (statesArray) return statesArray.includes(val || 0);
+                // legacy basic normal stored as true
+                if (val === true) return true;
                 return (val || 0) > 0;
             }
             return val === true || val === 'custom';
         },
+        // 0 = off, 1 = normal (jen Findings), 2 = normal! (Findings + Impression)
+        normalLevel(localId) {
+            const val = this._val(localId);
+            if (val === true) return 2;
+            const n = typeof val === 'number' ? val : 0;
+            return n > 0 ? n : 0;
+        },
         text(localId, lowercase = false) {
             if (isPetOnly(localId)) return '';
             const globalId = `${examId}_${regionId}_${localId}`;
-            const val = Store.buttonStates[globalId] || 0;
+            let val = Store.buttonStates[globalId] || 0;
+            if (val === true) val = 2;
             const cfg = resolveButtonConfig(examId, regionId, localId);
             if (!cfg) return '';
             

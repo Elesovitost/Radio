@@ -816,7 +816,8 @@ const RegionThorax = {
                 plicePhrases.push(descText);
             }
 
-            const pliceNormal = ctx.isActive('plice_ost_add_normal');
+            const pliceNormalLvl = ctx.normalLevel('plice_ost_add_normal');
+            const pliceNormal = pliceNormalLvl > 0;
             if (pliceNormal || plicePhrases.length > 0) {
                 let body;
                 if (pliceNormal && plicePhrases.length > 0) body = `přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn. Jinak pouze ${plicePhrases.join(', ')}.`;
@@ -824,7 +825,7 @@ const RegionThorax = {
                 else body = plicePhrases.join(', ') + '.';
                 reportOut.push({ type: 'frame', text: `- Plíce: ${body}`, tableId: 'thorax_plice_main' });
             }
-            if (pliceNormal) {
+            if (pliceNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález na plicích, bez ložiskové léze.', tableId: 'thorax_plice_main' });
             }
             if (ildOutcome) {
@@ -939,7 +940,8 @@ const RegionThorax = {
                 if (txt.endsWith('.')) txt = txt.slice(0, -1);
                 maParts.push(txt);
             }
-            const mammaNormal = ctx.isActive('mamma_ost_add_normal');
+            const mammaNormalLvl = ctx.normalLevel('mamma_ost_add_normal');
+            const mammaNormal = mammaNormalLvl > 0;
             if (mammaNormal || maParts.length > 0) {
                 let body;
                 if (mammaNormal && maParts.length > 0) body = `obvyklého vzhledu, bez ložiskových změn. Jinak pouze ${formatList(maParts)}.`;
@@ -950,7 +952,7 @@ const RegionThorax = {
             
             let maConc = ctx.field('mamma_custom_conc');
             if (maConc) concInc.push({ type: 'frame', text: maConc, tableId: 'thorax_mamma_main' });
-            if (mammaNormal) {
+            if (mammaNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález na mléčných žlázách, bez ložiskové léze.', tableId: 'thorax_mamma_main' });
             }
 
@@ -979,7 +981,8 @@ const RegionThorax = {
                 if (txt.endsWith('.')) txt = txt.slice(0, -1);
                 jiParts.push(txt);
             }
-            const jicenNormal = ctx.isActive('jicen_ost_add_normal');
+            const jicenNormalLvl = ctx.normalLevel('jicen_ost_add_normal');
+            const jicenNormal = jicenNormalLvl > 0;
             if (jicenNormal || jiParts.length > 0) {
                 let body;
                 if (jicenNormal && jiParts.length > 0) body = `přiměřené šíře, bez ložiskového ztluštění stěny. Jinak pouze ${formatList(jiParts)}.`;
@@ -991,7 +994,7 @@ const RegionThorax = {
             let jiConc = ctx.field('jicen_custom_conc');
             if (jiConc) jicenConc.push(jiConc);
             jicenConc.forEach(c => concInc.push({ type: 'frame', text: c, tableId: 'thorax_jicen_main' }));
-            if (jicenNormal) {
+            if (jicenNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález na jícnu.', tableId: 'thorax_jicen_main' });
             }
 
@@ -1009,7 +1012,8 @@ const RegionThorax = {
                 if (txt.endsWith('.')) txt = txt.slice(0, -1);
                 thParts.push(txt);
             }
-            const thymusNormal = ctx.isActive('thymus_ost_add_normal');
+            const thymusNormalLvl = ctx.normalLevel('thymus_ost_add_normal');
+            const thymusNormal = thymusNormalLvl > 0;
             if (thymusNormal || thParts.length > 0) {
                 let body;
                 const thymusNormRep = isPET
@@ -1023,7 +1027,7 @@ const RegionThorax = {
             
             let thConc = ctx.field('thymus_custom_conc');
             if (thConc) concInc.push({ type: 'frame', text: thConc, tableId: 'thorax_thymus_main' });
-            if (thymusNormal) {
+            if (thymusNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález na thymu.', tableId: 'thorax_thymus_main' });
             }
 
@@ -1090,7 +1094,8 @@ const RegionThorax = {
                 if (txt.endsWith('.')) txt = txt.slice(0, -1);
                 srParts.push(txt);
             }
-            const srdceNormal = ctx.isActive('srdce_ost_add_normal');
+            const srdceNormalLvl = ctx.normalLevel('srdce_ost_add_normal');
+            const srdceNormal = srdceNormalLvl > 0;
             if (srdceNormal || srParts.length > 0) {
                 let body;
                 if (srdceNormal && srParts.length > 0) body = `přiměřené velikosti, aorta přiměřené šíře, bez perikardiálního výpotku. Jinak pouze ${formatList(srParts)}.`;
@@ -1102,7 +1107,7 @@ const RegionThorax = {
             let srConc = ctx.field('srdce_custom_conc');
             if (srConc) srdceConc.push(srConc);
             srdceConc.forEach(c => concMain.push({ type: 'frame', text: c, tableId: 'thorax_srdce_main' }));
-            if (srdceNormal) {
+            if (srdceNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález na srdci a velkých cévách.', tableId: 'thorax_srdce_main' });
             }
 
@@ -1122,7 +1127,8 @@ const RegionThorax = {
                 if (txt.endsWith('.')) txt = txt.slice(0, -1);
                 devParts.push(txt);
             }
-            const devicesNormal = ctx.isActive('devices_ost_add_normal');
+            const devicesNormalLvl = ctx.normalLevel('devices_ost_add_normal');
+            const devicesNormal = devicesNormalLvl > 0;
             if (devicesNormal || devParts.length > 0) {
                 let text;
                 if (devicesNormal && devParts.length > 0) text = `Bez zavedených invazivních zařízení. Jinak pouze ${formatList(devParts)}.`;
@@ -1133,7 +1139,7 @@ const RegionThorax = {
             
             let devConc = ctx.field('devices_custom_conc');
             if (devConc) concInc.push({ type: 'frame', text: devConc, tableId: 'thorax_devices_main' });
-            if (devicesNormal) {
+            if (devicesNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Bez zavedených invazivních zařízení.', tableId: 'thorax_devices_main' });
             }
 
@@ -1144,7 +1150,8 @@ const RegionThorax = {
                 if (txt.endsWith('.')) txt = txt.slice(0, -1);
                 if (txt) ostParts.push(txt);
             }
-            const ostatniNormal = ctx.isActive('ostatni_ost_add_normal');
+            const ostatniNormalLvl = ctx.normalLevel('ostatni_ost_add_normal');
+            const ostatniNormal = ostatniNormalLvl > 0;
             if (ostatniNormal || ostParts.length > 0) {
                 let text;
                 if (ostatniNormal && ostParts.length > 0) text = `Bez dalších významných nálezů. Jinak pouze ${formatList(ostParts)}.`;
@@ -1157,7 +1164,7 @@ const RegionThorax = {
             if (ostConc) {
                 concInc.push({ type: 'frame', text: ostConc, tableId: 'thorax_ostatni_main' });
             }
-            if (ostatniNormal) {
+            if (ostatniNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Bez dalších významných nálezů na hrudníku.', tableId: 'thorax_ostatni_main' });
             }
 
