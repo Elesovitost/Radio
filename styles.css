@@ -19,13 +19,14 @@ h2 { font-size: 0.75rem; color: var(--dim); letter-spacing: 1px; text-transform:
 .sep { border-left: 1px solid var(--border); padding-left: 15px; margin-left: 5px; }
 .push { margin-left: auto; }
 
-/* ─── SCROLLBARY (content + overlay) ─────────────────── */
-.content-area, #table-overlay-container { scrollbar-width: thin; scrollbar-color: var(--accent-hi) transparent; }
-.content-area::-webkit-scrollbar, #table-overlay-container::-webkit-scrollbar { width: 8px; height: 8px; }
-.content-area::-webkit-scrollbar-track:horizontal, #table-overlay-container::-webkit-scrollbar-track:horizontal { background: linear-gradient(to bottom, transparent 45%, rgba(255,255,255,0.1) 45%, rgba(255,255,255,0.1) 55%, transparent 55%); }
-.content-area::-webkit-scrollbar-track:vertical, #table-overlay-container::-webkit-scrollbar-track:vertical { background: linear-gradient(to right, transparent 45%, rgba(255,255,255,0.1) 45%, rgba(255,255,255,0.1) 55%, transparent 55%); }
-.content-area::-webkit-scrollbar-thumb, #table-overlay-container::-webkit-scrollbar-thumb { background: var(--accent-hi); border-radius: 10px; }
-.content-area::-webkit-scrollbar-corner, #table-overlay-container::-webkit-scrollbar-corner { background: transparent; }
+/* ─── SCROLLBARY (bez scrollbar-color – v Chromiu by vypnul webkit šířku) ─── */
+.content-area, #table-overlay-container, .organ-nav { --sb: rgba(125,133,144,.4); }
+.content-area::-webkit-scrollbar, #table-overlay-container::-webkit-scrollbar, .organ-nav::-webkit-scrollbar { width: 3px; height: 3px; }
+.content-area::-webkit-scrollbar-thumb, #table-overlay-container::-webkit-scrollbar-thumb, .organ-nav::-webkit-scrollbar-thumb { background: var(--sb); border-radius: 3px; }
+.content-area::-webkit-scrollbar-thumb:hover, #table-overlay-container::-webkit-scrollbar-thumb:hover, .organ-nav::-webkit-scrollbar-thumb:hover { background: rgba(125,133,144,.65); }
+@supports not selector(::-webkit-scrollbar) {
+    .content-area, #table-overlay-container, .organ-nav { scrollbar-width: thin; scrollbar-color: var(--sb) transparent; }
+}
 .content-area { overflow: auto; flex: 1; min-height: 0; }
 /* V režimu orgánové mapy scrolluje jen overlay tabulek, ne content-area */
 #details-content:has(.organ-wrapper) { overflow: hidden; }
@@ -122,9 +123,7 @@ body:not(.has-past-date) .tbl > tbody > tr:has([data-id*="_old"]), body:not(.has
 .organ-wrapper { position: relative; width: 100%; height: 100%; min-height: 0; display: flex; align-items: stretch; overflow: hidden; }
 .organ-body { position: relative; flex: 1 1 auto; min-width: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; }
 /* Navigace kategorií vlevo od schématu */
-.organ-nav { display: flex; flex-direction: column; flex: 0 0 auto; width: max-content; min-width: 0; max-width: min(290px, 100%); align-self: stretch; overflow-y: auto; overflow-x: hidden; padding: 4px 8px 6px 2px; border-right: 1px solid var(--border); margin-right: 2px; line-height: 1.25; scrollbar-width: thin; scrollbar-color: var(--accent-hi) transparent; }
-.organ-nav::-webkit-scrollbar { width: 6px; }
-.organ-nav::-webkit-scrollbar-thumb { background: var(--accent-hi); border-radius: 10px; }
+.organ-nav { display: flex; flex-direction: column; flex: 0 0 150px; width: 150px; min-width: 150px; max-width: 150px; align-self: stretch; overflow-y: auto; overflow-x: hidden; padding: 4px 8px 6px 2px; border-right: 1px solid var(--border); margin-right: 2px; line-height: 1.25; }
 /* Řádky navigace se nikdy nesmí flexem stlačovat – overflow: hidden na tlačítkách jim jinak
    vynuluje minimální výšku a text se ořeže. Přebytek řeší svislý scrollbar. */
 .organ-nav > *, .organ-nav-lecat > * { flex: none; }
