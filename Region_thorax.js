@@ -542,7 +542,7 @@ const RegionThorax = {
                         { field: 'text', id: 'thymus_custom_conc', placeholder: 'vlastní...závěr...' }
                     ], { normal: true })
                 ]),
-                helpers.TableMain('thorax_srdce_main', 'Srdce a koronární tepny', [
+                helpers.TableMain('thorax_srdce_main', 'Srdce a cévy', [
                     helpers.Table2colNormal('srdce_table', [
                         [ 'Dilatace srdce', { btn: 'sr_dil', states: ['0', 'síní', 'celého'] } ],
                         [ 'Dilatace aorty', { btn: 'sr_dil_ao', states: ['0', 'kořene', 'ascendentní', 'oboje'] }, { field: 'mm', id: 'sr_dil_ao_mm', placeholder: 'mm', step: 1 } ],
@@ -901,8 +901,8 @@ const RegionThorax = {
 
                 if (!hFok && !hKon && !hOp && !hPl) { txt = "Adekvátní plicní objem a vzdušnost."; top = true; }
                 else if (!hKon && !hOp && !hPl && hFok) txt = "Jinak adekvátní plicní objem a vzdušnost.";
-                else if ((kon.r || op.r || pl.r) && !(kon.l || op.l || pl.l)) txt = "Vlevo adekvátní plicní objem a vzdušnost.";
-                else if ((kon.l || op.l || pl.l) && !(kon.r || op.r || pl.r)) txt = "Vpravo adekvátní plicní objem a vzdušnost.";
+                else if ((kon.r || op.r || pl.r) && !(kon.l || op.l || pl.l)) txt = "Jinak vlevo adekvátní plicní objem a vzdušnost.";
+                else if ((kon.l || op.l || pl.l) && !(kon.r || op.r || pl.r)) txt = "JInak vpravo adekvátní plicní objem a vzdušnost.";
             }
 
             if (txt && !pliceNormal) {

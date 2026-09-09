@@ -136,7 +136,8 @@ body:not(.has-past-date) .tbl > tbody > tr:has([data-id*="_old"]), body:not(.has
 .organ-nav-lecat { display: flex; flex-direction: column; }
 .organ-nav-item.nav-lesion { color: #ff9d9d; }
 .organ-nav-item.nav-lymph { color: #e6c56a; }
-.organ-nav-item.nav-lesion:hover, .organ-nav-item.nav-lymph:hover { color: #fff; }
+.organ-nav-item.nav-hemo { color: #b19cd9; }
+.organ-nav-item.nav-lesion:hover, .organ-nav-item.nav-lymph:hover, .organ-nav-item.nav-hemo:hover { color: #fff; }
 .organ-nav-le { font-weight: 700; letter-spacing: 0.2px; }
 .organ-svg { width: 90%; opacity: 0.7; transform: translateY(40px); transition: opacity 0.3s; display: block; stroke: #000; stroke-width: 1px; stroke-linejoin: round; }
 .organ-svg svg, .organ-svg.multi-svg svg { display: block; height: auto; }

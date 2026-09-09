@@ -66,7 +66,8 @@ const UI = {
         // [tabulka, druh, popisek záhlaví, defaultní typ instance, organName pro fallback]
         const WB_LESION_BLOCKS = {
             brain: [
-                ['brain_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Hlava)']
+                ['brain_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Hlava)'],
+                ['brain_hemo_main', 'hemo', 'Krvácení / ischemie', 'Krvácení / ischemie', 'Léze (Hlava)']
             ],
             neck: [
                 ['neck_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Krk)'],
@@ -110,14 +111,14 @@ const UI = {
                     if (primary !== group) continue;
                 }
                 let table = def.table;
-                if (!table) continue;
                 if (def.resolveTable) table = def.resolveTable([group.id]);
                 if (!table) continue;
                 // Léze / lymfadenopatie / krvácení se otevírají popupem na SVG – nepatří sem
                 if (table.includes('_lesion_main') || table.includes('_lymphnode_main') || table.includes('_hemo')) continue;
                 if (usedTables.has(table)) continue;
                 usedTables.add(table);
-                group.items.push({ name: def.name, table });
+                const name = table === 'brain_sinus_main' ? 'VDN, baze' : def.name;
+                group.items.push({ name, table });
             }
         }
 
@@ -176,8 +177,8 @@ const UI = {
         const kind = cat.dataset.kind || 'lesion';
         const defaultType = cat.dataset.default || 'Ložisko';
         const organName = cat.dataset.organ || '';
-        const firstLabel = cat.dataset.label || (kind === 'lymph' ? 'Uzliny' : 'Ložisko');
-        const addLabel = cat.dataset.add || (kind === 'lymph' ? 'další uzliny' : 'další ložisko');
+        const firstLabel = cat.dataset.label || (kind === 'lymph' ? 'Uzliny' : kind === 'hemo' ? 'Krvácení / ischemie' : 'Ložisko');
+        const addLabel = cat.dataset.add || (kind === 'lymph' ? 'další uzliny' : kind === 'hemo' ? 'další krvácení / ischemie' : 'další ložisko');
         const insts = (Store.instances && Store.instances[table]) || [];
 
         const children = insts.map(instId => {

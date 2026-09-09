@@ -662,7 +662,7 @@ const RegionAbdomen = {
                 }
             }
             let peDesc = ctx.field('pe_custom_desc'); if (peDesc) peRep.push(peDesc);
-            const peNormal = emitOrgan('pe_ost_add', peRep, '- Peritoneum a mesenterium', 'abdomen_peritoneum_main', 'bez volné tekutiny, mesenterium bez zastření, bez zřetelných patologických změn', 'Bez ascites a bez zřetelné peritoneální patologie.');
+            const peNormal = emitOrgan('pe_ost_add', peRep, '- Peritoneum a mesenterium', 'abdomen_peritoneum_main', 'bez volné tekutiny, mesenterium bez zastření, bez zřetelných patologických změn', 'Bez ascitu a bez zřetelné peritoneální patologie.');
             let peConc = ctx.field('pe_custom_conc'); if (peConc) concInc.push({ type: 'frame', text: peConc, tableId: 'abdomen_peritoneum_main' });
 
             // 10. Nadledviny
