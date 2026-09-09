@@ -344,6 +344,74 @@ document.addEventListener('input', e => {
 let organPopupTimeout = null;
 let currentHoveredOrganId = null;
 
+// Zobrazovaný název instance (ložisko / uzlina / hemo) – sdílený mezi SVG popupem a levou navigací
+function getLesionInstanceName(tableId, instId, defaultType, organName) {
+    const reportFrame = document.querySelector(`.report-frame[data-table="${tableId}__${instId}"]`);
+    if (reportFrame) {
+        let fullText = reportFrame.textContent.trim().split('.')[0];
+        const cutRegex = /\s+(diametru|velikosti|rozměru|se SUV|s nízkou|s intermediární|středně|zvýšeně|nízce|se zvýšenou|s vysokou|bez metabolické|bez PSMA|bez exprese|bez akumulace|s izovaskulárním|izovaskulární|hypervaskulární|s wash-out|s restrikcí|bez restrikce|kulat|dobře ohraničen|hůře ohraničen|neohraničen|s časným|bez časného|s invazí|s infiltrací|s extrakapsulárním|bez CT|bez sycení|se sycením|nativně|v dif\.dg\.|v\.s\.|susp\.|benigního|maligního|charakteru|etiologie|\(T1|\(T2|\(DWI|\(SWI|\(nativ|\(kontrast)/i;
+
+        let match = fullText.match(cutRegex);
+        let result = match ? fullText.substring(0, match.index) : fullText;
+
+        result = result.replace(/[,.]$/, '').trim();
+        if (result) {
+            const words = result.split(/\s+/);
+            if (words.length > 4) {
+                return words.slice(0, 4).join(' ') + '...';
+            }
+            return result;
+        }
+    }
+
+    let typeName = defaultType;
+    let locParts = [];
+    let instPrefix = '';
+
+    const allKeys = Object.keys(Store.buttonStates);
+    for (const key of allKeys) {
+        const match = key.match(new RegExp(`_([a-zA-Z]+_${instId})_`));
+        if (match) {
+            instPrefix = match[1];
+            break;
+        }
+    }
+
+    if (instPrefix) {
+        const examId = Store.activeTab || 'default';
+        const regionId = tableId.split('_')[0];
+        const searchStr = `${examId}_${regionId}_${instPrefix}_`;
+
+        const typeKey = allKeys.find(k => k.startsWith(searchStr + 'k_') && Store.buttonStates[k]);
+        if (typeKey && ButtonConfigs[typeKey]) {
+            const btnCfg = ButtonConfigs[typeKey];
+            if (btnCfg.custom && Store.buttonStates[typeKey] === 'custom') {
+                typeName = Store.customTexts[typeKey] || defaultType;
+            } else if (btnCfg.type === 'basic') {
+                typeName = btnCfg.text;
+            } else if (btnCfg.type === 'standard') {
+                typeName = btnCfg.states[Store.buttonStates[typeKey]];
+            }
+        }
+        typeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
+
+        const textInput = Store.fields[`${searchStr}nej_text`];
+        if (textInput) locParts.push(textInput);
+
+        const lnLocKeys = allKeys.filter(k => k.startsWith(searchStr + 'p_') && Store.buttonStates[k]);
+        lnLocKeys.forEach(k => {
+            if (ButtonConfigs[k]) locParts.push(ButtonConfigs[k].text);
+        });
+    }
+
+    if (locParts.length > 0) {
+        return `${typeName} ${locParts.join(', ')}`;
+    } else {
+        let cleanOrgan = organName.replace(/Léze\s*\(/i, '').replace(/Lymfadenopatie\s*\(/i, '').replace(/\)/g, '').toLowerCase();
+        return `${typeName} (${cleanOrgan})`;
+    }
+}
+
 function renderOrganPopup(organDef, organId) {
     const popup = document.getElementById('organ-popup');
     if (!popup) return;
@@ -361,78 +429,11 @@ function renderOrganPopup(organDef, organId) {
     
     let html = '';
     
-    const getInstanceName = (tableId, instId, defaultType, organName) => {
-        const reportFrame = document.querySelector(`.report-frame[data-table="${tableId}__${instId}"]`);
-        if (reportFrame) {
-            let fullText = reportFrame.textContent.trim().split('.')[0];
-            const cutRegex = /\s+(diametru|velikosti|rozměru|se SUV|s nízkou|s intermediární|středně|zvýšeně|nízce|se zvýšenou|s vysokou|bez metabolické|bez PSMA|bez exprese|bez akumulace|s izovaskulárním|izovaskulární|hypervaskulární|s wash-out|s restrikcí|bez restrikce|kulat|dobře ohraničen|hůře ohraničen|neohraničen|s časným|bez časného|s invazí|s infiltrací|s extrakapsulárním|bez CT|bez sycení|se sycením|nativně|v dif\.dg\.|v\.s\.|susp\.|benigního|maligního|charakteru|etiologie|\(T1|\(T2|\(DWI|\(SWI|\(nativ|\(kontrast)/i;
-            
-            let match = fullText.match(cutRegex);
-            let result = match ? fullText.substring(0, match.index) : fullText;
-            
-            result = result.replace(/[,.]$/, '').trim();
-            if (result) {
-                const words = result.split(/\s+/);
-                if (words.length > 7) {
-                    return words.slice(0, 7).join(' ') + '...';
-                }
-                return result;
-            }
-        }
-
-        let typeName = defaultType;
-        let locParts = [];
-        let instPrefix = '';
-        
-        const allKeys = Object.keys(Store.buttonStates);
-        for (const key of allKeys) {
-            const match = key.match(new RegExp(`_([a-zA-Z]+_${instId})_`));
-            if (match) {
-                instPrefix = match[1];
-                break;
-            }
-        }
-
-        if (instPrefix) {
-            const examId = Store.activeTab || 'default';
-            const regionId = tableId.split('_')[0];
-            const searchStr = `${examId}_${regionId}_${instPrefix}_`;
-
-            const typeKey = allKeys.find(k => k.startsWith(searchStr + 'k_') && Store.buttonStates[k]);
-            if (typeKey && ButtonConfigs[typeKey]) {
-                const btnCfg = ButtonConfigs[typeKey];
-                if (btnCfg.custom && Store.buttonStates[typeKey] === 'custom') {
-                    typeName = Store.customTexts[typeKey] || defaultType;
-                } else if (btnCfg.type === 'basic') {
-                    typeName = btnCfg.text;
-                } else if (btnCfg.type === 'standard') {
-                    typeName = btnCfg.states[Store.buttonStates[typeKey]];
-                }
-            }
-            typeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
-
-            const textInput = Store.fields[`${searchStr}nej_text`];
-            if (textInput) locParts.push(textInput);
-
-            const lnLocKeys = allKeys.filter(k => k.startsWith(searchStr + 'p_') && Store.buttonStates[k]);
-            lnLocKeys.forEach(k => {
-                if (ButtonConfigs[k]) locParts.push(ButtonConfigs[k].text);
-            });
-        }
-
-        if (locParts.length > 0) {
-            return `${typeName} ${locParts.join(', ')}`;
-        } else {
-            let cleanOrgan = organName.replace(/Léze\s*\(/i, '').replace(/Lymfadenopatie\s*\(/i, '').replace(/\)/g, '').toLowerCase();
-            return `${typeName} (${cleanOrgan})`;
-        }
-    };
-
     // Vykreslení tlačítek - Existující instance VŽDY před novými / dalšími
     if (lesionTable && lesionTable.includes('_lesion_main')) {
         const lesionInsts = Store.instances?.[lesionTable] || [];
         lesionInsts.forEach((instId) => {
-            const name = getInstanceName(lesionTable, instId, 'Ložisko', organDef.name);
+            const name = getLesionInstanceName(lesionTable, instId, 'Ložisko', organDef.name);
             html += `<button class="popup-btn btn-lesion" data-action="open-table" data-table="${lesionTable}__${instId}">🔴 ${name}</button>`;
         });
         const lesionAddLabel = lesionInsts.length > 0 ? withLoc('DALŠÍ LOŽISKO') : withLoc('LOŽISKO');
@@ -442,7 +443,7 @@ function renderOrganPopup(organDef, organId) {
     if (!isBrain && !isSkeleton && lymphTable) {
         const lymphInsts = Store.instances?.[lymphTable] || [];
         lymphInsts.forEach((instId) => {
-            const name = getInstanceName(lymphTable, instId, 'Uzlina', organDef.name);
+            const name = getLesionInstanceName(lymphTable, instId, 'Uzlina', organDef.name);
             html += `<button class="popup-btn btn-lymph" data-action="open-table" data-table="${lymphTable}__${instId}">🟡 ${name}</button>`;
         });
         const lymphAddLabel = lymphInsts.length > 0 ? withLoc('DALŠÍ UZLINY') : withLoc('UZLINY');
@@ -452,7 +453,7 @@ function renderOrganPopup(organDef, organId) {
     if (isBrain && hemoTable) {
         const hemoInsts = Store.instances?.[hemoTable] || [];
         hemoInsts.forEach((instId) => {
-            const name = getInstanceName(hemoTable, instId, 'Krvácení / ischemie', organDef.name);
+            const name = getLesionInstanceName(hemoTable, instId, 'Krvácení / ischemie', organDef.name);
             html += `<button class="popup-btn btn-hemo" data-action="open-table" data-table="${hemoTable}__${instId}">🟣 ${name}</button>`;
         });
         const hemoAddLabel = hemoInsts.length > 0 ? withLoc('DALŠÍ KRVÁCENÍ / ISCHEMIE') : withLoc('KRVÁCENÍ / ISCHEMIE');

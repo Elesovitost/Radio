@@ -46,7 +46,7 @@ const UI = {
         allOrgans.forEach(organ => {
             const organDef = ORGAN_MAP[organ.id];
             if (organDef && organDef.regions) {
-                // Dimming logika
+                // Dimming logika           
                 const isMatch = organDef.regions.some(r => activeRegions.includes(r));
                 organ.classList.toggle('organ-dimmed', !isMatch);
             } else {
@@ -61,6 +61,29 @@ const UI = {
     buildOrganCategoryNav(activeRegions) {
         const WB_REGIONS = ['brain', 'neck', 'thorax', 'abdomen', 'skeleton'];
         const DEDICATED = ['prostate', 'rectum', 'shoulder', 'knee', 'ankle'];
+
+        // Regionální tabulky lézí / uzlin, které se na WB schématu otvírají popupem.
+        // [tabulka, druh, popisek záhlaví, defaultní typ instance, organName pro fallback]
+        const WB_LESION_BLOCKS = {
+            brain: [
+                ['brain_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Hlava)']
+            ],
+            neck: [
+                ['neck_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Krk)'],
+                ['neck_lymphnode_main', 'lymph', 'Uzliny', 'Uzlina', 'Lymfadenopatie (Krk)']
+            ],
+            thorax: [
+                ['thorax_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Hrudník)'],
+                ['thorax_lymphnode_main', 'lymph', 'Uzliny', 'Uzlina', 'Lymfadenopatie (Hrudník)']
+            ],
+            abdomen: [
+                ['abdomen_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Břicho)'],
+                ['abdomen_lymphnode_main', 'lymph', 'Uzliny', 'Uzlina', 'Lymfadenopatie (Břicho)']
+            ],
+            skeleton: [
+                ['skeleton_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Skelet / Měkké tkáně)']
+            ]
+        };
 
         // Celotělové schéma (hlava/krk/hrudník/břicho/skeleton) vs. dedikovaná mapa regionu
         const wbActive = WB_REGIONS.filter(r => activeRegions.includes(r));
@@ -98,7 +121,7 @@ const UI = {
             }
         }
 
-        const visibleGroups = groups.filter(g => g.items.length > 0);
+        const visibleGroups = groups.filter(g => g.items.length > 0 || (WB_LESION_BLOCKS[g.id] && wbActive.length));
         if (visibleGroups.length === 0) return null;
 
         const nav = el('div', { className: 'organ-nav' });
@@ -112,6 +135,26 @@ const UI = {
             });
             if (idx > 0) head.style.marginTop = '8px';
             nav.appendChild(head);
+
+            // Hned pod nadpisem WB regionu plochý seznam „Ložisko" / „Uzliny" (jako popup na SVG):
+            // bez instance je tu řádek kategorie (klik = vytvoří první), s instancemi řádky jejich
+            // znění a na konci řádek „další …" (klik = vytvoří další). Vše na stejné úrovni.
+            const blocks = wbActive.length ? (WB_LESION_BLOCKS[group.id] || []) : [];
+            blocks.forEach(([table, kind, label, defaultType, organName]) => {
+                const addLabel = kind === 'lymph' ? 'další uzliny' : kind === 'lesion' ? 'další ložisko' : 'další krvácení / ischemie';
+                const cat = el('div', {
+                    className: 'organ-nav-lecat',
+                    'data-table': table,
+                    'data-kind': kind,
+                    'data-default': defaultType,
+                    'data-organ': organName,
+                    'data-label': label,
+                    'data-add': addLabel
+                });
+                nav.appendChild(cat);
+                this.populateOrganNavLesub(cat);
+            });
+
             group.items.forEach(({ name, table }) => {
                 nav.appendChild(el('button', {
                     className: 'organ-nav-item',
@@ -123,6 +166,45 @@ const UI = {
             });
         });
         return nav;
+    },
+
+    // Naplnění plochého seznamu lézí / uzlin pod nadpisem WB regionu (jako popup na SVG):
+    // bez instance je tu jen řádek kategorie (klik = vytvoří první), s instancemi řádky jejich
+    // znění a na konci řádek „další …" (klik = vytvoří další). Vše na stejné úrovni.
+    populateOrganNavLesub(cat) {
+        const table = cat.dataset.table;
+        const kind = cat.dataset.kind || 'lesion';
+        const defaultType = cat.dataset.default || 'Ložisko';
+        const organName = cat.dataset.organ || '';
+        const firstLabel = cat.dataset.label || (kind === 'lymph' ? 'Uzliny' : 'Ložisko');
+        const addLabel = cat.dataset.add || (kind === 'lymph' ? 'další uzliny' : 'další ložisko');
+        const insts = (Store.instances && Store.instances[table]) || [];
+
+        const children = insts.map(instId => {
+            const name = getLesionInstanceName(table, instId, defaultType, organName);
+            return el('button', {
+                className: `organ-nav-item nav-${kind}`,
+                'data-action': 'open-table',
+                'data-table': `${table}__${instId}`,
+                textContent: name,
+                title: name
+            });
+        });
+        children.push(el('button', {
+            className: `organ-nav-item organ-nav-le nav-${kind}`,
+            'data-action': 'open-table',
+            'data-table': table,
+            textContent: insts.length ? addLabel : firstLabel,
+            title: insts.length ? addLabel : firstLabel
+        }));
+        cat.replaceChildren(...children);
+    },
+
+    // Aktualizace seznamů lézí / uzlin v levém panelu (po každé změně obsahu / instancí)
+    refreshOrganNavLesubs() {
+        document.querySelectorAll('.organ-nav-lecat').forEach(cat => {
+            this.populateOrganNavLesub(cat);
+        });
     },
 
     updateReferencesVisibility() {
@@ -1029,5 +1111,8 @@ const UI = {
         }
         concContainer.replaceChildren(...concNodes);
         appendLlmImpressionSection(concContainer);
+
+        // Aktualizace otevřených sublistů lézí / uzlin v levém panelu (po každé změně obsahu)
+        this.refreshOrganNavLesubs();
     }
 };
