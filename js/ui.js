@@ -652,8 +652,10 @@ const UI = {
         if (!overlay || !svgContainer) return;
 
         const existingViewer = document.getElementById('standalone-slice-viewer');
-        const viewerExisted = !!existingViewer; // Uložíme si info, zda už tu viewer byl
+        const existingShowBtn = document.getElementById('slice-viewer-show-btn');
+        const viewerExisted = !!existingViewer || !!existingShowBtn;
         if (existingViewer) existingViewer.remove();
+        if (existingShowBtn) existingShowBtn.remove();
 
         if (!Store.activeTable) {
             overlay.classList.remove('active');
@@ -743,21 +745,57 @@ const UI = {
                     Store.activeViewerKey = baseTableId;
                     Store.activeSlice = 1;
                 }
-                
-                const viewer = createImageViewer(baseTableId);
-                if (viewer) {
-                    viewer.id = 'standalone-slice-viewer';
-                    overlay.parentElement.appendChild(viewer); 
-                    
-                    requestAnimationFrame(() => {
-                        viewer.style.left = `${overlay.offsetLeft + overlay.offsetWidth + 15}px`;
-                        viewer.style.top = `${overlay.offsetTop}px`;
-                    });
-                }
+                this.mountSliceViewer(overlay, baseTableId);
             }
         } else {
             overlay.appendChild(el('div', { textContent: 'Tabulka nenalezena nebo neobsahuje cílová data.', className: 'label' }));
         }
+    },
+
+    /** Umístí viewer / očičko vedle tabulky v rámci organ-body; šířka podle zbývajícího místa. */
+    mountSliceViewer(overlay, baseTableId) {
+        document.getElementById('standalone-slice-viewer')?.remove();
+        document.getElementById('slice-viewer-show-btn')?.remove();
+
+        const host = overlay?.parentElement;
+        if (!overlay || !host || !baseTableId || !SLICE_VIEWERS[baseTableId]) return;
+
+        const placeBesideOverlay = (node, gap = 15, fitWidth = false) => {
+            node.style.left = `${overlay.offsetLeft + overlay.offsetWidth + gap}px`;
+            node.style.top = `${overlay.offsetTop}px`;
+            if (!fitWidth) return;
+
+            const preferred = parseInt(node.querySelector('#slice-image')?.dataset.preferredWidth, 10) || 450;
+            const available = Math.max(80, host.clientWidth - (overlay.offsetLeft + overlay.offsetWidth + gap) - 8);
+            const width = Math.min(preferred, available);
+            node.style.width = `${width}px`;
+            node.style.maxWidth = `${available}px`;
+        };
+
+        if (Store.sliceViewerHidden) {
+            const showBtn = createSliceViewerShowBtn();
+            host.appendChild(showBtn);
+            requestAnimationFrame(() => placeBesideOverlay(showBtn, 8, false));
+            return;
+        }
+
+        const viewer = createImageViewer(baseTableId);
+        if (!viewer) return;
+        viewer.id = 'standalone-slice-viewer';
+        host.appendChild(viewer);
+        requestAnimationFrame(() => placeBesideOverlay(viewer, 15, true));
+    },
+
+    /** Jen přepne referenční obrázek / tlačítko oka — nepřekresluje otevřenou tabulku. */
+    refreshSliceViewer() {
+        const overlay = document.getElementById('table-overlay-container');
+        if (!overlay || !Store.activeTable) {
+            document.getElementById('standalone-slice-viewer')?.remove();
+            document.getElementById('slice-viewer-show-btn')?.remove();
+            return;
+        }
+        const baseTableId = Store.activeTable.split('__')[0];
+        this.mountSliceViewer(overlay, baseTableId);
     },
 
     updateBackground(activeRegions) {

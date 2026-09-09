@@ -58,7 +58,7 @@ document.addEventListener('click', e => {
 
     if (Store.activeTable) {
         const isInsideOverlay = e.target.closest('#table-overlay-container');
-        const isInsideViewer = e.target.closest('#standalone-slice-viewer');
+        const isInsideViewer = e.target.closest('#standalone-slice-viewer, #slice-viewer-show-btn');
         const isInputOrInteractive = e.target.closest('.input, select, textarea, #organ-popup');
         if (!isInsideOverlay && !isInsideViewer && !isInputOrInteractive) {
             Store.activeTable = null;

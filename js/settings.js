@@ -187,6 +187,7 @@ const Store = new Proxy(
         activeTable: null,
         activeSlice: 1,
         activeViewerKey: null,
+        sliceViewerHidden: true,
         instances: {},
         expandedNotes: {},
         _silent: false
@@ -239,6 +240,8 @@ const Store = new Proxy(
                 UI.renderReport();
             } else if (prop === 'activeSlice' || prop === 'activeViewerKey') {
                 UI.updateSliceViewer(target.activeViewerKey, target.activeSlice);
+            } else if (prop === 'sliceViewerHidden') {
+                // přepíná se v ActionHandlers → UI.renderActiveTable()
             } else {
                 UI.render(prop);
             }

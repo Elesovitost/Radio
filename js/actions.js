@@ -376,6 +376,14 @@ const ActionHandlers = {
             modal.style.display = show ? 'block' : 'none';
         }
     },
+    'hide-slice-viewer': () => {
+        Store.sliceViewerHidden = true;
+        UI.refreshSliceViewer();
+    },
+    'show-slice-viewer': () => {
+        Store.sliceViewerHidden = false;
+        UI.refreshSliceViewer();
+    },
     'toggle-llm': () => {
         const modal = document.getElementById('llm-modal');
         if (modal) {

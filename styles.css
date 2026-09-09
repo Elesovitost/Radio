@@ -179,9 +179,18 @@ input:checked + .slider { background-color: var(--accent); }
 input:checked + .slider:before { transform: translateX(14px); background-color: #fff; }
 
 /* ─── SLICE VIEWER ───────────────────────────────────── */
-.slice-viewer { position: absolute; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; gap: 8px; user-select: none; z-index: 101; }
-.slice-viewer img { height: auto; object-fit: contain; border-radius: 4px; cursor: ns-resize; border: 1px solid var(--border); }
+.slice-viewer { position: absolute; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; gap: 8px; user-select: none; z-index: 101; box-sizing: border-box; max-width: 100%; }
+.slice-viewer img { width: 100%; height: auto; object-fit: contain; border-radius: 4px; cursor: ns-resize; border: 1px solid var(--border); }
 .slice-hint { color: var(--dim); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+.slice-viewer-toggle, .slice-viewer-show {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; padding: 0; margin: 0;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 4px;
+    color: var(--dim); cursor: pointer; min-width: 0;
+}
+.slice-viewer-toggle { position: absolute; top: 6px; left: 6px; z-index: 1; }
+.slice-viewer-toggle:hover, .slice-viewer-show:hover { color: #fff; border-color: var(--accent-hi); background: rgba(88,166,255,0.15); }
+.slice-viewer-show { position: absolute; z-index: 101; box-shadow: 0 6px 16px rgba(0,0,0,0.55); }
 
 /* ─── DYNAMICKÉ SKRÝVÁNÍ PODLE TYPU VYŠETŘENÍ (PET, CT, MR) ─── */
 body.is-non-pet .tbl td:has(>[data-id*="_suv"]), body.is-non-pet .tbl td:has(+ td >[data-id*="_suv"]), body.is-non-pet .tbl td:has(>[data-id*="_act"]), body.is-non-pet .tbl td:has(+ td >[data-id*="_act"]), body.is-non-pet .tbl>tbody>tr:has([data-id*="_akt"]), body.is-non-pet .tbl>tbody>tr:has([data-id*="_neakt"]), body.is-non-pet .tbl>tbody>tr:has([data-id*="_fok"]), body.is-non-pet .tbl>tbody>tr:has([data-id*="_poly"]) { display: none !important; }
