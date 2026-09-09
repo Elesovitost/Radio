@@ -9,7 +9,7 @@ body, .report-frame, .report-heading, .report-exam-heading, #report-container, #
 .report-frame[data-action="open-table"], .report-heading[data-action="open-region"] { cursor: pointer; }
 .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 4px; padding: 12px; display: flex; flex-direction: column; position: relative; min-height: 0; }
 #header-panel { grid-column: 1 / -1; gap: 12px; z-index: 100; overflow: visible; }
-#details-panel { --details-bg: none; background-image: var(--details-bg); background-repeat: no-repeat; background-position: center; background-size: contain; overflow: auto; }
+#details-panel { --details-bg: none; background-image: var(--details-bg); background-repeat: no-repeat; background-position: center; background-size: contain; overflow: hidden; }
 #details-panel[data-bg="wb"], #details-panel[data-bg="neck"] { --details-bg: url('Organs_schematic_WB.svg'); }
 h2 { font-size: 0.75rem; color: var(--dim); letter-spacing: 1px; text-transform: uppercase; text-align: center; padding-bottom: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--border); }
 .region-header { font-size: 13px; color: var(--accent-hi); border-bottom: 1px solid var(--border); padding-bottom: 4px; margin: 15px 0 10px 0; text-transform: uppercase; letter-spacing: 1px; }
@@ -26,7 +26,9 @@ h2 { font-size: 0.75rem; color: var(--dim); letter-spacing: 1px; text-transform:
 .content-area::-webkit-scrollbar-track:vertical, #table-overlay-container::-webkit-scrollbar-track:vertical { background: linear-gradient(to right, transparent 45%, rgba(255,255,255,0.1) 45%, rgba(255,255,255,0.1) 55%, transparent 55%); }
 .content-area::-webkit-scrollbar-thumb, #table-overlay-container::-webkit-scrollbar-thumb { background: var(--accent-hi); border-radius: 10px; }
 .content-area::-webkit-scrollbar-corner, #table-overlay-container::-webkit-scrollbar-corner { background: transparent; }
-.content-area { overflow: auto; flex: 1; }
+.content-area { overflow: auto; flex: 1; min-height: 0; }
+/* V režimu orgánové mapy scrolluje jen overlay tabulek, ne content-area */
+#details-content:has(.organ-wrapper) { overflow: hidden; }
 
 /* ─── INPUTY ─────────────────────────────────────────── */
 .input { background: rgba(255,255,255,0.02); border: 1px solid var(--border); color: #fff; padding: 3px; font-size: 11px; border-radius: 2px; outline: none; transition: border-color 0.2s; }
@@ -116,7 +118,7 @@ body:not(.has-past-date) .tbl > tbody > tr:has([data-id*="_old"]), body:not(.has
 .sub-table-title-settings { font-size: 11px; font-weight: bold; color: var(--accent-hi); padding: 4px 0 10px 0; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; width: 100%; text-align: center; }
 
 /* ─── ORGÁNOVÉ SCHÉMA ────────────────────────────────── */
-.organ-wrapper { position: relative; width: 100%; height: 100%; display: flex; align-items: flex-start; }
+.organ-wrapper { position: relative; width: 100%; height: 100%; min-height: 0; display: flex; align-items: flex-start; overflow: hidden; }
 .organ-svg { width: 90%; opacity: 0.7; transform: translateY(40px); transition: opacity 0.3s; display: block; stroke: #000; stroke-width: 1px; stroke-linejoin: round; }
 .organ-svg svg, .organ-svg.multi-svg svg { display: block; height: auto; }
 .organ-svg svg { width: 100%; max-height: 70vh; }
@@ -131,7 +133,7 @@ body:not(.has-past-date) .tbl > tbody > tr:has([data-id*="_old"]), body:not(.has
 .organ-svg.dimmed { opacity: 0.1; pointer-events: none; }
 #organ-tooltip { position: fixed; background: var(--panel); border: 1px solid var(--border); color: var(--accent-hi); padding: 4px 8px; border-radius: 4px; font-size: 11px; pointer-events: none; z-index: 1000; display: none; white-space: nowrap; font-weight: 700; text-transform: uppercase; transition: color 0.2s, border-color 0.2s; }
 #organ-tooltip.tooltip-dimmed { color: var(--dim); border-color: var(--dim); }
-#table-overlay-container { position: absolute; top: 10px; left: 10px; z-index: 100; background: var(--bg); padding: 15px; border-radius: 6px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.8); display: none; max-height: 80vh; max-width: 85vw; overflow: auto; width: max-content; }
+#table-overlay-container { position: absolute; top: 10px; left: 10px; z-index: 100; background: var(--bg); padding: 15px; border-radius: 6px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.8); display: none; max-height: calc(100% - 20px); max-width: calc(100% - 20px); overflow: auto; width: max-content; }
 #table-overlay-container.active { display: flex; flex-flow: column wrap; align-content: flex-start; align-items: flex-start; gap: 15px; }
 #table-overlay-container > * { margin-bottom: 0 !important; break-inside: avoid; }
 .input-btn-inner { position: absolute; inset: 0; width: 100%; height: 100%; background: transparent; border: none; color: inherit; font: inherit; outline: none; text-align: center; z-index: 2; padding: 0; margin: 0; border-radius: 3px; }

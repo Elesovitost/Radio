@@ -226,7 +226,19 @@ function Table1col(id, cells, regionId, opts = {}) {
         const customTd = el('td', { className: 'tbl-full-cell' });
         const customBtn = makeBasicButton(customConfig);
         customBtn.classList.add('btn-green');
-        customTd.appendChild(customBtn);
+
+        if (opts.normal) {
+            const btnRow = el('div', { className: 'row' });
+            btnRow.appendChild(customBtn);
+            const normalConfig = getButtonBase(regionId, { btn: `${id}_normal`, id: `${id}_normal`, type: 'basic', text: 'normal' });
+            const normalBtn = makeBasicButton(normalConfig);
+            normalBtn.classList.add('btn-green');
+            btnRow.appendChild(normalBtn);
+            customTd.appendChild(btnRow);
+        } else {
+            customTd.appendChild(customBtn);
+        }
+
         customTr.appendChild(customTd);
         tbody.appendChild(customTr);
 
@@ -238,17 +250,6 @@ function Table1col(id, cells, regionId, opts = {}) {
                 fieldTr.appendChild(fieldTd);
                 tbody.appendChild(fieldTr);
             }
-        }
-
-        if (opts.normal) {
-            const normalConfig = getButtonBase(regionId, { btn: `${id}_normal`, id: `${id}_normal`, type: 'basic', text: 'normal' });
-            const normalTr = el('tr');
-            const normalTd = el('td', { className: 'tbl-full-cell' });
-            const normalBtn = makeBasicButton(normalConfig);
-            normalBtn.classList.add('btn-green');
-            normalTd.appendChild(normalBtn);
-            normalTr.appendChild(normalTd);
-            tbody.appendChild(normalTr);
         }
     } else {
         for (const cell of cells) {
