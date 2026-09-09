@@ -17,7 +17,7 @@ const ORGAN_MAP = {
         regions: ['brain', 'neck'] 
     },
     "Thyroidea": { name: "Štítná žláza", table: "neck_thyroid_main", regions: ['neck'] },
-    "Pharynx": { name: "Hltan", table: "neck_pharynx_main", regions: ['neck'] },
+    "Pharynx": { name: "Hltan/hrtan", table: "neck_pharynx_main", regions: ['neck'] },
     "Slinné": { name: "Slinné žlázy", table: "neck_salivary_main", regions: ['neck'] },
     "Játra": { name: "Játra", table: "abdomen_jatra_main", regions: ['abdomen'] },
     "Žlučník": { name: "Žlučník", table: "abdomen_zlucnik_main", regions: ['abdomen'] },

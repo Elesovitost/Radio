@@ -79,11 +79,12 @@ const RegionNeck = {
                         { field: 'text', id: 'salivary_custom_conc', placeholder: 'vlastní...závěr...' }
                     ], { normal: true })
                 ]),
-                helpers.TableMain('neck_pharynx_main', 'Farynx', [
+                helpers.TableMain('neck_pharynx_main', 'Hltan/hrtan', [
                     helpers.Table3colRL('neck_pharynx_table', [
                         [ { btn: 'far_asym_oro_r', states: ['0', 'poop', 'porad', 'oboje'] }, 'asymetrie orofaryngu', { btn: 'far_asym_oro_l', states: ['0', 'poop', 'porad', 'oboje'] } ],
                         [ { btn: 'far_asym_hypo_r', states: ['0', 'poop', 'porad', 'oboje'] }, 'asymetrie hypofaryngu', { btn: 'far_asym_hypo_l', states: ['0', 'poop', 'porad', 'oboje'] } ],
-                        [ { btn: 'far_tons_r', states: ['0', '+'] }, 'tonsila RF+', { btn: 'far_tons_l', states: ['0', '+'] } ]
+                        [ { btn: 'far_tons_r', states: ['0', '+'] }, 'tonsila RF-', { btn: 'far_tons_l', states: ['0', '+'] } ],
+                        [ { btn: 'far_hlas_r', states: ['0', '+'] }, 'hlasivky RF-', { btn: 'far_hlas_l', states: ['0', '+'] } ]
                     ]),
                     helpers.Table1col('neck_pharynx_add', [
                         { field: 'text', id: 'pharynx_custom_desc', placeholder: 'vlastní...popis...' },
@@ -348,6 +349,16 @@ const RegionNeck = {
                 concInc.push({ type: 'frame', text: `Asymetricky zvýšená aktivita tonsily ${side}, vhodné ORL dovyšetření.`, tableId: 'neck_pharynx_main' });
             }
 
+            let hlasR = ctx.isActive('far_hlas_r'), hlasL = ctx.isActive('far_hlas_l');
+            if (hlasR && hlasL) {
+                farRep.push('asymetrie akumulace RF v hlasivkách bilat.');
+                concInc.push({ type: 'frame', text: 'Paréza hlasivek bilat.', tableId: 'neck_pharynx_main' });
+            } else if (hlasR || hlasL) {
+                let side = hlasR ? 'vpravo' : 'vlevo';
+                farRep.push(`asymetrie akumulace RF v hlasivkách ${side}`);
+                concInc.push({ type: 'frame', text: `Paréza hlasivky ${side}.`, tableId: 'neck_pharynx_main' });
+            }
+
             let farDesc = ctx.field('pharynx_custom_desc');
             if (farDesc) farRep.push(farDesc);
 
@@ -357,7 +368,7 @@ const RegionNeck = {
                 if (pharynxNormal && farRep.length > 0) body = `symetrický, bez ložiskového ztluštění stěny. Jinak pouze ${formatList(farRep)}.`;
                 else if (pharynxNormal) body = 'symetrický, bez ložiskového ztluštění stěny.';
                 else body = `${formatList(farRep)}.`;
-                reportOut.push({ type: 'frame', text: `- Farynx: ${body}`, tableId: 'neck_pharynx_main' });
+                reportOut.push({ type: 'frame', text: `- Hltan/hrtan: ${body}`, tableId: 'neck_pharynx_main' });
             }
 
             let pharynxCustomConc = ctx.field('pharynx_custom_conc');
