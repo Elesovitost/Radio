@@ -119,7 +119,16 @@ body:not(.has-past-date) .tbl > tbody > tr:has([data-id*="_old"]), body:not(.has
 .sub-table-title-settings { font-size: 11px; font-weight: bold; color: var(--accent-hi); padding: 4px 0 10px 0; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; width: 100%; text-align: center; }
 
 /* ─── ORGÁNOVÉ SCHÉMA ────────────────────────────────── */
-.organ-wrapper { position: relative; width: 100%; height: 100%; min-height: 0; display: flex; align-items: flex-start; overflow: hidden; }
+.organ-wrapper { position: relative; width: 100%; height: 100%; min-height: 0; display: flex; align-items: stretch; overflow: hidden; }
+.organ-body { position: relative; flex: 1 1 auto; min-width: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; }
+/* Navigace kategorií vlevo od schématu */
+.organ-nav { display: flex; flex-direction: column; flex: 0 0 auto; width: max-content; min-width: 0; max-width: 240px; align-self: stretch; overflow-y: auto; padding: 6px 10px 8px 4px; border-right: 1px solid var(--border); margin-right: 2px; scrollbar-width: thin; scrollbar-color: var(--accent-hi) transparent; }
+.organ-nav::-webkit-scrollbar { width: 6px; }
+.organ-nav::-webkit-scrollbar-thumb { background: var(--accent-hi); border-radius: 10px; }
+.organ-nav-region { font: inherit; background: none; border: none; padding: 8px 6px 3px; margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--accent-hi); text-align: left; cursor: pointer; width: 100%; transition: color 0.15s, text-shadow 0.15s; }
+.organ-nav-region:hover { color: #fff; text-shadow: 0 0 4px var(--accent-hi); }
+.organ-nav-item { font: inherit; background: none; border: none; color: #c9d1d9; text-align: left; padding: 2px 2px; margin: 1px 0 1px 4px; font-size: 12px; border-radius: 3px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; transition: background 0.15s, color 0.15s; }
+.organ-nav-item:hover { background: rgba(88,166,255,0.15); color: #fff; }
 .organ-svg { width: 90%; opacity: 0.7; transform: translateY(40px); transition: opacity 0.3s; display: block; stroke: #000; stroke-width: 1px; stroke-linejoin: round; }
 .organ-svg svg, .organ-svg.multi-svg svg { display: block; height: auto; }
 .organ-svg svg { width: 100%; max-height: 70vh; }

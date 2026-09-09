@@ -55,6 +55,62 @@ const UI = {
         });
     },
 
+    // Seskupený seznam kategorií: pro každou aktivní část těla (hlava, krk, hrudník,
+    // břicho, skeleton) nadpis - klikatelný - a pod ním položky, které k ní patří.
+    // Kliknutí na nadpis otevře všechny tabulky regionu, kliknutí na položku danou tabulku.
+    buildOrganCategoryNav(activeRegions) {
+        const regionOrder = ['brain', 'neck', 'thorax', 'abdomen', 'skeleton'];
+        const groups = regionOrder
+            .filter(r => activeRegions.includes(r))
+            .map(r => ({ id: r, title: (REGIONS[r] && REGIONS[r].title) || r, items: [] }));
+
+        const usedTables = new Set();
+        for (const group of groups) {
+            for (const organId of Object.keys(ORGAN_MAP)) {
+                const def = ORGAN_MAP[organId];
+                if (!def.regions || !def.regions.includes(group.id)) continue;
+                // položku přiřaď do první aktivní skupiny (aby se nezdvojovala)
+                const primary = groups.find(g => def.regions.includes(g.id));
+                if (primary !== group) continue;
+                let table = def.table;
+                if (!table) continue;
+                if (def.resolveTable) table = def.resolveTable([group.id]);
+                if (!table) continue;
+                // Léze / lymfadenopatie / krvácení se otevírají popupem na SVG – nepatří sem
+                if (table.includes('_lesion_main') || table.includes('_lymphnode_main') || table.includes('_hemo')) continue;
+                if (usedTables.has(table)) continue;
+                usedTables.add(table);
+                group.items.push({ name: def.name, table });
+            }
+        }
+
+        const visibleGroups = groups.filter(g => g.items.length > 0);
+        if (visibleGroups.length === 0) return null;
+
+        const nav = el('div', { className: 'organ-nav' });
+        visibleGroups.forEach((group, idx) => {
+            const head = el('button', {
+                className: 'organ-nav-region',
+                'data-action': 'open-region',
+                'data-region': group.id,
+                textContent: group.title,
+                title: `Zobrazit všechny tabulky (${group.title})`
+            });
+            if (idx > 0) head.style.marginTop = '8px';
+            nav.appendChild(head);
+            group.items.forEach(({ name, table }) => {
+                nav.appendChild(el('button', {
+                    className: 'organ-nav-item',
+                    'data-action': 'open-table',
+                    'data-table': table,
+                    textContent: name,
+                    title: `Otevřít tabulku: ${name}`
+                }));
+            });
+        });
+        return nav;
+    },
+
     updateReferencesVisibility() {
         const activeExamId = (Store.activeTab || '').toLowerCase();
         
@@ -373,11 +429,23 @@ const UI = {
             }
 
             const wrapper = el('div', { className: 'organ-wrapper' });
+            // Vpravo: plocha se schématem + overlay tabulek; vlevo: navigace kategorií
+            const body = el('div', { className: 'organ-body' });
             const svgContainer = el('div', { className: 'organ-svg', id: 'organ-svg-container' });
-            wrapper.appendChild(svgContainer);
+            body.appendChild(svgContainer);
+
+            // Klikatelný seznam kategorií vlevo od SVG (jen pro WB části těla)
+            if (hasWBSvg) {
+                const nav = this.buildOrganCategoryNav(activeRegions);
+                if (nav) {
+                    wrapper.classList.add('has-organ-nav');
+                    wrapper.appendChild(nav);
+                }
+            }
 
             const overlay = el('div', { id: 'table-overlay-container' });
-            wrapper.appendChild(overlay);
+            body.appendChild(overlay);
+            wrapper.appendChild(body);
 
             if (!document.getElementById('organ-tooltip')) {
                 document.body.appendChild(el('div', { id: 'organ-tooltip' }));
