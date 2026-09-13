@@ -833,7 +833,6 @@ const UI = {
             let examConcMainBlocks = [];
             let examConcIncBlocks = [];
 
-            let officialRegions = new Set(exam.regs);
             let regionsToCompile = new Set(exam.regs);
 
             Object.keys(REGIONS).forEach(rId => {
@@ -971,14 +970,7 @@ const UI = {
                 };
 
                 if (compiled.report) {
-                    let mappedReport = compiled.report.map(b => {
-                        let text = sanitizeText(b.text, false);
-                        if (!officialRegions.has(regionId) && b.type === 'heading') {
-                            text = text.replace(':', ' (v zachyceném rozsahu):');
-                        }
-                        return { ...b, text, examId };
-                    });
-                    examRepBlocks.push(...mappedReport);
+                    examRepBlocks.push(...compiled.report.map(b => ({ ...b, text: sanitizeText(b.text, false), examId })));
                 }
                 
                 if (compiled.conclusion) {
