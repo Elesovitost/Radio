@@ -540,7 +540,7 @@ const RegionThorax = {
                         { field: 'text', id: 'thymus_custom_conc', placeholder: 'vlastní...závěr...' }
                     ], { normal: true })
                 ]),
-                helpers.TableMain('thorax_srdce_main', 'Srdce a cévy', [
+                helpers.TableMain('thorax_srdce_main', 'Srdce', [
                     helpers.Table2colNormal('srdce_table', [
                         [ 'Dilatace srdce', { btn: 'sr_dil', states: ['0', 'síní', 'celého'] } ],
                         [ 'Dilatace aorty', { btn: 'sr_dil_ao', states: ['0', 'kořene', 'ascendentní', 'oboje'] }, { field: 'mm', id: 'sr_dil_ao_mm', placeholder: 'mm', step: 1 } ],
@@ -1122,7 +1122,7 @@ const RegionThorax = {
                 if (srdceNormal && srParts.length > 0) body = `přiměřené velikosti, aorta přiměřené šíře, bez perikardiálního výpotku. Jinak pouze ${formatList(srParts)}.`;
                 else if (srdceNormal) body = 'přiměřené velikosti, aorta přiměřené šíře, bez perikardiálního výpotku.';
                 else body = `${formatList(srParts)}.`;
-                reportOut.push({ type: 'frame', text: `Srdce a cévy: ${body}`, tableId: 'thorax_srdce_main' });
+                reportOut.push({ type: 'frame', text: `Srdce: ${body}`, tableId: 'thorax_srdce_main' });
             }
             
             let srConc = ctx.field('srdce_custom_conc');

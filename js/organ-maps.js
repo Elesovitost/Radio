@@ -24,7 +24,7 @@ const ORGAN_MAP = {
     "Thorax Lymph Node": { name: "Lymfadenopatie (Hrudník)", table: "thorax_lymphnode_main", regions: ['thorax'] },
     "Thymus": { name: "Thymus", table: "thorax_thymus_main", regions: ['thorax'] },
     "Jícen": { name: "Jícen", table: "thorax_jicen_main", regions: ['thorax'] },
-    "Srdce": { name: "Srdce a cévy", table: "thorax_srdce_main", regions: ['thorax'] },
+    "Srdce": { name: "Srdce", table: "thorax_srdce_main", regions: ['thorax'] },
     "Plíce": { name: "Plíce a pleura", table: "thorax_plice_main", regions: ['thorax'] },
     "Chest Wall": { name: "Hrudní stěna / Prsa", table: "thorax_mamma_main", regions: ['thorax'] },
     "Devices": { name: "Devices", table: "thorax_devices_main", regions: ['thorax'] },
