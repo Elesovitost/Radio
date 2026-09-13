@@ -530,10 +530,13 @@ const RegionThorax = {
                         { field: 'text', id: 'jicen_custom_conc', placeholder: 'vlastní...závěr...' }
                     ], { normal: true })
                 ]),
-                helpers.TableMain('thorax_thymus_main', 'Thymus', [
+                helpers.TableMain('thorax_thymus_main', 'Mediastinum', [
                     helpers.Table2colNormal('thymus_table', [
-                        [ 'Zvětšení', { btn: 'th_zvet', states: ['0', '+'] } ],
-                        [ 'RF+', { btn: 'th_akt', states: ['0', '+'] } ]
+                        [ 'Thymus - zvětšení', { btn: 'th_zvet', states: ['0', '+'] } ],
+                        [ 'Thymus RF+', { btn: 'th_akt', states: ['0', '+'] } ],
+                        [ 'Přední med.', { btn: 'th_med_pred', states: ['0', 'cystoid', 'kombinace', 'solidní'] } ],
+                        [ 'Střední med.', { btn: 'th_med_stred', states: ['0', 'cystoid', 'kombinace', 'solidní'] } ],
+                        [ 'Zadní med.', { btn: 'th_med_zad', states: ['0', 'cystoid', 'kombinace', 'solidní'] } ]
                     ]),
                     helpers.Table1col('thymus_ost_add', [
                         { field: 'text', id: 'thymus_custom_desc', placeholder: 'vlastní...popis...' },
@@ -1021,9 +1024,9 @@ const RegionThorax = {
 
             let thZvet = ctx.isActive('th_zvet'), thAkt = ctx.isActive('th_akt');
             let thymusText = "";
-            if (thZvet && thAkt) thymusText = "difuzně zvětšen s difuzně zvýšenou akumulací RF při reaktivaci";
-            else if (thZvet) thymusText = "difuzně zvětšen po reaktivaci";
-            else if (thAkt) thymusText = "s difuzně zvýšenou akumulací RF po reaktivaci";
+            if (thZvet && thAkt) thymusText = "thymus difuzně zvětšen s difuzně zvýšenou akumulací RF při reaktivaci";
+            else if (thZvet) thymusText = "thymus difuzně zvětšen po reaktivaci";
+            else if (thAkt) thymusText = "thymus s difuzně zvýšenou akumulací RF po reaktivaci";
             
             let thDesc = ctx.field('thymus_custom_desc');
             let thParts = [];
@@ -1033,6 +1036,43 @@ const RegionThorax = {
                 if (txt.endsWith('.')) txt = txt.slice(0, -1);
                 thParts.push(txt);
             }
+            [
+                {
+                    id: 'th_med_pred', loc: 'v předním mediastinu',
+                    dg: {
+                        'cystoid':    'thymická cysta, teratom, bronchogenní cysta',
+                        'kombinace':  'thymom s cystickou složkou, teratom, lymfom',
+                        'solidní':    'thymom, lymfom, germinální tumor, hyperplázie thymu, retrosternální struma'
+                    }
+                },
+                {
+                    id: 'th_med_stred', loc: 've středním mediastinu',
+                    dg: {
+                        'cystoid':    'bronchogenní cysta, perikardiální cysta, duplikatura jícnu',
+                        'kombinace':  'lymfom s nekrózou/cystickou složkou, metastáza, teratom',
+                        'solidní':    'lymfadenopatie (lymfom, sarkoidóza, metastázy), bronchogenní tumor'
+                    }
+                },
+                {
+                    id: 'th_med_zad', loc: 'v zadním mediastinu',
+                    dg: {
+                        'cystoid':    'neuroenterická cysta, meningokéla',
+                        'kombinace':  'neurogenní tumor s cystickou složkou, ganglioneurom',
+                        'solidní':    'neurogenní tumor (schwannom, neurofibrom, ganglioneurom)'
+                    }
+                }
+            ].forEach(({ id, loc, dg }) => {
+                const st = ctx.text(id);
+                if (!dg[st]) return;
+                const rep = st === 'cystoid' ? `cystoidní léze ${loc}`
+                          : st === 'kombinace' ? `cystoidně-solidní léze ${loc}`
+                          : `solidní ložisko ${loc}`;
+                thParts.push(rep);
+                const conc = st === 'cystoid' ? `Cystoidní léze ${loc} - dif. dg.: ${dg[st]}.`
+                           : st === 'kombinace' ? `Cystoidně-solidní léze ${loc} - dif. dg.: ${dg[st]}.`
+                           : `Solidní ložisko ${loc} - dif. dg.: ${dg[st]}.`;
+                concInc.push({ type: 'frame', text: conc, tableId: 'thorax_thymus_main' });
+            });
             const thymusNormalLvl = ctx.normalLevel('thymus_ost_add_normal');
             const thymusNormal = thymusNormalLvl > 0;
             if (thymusNormal || thParts.length > 0) {
@@ -1043,13 +1083,13 @@ const RegionThorax = {
                 if (thymusNormal && thParts.length > 0) body = `${thymusNormRep}. Jinak pouze ${formatList(thParts)}.`;
                 else if (thymusNormal) body = `${thymusNormRep}.`;
                 else body = `${formatList(thParts)}.`;
-                reportOut.push({ type: 'frame', text: `Thymus: ${body}`, tableId: 'thorax_thymus_main' });
+                reportOut.push({ type: 'frame', text: `Mediastinum: ${body}`, tableId: 'thorax_thymus_main' });
             }
             
             let thConc = ctx.field('thymus_custom_conc');
             if (thConc) concInc.push({ type: 'frame', text: thConc, tableId: 'thorax_thymus_main' });
             if (thymusNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Přiměřený nález na thymu.', tableId: 'thorax_thymus_main' });
+                concMain.push({ type: 'frame', text: 'Přiměřený nález v mediastinu.', tableId: 'thorax_thymus_main' });
             }
 
             let srdceRep = [];

@@ -1086,7 +1086,7 @@ const UI = {
             incidentalBlocks.push(...examConcIncBlocks);
         }
 
-        const buildNodes = (blocks, { prefixNove = false } = {}) => {
+        const buildNodes = (blocks, { prefixNove = false, labels = true } = {}) => {
             return blocks.map(b => {
                 if (b.type === 'heading' || b.type === 'heading-gray') {
                     const node = el('div', { className: b.type === 'heading-gray' ? 'report-heading heading-gray' : 'report-heading', textContent: b.text });
@@ -1122,7 +1122,7 @@ const UI = {
                     if (b.tableId && (b.tableId.includes('lesion') || b.tableId.includes('hemo'))) classes.push('frame-lesion');
                     if (b.tableId && b.tableId.includes('lymphnode')) classes.push('frame-lymphnode');
 
-                    const organLabel = (cleanText.match(/^([^:\n]+:)/) || [])[1];
+                    const organLabel = labels ? (cleanText.match(/^([^:\n]+:)/) || [])[1] : null;
                     const node = el('div', { className: classes.join(' '), textContent: organLabel ? cleanText.slice(organLabel.length) : cleanText });
                     if (organLabel) node.dataset.label = organLabel;
                     if (b.tableId) {
@@ -1145,11 +1145,11 @@ const UI = {
         let concNodes = [];
         if (mainConclusionBlocks.length > 0) {
             concNodes.push(el('div', { className: 'report-heading', textContent: 'Závěr:' }));
-            concNodes.push(...buildNodes(mainConclusionBlocks, { prefixNove: true }));
+            concNodes.push(...buildNodes(mainConclusionBlocks, { prefixNove: true, labels: false }));
         }
         if (incidentalBlocks.length > 0) {
             concNodes.push(el('div', { className: 'report-heading', textContent: 'Vedlejší nálezy:' }));
-            concNodes.push(...buildNodes(incidentalBlocks, { prefixNove: true }));
+            concNodes.push(...buildNodes(incidentalBlocks, { prefixNove: true, labels: false }));
         }
         concContainer.replaceChildren(...concNodes);
         appendLlmImpressionSection(concContainer);
