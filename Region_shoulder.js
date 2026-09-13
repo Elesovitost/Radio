@@ -59,8 +59,9 @@ const RegionShoulder = {
             // --- BICEPS A BICEPSOVÁ KLADKA ---
             helpers.TableMain('shoulder_lhb_main', 'LHBT', [
                 helpers.Table2colNormal('shoulder_lhb_table', '', [
-                    [ 'Stav:', { btn: 'sh_lhb_stav', states: ['0', 'tendinóza', 'gr. I', 'gr. II', 'gr. III', 'kompletní'] } ],
-                    [ 'Poloha:', { btn: 'sh_lhb_poloha', states: ['in situ', 'pulley', 'subluxace', 'luxace', 'retrakce'] } ]
+                    [ 'Stav:', { btn: 'sh_lhb_stav', states: ['0', 'tendinóza', 'gr. I', 'gr. II', 'gr. III', 'kompletní', 'tenotomie'] } ],
+                    [ 'Poloha:', { btn: 'sh_lhb_poloha', states: ['in situ', 'pulley', 'subluxace', 'luxace', 'retrakce'] } ],
+                    [ 'Sulkus:', { btn: 'sh_lhb_sulkus', states: ['0', 'tekutina'] } ]
                 ])
             ]),
 
@@ -411,8 +412,10 @@ const RegionShoulder = {
         // --- 4. BICEPS A BICEPSOVÁ KLADKA (LHB) ---
         const lhbStav = ctx.text('sh_lhb_stav');
         const lhbPoloha = ctx.text('sh_lhb_poloha');
+        const lhbSulkus = ctx.text('sh_lhb_sulkus');
         
-        let isLhbNormal = (!lhbStav || lhbStav === '0') && (!lhbPoloha || lhbPoloha === 'in situ');
+        let isLhbNormal = (!lhbStav || lhbStav === '0') && (!lhbPoloha || lhbPoloha === 'in situ') &&
+                          (!lhbSulkus || lhbSulkus === '0');
 
         if (isLhbNormal) {
             reportOut.push({ type: 'frame', text: 'Šlacha dlouhé hlavy bicepsu je v sulku, přim. šíře a signálu, bez výraznějšího tekutinového lemu.', tableId: 'shoulder_lhb_main', dimmed: true });
@@ -420,6 +423,7 @@ const RegionShoulder = {
             let repParts = [];
             let concStavText = '';
             let concPolohaText = '';
+            let concSulkusText = '';
 
             if (lhbStav && lhbStav !== '0') {
                 const repStavMap = {
@@ -427,14 +431,16 @@ const RegionShoulder = {
                     'gr. I': 'mírná parciální léze se zvýšenou SI',
                     'gr. II': 'parciální léze a nehomogenita se zvýšenou SI',
                     'gr. III': 'výrazná parciální léze s rozvlákněním a vysokou SI',
-                    'kompletní': 'kompletní ruptura s přerušením kontinuity vláken'
+                    'kompletní': 'kompletní ruptura s přerušením kontinuity vláken',
+                    'tenotomie': 'stav po tenotomii, šlacha v průběhu není zobrazena'
                 };
                 const concStavMap = {
                     'tendinóza': 'tendinózou',
                     'gr. I': 'low-grade (gr. I) parciální rupturou',
                     'gr. II': 'parciální (gr. II) rupturou',
                     'gr. III': 'high-grade (gr. III) parciální rupturou',
-                    'kompletní': 'kompletní rupturou'
+                    'kompletní': 'kompletní rupturou',
+                    'tenotomie': 'stavem po tenotomii'
                 };
                 repParts.push(repStavMap[lhbStav]);
                 concStavText = concStavMap[lhbStav];
@@ -457,21 +463,32 @@ const RegionShoulder = {
                 };
                 repParts.push(repPolohaMap[lhbPoloha]);
                 concPolohaText = concPolohaMap[lhbPoloha];
-            } else if (lhbStav && lhbStav !== '0') {
+            } else if (lhbStav && lhbStav !== '0' && lhbStav !== 'tenotomie') {
                 repParts.push('lokalizace v bicepsovém sulku');
+            }
+
+            if (lhbSulkus === 'tekutina') {
+                repParts.push('v bicepsovém sulku je tekutinový lem');
+                concSulkusText = 'tekutinou v sulku';
             }
 
             let lhbRepText = 'Šlacha dlouhé hlavy bicepsu (LHB): ' + repParts.join(', ') + '.';
             reportOut.push({ type: 'frame', text: lhbRepText, tableId: 'shoulder_lhb_main' });
 
             let polohaPrep = (lhbPoloha === 'subluxace') ? 'se' : 's';
+            let stavPrep = (lhbStav === 'tenotomie') ? 'se' : 's';
 
-            if (concStavText && concPolohaText) {
-                concMain.push({ type: 'frame', text: `LHBT s ${concStavText} a ${polohaPrep} ${concPolohaText}.`, tableId: 'shoulder_lhb_main' });
-            } else if (concStavText) {
-                concMain.push({ type: 'frame', text: `LHBT s ${concStavText}.`, tableId: 'shoulder_lhb_main' });
-            } else if (concPolohaText) {
-                concMain.push({ type: 'frame', text: `LHBT ${polohaPrep} ${concPolohaText}.`, tableId: 'shoulder_lhb_main' });
+            const concBits = [];
+            if (concStavText) concBits.push(`${stavPrep} ${concStavText}`);
+            if (concPolohaText) concBits.push(`${polohaPrep} ${concPolohaText}`);
+            if (concSulkusText) concBits.push(`s ${concSulkusText}`);
+
+            if (concBits.length === 1) {
+                concMain.push({ type: 'frame', text: `LHBT ${concBits[0]}.`, tableId: 'shoulder_lhb_main' });
+            } else if (concBits.length === 2) {
+                concMain.push({ type: 'frame', text: `LHBT ${concBits[0]} a ${concBits[1]}.`, tableId: 'shoulder_lhb_main' });
+            } else if (concBits.length > 2) {
+                concMain.push({ type: 'frame', text: `LHBT ${concBits.slice(0, -1).join(', ')} a ${concBits[concBits.length - 1]}.`, tableId: 'shoulder_lhb_main' });
             }
         }
 
