@@ -1078,8 +1078,8 @@ const RegionThorax = {
             if (thymusNormal || thParts.length > 0) {
                 let body;
                 const thymusNormRep = isPET
-                    ? 'obvyklé involuce, bez zvětšení a bez patologické akumulace RF'
-                    : 'obvyklé involuce, bez zvětšení';
+                    ? 'bez ložiskových změn a bez patologické akumulace RF'
+                    : 'bez ložiskových změn ';
                 if (thymusNormal && thParts.length > 0) body = `${thymusNormRep}. Jinak pouze ${formatList(thParts)}.`;
                 else if (thymusNormal) body = `${thymusNormRep}.`;
                 else body = `${formatList(thParts)}.`;
