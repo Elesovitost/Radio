@@ -7,6 +7,30 @@ const RegionSoft = {
         const lesInsts = Store.instances?.['soft_lesion_main'] || [];
         lesInsts.forEach((instId, idx) => {
             const p = `l_${instId}`;
+
+            const locTab = helpers.Table3colRCL(`${p}_loc_r4`, [
+                [ { btn: `${p}_p_hlava_r`, states: ['0', '+'] }, 'Hlava', { btn: `${p}_p_hlava_l`, states: ['0', '+'] } ],
+                [ { btn: `${p}_p_krk_r`, states: ['0', '+'] }, 'Krk', { btn: `${p}_p_krk_l`, states: ['0', '+'] } ],
+                [ { btn: `${p}_p_hkk_r`, states: ['0', '+'] }, 'HK', { btn: `${p}_p_hkk_l`, states: ['0', '+'] } ],
+                [ { btn: `${p}_p_hrud_r`, states: ['0', '+'] }, 'Hrudník', { btn: `${p}_p_hrud_l`, states: ['0', '+'] } ],
+                [ { btn: `${p}_p_bris_r`, states: ['0', '+'] }, 'Břicho', { btn: `${p}_p_bris_l`, states: ['0', '+'] } ],
+                [ { btn: `${p}_p_pan_r`, states: ['0', '+'] }, 'Pánev', { btn: `${p}_p_pan_l`, states: ['0', '+'] } ],
+                [ { btn: `${p}_p_dkk_r`, states: ['0', '+'] }, 'DK', { btn: `${p}_p_dkk_l`, states: ['0', '+'] } ]
+            ]);
+
+            const vztahTab = helpers.Table1col(`${p}_vztah`, [
+                { btn: `${p}_v_intra`, type: 'basic', text: 'intramuskulárně' },
+                { btn: `${p}_v_inter`, type: 'basic', text: 'intermuskulárně' },
+                { btn: `${p}_v_subk`, type: 'basic', text: 'subkutánně' },
+                { btn: `${p}_v_fasc`, type: 'basic', text: 'podél fascie' }
+            ]);
+            vztahTab.style.marginLeft = '8px';
+
+            const locBox = el('div', { className: 'table-wrapper', style: 'width: 100%;' }, [
+                el('div', { className: 'sub-table-title', textContent: 'Lokalizace' }),
+                el('div', { className: 'row', style: 'align-items: flex-start; justify-content: center;' }, [locTab, vztahTab])
+            ]);
+
             layoutNodes.push(
                 helpers.LesionMain(`soft_lesion_main__${instId}`, `Léze měkkých tkání (${idx + 1})`, [
                     helpers.Table1col(`${p}_r1_excl`, [ [ 'Počet:', { btn: `${p}_c_soli`, type: 'basic', text: 'solitární' }, { btn: `${p}_c_dve`, type: 'basic', text: 'dvě' }, { btn: `${p}_c_vice`, type: 'basic', text: 'vícečetné' }, { btn: `${p}_c_mnoho`, type: 'basic', text: 'mnohočetné' } ] ]),
@@ -18,22 +42,7 @@ const RegionSoft = {
                         { btn: `${p}_k_kol`, type: 'basic', text: 'kolekce' },
                         { btn: `${p}_k_cust`, states: ['vlastní', 'custom'] }
                     ] ]),
-                    helpers.Table1col(`${p}_r3_vztah`, [ [ 'Vztah:',
-                        { btn: `${p}_v_intra`, type: 'basic', text: 'intramuskulárně' },
-                        { btn: `${p}_v_inter`, type: 'basic', text: 'intermuskulárně' },
-                        { btn: `${p}_v_subk`, type: 'basic', text: 'subkutánně' },
-                        { btn: `${p}_v_fasc`, type: 'basic', text: 'podél fascie' }
-                    ] ]),
-                    helpers.Table3colRCL(`${p}_loc_r4`, 'Lokalizace', [
-                        [ { btn: `${p}_p_krk_r`, type: 'basic', text: 'Krk' }, '', { btn: `${p}_p_krk_l`, type: 'basic', text: 'Krk' } ],
-                        [ { btn: `${p}_p_hrud_r`, type: 'basic', text: 'Hrudní stěna' }, '', { btn: `${p}_p_hrud_l`, type: 'basic', text: 'Hrudní stěna' } ],
-                        [ { btn: `${p}_p_bris_r`, type: 'basic', text: 'Břišní stěna' }, '', { btn: `${p}_p_bris_l`, type: 'basic', text: 'Břišní stěna' } ],
-                        [ '', { btn: `${p}_p_retro`, type: 'basic', text: 'Retroperitoneum' }, '' ],
-                        [ { btn: `${p}_p_para_r`, type: 'basic', text: 'Paravertebr.' }, '', { btn: `${p}_p_para_l`, type: 'basic', text: 'Paravertebr.' } ],
-                        [ { btn: `${p}_p_pan_r`, type: 'basic', text: 'Pánev/gluteál.' }, '', { btn: `${p}_p_pan_l`, type: 'basic', text: 'Pánev/gluteál.' } ],
-                        [ { btn: `${p}_p_hkk_r`, type: 'basic', text: 'Horní končetina' }, '', { btn: `${p}_p_hkk_l`, type: 'basic', text: 'Horní končetina' } ],
-                        [ { btn: `${p}_p_dkk_r`, type: 'basic', text: 'Dolní končetina' }, '', { btn: `${p}_p_dkk_l`, type: 'basic', text: 'Dolní končetina' } ]
-                    ]),
+                    locBox,
                     ...LESIONS_DEFINITION.getLesionRowsPost(helpers, p, `${p}_met`, `${p}_e`)
                 ])
             );
@@ -89,14 +98,13 @@ const RegionSoft = {
                 else if (l) lokace.push(sL);
             };
 
-            addBilat('krk', 'vpravo v krku', 'vlevo v krku', 'v krku bilat.');
-            addBilat('hrud', 'v pravé hrudní stěně', 'v levé hrudní stěně', 'v hrudní stěně bilat.');
-            addBilat('bris', 'v pravé břišní stěně', 'v levé břišní stěně', 'v břišní stěně bilat.');
-            if (ctx.isActive(`${p}_p_retro`)) lokace.push('v retroperitoneu');
-            addBilat('para', 'paravertebrálně vpravo', 'paravertebrálně vlevo', 'paravertebrálně bilat.');
-            addBilat('pan', 'v pravé gluteální oblasti', 'v levé gluteální oblasti', 'v gluteální oblasti bilat.');
-            addBilat('hkk', 'vpravo na horní končetině', 'vlevo na horní končetině', 'na horních končetinách bilat.');
-            addBilat('dkk', 'vpravo na dolní končetině', 'vlevo na dolní končetině', 'na dolních končetinách bilat.');
+            addBilat('hlava', 'na hlavě vpravo', 'na hlavě vlevo', 'na hlavě bilat.');
+            addBilat('krk', 'na krku vpravo', 'na krku vlevo', 'na krku bilat.');
+            addBilat('hkk', 'v měkkých tkáních HK vpravo', 'v měkkých tkáních HK vlevo', 'v měkkých tkáních HK bilat.');
+            addBilat('hrud', 'v hrudní stěně vpravo', 'v hrudní stěně vlevo', 'v hrudní stěně bilat.');
+            addBilat('bris', 'v břišní stěně vpravo', 'v břišní stěně vlevo', 'v břišní stěně bilat.');
+            addBilat('pan', 'v pánevní stěně vpravo', 'v pánevní stěně vlevo', 'v pánevní stěně bilat.');
+            addBilat('dkk', 'v měkkých tkáních DK vpravo', 'v měkkých tkáních DK vlevo', 'v měkkých tkáních DK bilat.');
 
             let vztah = [];
             if (ctx.isActive(`${p}_v_intra`)) vztah.push('intramuskulárně');
