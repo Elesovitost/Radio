@@ -72,26 +72,6 @@ const RegionSkeleton = {
             );
 
             layoutNodes.push(
-                helpers.TableMain('skeleton_degen', 'Degenerativní změny', [
-                    helpers.Table3colRCL('sk_degen_table', degInfRowsFn('sk_dg')),
-                    helpers.Table1col('sk_degen_ost_add', [
-                        { field: 'text', id: 'sk_degen_custom_desc', placeholder: 'vlastní popis...' },
-                        { field: 'text', id: 'sk_degen_custom_conc', placeholder: 'vlastní závěr...' }
-                    ])
-                ])
-            );
-
-            layoutNodes.push(
-                helpers.TableMain('skeleton_inflam', 'Zánětlivé změny', [
-                    helpers.Table3colRCL('sk_inflam_table', degInfRowsFn('sk_za')),
-                    helpers.Table1col('sk_inflam_ost_add', [
-                        { field: 'text', id: 'sk_inflam_custom_desc', placeholder: 'vlastní popis...' },
-                        { field: 'text', id: 'sk_inflam_custom_conc', placeholder: 'vlastní závěr...' }
-                    ])
-                ])
-            );
-
-            layoutNodes.push(
                 helpers.TableMain('skeleton_systemic', 'Systémové procesy', [
                     helpers.Table2colNormal('sk_systemic_table', [
                         [ 'DISH', { btn: 'sk_sy_dish', states: ['0', '+'] } ],
@@ -106,13 +86,33 @@ const RegionSkeleton = {
             );
 
             layoutNodes.push(
+                helpers.TableMain('skeleton_degen', 'Degenerativní změny', [
+                    helpers.Table3colRCL('sk_degen_table', degInfRowsFn('sk_dg')),
+                    helpers.Table1col('sk_degen_ost_add', [
+                        { field: 'text', id: 'sk_degen_custom_desc', placeholder: 'vlastní popis...' },
+                        { field: 'text', id: 'sk_degen_custom_conc', placeholder: 'vlastní závěr...' }
+                    ])
+                ], { collapsed: true })
+            );
+
+            layoutNodes.push(
+                helpers.TableMain('skeleton_inflam', 'Zánětlivé změny', [
+                    helpers.Table3colRCL('sk_inflam_table', degInfRowsFn('sk_za')),
+                    helpers.Table1col('sk_inflam_ost_add', [
+                        { field: 'text', id: 'sk_inflam_custom_desc', placeholder: 'vlastní popis...' },
+                        { field: 'text', id: 'sk_inflam_custom_conc', placeholder: 'vlastní závěr...' }
+                    ])
+                ], { collapsed: true })
+            );
+
+            layoutNodes.push(
                 helpers.TableMain('skeleton_acute', 'Akutní trauma', [
                     helpers.Table3colRCL('sk_acute_table', traumaRowsFn('sk_ta')),
                     helpers.Table1col('sk_acute_ost_add', [
                         { field: 'text', id: 'sk_acute_custom_desc', placeholder: 'vlastní popis...' },
                         { field: 'text', id: 'sk_acute_custom_conc', placeholder: 'vlastní závěr...' }
                     ])
-                ])
+                ], { collapsed: true })
             );
 
             layoutNodes.push(
@@ -122,7 +122,7 @@ const RegionSkeleton = {
                         { field: 'text', id: 'sk_chronic_custom_desc', placeholder: 'vlastní popis...' },
                         { field: 'text', id: 'sk_chronic_custom_conc', placeholder: 'vlastní závěr...' }
                     ])
-                ])
+                ], { collapsed: true })
             );
 
             layoutNodes.push(
@@ -140,7 +140,7 @@ const RegionSkeleton = {
                     helpers.Table1col('sk_inst_ost_add', [
                         { field: 'text', id: 'sk_inst_custom_desc', placeholder: 'vlastní popis...' }
                     ])
-                ])
+                ], { collapsed: true })
             );
 
             layoutNodes.push(

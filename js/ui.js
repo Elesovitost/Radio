@@ -626,7 +626,7 @@ const UI = {
 
         const helpers = {
             LesionMain:         (id, title, rowsContent) => LesionMain(id, title, rowsContent),
-            TableMain:          (id, title, contents) => TableMain(id, title, contents),
+            TableMain:          (id, title, contents, opts) => TableMain(id, title, contents, opts || {}),
             Table3colRL:        (id, arg2, arg3) => handleArgs(Table3colRL, id, arg2, arg3),
             Table3colRCL:       (id, arg2, arg3) => handleArgs(Table3colRCL, id, arg2, arg3),
             Table2colNormal:    (id, arg2, arg3) => handleArgs(Table2colNormal, id, arg2, arg3),
@@ -738,6 +738,9 @@ const UI = {
 
         if (tableNode) {
             overlay.appendChild(tableNode);
+            if (tableNode.classList?.contains('tbl-main-collapsed')) {
+                tableNode.classList.remove('tbl-main-collapsed');
+            }
             const baseTableId = Store.activeTable ? Store.activeTable.split('__')[0] : null;
             
             if (baseTableId && SLICE_VIEWERS[baseTableId]) {

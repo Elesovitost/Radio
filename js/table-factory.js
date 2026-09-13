@@ -102,10 +102,22 @@ function LesionMain(id, title, rowsContent) {
     return table;
 }
 
-function TableMain(id, title, contents) {
-    const table = el('table', { id, className: 'tbl-main' });
+function TableMain(id, title, contents, opts = {}) {
+    const collapsible = !!opts.collapsed;
+    const table = el('table', { id, className: `tbl-main${collapsible ? ' tbl-main-collapsed' : ''}` });
     const tbody = el('tbody');
-    const trHead = el('tr', {}, [el('td', { className: 'tbl-main-head', textContent: title })]);
+    const headAttrs = { className: 'tbl-main-head' };
+    let headContent;
+    if (collapsible) {
+        headAttrs['data-action'] = 'toggle-table-collapse';
+        headContent = el('div', { className: 'tbl-main-head-inner' }, [
+            el('span', { className: 'tbl-main-chevron', textContent: '▸', 'aria-hidden': 'true' }),
+            el('span', { className: 'tbl-main-title', textContent: title })
+        ]);
+    } else {
+        headContent = title;
+    }
+    const trHead = el('tr', {}, [el('td', headAttrs, [headContent])]);
     const container = el('div', { className: 'tbl-main-container' });
     const contentArr = Array.isArray(contents) ? contents : [contents];
     contentArr.forEach(item => { if (item instanceof Node) container.appendChild(item); });

@@ -384,6 +384,10 @@ const ActionHandlers = {
         Store.sliceViewerHidden = false;
         UI.refreshSliceViewer();
     },
+    'toggle-table-collapse': (target) => {
+        const table = target.closest('.tbl-main');
+        if (table) table.classList.toggle('tbl-main-collapsed');
+    },
     'toggle-llm': () => {
         const modal = document.getElementById('llm-modal');
         if (modal) {

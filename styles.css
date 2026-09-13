@@ -109,6 +109,12 @@ body:not(.has-past-date) .tbl > tbody > tr:has([data-id*="_old"]), body:not(.has
 .tbl-main > tbody > tr > td, .tbl-lesion > tbody > tr > td { padding: 4px 8px; }
 .tbl-main-head, .tbl-lesion-head { padding: 3px 0; font-weight: 700; font-size: 11px; color: var(--accent-hi); text-transform: uppercase; letter-spacing: 1px; border: none; border-bottom: 1px solid var(--border) !important; }
 .tbl-main-head { text-align: center; }
+.tbl-main-head[data-action="toggle-table-collapse"] { cursor: pointer; user-select: none; }
+.tbl-main-head[data-action="toggle-table-collapse"]:hover .tbl-main-title { color: #fff; }
+.tbl-main-head-inner { display: inline-flex; align-items: center; gap: 6px; justify-content: center; }
+.tbl-main-chevron { font-size: 10px; color: var(--dim); line-height: 1; transition: transform 0.15s ease, color 0.15s; }
+.tbl-main:not(.tbl-main-collapsed) .tbl-main-chevron { transform: rotate(90deg); color: var(--accent-hi); }
+.tbl-main-collapsed .tbl-main-body { display: none; }
 .tbl-main-container, .tbl-lesion-container { display: flex; flex-direction: column; gap: 2px; width: 100%; align-items: center; }
 .tbl.tbl-full { width: 100%; }
 .tbl.tbl-full .tbl-full-cell { width: 100%; }
