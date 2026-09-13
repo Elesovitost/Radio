@@ -1229,6 +1229,29 @@ const RegionThorax = {
                 concMain.push({ type: 'frame', text: 'Bez dalších významných nálezů na hrudníku.', tableId: 'thorax_ostatni_main' });
             }
 
+            // Pořadí sekcí ve Findings je dáno tímto seznamem, ne pořadím kódu výše.
+            // Ložiska a uzliny zůstávají první, dále plíce/pleura → srdce → mediastinum → jícen → mamma → devices.
+            const REPORT_ORDER = [
+                'thorax_lesion_main',
+                'thorax_lymphnode_main',
+                'thorax_plice_main',
+                'thorax_srdce_main',
+                'thorax_thymus_main',
+                'thorax_jicen_main',
+                'thorax_mamma_main',
+                'thorax_devices_main',
+                'thorax_ostatni_main'
+            ];
+            const reportRank = (frame) => {
+                if (!frame.tableId) return -1; // heading a podobné zůstávají na začátku
+                const i = REPORT_ORDER.findIndex(prefix => frame.tableId.startsWith(prefix));
+                return i === -1 ? REPORT_ORDER.length : i;
+            };
+            reportOut = reportOut
+                .map((frame, i) => ({ frame, i, rank: reportRank(frame) }))
+                .sort((a, b) => a.rank - b.rank || a.i - b.i)
+                .map(x => x.frame);
+
             return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };
         }
     };
