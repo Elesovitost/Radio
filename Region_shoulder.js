@@ -70,7 +70,8 @@ const RegionShoulder = {
                     [ 'Horní labrum:', { btn: 'sh_lab_sup', states: ['0', 'degenerace', 'léze', 'SLAP I', 'SLAP II', 'komplexní SLAP'] } ],
                     [ 'Přední labrum:', { btn: 'sh_lab_ant', states: ['0', 'degenerace', 'léze', 'Bankart', 'ALPSA', 'Perthes'] } ],
                     [ 'Zadní labrum:', { btn: 'sh_lab_pos', states: ['0', 'degenerace', 'léze', 'Reverse Bankart'] } ],
-                    [ 'Paralabrální cysta:', { btn: 'sh_lab_cysta', states: ['0', 'spinoglenoidní', 'supraskapulární'] } ]
+                    [ 'Paralabrální cysta:', { btn: 'sh_lab_cysta', states: ['0', 'spinoglenoidní', 'supraskapulární'] } ],
+                    [ 'IGHL:', { btn: 'sh_lab_ighl', states: ['0', 'léze', 'edém'] } ]
                 ])
             ]),
 
@@ -478,10 +479,12 @@ const RegionShoulder = {
         const labSup = ctx.text('sh_lab_sup');
         const labAnt = ctx.text('sh_lab_ant');
         const labPos = ctx.text('sh_lab_pos');
+        const labIghl = ctx.text('sh_lab_ighl');
         const labCysta = ctx.text('sh_lab_cysta');
 
         let isLabNormal = (!labSup || labSup === '0') && (!labAnt || labAnt === '0') && 
-                          (!labPos || labPos === '0') && (!labCysta || labCysta === '0');
+                          (!labPos || labPos === '0') && (!labIghl || labIghl === '0') &&
+                          (!labCysta || labCysta === '0');
 
         if (isLabNormal) {
             reportOut.push({ type: 'frame', text: 'Glenoidální labrum celistvé, bez zřetelné separace či defektu.', tableId: 'shoulder_labrum_main', dimmed: true });
@@ -531,6 +534,16 @@ const RegionShoulder = {
             if (labCysta && labCysta !== '0') {
                 labrep.push(`paralabrální formace laločnatého tekutinového signálu v ${labCysta === 'spinoglenoidní' ? 'incisura spinoglenoidalis' : 'incisura scapulae'}`);
                 labconc.push(`Paralabrální cysta v oblasti ${labCysta === 'spinoglenoidní' ? 'incisura spinoglenoidalis (s potenc. tlakem na n. suprascapularis)' : 'supraskapulárního zářezu'}`);
+            }
+
+            if (labIghl && labIghl !== '0') {
+                if (labIghl === 'léze') {
+                    labrep.push('léze či diskontinuita IGHL');
+                    labconc.push('Léze IGHL');
+                } else if (labIghl === 'edém') {
+                    labrep.push('edém a ztluštění IGHL');
+                    labconc.push('Edém IGHL, susp. ze zmrzlého ramena');
+                }
             }
 
             reportOut.push({ type: 'frame', text: 'Glenoidální labrum: ' + cap(labrep.join('; ')) + '.', tableId: 'shoulder_labrum_main' });
