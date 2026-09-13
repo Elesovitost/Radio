@@ -247,7 +247,7 @@ const RegionNeck = {
                 if (sinyNormal && sinyParts.length > 0) body = `vzdušné, bez patologického obsahu. Jinak pouze ${formatList(sinyParts)}.`;
                 else if (sinyNormal) body = 'vzdušné, bez patologického obsahu.';
                 else body = `${formatList(sinyParts)}.`;
-                reportOut.push({ type: 'frame', text: `- Siny: ${body}`, tableId: 'neck_sinus_main' });
+                reportOut.push({ type: 'frame', text: `Siny: ${body}`, tableId: 'neck_sinus_main' });
             }
 
             const sinusItems = [
@@ -306,7 +306,7 @@ const RegionNeck = {
                 if (salivaryNormal && salivaryParts.length > 0) body = `obvyklé velikosti a struktury, bez ložiskových změn. Jinak pouze ${formatList(salivaryParts)}.`;
                 else if (salivaryNormal) body = 'obvyklé velikosti a struktury, bez ložiskových změn.';
                 else body = `${formatList(salivaryParts)}.`;
-                reportOut.push({ type: 'frame', text: `- Slinné žlázy: ${body}`, tableId: 'neck_salivary_main' });
+                reportOut.push({ type: 'frame', text: `Slinné žlázy: ${body}`, tableId: 'neck_salivary_main' });
             }
 
             let salConcStr = ctx.mapStates({
@@ -371,7 +371,7 @@ const RegionNeck = {
                 if (pharynxNormal && farRep.length > 0) body = `symetrický, bez ložiskového ztluštění stěny. Jinak pouze ${formatList(farRep)}.`;
                 else if (pharynxNormal) body = 'symetrický, bez ložiskového ztluštění stěny.';
                 else body = `${formatList(farRep)}.`;
-                reportOut.push({ type: 'frame', text: `- Hltan/hrtan: ${body}`, tableId: 'neck_pharynx_main' });
+                reportOut.push({ type: 'frame', text: `Hltan/hrtan: ${body}`, tableId: 'neck_pharynx_main' });
             }
 
             let pharynxCustomConc = ctx.field('pharynx_custom_conc');
@@ -413,7 +413,7 @@ const RegionNeck = {
                 if (thyroidNormal && thyroidParts.length > 0) body = `normální velikosti, parenchym bez zřetelných cyst či ložisek. Jinak pouze ${formatList(thyroidParts)}.`;
                 else if (thyroidNormal) body = 'normální velikosti, parenchym bez zřetelných cyst či ložisek.';
                 else body = `${formatList(thyroidParts)}.`;
-                reportOut.push({ type: 'frame', text: `- Thyroidea: ${body}`, tableId: 'neck_thyroid_main' });
+                reportOut.push({ type: 'frame', text: `Thyroidea: ${body}`, tableId: 'neck_thyroid_main' });
             }
 
             let thyrConcArr = [];
@@ -452,7 +452,7 @@ const RegionNeck = {
                 if (neckSoftNormal && softParts.length > 0) text = `bez ložiskových změn. Jinak pouze ${formatList(softParts)}.`;
                 else if (neckSoftNormal) text = 'bez ložiskových změn.';
                 else text = `${formatList(softParts)}.`;
-                reportOut.push({ type: 'frame', text: `- Měkké tkáně: ${text}`, tableId: 'neck_soft_main' });
+                reportOut.push({ type: 'frame', text: `Měkké tkáně: ${text}`, tableId: 'neck_soft_main' });
             }
             let softConc = ctx.field('neck_soft_custom_conc');
             if (softConc) {

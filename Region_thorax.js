@@ -831,7 +831,7 @@ const RegionThorax = {
                 if (pliceNormal && plicePhrases.length > 0) body = `přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn. Jinak pouze ${plicePhrases.join(', ')}.`;
                 else if (pliceNormal) body = 'přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn.';
                 else body = plicePhrases.join(', ') + '.';
-                reportOut.push({ type: 'frame', text: `- Plíce: ${body}`, tableId: 'thorax_plice_main' });
+                reportOut.push({ type: 'frame', text: `Plíce: ${body}`, tableId: 'thorax_plice_main' });
             }
             if (pliceNormalLvl >= 2) {
                 concMain.push({ type: 'frame', text: 'Přiměřený nález na plicích, bez ložiskové léze.', tableId: 'thorax_plice_main' });
@@ -897,7 +897,7 @@ const RegionThorax = {
 
             if (pleuraRep.length > 0) {
                 let text = formatCzechList(pleuraRep);
-                reportOut.push({ type: 'frame', text: `- Pleura: ${text}.`, tableId: 'thorax_plice_main' });
+                reportOut.push({ type: 'frame', text: `Pleura: ${text}.`, tableId: 'thorax_plice_main' });
             }
 
             /* --- AUTO-HODNOCENÍ VZDUŠNOSTI PLIC A PLEURY --- */
@@ -968,7 +968,7 @@ const RegionThorax = {
                 if (mammaNormal && maParts.length > 0) body = `obvyklého vzhledu, bez ložiskových změn. Jinak pouze ${formatList(maParts)}.`;
                 else if (mammaNormal) body = 'obvyklého vzhledu, bez ložiskových změn.';
                 else body = `${formatList(maParts)}.`;
-                reportOut.push({ type: 'frame', text: `- Mamma: ${body}`, tableId: 'thorax_mamma_main' });
+                reportOut.push({ type: 'frame', text: `Mamma: ${body}`, tableId: 'thorax_mamma_main' });
             }
             
             let maConc = ctx.field('mamma_custom_conc');
@@ -1009,7 +1009,7 @@ const RegionThorax = {
                 if (jicenNormal && jiParts.length > 0) body = `přiměřené šíře, bez ložiskového ztluštění stěny. Jinak pouze ${formatList(jiParts)}.`;
                 else if (jicenNormal) body = 'přiměřené šíře, bez ložiskového ztluštění stěny.';
                 else body = `${formatList(jiParts)}.`;
-                reportOut.push({ type: 'frame', text: `- Jícen: ${body}`, tableId: 'thorax_jicen_main' });
+                reportOut.push({ type: 'frame', text: `Jícen: ${body}`, tableId: 'thorax_jicen_main' });
             }
             
             let jiConc = ctx.field('jicen_custom_conc');
@@ -1043,7 +1043,7 @@ const RegionThorax = {
                 if (thymusNormal && thParts.length > 0) body = `${thymusNormRep}. Jinak pouze ${formatList(thParts)}.`;
                 else if (thymusNormal) body = `${thymusNormRep}.`;
                 else body = `${formatList(thParts)}.`;
-                reportOut.push({ type: 'frame', text: `- Thymus: ${body}`, tableId: 'thorax_thymus_main' });
+                reportOut.push({ type: 'frame', text: `Thymus: ${body}`, tableId: 'thorax_thymus_main' });
             }
             
             let thConc = ctx.field('thymus_custom_conc');
@@ -1122,7 +1122,7 @@ const RegionThorax = {
                 if (srdceNormal && srParts.length > 0) body = `přiměřené velikosti, aorta přiměřené šíře, bez perikardiálního výpotku. Jinak pouze ${formatList(srParts)}.`;
                 else if (srdceNormal) body = 'přiměřené velikosti, aorta přiměřené šíře, bez perikardiálního výpotku.';
                 else body = `${formatList(srParts)}.`;
-                reportOut.push({ type: 'frame', text: `- Srdce a cévy: ${body}`, tableId: 'thorax_srdce_main' });
+                reportOut.push({ type: 'frame', text: `Srdce a cévy: ${body}`, tableId: 'thorax_srdce_main' });
             }
             
             let srConc = ctx.field('srdce_custom_conc');
