@@ -184,18 +184,31 @@ const RegionKnee = {
         const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
         const examId = ctx.examId || 'default';
 
-        const pushCustom = (prefix, tableId) => {
+        // Vlastní texty se přilepí přímo k textu dané části (nikoli jako samostatný odstavec)
+        const attachCustom = (prefix, tableId) => {
             const fmt = (raw) => {
                 let txt = (raw || '').replace(/\u200B/g, '').trim();
                 if (!txt) return '';
                 txt = txt.charAt(0).toUpperCase() + txt.slice(1);
-                if (!txt.endsWith('.')) txt += '.';
-                return '\u200B' + txt;
+                if (!/[.!?]$/.test(txt)) txt += '.';
+                return txt;
             };
-            const d = fmt(ctx.field(`${prefix}_custom_desc`));
-            const c = fmt(ctx.field(`${prefix}_custom_conc`));
-            if (d) reportOut.push({ type: 'frame', text: d, tableId });
-            if (c) concMain.push({ type: 'frame', text: c, tableId });
+            const merge = (arr, text) => {
+                if (!text) return;
+                for (let i = arr.length - 1; i >= 0; i--) {
+                    const fr = arr[i];
+                    if (fr.type === 'frame' && fr.tableId === tableId && (fr.text || '').trim()) {
+                        let base = fr.text.replace(/\s+$/, '');
+                        if (!/[.!?]$/.test(base)) base += '.';
+                        fr.text = base + ' ' + text;
+                        delete fr.dimmed;
+                        return;
+                    }
+                }
+                arr.push({ type: 'frame', text, tableId });
+            };
+            merge(reportOut, fmt(ctx.field(`${prefix}_custom_desc`)));
+            merge(concMain, fmt(ctx.field(`${prefix}_custom_conc`)));
         };
         
         // --- HELPERY PRO CHRUPAVKY A SKELET ---
@@ -360,7 +373,7 @@ const RegionKnee = {
             finalJointText = finalJointText.charAt(0).toUpperCase() + finalJointText.slice(1) + '.';
             reportOut.push({ type: 'frame', text: finalJointText, tableId: 'knee_joint_main' });
         }
-        pushCustom('kn_joint', 'knee_joint_main');
+        attachCustom('kn_joint', 'knee_joint_main');
 
         // ═══ PATELLA A FP SKLOUBENÍ ═══
         let patRep = [];
@@ -437,7 +450,7 @@ const RegionKnee = {
                 concMain.push({ type: 'frame', text: `FP chondropatie ${fpMerged}.`, tableId: 'knee_patella_main' });
             }
         }
-        pushCustom('kn_pat', 'knee_patella_main');
+        attachCustom('kn_pat', 'knee_patella_main');
 
         // ═══ EXEKUCE LATERÁLNÍHO A MEDIÁLNÍHO KOMPARTMENTU ═══
         const buildCompartment = (compName, femPrefix, tibPrefix, femBoneName, tibBoneName, tableId, ostBtnId) => {
@@ -640,18 +653,18 @@ const RegionKnee = {
 
         // Generování kompartmentů
         buildCompartment('Laterální kompartment', 'kn_lfc', 'kn_ltc', 'Laterální kondyl femuru', 'Laterální plato tibie', 'knee_lat_comp_main', 'kn_lat_shared_ost');
-        pushCustom('kn_lat', 'knee_lat_comp_main');
+        attachCustom('kn_lat', 'knee_lat_comp_main');
         parseMeniscus('kn_lm', 'Laterální meniskus', 'laterálního menisku', 'LM', 'knee_lm_main');
-        pushCustom('kn_lm', 'knee_lm_main');
+        attachCustom('kn_lm', 'knee_lm_main');
         parseCollateralLigament('kn_lcl', 'Laterální kolaterální vaz', 'knee_lcl_main');
-        pushCustom('kn_lcl', 'knee_lcl_main');
+        attachCustom('kn_lcl', 'knee_lcl_main');
 
         buildCompartment('Mediální kompartment', 'kn_mfc', 'kn_mtc', 'Mediální kondyl femuru', 'Mediální plato tibie', 'knee_med_comp_main', 'kn_med_shared_ost');
-        pushCustom('kn_med', 'knee_med_comp_main');
+        attachCustom('kn_med', 'knee_med_comp_main');
         parseMeniscus('kn_mm', 'Mediální meniskus', 'mediálního menisku', 'MM', 'knee_mm_main');
-        pushCustom('kn_mm', 'knee_mm_main');
+        attachCustom('kn_mm', 'knee_mm_main');
         parseCollateralLigament('kn_mcl', 'Mediální kolaterální vaz', 'knee_mcl_main');
-        pushCustom('kn_mcl', 'knee_mcl_main');
+        attachCustom('kn_mcl', 'knee_mcl_main');
 
         // Jednotná věta pro gonartrózu dle osteofytů
         const ostLat = ctx.text('kn_lat_shared_ost');
@@ -808,7 +821,7 @@ const RegionKnee = {
                 concMain.push({ type: 'frame', text: concSentence, tableId: 'knee_acl_main' });
             }
         }
-        pushCustom('kn_acl', 'knee_acl_main');
+        attachCustom('kn_acl', 'knee_acl_main');
 
         // ═══ KOMPILÁTOR PRO ZADNÍ ZKŘÍŽENÝ VAZ (PCL) ═══
         const pclRupt = ctx.text('kn_pcl_rupt');
@@ -893,7 +906,7 @@ const RegionKnee = {
 
             concMain.push({ type: 'frame', text: concSentencePcl, tableId: 'knee_pcl_main' });
         }
-        pushCustom('kn_pcl', 'knee_pcl_main');
+        attachCustom('kn_pcl', 'knee_pcl_main');
 
         // ═══ KOMPILÁTOR PRO MĚKKÉ TKÁNĚ A OKOLÍ ═══
         const stQuad = ctx.text('kn_st_quad');
@@ -1038,8 +1051,8 @@ const RegionKnee = {
         if (combinedStBnText !== '') {
             reportOut.push({ type: 'frame', text: combinedStBnText, tableId: 'knee_soft_main', dimmed: isSoftDimmed && isBoneDimmed });
         }
-        pushCustom('kn_st', 'knee_soft_main');
-        pushCustom('kn_bn', 'knee_bones_main');
+        attachCustom('kn_st', 'knee_soft_main');
+        attachCustom('kn_bn', 'knee_bones_main');
 
         const conclusionOrder = {
             'knee_acl_main': 1,

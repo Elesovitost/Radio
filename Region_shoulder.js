@@ -118,18 +118,31 @@ const RegionShoulder = {
         let concInc = [];
         const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
 
-        const pushCustom = (prefix, tableId) => {
+        // Vlastní texty se přilepí přímo k textu dané části (nikoli jako samostatný odstavec)
+        const attachCustom = (prefix, tableId) => {
             const fmt = (raw) => {
                 let txt = (raw || '').replace(/\u200B/g, '').trim();
                 if (!txt) return '';
                 txt = txt.charAt(0).toUpperCase() + txt.slice(1);
-                if (!txt.endsWith('.')) txt += '.';
-                return '\u200B' + txt;
+                if (!/[.!?]$/.test(txt)) txt += '.';
+                return txt;
             };
-            const d = fmt(ctx.field(`${prefix}_custom_desc`));
-            const c = fmt(ctx.field(`${prefix}_custom_conc`));
-            if (d) reportOut.push({ type: 'frame', text: d, tableId });
-            if (c) concMain.push({ type: 'frame', text: c, tableId });
+            const merge = (arr, text) => {
+                if (!text) return;
+                for (let i = arr.length - 1; i >= 0; i--) {
+                    const fr = arr[i];
+                    if (fr.type === 'frame' && fr.tableId === tableId && (fr.text || '').trim()) {
+                        let base = fr.text.replace(/\s+$/, '');
+                        if (!/[.!?]$/.test(base)) base += '.';
+                        fr.text = base + ' ' + text;
+                        delete fr.dimmed;
+                        return;
+                    }
+                }
+                arr.push({ type: 'frame', text, tableId });
+            };
+            merge(reportOut, fmt(ctx.field(`${prefix}_custom_desc`)));
+            merge(concMain, fmt(ctx.field(`${prefix}_custom_conc`)));
         };
 
         // --- 1. AC KLOUB A AKROMION ---
@@ -223,7 +236,7 @@ const RegionShoulder = {
             let acText = 'AC kloub a akromion: ' + acParts.join(', ') + '.';
             reportOut.push({ type: 'frame', text: acText, tableId: 'shoulder_ac_main' });
         }
-        pushCustom('sh_ac', 'shoulder_ac_main');
+        attachCustom('sh_ac', 'shoulder_ac_main');
 
         // --- 2. GH KLOUB A BURZY ---
         let bursaParts = [];
@@ -265,7 +278,7 @@ const RegionShoulder = {
             reportOut.push({ type: 'frame', text: bursaText, tableId: 'shoulder_bursa_main' });
             bursaConc.forEach(c => concInc.push({ type: 'frame', text: c + '.', tableId: 'shoulder_bursa_main' }));
         }
-        pushCustom('sh_bursa', 'shoulder_bursa_main');
+        attachCustom('sh_bursa', 'shoulder_bursa_main');
 
         // --- 3. ROTÁTOROVÁ MANŽETA ---
         const parseTendon = (prefix, nameTitle) => {
@@ -389,7 +402,6 @@ const RegionShoulder = {
         let cuffArr = [ssp, isp, ssc].filter(Boolean);
         
         const customDesc = ctx.field('sh_rm_custom_desc');
-        const customConc = ctx.field('sh_rm_custom_conc');
 
         if (cuffArr.length === 0 && !customDesc) {
             reportOut.push({ type: 'frame', text: 'Rotátorová manžeta přiměřeného průběhu, signálu i morfologie bez detekovatelné trhliny.', tableId: 'shoulder_rm_main', dimmed: true });
@@ -405,25 +417,8 @@ const RegionShoulder = {
                 let combined = 'Kombinované postižení šlach RM: ' + cuffArr.map(item => item.conc).join(', ') + '.';
                 concMain.push({ type: 'frame', text: combined, tableId: 'shoulder_rm_main' });
             }
-            
-            if (customDesc) {
-                let txt = customDesc.trim();
-                if (txt && !txt.endsWith('.')) txt += '.';
-                if (txt) {
-                    txt = txt.charAt(0).toUpperCase() + txt.slice(1);
-                    reportOut.push({ type: 'frame', text: txt, tableId: 'shoulder_rm_main' });
-                }
-            }
         }
-
-        if (customConc) {
-            let txt = customConc.trim();
-            if (txt && !txt.endsWith('.')) txt += '.';
-            if (txt) {
-                txt = txt.charAt(0).toUpperCase() + txt.slice(1);
-                concMain.push({ type: 'frame', text: txt, tableId: 'shoulder_rm_main' });
-            }
-        }
+        attachCustom('sh_rm', 'shoulder_rm_main');
 
 
         // Teres minor logic (ponecháno nezávisle na RM bloku)
@@ -448,7 +443,7 @@ const RegionShoulder = {
             reportOut.push({ type: 'frame', text: tmText, tableId: 'shoulder_tm_main' });
             if (tmConc) concMain.push({ type: 'frame', text: tmConc + '.', tableId: 'shoulder_tm_main' });
         }
-        pushCustom('sh_tm', 'shoulder_tm_main');
+        attachCustom('sh_tm', 'shoulder_tm_main');
 
         // --- 4. BICEPS A BICEPSOVÁ KLADKA (LHB) ---
         const lhbStav = ctx.text('sh_lhb_stav');
@@ -532,7 +527,7 @@ const RegionShoulder = {
                 concMain.push({ type: 'frame', text: `LHBT ${concBits.slice(0, -1).join(', ')} a ${concBits[concBits.length - 1]}.`, tableId: 'shoulder_lhb_main' });
             }
         }
-        pushCustom('sh_lhb', 'shoulder_lhb_main');
+        attachCustom('sh_lhb', 'shoulder_lhb_main');
 
         // --- 5. LABRUM A LIGAMENTA ---
         const labSup = ctx.text('sh_lab_sup');
@@ -608,7 +603,7 @@ const RegionShoulder = {
             reportOut.push({ type: 'frame', text: 'Glenoidální labrum: ' + cap(labrep.join('; ')) + '.', tableId: 'shoulder_labrum_main' });
             labconc.forEach(c => concMain.push({ type: 'frame', text: c + '.', tableId: 'shoulder_labrum_main' }));
         }
-        pushCustom('sh_lab', 'shoulder_labrum_main');
+        attachCustom('sh_lab', 'shoulder_labrum_main');
 
         // --- 6. SKELET A CHRUPAVKY ---
         const bnHlav = ctx.text('sh_bn_hlav');
@@ -646,7 +641,7 @@ const RegionShoulder = {
 
             reportOut.push({ type: 'frame', text: 'Skelet a chrupavky: ' + cap(bnRep.join(', ')) + '.', tableId: 'shoulder_bones_main' });
         }
-        pushCustom('sh_bn', 'shoulder_bones_main');
+        attachCustom('sh_bn', 'shoulder_bones_main');
 
         if (concMain.length === 0) {
             concMain.push({ type: 'frame', text: 'Přiměřený nález, bez signifikantní patologie.' });
