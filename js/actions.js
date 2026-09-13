@@ -117,12 +117,12 @@ function createNewInstance(baseTableId) {
     if (isHemo) {
         pfx = 'bh';
     } else {
-        const prefixMap = { brain: 'bl', thorax: isLN ? 'tln' : 'tl', abdomen: isLN ? 'aln' : 'al', neck: isLN ? 'ln' : 'l', skeleton: 'l', prostate: isLN ? 'prln' : 'pl', rectum: isLN ? 'rtln' : 'rt' };
+        const prefixMap = { brain: 'bl', thorax: isLN ? 'tln' : 'tl', abdomen: isLN ? 'aln' : 'al', neck: isLN ? 'ln' : 'l', skeleton: 'l', soft: 'l', prostate: isLN ? 'prln' : 'pl', rectum: isLN ? 'rtln' : 'rt' };
         pfx = prefixMap[regionId] || (isLN ? 'ln' : 'l');
     }
     
     const p = `${pfx}_${instId}`;
-    const defaultLesState = (regionId === 'skeleton' && !isLN) ? 1 : true;
+    const defaultLesState = (regionId === 'skeleton' || regionId === 'soft') && !isLN ? 1 : true;
     
     let kindSuffix = isLN ? 'uzl' : 'les';
     if (isHemo) kindSuffix = 'lez';

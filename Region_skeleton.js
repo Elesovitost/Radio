@@ -49,8 +49,7 @@ const RegionSkeleton = {
                             [ { btn: `${p}_p_kyc_r`, type: 'basic', text: 'Kyčelní k.' }, '', { btn: `${p}_p_kyc_l`, type: 'basic', text: 'Kyčelní k.' } ],
                             [ { btn: `${p}_p_sed_r`, type: 'basic', text: 'Sedací k.' }, '', { btn: `${p}_p_sed_l`, type: 'basic', text: 'Sedací k.' } ],
                             [ { btn: `${p}_p_styd_r`, type: 'basic', text: 'Stydká kost' }, '', { btn: `${p}_p_styd_l`, type: 'basic', text: 'Stydká kost' } ],
-                            [ { btn: `${p}_p_fem_r`, type: 'basic', text: 'Femur' }, '', { btn: `${p}_p_fem_l`, type: 'basic', text: 'Femur' } ],
-                            [ { btn: `${p}_p_mek_r`, type: 'basic', text: 'Měkké tkáně' }, '', { btn: `${p}_p_mek_l`, type: 'basic', text: 'Měkké tkáně' } ]
+                            [ { btn: `${p}_p_fem_r`, type: 'basic', text: 'Femur' }, '', { btn: `${p}_p_fem_l`, type: 'basic', text: 'Femur' } ]
                         ]),
                         ...LESIONS_DEFINITION.getLesionRowsPost(helpers, p, `${p}_met`, `${p}_e`)
                     ])
@@ -152,20 +151,6 @@ const RegionSkeleton = {
                 ])
             );
 
-            layoutNodes.push(
-                helpers.TableMain('skeleton_soft_main', 'Svaly a měkké tkáně', [
-                    helpers.Table3colRCL('sk_soft_table', [
-                        [ '', { btn: 'sk_soft_fat', type: 'basic', text: 'RF+ tuk' }, '' ],
-                        [ '', { btn: 'sk_soft_dif', type: 'basic', text: 'RF+ difuzně' }, '' ],
-                        [ { btn: 'sk_soft_parav_r', states: ['0', '+'] }, 'Paravazace', { btn: 'sk_soft_parav_l', states: ['0', '+'] } ]
-                    ]),
-                    helpers.Table1col('sk_soft_add', [
-                        { field: 'text', id: 'sk_soft_custom_desc', placeholder: 'vlastní popis...' },
-                        { field: 'text', id: 'sk_soft_custom_conc', placeholder: 'vlastní závěr...' }
-                    ])
-                ])
-            );
-
             return layoutNodes;
         },
         compile: (ctx) => {
@@ -259,7 +244,6 @@ const RegionSkeleton = {
                     addBilat('sed', 'v pravé sedací kosti', 'v levé sedací kosti', 'v sedacích kostech bilat.');
                     addBilat('styd', 'v pravé stydké kosti', 'v levé stydké kosti', 've stydkých kostech bilat.');
                     addBilat('fem', 'v pravém femuru', 'v levém femuru', 've femurech bilat.');
-                    addBilat('mek', 'v měkkých tkáních vpravo', 'v měkkých tkáních vlevo', 'v měkkých tkáních bilat.');
 
                     let lokText = lokace.length > 0 ? formatList(lokace) : '';
                     let d = LESIONS_DEFINITION.parseDetails(ctx, examId, 'skeleton', p, `${p}_met`, `${p}_e`, false);
@@ -532,12 +516,6 @@ const RegionSkeleton = {
             
             let skConc = ctx.field('sk_custom_conc'); 
             if (skConc) concInc.push({ type: 'frame', text: skConc, tableId: 'skeleton_ostatni' });
-
-            let skSoftDesc = ctx.field('sk_soft_custom_desc'); 
-            if (skSoftDesc) reportOut.push({ type: 'frame', text: cap(skSoftDesc), tableId: 'skeleton_soft_main' });
-            
-            let skSoftConc = ctx.field('sk_soft_custom_conc'); 
-            if (skSoftConc) concInc.push({ type: 'frame', text: skSoftConc, tableId: 'skeleton_soft_main' });
 
             return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };
         }

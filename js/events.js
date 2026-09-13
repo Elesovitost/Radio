@@ -419,6 +419,7 @@ function renderOrganPopup(organDef, organId) {
     const lesionTable = organDef.table;
     const isBrain = organDef.regions && organDef.regions.includes('brain');
     const isSkeleton = organDef.regions && organDef.regions.includes('skeleton');
+    const isSoft = organDef.regions && organDef.regions.includes('soft');
     
     const lymphTable = lesionTable ? lesionTable.replace('_lesion_main', '_lymphnode_main') : null;
     const hemoTable = isBrain ? 'brain_hemo_main' : null;
@@ -440,7 +441,7 @@ function renderOrganPopup(organDef, organId) {
         html += `<button class="popup-btn btn-lesion" data-action="open-table" data-table="${lesionTable}">${lesionAddLabel}</button>`;
     }
 
-    if (!isBrain && !isSkeleton && lymphTable) {
+    if (!isBrain && !isSkeleton && !isSoft && lymphTable) {
         const lymphInsts = Store.instances?.[lymphTable] || [];
         lymphInsts.forEach((instId) => {
             const name = getLesionInstanceName(lymphTable, instId, 'Uzlina', organDef.name);

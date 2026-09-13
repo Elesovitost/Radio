@@ -34,6 +34,7 @@ const REGIONS = {
     thorax: typeof RegionThorax !== 'undefined' ? RegionThorax : null,
     abdomen: typeof RegionAbdomen !== 'undefined' ? RegionAbdomen : null,
     skeleton: typeof RegionSkeleton !== 'undefined' ? RegionSkeleton : null,
+    soft: typeof RegionSoft !== 'undefined' ? RegionSoft : null,
     wrist: typeof RegionWrist !== 'undefined' ? RegionWrist : null,
     shoulder: typeof RegionShoulder !== 'undefined' ? RegionShoulder : null,
     knee: typeof RegionKnee !== 'undefined' ? RegionKnee : null,

@@ -48,9 +48,10 @@ const ORGAN_MAP = {
     "Močový měchýř": { name: "Močový měchýř", table: "abdomen_moc_mechyr_main", regions: ['abdomen', 'prostate', 'rectum'] },
     "Prostata": { name: "Prostata", table: "abdomen_prostata_main", regions: ['abdomen', 'prostate', 'rectum'] },
     "Testes": { name: "Testes", table: "abdomen_testes_main", regions: ['abdomen', 'prostate'] },
-    "Soft Tissues Lesion": { name: "Léze (Skelet / Měkké tkáně)", table: "skeleton_lesion_main", regions: ['skeleton'] },
+    "Skeleton Lesion": { name: "Léze (Skelet)", table: "skeleton_lesion_main", regions: ['skeleton'] },
+    "Soft Tissues Lesion": { name: "Léze (Měkké tkáně)", table: "soft_lesion_main", regions: ['soft'] },
     "Skelet": { name: "Kosti / Klouby", table: "region:skeleton", regions: ['skeleton'] },
-    "Svaly": { name: "Svaly / Měkké tkáně", table: "skeleton_soft_main", regions: ['skeleton'] },
+    "Svaly": { name: "Svaly / Měkké tkáně", table: "soft_tissue_main", regions: ['soft'] },
 
 
     "Knee_joint": { name: "Kloubní dutina", table: "knee_joint_main", regions: ['knee'] },

@@ -59,7 +59,7 @@ const UI = {
     // a pod ním položky, které k ní patří. Kliknutí na nadpis otevře všechny tabulky
     // regionu, kliknutí na položku danou tabulku.
     buildOrganCategoryNav(activeRegions) {
-        const WB_REGIONS = ['brain', 'neck', 'thorax', 'abdomen', 'skeleton'];
+        const WB_REGIONS = ['brain', 'neck', 'thorax', 'abdomen', 'skeleton', 'soft'];
         const DEDICATED = ['prostate', 'rectum', 'shoulder', 'knee', 'ankle'];
 
         // Regionální tabulky lézí / uzlin, které se na WB schématu otvírají popupem.
@@ -82,7 +82,10 @@ const UI = {
                 ['abdomen_lymphnode_main', 'lymph', 'Uzliny', 'Uzlina', 'Lymfadenopatie (Břicho)']
             ],
             skeleton: [
-                ['skeleton_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Skelet / Měkké tkáně)']
+                ['skeleton_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Skelet)']
+            ],
+            soft: [
+                ['soft_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Měkké tkáně)']
             ]
         };
 
@@ -506,7 +509,7 @@ const UI = {
             }
         }
         
-        const hasWBSvg = activeRegions.some(r => ['brain', 'neck', 'thorax', 'abdomen'].includes(r));
+        const hasWBSvg = activeRegions.some(r => ['brain', 'neck', 'thorax', 'abdomen', 'skeleton', 'soft'].includes(r));
         const usesSvg = activeRegionConfig !== null || hasWBSvg;
 
         const sideConfig = APP_MANIFEST.examsWithSides[Store.activeTab];
@@ -1049,19 +1052,19 @@ const UI = {
 
             let prefixes = [];
 
-            if (Store.buttonStates[`${examId}_skeleton_sk_soft_fat`]) {
+            if (Store.buttonStates[`${examId}_soft_st_fat`]) {
                 prefixes.push("Zvýšená akumulace RF v oblasti metabolicky aktivního tuku krku a trupu symetricky bilat.");
             }
 
-            const pR = Store.buttonStates[`${examId}_skeleton_sk_soft_parav_r`] === 1;
-            const pL = Store.buttonStates[`${examId}_skeleton_sk_soft_parav_l`] === 1;
+            const pR = Store.buttonStates[`${examId}_soft_st_parav_r`] === 1;
+            const pL = Store.buttonStates[`${examId}_soft_st_parav_l`] === 1;
             
             if (pR || pL) {
                 let sideStr = pR && pL ? "PHK a LHK" : (pR ? "PHK" : "LHK");
                 prefixes.push(`Zvýšená akumulace RF v průběhu lymfatik ${sideStr} na podkladě parciální paravazace RF při aplikaci.`);
             }
 
-            if (Store.buttonStates[`${examId}_skeleton_sk_soft_dif`]) {
+            if (Store.buttonStates[`${examId}_soft_st_dif`]) {
                 prefixes.push("Difuzně vysoká akumulace RF v kosterním svalstvu při zátěži po aplikaci či nedodrženém lačnění.");
             }
 
