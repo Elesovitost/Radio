@@ -1124,7 +1124,7 @@ const UI = {
 
                     const organLabel = (cleanText.match(/^(- [^:\n]+:)/) || [])[1];
                     const node = el('div', { className: classes.join(' '), textContent: organLabel ? cleanText.slice(organLabel.length) : cleanText });
-                    if (organLabel) node.dataset.label = organLabel;
+                    if (organLabel) node.dataset.label = organLabel.replace(/^- /, '');
                     if (b.tableId) {
                         node.dataset.action = 'open-table';
                         node.dataset.table = b.tableId;
