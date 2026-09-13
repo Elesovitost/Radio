@@ -24,12 +24,17 @@ const RegionSoft = {
                 { btn: `${p}_v_subk`, type: 'basic', text: 'subkutánně' },
                 { btn: `${p}_v_fasc`, type: 'basic', text: 'podél fascie' }
             ]);
-            vztahTab.style.marginLeft = '8px';
 
-            const locBox = el('div', { className: 'table-wrapper', style: 'width: 100%;' }, [
+            const locPair = el('div', { className: 'row' }, [locTab, vztahTab]);
+            locPair.style.alignItems = 'flex-start';
+            locPair.style.gap = '8px';
+
+            const locBox = el('div', { className: 'table-wrapper' }, [
                 el('div', { className: 'sub-table-title', textContent: 'Lokalizace' }),
-                el('div', { className: 'row', style: 'align-items: flex-start; justify-content: center;' }, [locTab, vztahTab])
+                locPair
             ]);
+            locBox.style.width = '100%';
+            locBox.style.alignItems = 'center';
 
             layoutNodes.push(
                 helpers.LesionMain(`soft_lesion_main__${instId}`, `Léze měkkých tkání (${idx + 1})`, [
