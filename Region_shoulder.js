@@ -13,6 +13,10 @@ const RegionShoulder = {
                     [ 'AC edém (BML):', { btn: 'sh_ac_edem', states: ['0', '+', '++', 'DCO'] } ],
                     [ 'Os acromiale:', { btn: 'sh_ac_os', states: ['0', 'přítomno', 'edém'] } ],
                     [ 'Impingement:', { btn: 'sh_ac_impingement', states: ['0', 'subakromiální', 'subkorakoidní'] } ]
+                ]),
+                helpers.Table1col('shoulder_ac_add', [
+                    { field: 'text', id: 'sh_ac_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'sh_ac_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ]),
 
@@ -23,6 +27,10 @@ const RegionShoulder = {
                     [ 'Subkorak. burza:', { btn: 'sh_gh_subcor', states: ['0', 'tekutina', 'bursitida'] } ],
                     [ 'GH náplň:', { btn: 'sh_gh_napln', states: ['0', '+', '++', '+++'] } ],
                     [ 'Synovitida:', { btn: 'sh_gh_synov', states: ['0', '+', '++', 'Chondromatóza'] } ]
+                ]),
+                helpers.Table1col('shoulder_bursa_add', [
+                    { field: 'text', id: 'sh_bursa_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'sh_bursa_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ]),
 
@@ -43,7 +51,7 @@ const RegionShoulder = {
                     [ '', { btn: 'sh_ssc_retr', states: ['retrakce?', '+', '++', '+++'] }, { btn: 'sh_ssc_atrofie', states: ['atrofie?', '+', '++'] } ],
                     [ ['Kalcif.:', { btn: 'sh_ssc_kalcif', states: ['0', 'HADD', 'dystrof.'] }], '', '' ]
                 ]),
-                helpers.Table1col('sh_rm_vlastni_table', [
+                helpers.Table1col('sh_rm_add', [
                     { field: 'text', id: 'sh_rm_custom_desc', placeholder: 'vlastní popis...' },
                     { field: 'text', id: 'sh_rm_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
@@ -53,6 +61,10 @@ const RegionShoulder = {
                 helpers.Table2colNormal('sh_tm_table', '', [
                     [ 'Stav šlachy:', { btn: 'sh_tm_stav', states: ['0', 'tendinóza', 'parc. ruptura', 'kompletní'] } ],
                     [ 'Tuk. degen. / atrofie:', { btn: 'sh_tm_gout', states: ['0', '+', '++'] } ]
+                ]),
+                helpers.Table1col('shoulder_tm_add', [
+                    { field: 'text', id: 'sh_tm_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'sh_tm_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ]),
 
@@ -62,6 +74,10 @@ const RegionShoulder = {
                     [ 'Stav:', { btn: 'sh_lhb_stav', states: ['0', 'tendinóza', 'gr. I', 'gr. II', 'gr. III', 'kompletní', 'tenotomie'] } ],
                     [ 'Poloha:', { btn: 'sh_lhb_poloha', states: ['in situ', 'pulley', 'subluxace', 'luxace', 'retrakce'] } ],
                     [ 'Sulkus:', { btn: 'sh_lhb_sulkus', states: ['0', 'tekutina'] } ]
+                ]),
+                helpers.Table1col('shoulder_lhb_add', [
+                    { field: 'text', id: 'sh_lhb_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'sh_lhb_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ]),
 
@@ -73,6 +89,10 @@ const RegionShoulder = {
                     [ 'Zadní labrum:', { btn: 'sh_lab_pos', states: ['0', 'degenerace', 'léze', 'Reverse Bankart'] } ],
                     [ 'Paralabrální cysta:', { btn: 'sh_lab_cysta', states: ['0', 'spinoglenoidní', 'supraskapulární'] } ],
                     [ 'IGHL:', { btn: 'sh_lab_ighl', states: ['0', 'léze', 'edém'] } ]
+                ]),
+                helpers.Table1col('shoulder_lab_add', [
+                    { field: 'text', id: 'sh_lab_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'sh_lab_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ]),
 
@@ -83,6 +103,10 @@ const RegionShoulder = {
                     [ 'Defekt glenoidu:', { btn: 'sh_bn_glen', states: ['0', 'Bony Bankart', 'kontuzní edém'] } ],
                     [ 'GH chondropatie:', { btn: 'sh_bn_chr', states: ['0', 'Gr. 1', 'Gr. 2', 'Gr. 3', 'Gr. 4'] } ],
                     [ 'Kostní léze:', { btn: 'sh_bn_lesion', states: ['0', 'Enchondrom', 'Geoda', 'Hemangiom'] } ]
+                ]),
+                helpers.Table1col('shoulder_bn_add', [
+                    { field: 'text', id: 'sh_bn_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'sh_bn_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ])
         ];
@@ -93,6 +117,20 @@ const RegionShoulder = {
         let concMain = [];
         let concInc = [];
         const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
+
+        const pushCustom = (prefix, tableId) => {
+            const fmt = (raw) => {
+                let txt = (raw || '').replace(/\u200B/g, '').trim();
+                if (!txt) return '';
+                txt = txt.charAt(0).toUpperCase() + txt.slice(1);
+                if (!txt.endsWith('.')) txt += '.';
+                return '\u200B' + txt;
+            };
+            const d = fmt(ctx.field(`${prefix}_custom_desc`));
+            const c = fmt(ctx.field(`${prefix}_custom_conc`));
+            if (d) reportOut.push({ type: 'frame', text: d, tableId });
+            if (c) concMain.push({ type: 'frame', text: c, tableId });
+        };
 
         // --- 1. AC KLOUB A AKROMION ---
         let acParts = [];
@@ -185,6 +223,7 @@ const RegionShoulder = {
             let acText = 'AC kloub a akromion: ' + acParts.join(', ') + '.';
             reportOut.push({ type: 'frame', text: acText, tableId: 'shoulder_ac_main' });
         }
+        pushCustom('sh_ac', 'shoulder_ac_main');
 
         // --- 2. GH KLOUB A BURZY ---
         let bursaParts = [];
@@ -226,6 +265,7 @@ const RegionShoulder = {
             reportOut.push({ type: 'frame', text: bursaText, tableId: 'shoulder_bursa_main' });
             bursaConc.forEach(c => concInc.push({ type: 'frame', text: c + '.', tableId: 'shoulder_bursa_main' }));
         }
+        pushCustom('sh_bursa', 'shoulder_bursa_main');
 
         // --- 3. ROTÁTOROVÁ MANŽETA ---
         const parseTendon = (prefix, nameTitle) => {
@@ -408,6 +448,7 @@ const RegionShoulder = {
             reportOut.push({ type: 'frame', text: tmText, tableId: 'shoulder_tm_main' });
             if (tmConc) concMain.push({ type: 'frame', text: tmConc + '.', tableId: 'shoulder_tm_main' });
         }
+        pushCustom('sh_tm', 'shoulder_tm_main');
 
         // --- 4. BICEPS A BICEPSOVÁ KLADKA (LHB) ---
         const lhbStav = ctx.text('sh_lhb_stav');
@@ -487,10 +528,11 @@ const RegionShoulder = {
                 concMain.push({ type: 'frame', text: `LHBT ${concBits[0]}.`, tableId: 'shoulder_lhb_main' });
             } else if (concBits.length === 2) {
                 concMain.push({ type: 'frame', text: `LHBT ${concBits[0]} a ${concBits[1]}.`, tableId: 'shoulder_lhb_main' });
-            } else if (concBits.length > 2) {
+            } else             if (concBits.length > 2) {
                 concMain.push({ type: 'frame', text: `LHBT ${concBits.slice(0, -1).join(', ')} a ${concBits[concBits.length - 1]}.`, tableId: 'shoulder_lhb_main' });
             }
         }
+        pushCustom('sh_lhb', 'shoulder_lhb_main');
 
         // --- 5. LABRUM A LIGAMENTA ---
         const labSup = ctx.text('sh_lab_sup');
@@ -566,6 +608,7 @@ const RegionShoulder = {
             reportOut.push({ type: 'frame', text: 'Glenoidální labrum: ' + cap(labrep.join('; ')) + '.', tableId: 'shoulder_labrum_main' });
             labconc.forEach(c => concMain.push({ type: 'frame', text: c + '.', tableId: 'shoulder_labrum_main' }));
         }
+        pushCustom('sh_lab', 'shoulder_labrum_main');
 
         // --- 6. SKELET A CHRUPAVKY ---
         const bnHlav = ctx.text('sh_bn_hlav');
@@ -603,6 +646,7 @@ const RegionShoulder = {
 
             reportOut.push({ type: 'frame', text: 'Skelet a chrupavky: ' + cap(bnRep.join(', ')) + '.', tableId: 'shoulder_bones_main' });
         }
+        pushCustom('sh_bn', 'shoulder_bones_main');
 
         if (concMain.length === 0) {
             concMain.push({ type: 'frame', text: 'Přiměřený nález, bez signifikantní patologie.' });

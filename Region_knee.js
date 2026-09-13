@@ -9,6 +9,10 @@ const RegionKnee = {
                     [ 'Bakerova cysta:', { btn: 'kn_baker', states: ['0', '+', '++', '+++'] } ],
                     [ 'Synovitida:', { btn: 'kn_synov', states: ['0', '+', '++', 'PVS'] } ],
                     [ 'Volná tělíska:', { btn: 'kn_teliska', states: ['0', '+ [field:field_text:loc:kde...]', '++ [field:field_text:loc:kde...]', 'Syn. Chon.'] } ]
+                ]),
+                helpers.Table1col('knee_joint_add', [
+                    { field: 'text', id: 'kn_joint_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'kn_joint_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ]),
             helpers.TableMain('knee_patella_main', 'Patella a Přední kompartment', [
@@ -29,6 +33,10 @@ const RegionKnee = {
                     [ 'Med. plica:', { btn: 'kn_ant_plica', states: ['0', '+'] } ],
                     [ 'Edém Hoffa:', { btn: 'kn_ant_hoffa', states: ['0', '+'] } ],
                     [ 'Fat pad imping.:', { btn: 'kn_ant_imp', states: ['0', '+'] } ]
+                ]),
+                helpers.Table1col('knee_pat_add', [
+                    { field: 'text', id: 'kn_pat_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'kn_pat_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ]),
             
@@ -50,6 +58,10 @@ const RegionKnee = {
                         [ 'Cysta:', { btn: `${prefix}_cyst`, states: ['0', 'malá', 'střední', 'výrazná'] } ],
                         [ 'Extruze:', { btn: `${prefix}_extr`, states: ['0', '< 50 %', '> 50 %'] } ],
                         [ 'Operace:', { btn: `${prefix}_oper`, states: ['0', 'parciální', 'subtotální', 'totální'] } ]
+                    ]),
+                    helpers.Table1col(`${prefix}_add`, [
+                        { field: 'text', id: `${prefix}_custom_desc`, placeholder: 'vlastní popis...' },
+                        { field: 'text', id: `${prefix}_custom_conc`, placeholder: 'vlastní závěr...' }
                     ])
                 ]);
 
@@ -59,6 +71,10 @@ const RegionKnee = {
                             { btn: `${prefix}_rupt`, states: ['0', 'low-grade', 'parciální', 'high-grade', 'kompletní', 'po starší'] },
                             { btn: `${prefix}_loc`, states: ['lokace...', 'femorálně', 'střed', 'tibiálně'] }
                         ] ]
+                    ]),
+                    helpers.Table1col(`${prefix}_add`, [
+                        { field: 'text', id: `${prefix}_custom_desc`, placeholder: 'vlastní popis...' },
+                        { field: 'text', id: `${prefix}_custom_conc`, placeholder: 'vlastní závěr...' }
                     ])
                 ]);
 
@@ -68,6 +84,10 @@ const RegionKnee = {
                         makeCondyleTable('Laterální plato tibie (LTC)', 'kn_ltc'),
                         helpers.Table2colNormal('kn_lat_shared_ost_table', 'SPOLEČNÉ', [
                             [ 'Osteofyty:', { btn: 'kn_lat_shared_ost', states: ['0', 'I', 'II', 'III'] } ]
+                        ]),
+                        helpers.Table1col('knee_lat_add', [
+                            { field: 'text', id: 'kn_lat_custom_desc', placeholder: 'vlastní popis...' },
+                            { field: 'text', id: 'kn_lat_custom_conc', placeholder: 'vlastní závěr...' }
                         ])
                     ]),
                     makeMeniscus('knee_lm_main', 'Laterální meniskus (LM)', 'kn_lm'),
@@ -79,6 +99,10 @@ const RegionKnee = {
                         makeCondyleTable('Mediální plato tibie (MTC)', 'kn_mtc'),
                         helpers.Table2colNormal('kn_med_shared_ost_table', 'SPOLEČNÉ', [
                             [ 'Osteofyty:', { btn: 'kn_med_shared_ost', states: ['0', 'I', 'II', 'III'] } ]
+                        ]),
+                        helpers.Table1col('knee_med_add', [
+                            { field: 'text', id: 'kn_med_custom_desc', placeholder: 'vlastní popis...' },
+                            { field: 'text', id: 'kn_med_custom_conc', placeholder: 'vlastní závěr...' }
                         ])
                     ]),
                     makeMeniscus('knee_mm_main', 'Mediální meniskus (MM)', 'kn_mm'),
@@ -93,12 +117,20 @@ const RegionKnee = {
                     [ 'Náhrada (štěp):', [ { btn: 'kn_acl_plast', states: ['0', 'intaktní', 'parc. léze', 'kompl. rupt.'] }, { btn: 'kn_acl_vzhled', states: ['orientace OK', 'laxita', 'vertikální', 'horizontální', 'impingement'] } ] ],
                     [ '', { btn: 'kn_acl_tunel', states: ['tunely', 'širší F', 'širší T', 'ventrální T'] } ],
                     [ 'Kyklop léze:', { btn: 'kn_acl_kyklop', states: ['0', '+', '+/-'] } ]
+                ]),
+                helpers.Table1col('knee_acl_add', [
+                    { field: 'text', id: 'kn_acl_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'kn_acl_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ]),
             helpers.TableMain('knee_pcl_main', 'Zadní zkřížený vaz (PCL)', [
                 helpers.Table2colNormal('kn_pcl_table', '', [
                     [ 'Ruptura:', [ { btn: 'kn_pcl_rupt', states: ['0', 'low-grade', 'parciální', 'high-grade', 'kompletní'] }, { btn: 'kn_pcl_bml', states: ['skelet 0', 'BML +', 'avulze tibie'] } ] ],
                     [ 'Morfologie:', { btn: 'kn_pcl_morf', states: ['0', 'elongace', 'mukoid. deg.', 'cysta'] } ]
+                ]),
+                helpers.Table1col('knee_pcl_add', [
+                    { field: 'text', id: 'kn_pcl_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'kn_pcl_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ]),
             
@@ -122,6 +154,10 @@ const RegionKnee = {
                     [ 'Subkut. infrapat.:', { btn: 'kn_b_infrap_sub', states: ['0', '+'] } ],
                     [ 'MCL burza:', { btn: 'kn_b_mcl', states: ['0', '+'] } ],
                     [ 'TF ganglion:', { btn: 'kn_g_tf', states: ['0', '+'] } ]
+                ]),
+                helpers.Table1col('knee_soft_add', [
+                    { field: 'text', id: 'kn_st_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'kn_st_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ]),
             
@@ -132,6 +168,10 @@ const RegionKnee = {
                     [ 'Lokalizace:', { btn: 'kn_bn_loc', states: ['0', 'femur', 'tibie', 'fibuly', 'patella'] } ],
                     [ 'Velikost:', { field: 'size', id: 'kn_bn_size', placeholder: 'mm' } ],
                     [ 'Aktivita:', { btn: 'kn_bn_edema', states: ['0', 'bez edému', 's edémem'] } ]
+                ]),
+                helpers.Table1col('knee_bones_add', [
+                    { field: 'text', id: 'kn_bn_custom_desc', placeholder: 'vlastní popis...' },
+                    { field: 'text', id: 'kn_bn_custom_conc', placeholder: 'vlastní závěr...' }
                 ])
             ])
         ];
@@ -143,6 +183,20 @@ const RegionKnee = {
         let concInc = [];
         const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
         const examId = ctx.examId || 'default';
+
+        const pushCustom = (prefix, tableId) => {
+            const fmt = (raw) => {
+                let txt = (raw || '').replace(/\u200B/g, '').trim();
+                if (!txt) return '';
+                txt = txt.charAt(0).toUpperCase() + txt.slice(1);
+                if (!txt.endsWith('.')) txt += '.';
+                return '\u200B' + txt;
+            };
+            const d = fmt(ctx.field(`${prefix}_custom_desc`));
+            const c = fmt(ctx.field(`${prefix}_custom_conc`));
+            if (d) reportOut.push({ type: 'frame', text: d, tableId });
+            if (c) concMain.push({ type: 'frame', text: c, tableId });
+        };
         
         // --- HELPERY PRO CHRUPAVKY A SKELET ---
         const getChondroRep = (grade, lesion, edema, nameRep) => {
@@ -306,6 +360,7 @@ const RegionKnee = {
             finalJointText = finalJointText.charAt(0).toUpperCase() + finalJointText.slice(1) + '.';
             reportOut.push({ type: 'frame', text: finalJointText, tableId: 'knee_joint_main' });
         }
+        pushCustom('kn_joint', 'knee_joint_main');
 
         // ═══ PATELLA A FP SKLOUBENÍ ═══
         let patRep = [];
@@ -382,6 +437,7 @@ const RegionKnee = {
                 concMain.push({ type: 'frame', text: `FP chondropatie ${fpMerged}.`, tableId: 'knee_patella_main' });
             }
         }
+        pushCustom('kn_pat', 'knee_patella_main');
 
         // ═══ EXEKUCE LATERÁLNÍHO A MEDIÁLNÍHO KOMPARTMENTU ═══
         const buildCompartment = (compName, femPrefix, tibPrefix, femBoneName, tibBoneName, tableId, ostBtnId) => {
@@ -584,12 +640,18 @@ const RegionKnee = {
 
         // Generování kompartmentů
         buildCompartment('Laterální kompartment', 'kn_lfc', 'kn_ltc', 'Laterální kondyl femuru', 'Laterální plato tibie', 'knee_lat_comp_main', 'kn_lat_shared_ost');
+        pushCustom('kn_lat', 'knee_lat_comp_main');
         parseMeniscus('kn_lm', 'Laterální meniskus', 'laterálního menisku', 'LM', 'knee_lm_main');
+        pushCustom('kn_lm', 'knee_lm_main');
         parseCollateralLigament('kn_lcl', 'Laterální kolaterální vaz', 'knee_lcl_main');
+        pushCustom('kn_lcl', 'knee_lcl_main');
 
         buildCompartment('Mediální kompartment', 'kn_mfc', 'kn_mtc', 'Mediální kondyl femuru', 'Mediální plato tibie', 'knee_med_comp_main', 'kn_med_shared_ost');
+        pushCustom('kn_med', 'knee_med_comp_main');
         parseMeniscus('kn_mm', 'Mediální meniskus', 'mediálního menisku', 'MM', 'knee_mm_main');
+        pushCustom('kn_mm', 'knee_mm_main');
         parseCollateralLigament('kn_mcl', 'Mediální kolaterální vaz', 'knee_mcl_main');
+        pushCustom('kn_mcl', 'knee_mcl_main');
 
         // Jednotná věta pro gonartrózu dle osteofytů
         const ostLat = ctx.text('kn_lat_shared_ost');
@@ -746,6 +808,7 @@ const RegionKnee = {
                 concMain.push({ type: 'frame', text: concSentence, tableId: 'knee_acl_main' });
             }
         }
+        pushCustom('kn_acl', 'knee_acl_main');
 
         // ═══ KOMPILÁTOR PRO ZADNÍ ZKŘÍŽENÝ VAZ (PCL) ═══
         const pclRupt = ctx.text('kn_pcl_rupt');
@@ -830,6 +893,7 @@ const RegionKnee = {
 
             concMain.push({ type: 'frame', text: concSentencePcl, tableId: 'knee_pcl_main' });
         }
+        pushCustom('kn_pcl', 'knee_pcl_main');
 
         // ═══ KOMPILÁTOR PRO MĚKKÉ TKÁNĚ A OKOLÍ ═══
         const stQuad = ctx.text('kn_st_quad');
@@ -974,6 +1038,8 @@ const RegionKnee = {
         if (combinedStBnText !== '') {
             reportOut.push({ type: 'frame', text: combinedStBnText, tableId: 'knee_soft_main', dimmed: isSoftDimmed && isBoneDimmed });
         }
+        pushCustom('kn_st', 'knee_soft_main');
+        pushCustom('kn_bn', 'knee_bones_main');
 
         const conclusionOrder = {
             'knee_acl_main': 1,
