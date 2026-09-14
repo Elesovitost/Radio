@@ -71,27 +71,16 @@ const RegionSoft = {
     },
 
     compile: (ctx) => {
-        let reportOut = [{ type: 'heading', text: 'Měkké tkáně:', action: 'open-region', regionId: 'soft' }];
+        let reportOut = [];
         let concMain = [];
         let concInc = [];
 
         const examId = ctx.examId || 'default';
         const cap = (s) => s && s[0].toUpperCase() + s.slice(1);
         const formatList = formatCzechList;
-        const isPET = (examId || '').toLowerCase().includes('pet');
 
-        // --- LÉZE MĚKKÝCH TKÁNÍ ---
+        // --- LÉZE MĚKKÝCH TKÁNÍ (jen zadané; bez automatického negativního textu) ---
         const lesInsts = Store.instances?.['soft_lesion_main'] || [];
-        let highAct = false, badEtio = false;
-        lesInsts.forEach(id => {
-            if (['intermediární', 'zvýšená', 'vysoká'].includes(ctx.text(`l_${id}_met_act`, true))) highAct = true;
-            if (!ctx.isActive(`l_${id}_e_b`) && !ctx.isActive(`l_${id}_e_inf`)) badEtio = true;
-        });
-
-        if (lesInsts.length === 0 || (lesInsts.length > 0 && isPET && !highAct)) {
-            reportOut.push({ type: 'frame', text: isPET ? 'Bez patrných hyperakumulujících ložiskových změn v měkkých tkáních.' : 'Bez patrných ložiskových změn v měkkých tkáních.', tableId: 'soft_lesion_main', dimmed: true });
-        }
-
         lesInsts.forEach(instId => {
             const p = `l_${instId}`;
             let lokace = [];
@@ -134,16 +123,16 @@ const RegionSoft = {
             }
         });
 
-        if (lesInsts.length > 0 && (!isPET || highAct) && !badEtio) {
-            reportOut.push({ type: 'frame', text: 'Jinak bez patrných ložiskových změn v měkkých tkáních.', tableId: 'soft_lesion_main', dimmed: true });
-        }
-
         // --- SVALY A MĚKKÉ TKÁNĚ (obecné) ---
         let stDesc = ctx.field('st_custom_desc');
         if (stDesc) reportOut.push({ type: 'frame', text: cap(stDesc), tableId: 'soft_tissue_main' });
 
         let stConc = ctx.field('st_custom_conc');
         if (stConc) concInc.push({ type: 'frame', text: stConc, tableId: 'soft_tissue_main' });
+
+        if (reportOut.length > 0) {
+            reportOut.unshift({ type: 'heading', text: 'Měkké tkáně:', action: 'open-region', regionId: 'soft' });
+        }
 
         return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };
     }
