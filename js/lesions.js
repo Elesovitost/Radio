@@ -14,37 +14,50 @@ const LESIONS_DEFINITION = {
         'SUVmax:', { field: 'suv', id: `${prefix}_suv_old`, placeholder: '...' },
         'Počet:', { btn: `${prefix}_cnt_old`, states: ['vyber', 'méně', 'více', 'kolísání'] }
     ],
-    getLesionMetricsRow: (helpers, rowId, prefix) => {
+    /* Metriky jsou pro lézi i uzlinu stejné. */
+    getMetricsRow: (helpers, rowId, prefix) => {
         return helpers.Table2rowNormal(rowId, [
             ['Metriky:', 'Rozměry:', { field: 'size', id: `${prefix}_size`, placeholder: 'mm' }, 'SUVmax:', { field: 'suv', id: `${prefix}_suv`, placeholder: '...' }, 'Aktivita:', { btn: `${prefix}_act`, states: ['0', 'není', 'nízká', 'intermediární', 'zvýšená', 'vysoká'] }],
             LESIONS_DEFINITION.getMinuleRowCells(prefix),
         ]);
     },
-    getLesionEtiologyRow: (helpers, rowId, prefix) => {
-        return helpers.Table1col(rowId, [
-            ['Etiologie:', 
-                { btn: `${prefix}_q`, states: ['?', '?'] },
-                { btn: `${prefix}_b`, states: ['benigní', 'benigní?', 'benigní+', 'benigní!'] },
-                { btn: `${prefix}_m`, states: ['maligní', 'maligní?', 'maligní+', 'maligní!'] },
-                { btn: `${prefix}_t`, states: ['tumor', 'tumor?', 'tumor+', 'tumor!'] },
-                { btn: `${prefix}_meta`, states: ['meta', 'meta?', 'meta+', 'meta!'] },
-                { btn: `${prefix}_inf`, states: ['zánět', 'zánět?', 'zánět+', 'zánět!'] },
-                { btn: `${prefix}_cust_etio`, states: ['vlastní...', 'custom'] }
-            ]
-        ]);
+    /* Etiologie; uzlina nemá navíc tlačítko "vlastní etiologie". */
+    getEtiologyRow: (helpers, rowId, prefix, withCustom = false) => {
+        const cells = [
+            { btn: `${prefix}_q`, states: ['?', '?'] },
+            { btn: `${prefix}_b`, states: ['benigní', 'benigní?', 'benigní+', 'benigní!'] },
+            { btn: `${prefix}_m`, states: ['maligní', 'maligní?', 'maligní+', 'maligní!'] },
+            { btn: `${prefix}_t`, states: ['tumor', 'tumor?', 'tumor+', 'tumor!'] },
+            { btn: `${prefix}_meta`, states: ['meta', 'meta?', 'meta+', 'meta!'] },
+            { btn: `${prefix}_inf`, states: ['zánět', 'zánět?', 'zánět+', 'zánět!'] }
+        ];
+        if (withCustom) cells.push({ btn: `${prefix}_cust_etio`, states: ['vlastní...', 'custom'] });
+        return helpers.Table1col(rowId, [ ['Etiologie:', ...cells] ]);
     },
-    getLesionRowsPre: (helpers, prefix, customInfText = 'infiltrace') => [
+    getRowsPre: (helpers, prefix, { customInfText = 'infiltrace', isLN = false } = {}) => [
         helpers.Table1col(`${prefix}_r1_excl`, [ [ 'Počet:', { btn: `${prefix}_c_soli`, type: 'basic', text: 'solitární' }, { btn: `${prefix}_c_dve`, type: 'basic', text: 'dvě' }, { btn: `${prefix}_c_vice`, type: 'basic', text: 'vícečetné' }, { btn: `${prefix}_c_mnoho`, type: 'basic', text: 'mnohočetné' } ] ]),
-        helpers.Table1col(`${prefix}_r2_excl`, [ [ 'Druh:', { btn: `${prefix}_k_les`, type: 'basic', text: 'ložisko'}, { btn: `${prefix}_k_exp`, type: 'basic', text: 'expanze' }, { btn: `${prefix}_k_inf`, type: 'basic', text: customInfText }, { btn: `${prefix}_k_kol`, type: 'basic', text: 'kolekce' }, { btn: `${prefix}_k_cys`, type: 'basic', text: 'cysta' }, { btn: `${prefix}_k_cust`, states: ['vlastní', 'custom'] } ] ])
+        helpers.Table1col(`${prefix}_r2_excl`, [ [ 'Druh:',
+            ...(isLN
+                ? [ { btn: `${prefix}_k_uzl`, type: 'basic', text: 'uzlina' }, { btn: `${prefix}_k_pak`, type: 'basic', text: 'paket' } ]
+                : [ { btn: `${prefix}_k_les`, type: 'basic', text: 'ložisko' }, { btn: `${prefix}_k_exp`, type: 'basic', text: 'expanze' }, { btn: `${prefix}_k_inf`, type: 'basic', text: customInfText }, { btn: `${prefix}_k_kol`, type: 'basic', text: 'kolekce' }, { btn: `${prefix}_k_cys`, type: 'basic', text: 'cysta' } ]),
+            { btn: `${prefix}_k_cust`, states: ['vlastní', 'custom'] }
+        ] ])
     ],
-    getLesionRowsPost: (helpers, prefix, metPfx, etioPfx) => [
+    getRowsPost: (helpers, prefix, metPfx, etioPfx, isLN = false) => [
         helpers.Table1col(`${prefix}_r4`, [ [ { btn: `${prefix}_doplneni`, type: 'basic_custom', text: 'doplnění:' } ] ]),
         helpers.Table1col(`${prefix}_r5`, [ [ 'Vzhled MR:', { btn: `${prefix}_mr_t1`, states: ['T1', 'T1 hypo', 'T1 izo', 'T1 hyper'] }, { btn: `${prefix}_mr_t2`, states: ['T2', 'T2 hypo', 'T2 izo', 'T2 hyper'] }, { btn: `${prefix}_mr_dwi`, states: ['DWI', 'DWI -', 'DWI +'] }, { btn: `${prefix}_mr_swi`, states: ['SWI', 'SWI -', 'SWI +'] }, { btn: `${prefix}_mr_t1c`, states: ['kontrast', 'bez sycení', 'sycení', 'izo', 'hyper', 'progresivní', 'wash-out'] } ] ]),
         helpers.Table1col(`${prefix}_r6`, [ [ 'Vzhled CT:', { btn: `${prefix}_ct_nat`, states: ['nativ', 'nativ hypo', 'nativ izo', 'nativ hyper'] }, { btn: `${prefix}_ct_syc`, states: ['kontrast', 'bez sycení', 'sycení', 'izo', 'hyper', 'progresivní', 'wash-out'] }, { btn: `${prefix}_ct_nek`, states: ['nekróza', 'centrální'] }, { btn: `${prefix}_ct_kal`, states: ['kalcif.', 'centrální', 'periferní', 'nepravid.'] }, { btn: `${prefix}_ct_bez`, type: 'basic', text: 'bez korelátu' } ] ]),
         helpers.Table1col(`${prefix}_r7`, [ [ 'Největší:',  { field: 'text', id: `${prefix}_nej_text`, placeholder: 'Kde...' }] ]),
-        LESIONS_DEFINITION.getLesionMetricsRow(helpers, `${prefix}_r8`, metPfx),
-        LESIONS_DEFINITION.getLesionEtiologyRow(helpers, `${prefix}_r9`, etioPfx)
+        LESIONS_DEFINITION.getMetricsRow(helpers, `${prefix}_r8`, metPfx),
+        LESIONS_DEFINITION.getEtiologyRow(helpers, `${prefix}_r9`, etioPfx, !isLN)
     ],
+
+    /* Adaptéry: layout regionů volá variantu pro lézi, resp. pro uzlinu. */
+    getLesionRowsPre: (helpers, prefix, customInfText = 'infiltrace') => LESIONS_DEFINITION.getRowsPre(helpers, prefix, { customInfText }),
+    getLymphNodeRowsPre: (helpers, prefix) => LESIONS_DEFINITION.getRowsPre(helpers, prefix, { isLN: true }),
+    getLesionRowsPost: (helpers, prefix, metPfx, etioPfx) => LESIONS_DEFINITION.getRowsPost(helpers, prefix, metPfx, etioPfx, false),
+    getLymphNodeRowsPost: (helpers, prefix, metPfx, etioPfx) => LESIONS_DEFINITION.getRowsPost(helpers, prefix, metPfx, etioPfx, true),
+    getLesionMetricsRow: (helpers, rowId, prefix) => LESIONS_DEFINITION.getMetricsRow(helpers, rowId, prefix),
 
     buildPastStr: (ctx, metPfx, size, suv) => {
         if (!Store.pastDate) return '';
@@ -73,11 +86,12 @@ const LESIONS_DEFINITION = {
         return pastArr.length ? ` (minule ${pastArr.join(', ')})` : '';
     },
 
-    parseLesionMetrics: (ctx, metPfx, pocetText, nejText) => {
+    /* Metriky ložiska (isLN = uzlina: měří se krátká osa, jinak max. diametr). */
+    parseMetrics: (ctx, metPfx, pocetText, nejText, isLN = false) => {
         let size = ctx.field(`${metPfx}_size`);
         let sizeOld = ctx.field(`${metPfx}_size_old`);
         let suv = ctx.field(`${metPfx}_suv`);
-        
+
         let prefixNej = '';
         if (nejText && pocetText !== 'solitární') {
             prefixNej = (pocetText === 'dvě') ? `, větší ${nejText}` : `, největší ${nejText}`;
@@ -89,161 +103,13 @@ const LESIONS_DEFINITION = {
         let metrikyStr = '';
         const sizeAbsent = !isSizeNonZero(size);
         const sizeOldPresent = isSizeNonZero(sizeOld);
+        const is1D = !size.includes('x');
 
         if (Store.pastDate && sizeAbsent && sizeOldPresent) {
             metrikyStr = `${prefixNej} dnes absentující (minule ${sizeOld} mm)${suv ? ' ' + suvText : ''}`;
         } else if (isSizeNonZero(size)) {
-            let dimLabel = size.includes('x') ? 'rozměru' : 'max. diametru';
-            metrikyStr = `${prefixNej} ${dimLabel} ${size} mm${suv ? ' ' + suvText : ''}${pastStr}`;
-        } else if (suv) {
-            metrikyStr = `${prefixNej} ${suvText}${pastStr}`;
-        } else if (prefixNej) {
-            metrikyStr = `${prefixNej}${pastStr}`;
-        } else if (pastStr) {
-            metrikyStr = `${pastStr}`;
-        }
-
-        if (metrikyStr && !metrikyStr.startsWith(',') && !metrikyStr.startsWith(' ')) {
-             metrikyStr = ' ' + metrikyStr;
-        }
-        return metrikyStr;
-    },
-
-    parseLesionEtiology: (ctx, etioPfx) => {
-        let etioMap = [
-            { id: `${etioPfx}_b`, base: 'benigní' },
-            { id: `${etioPfx}_m`, base: 'maligní' },
-            { id: `${etioPfx}_t`, base: 'tumor' },
-            { id: `${etioPfx}_meta`, base: 'meta' },
-            { id: `${etioPfx}_inf`, base: 'zánět' }
-        ];
-
-        let certainties = { '!': [], '+': [], '?': [] };
-        let hasQ = ctx.isActive(`${etioPfx}_q`);
-
-        etioMap.forEach(e => {
-            if (ctx.isActive(e.id)) {
-                let val = ctx.text(e.id);
-                if (val.endsWith('!')) certainties['!'].push(e.base);
-                else if (val.endsWith('+')) certainties['+'].push(e.base);
-                else if (val.endsWith('?')) certainties['?'].push(e.base);
-            }
-        });
-
-        if (ctx.isActive(`${etioPfx}_cust_etio`)) {
-            let val = ctx.text(`${etioPfx}_cust_etio`).trim();
-            if (val && val !== 'vlastní') {
-                let level = '+'; 
-                let base = val;
-                if (val.endsWith('!')) { level = '!'; base = val.slice(0, -1).trim(); }
-                else if (val.endsWith('+')) { level = '+'; base = val.slice(0, -1).trim(); }
-                else if (val.endsWith('?')) { level = '?'; base = val.slice(0, -1).trim(); }
-                certainties[level].push(base);
-            }
-        }
-
-        let etioStr = "";
-        if (hasQ) {
-            etioStr = "etiologii nyní nelze spolehlivě určit";
-        } else {
-            let highestLevel = null;
-            if (certainties['!'].length > 0) highestLevel = '!';
-            else if (certainties['+'].length > 0) highestLevel = '+';
-            else if (certainties['?'].length > 0) highestLevel = '?';
-
-            if (highestLevel) {
-                let highestItems = certainties[highestLevel];
-                let highestStr = "";
-                
-                if (highestItems.length > 1) {
-                    highestStr = "v dif.dg. " + highestItems.join(', ');
-                } else {
-                    let item = highestItems[0];
-                    if (highestLevel === '!') {
-                        if (item === 'benigní') highestStr = 'benigního charakteru';
-                        else if (item === 'maligní') highestStr = 'maligního charakteru';
-                        else if (item === 'tumor') highestStr = 'charakteru tumoru';
-                        else if (item === 'meta') highestStr = 'charakteru metastázy';
-                        else if (item === 'zánět') highestStr = 'zánětlivé etiologie';
-                        else highestStr = 'v.s. ' + (GRAMMAR_DICT.etiologie2pad?.[item.toLowerCase()] || item);
-                    } else if (highestLevel === '+') {
-                        highestStr = 'v.s. ' + item;
-                    } else if (highestLevel === '?') {
-                        highestStr = 'susp. ' + item;
-                    }
-                }
-
-                let otherItems = [];
-                if (highestLevel === '!') {
-                    otherItems = [...certainties['+'], ...certainties['?']];
-                } else if (highestLevel === '+') {
-                    otherItems = [...certainties['?']];
-                }
-
-                if (otherItems.length > 0) {
-                    etioStr = highestStr + ", v dif.dg. " + otherItems.join(', ');
-                } else {
-                    etioStr = highestStr;
-                }
-            }
-        }
-        return etioStr;
-    },
-
-    getLymphNodeMetricsRow: (helpers, rowId, prefix) => {
-        return helpers.Table2rowNormal(rowId, [
-            ['Metriky:', 'Rozměry:', { field: 'size', id: `${prefix}_size`, placeholder: 'mm' }, 'SUVmax:', { field: 'suv', id: `${prefix}_suv`, placeholder: '...' }, 'Aktivita:', { btn: `${prefix}_act`, states: ['0', 'není', 'nízká', 'intermediární', 'zvýšená', 'vysoká'] }],
-            LESIONS_DEFINITION.getMinuleRowCells(prefix),
-        ]);
-    },
-    getLymphNodeEtiologyRow: (helpers, rowId, prefix) => {
-        return helpers.Table1col(rowId, [
-            ['Etiologie:', 
-                { btn: `${prefix}_q`, states: ['?', '?'] },
-                { btn: `${prefix}_b`, states: ['benigní', 'benigní?', 'benigní+', 'benigní!'] },
-                { btn: `${prefix}_m`, states: ['maligní', 'maligní?', 'maligní+', 'maligní!'] },
-                { btn: `${prefix}_t`, states: ['tumor', 'tumor?', 'tumor+', 'tumor!'] },
-                { btn: `${prefix}_meta`, states: ['meta', 'meta?', 'meta+', 'meta!'] },
-                { btn: `${prefix}_inf`, states: ['zánět', 'zánět?', 'zánět+', 'zánět!'] }
-            ]
-        ]);
-    },
-    getLymphNodeRowsPre: (helpers, prefix) => [
-        helpers.Table1col(`${prefix}_r1_excl`, [ [ 'Počet:', { btn: `${prefix}_c_soli`, type: 'basic', text: 'solitární' }, { btn: `${prefix}_c_dve`, type: 'basic', text: 'dvě' }, { btn: `${prefix}_c_vice`, type: 'basic', text: 'vícečetné' }, { btn: `${prefix}_c_mnoho`, type: 'basic', text: 'mnohočetné' } ] ]),
-        helpers.Table1col(`${prefix}_r2_excl`, [ [ 'Druh:', { btn: `${prefix}_k_uzl`, type: 'basic', text: 'uzlina'}, { btn: `${prefix}_k_pak`, type: 'basic', text: 'paket' }, { btn: `${prefix}_k_cust`, states: ['vlastní', 'custom'] } ] ])
-    ],
-    getLymphNodeRowsPost: (helpers, prefix, metPfx, etioPfx) => [
-        helpers.Table1col(`${prefix}_r4`, [ [ { btn: `${prefix}_doplneni`, type: 'basic_custom', text: 'doplnění:' } ] ]),
-        helpers.Table1col(`${prefix}_r5`, [ [ 'Vzhled MR:', { btn: `${prefix}_mr_t1`, states: ['T1', 'T1 hypo', 'T1 izo', 'T1 hyper'] }, { btn: `${prefix}_mr_t2`, states: ['T2', 'T2 hypo', 'T2 izo', 'T2 hyper'] }, { btn: `${prefix}_mr_dwi`, states: ['DWI', 'DWI -', 'DWI +'] }, { btn: `${prefix}_mr_swi`, states: ['SWI', 'SWI -', 'SWI +'] }, { btn: `${prefix}_mr_t1c`, states: ['kontrast', 'bez sycení', 'sycení', 'izo', 'hyper', 'progresivní', 'wash-out'] } ] ]),
-        helpers.Table1col(`${prefix}_r6`, [ [ 'Vzhled CT:', { btn: `${prefix}_ct_nat`, states: ['nativ', 'nativ hypo', 'nativ izo', 'nativ hyper'] }, { btn: `${prefix}_ct_syc`, states: ['kontrast', 'bez sycení', 'sycení', 'izo', 'hyper', 'progresivní', 'wash-out'] }, { btn: `${prefix}_ct_nek`, states: ['nekróza', 'centrální'] }, { btn: `${prefix}_ct_kal`, states: ['kalcif.', 'centrální', 'periferní', 'nepravid.'] }, { btn: `${prefix}_ct_bez`, type: 'basic', text: 'bez korelátu' } ] ]),
-        helpers.Table1col(`${prefix}_r7`, [ [ 'Největší:',  { field: 'text', id: `${prefix}_nej_text`, placeholder: 'Kde...' }] ]),
-        LESIONS_DEFINITION.getLymphNodeMetricsRow(helpers, `${prefix}_r8`, metPfx),
-        LESIONS_DEFINITION.getLymphNodeEtiologyRow(helpers, `${prefix}_r9`, etioPfx)
-    ],
-
-    parseLymphNodeMetrics: (ctx, metPfx, pocetText, nejText) => {
-        let size = ctx.field(`${metPfx}_size`);
-        let sizeOld = ctx.field(`${metPfx}_size_old`);
-        let suv = ctx.field(`${metPfx}_suv`);
-        
-        let prefixNej = '';
-        if (nejText && pocetText !== 'solitární') {
-            prefixNej = (pocetText === 'dvě') ? `, větší ${nejText}` : `, největší ${nejText}`;
-        }
-
-        let pastStr = LESIONS_DEFINITION.buildPastStr(ctx, metPfx, size, suv);
-
-        let suvText = suv ? MetricsEngine.getSuvText(suv) : '';
-        let metrikyStr = '';
-        const sizeAbsent = !isSizeNonZero(size);
-        const sizeOldPresent = isSizeNonZero(sizeOld);
-
-        if (Store.pastDate && sizeAbsent && sizeOldPresent) {
-            metrikyStr = `${prefixNej} dnes absentující (minule ${sizeOld} mm)${suv ? ' ' + suvText : ''}`;
-        } else if (isSizeNonZero(size)) {
-            let is1D = !size.includes('x');
-            let dimLabel = is1D ? 'diametru' : 'rozměru';
-            let osaSufix = is1D ? ' v krátké ose' : '';
+            const dimLabel = is1D ? (isLN ? 'diametru' : 'max. diametru') : 'rozměru';
+            const osaSufix = (isLN && is1D) ? ' v krátké ose' : '';
             metrikyStr = `${prefixNej} ${dimLabel} ${size} mm${osaSufix}${suv ? ' ' + suvText : ''}${pastStr}`;
         } else if (suv) {
             metrikyStr = `${prefixNej} ${suvText}${pastStr}`;
@@ -259,7 +125,13 @@ const LESIONS_DEFINITION = {
         return metrikyStr;
     },
 
-    parseLymphNodeEtiology: (ctx, etioPfx) => {
+    parseLesionMetrics: (ctx, metPfx, pocetText, nejText) => LESIONS_DEFINITION.parseMetrics(ctx, metPfx, pocetText, nejText, false),
+    parseLymphNodeMetrics: (ctx, metPfx, pocetText, nejText) => LESIONS_DEFINITION.parseMetrics(ctx, metPfx, pocetText, nejText, true),
+
+    /* Etiologie: nejvyšší dosažená jistota + ostatní položky do dif. dg.
+       custom = tlačítko "vlastní etiologie" (jen léze),
+       twoPad = skloňování neznámé položky do 2. pádu (jen léze). */
+    parseEtiology: (ctx, etioPfx, { custom = false, twoPad = false, qText = '' } = {}) => {
         let etioMap = [
             { id: `${etioPfx}_b`, base: 'benigní' },
             { id: `${etioPfx}_m`, base: 'maligní' },
@@ -280,64 +152,74 @@ const LESIONS_DEFINITION = {
             }
         });
 
-        let etioStr = "";
-        if (hasQ) {
-            etioStr = "nelze etiologii spolehlivě určit";
-        } else {
-            let highestLevel = null;
-            if (certainties['!'].length > 0) highestLevel = '!';
-            else if (certainties['+'].length > 0) highestLevel = '+';
-            else if (certainties['?'].length > 0) highestLevel = '?';
-
-            if (highestLevel) {
-                let highestItems = certainties[highestLevel];
-                let highestStr = "";
-                
-                if (highestItems.length > 1) {
-                    highestStr = "v dif.dg. " + highestItems.join(', ');
-                } else {
-                    let item = highestItems[0];
-                    if (highestLevel === '!') {
-                        if (item === 'benigní') highestStr = 'benigního charakteru';
-                        else if (item === 'maligní') highestStr = 'maligního charakteru';
-                        else if (item === 'tumor') highestStr = 'charakteru tumoru';
-                        else if (item === 'meta') highestStr = 'charakteru metastázy';
-                        else if (item === 'zánět') highestStr = 'zánětlivé etiologie';
-                    } else if (highestLevel === '+') {
-                        highestStr = 'v.s. ' + item;
-                    } else if (highestLevel === '?') {
-                        highestStr = 'susp. ' + item;
-                    }
-                }
-
-                let otherItems = [];
-                if (highestLevel === '!') {
-                    otherItems = [...certainties['+'], ...certainties['?']];
-                } else if (highestLevel === '+') {
-                    otherItems = [...certainties['?']];
-                }
-
-                if (otherItems.length > 0) {
-                    etioStr = highestStr + ", v dif.dg. " + otherItems.join(', ');
-                } else {
-                    etioStr = highestStr;
-                }
+        if (custom && ctx.isActive(`${etioPfx}_cust_etio`)) {
+            let val = String(ctx.text(`${etioPfx}_cust_etio`) || '').replace(/\u200B/g, '').trim();
+            if (val && val !== 'vlastní') {
+                let level = '+';
+                let base = val;
+                if (val.endsWith('!')) { level = '!'; base = val.slice(0, -1).trim(); }
+                else if (val.endsWith('+')) { level = '+'; base = val.slice(0, -1).trim(); }
+                else if (val.endsWith('?')) { level = '?'; base = val.slice(0, -1).trim(); }
+                certainties[level].push(base);
             }
         }
-        return etioStr;
+
+        if (hasQ) return qText;
+
+        let highestLevel = null;
+        if (certainties['!'].length > 0) highestLevel = '!';
+        else if (certainties['+'].length > 0) highestLevel = '+';
+        else if (certainties['?'].length > 0) highestLevel = '?';
+        if (!highestLevel) return '';
+
+        let highestItems = certainties[highestLevel];
+        let highestStr = "";
+
+        if (highestItems.length > 1) {
+            highestStr = "v dif.dg. " + highestItems.join(', ');
+        } else {
+            let item = highestItems[0];
+            if (highestLevel === '!') {
+                if (item === 'benigní') highestStr = 'benigního charakteru';
+                else if (item === 'maligní') highestStr = 'maligního charakteru';
+                else if (item === 'tumor') highestStr = 'charakteru tumoru';
+                else if (item === 'meta') highestStr = 'charakteru metastázy';
+                else if (item === 'zánět') highestStr = 'zánětlivé etiologie';
+                else if (twoPad) highestStr = 'v.s. ' + (GRAMMAR_DICT.etiologie2pad?.[item.toLowerCase()] || item);
+            } else if (highestLevel === '+') {
+                highestStr = 'v.s. ' + item;
+            } else if (highestLevel === '?') {
+                highestStr = 'susp. ' + item;
+            }
+        }
+
+        let otherItems = [];
+        if (highestLevel === '!') {
+            otherItems = [...certainties['+'], ...certainties['?']];
+        } else if (highestLevel === '+') {
+            otherItems = [...certainties['?']];
+        }
+
+        return otherItems.length > 0 ? highestStr + ", v dif.dg. " + otherItems.join(', ') : highestStr;
     },
 
-    parseDetails: (ctx, examId, regionId, pfx, metPfx, etioPfx, isLN) => {
-        const capitalize = (s) => s && s[0].toUpperCase() + s.slice(1);
-        
-        const pocetIds = [`${pfx}_c_soli`, `${pfx}_c_dve`, `${pfx}_c_vice`, `${pfx}_c_mnoho`];
-        let pocetRawId = pocetIds.find(id => ctx.isActive(id));
-        let pocetCfg = pocetRawId ? resolveButtonConfig(examId, regionId, pocetRawId) : null;
-        let pocetText = pocetCfg?.text || 'solitární';
+    parseLesionEtiology: (ctx, etioPfx) => LESIONS_DEFINITION.parseEtiology(ctx, etioPfx, {
+        custom: true, twoPad: true, qText: "etiologii nyní nelze spolehlivě určit"
+    }),
+    parseLymphNodeEtiology: (ctx, etioPfx) => LESIONS_DEFINITION.parseEtiology(ctx, etioPfx, {
+        qText: "nelze etiologii spolehlivě určit"
+    }),
 
-        const druhIds = isLN ? [`${pfx}_k_uzl`, `${pfx}_k_pak`, `${pfx}_k_cust`] : [`${pfx}_k_les`, `${pfx}_k_cys`, `${pfx}_k_exp`, `${pfx}_k_inf`, `${pfx}_k_def`, `${pfx}_k_kol`, `${pfx}_k_cust`];
-        let druhRawId = druhIds.find(id => ctx.isActive(id));
-        let defaultDruh = isLN ? 'uzlina' : 'ložisko';
+    /* Počet + druh + skloňovaný základ věty („Solitární ložisko“, „Dvě kolekce“).
+       druhIds      – koncovky id tlačítek druhu (např. ['_k_les', '_k_cust'])
+       defaultDruh  – druh, když není nic vybráno
+       rodFallback  – rod pro druh, který není ve slovníku */
+    parseBase: (ctx, examId, regionId, pfx, { druhIds, defaultDruh = 'ložisko', rodFallback = 'n' }) => {
+        const pocetIds = [`${pfx}_c_soli`, `${pfx}_c_dve`, `${pfx}_c_vice`, `${pfx}_c_mnoho`];
+        const pocetRawId = pocetIds.find(id => ctx.isActive(id));
+        const pocetText = (pocetRawId ? resolveButtonConfig(examId, regionId, pocetRawId)?.text : null) || 'solitární';
+
+        const druhRawId = druhIds.map(s => `${pfx}${s}`).find(id => ctx.isActive(id));
         let druhRaw = defaultDruh;
         if (druhRawId === `${pfx}_k_cust`) {
             druhRaw = Store.customTexts[`${examId}_${regionId}_${pfx}_k_cust`] || defaultDruh;
@@ -352,12 +234,23 @@ const LESIONS_DEFINITION = {
             }
         }
 
-        let druhObj = GRAMMAR_DICT.druh[druhRaw] || { rod: isLN ? 'f' : 'n', plural: druhRaw };
-        let isPlural = pocetText !== 'solitární';
-        let pocetSlovo = GRAMMAR_DICT.pocet[pocetText]?.[druhObj.rod] || pocetText;
-        let druhSlovo = isPlural ? druhObj.plural : druhRaw;
-        
-        let baseText = pocetText === 'solitární' ? capitalize(druhSlovo) : capitalize(`${pocetSlovo} ${druhSlovo}`.trim());
+        const druhObj = GRAMMAR_DICT.druh[druhRaw] || { rod: rodFallback, plural: druhRaw };
+        const isPlural = pocetText !== 'solitární';
+        const pocetSlovo = GRAMMAR_DICT.pocet[pocetText]?.[druhObj.rod] || pocetText;
+        const druhSlovo = isPlural ? druhObj.plural : druhRaw;
+        const baseText = pocetText === 'solitární' ? capitalize(druhSlovo) : capitalize(`${pocetSlovo} ${druhSlovo}`.trim());
+        return { pocetRawId, druhRawId, pocetText, druhObj, isPlural, pocetSlovo, druhSlovo, baseText };
+    },
+
+    parseDetails: (ctx, examId, regionId, pfx, metPfx, etioPfx, isLN) => {
+        const druhIds = isLN
+            ? ['_k_uzl', '_k_pak', '_k_cust']
+            : ['_k_les', '_k_cys', '_k_exp', '_k_inf', '_k_def', '_k_kol', '_k_cust'];
+        const { pocetRawId, druhRawId, pocetText, baseText } = LESIONS_DEFINITION.parseBase(ctx, examId, regionId, pfx, {
+            druhIds,
+            defaultDruh: isLN ? 'uzlina' : 'ložisko',
+            rodFallback: isLN ? 'f' : 'n'
+        });
 
         let vzhledy = [];
         
@@ -464,5 +357,33 @@ const LESIONS_DEFINITION = {
         let hasAny = !!(pocetRawId || druhRawId || ctx.field(`${metPfx}_size`) || ctx.field(`${metPfx}_size_old`) || ctx.field(`${metPfx}_suv`) || ctx.isActive(`${metPfx}_cnt_old`) || vzhledy.length > 0 || etioStr !== "");
 
         return { hasAny, baseText, vzhledText, metrikyStr, doplneniStr, etioStr, actStr, dynStr };
+    },
+
+    /* Jeden nález + jeden závěr pro instanci léze / uzliny / hematomu.
+       Region dodá jen lokalizace, případně text hned za nimi:
+         lokace – pole hotových lokalizací (spojí se přes formatCzechList)
+         vztah  – text za lokalizací (např. ", intramuskulárně, podél fascie")
+         isLN   – u uzlin se doplnění věty řadí před lokalizaci
+       Vrací { report, conc } bloky k vložení, nebo null když není co vypsat. */
+    frames: (ctx, { examId, regionId, p, tableId, isLN = false, lokace = [], vztah = '' }) => {
+        const d = LESIONS_DEFINITION.parseDetails(ctx, examId, regionId, p, `${p}_met`, `${p}_e`, isLN);
+        if (!d.hasAny && lokace.length === 0 && !vztah) return null;
+
+        const lokText = lokace.length > 0 ? formatCzechList(lokace) : '';
+        const mid = `${lokText}${vztah}`;
+        /* U lézí jde lokalizace hned za základ a doplnění až za ní,
+           u uzlin je to obráceně (doplnění, pak lokalizace). */
+        const head = isLN ? `${d.baseText}${d.doplneniStr} ` : `${d.baseText} ${mid}`;
+        const tail = isLN ? mid : d.doplneniStr;
+
+        const report = `${head}${tail}${d.vzhledText}${d.metrikyStr}.`
+            .replace(/\s+/g, ' ').replace(' .', '.').trim();
+        const conc = `${head}${tail}${d.actStr}${d.dynStr}${d.etioStr ? `: ${d.etioStr}.` : '.'}`
+            .replace(/\s+/g, ' ').replace(' : ', ': ').replace(' .', '.').trim();
+
+        return {
+            report: { type: 'frame', text: report, tableId },
+            conc: { type: 'frame', text: conc, tableId }
+        };
     }
 };

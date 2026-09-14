@@ -10,6 +10,52 @@
 let isDraggingSlice = false;
 let dragSliceLastY = 0;
 
+function isNormalButton(globalId) {
+    const cfg = ButtonConfigs[globalId];
+    return !!(cfg && cfg.type === 'standard' && cfg.states && cfg.states.includes('normal!'));
+}
+
+function isButtonOn(val, cfg) {
+    if (!cfg) return !!val;
+    if (cfg.type === 'standard') {
+        if (val === true) return true;
+        return (typeof val === 'number' ? val : 0) > 0;
+    }
+    return val === true || val === 'custom';
+}
+
+function buttonOffValue(cfg) {
+    return cfg?.type === 'standard' ? 0 : false;
+}
+
+/* Vzájemné vyloučení normal ↔ patologie uvnitř jednoho orgánu (.tbl-main). */
+function applyOrganNormalMutex(states, globalId, nextVal) {
+    const cfg = ButtonConfigs[globalId];
+    if (!cfg || !isButtonOn(nextVal, cfg)) return states;
+
+    const btn = document.querySelector(`button[data-id="${globalId}"]`);
+    const organ = btn?.closest('table.tbl-main');
+    if (!organ) return states;
+
+    const next = { ...states };
+    if (isNormalButton(globalId)) {
+        organ.querySelectorAll('button[data-id]').forEach(b => {
+            const sid = b.dataset.id;
+            if (!sid || sid === globalId || sid.endsWith('_add_custom')) return;
+            const scfg = ButtonConfigs[sid];
+            if (!scfg || !isButtonOn(next[sid], scfg)) return;
+            next[sid] = buttonOffValue(scfg);
+        });
+    } else {
+        organ.querySelectorAll('button[data-id]').forEach(b => {
+            const sid = b.dataset.id;
+            if (!sid || !isNormalButton(sid) || !isButtonOn(next[sid], ButtonConfigs[sid])) return;
+            next[sid] = 0;
+        });
+    }
+    return next;
+}
+
 function getExclusiveStates(globalId, nextVal) {
     const btn = document.querySelector(`button[data-id="${globalId}"]`);
     if (!btn) return { block: false, states: null };
@@ -31,6 +77,15 @@ function getExclusiveStates(globalId, nextVal) {
     return { block: false, states };
 }
 
+function commitButtonState(globalId, next) {
+    const excl = getExclusiveStates(globalId, next);
+    if (excl.block) return false;
+    let states = excl.states || Store.buttonStates;
+    states = applyOrganNormalMutex(states, globalId, next);
+    Store.buttonStates = { ...states, [globalId]: next };
+    return true;
+}
+
 function cycleState(globalId, dir = 1) {
     const cfg = ButtonConfigs[globalId];
     if (!cfg || cfg.type !== 'standard') return;
@@ -39,10 +94,7 @@ function cycleState(globalId, dir = 1) {
     const next = Math.max(0, Math.min(cfg.states.length - 1, cur + dir));
     if (next === cur) return;
 
-    const excl = getExclusiveStates(globalId, next);
-    if (excl.block) return;
-    
-    Store.buttonStates = { ...(excl.states || Store.buttonStates), [globalId]: next };
+    if (!commitButtonState(globalId, next)) return;
     
     const nextStateStr = cfg.states[next];
     if (nextStateStr === 'custom') {
@@ -80,10 +132,7 @@ function toggleBasic(globalId, force = null) {
     
     if (next === cur) return;
 
-    const excl = getExclusiveStates(globalId, next);
-    if (excl.block) return;
-
-    Store.buttonStates = { ...(excl.states || Store.buttonStates), [globalId]: next };
+    if (!commitButtonState(globalId, next)) return;
     if (next === 'custom') focusInput(globalId);
 }
 
@@ -92,10 +141,7 @@ function toggleBasicCustom(globalId, activate = null) {
     const next = activate !== null ? activate : !cur;
     if (next === cur) return;
 
-    const excl = getExclusiveStates(globalId, next);
-    if (excl.block) return;
-
-    Store.buttonStates = { ...(excl.states || Store.buttonStates), [globalId]: next };
+    if (!commitButtonState(globalId, next)) return;
     if (next) focusInput(globalId);
 }
 
@@ -138,89 +184,16 @@ function createNewInstance(baseTableId) {
 
 const ClipboardService = {
     formatReport: function(includeIndicationLabel = false) {
-        const container = document.getElementById('report-container');
-        if (!container) return "";
-        let lines = [];
-        const indication = (Store.indication || "").trim();
-
-        if (indication && includeIndicationLabel) { 
-            lines.push(`Indikace: ${indication}`); 
-            lines.push(""); 
-        }
-
-        if (Store.pastDate) {
-            const [y, m, d] = Store.pastDate.split('-');
-            lines.push(`Srovnáno s vyšetřením z ${d}.${m}.${y}:`);
-        }
-
-        let currentLine = "";
-        let currentLayout = "inline";
-        const hasMultipleHeadings = Array.from(container.children).filter(el => el.classList.contains('report-heading')).length > 1;
-
-        Array.from(container.children).forEach(el => {
-            const text = ((el.dataset.label || '') + el.textContent).trim();
-            if (el.classList.contains('report-exam-heading')) {
-                if (currentLine) {
-                    lines.push(currentLine.trim());
-                    currentLine = "";
-                }
-                if (lines.length > 0 && lines[lines.length - 1] !== "") {
-                    lines.push("");
-                }
-            } else if (el.classList.contains('report-heading')) {
-                if (currentLine) { lines.push(currentLine.trim()); currentLine = ""; }
-                if (text === 'OSTATNÍ:') {
-                    currentLayout = 'block';
-                    return; 
-                }
-
-                const regionId = el.dataset.region;
-                currentLayout = (regionId && REGIONS[regionId] && REGIONS[regionId].reportLayout) ? REGIONS[regionId].reportLayout : 'inline';
-                if (hasMultipleHeadings) {
-                    currentLine = text.toUpperCase().replace(/:$/, '') + ":";
-                } else {
-                    currentLine = "";
-                }
-            } else if (el.classList.contains('report-frame') || el.classList.contains('report-frame-hidden')) {
-                const cleanText = text.replace(/^- /, '');
-                if (currentLayout === 'block' || el.classList.contains('report-frame-hidden') || text.startsWith('Neložisková')) {
-                    if (currentLine) { lines.push(currentLine.trim()); currentLine = ""; }
-                    lines.push(cleanText);
-                } else {
-                    currentLine = currentLine === "" ? cleanText : currentLine + " " + cleanText;
-                }
-            }
-        });
-        if (currentLine) lines.push(currentLine.trim());
-        return lines.join('\n').replace(/  +/g, ' ').trim();
+        return ReportDoc.serializeFindings(UI.getReportDoc(), { includeIndicationLabel });
     },
 
-    formatConclusion: function(includeIncidentalLabel = true) {
-        const container = document.getElementById('conclusion-container');
-        if (!container) return "";
-        let mainParts = [], incidentalParts = [], state = "none";
-        const seen = new Set();
+    formatConclusion: function(incidentalLabel = 'Vedlejší nálezy:') {
+        return ReportDoc.serializeImpression(UI.getReportDoc(), { incidentalLabel });
+    },
 
-        if (Store.pastDate) {
-            const [y, m, d] = Store.pastDate.split('-');
-            mainParts.push(`Oproti vyšetření z ${d}.${m}.${y}:`);
-        }
-
-        Array.from(container.children).forEach(el => {
-            const txt = el.textContent.trim();
-            if (txt === "Závěr:") { state = "main"; return; }
-            if (txt === "Vedlejší nálezy:") { state = "incidental"; return; }
-            if ((state === "main" || state === "incidental") && el.classList.contains('report-frame')) {
-                if (seen.has(txt)) return;
-                seen.add(txt);
-                if (state === "main") mainParts.push(txt);
-                else incidentalParts.push(txt);
-            }
-        });
-
-        let out = mainParts.join('\n');
-        if (incidentalParts.length > 0) out += "\n\n" + (includeIncidentalLabel ? "Vedlejší nálezy: " : "") + incidentalParts.join(' ');
-        return out.trim();
+    /* Výstup 3: celá zpráva (titulek + nález + závěr) dle REPORT_PROFILES. */
+    formatAll: function() {
+        return ReportDoc.compose(UI.getReportDoc());
     },
 
     copyToClipboard: function(text, targetEl, originalText) {
@@ -240,7 +213,7 @@ function getLlmHelpContext() {
     const isFemale = gender === '♀';
     const isMale = gender === '♂';
     return {
-        conclusion: ClipboardService.formatConclusion(true) || '',
+        conclusion: ClipboardService.formatConclusion() || '',
         age: (Store.patientAge || '').trim(),
         gender,
         patientText: isFemale ? 'Pacientka' : (isMale ? 'Pacient' : 'Pacient'),
@@ -263,42 +236,8 @@ function getLlmExamTitles() {
     }).filter(Boolean);
 }
 
-function validateTextForSingleWords(text) {
-    let warnings = [];
-    let currentSection = "Neznámá sekce";
-    
-    const lines = text.split('\n');
-    for (let line of lines) {
-        line = line.trim();
-        if (!line) continue;
-        
-        // Detekce hlavičky na začátku řádku (např. "HRUDNÍK:" nebo "HRUDNÍK A BŘICHO:")
-        const headerMatch = line.match(/^([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]+):/);
-        if (headerMatch) {
-            currentSection = headerMatch[1].trim();
-        } else if (line === line.toUpperCase() && line.length > 2) {
-            // Alternativa: Celý řádek je velkými písmeny (samostatná hlavička bez dvojtečky)
-            currentSection = line.trim();
-        }
-        
-        // Rozdělení textu na věty podle ukončovací interpunkce
-        const sentences = line.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 0);
-        
-        for (let sentence of sentences) {
-            // Oříznutí hlavičky sekce, aby první věta (např. "HRUDNÍK: Ložisko") nezklamala validaci
-            let cleanSentence = sentence.replace(/^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]+:\s*/, '').trim();
-            
-            // Nová podmínka: 1 velké písmeno a alespoň 3 další písmena (celkem min. 4 znaky)
-            if (/^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽa-záčďéěíňóřšťúůýž]{3,}$/.test(cleanSentence)) {
-                warnings.push({ word: cleanSentence + '.', section: currentSection });
-            }
-        }
-    }
-    return warnings;
-}
-
 function executeCopyFlow(textToCopy, target, isAll) {
-    let warningMessages = validateTextForSingleWords(textToCopy).map(w => `Pozor, překontroluj ${w.word} v sekci ${w.section}, pravděpodobně nedostatečně určeno.`);
+    let warningMessages = Corrections.validate(textToCopy).map(w => w.message);
     
     if (Store.pastDate) {
         const pastDate = new Date(Store.pastDate);
@@ -425,33 +364,7 @@ const ActionHandlers = {
         executeCopyFlow(textToCopy, target, false);
     },
     'copy-all': () => {
-        const getExamTitle = (id) => {
-            const exam = getExamById(id);
-            if (!exam) return "";
-            const sideConfig = APP_MANIFEST.examsWithSides[id];
-            if (sideConfig) {
-                const side = Store.fields[sideConfig.field];
-                if (side === 'R') return `MR pravého ${sideConfig.label}`;
-                if (side === 'L') return `MR levého ${sideConfig.label}`;
-            }
-            return exam.title;
-        };
-
-        let title = "";
-        if (Store.exams.size >= 2) {
-            title = Array.from(Store.exams).map(getExamTitle).filter(Boolean).join(', ');
-        } else {
-            title = getExamTitle(Store.activeTab) || "Lékařský nález";
-        }
-        
-        const report = ClipboardService.formatReport(true);
-        const conclusion = ClipboardService.formatConclusion(true);
-        const incidentalMatch = conclusion.match(/\n\nVedlejší nálezy: (.*)/s);
-        const mainConc = conclusion.replace(/\n\nVedlejší nálezy: .*/s, '');
-        const incidental = incidentalMatch ? incidentalMatch[0].trim() : '';
-
-        const combined = `${title}\n\n${report}\n\nZávěr:\n${mainConc}${incidental ? '\n\n' + incidental : ''}`.trim().replace(/\n{3,}/g, '\n\n');
-        executeCopyFlow(combined, null, true);
+        executeCopyFlow(ClipboardService.formatAll(), null, true);
     },
     'preview-close': () => {
         document.getElementById('preview-modal').style.display = 'none';

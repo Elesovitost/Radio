@@ -143,8 +143,6 @@ const RegionAnkle = {
         let reportOut = [{ type: 'heading', text: 'Hlezno:', action: 'open-region', regionId: 'ankle' }];
         let concMain = [];
         let concInc = [];
-        const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
-
         // Pomocné funkce pro parsování textů
         const parseTendon = (id, name) => {
             const val = ctx.text(id);
@@ -180,7 +178,7 @@ const RegionAnkle = {
             let parts = [];
             if (jtFluid && jtFluid !== '0') {
                 parts.push(`${jtFluid} zmnožení tekutiny v hlezenním kloubu`);
-                if (jtFluid !== 'mírná') concInc.push({ type: 'frame', text: `${cap(jtFluid)} efuze hlezenního kloubu.`, tableId: 'ankle_joint_main' });
+                if (jtFluid !== 'mírná') concInc.push({ type: 'frame', text: `${capitalize(jtFluid)} efuze hlezenního kloubu.`, tableId: 'ankle_joint_main' });
             }
             if (jtSynov && jtSynov !== '0') {
                 parts.push(jtSynov === '+' ? 'mírná hypertrofie synovie' : 'výrazná synovitida');
@@ -192,9 +190,9 @@ const RegionAnkle = {
             }
             if (jtDesc) parts.push(jtDesc);
             
-            reportOut.push({ type: 'frame', text: 'Kloubní dutina: ' + cap(parts.join(', ')) + '.', tableId: 'ankle_joint_main' });
+            reportOut.push({ type: 'frame', text: 'Kloubní dutina: ' + capitalize(parts.join(', ')) + '.', tableId: 'ankle_joint_main' });
         }
-        if (jtConc) concMain.push({ type: 'frame', text: cap(jtConc) + (jtConc.endsWith('.') ? '' : '.'), tableId: 'ankle_joint_main' });
+        if (jtConc) concMain.push({ type: 'frame', text: capitalize(jtConc) + (jtConc.endsWith('.') ? '' : '.'), tableId: 'ankle_joint_main' });
 
 
         // --- 2. SKELET ---
@@ -229,7 +227,7 @@ const RegionAnkle = {
                 let extStr = fExt ? ` ${fExt.trim()}` : '';
                 bnParts.push(`na ${boneNameGenitive} patrná ${repF}${extStr}`);
                 
-                let concBone = cap(boneNameGenitive);
+                let concBone = capitalize(boneNameGenitive);
                 if (boneNameGenitive === 'talu') concBone = 'talu';
                 else if (boneNameGenitive === 'kalkaneu') concBone = 'kalkaneu';
                 else if (boneNameGenitive === 'naviculare') concBone = 'naviculare';
@@ -243,7 +241,7 @@ const RegionAnkle = {
             if (e && e !== '0') {
                 let eType = e === '+' ? 'subchondrální' : 'difuzní';
                 bnParts.push(`${eType} edém kostní dřeně na ${boneNameGenitive}`);
-                concInc.push({ type: 'frame', text: `${cap(eType)} edém dřeně ${boneNameGenitive}.`, tableId: 'ankle_bones_main' });
+                concInc.push({ type: 'frame', text: `${capitalize(eType)} edém dřeně ${boneNameGenitive}.`, tableId: 'ankle_bones_main' });
             }
         };
 
@@ -285,9 +283,9 @@ const RegionAnkle = {
         if (bnParts.length === 0) {
             reportOut.push({ type: 'frame', text: 'Skelet: Kosti bez výrazných signálových patologií.', tableId: 'ankle_bones_main', dimmed: true });
         } else {
-            reportOut.push({ type: 'frame', text: 'Skelet: ' + cap(bnParts.join('; ')) + '.', tableId: 'ankle_bones_main' });
+            reportOut.push({ type: 'frame', text: 'Skelet: ' + capitalize(bnParts.join('; ')) + '.', tableId: 'ankle_bones_main' });
         }
-        if (bnConc) concMain.push({ type: 'frame', text: cap(bnConc) + (bnConc.endsWith('.') ? '' : '.'), tableId: 'ankle_bones_main' });
+        if (bnConc) concMain.push({ type: 'frame', text: capitalize(bnConc) + (bnConc.endsWith('.') ? '' : '.'), tableId: 'ankle_bones_main' });
 
 
         // --- 3. MEDIÁLNÍ KOMPARTMENT (VAZY A ŠLACHY) ---
@@ -308,10 +306,10 @@ const RegionAnkle = {
         if (medParts.length === 0) {
             reportOut.push({ type: 'frame', text: 'Mediální kompartment: Ligamentum deltoideum je intaktní. Šlachy flexorů bez výraznější patologie.', tableId: 'ankle_med_lig_main', dimmed: true });
         } else {
-            reportOut.push({ type: 'frame', text: 'Mediální kompartment: ' + cap(medParts.join('; ')) + '.', tableId: 'ankle_med_lig_main' });
+            reportOut.push({ type: 'frame', text: 'Mediální kompartment: ' + capitalize(medParts.join('; ')) + '.', tableId: 'ankle_med_lig_main' });
         }
-        if (mlConc) concMain.push({ type: 'frame', text: cap(mlConc) + (mlConc.endsWith('.') ? '' : '.'), tableId: 'ankle_med_lig_main' });
-        if (mtConc) concMain.push({ type: 'frame', text: cap(mtConc) + (mtConc.endsWith('.') ? '' : '.'), tableId: 'ankle_med_tendon_main' });
+        if (mlConc) concMain.push({ type: 'frame', text: capitalize(mlConc) + (mlConc.endsWith('.') ? '' : '.'), tableId: 'ankle_med_lig_main' });
+        if (mtConc) concMain.push({ type: 'frame', text: capitalize(mtConc) + (mtConc.endsWith('.') ? '' : '.'), tableId: 'ankle_med_tendon_main' });
 
 
         // --- 4. LATERÁLNÍ KOMPARTMENT (VAZY A ŠLACHY) ---
@@ -339,10 +337,10 @@ const RegionAnkle = {
         if (latParts.length === 0) {
             reportOut.push({ type: 'frame', text: 'Laterální kompartment: LFTA, LFC, LFTP i syndesmóza jsou intaktní. Šlachy peroneů bez výraznější patologie.', tableId: 'ankle_lat_lig_main', dimmed: true });
         } else {
-            reportOut.push({ type: 'frame', text: 'Laterální kompartment: ' + cap(latParts.join('; ')) + '.', tableId: 'ankle_lat_lig_main' });
+            reportOut.push({ type: 'frame', text: 'Laterální kompartment: ' + capitalize(latParts.join('; ')) + '.', tableId: 'ankle_lat_lig_main' });
         }
-        if (llConc) concMain.push({ type: 'frame', text: cap(llConc) + (llConc.endsWith('.') ? '' : '.'), tableId: 'ankle_lat_lig_main' });
-        if (ltConc) concMain.push({ type: 'frame', text: cap(ltConc) + (ltConc.endsWith('.') ? '' : '.'), tableId: 'ankle_lat_tendon_main' });
+        if (llConc) concMain.push({ type: 'frame', text: capitalize(llConc) + (llConc.endsWith('.') ? '' : '.'), tableId: 'ankle_lat_lig_main' });
+        if (ltConc) concMain.push({ type: 'frame', text: capitalize(ltConc) + (ltConc.endsWith('.') ? '' : '.'), tableId: 'ankle_lat_tendon_main' });
 
 
         // --- 5. PŘEDNÍ KOMPARTMENT (ŠLACHY) ---
@@ -359,9 +357,9 @@ const RegionAnkle = {
         if (antParts.length === 0) {
             reportOut.push({ type: 'frame', text: 'Přední kompartment: Šlachy extenzorů bez výraznější patologie.', tableId: 'ankle_ant_tendon_main', dimmed: true });
         } else {
-            reportOut.push({ type: 'frame', text: 'Přední kompartment: ' + cap(antParts.join('; ')) + '.', tableId: 'ankle_ant_tendon_main' });
+            reportOut.push({ type: 'frame', text: 'Přední kompartment: ' + capitalize(antParts.join('; ')) + '.', tableId: 'ankle_ant_tendon_main' });
         }
-        if (atConc) concMain.push({ type: 'frame', text: cap(atConc) + (atConc.endsWith('.') ? '' : '.'), tableId: 'ankle_ant_tendon_main' });
+        if (atConc) concMain.push({ type: 'frame', text: capitalize(atConc) + (atConc.endsWith('.') ? '' : '.'), tableId: 'ankle_ant_tendon_main' });
 
 
         // --- 6. ACHILLOVA ŠLACHA ---
@@ -393,9 +391,9 @@ const RegionAnkle = {
         if (achParts.length === 0) {
             reportOut.push({ type: 'frame', text: 'Achillova šlacha přim. vzhledu a signálu.', tableId: 'ankle_achilles_main', dimmed: true });
         } else {
-            reportOut.push({ type: 'frame', text: 'Achillova šlacha: ' + cap(achParts.join('; ')) + '.', tableId: 'ankle_achilles_main' });
+            reportOut.push({ type: 'frame', text: 'Achillova šlacha: ' + capitalize(achParts.join('; ')) + '.', tableId: 'ankle_achilles_main' });
         }
-        if (achConc) concMain.push({ type: 'frame', text: cap(achConc) + (achConc.endsWith('.') ? '' : '.'), tableId: 'ankle_achilles_main' });
+        if (achConc) concMain.push({ type: 'frame', text: capitalize(achConc) + (achConc.endsWith('.') ? '' : '.'), tableId: 'ankle_achilles_main' });
 
 
         // --- 7. ZADNÍ KOMPARTMENT - OSTATNÍ ---
@@ -424,9 +422,9 @@ const RegionAnkle = {
         if (postParts.length === 0) {
             reportOut.push({ type: 'frame', text: 'Ostatní struktury zadního kompartmentu bez patologických změn.', tableId: 'ankle_post_other_main', dimmed: true });
         } else {
-            reportOut.push({ type: 'frame', text: 'Zadní kompartment - ostatní: ' + cap(postParts.join('; ')) + '.', tableId: 'ankle_post_other_main' });
+            reportOut.push({ type: 'frame', text: 'Zadní kompartment - ostatní: ' + capitalize(postParts.join('; ')) + '.', tableId: 'ankle_post_other_main' });
         }
-        if (ptConc) concMain.push({ type: 'frame', text: cap(ptConc) + (ptConc.endsWith('.') ? '' : '.'), tableId: 'ankle_post_other_main' });
+        if (ptConc) concMain.push({ type: 'frame', text: capitalize(ptConc) + (ptConc.endsWith('.') ? '' : '.'), tableId: 'ankle_post_other_main' });
 
         if (concMain.length === 0) {
             concMain.push({ type: 'frame', text: 'Přiměřený nález, bez signifikantní patologie.' });

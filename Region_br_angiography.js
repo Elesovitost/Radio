@@ -43,8 +43,6 @@ const RegionBrAngiography = {
         let varRepList = [];
         let varConcList = [];
         
-        const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
-
         let vesPat = ctx.text('angio_ves_pat');
         if (vesPat && vesPat !== '0') {
             let actVes = [];
@@ -84,9 +82,9 @@ const RegionBrAngiography = {
                 vesRep.push(fullRep);
                 
                 if (['aneurysma', 'stenóza', 'uzávěr'].includes(vesPat)) {
-                    concMain.push({ type: 'frame', text: `${cap(repText)}.`, tableId: 'angio_vessels_main' });
+                    concMain.push({ type: 'frame', text: `${capitalize(repText)}.`, tableId: 'angio_vessels_main' });
                 } else {
-                    concInc.push({ type: 'frame', text: `${cap(repText)}.`, tableId: 'angio_vessels_main' });
+                    concInc.push({ type: 'frame', text: `${capitalize(repText)}.`, tableId: 'angio_vessels_main' });
                 }
             }
         }
@@ -97,7 +95,7 @@ const RegionBrAngiography = {
         }
 
         if (vesRep.length > 0) {
-            reportOut.push({ type: 'frame', text: cap(formatCzechList(vesRep)) + '. Jinak je konfigurace mozkových tepen obvyklá.', tableId: 'angio_vessels_main' });
+            reportOut.push({ type: 'frame', text: capitalize(formatCzechList(vesRep)) + '. Jinak je konfigurace mozkových tepen obvyklá.', tableId: 'angio_vessels_main' });
         } else {
             reportOut.push({ type: 'frame', text: 'Přívodné mozkové tepny mají normální šířku i průběh, Willisův okruh se zobrazuje obvykle, cévy přiměřené šíře do periferie, bez patrných stenóz či aneurysmat.', tableId: 'angio_vessels_main', dimmed: true });
         }

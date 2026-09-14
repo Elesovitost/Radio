@@ -7,25 +7,23 @@
 /* ═══════════════════════════════════════════════
    TABLE FACTORIES
 ═══════════════════════════════════════════════ */
+/* Zobrazovaný text stavu tlačítka – bez [field:...] anotace. */
+function _stateLabel(state) {
+    return String(state).replace(/\s*\[field:[^\]]+\]/, '');
+}
+
+/* Nejdelší popisek tlačítek v tabulce (určuje společnou šířku). */
 function _tableLongest(rows, regionId) {
     const texts = [];
-    for (const row of rows) {
-        for (const cell of (Array.isArray(row) ? row : [row])) {
-            for (const item of (Array.isArray(cell) ? cell : [cell])) {
-                if (item?.btn) {
-                    const cfg = (REGIONS[regionId].buttons || {})[item.btn] || {};
-                    const type = item.type || cfg.type || 'standard';
-                    
-                    if (type.startsWith('basic')) {
-                        texts.push(item.text || cfg.text || '');
-                    } else {
-                        const states = item.states || cfg.states || [];
-                        texts.push(...states.map(s => s.replace(/\s*\[field:[^\]]+\]/, '')));
-                    }
-                }
-            }
-        }
-    }
+    const walk = (item) => {
+        if (Array.isArray(item)) return item.forEach(walk);
+        if (!item?.btn) return;
+        const cfg = (REGIONS[regionId].buttons || {})[item.btn] || {};
+        const type = item.type || cfg.type || 'standard';
+        if (type.startsWith('basic')) texts.push(item.text || cfg.text || '');
+        else texts.push(...(item.states || cfg.states || []).map(_stateLabel));
+    };
+    walk(rows);
     return texts.reduce((a, b) => (a.length > b.length ? a : b), '');
 }
 
@@ -33,6 +31,37 @@ function _renderCell(td, cell, longestObj, regionId) {
     const items = Array.isArray(cell) ? cell : [cell];
     if (items.length > 1) td.appendChild(el('div', { className: 'row' }, items.map(i => _cellItem(i, longestObj, regionId))));
     else                  td.appendChild(_cellItem(items[0], longestObj, regionId));
+}
+
+/* Naplní tbody řádky buněk; labelFirst = první buňka dostane třídu popisku. */
+function _fillRows(tbody, rows, longest, regionId, labelFirst = false) {
+    for (const row of rows) {
+        const tr = el('tr');
+        row.forEach((cell, ci) => {
+            const td = el('td', { className: labelFirst && ci === 0 ? 'cell-label' : '' });
+            _renderCell(td, cell, longest, regionId);
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    }
+}
+
+/* Tabulka mřížky: rows = pole řádků, každý řádek pole buněk.
+   head = popisky sloupců (nebo null; prázdný popisek = úzký středový sloupec),
+   longest = null → každé tlačítko si drží vlastní šířku. */
+function _gridTable(id, className, rows, regionId, { head = null, longest } = {}) {
+    const table = el('table', { id, className });
+    if (head) {
+        table.appendChild(el('thead', {}, [el('tr', {}, head.map(h => {
+            const th = el('th', { textContent: h });
+            if (!h) th.style.minWidth = '30px';
+            return th;
+        }))]));
+    }
+    const tbody = el('tbody');
+    _fillRows(tbody, rows, longest === undefined ? _tableLongest(rows, regionId) : longest, regionId);
+    table.appendChild(tbody);
+    return table;
 }
 
 function _cellItem(item, longestObj, regionId) {
@@ -64,10 +93,13 @@ function _cellItem(item, longestObj, regionId) {
     return document.createTextNode('');
 }
 
+/* Řádek s hlavičkou tabulky (společný pro LesionMain i TableMain). */
+function _headRow(tbody, headAttrs, headNode) {
+    tbody.appendChild(el('tr', {}, [el('td', headAttrs, [headNode])]));
+}
+
 function LesionMain(id, title, rowsContent) {
-    const table = el('table', { id, className: 'tbl-lesion' });
     const tbody = el('tbody');
-    
     const headContent = [el('span', { textContent: title })];
     if (id.includes('__')) {
         headContent.push(el('button', {
@@ -79,146 +111,62 @@ function LesionMain(id, title, rowsContent) {
             'data-id': id
         }));
     }
+    _headRow(tbody, { className: 'tbl-lesion-head' },
+        el('div', { style: 'display: flex; align-items: center;' }, headContent));
 
-    const trHead = el('tr', {}, [
-        el('td', { className: 'tbl-lesion-head' }, [
-            el('div', { style: 'display: flex; align-items: center;' }, headContent)
-        ])
-    ]);
-    tbody.appendChild(trHead);
-    const contentArr = (Array.isArray(rowsContent) ? rowsContent : [rowsContent]).filter(Boolean);
-    contentArr.forEach(item => {
-        if (item instanceof Node) {
-            const trBody = el('tr', {}, [
-                el('td', { className: 'tbl-lesion-body' }, [
-                    el('div', { className: 'tbl-lesion-container' }, [item])
-                ])
-            ]);
-            tbody.appendChild(trBody);
-        }
-    });
-
-    table.appendChild(tbody);
-    return table;
+    for (const item of (Array.isArray(rowsContent) ? rowsContent : [rowsContent]).filter(Boolean)) {
+        if (!(item instanceof Node)) continue;
+        tbody.appendChild(el('tr', {}, [
+            el('td', { className: 'tbl-lesion-body' }, [el('div', { className: 'tbl-lesion-container' }, [item])])
+        ]));
+    }
+    return el('table', { id, className: 'tbl-lesion' }, [tbody]);
 }
 
 function TableMain(id, title, contents, opts = {}) {
     const collapsible = !!opts.collapsed;
-    const table = el('table', { id, className: `tbl-main${collapsible ? ' tbl-main-collapsed' : ''}` });
-    const tbody = el('tbody');
     const headAttrs = { className: 'tbl-main-head' };
-    let headContent;
+    let headNode = title;
     if (collapsible) {
         headAttrs['data-action'] = 'toggle-table-collapse';
-        headContent = el('div', { className: 'tbl-main-head-inner' }, [
+        headNode = el('div', { className: 'tbl-main-head-inner' }, [
             el('span', { className: 'tbl-main-chevron', textContent: '▸', 'aria-hidden': 'true' }),
             el('span', { className: 'tbl-main-title', textContent: title })
         ]);
-    } else {
-        headContent = title;
     }
-    const trHead = el('tr', {}, [el('td', headAttrs, [headContent])]);
+    const tbody = el('tbody');
+    _headRow(tbody, headAttrs, headNode);
+
     const container = el('div', { className: 'tbl-main-container' });
-    const contentArr = Array.isArray(contents) ? contents : [contents];
-    contentArr.forEach(item => { if (item instanceof Node) container.appendChild(item); });
-    const trBody = el('tr', {}, [el('td', { className: 'tbl-main-body' }, [container])]);
-    tbody.appendChild(trHead);
-    tbody.appendChild(trBody);
-    table.appendChild(tbody);
-    return table;
+    for (const item of (Array.isArray(contents) ? contents : [contents])) {
+        if (item instanceof Node) container.appendChild(item);
+    }
+    tbody.appendChild(el('tr', {}, [el('td', { className: 'tbl-main-body' }, [container])]));
+    return el('table', { id, className: `tbl-main${collapsible ? ' tbl-main-collapsed' : ''}` }, [tbody]);
 }
 
 function Table3colRL(id, rows, regionId) {
-    const longest = _tableLongest(rows, regionId);
-    const table = el('table', { id: id, className: 'tbl tbl-center' });
-    const thMid = el('th', { textContent: '' });
-    thMid.style.minWidth = '30px';
-    const thead = el('thead', {}, [el('tr', {}, [
-        el('th', { textContent: 'R' }), 
-        thMid, 
-        el('th', { textContent: 'L' })
-    ])]);
-    const tbody = el('tbody');
-    for (const [r, c, l] of rows) {
-        const tr = el('tr');
-        for (const cell of [r, c, l]) {
-            const td = el('td');
-            _renderCell(td, cell, longest, regionId);
-            tr.appendChild(td);
-        }
-        tbody.appendChild(tr);
-    }
-    table.appendChild(thead);
-    table.appendChild(tbody);
-    return table;
+    return _gridTable(id, 'tbl tbl-center', rows, regionId, { head: ['R', '', 'L'] });
 }
 
 function Table3colRCL(id, rows, regionId) {
-    const longest = _tableLongest(rows, regionId);
-    const table = el('table', { id: id, className: 'tbl tbl-center' });
-    const thead = el('thead', {}, [el('tr', {}, [el('th', { textContent: 'R' }), el('th', { textContent: 'C' }), el('th', { textContent: 'L' })])]);
-    const tbody = el('tbody');
-    for (const [r, c, l] of rows) {
-        const tr = el('tr');
-        for (const cell of [r, c, l]) {
-            const td = el('td');
-            _renderCell(td, cell, longest, regionId);
-            tr.appendChild(td);
-        }
-        tbody.appendChild(tr);
-    }
-    table.appendChild(thead);
-    table.appendChild(tbody);
-    return table;
+    return _gridTable(id, 'tbl tbl-center', rows, regionId, { head: ['R', 'C', 'L'] });
 }
 
 function Table2colNormal(id, rows, regionId) {
-    const longest = _tableLongest(rows, regionId);
-    const table = el('table', { id: id, className: 'tbl' });
-    const tbody = el('tbody');
-    for (const row of rows) {
-        const tr = el('tr');
-        for (const cell of row) {
-            const td = el('td');
-            _renderCell(td, cell, longest, regionId);
-            tr.appendChild(td);
-        }
-        tbody.appendChild(tr);
-    }
-    table.appendChild(tbody);
-    return table;
+    return _gridTable(id, 'tbl', rows, regionId);
 }
 
 function TableGrid(id, rows, regionId) {
-    const table = el('table', { id: id, className: 'tbl tbl-center' });
-    const tbody = el('tbody');
-    for (const row of rows) {
-        const tr = el('tr');
-        for (const cell of row) {
-            const td = el('td');
-            // Předáním null si každé tlačítko zachová šířku pouze dle vlastních stavů
-            _renderCell(td, cell, null, regionId);
-            tr.appendChild(td);
-        }
-        tbody.appendChild(tr);
-    }
-    table.appendChild(tbody);
-    return table;
+    // longest: null → každé tlačítko si zachová šířku pouze dle vlastních stavů
+    return _gridTable(id, 'tbl tbl-center', rows, regionId, { longest: null });
 }
 
 function Table2rowNormal(id, layoutData, regionId) {
     const longest = _tableLongest(layoutData.map(row => row.slice(1)), regionId);
-    const table = el('table', { id: id, className: 'tbl' });
+    const table = el('table', { id, className: 'tbl' });
     const tbody = el('tbody');
-    layoutData.forEach(rowData => {
-        const tr = el('tr');
-        rowData.forEach((cell, ci) => {
-            const td = el('td', { className: ci === 0 ? 'cell-label' : '' });
-            _renderCell(td, cell, longest, regionId);
-            tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-    });
+    _fillRows(tbody, layoutData, longest, regionId, true);
     table.appendChild(tbody);
     return table;
 }

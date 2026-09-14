@@ -76,7 +76,6 @@ const RegionSoft = {
         let concInc = [];
 
         const examId = ctx.examId || 'default';
-        const cap = (s) => s && s[0].toUpperCase() + s.slice(1);
         const formatList = formatCzechList;
 
         // --- LÉZE MĚKKÝCH TKÁNÍ (jen zadané; bez automatického negativního textu) ---
@@ -106,26 +105,17 @@ const RegionSoft = {
             if (ctx.isActive(`${p}_v_subk`)) vztah.push('subkutánně');
             if (ctx.isActive(`${p}_v_fasc`)) vztah.push('podél fascie');
 
-            let lokText = lokace.length > 0 ? formatList(lokace) : '';
-            let vztahStr = vztah.length > 0 ? `, ${formatList(vztah)}` : '';
-            let d = LESIONS_DEFINITION.parseDetails(ctx, examId, 'soft', p, `${p}_met`, `${p}_e`, false);
-
-            if (d.hasAny || lokace.length > 0 || vztah.length > 0) {
-                let repSentence = `${d.baseText} ${lokText}${vztahStr}${d.doplneniStr}${d.vzhledText}${d.metrikyStr}.`.replace(/\s+/g, ' ').replace(' .', '.').trim();
-                reportOut.push({ type: 'frame', text: repSentence, tableId: `soft_lesion_main__${instId}` });
-
-                let concSentence = `${d.baseText} ${lokText}${vztahStr}${d.doplneniStr}${d.actStr}${d.dynStr}`;
-                if (d.etioStr) concSentence += `: ${d.etioStr}.`;
-                else concSentence += `.`;
-
-                concSentence = concSentence.replace(/\s+/g, ' ').replace(' : ', ': ').replace(' .', '.').trim();
-                concMain.push({ type: 'frame', text: concSentence, tableId: `soft_lesion_main__${instId}` });
-            }
-        });
+                    const vztahStr = vztah.length > 0 ? `, ${formatList(vztah)}` : '';
+                    const f = LESIONS_DEFINITION.frames(ctx, { examId, regionId: 'soft', p, tableId: `soft_lesion_main__${instId}`, lokace, vztah: vztahStr });
+                    if (f) {
+                        reportOut.push(f.report);
+                        concMain.push(f.conc);
+                    }
+                });
 
         // --- SVALY A MĚKKÉ TKÁNĚ (obecné) ---
         let stDesc = ctx.field('st_custom_desc');
-        if (stDesc) reportOut.push({ type: 'frame', text: cap(stDesc), tableId: 'soft_tissue_main' });
+        if (stDesc) reportOut.push({ type: 'frame', text: capitalize(stDesc), tableId: 'soft_tissue_main' });
 
         let stConc = ctx.field('st_custom_conc');
         if (stConc) concInc.push({ type: 'frame', text: stConc, tableId: 'soft_tissue_main' });

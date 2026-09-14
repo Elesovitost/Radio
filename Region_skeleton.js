@@ -159,7 +159,6 @@ const RegionSkeleton = {
             let concInc = [];
             
             const examId = ctx.examId || 'default';
-            const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
             const formatList = formatCzechList;
 
             // --- LÉZE ---
@@ -245,19 +244,10 @@ const RegionSkeleton = {
                     addBilat('styd', 'v pravé stydké kosti', 'v levé stydké kosti', 've stydkých kostech bilat.');
                     addBilat('fem', 'v pravém femuru', 'v levém femuru', 've femurech bilat.');
 
-                    let lokText = lokace.length > 0 ? formatList(lokace) : '';
-                    let d = LESIONS_DEFINITION.parseDetails(ctx, examId, 'skeleton', p, `${p}_met`, `${p}_e`, false);
-
-                    if (d.hasAny || lokace.length > 0) {
-                        let repSentence = `${d.baseText} ${lokText}${d.doplneniStr}${d.vzhledText}${d.metrikyStr}.`.replace(/\s+/g, ' ').replace(' .', '.').trim();
-                        reportOut.push({ type: 'frame', text: repSentence, tableId: `skeleton_lesion_main__${instId}` });
-                        
-                        let concSentence = `${d.baseText} ${lokText}${d.doplneniStr}${d.actStr}${d.dynStr}`;
-                        if (d.etioStr) concSentence += `: ${d.etioStr}.`;
-                        else concSentence += `.`;
-                        
-                        concSentence = concSentence.replace(/\s+/g, ' ').replace(' : ', ': ').replace(' .', '.').trim();
-                        concMain.push({ type: 'frame', text: concSentence, tableId: `skeleton_lesion_main__${instId}` });
+                    const f = LESIONS_DEFINITION.frames(ctx, { examId, regionId: 'skeleton', p, tableId: `skeleton_lesion_main__${instId}`, lokace });
+                    if (f) {
+                        reportOut.push(f.report);
+                        concMain.push(f.conc);
                     }
                 });
 
@@ -283,7 +273,7 @@ const RegionSkeleton = {
             if (mdDesc) marrow.push(mdDesc);
             
             if (marrow.length > 0) {
-                reportOut.push({ type: 'frame', text: `${cap(formatList(marrow))}.`, tableId: 'skeleton_marrow' });
+                reportOut.push({ type: 'frame', text: `${capitalize(formatList(marrow))}.`, tableId: 'skeleton_marrow' });
             }
             
             let mdConc = ctx.field('sk_marrow_custom_conc');
@@ -319,7 +309,7 @@ const RegionSkeleton = {
                     const locsStr = formatList(locs);
                     if (isDeg) {
                         repText = `pokročilé degenerativní změny ${locsStr}`;
-                        concInc.push({ type: 'frame', text: `${cap(repText)}.`, tableId: tableId });
+                        concInc.push({ type: 'frame', text: `${capitalize(repText)}.`, tableId: tableId });
                     } else {
                         repText = `${locsStr} se zvýšenou aktivitou okolních měkkých tkání v rámci nespec. zánětlivých změn`;
                     }
@@ -332,7 +322,7 @@ const RegionSkeleton = {
                 if (customDesc) descParts.push(customDesc);
                 
                 if (descParts.length > 0) {
-                    reportOut.push({ type: 'frame', text: `${cap(formatList(descParts))}.`, tableId: tableId });
+                    reportOut.push({ type: 'frame', text: `${capitalize(formatList(descParts))}.`, tableId: tableId });
                 }
                 
                 let customConc = ctx.field(`${idSuffix}_custom_conc`);
@@ -356,7 +346,7 @@ const RegionSkeleton = {
             }
             
             let sysDesc = ctx.field('sk_systemic_custom_desc');
-            if (sysDesc) reportOut.push({ type: 'frame', text: cap(sysDesc), tableId: 'skeleton_systemic' });
+            if (sysDesc) reportOut.push({ type: 'frame', text: capitalize(sysDesc), tableId: 'skeleton_systemic' });
             let sysConc = ctx.field('sk_systemic_custom_conc');
             if (sysConc) concInc.push({ type: 'frame', text: sysConc, tableId: 'skeleton_systemic' });
 
@@ -431,7 +421,7 @@ const RegionSkeleton = {
                     } else {
                         const txt = `stav po starší kompresi obratl. ${telWord} ${vertStr} bez zvýšené akumulace RF`;
                         repParts.push(txt);
-                        conclParts.push(cap(txt) + '.');
+                        conclParts.push(capitalize(txt) + '.');
                     }
                 }
 
@@ -443,7 +433,7 @@ const RegionSkeleton = {
                     } else {
                         const txt = `stav po starší fraktuře ${otherStr} bez zvýšené akumulace RF`;
                         repParts.push(txt);
-                        conclParts.push(cap(txt) + '.');
+                        conclParts.push(capitalize(txt) + '.');
                     }
                 }
                 
@@ -451,7 +441,7 @@ const RegionSkeleton = {
                 if (customDesc) repParts.push(customDesc);
 
                 if (repParts.length > 0) {
-                    reportOut.push({ type: 'frame', text: `${cap(repParts.join(', '))}.`, tableId: tableId });
+                    reportOut.push({ type: 'frame', text: `${capitalize(repParts.join(', '))}.`, tableId: tableId });
                 }
                 
                 let customConc = ctx.field(`${idSuffix}_custom_conc`);
@@ -506,13 +496,13 @@ const RegionSkeleton = {
                 if (customDesc) instRep.push(customDesc);
 
                 if (instRep.length > 0) {
-                    reportOut.push({ type: 'frame', text: `${cap(instRep.join(', '))}.`, tableId: 'skeleton_instrumentace' });
+                    reportOut.push({ type: 'frame', text: `${capitalize(instRep.join(', '))}.`, tableId: 'skeleton_instrumentace' });
                 }
             };
             processInstrumentace();
 
             let skDesc = ctx.field('sk_custom_desc'); 
-            if (skDesc) reportOut.push({ type: 'frame', text: cap(skDesc), tableId: 'skeleton_ostatni' });
+            if (skDesc) reportOut.push({ type: 'frame', text: capitalize(skDesc), tableId: 'skeleton_ostatni' });
             
             let skConc = ctx.field('sk_custom_conc'); 
             if (skConc) concInc.push({ type: 'frame', text: skConc, tableId: 'skeleton_ostatni' });

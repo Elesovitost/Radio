@@ -23,7 +23,7 @@ const ORGAN_MAP = {
     "Thorax Lesion": { name: "Léze (Hrudník)", table: "thorax_lesion_main", regions: ['thorax'] },
     "Thorax Lymph Node": { name: "Lymfadenopatie (Hrudník)", table: "thorax_lymphnode_main", regions: ['thorax'] },
     // Pořadí v levém panelu = pořadí klíčů zde (stejné jako pořadí sekcí ve Findings).
-    "Plíce": { name: "Plíce a pleura", table: "thorax_plice_main", regions: ['thorax'] },
+    "Plíce": { name: "Plíce a pleura", table: "group:thorax_plice_main,thorax_pleura_main", regions: ['thorax'] },
     "Srdce": { name: "Srdce", table: "thorax_srdce_main", regions: ['thorax'] },
     "Thymus": { name: "Mediastinum", table: "thorax_thymus_main", regions: ['thorax'] },
     "Jícen": { name: "Jícen", table: "thorax_jicen_main", regions: ['thorax'] },

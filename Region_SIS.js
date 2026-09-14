@@ -32,8 +32,6 @@ const RegionSis = {
         let concMain = [];
         let concInc = [];
         
-        const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
-
         const parseSide = (pfx) => {
             let main = [];
             let inc = [];
@@ -108,7 +106,7 @@ const RegionSis = {
             } else {
                 reportOut.push({ type: 'frame', text: `Vpravo: ${right.reportText}.`, tableId: 'sis_main', dimmed: !right.hasPathology });
                 reportOut.push({ type: 'frame', text: `Vlevo: ${left.reportText}.`, tableId: 'sis_main', dimmed: !left.hasPathology });
-                if (desc) reportOut.push({ type: 'frame', text: cap(desc) + (desc.endsWith('.') ? '' : '.'), tableId: 'sis_other_main' });
+                if (desc) reportOut.push({ type: 'frame', text: capitalize(desc) + (desc.endsWith('.') ? '' : '.'), tableId: 'sis_other_main' });
             }
         }
 
@@ -134,7 +132,7 @@ const RegionSis = {
             }
         }
 
-        if (concUser) concMain.push({ type: 'frame', text: cap(concUser) + (concUser.endsWith('.') ? '' : '.'), tableId: 'sis_other_main' });
+        if (concUser) concMain.push({ type: 'frame', text: capitalize(concUser) + (concUser.endsWith('.') ? '' : '.'), tableId: 'sis_other_main' });
 
         return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };
     }

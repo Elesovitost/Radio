@@ -118,7 +118,7 @@ async function llmSendImpression() {
 }
 
 async function llmSendCaseStudy() {
-    const conclusion = ClipboardService.formatConclusion(true) || '';
+    const conclusion = ClipboardService.formatConclusion() || '';
     if (!conclusion) {
         llmSetStatus('Nejprve doplň závěr (Impression).', true);
         return;

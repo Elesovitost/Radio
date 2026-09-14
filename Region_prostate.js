@@ -311,7 +311,7 @@ const RegionProstate = {
                 let isPlural = pocetText !== 'solitární';
                 let pocetSlovo = GRAMMAR_DICT.pocet[pocetText]?.[druhObj.rod] || pocetText;
                 let druhSlovo = isPlural ? druhObj.plural : druhRaw;
-                let baseText = pocetText === 'solitární' ? (druhSlovo.charAt(0).toUpperCase() + druhSlovo.slice(1)) : (`${pocetSlovo} ${druhSlovo}`.charAt(0).toUpperCase() + `${pocetSlovo} ${druhSlovo}`.slice(1));
+                let baseText = pocetText === 'solitární' ? capitalize(druhSlovo) : capitalize(`${pocetSlovo} ${druhSlovo}`);
 
                 let t2 = ctx.text(`${p}_t2`);
                 let dwi = ctx.text(`${p}_dwi`);
@@ -455,7 +455,8 @@ const RegionProstate = {
         let prSize = ctx.field('pr_size');
         let prHyp = ctx.text('pr_hyp');
         let prHem = ctx.text('pr_hem');
-        let prDesc = ctx.field('pr_custom_desc');
+        /* ctx.field u "*desc*" vrací text s markerem \u200B – do nálezu nepatří. */
+        let prDesc = (ctx.field('pr_custom_desc') || '').replace(/\u200B/g, '').trim();
         let prConcRaw = ctx.field('pr_custom_conc');
 
         if (prOp === 'RAPE') {
@@ -513,7 +514,7 @@ const RegionProstate = {
         if (prConcRaw) {
             let prConcClean = prConcRaw.replace(/\u200B/g, '').trim();
             if (prConcClean) {
-                let formattedConc = prConcClean.charAt(0).toUpperCase() + prConcClean.slice(1);
+                let formattedConc = capitalize(prConcClean);
                 if (!formattedConc.endsWith('.')) {
                     formattedConc += '.';
                 }

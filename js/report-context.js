@@ -13,8 +13,12 @@ function resolveButtonConfig(examId, regionId, localId) {
     if (ButtonConfigs[exact]) return ButtonConfigs[exact];
     const suffix = `_${regionId}_${localId}`;
     for (const key in ButtonConfigs) {
-        if (key.endsWith(suffix)) return ButtonConfigs[key];
+        if (key.endsWith(suffix)) {
+            (window.__BMISS__ = window.__BMISS__ || []).push(`FALLBACK ${exact} <- ${key}`);
+            return ButtonConfigs[key];
+        }
     }
+    (window.__BMISS__ = window.__BMISS__ || []).push(`MISS ${exact}`);
     return null;
 }
 
@@ -25,6 +29,19 @@ function migrateButtonConfigs(oldId, newId) {
             delete ButtonConfigs[key];
         }
     });
+}
+
+/* Vlastní text bez koncové tečky - vkládá se doprostřed věty. */
+function bezTecky(text) {
+    const t = String(text == null ? '' : text).trim();
+    return t.endsWith('.') ? t.slice(0, -1) : t;
+}
+
+/* Zápis sekce z ctx.section() do reportu a závěrů. */
+function useSection(section, { report, main, incidental }) {
+    report.push(...section.report);
+    main.push(...section.main);
+    incidental.push(...section.incidental);
 }
 
 function createContext(regionId, examId) {
@@ -116,6 +133,41 @@ function createContext(regionId, examId) {
             const mLiv = extractNumber(Store.fields['suv_jater_minule'] || '3.0');
 
             return MetricsEngine.calculateDynamics(currSize, minSize, currSuv, minSuv, cLiv, mLiv, APP_SETTINGS.recist, cntOld);
+        },
+        /* Sekce nálezu i závěru na jednom místě:
+           [Popisek: ]nález(y) s volitelnou "normální" variantou.
+             parts      - hotové texty nálezu (např. z mapStates)
+             desc       - id pole s vlastním popisem (připojí se bez koncové tečky)
+             normal     - id tlačítka "normální": 1 = popsat normalText, 2 = i do závěru
+                          (s patologií se vzájemně vylučuje — viz applyOrganNormalMutex)
+             normalConc - text přiměřeného nálezu do hlavního závěru
+             concField  - id pole s vlastním závěrem
+             concTarget - kam vlastní závěr ('incidental' | 'main')
+             main/incidental - hotové závěry navíc (vloží se před vlastní závěr)
+             capitalize - nález začíná velkým písmenem
+           Vrací { report, main, incidental } - co vložit do reportu a závěrů. */
+        section({ label = '', tableId, parts = [], desc = null, normal = null,
+                  normalText = '', normalConc = '', concField = null,
+                  concTarget = 'incidental', main = [], incidental = [], capitalize = false }) {
+            const lvl = normal ? this.normalLevel(normal) : 0;
+            const items = parts.filter(Boolean);
+            const customDesc = desc ? bezTecky(this.field(desc)) : '';
+            if (customDesc) items.push(customDesc);
+
+            const list = formatCzechList(items) + '.';
+            let text;
+            if (lvl > 0) text = normalText;
+            else if (items.length > 0) text = capitalize ? list[0].toUpperCase() + list.slice(1) : list;
+
+            const frame = (t) => (typeof t === 'string' ? { type: 'frame', text: t, tableId } : t);
+            const customConc = concField ? this.field(concField) : '';
+            const intoMain = concTarget === 'main';
+
+            return {
+                report: text ? [frame(label ? `${label}: ${text}` : text)] : [],
+                main: [...main, intoMain && customConc, lvl >= 2 && normalConc].filter(Boolean).map(frame),
+                incidental: [...incidental, !intoMain && customConc].filter(Boolean).map(frame)
+            };
         },
         mapStates(config) {
             const found = [];

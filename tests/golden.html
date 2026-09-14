@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Golden master harness</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <!-- Minimální DOM, který očekává index.html (aby se appka nastartovala bez chyb). -->
+    <header class="panel" id="header-panel">
+        <div class="row" id="exams-container"></div>
+        <div id="fmm-akum-btn-slot"></div>
+        <div id="history-dropdown-menu"></div>
+        <input type="date" class="input input-date" data-action="update-date">
+        <div id="settings-modal" style="display:none"></div>
+        <div id="llm-modal" style="display:none"></div>
+    </header>
+
+    <main class="panel" id="details-panel">
+        <div class="exam-tabs" id="exam-tabs-container"></div>
+        <div class="content-area" id="details-content"></div>
+    </main>
+
+    <aside class="panel" id="panel-report">
+        <div class="content-area" id="report-container"></div>
+    </aside>
+
+    <aside class="panel" id="panel-conclusion">
+        <div class="content-area" id="conclusion-container"></div>
+    </aside>
+
+    <!-- Sem harness zapíše base64 se snapshotem; runner si ho přečte. -->
+    <pre id="golden-out" style="display:none"></pre>
+
+    <!-- Stejné pořadí jako index.html (viz tests/README). -->
+    <script src="../js/spine-factory.js"></script>
+    <script src="../Region_brain.js"></script>
+    <script src="../Region_br_angiography.js"></script>
+    <script src="../Region_neck.js"></script>
+    <script src="../Region_thorax.js"></script>
+    <script src="../Region_abdomen.js"></script>
+    <script src="../Region_skeleton.js"></script>
+    <script src="../Region_soft.js"></script>
+    <script src="../Region_Cp.js"></script>
+    <script src="../Region_Tp.js"></script>
+    <script src="../Region_LSp.js"></script>
+    <script src="../Region_spineNaf.js"></script>
+    <script src="../Region_shoulder.js"></script>
+    <script src="../Region_knee.js"></script>
+    <script src="../Region_ankle.js"></script>
+    <script src="../Region_rectum.js"></script>
+    <script src="../Region_prostate.js"></script>
+    <script src="../Region_tmk.js"></script>
+    <script src="../Region_SIS.js"></script>
+    <script src="../Region_wrist.js"></script>
+
+    <script src="../js/settings.js"></script>
+    <script src="../js/organ-maps.js"></script>
+    <script src="../js/config-exams.js"></script>
+    <script src="../js/grammar.js"></script>
+    <script src="../js/number-fields.js"></script>
+    <script src="../js/lesions.js"></script>
+    <script src="../js/regions.js"></script>
+    <script src="../js/viewers.js"></script>
+    <script src="../js/dom.js"></script>
+    <script src="../js/report-context.js"></script>
+    <script src="../js/metrics.js"></script>
+    <script src="../js/button-factory.js"></script>
+<script src="../js/table-factory.js"></script>
+<script src="../js/corrections.js"></script>
+<script src="../js/report-doc.js"></script>
+            <script src="../js/ui.js"></script>
+    <script src="../js/ui-nav.js"></script>
+    <script src="../js/ui-details.js"></script>
+    <script src="../js/ui-report.js"></script>
+    <script src="../js/actions.js"></script>
+    <script src="../js/llm.js"></script>
+    <script src="../js/events.js"></script>
+
+    <script src="fixtures.js"></script>
+    <script src="harness.js"></script>
+</body>
+</html>

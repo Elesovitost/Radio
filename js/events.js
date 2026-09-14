@@ -393,7 +393,7 @@ function getLesionInstanceName(tableId, instId, defaultType, organName) {
                 typeName = btnCfg.states[Store.buttonStates[typeKey]];
             }
         }
-        typeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
+        typeName = capitalize(typeName);
 
         const textInput = Store.fields[`${searchStr}nej_text`];
         if (textInput) locParts.push(textInput);

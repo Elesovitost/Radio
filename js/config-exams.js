@@ -66,6 +66,86 @@ const RADIOFARM_CONFIG = {
     fmm: { defaultSuvJater: '3.0', showGroups: ['akumulace'], defaults: {} }
 };
 
+/* =============================================================
+   REPORT_PROFILES
+   Jak se z ReportDoc složí výstup "Report" (náhled / kopírovat vše).
+   Klíč je prefix examId před "_" (typ vyšetření) nebo celý examId;
+   konkrétnější klíč přebíjí obecnější, vše se slévá přes "default".
+
+   - title             – titulek vyšetření (u více vyšetření seznam)
+   - indication        – řádek s indikací
+   - pastDate          – řádek "srovnáno s …"
+   - indicationLabel / pastDateLabel / conclusionLabel / incidentalLabel
+                       – popisky (null = bez popisku)
+   - tracer            – PET radiofarmakum; určuje texty v PET_TEXTS
+   - physio            – u celotrupové PET tiskne fyziologickou distribuci RF
+
+   Nález se skládá v pořadí: titulek → indikace → datum → nález →
+   fyziologická distribuce RF (blok "OSTATNÍ:" na konci nálezu) →
+   závěr → vedlejší nálezy. Pořadí regionů v nálezu = pořadí v REGIONS
+   (ne pořadí klikání).
+
+   Záměrná rozhodnutí (neměnit bez domluvy):
+   - blok "OSTATNÍ:" se v textu tiskne bez popisku - jen jako poslední
+     odstavec nálezu (v panelu Findings se nadpis zobrazuje)
+   - nález regionu zůstává inline (jeden odstavec), i když má vyšetření
+     víc regionů; 'block' se používá jen tam, kde ho má region sám
+   - tiskne se i region aktivovaný mimo regs vyšetření, jen se seřadí
+     podle REGIONS
+   ============================================================= */
+/* Texty vázané na radiofarmakum. */
+const PET_TEXTS = {
+    fdg: {
+        negative: 'Bez známek přítomnosti FDG-avidní neoplázie.',
+        physio: 'Neložisková akumulace radiofarmaka ve svalech, v gastrointestinálním traktu a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález. Akumulace RF vztažena k referenčnímu zdravému parenchymu jater.'
+    },
+    psma: {
+        negative: 'Bez známek přítomnosti ložisek zvýšené exprese PSMA.',
+        /* Pozn.: "gastrointestinální traktu" je původní (chybný) tvar - opraví ho až Corrections. */
+        physio: 'Neložisková akumulace radiofarmaka ve slinných a slzných žlazách, v jaterním parenchymu, slezině, v gastrointestinální traktu a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález. Akumulace RF vztažena k referenčnímu zdravému parenchymu jater a event. parotid.'
+    },
+    dotatoc: {
+        negative: 'Bez známek přítomnosti ložisek se zvýšeným nakupením somatostatinových receptorů.',
+        physio: 'Neložisková akumulace radiofarmaka v hypofýze, štítné žláze, nadledvinách a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález. Akumulace RF vztažena k referenčnímu zdravému parenchymu jater a event. sleziny.'
+    },
+    dopa: {
+        negative: 'Bez známek přítomnosti ložisek se zvýšenou konzumpcí aminokyseliny.',
+        physio: 'Neložisková akumulace radiofarmaka v BG bilat., játrech a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález. k referenčnímu zdravému parenchymu jater.'
+    },
+    fmm: {}
+};
+
+const REPORT_PROFILES = {
+    default: {
+        title: true,
+        indication: true,
+        pastDate: true,
+        indicationLabel: 'Indikace:',
+        pastDateLabel: 'Srovnáno s vyšetřením z',
+        conclusionLabel: 'Závěr:',
+        incidentalLabel: 'Vedlejší nálezy:',
+        tracer: null,
+        physio: false
+    },
+
+    /* PET / CT */
+    petct_fdg_trup: { tracer: 'fdg', physio: true },
+    petct_psma_trup: { tracer: 'psma', physio: true },
+    petct_dotatoc_trup: { tracer: 'dotatoc', physio: true },
+    petct_dopa_trup: { tracer: 'dopa', physio: true },
+    petct_dopa_mozek: { tracer: 'dopa' },
+    petct_fmm_mozek: { tracer: 'fmm' },
+
+    /* PET / MR */
+    petmr_fdg_trup: { tracer: 'fdg', physio: true },
+    petmr_psma_prostata: { tracer: 'psma' },
+    petmr_fdg_mozek: { tracer: 'fdg' },
+    petmr_dopa_mozek: { tracer: 'dopa' },
+    petmr_fmm_mozek: { tracer: 'fmm' },
+    petmr_fdg_orl: { tracer: 'fdg' },
+    petmr_fdg_rekta: { tracer: 'fdg' }
+};
+
 const FMM_AKUM_STATES = ['-', '+', '++'];
 const FMM_AKUM_TEXTS = [
     {

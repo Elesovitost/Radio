@@ -35,40 +35,29 @@ function createButtonElement(config, isActive, btnLabel, action) {
     }, [el('span', { textContent: btnLabel })]);
 }
 
+/* Tlačítko stavu s volitelným vstupem pro vlastní text. */
+function makeStateButton(config, action, isActive, withInput, placeholder) {
+    const btn = createButtonElement(config, isActive, config.text, action);
+    if (!withInput) return btn;
+    const inp = el('input', {
+        className: 'input',
+        value: Store.customTexts[config.globalId] || '',
+        'data-action': 'update-custom-input',
+        'data-id': config.globalId,
+        placeholder
+    });
+    return el('div', { className: 'row' }, [btn, inp]);
+}
+
 function makeBasicButton(config) {
     const rawState = Store.buttonStates[config.globalId] ?? false;
-    const showCustomInput = Boolean(config.custom && rawState === 'custom');
-    const isActive = Boolean(rawState === true || showCustomInput);
-    const btn = createButtonElement(config, isActive, config.text, 'toggle-basic');
-
-    if (showCustomInput) {
-        const inp = el('input', {
-            className: 'input',
-            value: Store.customTexts[config.globalId] || '',
-            'data-action': 'update-custom-input',
-            'data-id': config.globalId,
-            placeholder: 'vlastní'
-        });
-        return el('div', { className: 'row' }, [btn, inp]);
-    }
-    return btn;
+    const withInput = Boolean(config.custom && rawState === 'custom');
+    return makeStateButton(config, 'toggle-basic', rawState === true || withInput, withInput, 'vlastní');
 }
 
 function makeBasicCustomButton(config) {
     const isActive = Boolean(Store.buttonStates[config.globalId]);
-    const btn = createButtonElement(config, isActive, config.text, 'toggle-basic-custom');
-
-    if (isActive) {
-        const inp = el('input', {
-            className: 'input',
-            value: Store.customTexts[config.globalId] || '',
-            'data-action': 'update-custom-input',
-            'data-id': config.globalId,
-            placeholder: 'Upřesnit...'
-        });
-        return el('div', { className: 'row' }, [btn, inp]);
-    }
-    return btn;
+    return makeStateButton(config, 'toggle-basic-custom', isActive, isActive, 'Upřesnit...');
 }
 
 function makeStandardButton(config) {

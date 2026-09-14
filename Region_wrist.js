@@ -87,8 +87,7 @@ const RegionWrist = {
         let concInc = [];
         let hasPathology = false;
         
-        const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
-        const formatZaver = (str) => cap(str) + (str.endsWith('.') ? '' : '.');
+        const formatZaver = (str) => capitalize(str) + (str.endsWith('.') ? '' : '.');
         const pushConc = (txt) => { concMain.push({ type: 'frame', text: formatZaver(txt), tableId: 'wrist_joint_main' }); hasPathology = true; };
 
         // 1. Kloubní dutina
@@ -113,8 +112,8 @@ const RegionWrist = {
         const jtDesc = ctx.field('wri_jt_desc');
         if (jtDesc) jtPatho.push(jtDesc);
 
-        if (jtPatho.length > 0) reportOut.push({ type: 'frame', text: cap(jtPatho.join('. ')) + '.', tableId: 'wrist_joint_main' });
-        if (jtPhysio.length > 0) reportOut.push({ type: 'frame', text: cap(jtPhysio.join('. ')) + '.', tableId: 'wrist_joint_main', dimmed: true });
+        if (jtPatho.length > 0) reportOut.push({ type: 'frame', text: capitalize(jtPatho.join(', ')) + '.', tableId: 'wrist_joint_main' });
+        if (jtPhysio.length > 0) reportOut.push({ type: 'frame', text: capitalize(jtPhysio.join(', ')) + '.', tableId: 'wrist_joint_main', dimmed: true });
         
         const jtConc = ctx.field('wri_jt_conc');
         if (jtConc) pushConc(jtConc);
@@ -151,8 +150,8 @@ const RegionWrist = {
         const bnDesc = ctx.field('wri_bn_desc');
         if (bnDesc) bnPatho.push(bnDesc);
 
-        if (bnPatho.length > 0) reportOut.push({ type: 'frame', text: cap(bnPatho.join('. ')) + '.', tableId: 'wrist_bones_main' });
-        if (bnPhysio.length > 0) reportOut.push({ type: 'frame', text: cap(bnPhysio.join('. ')) + '.', tableId: 'wrist_bones_main', dimmed: true });
+        if (bnPatho.length > 0) reportOut.push({ type: 'frame', text: capitalize(bnPatho.join(', ')) + '.', tableId: 'wrist_bones_main' });
+        if (bnPhysio.length > 0) reportOut.push({ type: 'frame', text: capitalize(bnPhysio.join(', ')) + '.', tableId: 'wrist_bones_main', dimmed: true });
         
         const bnConc = ctx.field('wri_bn_conc');
         if (bnConc) pushConc(bnConc);
@@ -254,8 +253,8 @@ const RegionWrist = {
         const ligDesc = ctx.field('wri_lig_desc');
         if (ligDesc) ligPatho.push(ligDesc);
 
-        if (ligPatho.length > 0) reportOut.push({ type: 'frame', text: cap(ligPatho.join('. ')) + '.', tableId: 'wrist_lig_main' });
-        if (ligPhysio.length > 0) reportOut.push({ type: 'frame', text: cap(ligPhysio.join('. ')) + '.', tableId: 'wrist_lig_main', dimmed: true });
+        if (ligPatho.length > 0) reportOut.push({ type: 'frame', text: capitalize(ligPatho.join(', ')) + '.', tableId: 'wrist_lig_main' });
+        if (ligPhysio.length > 0) reportOut.push({ type: 'frame', text: capitalize(ligPhysio.join(', ')) + '.', tableId: 'wrist_lig_main', dimmed: true });
         
         const ligConc = ctx.field('wri_lig_conc');
         if (ligConc) pushLigConc(ligConc);
@@ -273,7 +272,7 @@ const RegionWrist = {
         if (snParts.length === 0) {
             reportOut.push({ type: 'frame', text: 'Šlachy a nervy bez signálních změn či ztluštění.', tableId: 'wrist_tendons_main', dimmed: true });
         } else {
-            reportOut.push({ type: 'frame', text: cap(snParts.join('. ')) + '.', tableId: 'wrist_tendons_main' });
+            reportOut.push({ type: 'frame', text: capitalize(snParts.join(', ')) + '.', tableId: 'wrist_tendons_main' });
         }
 
         const snConc = ctx.field('wri_sn_conc');

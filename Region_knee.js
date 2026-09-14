@@ -181,7 +181,6 @@ const RegionKnee = {
         let reportOut = [{ type: 'heading', text: 'Koleno:', action: 'open-region', regionId: 'knee' }];
         let concMain = [];
         let concInc = [];
-        const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
         const examId = ctx.examId || 'default';
 
         // Vlastní texty se přilepí přímo k textu dané části (nikoli jako samostatný odstavec)
@@ -189,7 +188,7 @@ const RegionKnee = {
             const fmt = (raw) => {
                 let txt = (raw || '').replace(/\u200B/g, '').trim();
                 if (!txt) return '';
-                txt = txt.charAt(0).toUpperCase() + txt.slice(1);
+                txt = capitalize(txt);
                 if (!/[.!?]$/.test(txt)) txt += '.';
                 return txt;
             };
@@ -370,7 +369,7 @@ const RegionKnee = {
             reportOut.push({ type: 'frame', text: 'Normální množství nitrokloubní tekutiny.', tableId: 'knee_joint_main', dimmed: true });
         } else {
             let finalJointText = jointRep.join(', ');
-            finalJointText = finalJointText.charAt(0).toUpperCase() + finalJointText.slice(1) + '.';
+            finalJointText = capitalize(finalJointText) + '.';
             reportOut.push({ type: 'frame', text: finalJointText, tableId: 'knee_joint_main' });
         }
         attachCustom('kn_joint', 'knee_joint_main');
@@ -429,7 +428,7 @@ const RegionKnee = {
         if (!hasPatellaPathology) {
             reportOut.push({ type: 'frame', text: 'Patella obvyklého vzhledu, FP chrupavky nesníženy bez výraznější léze.', tableId: 'knee_patella_main', dimmed: true });
         } else {
-            if (patRep.length > 0) reportOut.push({ type: 'frame', text: cap(patRep.join(', ').replace(/, ([^,]*)$/, ' a $1')) + '.', tableId: 'knee_patella_main' });
+            if (patRep.length > 0) reportOut.push({ type: 'frame', text: capitalize(patRep.join(', ').replace(/, ([^,]*)$/, ' a $1')) + '.', tableId: 'knee_patella_main' });
 
             let fpReportParts = [];
             if (fpPatRep) fpReportParts.push(fpPatRep + '.');
@@ -443,7 +442,7 @@ const RegionKnee = {
                 reportOut.push({ type: 'frame', text: `FP kompartment: ${fpReportParts.join(' ')}`, tableId: 'knee_patella_main' });
             }
 
-            if (antRep.length > 0) reportOut.push({ type: 'frame', text: cap(antRep.join(', ').replace(/, ([^,]*)$/, ' a $1')) + '.', tableId: 'knee_patella_main' });
+            if (antRep.length > 0) reportOut.push({ type: 'frame', text: capitalize(antRep.join(', ').replace(/, ([^,]*)$/, ' a $1')) + '.', tableId: 'knee_patella_main' });
 
             const fpMerged = mergeChondroConc(fpPatG, fpPatL, fpPatE, 'patelárně', fpFemG, fpFemL, fpFemE, 'femorálně');
             if (fpMerged) {
@@ -480,7 +479,7 @@ const RegionKnee = {
 
             if (femChrRep) repParts.push(femChrRep + '.');
             if (tibChrRep) repParts.push(tibChrRep + '.');
-            if (ostRep) repParts.push(ostRep.charAt(0).toUpperCase() + ostRep.slice(1) + '.');
+            if (ostRep) repParts.push(capitalize(ostRep) + '.');
 
             if (repParts.length > 0) {
                 reportOut.push({ type: 'frame', text: `${compName}: ${repParts.join(' ')}`, tableId: tableId });
@@ -806,7 +805,7 @@ const RegionKnee = {
                 let finalReportText = `Přední zkřížený vaz: ${nRep.join(', ')}.`;
                 finalReportText = finalReportText.replace('Přední zkřížený vaz: vaz je', 'Přední zkřížený vaz je');
 
-                reportOut.push({ type: 'frame', text: finalReportText.charAt(0).toUpperCase() + finalReportText.slice(1), tableId: 'knee_acl_main' });
+                reportOut.push({ type: 'frame', text: capitalize(finalReportText), tableId: 'knee_acl_main' });
                 
                 let concSentence = 'Přední zkřížený vaz';
                 if (concParts.length === 1) {
@@ -892,7 +891,7 @@ const RegionKnee = {
             let finalReportTextPcl = `Zadní zkřížený vaz: ${nRepPcl.join(', ')}.`;
             finalReportTextPcl = finalReportTextPcl.replace('Zadní zkřížený vaz: vaz je', 'Zadní zkřížený vaz je');
 
-            reportOut.push({ type: 'frame', text: finalReportTextPcl.charAt(0).toUpperCase() + finalReportTextPcl.slice(1), tableId: 'knee_pcl_main' });
+            reportOut.push({ type: 'frame', text: capitalize(finalReportTextPcl), tableId: 'knee_pcl_main' });
             
             let concSentencePcl = 'Zadní zkřížený vaz';
             if (concPartsPcl.length === 1) {
@@ -982,7 +981,7 @@ const RegionKnee = {
 
             if (stRepParts.length > 0) {
                 let finalStRep = stRepParts.join(', ');
-                finalStRep = finalStRep.charAt(0).toUpperCase() + finalStRep.slice(1) + '.';
+                finalStRep = capitalize(finalStRep) + '.';
                 finalSoftText = `Měkké tkáně: ${finalStRep}`;
             }
         }

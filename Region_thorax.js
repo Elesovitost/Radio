@@ -103,83 +103,99 @@ function ildIsOn(examId, localId) {
     return !!Store.buttonStates[`${examId}_thorax_${localId}`];
 }
 
-function ildChoice(examId, prefix, options) {
-    for (const opt of options) {
-        if (ildIsOn(examId, `${prefix}_${opt.id}`)) return opt.id;
+/* Rozhodovací strom ILD. Klíč uzlu = suffix id tlačítek (`ild_<klíč>_<volba>`).
+   Volba vede buď na další uzel (next), nebo na výsledek (outcome = klíč v ILD_OUTCOMES). */
+const ILD_TREE = {
+    fib: {
+        section: null,
+        question: 'Jsou přítomny známky plicní fibrózy? (Retikulace, trakční bronchiektázie/bronchiolektázie, ztráta objemu plic, plástvovatění/honeycombing)',
+        options: [{ id: 'ano', label: 'ANO', next: 'cpfe' }, { id: 'ne', label: 'NE', next: 'pat' }]
+    },
+    cpfe: {
+        section: 'Fibrotizující procesy',
+        question: 'Je přítomen syndrom CPFE? (Emfyzém/buly v horních lalocích + fibrotické změny v dolních lalocích u kuřáka)',
+        options: [{ id: 'ano', label: 'ANO', outcome: 'cpfe' }, { id: 'ne', label: 'NE', next: 'uip' }]
+    },
+    uip: {
+        section: 'Fibrotizující procesy',
+        question: 'Je přítomno pravé plástvovatění (honeycombing) se subpleurální a bazální predominancí BEZ znaků inkonzistentních s UIP (kraniokaudální distribuce, nodulace, výrazné GGO, konsolidace, mozaika, cysty, pleurální pláty)?',
+        options: [{ id: 'ano', label: 'ANO', outcome: 'uip' }, { id: 'ne', label: 'NE', next: 'prob' }]
+    },
+    prob: {
+        section: 'Fibrotizující bez honeycombingu',
+        question: 'Jsou přítomny retikulace a trakční bronchiektázie v subpleurální a bazální distribuci BEZ znaků inkonzistentních s UIP?',
+        options: [{ id: 'ano', label: 'ANO', outcome: 'probable_uip' }, { id: 'ne', label: 'NE', next: 'morph' }]
+    },
+    morph: {
+        section: 'Fibrotizující – jiné vzorce / Inkonzistentní s UIP',
+        question: 'Jaká je distribuce a průvodní morfologie?',
+        options: [
+            { id: 'fhp', label: 'A', desc: 'Vzorec tří denzit (Three-density pattern) NEBO kraniokaudální dominance ve středních/horních polích. (Kombinace normálního parenchymu, GGO a mozaikové atenuace/air-trappingu).', outcome: 'fhp' },
+            { id: 'nsip', label: 'B', desc: 'Relativní šetření (sparing) bezprostředního subpleurálního prostoru, axiálně podél peribronchovaskulárních svazků, často s GGO.', outcome: 'nsip_fib' },
+            { id: 'asbest', label: 'C', desc: 'Pleurální pláty v kombinaci s retikulacemi bazálně/subpleurálně.', outcome: 'asbest' },
+            { id: 'indet', label: 'D', desc: 'Nespecifické jemné retikulace bez jasné distribuce.', outcome: 'indeterminate' }
+        ]
+    },
+    pat: {
+        section: 'Nefibrotizující procesy',
+        question: 'Jaký je dominantní morfologický vzorec?',
+        options: [
+            { id: 'nod', label: 'A', desc: 'Nodulární vzorec.', next: 'nod' },
+            { id: 'dens', label: 'B', desc: 'Zvýšení denzity (GGO, konsolidace, crazy-paving).', next: 'dens' },
+            { id: 'cyst', label: 'C', desc: 'Cystický vzorec (dutiny s tenkou stěnou < 2 mm, nesouvisející s emfyzémem).', next: 'cyst' },
+            { id: 'ila', label: 'D', desc: 'Nevýrazné retikulace či GGO bez podezření na ILD.', outcome: 'ila' }
+        ]
+    },
+    nod: {
+        section: 'Nodulární vzorec',
+        question: 'Jaká je distribuce uzlíků vůči sekundárnímu plicnímu lalůčku a pleuře?',
+        options: [
+            { id: 'peri', label: 'A', desc: 'Perilymfatická (podél interlobulárních sept, fisur, subpleurálně).', outcome: 'sarcoid' },
+            { id: 'cent', label: 'B', desc: 'Centrilobulární (uzlíky šetří pleuru, > 2 mm od kraje lalůčku).', next: 'tib' },
+            { id: 'rand', label: 'C', desc: 'Random / náhodná (uzlíky difuzně, asymetrické, zasahují pleuru bez preference).', outcome: 'random_nod' }
+        ]
+    },
+    tib: {
+        section: 'Centrilobulární uzlíky',
+        question: 'Je přítomen „tree-in-bud“?',
+        options: [{ id: 'ano', label: 'ANO', outcome: 'tib_inf' }, { id: 'ne', label: 'NE', outcome: 'nfhp_rb' }]
+    },
+    dens: {
+        section: 'Zvýšení denzity',
+        question: 'Jaký je charakter opacit?',
+        options: [
+            { id: 'op', label: 'A', desc: 'Plošné konsolidace (často peribronchovaskulárně/subpleurálně), migrující charakter, „reversed halo sign“ (atoll sign).', outcome: 'op' },
+            { id: 'ggo', label: 'B', desc: 'Čisté GGO bez trakčních bronchiektázií (často difuzně nebo se šetřením pleury).', outcome: 'ggo_cell' },
+            { id: 'crazy', label: 'C', desc: 'Crazy-paving (výrazné plošné GGO protkané ztluštělými septy).', outcome: 'crazy' }
+        ]
+    },
+    cyst: {
+        section: 'Cystický vzorec',
+        question: 'Jaký je tvar, rozložení cyst a fenotyp pacienta?',
+        options: [
+            { id: 'plch', label: 'A', desc: 'Nepravidelné, bizardní cysty s noduly, v horních lalocích u kuřáků.', outcome: 'plch' },
+            { id: 'lam', label: 'B', desc: 'Uniformní, pravidelné, tenkostěnné okrouhlé cysty difuzně ve všech polích u žen.', outcome: 'lam' },
+            { id: 'lip', label: 'C', desc: 'Cysty v zónách GGO, úzký vztah k cévám (perivaskulární).', outcome: 'lip' },
+            { id: 'bhd', label: 'D', desc: 'Paramediastinální a bazálně uložené cysty, často čočkovitého (lentiformního) tvaru.', outcome: 'bhd' }
+        ]
     }
-    return null;
-}
+};
 
-function resolveIldTree(examId) {
-    const fib = ildChoice(examId, 'ild_fib', [{ id: 'ano' }, { id: 'ne' }]);
-    if (!fib) return null;
-
-    if (fib === 'ano') {
-        const cpfe = ildChoice(examId, 'ild_cpfe', [{ id: 'ano' }, { id: 'ne' }]);
-        if (!cpfe) return null;
-        if (cpfe === 'ano') return ILD_OUTCOMES.cpfe;
-
-        const uipHc = ildChoice(examId, 'ild_uip', [{ id: 'ano' }, { id: 'ne' }]);
-        if (!uipHc) return null;
-        if (uipHc === 'ano') return ILD_OUTCOMES.uip;
-
-        const prob = ildChoice(examId, 'ild_prob', [{ id: 'ano' }, { id: 'ne' }]);
-        if (!prob) return null;
-        if (prob === 'ano') return ILD_OUTCOMES.probable_uip;
-
-        const morph = ildChoice(examId, 'ild_morph', [
-            { id: 'fhp' }, { id: 'nsip' }, { id: 'asbest' }, { id: 'indet' }
-        ]);
-        if (!morph) return null;
-        if (morph === 'fhp') return ILD_OUTCOMES.fhp;
-        if (morph === 'nsip') return ILD_OUTCOMES.nsip_fib;
-        if (morph === 'asbest') return ILD_OUTCOMES.asbest;
-        if (morph === 'indet') return ILD_OUTCOMES.indeterminate;
-        return null;
+/* Projde strom podle aktuálních voleb:
+   path = klíče uzlů k vykreslení (včetně dosud nezodpověděného),
+   outcome = výsledek ILD_OUTCOMES, nebo null (větev není dokončená). */
+function ildPath(examId) {
+    const path = [];
+    let key = 'fib';
+    while (key) {
+        const node = ILD_TREE[key];
+        path.push(key);
+        const opt = node.options.find(o => ildIsOn(examId, `ild_${key}_${o.id}`));
+        if (!opt) return { path, outcome: null };
+        if (opt.outcome) return { path, outcome: ILD_OUTCOMES[opt.outcome] || null };
+        key = opt.next;
     }
-
-    const pattern = ildChoice(examId, 'ild_pat', [
-        { id: 'nod' }, { id: 'dens' }, { id: 'cyst' }, { id: 'ila' }
-    ]);
-    if (!pattern) return null;
-
-    if (pattern === 'ila') return ILD_OUTCOMES.ila;
-
-    if (pattern === 'nod') {
-        const dist = ildChoice(examId, 'ild_nod', [
-            { id: 'peri' }, { id: 'cent' }, { id: 'rand' }
-        ]);
-        if (!dist) return null;
-        if (dist === 'peri') return ILD_OUTCOMES.sarcoid;
-        if (dist === 'rand') return ILD_OUTCOMES.random_nod;
-        if (dist === 'cent') {
-            const tib = ildChoice(examId, 'ild_tib', [{ id: 'ano' }, { id: 'ne' }]);
-            if (!tib) return null;
-            return tib === 'ano' ? ILD_OUTCOMES.tib_inf : ILD_OUTCOMES.nfhp_rb;
-        }
-        return null;
-    }
-
-    if (pattern === 'dens') {
-        const ch = ildChoice(examId, 'ild_dens', [
-            { id: 'op' }, { id: 'ggo' }, { id: 'crazy' }
-        ]);
-        if (!ch) return null;
-        if (ch === 'op') return ILD_OUTCOMES.op;
-        if (ch === 'ggo') return ILD_OUTCOMES.ggo_cell;
-        if (ch === 'crazy') return ILD_OUTCOMES.crazy;
-        return null;
-    }
-
-    if (pattern === 'cyst') {
-        const c = ildChoice(examId, 'ild_cyst', [
-            { id: 'plch' }, { id: 'lam' }, { id: 'lip' }, { id: 'bhd' }
-        ]);
-        if (!c) return null;
-        return ILD_OUTCOMES[c] || null;
-    }
-
-    return null;
+    return { path, outcome: null };
 }
 
 function ildStepBlock(helpers, { section, question, exclId, options }) {
@@ -245,135 +261,9 @@ function ildStepBlock(helpers, { section, question, exclId, options }) {
 }
 
 function buildIldTreeTable(helpers, examId) {
-    const blocks = [];
+    const { path, outcome } = ildPath(examId);
+    const blocks = path.map(key => ildStepBlock(helpers, { ...ILD_TREE[key], exclId: `ild_${key}` }));
 
-    blocks.push(ildStepBlock(helpers, {
-        section: null,
-        question: 'Jsou přítomny známky plicní fibrózy? (Retikulace, trakční bronchiektázie/bronchiolektázie, ztráta objemu plic, plástvovatění/honeycombing)',
-        exclId: 'ild_fib',
-        options: [{ id: 'ano', label: 'ANO' }, { id: 'ne', label: 'NE' }]
-    }));
-
-    const fib = ildChoice(examId, 'ild_fib', [{ id: 'ano' }, { id: 'ne' }]);
-
-    if (fib === 'ano') {
-        blocks.push(ildStepBlock(helpers, {
-            section: 'Fibrotizující procesy',
-            question: 'Je přítomen syndrom CPFE? (Emfyzém/buly v horních lalocích + fibrotické změny v dolních lalocích u kuřáka)',
-            exclId: 'ild_cpfe',
-            options: [{ id: 'ano', label: 'ANO' }, { id: 'ne', label: 'NE' }]
-        }));
-
-        const cpfe = ildChoice(examId, 'ild_cpfe', [{ id: 'ano' }, { id: 'ne' }]);
-        if (cpfe === 'ne') {
-            blocks.push(ildStepBlock(helpers, {
-                section: 'Fibrotizující procesy',
-                question: 'Je přítomno pravé plástvovatění (honeycombing) se subpleurální a bazální predominancí BEZ znaků inkonzistentních s UIP (kraniokaudální distribuce, nodulace, výrazné GGO, konsolidace, mozaika, cysty, pleurální pláty)?',
-                exclId: 'ild_uip',
-                options: [{ id: 'ano', label: 'ANO' }, { id: 'ne', label: 'NE' }]
-            }));
-
-            const uip = ildChoice(examId, 'ild_uip', [{ id: 'ano' }, { id: 'ne' }]);
-            if (uip === 'ne') {
-                blocks.push(ildStepBlock(helpers, {
-                    section: 'Fibrotizující bez honeycombingu',
-                    question: 'Jsou přítomny retikulace a trakční bronchiektázie v subpleurální a bazální distribuci BEZ znaků inkonzistentních s UIP?',
-                    exclId: 'ild_prob',
-                    options: [{ id: 'ano', label: 'ANO' }, { id: 'ne', label: 'NE' }]
-                }));
-
-                const prob = ildChoice(examId, 'ild_prob', [{ id: 'ano' }, { id: 'ne' }]);
-                if (prob === 'ne') {
-                    blocks.push(ildStepBlock(helpers, {
-                        section: 'Fibrotizující – jiné vzorce / Inkonzistentní s UIP',
-                        question: 'Jaká je distribuce a průvodní morfologie?',
-                        exclId: 'ild_morph',
-                        options: [
-                            {
-                                id: 'fhp',
-                                label: 'A',
-                                desc: 'Vzorec tří denzit (Three-density pattern) NEBO kraniokaudální dominance ve středních/horních polích. (Kombinace normálního parenchymu, GGO a mozaikové atenuace/air-trappingu).'
-                            },
-                            {
-                                id: 'nsip',
-                                label: 'B',
-                                desc: 'Relativní šetření (sparing) bezprostředního subpleurálního prostoru, axiálně podél peribronchovaskulárních svazků, často s GGO.'
-                            },
-                            {
-                                id: 'asbest',
-                                label: 'C',
-                                desc: 'Pleurální pláty v kombinaci s retikulacemi bazálně/subpleurálně.'
-                            },
-                            {
-                                id: 'indet',
-                                label: 'D',
-                                desc: 'Nespecifické jemné retikulace bez jasné distribuce.'
-                            }
-                        ]
-                    }));
-                }
-            }
-        }
-    } else if (fib === 'ne') {
-        blocks.push(ildStepBlock(helpers, {
-            section: 'Nefibrotizující procesy',
-            question: 'Jaký je dominantní morfologický vzorec?',
-            exclId: 'ild_pat',
-            options: [
-                { id: 'nod', label: 'A', desc: 'Nodulární vzorec.' },
-                { id: 'dens', label: 'B', desc: 'Zvýšení denzity (GGO, konsolidace, crazy-paving).' },
-                { id: 'cyst', label: 'C', desc: 'Cystický vzorec (dutiny s tenkou stěnou < 2 mm, nesouvisející s emfyzémem).' },
-                { id: 'ila', label: 'D', desc: 'Nevýrazné retikulace či GGO bez podezření na ILD.' }
-            ]
-        }));
-
-        const pat = ildChoice(examId, 'ild_pat', [{ id: 'nod' }, { id: 'dens' }, { id: 'cyst' }, { id: 'ila' }]);
-        if (pat === 'nod') {
-            blocks.push(ildStepBlock(helpers, {
-                section: 'Nodulární vzorec',
-                question: 'Jaká je distribuce uzlíků vůči sekundárnímu plicnímu lalůčku a pleuře?',
-                exclId: 'ild_nod',
-                options: [
-                    { id: 'peri', label: 'A', desc: 'Perilymfatická (podél interlobulárních sept, fisur, subpleurálně).' },
-                    { id: 'cent', label: 'B', desc: 'Centrilobulární (uzlíky šetří pleuru, > 2 mm od kraje lalůčku).' },
-                    { id: 'rand', label: 'C', desc: 'Random / náhodná (uzlíky difuzně, asymetrické, zasahují pleuru bez preference).' }
-                ]
-            }));
-            if (ildChoice(examId, 'ild_nod', [{ id: 'cent' }]) === 'cent') {
-                blocks.push(ildStepBlock(helpers, {
-                    section: 'Centrilobulární uzlíky',
-                    question: 'Je přítomen „tree-in-bud“?',
-                    exclId: 'ild_tib',
-                    options: [{ id: 'ano', label: 'ANO' }, { id: 'ne', label: 'NE' }]
-                }));
-            }
-        } else if (pat === 'dens') {
-            blocks.push(ildStepBlock(helpers, {
-                section: 'Zvýšení denzity',
-                question: 'Jaký je charakter opacit?',
-                exclId: 'ild_dens',
-                options: [
-                    { id: 'op', label: 'A', desc: 'Plošné konsolidace (často peribronchovaskulárně/subpleurálně), migrující charakter, „reversed halo sign“ (atoll sign).' },
-                    { id: 'ggo', label: 'B', desc: 'Čisté GGO bez trakčních bronchiektázií (často difuzně nebo se šetřením pleury).' },
-                    { id: 'crazy', label: 'C', desc: 'Crazy-paving (výrazné plošné GGO protkané ztluštělými septy).' }
-                ]
-            }));
-        } else if (pat === 'cyst') {
-            blocks.push(ildStepBlock(helpers, {
-                section: 'Cystický vzorec',
-                question: 'Jaký je tvar, rozložení cyst a fenotyp pacienta?',
-                exclId: 'ild_cyst',
-                options: [
-                    { id: 'plch', label: 'A', desc: 'Nepravidelné, bizardní cysty s noduly, v horních lalocích u kuřáků.' },
-                    { id: 'lam', label: 'B', desc: 'Uniformní, pravidelné, tenkostěnné okrouhlé cysty difuzně ve všech polích u žen.' },
-                    { id: 'lip', label: 'C', desc: 'Cysty v zónách GGO, úzký vztah k cévám (perivaskulární).' },
-                    { id: 'bhd', label: 'D', desc: 'Paramediastinální a bazálně uložené cysty, často čočkovitého (lentiformního) tvaru.' }
-                ]
-            }));
-        }
-    }
-
-    const outcome = resolveIldTree(examId);
     if (outcome) {
         blocks.push(el('div', {
             className: 'label',
@@ -403,7 +293,7 @@ function buildIldTreeTable(helpers, examId) {
                 textContent: '×',
                 title: 'Zavřít',
                 'data-action': 'open-table',
-                'data-table': 'thorax_plice_main'
+                'data-table': 'group:thorax_plice_main,thorax_pleura_main'
             })
         ]));
     }
@@ -412,8 +302,58 @@ function buildIldTreeTable(helpers, examId) {
 
 const RegionThorax = {
         title: 'Hrudník',
+
+    /* Nabídky stavů na jednom místě - v layoutu se odkazuje jako { btn: 'plus', id: 'ma_mast_r' }. */
+    buttons: {
+        plus:    { states: ['0', '+'] },
+        pocet:   { states: ['0', '1', 'více'] },
+        cystoid: { states: ['0', 'cystoid', 'kombinace', 'solidní'] },
+        /* plicní segmenty podle laloku */
+        seg_hl:  { states: ['0', '+', 'S1', 'S2', 'S3'] },
+        seg_sl:  { states: ['0', '+', 'S4', 'S5'] },
+        seg_dl:  { states: ['0', '+', 'S6', 'S7', 'S8', 'S9', 'S10'] },
+        seg_ma:  { states: ['0', 'HZK', 'HVK', 'DVK', 'DZK'] },
+        jicen:   { states: ['jícen', 'horní', 'střední', 'dolní'] },
+        /* plicní operace: pravé plíce mají navíc střední lalok */
+        lalok_r: { states: ['0', 'H', 'S', 'D'] },
+        lalok_l: { states: ['0', 'H', 'D'] },
+        /* TNM uzlina: popisek přebírá z tabulky lnTnm */
+        ln:      { type: 'basic' }
+    },
+
+    /* Lokalizace ložiska: [klíč, popisek, nabídka stavů]. */
+    sites: [
+        ['pulm', 'plíce', 'plus'], ['hl', 'horní lalok', 'seg_hl'],
+        ['sl', 'střední lalok / lingula', 'seg_sl'], ['dl', 'dolní lalok', 'seg_dl'],
+        ['pl', 'pleura', 'plus'], ['sw', 'hrudní stěna', 'plus'],
+        ['ma', 'mamma', 'seg_ma'], ['th', 'thymus', 'plus']
+    ],
+
+    /* TNM uzliny: [klíč, vpravo, střed, vlevo]; null = bez tlačítka.
+       med/hil/axi/im nejsou "regie" - v závěru mají vlastní formulaci. */
+    lnTnm: [
+        ['med', 'Med', 'Med', 'Med'],
+        ['1', '1R', null, '1L'],
+        ['2', '2R', null, '2L'],
+        ['3a', null, '3A', null],
+        ['3p', null, '3P', null],
+        ['4', '4R', null, '4L'],
+        ['5', null, '5', null],
+        ['6', null, '6', null],
+        ['7', null, '7', null],
+        ['8', null, '8', null],
+        ['hil', 'Hilus', null, 'Hilus'],
+        ['10', '10R', null, '10L'],
+        ['11', '11-14R', null, '11-14L'],
+        ['axi', 'Axila', null, 'Axila'],
+        ['im', 'IM', null, 'IM']
+    ],
+    lnTnmMimoRegie: ['med', 'hil', 'axi', 'im'],
+
         layout: (helpers) => {
             let layoutNodes = [];
+            /* Rozměrové pole v mm (step 5, u aorty 1). */
+            const mm = (id, step = 5) => ({ field: 'mm', id, placeholder: 'mm', step });
 
             const lesInsts = Store.instances?.['thorax_lesion_main'] || [];
             lesInsts.forEach((instId, idx) => {
@@ -422,15 +362,10 @@ const RegionThorax = {
                     helpers.LesionMain(`thorax_lesion_main__${instId}`, `Léze (${idx + 1})`, [
                         ...LESIONS_DEFINITION.getLesionRowsPre(helpers, p, 'konsolidace'),
                         helpers.Table3colRCL(`${p}_r3`, 'Lokalizace', [
-                            [ { btn: `${p}_p_pulm_r`, states: ['0', '+'] }, 'plíce', { btn: `${p}_p_pulm_l`, states: ['0', '+'] } ],
-                            [ { btn: `${p}_p_hl_r`, states: ['0', '+', 'S1', 'S2', 'S3'] }, 'horní lalok', { btn: `${p}_p_hl_l`, states: ['0', '+', 'S1', 'S2', 'S3'] } ],
-                            [ { btn: `${p}_p_sl_r`, states: ['0', '+', 'S4', 'S5'] }, 'střední lalok / lingula', { btn: `${p}_p_sl_l`, states: ['0', '+', 'S4', 'S5'] } ],
-                            [ { btn: `${p}_p_dl_r`, states: ['0', '+',  'S6', 'S7', 'S8', 'S9', 'S10'] }, 'dolní lalok', { btn: `${p}_p_dl_l`, states: ['0', '+', 'S6', 'S7', 'S8', 'S9', 'S10'] } ],
-                            [ { btn: `${p}_p_pl_r`, states: ['0', '+'] }, 'pleura', { btn: `${p}_p_pl_l`, states: ['0', '+'] } ],
-                            [ { btn: `${p}_p_sw_r`, states: ['0', '+'] }, 'hrudní stěna', { btn: `${p}_p_sw_l`, states: ['0', '+'] } ],
-                            [ { btn: `${p}_p_ma_r`, states: ['0', 'HZK', 'HVK', 'DVK', 'DZK'] }, 'mamma', { btn: `${p}_p_ma_l`, states: ['0', 'HZK', 'HVK', 'DVK', 'DZK'] } ],
-                            [ { btn: `${p}_p_th_r`, states: ['0', '+'] }, 'thymus', { btn: `${p}_p_th_l`, states: ['0', '+'] } ],
-                            [ '', { btn: `${p}_p_ji`, states: ['jícen', 'horní', 'střední', 'dolní'] }, '' ]
+                            ...RegionThorax.sites.map(([site, label, btn]) => [
+                                { btn, id: `${p}_p_${site}_r` }, label, { btn, id: `${p}_p_${site}_l` }
+                            ]),
+                            [ '', { btn: 'jicen', id: `${p}_p_ji` }, '' ]
                         ]),
                         ...LESIONS_DEFINITION.getLesionRowsPost(helpers, p, `${p}_met`, `${p}_e`)
                     ])
@@ -443,59 +378,51 @@ const RegionThorax = {
                 layoutNodes.push(
                     helpers.LesionMain(`thorax_lymphnode_main__${instId}`, `Lymfadenopatie (${idx + 1})`, [
                         ...LESIONS_DEFINITION.getLymphNodeRowsPre(helpers, p),
-                        helpers.Table3colRCL(`${p}_r3`, 'Lokalizace', [
-                            [ { btn: `${p}_p_med_r`, type: 'basic', text: 'Med' }, { btn: `${p}_p_med_c`, type: 'basic', text: 'Med' }, { btn: `${p}_p_med_l`, type: 'basic', text: 'Med' } ],
-                            [ { btn: `${p}_p_1_r`, type: 'basic', text: '1R' }, '', { btn: `${p}_p_1_l`, type: 'basic', text: '1L' } ],
-                            [ { btn: `${p}_p_2_r`, type: 'basic', text: '2R' }, '', { btn: `${p}_p_2_l`, type: 'basic', text: '2L' } ],
-                            [ '', { btn: `${p}_p_3a_c`, type: 'basic', text: '3A' }, '' ],
-                            [ '', { btn: `${p}_p_3p_c`, type: 'basic', text: '3P' }, '' ],
-                            [ { btn: `${p}_p_4_r`, type: 'basic', text: '4R' }, '', { btn: `${p}_p_4_l`, type: 'basic', text: '4L' } ],
-                            [ '', { btn: `${p}_p_5_c`, type: 'basic', text: '5' }, '' ],
-                            [ '', { btn: `${p}_p_6_c`, type: 'basic', text: '6' }, '' ],
-                            [ '', { btn: `${p}_p_7_c`, type: 'basic', text: '7' }, '' ],
-                            [ '', { btn: `${p}_p_8_c`, type: 'basic', text: '8' }, '' ],
-                            [ { btn: `${p}_p_hil_r`, type: 'basic', text: 'Hilus' }, '', { btn: `${p}_p_hil_l`, type: 'basic', text: 'Hilus' } ],
-                            [ { btn: `${p}_p_10_r`, type: 'basic', text: '10R' }, '', { btn: `${p}_p_10_l`, type: 'basic', text: '10L' } ],
-                            [ { btn: `${p}_p_11_r`, type: 'basic', text: '11-14R' }, '', { btn: `${p}_p_11_l`, type: 'basic', text: '11-14L' } ],
-                            [ { btn: `${p}_p_axi_r`, type: 'basic', text: 'Axila' }, '', { btn: `${p}_p_axi_l`, type: 'basic', text: 'Axila' } ],
-                            [ { btn: `${p}_p_im_r`, type: 'basic', text: 'IM' }, '', { btn: `${p}_p_im_l`, type: 'basic', text: 'IM' } ]
-                        ]),
+                        helpers.Table3colRCL(`${p}_r3`, 'Lokalizace', RegionThorax.lnTnm.map(([key, ...cells]) => cells.map((text, i) => (
+                            text ? { btn: 'ln', id: `${p}_p_${key}_${'rcl'[i]}`, text } : ''
+                        )))),
                         ...LESIONS_DEFINITION.getLymphNodeRowsPost(helpers, p, `${p}_met`, `${p}_e`)
                     ])
                 );
             });
 
             layoutNodes.push(
-                helpers.TableMain('thorax_plice_main', 'Plíce a Pleura', [
+                helpers.TableMain('thorax_plice_main', 'Plíce', [
                     helpers.Table3colRL('plice_fokal_table', 'Fokální změny', [
-                        [ { btn: 'pl_mikro_r', states: ['0', '1', 'více'] }, 'mikronodul', { btn: 'pl_mikro_l', states: ['0', '1', 'více'] } ],
-                        [ { btn: 'pl_nodul_r', states: ['0', '1', 'více'] }, 'nodul', { btn: 'pl_nodul_l', states: ['0', '1', 'více'] } ],
-                        [ { btn: 'pl_opac_r', states: ['0', '1', 'více'] }, 'opacita', { btn: 'pl_opac_l', states: ['0', '1', 'více'] } ],
-                        [ { btn: 'pl_kons_r', states: ['0', '1', 'více'] }, 'konsolidace', { btn: 'pl_kons_l', states: ['0', '1', 'více'] } ],
-                        [ { btn: 'pl_hypo_r', states: ['0', '1', 'více'] }, 'hypoventilace', { btn: 'pl_hypo_l', states: ['0', '1', 'více'] } ],
-                        [ { btn: 'pl_jizva_r', states: ['0', '1', 'více'] }, 'jizva', { btn: 'pl_jizva_l', states: ['0', '1', 'více'] } ],
-                        [ { btn: 'pl_rad_r', states: ['0', '+'] }, 'poradiační', { btn: 'pl_rad_l', states: ['0', '+'] } ]
+                        [ { btn: 'pocet', id: 'pl_mikro_r' }, 'mikronodul', { btn: 'pocet', id: 'pl_mikro_l' } ],
+                        [ { btn: 'pocet', id: 'pl_nodul_r' }, 'nodul', { btn: 'pocet', id: 'pl_nodul_l' } ],
+                        [ { btn: 'pocet', id: 'pl_opac_r' }, 'opacita', { btn: 'pocet', id: 'pl_opac_l' } ],
+                        [ { btn: 'pocet', id: 'pl_kons_r' }, 'konsolidace', { btn: 'pocet', id: 'pl_kons_l' } ],
+                        [ { btn: 'pocet', id: 'pl_hypo_r' }, 'hypoventilace', { btn: 'pocet', id: 'pl_hypo_l' } ],
+                        [ { btn: 'pocet', id: 'pl_jizva_r' }, 'jizva', { btn: 'pocet', id: 'pl_jizva_l' } ],
+                        [ { btn: 'plus', id: 'pl_rad_r' }, 'poradiační', { btn: 'plus', id: 'pl_rad_l' } ]
                     ]),
                     helpers.Table2colNormal('plice_difuz_table', 'Difuzní změny',[
                         [ 'Fibróza:', { btn: 'pl_fib', states: ['0', 'ANO'] } ],
                         [ 'Emfyzém:', { btn: 'pl_emf', states: ['0', 'parasept.', 'centrilob.', 'panacin.'] }, { btn: 'pl_emf_loc', states: ['distr.', 'apikálně', 'všude', 'bazálně'] } ]
                     ]),
                     helpers.Table3colRL('plice_op_table', 'Operace plic', [
-                        [ { btn: 'pl_op_pulm_r', states: ['0', '+'] }, 'pulmonektomie', { btn: 'pl_op_pulm_l', states: ['0', '+'] } ],
-                        [ { btn: 'pl_op_lob_r', states: ['0', 'H', 'S', 'D'] }, 'lobektomie', { btn: 'pl_op_lob_l', states: ['0', 'H', 'D'] } ],
-                        [ { btn: 'pl_op_res_r', states: ['0', 'H', 'S', 'D'] }, 'resekce', { btn: 'pl_op_res_l', states: ['0', 'H', 'D'] } ]
-                    ]),
-                    helpers.Table3colRL('pleura_ost_table', 'Pleura',[
-                        [ { field: 'mm', id: 'pl_tek_r', placeholder: 'mm', step: 5 }, 'tekutina:', { field: 'mm', id: 'pl_tek_l', placeholder: 'mm', step: 5 }],
-                        [ { field: 'mm', id: 'pl_tek_old_r', placeholder: 'mm', step: 5 }, 'minule:', { field: 'mm', id: 'pl_tek_old_l', placeholder: 'mm', step: 5 } ],
-                        [ { field: 'mm', id: 'pl_vzd_r', placeholder: 'mm', step: 5 }, 'vzduch:', { field: 'mm', id: 'pl_vzd_l', placeholder: 'mm', step: 5 }],
-                        [ { field: 'mm', id: 'pl_vzd_old_r', placeholder: 'mm', step: 5 }, 'minule:', { field: 'mm', id: 'pl_vzd_old_l', placeholder: 'mm', step: 5 } ],
-                        [ { btn: 'pl_akt_r', states: ['0', '+'] }, 'RF+', { btn: 'pl_akt_l', states: ['0', '+'] } ],
-                        [ { btn: 'pl_talk_r', states: ['0', '+'] }, 'talkáž', { btn: 'pl_talk_l', states: ['0', '+'] } ]
+                        [ { btn: 'plus', id: 'pl_op_pulm_r' }, 'pulmonektomie', { btn: 'plus', id: 'pl_op_pulm_l' } ],
+                        [ { btn: 'lalok_r', id: 'pl_op_lob_r' }, 'lobektomie', { btn: 'lalok_l', id: 'pl_op_lob_l' } ],
+                        [ { btn: 'lalok_r', id: 'pl_op_res_r' }, 'resekce', { btn: 'lalok_l', id: 'pl_op_res_l' } ]
                     ]),
                     helpers.Table1col('plice_ost_add', [
                         { field: 'text', id: 'plice_custom_desc', placeholder: 'vlastní...popis...' },
                         { field: 'text', id: 'plice_custom_conc', placeholder: 'vlastní...závěr...' }
+                    ], { normal: true })
+                ]),
+                helpers.TableMain('thorax_pleura_main', 'Pleura', [
+                    helpers.Table3colRL('pleura_ost_table', [
+                        [ mm('pl_tek_r'), 'tekutina:', mm('pl_tek_l')],
+                        [ mm('pl_tek_old_r'), 'minule:', mm('pl_tek_old_l') ],
+                        [ mm('pl_vzd_r'), 'vzduch:', mm('pl_vzd_l')],
+                        [ mm('pl_vzd_old_r'), 'minule:', mm('pl_vzd_old_l') ],
+                        [ { btn: 'plus', id: 'pl_akt_r' }, 'RF+', { btn: 'plus', id: 'pl_akt_l' } ],
+                        [ { btn: 'plus', id: 'pl_talk_r' }, 'talkáž', { btn: 'plus', id: 'pl_talk_l' } ]
+                    ]),
+                    helpers.Table1col('pleura_ost_add', [
+                        { field: 'text', id: 'pleura_custom_desc', placeholder: 'vlastní...popis...' },
+                        { field: 'text', id: 'pleura_custom_conc', placeholder: 'vlastní...závěr...' }
                     ], { normal: true })
                 ])
             );
@@ -506,12 +433,12 @@ const RegionThorax = {
             layoutNodes.push(
                 helpers.TableMain('thorax_mamma_main', 'Mamma', [
                     helpers.Table3colRL('mamma_table', [
-                        [ { btn: 'ma_mast_r', states: ['0', '+'] }, 'mastektomie', { btn: 'ma_mast_l', states: ['0', '+'] } ],
-                        [ { btn: 'ma_kvad_r', states: ['0', '+'] }, 'kvadrantektomie', { btn: 'ma_kvad_l', states: ['0', '+'] } ],
-                        [ { btn: 'ma_res_r', states: ['0', '+'] }, 'resekce', { btn: 'ma_res_l', states: ['0', '+'] } ],
-                        [ { btn: 'ma_nahr_r', states: ['0', '+'] }, 'náhrada', { btn: 'ma_nahr_l', states: ['0', '+'] } ],
-                        [ { btn: 'ma_aug_r', states: ['0', '+'] }, 'augmentace', { btn: 'ma_aug_l', states: ['0', '+'] } ],
-                        [ { btn: 'ma_koz_r', states: ['0', '+'] }, 'kožní zesílení', { btn: 'ma_koz_l', states: ['0', '+'] } ]
+                        [ { btn: 'plus', id: 'ma_mast_r' }, 'mastektomie', { btn: 'plus', id: 'ma_mast_l' } ],
+                        [ { btn: 'plus', id: 'ma_kvad_r' }, 'kvadrantektomie', { btn: 'plus', id: 'ma_kvad_l' } ],
+                        [ { btn: 'plus', id: 'ma_res_r' }, 'resekce', { btn: 'plus', id: 'ma_res_l' } ],
+                        [ { btn: 'plus', id: 'ma_nahr_r' }, 'náhrada', { btn: 'plus', id: 'ma_nahr_l' } ],
+                        [ { btn: 'plus', id: 'ma_aug_r' }, 'augmentace', { btn: 'plus', id: 'ma_aug_l' } ],
+                        [ { btn: 'plus', id: 'ma_koz_r' }, 'kožní zesílení', { btn: 'plus', id: 'ma_koz_l' } ]
                     ]),
                     helpers.Table1col('mamma_ost_add', [
                         { field: 'text', id: 'mamma_custom_desc', placeholder: 'vlastní...popis...' },
@@ -521,8 +448,8 @@ const RegionThorax = {
                 helpers.TableMain('thorax_jicen_main', 'Jícen', [
                     helpers.Table2colNormal('jicen_table', [
                         [ 'Hiátová hernie', { btn: 'ji_hernie', states: ['0', 'drobná', 'větší', 'upside-down'] } ],
-                        [ 'RF+ distálně', { btn: 'ji_aktdist', states: ['0', '+'] } ],
-                        [ 'RF+ difuzně', { btn: 'ji_aktdif', states: ['0', '+'] } ],
+                        [ 'RF+ distálně', { btn: 'plus', id: 'ji_aktdist' } ],
+                        [ 'RF+ difuzně', { btn: 'plus', id: 'ji_aktdif' } ],
                         [ 'Resekce', { btn: 'ji_res', states: ['0', '+', 'žaludek', 'tračník'] } ]
                     ]),
                     helpers.Table1col('jicen_ost_add', [
@@ -532,11 +459,11 @@ const RegionThorax = {
                 ]),
                 helpers.TableMain('thorax_thymus_main', 'Mediastinum', [
                     helpers.Table2colNormal('thymus_table', [
-                        [ 'Thymus - zvětšení', { btn: 'th_zvet', states: ['0', '+'] } ],
-                        [ 'Thymus RF+', { btn: 'th_akt', states: ['0', '+'] } ],
-                        [ 'Přední med.', { btn: 'th_med_pred', states: ['0', 'cystoid', 'kombinace', 'solidní'] } ],
-                        [ 'Střední med.', { btn: 'th_med_stred', states: ['0', 'cystoid', 'kombinace', 'solidní'] } ],
-                        [ 'Zadní med.', { btn: 'th_med_zad', states: ['0', 'cystoid', 'kombinace', 'solidní'] } ]
+                        [ 'Thymus - zvětšení', { btn: 'plus', id: 'th_zvet' } ],
+                        [ 'Thymus RF+', { btn: 'plus', id: 'th_akt' } ],
+                        [ 'Přední med.', { btn: 'cystoid', id: 'th_med_pred' } ],
+                        [ 'Střední med.', { btn: 'cystoid', id: 'th_med_stred' } ],
+                        [ 'Zadní med.', { btn: 'cystoid', id: 'th_med_zad' } ]
                     ]),
                     helpers.Table1col('thymus_ost_add', [
                         { field: 'text', id: 'thymus_custom_desc', placeholder: 'vlastní...popis...' },
@@ -546,11 +473,11 @@ const RegionThorax = {
                 helpers.TableMain('thorax_srdce_main', 'Srdce', [
                     helpers.Table2colNormal('srdce_table', [
                         [ 'Dilatace srdce', { btn: 'sr_dil', states: ['0', 'síní', 'celého'] } ],
-                        [ 'Dilatace aorty', { btn: 'sr_dil_ao', states: ['0', 'kořene', 'ascendentní', 'oboje'] }, { field: 'mm', id: 'sr_dil_ao_mm', placeholder: 'mm', step: 1 } ],
+                        [ 'Dilatace aorty', { btn: 'sr_dil_ao', states: ['0', 'kořene', 'ascendentní', 'oboje'] }, mm('sr_dil_ao_mm', 1) ],
                         [ 'Náhrada chlopně', { btn: 'sr_chl', states: ['0', 'Ao', 'Mi', 'obou', 'Ao+Asc R'] } ],
-                        [ 'AS koronárek', { btn: 'sr_as', states: ['0', '+'] } ],
-                        [ 'Perikard. výpotek:', { field: 'mm', id: 'sr_tek_mm', placeholder: 'mm', step: 5 } ],
-                        [ 'Minule:', { field: 'mm', id: 'sr_tek_old_mm', placeholder: 'mm', step: 5 } ]
+                        [ 'AS koronárek', { btn: 'plus', id: 'sr_as' } ],
+                        [ 'Perikard. výpotek:', mm('sr_tek_mm') ],
+                        [ 'Minule:', mm('sr_tek_old_mm') ]
                     ]),
                     helpers.Table1col('srdce_ost_add', [
                         { field: 'text', id: 'srdce_custom_desc', placeholder: 'vlastní...popis...' },
@@ -559,11 +486,11 @@ const RegionThorax = {
                 ]),
                 helpers.TableMain('thorax_devices_main', 'Devices', [
                     helpers.Table3colRL('devices_table', [
-                        [ { btn: 'dev_port_r', states: ['0', '+'] }, 'portkatetr', { btn: 'dev_port_l', states: ['0', '+'] } ],
-                        [ { btn: 'dev_picc_r', states: ['0', '+'] }, 'PICC', { btn: 'dev_picc_l', states: ['0', '+'] } ],
-                        [ { btn: 'dev_cvk_r', states: ['0', '+'] }, 'CVK', { btn: 'dev_cvk_l', states: ['0', '+'] } ],
-                        [ { btn: 'dev_ks_r', states: ['0', '+'] }, 'KS', { btn: 'dev_ks_l', states: ['0', '+'] } ],
-                        [ { btn: 'dev_icd_r', states: ['0', '+'] }, 'ICD', { btn: 'dev_icd_l', states: ['0', '+'] } ]
+                        [ { btn: 'plus', id: 'dev_port_r' }, 'portkatetr', { btn: 'plus', id: 'dev_port_l' } ],
+                        [ { btn: 'plus', id: 'dev_picc_r' }, 'PICC', { btn: 'plus', id: 'dev_picc_l' } ],
+                        [ { btn: 'plus', id: 'dev_cvk_r' }, 'CVK', { btn: 'plus', id: 'dev_cvk_l' } ],
+                        [ { btn: 'plus', id: 'dev_ks_r' }, 'KS', { btn: 'plus', id: 'dev_ks_l' } ],
+                        [ { btn: 'plus', id: 'dev_icd_r' }, 'ICD', { btn: 'plus', id: 'dev_icd_l' } ]
                     ]),
                     helpers.Table1col('devices_ost_add', [
                         { field: 'text', id: 'devices_custom_desc', placeholder: 'vlastní...popis...' },
@@ -587,8 +514,6 @@ const RegionThorax = {
             
             const examId = ctx.examId || 'default';
             const formatList = formatCzechList;
-            const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-
             const isPET = (examId || '').toLowerCase().includes('pet');
 
             const lesInsts = Store.instances?.['thorax_lesion_main'] || [];
@@ -654,20 +579,10 @@ const RegionThorax = {
                         else if (jiVal === 'dolní') lokace.push('v dolním jícnu');
                     }
 
-                    let lokText = lokace.length > 0 ? formatCzechList(lokace) : '';
-                    
-                    let d = LESIONS_DEFINITION.parseDetails(ctx, examId, 'thorax', p, `${p}_met`, `${p}_e`, false);
-
-                    if (d.hasAny || lokace.length > 0) {
-                        let repSentence = `${d.baseText} ${lokText}${d.doplneniStr}${d.vzhledText}${d.metrikyStr}.`.replace(/\s+/g, ' ').replace(' .', '.').trim();
-                        reportOut.push({ type: 'frame', text: repSentence, tableId: `thorax_lesion_main__${instId}` });
-                        
-                        let concSentence = `${d.baseText} ${lokText}${d.doplneniStr}${d.actStr}${d.dynStr}`;
-                        if (d.etioStr) concSentence += `: ${d.etioStr}.`;
-                        else concSentence += `.`;
-                        
-                        concSentence = concSentence.replace(/\s+/g, ' ').replace(' : ', ': ').replace(' .', '.');
-                        concMain.push({ type: 'frame', text: concSentence, tableId: `thorax_lesion_main__${instId}` });
+                    const f = LESIONS_DEFINITION.frames(ctx, { examId, regionId: 'thorax', p, tableId: `thorax_lesion_main__${instId}`, lokace });
+                    if (f) {
+                        reportOut.push(f.report);
+                        concMain.push(f.conc);
                     }
                 });
 
@@ -690,22 +605,12 @@ const RegionThorax = {
                     else if (med_l) lokaceLN.push('v mediastinu vlevo');
 
                     let activeRegs = [];
-                    if (ctx.isActive(`${p}_p_1_r`)) activeRegs.push('1R');
-                    if (ctx.isActive(`${p}_p_1_l`)) activeRegs.push('1L');
-                    if (ctx.isActive(`${p}_p_2_r`)) activeRegs.push('2R');
-                    if (ctx.isActive(`${p}_p_2_l`)) activeRegs.push('2L');
-                    if (ctx.isActive(`${p}_p_3a_c`)) activeRegs.push('3A');
-                    if (ctx.isActive(`${p}_p_3p_c`)) activeRegs.push('3P');
-                    if (ctx.isActive(`${p}_p_4_r`)) activeRegs.push('4R');
-                    if (ctx.isActive(`${p}_p_4_l`)) activeRegs.push('4L');
-                    if (ctx.isActive(`${p}_p_5_c`)) activeRegs.push('5');
-                    if (ctx.isActive(`${p}_p_6_c`)) activeRegs.push('6');
-                    if (ctx.isActive(`${p}_p_7_c`)) activeRegs.push('7');
-                    if (ctx.isActive(`${p}_p_8_c`)) activeRegs.push('8');
-                    if (ctx.isActive(`${p}_p_10_r`)) activeRegs.push('10R');
-                    if (ctx.isActive(`${p}_p_10_l`)) activeRegs.push('10L');
-                    if (ctx.isActive(`${p}_p_11_r`)) activeRegs.push('11-14R');
-                    if (ctx.isActive(`${p}_p_11_l`)) activeRegs.push('11-14L');
+                    RegionThorax.lnTnm.forEach(([key, r, c, l]) => {
+                        if (RegionThorax.lnTnmMimoRegie.includes(key)) return;
+                        if (r && ctx.isActive(`${p}_p_${key}_r`)) activeRegs.push(r);
+                        if (c && ctx.isActive(`${p}_p_${key}_c`)) activeRegs.push(c);
+                        if (l && ctx.isActive(`${p}_p_${key}_l`)) activeRegs.push(l);
+                    });
 
                     if (activeRegs.length > 0) {
                         let prefix = activeRegs.length > 1 ? 'v regiích' : 'v regiu';
@@ -727,20 +632,10 @@ const RegionThorax = {
                     else if (im_r) lokaceLN.push('interní mammární vpravo');
                     else if (im_l) lokaceLN.push('interní mammární vlevo');
 
-                    let lokTextLN = lokaceLN.length > 0 ? formatCzechList(lokaceLN) : '';
-
-                    let dLN = LESIONS_DEFINITION.parseDetails(ctx, examId, 'thorax', p, `${p}_met`, `${p}_e`, true);
-
-                    if (dLN.hasAny || lokaceLN.length > 0) {
-                        let repSentence = `${dLN.baseText}${dLN.doplneniStr} ${lokTextLN}${dLN.vzhledText}${dLN.metrikyStr}.`.replace(/\s+/g, ' ').replace(' .', '.');
-                        reportOut.push({ type: 'frame', text: repSentence, tableId: `thorax_lymphnode_main__${instId}` });
-                        
-                        let concSentence = `${dLN.baseText}${dLN.doplneniStr} ${lokTextLN}${dLN.actStr}${dLN.dynStr}`;
-                        if (dLN.etioStr) concSentence += `: ${dLN.etioStr}.`;
-                        else concSentence += `.`;
-                        
-                        concSentence = concSentence.replace(/\s+/g, ' ').replace(' : ', ': ').replace(' .', '.');
-                        concMain.push({ type: 'frame', text: concSentence, tableId: `thorax_lymphnode_main__${instId}` });
+                    const f = LESIONS_DEFINITION.frames(ctx, { examId, regionId: 'thorax', p, tableId: `thorax_lymphnode_main__${instId}`, isLN: true, lokace: lokaceLN });
+                    if (f) {
+                        reportOut.push(f.report);
+                        concMain.push(f.conc);
                     }
                 });
             }
@@ -782,7 +677,7 @@ const RegionThorax = {
                 if (loc.isDifuzni) {
                     concInc.push({ type: 'frame', text: `Difuzní ${emfFull} plicní emfyzém.`, tableId: 'thorax_plice_main' });
                 } else {
-                    concInc.push({ type: 'frame', text: `${cap(emfFull)} plicní emfyzém${loc.conc}.`, tableId: 'thorax_plice_main' });
+                    concInc.push({ type: 'frame', text: `${capitalize(emfFull)} plicní emfyzém${loc.conc}.`, tableId: 'thorax_plice_main' });
                 }
             }
             
@@ -814,7 +709,7 @@ const RegionThorax = {
             if (resL && resMapL[resL]) allOps.push(resMapL[resL]);
 
             let pliceDesc = ctx.field('plice_custom_desc');
-            const ildOutcome = (fib === 'ANO') ? resolveIldTree(examId) : null;
+            const ildOutcome = (fib === 'ANO') ? ildPath(examId).outcome : null;
             
             let plicePhrases = [];
             if (fokalniRep.length > 0) plicePhrases.push(formatList(fokalniRep));
@@ -827,18 +722,14 @@ const RegionThorax = {
                 plicePhrases.push(descText);
             }
 
-            const pliceNormalLvl = ctx.normalLevel('plice_ost_add_normal');
-            const pliceNormal = pliceNormalLvl > 0;
-            if (pliceNormal || plicePhrases.length > 0) {
-                let body;
-                if (pliceNormal && plicePhrases.length > 0) body = `přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn. Jinak pouze ${plicePhrases.join(', ')}.`;
-                else if (pliceNormal) body = 'přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn.';
-                else body = plicePhrases.join(', ') + '.';
-                reportOut.push({ type: 'frame', text: `Plíce: ${body}`, tableId: 'thorax_plice_main' });
-            }
-            if (pliceNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Přiměřený nález na plicích, bez ložiskové léze.', tableId: 'thorax_plice_main' });
-            }
+            useSection(ctx.section({
+                label: 'Plíce', tableId: 'thorax_plice_main',
+                normal: 'plice_ost_add_normal',
+                normalText: 'přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn.',
+                normalConc: 'Přiměřený nález na plicích, bez ložiskové léze.',
+                concField: 'plice_custom_conc',
+                parts: [plicePhrases.join(', ')]
+            }), { report: reportOut, main: concMain, incidental: concInc });
             if (ildOutcome) {
                 let concTxt = ildOutcome.conc;
                 if (ildOutcome.recommend) concTxt += ' ' + ildOutcome.recommend;
@@ -846,6 +737,8 @@ const RegionThorax = {
             }
 
             let pleuraRep = [];
+            let pleuraMain = [];
+            let pleuraInc = [];
             let tekR = parseInt(ctx.field('pl_tek_r')) || 0, tekL = parseInt(ctx.field('pl_tek_l')) || 0;
             let minR = parseInt(ctx.field('pl_tek_old_r')) || 0, minL = parseInt(ctx.field('pl_tek_old_l')) || 0;
             let vzdR = parseInt(ctx.field('pl_vzd_r')) || 0, vzdL = parseInt(ctx.field('pl_vzd_l')) || 0;
@@ -879,7 +772,7 @@ const RegionThorax = {
                     pleuraRep.push(R && L ? `${fmt(R)}, ${fmt(L)}` : fmt(R || L));
                     concl = [R?.c, L?.c].filter(Boolean).join(', ');
                 }
-                concMain.push({ type: 'frame', text: `${cap(concl)}.`.replace('..', '.'), tableId: 'thorax_plice_main' });
+                pleuraMain.push(`${capitalize(concl)}.`.replace('..', '.'));
             };
 
             emitPleuraMm(tekR, tekL, minR, minL, 'tekutina', 'tekutina', 'fluidothorax');
@@ -891,19 +784,28 @@ const RegionThorax = {
                 let side = p && l ? 'bilat.' : (p ? 'vpravo' : 'vlevo');
                 if (k === 'pl_akt') {
                     pleuraRep.push(`zvýšená akumulace RF ${side} bez zřetelného zesílení`);
-                    concInc.push({ type: 'frame', text: `Zvýšená aktivita pleurálně ${side} bez patrné infiltrace: v.s. reaktivně / v rámci zánětu.`, tableId: 'thorax_plice_main' });
+                    pleuraInc.push(`Zvýšená aktivita pleurálně ${side} bez patrné infiltrace: v.s. reaktivně / v rámci zánětu.`);
                 } else {
                     pleuraRep.push(`difuzní pleurální zesílení s vysokou akumulací RF ${side} po talkáži`);
-                    concInc.push({ type: 'frame', text: `Pleurální reaktivní změny s vysokou aktivitou ${side} po talkáži.`, tableId: 'thorax_plice_main' });
+                    pleuraInc.push(`Pleurální reaktivní změny s vysokou aktivitou ${side} po talkáži.`);
                 }
             });
 
-            if (pleuraRep.length > 0) {
-                let text = formatCzechList(pleuraRep);
-                reportOut.push({ type: 'frame', text: `Pleura: ${text}.`, tableId: 'thorax_plice_main' });
-            }
+            useSection(ctx.section({
+                label: 'Pleurálně', tableId: 'thorax_pleura_main',
+                desc: 'pleura_custom_desc',
+                normal: 'pleura_ost_add_normal',
+                normalText: 'bez výpotku a bez pneumotoraxu.',
+                normalConc: 'Bez výpotku a bez pneumotoraxu.',
+                concField: 'pleura_custom_conc',
+                parts: [pleuraRep.length ? formatCzechList(pleuraRep) : ''],
+                main: pleuraMain,
+                incidental: pleuraInc
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
             /* --- AUTO-HODNOCENÍ VZDUŠNOSTI PLIC A PLEURY --- */
+            const pliceNormal = ctx.normalLevel('plice_ost_add_normal') > 0;
+            const pleuraNormal = ctx.normalLevel('pleura_ost_add_normal') > 0;
             let noFE = (!fib || fib === '0') && (!emf || emf === '0') && !ildOutcome;
             let noTek = !(tekR || tekL || minR || minL);
             let noVzd = !(vzdR || vzdL || vzdMinR || vzdMinL);
@@ -923,8 +825,8 @@ const RegionThorax = {
 
                 if (!hFok && !hKon && !hOp && !hPl) { txt = "Adekvátní plicní objem a vzdušnost."; top = true; }
                 else if (!hKon && !hOp && !hPl && hFok) txt = "Jinak adekvátní plicní objem a vzdušnost.";
-                else if ((kon.r || op.r || pl.r) && !(kon.l || op.l || pl.l)) txt = "Jinak vlevo adekvátní plicní objem a vzdušnost.";
-                else if ((kon.l || op.l || pl.l) && !(kon.r || op.r || pl.r)) txt = "Jinak vpravo adekvátní plicní objem a vzdušnost.";
+                else if ((kon.r || op.r || pl.r) && !(kon.l || op.l || pl.l)) txt = "Vlevo adekvátní plicní objem a vzdušnost.";
+                else if ((kon.l || op.l || pl.l) && !(kon.r || op.r || pl.r)) txt = "Vpravo adekvátní plicní objem a vzdušnost.";
             }
 
             if (txt && !pliceNormal) {
@@ -937,11 +839,13 @@ const RegionThorax = {
                 } else reportOut.push(obj);
             }
 
-            if (noTek) {
-                reportOut.push({ type: 'frame', text: "Bez výpotků.", tableId: 'thorax_plice_main', dimmed: true });
-            }
-            if (noVzd) {
-                reportOut.push({ type: 'frame', text: "Bez PNO.", tableId: 'thorax_plice_main', dimmed: true });
+            if (!pleuraNormal && !pleuraRep.length) {
+                if (noTek) {
+                    reportOut.push({ type: 'frame', text: "Bez výpotků.", tableId: 'thorax_pleura_main', dimmed: true });
+                }
+                if (noVzd) {
+                    reportOut.push({ type: 'frame', text: "Bez PNO.", tableId: 'thorax_pleura_main', dimmed: true });
+                }
             }
 
             let pliceConc = ctx.field('plice_custom_conc');
@@ -956,29 +860,14 @@ const RegionThorax = {
                 allMamma.push(`${mammaMap[k]} ${side}`);
             }
             let mammaText = allMamma.length > 0 ? formatList(allMamma) : "";
-            let maDesc = ctx.field('mamma_custom_desc');
-            let maParts = [];
-            if (mammaText) maParts.push(mammaText);
-            if (maDesc) {
-                let txt = maDesc.trim();
-                if (txt.endsWith('.')) txt = txt.slice(0, -1);
-                maParts.push(txt);
-            }
-            const mammaNormalLvl = ctx.normalLevel('mamma_ost_add_normal');
-            const mammaNormal = mammaNormalLvl > 0;
-            if (mammaNormal || maParts.length > 0) {
-                let body;
-                if (mammaNormal && maParts.length > 0) body = `obvyklého vzhledu, bez ložiskových změn. Jinak pouze ${formatList(maParts)}.`;
-                else if (mammaNormal) body = 'obvyklého vzhledu, bez ložiskových změn.';
-                else body = `${formatList(maParts)}.`;
-                reportOut.push({ type: 'frame', text: `Mamma: ${body}`, tableId: 'thorax_mamma_main' });
-            }
-            
-            let maConc = ctx.field('mamma_custom_conc');
-            if (maConc) concInc.push({ type: 'frame', text: maConc, tableId: 'thorax_mamma_main' });
-            if (mammaNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Přiměřený nález na mléčných žlázách, bez ložiskové léze.', tableId: 'thorax_mamma_main' });
-            }
+            useSection(ctx.section({
+                label: 'Mamma', tableId: 'thorax_mamma_main', desc: 'mamma_custom_desc',
+                normal: 'mamma_ost_add_normal',
+                normalText: 'obvyklého vzhledu, bez ložiskových změn.',
+                normalConc: 'Přiměřený nález na mléčných žlázách, bez ložiskové léze.',
+                concField: 'mamma_custom_conc',
+                parts: [mammaText]
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
             let jicenRep = [];
             let jicenConc = [];
@@ -997,30 +886,15 @@ const RegionThorax = {
                 else if (jRes === 'tračník') jicenRep.push("st.p. resekci dist. jícnu s náhradou tračníkem");
             }
             let jicenText = jicenRep.length > 0 ? formatCzechList(jicenRep) : "";
-            let jiDesc = ctx.field('jicen_custom_desc');
-            let jiParts = [];
-            if (jicenText) jiParts.push(jicenText);
-            if (jiDesc) {
-                let txt = jiDesc.trim();
-                if (txt.endsWith('.')) txt = txt.slice(0, -1);
-                jiParts.push(txt);
-            }
-            const jicenNormalLvl = ctx.normalLevel('jicen_ost_add_normal');
-            const jicenNormal = jicenNormalLvl > 0;
-            if (jicenNormal || jiParts.length > 0) {
-                let body;
-                if (jicenNormal && jiParts.length > 0) body = `přiměřené šíře, bez ložiskového ztluštění stěny. Jinak pouze ${formatList(jiParts)}.`;
-                else if (jicenNormal) body = 'přiměřené šíře, bez ložiskového ztluštění stěny.';
-                else body = `${formatList(jiParts)}.`;
-                reportOut.push({ type: 'frame', text: `Jícen: ${body}`, tableId: 'thorax_jicen_main' });
-            }
-            
-            let jiConc = ctx.field('jicen_custom_conc');
-            if (jiConc) jicenConc.push(jiConc);
-            jicenConc.forEach(c => concInc.push({ type: 'frame', text: c, tableId: 'thorax_jicen_main' }));
-            if (jicenNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Přiměřený nález na jícnu.', tableId: 'thorax_jicen_main' });
-            }
+            useSection(ctx.section({
+                label: 'Jícen', tableId: 'thorax_jicen_main', desc: 'jicen_custom_desc',
+                normal: 'jicen_ost_add_normal',
+                normalText: 'přiměřené šíře, bez ložiskového ztluštění stěny.',
+                normalConc: 'Přiměřený nález na jícnu.',
+                concField: 'jicen_custom_conc',
+                incidental: jicenConc,
+                parts: [jicenText]
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
             let thZvet = ctx.isActive('th_zvet'), thAkt = ctx.isActive('th_akt');
             let thymusText = "";
@@ -1036,6 +910,7 @@ const RegionThorax = {
                 if (txt.endsWith('.')) txt = txt.slice(0, -1);
                 thParts.push(txt);
             }
+            const thymusDgConc = [];
             [
                 {
                     id: 'th_med_pred', loc: 'v předním mediastinu',
@@ -1071,26 +946,17 @@ const RegionThorax = {
                 const conc = st === 'cystoid' ? `Cystoidní léze ${loc} - dif. dg.: ${dg[st]}.`
                            : st === 'kombinace' ? `Cystoidně-solidní léze ${loc} - dif. dg.: ${dg[st]}.`
                            : `Solidní ložisko ${loc} - dif. dg.: ${dg[st]}.`;
-                concInc.push({ type: 'frame', text: conc, tableId: 'thorax_thymus_main' });
+                thymusDgConc.push(conc);
             });
-            const thymusNormalLvl = ctx.normalLevel('thymus_ost_add_normal');
-            const thymusNormal = thymusNormalLvl > 0;
-            if (thymusNormal || thParts.length > 0) {
-                let body;
-                const thymusNormRep = isPET
-                    ? 'bez ložiskových změn a bez patologické akumulace RF'
-                    : 'bez ložiskových změn ';
-                if (thymusNormal && thParts.length > 0) body = `${thymusNormRep}. Jinak pouze ${formatList(thParts)}.`;
-                else if (thymusNormal) body = `${thymusNormRep}.`;
-                else body = `${formatList(thParts)}.`;
-                reportOut.push({ type: 'frame', text: `Mediastinum: ${body}`, tableId: 'thorax_thymus_main' });
-            }
-            
-            let thConc = ctx.field('thymus_custom_conc');
-            if (thConc) concInc.push({ type: 'frame', text: thConc, tableId: 'thorax_thymus_main' });
-            if (thymusNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Přiměřený nález v mediastinu.', tableId: 'thorax_thymus_main' });
-            }
+            useSection(ctx.section({
+                label: 'Mediastinum', tableId: 'thorax_thymus_main', desc: 'thymus_custom_desc',
+                normal: 'thymus_ost_add_normal',
+                normalText: isPET ? 'bez ložiskových změn a bez patologické akumulace RF.' : 'bez ložiskových změn .',
+                normalConc: 'Přiměřený nález v mediastinu.',
+                concField: 'thymus_custom_conc',
+                incidental: thymusDgConc,
+                parts: thParts
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
             let srdceRep = [];
             let srdceConc = [];
@@ -1109,7 +975,7 @@ const RegionThorax = {
                 if (srDilAoMm) aoText += ` šíře ${srDilAoMm} mm`;
                 srdceRep.push(aoText);
                 
-                let aoConcText = `${cap(aoText)}.`;
+                let aoConcText = `${capitalize(aoText)}.`;
                 if (srDilAoMm >= 50) {
                     concMain.push({ type: 'frame', text: `Výrazná ${aoText} (aneurysma).`, tableId: 'thorax_srdce_main' });
                 } else if (srDilAoMm >= 40 || srDilAo !== '0') {
@@ -1142,35 +1008,20 @@ const RegionThorax = {
                     }
                     const mod = srTekMm >= 20 ? "výrazný " : (srTekMm <= 10 ? "malý " : "");
                     srdceRep.push(`tekutina v perikardiální dutině šíře ${srTekMm} mm${(srMinMm && hasPast) ? ` (minule šíře ${srMinMm} mm)` : ''}`);
-                    srdceConc.push(`${cap(`${mod}perikardiální výpotek`)}${dynState ? ' ' + dynState : ''}.`);
+                    srdceConc.push(`${capitalize(`${mod}perikardiální výpotek`)}${dynState ? ' ' + dynState : ''}.`);
                 }
             }
             
             let srdceText = srdceRep.length > 0 ? formatCzechList(srdceRep) : "";
-            let srDesc = ctx.field('srdce_custom_desc');
-            let srParts = [];
-            if (srdceText) srParts.push(srdceText);
-            if (srDesc) {
-                let txt = srDesc.trim();
-                if (txt.endsWith('.')) txt = txt.slice(0, -1);
-                srParts.push(txt);
-            }
-            const srdceNormalLvl = ctx.normalLevel('srdce_ost_add_normal');
-            const srdceNormal = srdceNormalLvl > 0;
-            if (srdceNormal || srParts.length > 0) {
-                let body;
-                if (srdceNormal && srParts.length > 0) body = `přiměřené velikosti, aorta přiměřené šíře, bez perikardiálního výpotku. Jinak pouze ${formatList(srParts)}.`;
-                else if (srdceNormal) body = 'přiměřené velikosti, aorta přiměřené šíře, bez perikardiálního výpotku.';
-                else body = `${formatList(srParts)}.`;
-                reportOut.push({ type: 'frame', text: `Srdce: ${body}`, tableId: 'thorax_srdce_main' });
-            }
-            
-            let srConc = ctx.field('srdce_custom_conc');
-            if (srConc) srdceConc.push(srConc);
-            srdceConc.forEach(c => concMain.push({ type: 'frame', text: c, tableId: 'thorax_srdce_main' }));
-            if (srdceNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Přiměřený nález na srdci a velkých cévách.', tableId: 'thorax_srdce_main' });
-            }
+            useSection(ctx.section({
+                label: 'Srdce', tableId: 'thorax_srdce_main', desc: 'srdce_custom_desc',
+                normal: 'srdce_ost_add_normal',
+                normalText: 'přiměřené velikosti, aorta přiměřené šíře, bez perikardiálního výpotku.',
+                normalConc: 'Přiměřený nález na srdci a velkých cévách.',
+                concField: 'srdce_custom_conc', concTarget: 'main',
+                main: srdceConc,
+                parts: [srdceText]
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
             let devMap = { dev_port: 'portkatetr', dev_picc: 'PICC', dev_cvk: 'CVK', dev_ks: 'KS', dev_icd: 'ICD' };
             let allDev = [];
@@ -1180,61 +1031,32 @@ const RegionThorax = {
                 allDev.push(`${devMap[k]} ${(p && l) ? 'bilat.' : (p ? 'zprava' : 'zleva')}`);
             }
             let devText = allDev.length > 0 ? `zaveden ${formatList(allDev)}` : "";
-            let devDesc = ctx.field('devices_custom_desc');
-            let devParts = [];
-            if (devText) devParts.push(devText);
-            if (devDesc) {
-                let txt = devDesc.trim();
-                if (txt.endsWith('.')) txt = txt.slice(0, -1);
-                devParts.push(txt);
-            }
-            const devicesNormalLvl = ctx.normalLevel('devices_ost_add_normal');
-            const devicesNormal = devicesNormalLvl > 0;
-            if (devicesNormal || devParts.length > 0) {
-                let text;
-                if (devicesNormal && devParts.length > 0) text = `Bez zavedených invazivních zařízení. Jinak pouze ${formatList(devParts)}.`;
-                else if (devicesNormal) text = 'Bez zavedených invazivních zařízení.';
-                else text = `${cap(formatList(devParts))}.`;
-                reportOut.push({ type: 'frame', text: text, tableId: 'thorax_devices_main' });
-            }
-            
-            let devConc = ctx.field('devices_custom_conc');
-            if (devConc) concInc.push({ type: 'frame', text: devConc, tableId: 'thorax_devices_main' });
-            if (devicesNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Bez zavedených invazivních zařízení.', tableId: 'thorax_devices_main' });
-            }
+            useSection(ctx.section({
+                tableId: 'thorax_devices_main', desc: 'devices_custom_desc',
+                normal: 'devices_ost_add_normal',
+                normalText: 'Bez zavedených invazivních zařízení.',
+                normalConc: 'Bez zavedených invazivních zařízení.',
+                concField: 'devices_custom_conc',
+                capitalize: true,
+                parts: [devText]
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
-            let ostDesc = ctx.field('ostatni_custom_desc');
-            let ostParts = [];
-            if (ostDesc) {
-                let txt = ostDesc.trim();
-                if (txt.endsWith('.')) txt = txt.slice(0, -1);
-                if (txt) ostParts.push(txt);
-            }
-            const ostatniNormalLvl = ctx.normalLevel('ostatni_ost_add_normal');
-            const ostatniNormal = ostatniNormalLvl > 0;
-            if (ostatniNormal || ostParts.length > 0) {
-                let text;
-                if (ostatniNormal && ostParts.length > 0) text = `Bez dalších významných nálezů. Jinak pouze ${formatList(ostParts)}.`;
-                else if (ostatniNormal) text = 'Bez dalších významných nálezů.';
-                else text = `${cap(formatList(ostParts))}.`;
-                reportOut.push({ type: 'frame', text: text, tableId: 'thorax_ostatni_main' });
-            }
-
-            let ostConc = ctx.field('ostatni_custom_conc');
-            if (ostConc) {
-                concInc.push({ type: 'frame', text: ostConc, tableId: 'thorax_ostatni_main' });
-            }
-            if (ostatniNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Bez dalších významných nálezů na hrudníku.', tableId: 'thorax_ostatni_main' });
-            }
+            useSection(ctx.section({
+                tableId: 'thorax_ostatni_main', desc: 'ostatni_custom_desc',
+                normal: 'ostatni_ost_add_normal',
+                normalText: 'Bez dalších významných nálezů.',
+                normalConc: 'Bez dalších významných nálezů na hrudníku.',
+                concField: 'ostatni_custom_conc',
+                capitalize: true
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
             // Pořadí sekcí ve Findings je dáno tímto seznamem, ne pořadím kódu výše.
-            // Ložiska a uzliny zůstávají první, dále plíce/pleura → srdce → mediastinum → jícen → mamma → devices.
+            // Ložiska a uzliny zůstávají první, dále plíce → pleura → srdce → mediastinum → jícen → mamma → devices.
             const REPORT_ORDER = [
                 'thorax_lesion_main',
                 'thorax_lymphnode_main',
                 'thorax_plice_main',
+                'thorax_pleura_main',
                 'thorax_srdce_main',
                 'thorax_thymus_main',
                 'thorax_jicen_main',
@@ -1267,7 +1089,7 @@ const RegionThorax = {
         const idx = Store.buttonStates[globalId] || 0;
         const state = cfg?.states?.[idx];
         if (state === 'ANO') Store.activeTable = 'thorax_ild_main';
-        else if (state === '0' && Store.activeTable === 'thorax_ild_main') Store.activeTable = 'thorax_plice_main';
+        else if (state === '0' && Store.activeTable === 'thorax_ild_main') Store.activeTable = 'group:thorax_plice_main,thorax_pleura_main';
     }
 
     function onUiEvent(e) {

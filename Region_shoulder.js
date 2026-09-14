@@ -116,14 +116,12 @@ const RegionShoulder = {
         let reportOut = [{ type: 'heading', text: 'Rameno:', action: 'open-region', regionId: 'shoulder' }];
         let concMain = [];
         let concInc = [];
-        const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
-
         // Vlastní texty se přilepí přímo k textu dané části (nikoli jako samostatný odstavec)
         const attachCustom = (prefix, tableId) => {
             const fmt = (raw) => {
                 let txt = (raw || '').replace(/\u200B/g, '').trim();
                 if (!txt) return '';
-                txt = txt.charAt(0).toUpperCase() + txt.slice(1);
+                txt = capitalize(txt);
                 if (!/[.!?]$/.test(txt)) txt += '.';
                 return txt;
             };
@@ -212,7 +210,7 @@ const RegionShoulder = {
             let causeStr = impCauses.length > 0 ? ` na podkladě ${impCauses.join(', ')}` : '';
             acParts.push(`${acImp} impingement syndrom s redukcí prostoru pro manžetu`);
             
-            let finalConc = `${cap(acImp)} impingement syndrom${causeStr}`;
+            let finalConc = `${capitalize(acImp)} impingement syndrom${causeStr}`;
             if (acStandaloneConc.length > 0) {
                 finalConc += `, přidružena ${acStandaloneConc.join(', ')}`;
             }
@@ -226,7 +224,7 @@ const RegionShoulder = {
             allFindings = allFindings.concat(acStandaloneConc);
 
             if (allFindings.length > 0) {
-                concMain.push({ type: 'frame', text: cap(allFindings.join(', ')) + '.', tableId: 'shoulder_ac_main' });
+                concMain.push({ type: 'frame', text: capitalize(allFindings.join(', ')) + '.', tableId: 'shoulder_ac_main' });
             }
         }
 
@@ -411,7 +409,7 @@ const RegionShoulder = {
             });
             
             if (cuffArr.length === 1) {
-                let txt = cuffArr[0].conc.charAt(0).toUpperCase() + cuffArr[0].conc.slice(1);
+                let txt = capitalize(cuffArr[0].conc);
                 concMain.push({ type: 'frame', text: txt + '.', tableId: 'shoulder_rm_main' });
             } else if (cuffArr.length > 1) {
                 let combined = 'Kombinované postižení šlach RM: ' + cuffArr.map(item => item.conc).join(', ') + '.';
@@ -600,7 +598,7 @@ const RegionShoulder = {
                 }
             }
 
-            reportOut.push({ type: 'frame', text: 'Glenoidální labrum: ' + cap(labrep.join('; ')) + '.', tableId: 'shoulder_labrum_main' });
+            reportOut.push({ type: 'frame', text: 'Glenoidální labrum: ' + capitalize(labrep.join('; ')) + '.', tableId: 'shoulder_labrum_main' });
             labconc.forEach(c => concMain.push({ type: 'frame', text: c + '.', tableId: 'shoulder_labrum_main' }));
         }
         attachCustom('sh_lab', 'shoulder_labrum_main');
@@ -639,7 +637,7 @@ const RegionShoulder = {
                 concInc.push({ type: 'frame', text: `${bnLesion} ve skeletu (vedlejší nález).`, tableId: 'shoulder_bones_main' });
             }
 
-            reportOut.push({ type: 'frame', text: 'Skelet a chrupavky: ' + cap(bnRep.join(', ')) + '.', tableId: 'shoulder_bones_main' });
+            reportOut.push({ type: 'frame', text: 'Skelet a chrupavky: ' + capitalize(bnRep.join(', ')) + '.', tableId: 'shoulder_bones_main' });
         }
         attachCustom('sh_bn', 'shoulder_bones_main');
 

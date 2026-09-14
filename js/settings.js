@@ -33,6 +33,12 @@ function saveSettings() {
     UI.renderReport();
 }
 
+/* První písmeno velké (null-safe). */
+function capitalize(s) {
+    const t = String(s == null ? '' : s);
+    return t ? t[0].toUpperCase() + t.slice(1) : t;
+}
+
 function formatCzechList(arr) {
     if (!arr || !arr.length) return '';
     arr = arr.map(item => item.trim().replace(/[.,]\s*$/, ''));

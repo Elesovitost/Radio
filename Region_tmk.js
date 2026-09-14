@@ -57,8 +57,7 @@ const RegionTmk = {
         let concMain = [];
         let concInc = [];
         
-        const cap = (s) => s && s.charAt(0).toUpperCase() + s.slice(1);
-        const formatZaver = (arr) => arr.map(a => cap(a) + (a.endsWith('.') ? '' : '.')).join(' ');
+        const formatZaver = (arr) => arr.map(a => capitalize(a) + (a.endsWith('.') ? '' : '.')).join(' ');
 
         const parseSide = (pfx, label) => {
             let rPatho = [];
@@ -129,8 +128,8 @@ const RegionTmk = {
             else if (ankyl === 'kostní?') { rPatho.push('možná kostní ankylóza'); cMain.push('suspektní kostní ankylóza (korelace s CT)'); }
             
             return {
-                reportPatho: rPatho.length ? `${label} TMK: ${cap(rPatho.join('; '))}.` : null,
-                reportPhysio: rPhysio.length ? (rPatho.length ? `${cap(rPhysio.join('; '))}.` : `${label} TMK: ${cap(rPhysio.join('; '))}.`) : null,
+                reportPatho: rPatho.length ? `${label} TMK: ${capitalize(rPatho.join('; '))}.` : null,
+                reportPhysio: rPhysio.length ? (rPatho.length ? `${capitalize(rPhysio.join('; '))}.` : `${label} TMK: ${capitalize(rPhysio.join('; '))}.`) : null,
                 main: cMain.length ? `${label} TMK: ${formatZaver(cMain)}` : null,
                 hasPathology: cMain.length > 0
             };
@@ -168,7 +167,7 @@ const RegionTmk = {
         }
 
         const conc = ctx.field('tmk_conc');
-        if (conc) concMain.push({ type: 'frame', text: cap(conc) + (conc.endsWith('.') ? '' : '.'), tableId: 'tmk_other_main' });
+        if (conc) concMain.push({ type: 'frame', text: capitalize(conc) + (conc.endsWith('.') ? '' : '.'), tableId: 'tmk_other_main' });
 
         return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };
     }

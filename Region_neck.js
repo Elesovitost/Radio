@@ -1,7 +1,39 @@
 const RegionNeck = {
-        title: 'Krk',
+    title: 'Krk',
 
-        layout: (helpers) => {
+    /* Nabídky stavů na jednom místě - v layoutu se odkazuje jako
+       { btn: 'plus', id: 'par_atr_r' } (id je potřeba jen když se liší od klíče). */
+    buttons: {
+        plus:      { states: ['0', '+'] },
+        pocet:     { states: ['0', '1', 'více'] },
+        sinus:     { states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] },
+        asymetrie: { states: ['0', 'poop', 'porad', 'oboje'] },
+
+        ln_krk: { type: 'basic', text: 'Krk' },
+        ln_IA:  { type: 'basic', text: 'IA' },
+        ln_IB:  { type: 'basic', text: 'IB' },
+        ln_IIA: { type: 'basic', text: 'IIA' },
+        ln_IIB: { type: 'basic', text: 'IIB' },
+        ln_III: { type: 'basic', text: 'III' },
+        ln_IV:  { type: 'basic', text: 'IV' },
+        ln_V:   { type: 'basic', text: 'V' },
+        ln_VI:  { type: 'basic', text: 'VI' },
+
+        thyr_enl: { type: 'basic', text: 'zvětšení' },
+        thyr_rf:  { type: 'basic', text: 'RF+' }
+    },
+
+    /* Lokalizace léze - jedna tabulka pro layout i compile. */
+    lokalizace: [
+        ['patro', 'patro'], ['tons', 'tonsila'], ['jaz', 'jazyk'],
+        ['far', 'farynx'], ['hyp', 'hypofarynx'], ['lar', 'larynx'],
+        ['par', 'parotis'], ['sub', 'submandibularis'], ['thyr', 'thyroidea']
+    ],
+
+    /* Hladiny lymfatických uzlin krku (layout i compile). */
+    lnLevels: ['IA', 'IB', 'IIA', 'IIB', 'III', 'IV', 'V', 'VI'],
+
+    layout: (helpers) => {
             let layoutNodes = [];
 
             const lesInsts = Store.instances?.['neck_lesion_main'] || [];
@@ -10,17 +42,9 @@ const RegionNeck = {
                 layoutNodes.push(
                     helpers.LesionMain(`neck_lesion_main__${instId}`, `Léze (${idx + 1})`, [
                         ...LESIONS_DEFINITION.getLesionRowsPre(helpers, p),
-                        helpers.Table3colRCL(`${p}_r3`, 'Lokalizace', [
-                            [ { btn: `${p}_p_patro_r`, states: ['0', '+'] }, 'patro', { btn: `${p}_p_patro_l`, states: ['0', '+'] } ],
-                            [ { btn: `${p}_p_tons_r`, states: ['0', '+'] }, 'tonsila', { btn: `${p}_p_tons_l`, states: ['0', '+'] } ],
-                            [ { btn: `${p}_p_jaz_r`, states: ['0', '+'] }, 'jazyk', { btn: `${p}_p_jaz_l`, states: ['0', '+'] } ],
-                            [ { btn: `${p}_p_far_r`, states: ['0', '+'] }, 'farynx', { btn: `${p}_p_far_l`, states: ['0', '+'] } ],
-                            [ { btn: `${p}_p_hyp_r`, states: ['0', '+'] }, 'hypofarynx', { btn: `${p}_p_hyp_l`, states: ['0', '+'] } ],
-                            [ { btn: `${p}_p_lar_r`, states: ['0', '+'] }, 'larynx', { btn: `${p}_p_lar_l`, states: ['0', '+'] } ],
-                            [ { btn: `${p}_p_par_r`, states: ['0', '+'] }, 'parotis', { btn: `${p}_p_par_l`, states: ['0', '+'] } ],
-                            [ { btn: `${p}_p_sub_r`, states: ['0', '+'] }, 'submandibularis', { btn: `${p}_p_sub_l`, states: ['0', '+'] } ],
-                            [ { btn: `${p}_p_thyr_r`, states: ['0', '+'] }, 'thyroidea', { btn: `${p}_p_thyr_l`, states: ['0', '+'] } ]
-                        ]),
+                        helpers.Table3colRCL(`${p}_r3`, 'Lokalizace', RegionNeck.lokalizace.map(([site, label]) => [
+                            { btn: 'plus', id: `${p}_p_${site}_r` }, label, { btn: 'plus', id: `${p}_p_${site}_l` }
+                        ])),
                         ...LESIONS_DEFINITION.getLesionRowsPost(helpers, p, `${p}_met`, `${p}_e`)
                     ])
                 );
@@ -33,15 +57,10 @@ const RegionNeck = {
                     helpers.LesionMain(`neck_lymphnode_main__${instId}`, `Lymfadenopatie (${idx + 1})`, [
                         ...LESIONS_DEFINITION.getLymphNodeRowsPre(helpers, p),
                         helpers.Table3colRL(`${p}_r3`, 'Lokalizace', [
-                            [ { btn: `${p}_p_krk_r`, type: 'basic', text: 'Krk' },'\u00A0', { btn: `${p}_p_krk_l`, type: 'basic', text: 'Krk' } ],
-                            [ { btn: `${p}_p_IA_r`, type: 'basic', text: 'IA' },'', { btn: `${p}_p_IA_l`, type: 'basic', text: 'IA' } ],
-                            [ { btn: `${p}_p_IB_r`, type: 'basic', text: 'IB' },'', { btn: `${p}_p_IB_l`, type: 'basic', text: 'IB' } ],
-                            [ { btn: `${p}_p_IIA_r`, type: 'basic', text: 'IIA' },'', { btn: `${p}_p_IIA_l`, type: 'basic', text: 'IIA' } ],
-                            [ { btn: `${p}_p_IIB_r`, type: 'basic', text: 'IIB' },'', { btn: `${p}_p_IIB_l`, type: 'basic', text: 'IIB' } ],
-                            [ { btn: `${p}_p_III_r`, type: 'basic', text: 'III' },'', { btn: `${p}_p_III_l`, type: 'basic', text: 'III' } ],
-                            [ { btn: `${p}_p_IV_r`, type: 'basic', text: 'IV' },'', { btn: `${p}_p_IV_l`, type: 'basic', text: 'IV' } ],
-                            [ { btn: `${p}_p_V_r`, type: 'basic', text: 'V' },'', { btn: `${p}_p_V_l`, type: 'basic', text: 'V' } ],
-                            [ { btn: `${p}_p_VI_r`, type: 'basic', text: 'VI' },'', { btn: `${p}_p_VI_l`, type: 'basic', text: 'VI' } ]
+                            [ { btn: 'ln_krk', id: `${p}_p_krk_r` }, '\u00A0', { btn: 'ln_krk', id: `${p}_p_krk_l` } ],
+                            ...RegionNeck.lnLevels.map(lvl => [
+                                { btn: `ln_${lvl}`, id: `${p}_p_${lvl}_r` }, '', { btn: `ln_${lvl}`, id: `${p}_p_${lvl}_l` }
+                            ])
                         ]),
                         ...LESIONS_DEFINITION.getLymphNodeRowsPost(helpers, p, `${p}_met`, `${p}_e`)
                     ])
@@ -51,10 +70,10 @@ const RegionNeck = {
             layoutNodes.push(
                 helpers.TableMain('neck_sinus_main', 'Siny', [
                     helpers.Table3colRL('neck_sinus_table', [
-                        [ { btn: 'sinus_front_r', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] }, 'frontální', { btn: 'sinus_front_l', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] } ],
-                        [ { btn: 'sinus_ethmo_r', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] }, 'ethmoidální', { btn: 'sinus_ethmo_l', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] } ],
-                        [ { btn: 'sinus_sfeno_r', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] }, 'sfenoidální', { btn: 'sinus_sfeno_l', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] } ],
-                        [ { btn: 'sinus_maxil_r', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] }, 'maxilární', { btn: 'sinus_maxil_l', states: ['0', 'cysta', 'hyper+', 'hyper++', 'tekutina'] } ]
+                        [ { btn: 'sinus', id: 'sinus_front_r' }, 'frontální', { btn: 'sinus', id: 'sinus_front_l' } ],
+                        [ { btn: 'sinus', id: 'sinus_ethmo_r' }, 'ethmoidální', { btn: 'sinus', id: 'sinus_ethmo_l' } ],
+                        [ { btn: 'sinus', id: 'sinus_sfeno_r' }, 'sfenoidální', { btn: 'sinus', id: 'sinus_sfeno_l' } ],
+                        [ { btn: 'sinus', id: 'sinus_maxil_r' }, 'maxilární', { btn: 'sinus', id: 'sinus_maxil_l' } ]
                     ]),
                     helpers.Table1col('neck_sinus_add', [
                         { field: 'text', id: 'sinus_custom_desc', placeholder: 'vlastní...popis...' },
@@ -63,16 +82,16 @@ const RegionNeck = {
                 ]),
                 helpers.TableMain('neck_salivary_main', 'Slinné žlázy', [
                     helpers.Table3colRL('neck_parotis_table', 'Parotické', [
-                        [ { btn: 'par_atr_r', states: ['0', '+'] }, 'atrofie', { btn: 'par_atr_l', states: ['0', '+'] } ],
-                        [ { btn: 'par_res_r', states: ['0', '+'] }, 'resekce', { btn: 'par_res_l', states: ['0', '+'] } ],
-                        [ { btn: 'par_nod_r', states: ['0', '1', 'více'] }, 'nodul', { btn: 'par_nod_l', states: ['0', '1', 'více'] } ],
-                        [ { btn: 'par_nod_RF_r', states: ['0', '1', 'více'] }, 'nodul akumulace+', { btn: 'par_nod_RF_l', states: ['0', '1', 'více'] } ]
+                        [ { btn: 'plus', id: 'par_atr_r' }, 'atrofie', { btn: 'plus', id: 'par_atr_l' } ],
+                        [ { btn: 'plus', id: 'par_res_r' }, 'resekce', { btn: 'plus', id: 'par_res_l' } ],
+                        [ { btn: 'pocet', id: 'par_nod_r' }, 'nodul', { btn: 'pocet', id: 'par_nod_l' } ],
+                        [ { btn: 'pocet', id: 'par_nod_RF_r' }, 'nodul akumulace+', { btn: 'pocet', id: 'par_nod_RF_l' } ]
                     ]),
                     helpers.Table3colRL('neck_subman_table', 'Submandibulární', [
-                        [ { btn: 'sub_atr_r', states: ['0', '+'] }, 'atrofie', { btn: 'sub_atr_l', states: ['0', '+'] } ],
-                        [ { btn: 'sub_res_r', states: ['0', '+'] }, 'resekce', { btn: 'sub_res_l', states: ['0', '+'] } ],
-                        [ { btn: 'sub_nod_r', states: ['0', '1', 'více'] }, 'nodul', { btn: 'sub_nod_l', states: ['0', '1', 'více'] } ],
-                        [ { btn: 'sub_nod_RF_r', states: ['0', '1', 'více'] }, 'nodul akumulace+', { btn: 'sub_nod_RF_l', states: ['0', '1', 'více'] } ]
+                        [ { btn: 'plus', id: 'sub_atr_r' }, 'atrofie', { btn: 'plus', id: 'sub_atr_l' } ],
+                        [ { btn: 'plus', id: 'sub_res_r' }, 'resekce', { btn: 'plus', id: 'sub_res_l' } ],
+                        [ { btn: 'pocet', id: 'sub_nod_r' }, 'nodul', { btn: 'pocet', id: 'sub_nod_l' } ],
+                        [ { btn: 'pocet', id: 'sub_nod_RF_r' }, 'nodul akumulace+', { btn: 'pocet', id: 'sub_nod_RF_l' } ]
                     ]),
                     helpers.Table1col('neck_salivary_add', [
                         { field: 'text', id: 'salivary_custom_desc', placeholder: 'vlastní...popis...' },
@@ -81,10 +100,10 @@ const RegionNeck = {
                 ]),
                 helpers.TableMain('neck_pharynx_main', 'Hltan/hrtan', [
                     helpers.Table3colRL('neck_pharynx_table', [
-                        [ { btn: 'far_asym_oro_r', states: ['0', 'poop', 'porad', 'oboje'] }, 'asymetrie orofaryngu', { btn: 'far_asym_oro_l', states: ['0', 'poop', 'porad', 'oboje'] } ],
-                        [ { btn: 'far_asym_hypo_r', states: ['0', 'poop', 'porad', 'oboje'] }, 'asymetrie hypofaryngu', { btn: 'far_asym_hypo_l', states: ['0', 'poop', 'porad', 'oboje'] } ],
-                        [ { btn: 'far_tons_r', states: ['0', '+'] }, 'tonsila RF-', { btn: 'far_tons_l', states: ['0', '+'] } ],
-                        [ { btn: 'far_hlas_r', states: ['0', '+'] }, 'hlasivky RF-', { btn: 'far_hlas_l', states: ['0', '+'] } ]
+                        [ { btn: 'asymetrie', id: 'far_asym_oro_r' }, 'asymetrie orofaryngu', { btn: 'asymetrie', id: 'far_asym_oro_l' } ],
+                        [ { btn: 'asymetrie', id: 'far_asym_hypo_r' }, 'asymetrie hypofaryngu', { btn: 'asymetrie', id: 'far_asym_hypo_l' } ],
+                        [ { btn: 'plus', id: 'far_tons_r' }, 'tonsila RF-', { btn: 'plus', id: 'far_tons_l' } ],
+                        [ { btn: 'plus', id: 'far_hlas_r' }, 'hlasivky RF-', { btn: 'plus', id: 'far_hlas_l' } ]
                     ]),
                     helpers.Table1col('neck_pharynx_add', [
                         { field: 'text', id: 'pharynx_custom_desc', placeholder: 'vlastní...popis...' },
@@ -93,12 +112,12 @@ const RegionNeck = {
                 ]),
                 helpers.TableMain('neck_thyroid_main', 'Thyroidea', [
                     helpers.Table3colRL('neck_thyroid_table', [
-                        [ '', { btn: 'thyr_enl', type: 'basic', text: 'zvětšení' }, '' ],
-                        [ '', { btn: 'thyr_rf', type: 'basic', text: 'RF+' }, '' ],
-                        [ { btn: 'thyr_res_r', states: ['0', '+'] }, 'resekce', { btn: 'thyr_res_l', states: ['0', '+'] } ],
-                        [ { btn: 'thyr_nod_r', states: ['0', '1', 'více'] }, 'nodul', { btn: 'thyr_nod_l', states: ['0', '1', 'více'] } ],
-                        [ { btn: 'thyr_nod_rf_r', states: ['0', '1', 'více'] }, 'nodul RF+', { btn: 'thyr_nod_rf_l', states: ['0', '1', 'více'] } ],
-                        [ { btn: 'thyr_cys_r', states: ['0', '1', 'více'] }, 'cysta', { btn: 'thyr_cys_l', states: ['0', '1', 'více'] } ]
+                        [ '', { btn: 'thyr_enl' }, '' ],
+                        [ '', { btn: 'thyr_rf' }, '' ],
+                        [ { btn: 'plus', id: 'thyr_res_r' }, 'resekce', { btn: 'plus', id: 'thyr_res_l' } ],
+                        [ { btn: 'pocet', id: 'thyr_nod_r' }, 'nodul', { btn: 'pocet', id: 'thyr_nod_l' } ],
+                        [ { btn: 'pocet', id: 'thyr_nod_rf_r' }, 'nodul RF+', { btn: 'pocet', id: 'thyr_nod_rf_l' } ],
+                        [ { btn: 'pocet', id: 'thyr_cys_r' }, 'cysta', { btn: 'pocet', id: 'thyr_cys_l' } ]
                     ]),
                     helpers.Table1col('neck_thyroid_add', [
                         { field: 'text', id: 'thyroid_custom_desc', placeholder: 'vlastní...popis...' },
@@ -127,8 +146,6 @@ const RegionNeck = {
             let concMain = [];
             let concInc = [];
             const examId = ctx.examId || 'default';
-            const formatList = formatCzechList;
-            const capitalize = (s) => s && s[0].toUpperCase() + s.slice(1);
             const isPET = (examId || '').toLowerCase().includes('pet');
 
             const lesInsts = Store.instances?.['neck_lesion_main'] || [];
@@ -145,34 +162,17 @@ const RegionNeck = {
             lesInsts.forEach(instId => {
                 const p = `l_${instId}`;
                     let lokace = [];
-                    const lokMap = [
-                        { id: 'patro', name: 'patro' }, { id: 'tons', name: 'tonsila' }, { id: 'jaz', name: 'jazyk' },
-                        { id: 'far', name: 'farynx' }, { id: 'hyp', name: 'hypofarynx' }, { id: 'lar', name: 'larynx' },
-                        { id: 'par', name: 'parotis' }, { id: 'sub', name: 'submandibularis' }, { id: 'thyr', name: 'thyroidea' }
-                    ];
-                    
-                    lokMap.forEach(loc => {
-                        let r = ctx.isActive(`${p}_p_${loc.id}_r`), l = ctx.isActive(`${p}_p_${loc.id}_l`);
+                    RegionNeck.lokalizace.forEach(([site, name]) => {
+                        const r = ctx.isActive(`${p}_p_${site}_r`), l = ctx.isActive(`${p}_p_${site}_l`);
                         if (!r && !l) return;
-                        let pad2 = GRAMMAR_DICT.lokalizace[loc.name]?.pad2 || loc.name;
+                        const pad2 = GRAMMAR_DICT.lokalizace[name]?.pad2 || name;
                         if (r && l) lokace.push(`${pad2} bilat.`);
-                        else if (r) lokace.push(`${pad2} vpravo`);
-                        else if (l) lokace.push(`${pad2} vlevo`);
+                        else lokace.push(`${pad2} ${r ? 'vpravo' : 'vlevo'}`);
                     });
-                    let lokText = lokace.length > 0 ? formatCzechList(lokace) : '';
-
-                    let d = LESIONS_DEFINITION.parseDetails(ctx, examId, 'neck', p, `${p}_met`, `${p}_e`, false);
-
-                    if (d.hasAny || lokace.length > 0) {
-                        let repSentence = `${d.baseText} ${lokText}${d.doplneniStr}${d.vzhledText}${d.metrikyStr}.`.replace(/\s+/g, ' ').replace(' .', '.').trim();
-                        reportOut.push({ type: 'frame', text: repSentence, tableId: `neck_lesion_main__${instId}` });
-
-                        let concSentence = `${d.baseText} ${lokText}${d.doplneniStr}${d.actStr}${d.dynStr}`;
-                        if (d.etioStr) concSentence += `: ${d.etioStr}.`;
-                        else concSentence += `.`;
-                        
-                        concSentence = concSentence.replace(/\s+/g, ' ').replace(' : ', ': ').replace(' .', '.');
-                        concMain.push({ type: 'frame', text: concSentence, tableId: `neck_lesion_main__${instId}` });
+                    const f = LESIONS_DEFINITION.frames(ctx, { examId, regionId: 'neck', p, tableId: `neck_lesion_main__${instId}`, lokace });
+                    if (f) {
+                        reportOut.push(f.report);
+                        concMain.push(f.conc);
                     }
                 });
 
@@ -193,7 +193,7 @@ const RegionNeck = {
                     else if (krk_l) lokaceLN.push("na krku vlevo");
 
                     let levelsR = [], levelsL = [];
-                    ['IA', 'IB', 'IIA', 'IIB', 'III', 'IV', 'V', 'VI'].forEach(lvl => {
+                    RegionNeck.lnLevels.forEach(lvl => {
                         if (ctx.isActive(`${p}_p_${lvl}_r`)) levelsR.push(lvl);
                         if (ctx.isActive(`${p}_p_${lvl}_l`)) levelsL.push(lvl);
                     });
@@ -205,127 +205,90 @@ const RegionNeck = {
                         if (levelsL.length > 0) lokaceLN.push(`v levelu ${levelsL.join(', ')} vlevo`);
                     }
 
-                    let lokTextLN = lokaceLN.length > 0 ? formatCzechList(lokaceLN) : '';
-
-                    let dLN = LESIONS_DEFINITION.parseDetails(ctx, examId, 'neck', p, `${p}_met`, `${p}_e`, true);
-
-                    if (dLN.hasAny || lokaceLN.length > 0) {
-                        let repSentence = `${dLN.baseText}${dLN.doplneniStr} ${lokTextLN}${dLN.vzhledText}${dLN.metrikyStr}.`.replace(/\s+/g, ' ').replace(' .', '.');
-                        reportOut.push({ type: 'frame', text: repSentence, tableId: `neck_lymphnode_main__${instId}` });
-
-                        let concSentence = `${dLN.baseText}${dLN.doplneniStr} ${lokTextLN}${dLN.actStr}${dLN.dynStr}`;
-                        if (dLN.etioStr) concSentence += `: ${dLN.etioStr}.`;
-                        else concSentence += `.`;
-                        
-                        concSentence = concSentence.replace(/\s+/g, ' ').replace(' : ', ': ').replace(' .', '.');
-                        concMain.push({ type: 'frame', text: concSentence, tableId: `neck_lymphnode_main__${instId}` });
+                    const f = LESIONS_DEFINITION.frames(ctx, { examId, regionId: 'neck', p, tableId: `neck_lymphnode_main__${instId}`, isLN: true, lokace: lokaceLN });
+                    if (f) {
+                        reportOut.push(f.report);
+                        concMain.push(f.conc);
                     }
                 });
             }
 
-            let sinyStates = ctx.mapStates({
-                separator: ', ',
-                items: [
-                    { id: 'sinus_front_r', 1: 'cysta/polyp ve frontálním sinu vpravo', 2: 'hyperplázie sliznic ve frontálním sinu vpravo', 3: 'výrazná hyperplázie sliznic ve frontálním sinu vpravo', 4: 'tekutina ve frontálním sinu vpravo' },
-                    { id: 'sinus_front_l', 1: 'cysta/polyp ve frontálním sinu vlevo', 2: 'hyperplázie sliznic ve frontálním sinu vlevo', 3: 'výrazná hyperplázie sliznic ve frontálním sinu vlevo', 4: 'tekutina ve frontálním sinu vlevo' },
-                    { id: 'sinus_ethmo_r', 1: 'cysta/polyp v ethmoidálním sinu vpravo', 2: 'hyperplázie sliznic v ethmoidálním sinu vpravo', 3: 'výrazná hyperplázie sliznic v ethmoidálním sinu vpravo', 4: 'tekutina v ethmoidálním sinu vpravo' },
-                    { id: 'sinus_ethmo_l', 1: 'cysta/polyp v ethmoidálním sinu vlevo', 2: 'hyperplázie sliznic v ethmoidálním sinu vlevo', 3: 'výrazná hyperplázie sliznic v ethmoidálním sinu vlevo', 4: 'tekutina v ethmoidálním sinu vlevo' },
-                    { id: 'sinus_sfeno_r', 1: 'cysta/polyp ve sfenoidálním sinu vpravo', 2: 'hyperplázie sliznic ve sfenoidálním sinu vpravo', 3: 'výrazná hyperplázie sliznic ve sfenoidálním sinu vpravo', 4: 'tekutina ve sfenoidálním sinu vpravo' },
-                    { id: 'sinus_sfeno_l', 1: 'cysta/polyp ve sfenoidálním sinu vlevo', 2: 'hyperplázie sliznic ve sfenoidálním sinu vlevo', 3: 'výrazná hyperplázie sliznic ve sfenoidálním sinu vlevo', 4: 'tekutina ve sfenoidálním sinu vlevo' },
-                    { id: 'sinus_maxil_r', 1: 'cysta/polyp v maxilárním sinu vpravo', 2: 'hyperplázie sliznic v maxilárním sinu vpravo', 3: 'výrazná hyperplázie sliznic v maxilárním sinu vpravo', 4: 'tekutina v maxilárním sinu vpravo' },
-                    { id: 'sinus_maxil_l', 1: 'cysta/polyp v maxilárním sinu vlevo', 2: 'hyperplázie sliznic v maxilárním sinu vlevo', 3: 'výrazná hyperplázie sliznic v maxilárním sinu vlevo', 4: 'tekutina v maxilárním sinu vlevo' }
-                ]
-            });
-            let sinyCustomDesc = ctx.field('sinus_custom_desc');
-            let sinyParts = [];
-            if (sinyStates) sinyParts.push(sinyStates);
-            if (sinyCustomDesc) sinyParts.push(sinyCustomDesc);
-            const sinyNormalLvl = ctx.normalLevel('neck_sinus_add_normal');
-            const sinyNormal = sinyNormalLvl > 0;
-            if (sinyNormal || sinyParts.length > 0) {
-                let body;
-                if (sinyNormal && sinyParts.length > 0) body = `vzdušné, bez patologického obsahu. Jinak pouze ${formatList(sinyParts)}.`;
-                else if (sinyNormal) body = 'vzdušné, bez patologického obsahu.';
-                else body = `${formatList(sinyParts)}.`;
-                reportOut.push({ type: 'frame', text: `Siny: ${body}`, tableId: 'neck_sinus_main' });
-            }
-
-            const sinusItems = [
-                { id: 'sinus_front_r', text: 've frontálním sinu vpravo' },
-                { id: 'sinus_front_l', text: 've frontálním sinu vlevo' },
-                { id: 'sinus_ethmo_r', text: 'v ethmoidálním sinu vpravo' },
-                { id: 'sinus_ethmo_l', text: 'v ethmoidálním sinu vlevo' },
-                { id: 'sinus_sfeno_r', text: 've sfenoidálním sinu vpravo' },
-                { id: 'sinus_sfeno_l', text: 've sfenoidálním sinu vlevo' },
-                { id: 'sinus_maxil_r', text: 'v maxilárním sinu vpravo' },
-                { id: 'sinus_maxil_l', text: 'v maxilárním sinu vlevo' }
+            /* Siny: lokalita se píše jednou, varianty nálezu i text do závěru se z ní skládají. */
+            const SINY_LOK = [
+                { id: 'sinus_front_r', lok: 've frontálním sinu vpravo' },
+                { id: 'sinus_front_l', lok: 've frontálním sinu vlevo' },
+                { id: 'sinus_ethmo_r', lok: 'v ethmoidálním sinu vpravo' },
+                { id: 'sinus_ethmo_l', lok: 'v ethmoidálním sinu vlevo' },
+                { id: 'sinus_sfeno_r', lok: 've sfenoidálním sinu vpravo' },
+                { id: 'sinus_sfeno_l', lok: 've sfenoidálním sinu vlevo' },
+                { id: 'sinus_maxil_r', lok: 'v maxilárním sinu vpravo' },
+                { id: 'sinus_maxil_l', lok: 'v maxilárním sinu vlevo' }
             ];
-            
-            let sinyConcStr = ctx.mapConditions([
-                { states: [3], prefix: 'Chronická sinusitis (', suffix: ').', separator: ', ', items: sinusItems },
-                { states: [4], prefix: 'Akutní sinusitis (', suffix: ').', separator: ', ', items: sinusItems }
-            ]).trim();
-            let customSinusConc = ctx.field('sinus_custom_conc');
-            if (sinyConcStr || customSinusConc) {
-                let s = [sinyConcStr, customSinusConc].filter(Boolean).join('\n');
-                concInc.push({ type: 'frame', text: s, tableId: 'neck_sinus_main' });
-            }
-            if (sinyNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Přiměřený nález v oblasti sinů.', tableId: 'neck_sinus_main' });
-            }
+            const sinyItems = SINY_LOK.map(({ id, lok }) => ({
+                id, text: lok,
+                1: `cysta/polyp ${lok}`,
+                2: `hyperplázie sliznic ${lok}`,
+                3: `výrazná hyperplázie sliznic ${lok}`,
+                4: `tekutina ${lok}`
+            }));
 
-            let salivaryStates = ctx.mapStates({
-                separator: ', ',
-                items: [
-                    { id: 'par_atr_r', 1: 'atrofie parotidy vpravo' },
-                    { id: 'par_atr_l', 1: 'atrofie parotidy vlevo' },
-                    { id: 'par_res_r', 1: 'stav po resekci parotidy vpravo' },
-                    { id: 'par_res_l', 1: 'stav po resekci parotidy vlevo' },
-                    { id: 'par_nod_r', 1: 'nespecifický drobný nodul v parotidě vpravo', 2: 'nespecifické drobné noduly v parotidě vpravo' },
-                    { id: 'par_nod_l', 1: 'nespecifický drobný nodul v parotidě vlevo', 2: 'nespecifické drobné noduly v parotidě vlevo' },
-                    { id: 'par_nod_RF_r', 1: 'RF aktivní nodul v parotidě vpravo', 2: 'RF aktivní noduly v parotidě vpravo' },
-                    { id: 'par_nod_RF_l', 1: 'RF aktivní nodul v parotidě vlevo', 2: 'RF aktivní noduly v parotidě vlevo' },
-                    { id: 'sub_atr_r', 1: 'atrofie submandibulární žlázy vpravo' },
-                    { id: 'sub_atr_l', 1: 'atrofie submandibulární žlázy vlevo' },
-                    { id: 'sub_res_r', 1: 'stav po resekci submandibulární žlázy vpravo' },
-                    { id: 'sub_res_l', 1: 'stav po resekci submandibulární žlázy vlevo' },
-                    { id: 'sub_nod_r', 1: 'nespecifický drobný nodul v submandibulární žláze vpravo', 2: 'nespecifické drobné noduly v submandibulární žláze vpravo' },
-                    { id: 'sub_nod_l', 1: 'nespecifický drobný nodul v submandibulární žláze vlevo', 2: 'nespecifické drobné noduly v submandibulární žláze vlevo' },
-                    { id: 'sub_nod_RF_r', 1: 'RF aktivní nodul v submandibulární žláze vpravo', 2: 'RF aktivní noduly v submandibulární žláze vpravo' },
-                    { id: 'sub_nod_RF_l', 1: 'RF aktivní nodul v submandibulární žláze vlevo', 2: 'RF aktivní noduly v submandibulární žláze vlevo' }
-                ]
-            });
-            let salivaryCustomDesc = ctx.field('salivary_custom_desc');
-            let salivaryParts = [];
-            if (salivaryStates) salivaryParts.push(salivaryStates);
-            if (salivaryCustomDesc) salivaryParts.push(salivaryCustomDesc);
-            const salivaryNormalLvl = ctx.normalLevel('neck_salivary_add_normal');
-            const salivaryNormal = salivaryNormalLvl > 0;
-            if (salivaryNormal || salivaryParts.length > 0) {
-                let body;
-                if (salivaryNormal && salivaryParts.length > 0) body = `obvyklé velikosti a struktury, bez ložiskových změn. Jinak pouze ${formatList(salivaryParts)}.`;
-                else if (salivaryNormal) body = 'obvyklé velikosti a struktury, bez ložiskových změn.';
-                else body = `${formatList(salivaryParts)}.`;
-                reportOut.push({ type: 'frame', text: `Slinné žlázy: ${body}`, tableId: 'neck_salivary_main' });
-            }
+            const sinyNormalLvl = ctx.normalLevel('neck_sinus_add_normal');
+            const sinyConcParts = [
+                ctx.mapConditions([
+                    { states: [3], prefix: 'Chronická sinusitis (', suffix: ').', separator: ', ', items: sinyItems },
+                    { states: [4], prefix: 'Akutní sinusitis (', suffix: ').', separator: ', ', items: sinyItems }
+                ]).trim(),
+                ctx.field('sinus_custom_conc')
+            ].filter(Boolean);
 
-            let salConcStr = ctx.mapStates({
-                separator: '\n', suffix: '',
-                items: [
-                    { id: 'par_nod_RF_r', 1: 'Parotida vpravo s akumulujícím nodulem, pravděpodobně Warthinův tumor.', 2: 'Parotida vpravo s akumulujícími noduly, pravděpodobně Warthinův tumor.' },
-                    { id: 'par_nod_RF_l', 1: 'Parotida vlevo s akumulujícím nodulem, pravděpodobně Warthinův tumor.', 2: 'Parotida vlevo s akumulujícími noduly, pravděpodobně Warthinův tumor.' },
-                    { id: 'sub_nod_RF_r', 1: 'Submandibulární žláza vpravo s akumulujícím nodulem, pravděpodobně Warthinův tumor.', 2: 'Submandibulární žláza vpravo s akumulujícími noduly, pravděpodobně Warthinův tumor.' },
-                    { id: 'sub_nod_RF_l', 1: 'Submandibulární žláza vlevo s akumulujícím nodulem, pravděpodobně Warthinův tumor.', 2: 'Submandibulární žláza vlevo s akumulujícími noduly, pravděpodobně Warthinův tumor.' }
-                ]
-            }).trim();
-            let customSalivaryConc = ctx.field('salivary_custom_conc');
-            if (salConcStr || customSalivaryConc) {
-                let s = [salConcStr, customSalivaryConc].filter(Boolean).join('\n');
-                concInc.push({ type: 'frame', text: s, tableId: 'neck_salivary_main' });
-            }
-            if (salivaryNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Přiměřený nález na slinných žlázách, bez ložiskové léze.', tableId: 'neck_salivary_main' });
-            }
+            useSection(ctx.section({
+                label: 'Siny', tableId: 'neck_sinus_main', desc: 'sinus_custom_desc',
+                normal: 'neck_sinus_add_normal', normalText: 'vzdušné, bez patologického obsahu.',
+                normalConc: 'Přiměřený nález v oblasti sinů.',
+                incidental: [sinyConcParts.join('\n')],
+                parts: [ctx.mapStates({ items: sinyItems })]
+            }), { report: reportOut, main: concMain, incidental: concInc });
+
+            const salConcParts = [
+                ctx.mapStates({
+                    suffix: '',
+                    items: [
+                        { id: 'par_nod_RF_r', 1: 'Parotida vpravo s akumulujícím nodulem, pravděpodobně Warthinův tumor.', 2: 'Parotida vpravo s akumulujícími noduly, pravděpodobně Warthinův tumor.' },
+                        { id: 'par_nod_RF_l', 1: 'Parotida vlevo s akumulujícím nodulem, pravděpodobně Warthinův tumor.', 2: 'Parotida vlevo s akumulujícími noduly, pravděpodobně Warthinův tumor.' },
+                        { id: 'sub_nod_RF_r', 1: 'Submandibulární žláza vpravo s akumulujícím nodulem, pravděpodobně Warthinův tumor.', 2: 'Submandibulární žláza vpravo s akumulujícími noduly, pravděpodobně Warthinův tumor.' },
+                        { id: 'sub_nod_RF_l', 1: 'Submandibulární žláza vlevo s akumulujícím nodulem, pravděpodobně Warthinův tumor.', 2: 'Submandibulární žláza vlevo s akumulujícími noduly, pravděpodobně Warthinův tumor.' }
+                    ]
+                }).trim(),
+                ctx.field('salivary_custom_conc')
+            ].filter(Boolean);
+
+            useSection(ctx.section({
+                label: 'Slinné žlázy', tableId: 'neck_salivary_main', desc: 'salivary_custom_desc',
+                normal: 'neck_salivary_add_normal',
+                normalText: 'obvyklé velikosti a struktury, bez ložiskových změn.',
+                normalConc: 'Přiměřený nález na slinných žlázách, bez ložiskové léze.',
+                incidental: [salConcParts.join('\n')],
+                parts: [ctx.mapStates({
+                    items: [
+                        { id: 'par_atr_r', 1: 'atrofie parotidy vpravo' },
+                        { id: 'par_atr_l', 1: 'atrofie parotidy vlevo' },
+                        { id: 'par_res_r', 1: 'stav po resekci parotidy vpravo' },
+                        { id: 'par_res_l', 1: 'stav po resekci parotidy vlevo' },
+                        { id: 'par_nod_r', 1: 'nespecifický drobný nodul v parotidě vpravo', 2: 'nespecifické drobné noduly v parotidě vpravo' },
+                        { id: 'par_nod_l', 1: 'nespecifický drobný nodul v parotidě vlevo', 2: 'nespecifické drobné noduly v parotidě vlevo' },
+                        { id: 'par_nod_RF_r', 1: 'RF aktivní nodul v parotidě vpravo', 2: 'RF aktivní noduly v parotidě vpravo' },
+                        { id: 'par_nod_RF_l', 1: 'RF aktivní nodul v parotidě vlevo', 2: 'RF aktivní noduly v parotidě vlevo' },
+                        { id: 'sub_atr_r', 1: 'atrofie submandibulární žlázy vpravo' },
+                        { id: 'sub_atr_l', 1: 'atrofie submandibulární žlázy vlevo' },
+                        { id: 'sub_res_r', 1: 'stav po resekci submandibulární žlázy vpravo' },
+                        { id: 'sub_res_l', 1: 'stav po resekci submandibulární žlázy vlevo' },
+                        { id: 'sub_nod_r', 1: 'nespecifický drobný nodul v submandibulární žláze vpravo', 2: 'nespecifické drobné noduly v submandibulární žláze vpravo' },
+                        { id: 'sub_nod_l', 1: 'nespecifický drobný nodul v submandibulární žláze vlevo', 2: 'nespecifické drobné noduly v submandibulární žláze vlevo' },
+                        { id: 'sub_nod_RF_r', 1: 'RF aktivní nodul v submandibulární žláze vpravo', 2: 'RF aktivní noduly v submandibulární žláze vpravo' },
+                        { id: 'sub_nod_RF_l', 1: 'RF aktivní nodul v submandibulární žláze vlevo', 2: 'RF aktivní noduly v submandibulární žláze vlevo' }
+                    ]
+                })]
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
             let farRep = [];
             const stateMapFar = { 'poop': 'pooperační', 'porad': 'poradiační', 'oboje': 'pooperační a poradiační' };
@@ -364,23 +327,13 @@ const RegionNeck = {
             let farDesc = ctx.field('pharynx_custom_desc');
             if (farDesc) farRep.push(farDesc);
 
-            const pharynxNormalLvl = ctx.normalLevel('neck_pharynx_add_normal');
-            const pharynxNormal = pharynxNormalLvl > 0;
-            if (pharynxNormal || farRep.length > 0) {
-                let body;
-                if (pharynxNormal && farRep.length > 0) body = `symetrický, bez ložiskového ztluštění stěny. Jinak pouze ${formatList(farRep)}.`;
-                else if (pharynxNormal) body = 'symetrický, bez ložiskového ztluštění stěny.';
-                else body = `${formatList(farRep)}.`;
-                reportOut.push({ type: 'frame', text: `Hltan/hrtan: ${body}`, tableId: 'neck_pharynx_main' });
-            }
-
-            let pharynxCustomConc = ctx.field('pharynx_custom_conc');
-            if (pharynxCustomConc) {
-                concInc.push({ type: 'frame', text: pharynxCustomConc, tableId: 'neck_pharynx_main' });
-            }
-            if (pharynxNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Přiměřený nález na faryngu, bez ložiskové léze.', tableId: 'neck_pharynx_main' });
-            }
+            useSection(ctx.section({
+                label: 'Hltan/hrtan', tableId: 'neck_pharynx_main', parts: farRep,
+                normal: 'neck_pharynx_add_normal',
+                normalText: 'symetrický, bez ložiskového ztluštění stěny.',
+                normalConc: 'Přiměřený nález na faryngu, bez ložiskové léze.',
+                concField: 'pharynx_custom_conc'
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
             let thyroidParts = [];
             if (ctx.isActive('thyr_enl')) thyroidParts.push('štítná žláza je difuzně zvětšená');
@@ -392,100 +345,51 @@ const RegionNeck = {
             else if (thyrResR) thyroidParts.push('chybí pravý lalok po resekci');
             else if (thyrResL) thyroidParts.push('chybí levý lalok po resekci');
 
-            let thyroidStates = ctx.mapStates({
-                separator: ', ',
-                items: [
-                    { id: 'thyr_nod_r', 1: 'nespecifický drobný nodul vpravo', 2: 'nespecifické drobné noduly vpravo' },
-                    { id: 'thyr_nod_l', 1: 'nespecifický drobný nodul vlevo', 2: 'nespecifické drobné noduly vlevo' },
-                    { id: 'thyr_nod_rf_r', 1: 'RF aktivní nodul vpravo', 2: 'RF aktivní noduly vpravo' },
-                    { id: 'thyr_nod_rf_l', 1: 'RF aktivní nodul vlevo', 2: 'RF aktivní noduly vlevo' },
-                    { id: 'thyr_cys_r', 1: 'cysta vpravo', 2: 'cysty vpravo' },
-                    { id: 'thyr_cys_l', 1: 'cysta vlevo', 2: 'cysty vlevo' }
-                ]
-            });
-            if (thyroidStates) thyroidParts.push(thyroidStates);
-            let thyroidCustomDesc = ctx.field('thyroid_custom_desc');
-            if (thyroidCustomDesc) thyroidParts.push(thyroidCustomDesc);
-            const thyroidNormalLvl = ctx.normalLevel('neck_thyroid_add_normal');
-            const thyroidNormal = thyroidNormalLvl > 0;
-            if (thyroidNormal || thyroidParts.length > 0) {
-                let body;
-                if (thyroidNormal && thyroidParts.length > 0) body = `normální velikosti, parenchym bez zřetelných cyst či ložisek. Jinak pouze ${formatList(thyroidParts)}.`;
-                else if (thyroidNormal) body = 'normální velikosti, parenchym bez zřetelných cyst či ložisek.';
-                else body = `${formatList(thyroidParts)}.`;
-                reportOut.push({ type: 'frame', text: `Thyroidea: ${body}`, tableId: 'neck_thyroid_main' });
-            }
+            const thyrConcParts = [
+                ctx.isActive('thyr_enl') && 'Nespecifická struma.',
+                ctx.isActive('thyr_rf') && 'Difuzně zvýšená akumulace RF štítnice v rámci nespecifické thyreopatie.',
+                ctx.mapStates({
+                    suffix: '',
+                    items: [
+                        { id: 'thyr_nod_rf_r', 1: 'Štítná žláza vpravo s akumulujícím nodulem.', 2: 'Štítná žláza vpravo s akumulujícími noduly.' },
+                        { id: 'thyr_nod_rf_l', 1: 'Štítná žláza vlevo s akumulujícím nodulem.', 2: 'Štítná žláza vlevo s akumulujícími noduly.' }
+                    ]
+                }).trim(),
+                ctx.field('thyroid_custom_conc')
+            ].filter(Boolean);
 
-            let thyrConcArr = [];
-            if (ctx.isActive('thyr_enl')) thyrConcArr.push('Nespecifická struma.');
-            if (ctx.isActive('thyr_rf'))  thyrConcArr.push('Difuzně zvýšená akumulace RF štítnice v rámci nespecifické thyreopatie.');
-            let thyrStateConc = ctx.mapStates({
-                separator: '\n', suffix: '',
-                items: [
-                    { id: 'thyr_nod_rf_r', 1: 'Štítná žláza vpravo s akumulujícím nodulem.', 2: 'Štítná žláza vpravo s akumulujícími noduly.' },
-                    { id: 'thyr_nod_rf_l', 1: 'Štítná žláza vlevo s akumulujícím nodulem.', 2: 'Štítná žláza vlevo s akumulujícími noduly.' }
-                ]
-            }).trim();
-            if (thyrStateConc) thyrConcArr.push(thyrStateConc);
-            let customThyroidConc = ctx.field('thyroid_custom_conc');
-            if (customThyroidConc) thyrConcArr.push(customThyroidConc);
-            
-            if (thyrConcArr.length > 0) {
-                concInc.push({ type: 'frame', text: thyrConcArr.join('\n'), tableId: 'neck_thyroid_main' });
-            }
-            if (thyroidNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Přiměřený nález na štítné žláze, bez ložiskové léze.', tableId: 'neck_thyroid_main' });
-            }
+            useSection(ctx.section({
+                label: 'Thyroidea', tableId: 'neck_thyroid_main', desc: 'thyroid_custom_desc',
+                normal: 'neck_thyroid_add_normal',
+                normalText: 'normální velikosti, parenchym bez zřetelných cyst či ložisek.',
+                normalConc: 'Přiměřený nález na štítné žláze, bez ložiskové léze.',
+                incidental: [thyrConcParts.join('\n')],
+                parts: [...thyroidParts, ctx.mapStates({
+                    items: [
+                        { id: 'thyr_nod_r', 1: 'nespecifický drobný nodul vpravo', 2: 'nespecifické drobné noduly vpravo' },
+                        { id: 'thyr_nod_l', 1: 'nespecifický drobný nodul vlevo', 2: 'nespecifické drobné noduly vlevo' },
+                        { id: 'thyr_nod_rf_r', 1: 'RF aktivní nodul vpravo', 2: 'RF aktivní noduly vpravo' },
+                        { id: 'thyr_nod_rf_l', 1: 'RF aktivní nodul vlevo', 2: 'RF aktivní noduly vlevo' },
+                        { id: 'thyr_cys_r', 1: 'cysta vpravo', 2: 'cysty vpravo' },
+                        { id: 'thyr_cys_l', 1: 'cysta vlevo', 2: 'cysty vlevo' }
+                    ]
+                })]
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
             // --- Měkké tkáně krku (vlastní nálezy) ---
-            let softParts = [];
-            let softDesc = ctx.field('neck_soft_custom_desc');
-            if (softDesc) {
-                let txt = softDesc.trim();
-                if (txt.endsWith('.')) txt = txt.slice(0, -1);
-                if (txt) softParts.push(txt);
-            }
-            const neckSoftNormalLvl = ctx.normalLevel('neck_soft_add_normal');
-            const neckSoftNormal = neckSoftNormalLvl > 0;
-            if (neckSoftNormal || softParts.length > 0) {
-                let text;
-                if (neckSoftNormal && softParts.length > 0) text = `bez ložiskových změn. Jinak pouze ${formatList(softParts)}.`;
-                else if (neckSoftNormal) text = 'bez ložiskových změn.';
-                else text = `${formatList(softParts)}.`;
-                reportOut.push({ type: 'frame', text: `Měkké tkáně: ${text}`, tableId: 'neck_soft_main' });
-            }
-            let softConc = ctx.field('neck_soft_custom_conc');
-            if (softConc) {
-                concInc.push({ type: 'frame', text: softConc, tableId: 'neck_soft_main' });
-            }
-            if (neckSoftNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Přiměřený nález v měkkých tkáních krku, bez ložiskové léze.', tableId: 'neck_soft_main' });
-            }
+            useSection(ctx.section({
+                label: 'Měkké tkáně', tableId: 'neck_soft_main', desc: 'neck_soft_custom_desc',
+                normal: 'neck_soft_add_normal', normalText: 'bez ložiskových změn.',
+                normalConc: 'Přiměřený nález v měkkých tkáních krku, bez ložiskové léze.',
+                concField: 'neck_soft_custom_conc'
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
-            let ostDesc = ctx.field('neck_ostatni_custom_desc');
-            let ostParts = [];
-            if (ostDesc) {
-                let txt = ostDesc.trim();
-                if (txt.endsWith('.')) txt = txt.slice(0, -1);
-                if (txt) ostParts.push(txt);
-            }
-            const ostatniNormalLvl = ctx.normalLevel('neck_ostatni_add_normal');
-            const ostatniNormal = ostatniNormalLvl > 0;
-            if (ostatniNormal || ostParts.length > 0) {
-                let text;
-                if (ostatniNormal && ostParts.length > 0) text = `Bez dalších významných nálezů. Jinak pouze ${formatList(ostParts)}.`;
-                else if (ostatniNormal) text = 'Bez dalších významných nálezů.';
-                else text = `${capitalize(formatList(ostParts))}.`;
-                reportOut.push({ type: 'frame', text: text, tableId: 'neck_ostatni_main' });
-            }
-
-            let ostConc = ctx.field('neck_ostatni_custom_conc');
-            if (ostConc) {
-                concInc.push({ type: 'frame', text: ostConc, tableId: 'neck_ostatni_main' });
-            }
-            if (ostatniNormalLvl >= 2) {
-                concMain.push({ type: 'frame', text: 'Bez dalších významných nálezů na krku.', tableId: 'neck_ostatni_main' });
-            }
+            useSection(ctx.section({
+                tableId: 'neck_ostatni_main', desc: 'neck_ostatni_custom_desc', capitalize: true,
+                normal: 'neck_ostatni_add_normal', normalText: 'Bez dalších významných nálezů.',
+                normalConc: 'Bez dalších významných nálezů na krku.',
+                concField: 'neck_ostatni_custom_conc'
+            }), { report: reportOut, main: concMain, incidental: concInc });
 
             return { 
                 report: reportOut, 

@@ -358,7 +358,6 @@ const RegionSpineNaf = {
         });
 
         // Merge identical report lines into ranges
-        const mergedReport = [];
         let i = 0;
         while (i < segResults.length) {
             const text = segResults[i].text;

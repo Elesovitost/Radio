@@ -161,7 +161,7 @@ const RegionRectum = {
         if (rtConcRaw) {
             let rtConcClean = rtConcRaw.replace(/\u200B/g, '').trim();
             if (rtConcClean) {
-                let formattedConc = rtConcClean.charAt(0).toUpperCase() + rtConcClean.slice(1);
+                let formattedConc = capitalize(rtConcClean);
                 if (!formattedConc.endsWith('.')) formattedConc += '.';
                 concMain.push({ type: 'frame', text: formattedConc, tableId: 'rectum_obecne_main' });
             }
