@@ -57,6 +57,9 @@ const ORGAN_MAP = {
 
     "Knee_joint": { name: "Kloubní dutina", table: "knee_joint_main", regions: ['knee'] },
     "Patella": { name: "Patella", table: "knee_patella_main", regions: ['knee'] },
+    // Virtuální položky levého panelu (SVG orgány LFC/LTC resp. MFC/MTC jsou skryté přes includes)
+    "Knee_med_comp": { name: "Mediální kompartment", table: "knee_med_comp_main", regions: ['knee'], includes: ['MFC', 'MTC'] },
+    "Knee_lat_comp": { name: "Laterální kompartment", table: "knee_lat_comp_main", regions: ['knee'], includes: ['LFC', 'LTC'] },
     "MFC": { name: "MFC", table: "knee_med_comp_main", regions: ['knee'] },
     "LFC": { name: "LFC", table: "knee_lat_comp_main", regions: ['knee'] },
     "MTC": { name: "MTC", table: "knee_med_comp_main", regions: ['knee'] },

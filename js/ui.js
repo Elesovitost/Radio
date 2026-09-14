@@ -99,12 +99,15 @@ const UI = {
         const groups = ordered
             .map(r => ({ id: r, title: (REGIONS[r] && REGIONS[r].title) || r, items: [] }));
 
+        // Orgány uvedené v includes virtuální nadřazené entity (např. MFC pod kompartmentem) do panelu nepatří
+        const navHidden = new Set(Object.values(ORGAN_MAP).flatMap(d => d.includes || []));
         const usedTables = new Set();
         for (const group of groups) {
             const isWbGroup = WB_REGIONS.includes(group.id);
             for (const organId of Object.keys(ORGAN_MAP)) {
                 const def = ORGAN_MAP[organId];
                 if (!def.regions || !def.regions.includes(group.id)) continue;
+                if (navHidden.has(organId)) continue;
                 // Na dedikované mapě (prostata, rektum, rameno, koleno, hlezno) se zobrazí
                 // jen položky náležející výhradně tomuto regionu – obecné (břišní) duplicity přeskoč
                 if (!wbActive.length && def.regions.length > 1) continue;
