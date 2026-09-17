@@ -195,24 +195,27 @@ const ReportDoc = {
         const headingCount = doc.findings.filter(ReportDoc.isHeading).length;
         let currentLine = '';
         let currentLayout = 'inline';
+        let currentExamId = null;
 
         for (const b of doc.findings) {
             if (b.type === 'exam-heading') {
                 if (currentLine) { lines.push(currentLine.trim()); currentLine = ''; }
                 if (lines.length > 0 && lines[lines.length - 1] !== '') lines.push('');
+                currentExamId = b.examId || currentExamId;
                 continue;
             }
 
             if (ReportDoc.isHeading(b)) {
                 if (currentLine) { lines.push(currentLine.trim()); currentLine = ''; }
                 const text = (b.text || '').trim();
+                const examId = b.examId || currentExamId || Store.activeTab;
                 if (text === 'OSTATNÍ:') {
-                    currentLayout = APP_SETTINGS.organsStacked ? 'block' : 'inline';
+                    currentLayout = shouldStackOrgans(examId) ? 'block' : 'inline';
                     continue;
                 }
 
-                // Orgány pod sebe: vždy block. Jinak orgány inline, nový řádek jen u regionu.
-                currentLayout = APP_SETTINGS.organsStacked ? 'block' : 'inline';
+                // Orgány pod sebe: block dle modality. Jinak orgány inline, nový řádek jen u regionu.
+                currentLayout = shouldStackOrgans(examId) ? 'block' : 'inline';
                 currentLine = headingCount > 1 ? text.toUpperCase().replace(/:$/, '') + ':' : '';
                 continue;
             }

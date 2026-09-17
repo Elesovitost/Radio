@@ -1,5 +1,5 @@
 const RegionProstate = {
-    title: 'Prostata a okolí',
+    title: 'Prostata',
     reportLayout: 'block',
     layout: (helpers) => {
         let layoutNodes = [];
@@ -111,6 +111,7 @@ const RegionProstate = {
                     helpers.Table1col(`${p}_r1_excl`, [ [ 'Počet:', { btn: `${p}_c_soli`, type: 'basic', text: 'solitární' }, { btn: `${p}_c_dve`, type: 'basic', text: 'dvě' }, { btn: `${p}_c_vice`, type: 'basic', text: 'vícečetné' }, { btn: `${p}_c_mnoho`, type: 'basic', text: 'mnohočetné' } ] ], 'prostate'),
                     helpers.Table1col(`${p}_r2_excl`, [ [ 'Druh:', { btn: `${p}_k_loz`, type: 'basic', text: 'ložisko'}, { btn: `${p}_k_nod`, type: 'basic', text: 'nodul' }, { btn: `${p}_k_inf`, type: 'basic', text: 'infiltrace' }, { btn: `${p}_k_cust`, states: ['vlastní', 'custom'] } ] ], 'prostate'),
                     locContainer,
+                    helpers.Table1col(`${p}_r3`, [ [ { btn: `${p}_doplneni`, type: 'basic_custom', text: 'doplnění:' } ] ], 'prostate'),
                     helpers.Table1col(`${p}_r4`, [ [ 'Vzhled MR:', 
                         { btn: `${p}_t2`, states: ['T2', 'T2 score 1', 'T2 score 2', 'T2 score 3', 'T2 score 4-5'] }, 
                         { btn: `${p}_dwi`, states: ['DWI', 'DWI score 1', 'DWI score 2', 'DWI score 3', 'DWI score 4-5'] }, 
@@ -173,7 +174,7 @@ const RegionProstate = {
         return layoutNodes;
     },
     compile: (ctx) => {
-        let reportOut = [{ type: 'heading', text: 'Prostata a okolí:', action: 'open-region', regionId: 'prostate' }];
+        let reportOut = [{ type: 'heading', text: 'Prostata:', action: 'open-region', regionId: 'prostate' }];
         let concMain = [];
         let concInc = [];
 
@@ -298,20 +299,25 @@ const RegionProstate = {
 
                 const druhIds = [`${p}_k_loz`, `${p}_k_nod`, `${p}_k_inf`, `${p}_k_cust`];
                 let druhRawId = druhIds.find(id => ctx.isActive(id));
-                let druhRaw = 'ložisko';
-                if (druhRawId === `${p}_k_cust`) druhRaw = Store.customTexts[`${examId}_prostate_${p}_k_cust`] || 'ložisko';
-                else if (druhRawId === `${p}_k_nod`) druhRaw = 'nodul';
-                else if (druhRawId === `${p}_k_inf`) druhRaw = 'infiltrace';
+                let baseText;
+                if (!druhRawId) {
+                    baseText = 'Bez patologické léze';
+                } else {
+                    let druhRaw = 'ložisko';
+                    if (druhRawId === `${p}_k_cust`) druhRaw = Store.customTexts[`${examId}_prostate_${p}_k_cust`] || 'ložisko';
+                    else if (druhRawId === `${p}_k_nod`) druhRaw = 'nodul';
+                    else if (druhRawId === `${p}_k_inf`) druhRaw = 'infiltrace';
 
-                let druhObj = { rod: 'n', plural: druhRaw + 'a' };
-                if (druhRaw === 'infiltrace') druhObj = { rod: 'f', plural: 'infiltrace' };
-                if (druhRaw === 'nodul') druhObj = { rod: 'm', plural: 'noduly' };
-                if (druhRaw === 'ložisko') druhObj = { rod: 'n', plural: 'ložiska' };
+                    let druhObj = { rod: 'n', plural: druhRaw + 'a' };
+                    if (druhRaw === 'infiltrace') druhObj = { rod: 'f', plural: 'infiltrace' };
+                    if (druhRaw === 'nodul') druhObj = { rod: 'm', plural: 'noduly' };
+                    if (druhRaw === 'ložisko') druhObj = { rod: 'n', plural: 'ložiska' };
 
-                let isPlural = pocetText !== 'solitární';
-                let pocetSlovo = GRAMMAR_DICT.pocet[pocetText]?.[druhObj.rod] || pocetText;
-                let druhSlovo = isPlural ? druhObj.plural : druhRaw;
-                let baseText = pocetText === 'solitární' ? capitalize(druhSlovo) : capitalize(`${pocetSlovo} ${druhSlovo}`);
+                    let isPlural = pocetText !== 'solitární';
+                    let pocetSlovo = GRAMMAR_DICT.pocet[pocetText]?.[druhObj.rod] || pocetText;
+                    let druhSlovo = isPlural ? druhObj.plural : druhRaw;
+                    baseText = pocetText === 'solitární' ? capitalize(druhSlovo) : capitalize(`${pocetSlovo} ${druhSlovo}`);
+                }
 
                 let t2 = ctx.text(`${p}_t2`);
                 let dwi = ctx.text(`${p}_dwi`);
@@ -423,6 +429,7 @@ const RegionProstate = {
 
                 let partsRep = [];
                 if (locText) partsRep.push(locText);
+                if (d.doplneniStr) partsRep.push(d.doplneniStr.trim());
                 if (vzhledy.length > 0) partsRep.push(vzhledy.join(', '));
                 if (invTextRep) partsRep.push(invTextRep);
 
@@ -431,6 +438,7 @@ const RegionProstate = {
                 let partsConc = [];
                 if (piradsText) partsConc.push(piradsText);
                 if (locText) partsConc.push(`- ${locText}`);
+                if (d.doplneniStr) partsConc.push(d.doplneniStr.trim());
                 if (d.actStr) partsConc.push(d.actStr.trim());
                 if (invTextConc) partsConc.push(invTextConc);
                 

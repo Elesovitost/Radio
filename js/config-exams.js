@@ -10,21 +10,22 @@
 const EXAMS = {
     "PET / CT": [
         { id: 'petct_fdg_trup',  title: 'FDG-PET / CT trupu',  regs: ['neck','thorax','abdomen','skeleton','soft'] },
+        { id: 'petct_fmm_mozek', title: 'FMM-PET / CT mozku', regs: ['brain'] },
+        { id: 'petct_dopa_mozek', title: 'DOPA-PET / CT mozku', regs: ['brain'] },
+        { id: 'petct_dopa_trup', title: 'DOPA-PET / CT trupu', regs: ['neck','thorax','abdomen','skeleton','soft'] },
         { id: 'petct_psma_trup', title: 'PSMA-PET / CT trupu', regs: ['neck','thorax','abdomen','skeleton','soft'] },
         { id: 'petct_dotatoc_trup', title: 'DOTATOC-PET / CT trupu', regs: ['neck','thorax','abdomen','skeleton','soft'] },
-        { id: 'petct_dopa_mozek', title: 'DOPA-PET / CT mozku', regs: ['brain'] },
-        { id: 'petct_fmm_mozek', title: 'FMM-PET / CT mozku', regs: ['brain'] },
-        { id: 'petct_naf_pater', title: 'NaF-PET / CT páteře', regs: ['spine_naf'] },
-        { id: 'petct_dopa_trup', title: 'DOPA-PET / CT trupu', regs: ['neck','thorax','abdomen','skeleton','soft'] }
+        { id: 'petct_naf_pater', title: 'NaF-PET / CT páteře', regs: ['spine_naf'] }
     ],
     "PET / MR": [
-        { id: 'petmr_fdg_trup', title: 'FDG-PET / MR trupu', regs: ['neck','thorax','abdomen','skeleton','soft'] },
-        { id: 'petmr_psma_prostata', title: 'PSMA-PET / MR prostaty', regs: ['prostate'] },
         { id: 'petmr_fdg_mozek', title: 'FDG-PET / MR mozku', regs: ['brain'] },
-        { id: 'petmr_dopa_mozek', title: 'DOPA-PET / MR mozku', regs: ['brain'] },
-        { id: 'petmr_fmm_mozek', title: 'FMM-PET / MR mozku', regs: ['brain'] },
+        { id: 'petmr_fdg_trup', title: 'FDG-PET / MR trupu', regs: ['neck','thorax','abdomen','skeleton','soft'] },
         { id: 'petmr_fdg_orl', title: 'FDG-PET / MR ORL', regs: ['neck'] },
-        { id: 'petmr_fdg_rekta', title: 'FDG-PET / MR rekta', regs: ['rectum'] }
+        { id: 'petmr_fdg_bricho', title: 'FDG-PET / MR břicha', regs: ['abdomen'] },
+        { id: 'petmr_fdg_rekta', title: 'FDG-PET / MR rekta', regs: ['rectum'] },
+        { id: 'petmr_fmm_mozek', title: 'FMM-PET / MR mozku', regs: ['brain'] },
+        { id: 'petmr_dopa_mozek', title: 'DOPA-PET / MR mozku', regs: ['brain'] },
+        { id: 'petmr_psma_prostata', title: 'PSMA-PET / MR prostaty', regs: ['prostate'] }
     ],
     CT: [
         { id: 'ct_mozek', title: 'CT mozku', regs: ['brain'] },
@@ -138,6 +139,7 @@ const REPORT_PROFILES = {
 
     /* PET / MR */
     petmr_fdg_trup: { tracer: 'fdg', physio: true },
+    petmr_fdg_bricho: { tracer: 'fdg', physio: true },
     petmr_psma_prostata: { tracer: 'psma' },
     petmr_fdg_mozek: { tracer: 'fdg' },
     petmr_dopa_mozek: { tracer: 'dopa' },

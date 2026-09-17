@@ -57,7 +57,7 @@
         APP_SETTINGS.recist = !!s.recist;
         APP_SETTINGS.suvWord = !!s.suvWord;
         APP_SETTINGS.hidePredefined = false;
-        APP_SETTINGS.organsStacked = false;
+        APP_SETTINGS.organsStacked = 'pet';
         APP_SETTINGS.organExpandPet = 'alwaysOrgans';
         APP_SETTINGS.organExpandCtMr = 'alwaysOrgans';
         APP_SETTINGS.lesionPlacement = 'separate';

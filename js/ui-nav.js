@@ -35,6 +35,14 @@ Object.assign(UI, {
             ],
             soft: [
                 ['soft_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Měkké tkáně)']
+            ],
+            prostate: [
+                ['prostate_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Prostata)'],
+                ['prostate_lymphnode_main', 'lymph', 'Uzliny', 'Uzlina', 'Lymfadenopatie (Prostata)']
+            ],
+            rectum: [
+                ['rectum_lesion_main', 'lesion', 'Ložisko', 'Ložisko', 'Léze (Rektum)'],
+                ['rectum_lymphnode_main', 'lymph', 'Uzliny', 'Uzlina', 'Lymfadenopatie (Rektum)']
             ]
         };
 
@@ -76,7 +84,7 @@ Object.assign(UI, {
             }
         }
 
-        const visibleGroups = groups.filter(g => g.items.length > 0 || (WB_LESION_BLOCKS[g.id] && wbActive.length));
+        const visibleGroups = groups.filter(g => g.items.length > 0 || WB_LESION_BLOCKS[g.id]);
         if (visibleGroups.length === 0) return null;
 
         const nav = el('div', { className: 'organ-nav' });
@@ -91,10 +99,10 @@ Object.assign(UI, {
             if (idx > 0) head.style.marginTop = '8px';
             nav.appendChild(head);
 
-            // Hned pod nadpisem WB regionu plochý seznam „Ložisko" / „Uzliny" (jako popup na SVG):
+            // Hned pod nadpisem plochý seznam „Ložisko" / „Uzliny" (jako popup na SVG):
             // bez instance je tu řádek kategorie (klik = vytvoří první), s instancemi řádky jejich
             // znění a na konci řádek „další …" (klik = vytvoří další). Vše na stejné úrovni.
-            const blocks = wbActive.length ? (WB_LESION_BLOCKS[group.id] || []) : [];
+            const blocks = WB_LESION_BLOCKS[group.id] || [];
             blocks.forEach(([table, kind, label, defaultType, organName]) => {
                 const addLabel = kind === 'lymph' ? 'další uzliny' : kind === 'lesion' ? 'Další ložisko' : 'Další krvácení / ischemie';
                 const cat = el('div', {

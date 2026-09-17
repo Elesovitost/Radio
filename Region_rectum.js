@@ -195,7 +195,10 @@ const RegionRectum = {
                 let stageDesc = "";
                 let kdeSuffix = invKde ? `, lokalizace: ${invKde}` : "";
 
-                if (inv) {
+                /* Bez vybraného druhu = negativní léze → T0, bez negativních staging frází. */
+                if (!dL.hasDruh) {
+                    stageStr = "T0";
+                } else if (inv) {
                     if (inv === '0') { stageStr = "T1/T2"; stageDesc = `Bez známek šíření mimo stěnu rekta${kdeSuffix}.`; }
                     else if (inv === '< 1 mm') { stageStr = "T3a"; stageDesc = `Extramurální hloubka invaze do 1 mm${kdeSuffix}.`; }
                     else if (inv === '1-5 mm') { stageStr = "T3b"; stageDesc = `Extramurální hloubka invaze 1-5 mm${kdeSuffix}.`; }
@@ -210,23 +213,34 @@ const RegionRectum = {
                 let emvi = ctx.text(`${p}_emvi`);
                 let td = ctx.text(`${p}_td`);
                 
-                let mrfStr = mrf === '+' ? "MRF+" : "MRF-";
-                let emviStr = emvi === '+' ? "EMVI+" : "EMVI-";
-                let mrfDesc = mrf === '+' ? "Fascie mezorekta (MRF) je infiltrována (vzdálenost tumoru ≤ 1 mm)." : "Fascie mezorekta (MRF) bez známek invaze (vzdálenost > 1 mm).";
-                let emviDesc = emvi === '+' ? "Přítomna extramurální vaskulární invaze (EMVI pozitivní)." : "";
+                let mrfStr = "";
+                let emviStr = "";
+                let mrfDesc = "";
+                let emviDesc = "";
+                if (dL.hasDruh) {
+                    mrfStr = mrf === '+' ? "MRF+" : "MRF-";
+                    emviStr = emvi === '+' ? "EMVI+" : "EMVI-";
+                    mrfDesc = mrf === '+' ? "Fascie mezorekta (MRF) je infiltrována (vzdálenost tumoru ≤ 1 mm)." : "Fascie mezorekta (MRF) bez známek invaze (vzdálenost > 1 mm).";
+                    emviDesc = emvi === '+' ? "Přítomna extramurální vaskulární invaze (EMVI pozitivní)." : "";
+                }
                 
                 let tdDesc = "";
-                if (td === '+') { tdDesc = "V mezorektu přítomna tumorózní depozita (TD)."; riskParts.push("TD+"); }
-                else if (td === '++') { tdDesc = "V mezorektu přítomna vícečetná tumorózní depozita (TD)."; riskParts.push("TD+ (vícečetná)"); }
+                if (dL.hasDruh) {
+                    if (td === '+') { tdDesc = "V mezorektu přítomna tumorózní depozita (TD)."; riskParts.push("TD+"); }
+                    else if (td === '++') { tdDesc = "V mezorektu přítomna vícečetná tumorózní depozita (TD)."; riskParts.push("TD+ (vícečetná)"); }
+                }
 
                 let dno = ctx.text(`${p}_dno`);
                 let sfinkter = ctx.text(`${p}_sfinkter`);
-                let dnoDesc = dno === '+' ? "Zřetelná invaze tumoru do pánevního dna." : "";
+                let dnoDesc = "";
                 let sfinDesc = "";
-                if (sfinkter && sfinkter !== '0') {
-                    if (sfinkter === 'interní') sfinDesc = "Tumor infiltruje interní sfinkter.";
-                    if (sfinkter === 'intersfinkter.') sfinDesc = "Tumor se šíří do intersfinkterického prostoru.";
-                    if (sfinkter === 'externí') sfinDesc = "Tumor infiltruje externí sfinkter.";
+                if (dL.hasDruh) {
+                    dnoDesc = dno === '+' ? "Zřetelná invaze tumoru do pánevního dna." : "";
+                    if (sfinkter && sfinkter !== '0') {
+                        if (sfinkter === 'interní') sfinDesc = "Tumor infiltruje interní sfinkter.";
+                        if (sfinkter === 'intersfinkter.') sfinDesc = "Tumor se šíří do intersfinkterického prostoru.";
+                        if (sfinkter === 'externí') sfinDesc = "Tumor infiltruje externí sfinkter.";
+                    }
                 }
 
                 let terapie = ctx.text(`${p}_terapie`);
@@ -242,9 +256,11 @@ const RegionRectum = {
                 
                 reportOut.push({ type: 'frame', text: `${repBase} ${repDetails}`.trim(), tableId: `rectum_lesion_main__${instId}` });
 
-                let stageArr = [stageStr, mrfStr, emviStr].filter(Boolean).join(', ');
+                let stageArr = dL.hasDruh
+                    ? [stageStr, mrfStr, emviStr].filter(Boolean).join(', ')
+                    : stageStr;
                 let extRisk = riskParts.length > 0 ? ` (${riskParts.join(', ')})` : "";
-                let dnoSfin = (dno === '+' || (sfinkter && sfinkter !== '0')) ? "s invazí dna/sfinkteru" : "";
+                let dnoSfin = (dL.hasDruh && (dno === '+' || (sfinkter && sfinkter !== '0'))) ? "s invazí dna/sfinkteru" : "";
                 
                 let etioLower = (dL.etioStr || '').toLowerCase();
                 let isKarcinom = etioLower.includes('karcinom') || etioLower.includes('maligní');

@@ -71,19 +71,13 @@
         </div>
 
         <div class="sub-table-title-settings" style="text-align: left;">Zápis findings</div>
-        <div class="row" style="margin-bottom: 8px;">
-            <span class="label" title="Zapne/vypne všechna predef tlačítka orgánů u právě otevřených vyšetření.">Predef texty orgánů:</span>
-            <label class="switch">
-                <input type="checkbox" id="setting-organ-predefs" data-action="update-setting" data-setting="organPredefs">
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div class="row" style="margin-bottom: 8px;">
-            <span class="label" title="Platí jen pro kopírovaný report: Ano = každý orgán na novém řádku. Ne = orgány za sebou, nový řádek jen u regionu těla. Ve findings panelu jsou orgány vždy pod sebou.">Orgány pod sebe:</span>
-            <label class="switch">
-                <input type="checkbox" id="setting-organs-stacked" data-action="update-setting" data-setting="organsStacked">
-                <span class="slider"></span>
-            </label>
+        <div class="row" style="margin-bottom: 8px; align-items: center;">
+            <span class="label" style="min-width: 52px;" title="Platí jen pro kopírovaný report: každý orgán na novém řádku. Ve findings panelu jsou orgány vždy pod sebou.">Orgány pod sebe:</span>
+            <select id="setting-organs-stacked" class="input" style="flex: 1; min-width: 0;" data-action="update-setting" data-setting="organsStacked">
+                <option value="pet">jen v PET</option>
+                <option value="ctmr">jen v CT/MR</option>
+                <option value="always">všude</option>
+            </select>
         </div>
         <div class="row" style="margin-bottom: 12px; align-items: center;">
             <span class="label" style="min-width: 52px;" title="Kam se ve findings řadí ložiska a uzliny: zvlášť nahoře regionu, nebo pod odpovídající orgán podle lokalizace.">Zápis ložisek:</span>

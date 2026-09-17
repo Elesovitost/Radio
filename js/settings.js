@@ -19,12 +19,29 @@ function normalizeLesionPlacement(v) {
     return LESION_PLACEMENT_MODES.includes(v) ? v : 'separate';
 }
 
+/* Orgány pod sebe v kopírovaném reportu podle modality. */
+const ORGANS_STACKED_MODES = ['pet', 'ctmr', 'always'];
+function normalizeOrgansStacked(v) {
+    if (v === true) return 'always';
+    if (ORGANS_STACKED_MODES.includes(v)) return v;
+    /* staré false / neznámé → jen PET (nejbližší k dřívějšímu vypnutí u CT/MR) */
+    return 'pet';
+}
+
+function shouldStackOrgans(examId) {
+    const mode = APP_SETTINGS.organsStacked;
+    const id = String(examId || '').toLowerCase();
+    if (mode === 'always') return true;
+    if (mode === 'pet') return id.includes('pet');
+    if (mode === 'ctmr') return !id.includes('pet');
+    return false;
+}
+
 const APP_SETTINGS = { 
     grammarMerging: savedConfig.grammarMerging !== undefined ? savedConfig.grammarMerging : true,
     suvWord: savedConfig.suvWord || false,
     hidePredefined: savedConfig.hidePredefined || false,
-    organPredefs: savedConfig.organPredefs || false,
-    organsStacked: savedConfig.organsStacked || false,
+    organsStacked: normalizeOrgansStacked(savedConfig.organsStacked),
     organExpandPet: normalizeOrganExpand(savedConfig.organExpandPet),
     organExpandCtMr: normalizeOrganExpand(savedConfig.organExpandCtMr),
     lesionPlacement: normalizeLesionPlacement(savedConfig.lesionPlacement),
@@ -39,7 +56,6 @@ function saveSettings() {
         grammarMerging: APP_SETTINGS.grammarMerging,
         suvWord: APP_SETTINGS.suvWord, 
         hidePredefined: APP_SETTINGS.hidePredefined,
-        organPredefs: APP_SETTINGS.organPredefs,
         organsStacked: APP_SETTINGS.organsStacked,
         organExpandPet: APP_SETTINGS.organExpandPet,
         organExpandCtMr: APP_SETTINGS.organExpandCtMr,

@@ -95,16 +95,20 @@ function getExclusiveStates(globalId, nextVal) {
     const table = btn.closest('table[id*="_excl"]');
     if (!table) return { block: false, states: null };
 
-    // Zamezení odkliknutí: v tabulce _excl musí zůstat vždy jedna volba aktivní
-    if (nextVal === false || nextVal === 0) return { block: true, states: null };
+    /* Druh/typ (*_k_*): exclusivní, ale smí zůstat prázdný.
+       Ostatní _excl (počet, etiologie, …): vždy právě jedna aktivní volba. */
+    const allowEmpty = /_k_/.test(globalId) || (table.id || '').includes('_r2_excl');
+    if (!allowEmpty && (nextVal === false || nextVal === 0)) return { block: true, states: null };
 
     let states = { ...Store.buttonStates };
-    table.querySelectorAll('button[data-id]').forEach(b => {
-        const sid = b.dataset.id;
-        if (sid !== globalId && ButtonConfigs[sid]) {
-            states[sid] = ButtonConfigs[sid].type === 'standard' ? 0 : false;
-        }
-    });
+    if (nextVal !== false && nextVal !== 0) {
+        table.querySelectorAll('button[data-id]').forEach(b => {
+            const sid = b.dataset.id;
+            if (sid !== globalId && ButtonConfigs[sid]) {
+                states[sid] = ButtonConfigs[sid].type === 'standard' ? 0 : false;
+            }
+        });
+    }
     
     return { block: false, states };
 }
@@ -237,7 +241,6 @@ function createNewInstance(baseTableId) {
     const examId = Store.activeTab || 'default';
     const instId = Date.now().toString();
     const tableInstances = getExamInstances(baseTableId, examId);
-    setExamInstances(baseTableId, [...tableInstances, instId], examId);
     
     const isLN = baseTableId.includes('lymphnode');
     const isHemo = baseTableId.includes('hemo');
@@ -256,12 +259,18 @@ function createNewInstance(baseTableId) {
     
     let kindSuffix = isLN ? 'uzl' : 'les';
     if (isHemo) kindSuffix = 'lez';
-    
+    else if (regionId === 'prostate' && !isLN) kindSuffix = 'loz';
+
+    /* Nevolat UI.render uprostřed vytváření – activeTable se nastaví až potom. */
+    const prevSilent = Store._silent;
+    Store._silent = true;
+    setExamInstances(baseTableId, [...tableInstances, instId], examId);
     Store.buttonStates = { 
         ...Store.buttonStates, 
         [`${examId}_${regionId}_${p}_c_soli`]: true, 
         [`${examId}_${regionId}_${p}_k_${kindSuffix}`]: defaultLesState 
     };
+    Store._silent = prevSilent;
     
     return `${baseTableId}__${instId}`;
 }
@@ -573,7 +582,6 @@ const ActionHandlers = {
         Store._silent = false;
 
         UI.render('exams');
-        if (APP_SETTINGS.organPredefs) applyAllOrganPredefs(true, [newId]);
     },
     'remove-instance': (target, dataset) => {
         const [baseTableId, instId] = dataset.id.split('__');
@@ -607,7 +615,6 @@ const ActionHandlers = {
     },
     'toggle-exam': (target, dataset) => {
         const next = new Set(Store.exams);
-        const adding = !next.has(dataset.payload);
         if (next.has(dataset.payload)) {
             next.delete(dataset.payload);
             if (Store.activeTab === dataset.payload) Store.activeTab = next.size > 0 ? Array.from(next).pop() : null;
@@ -617,7 +624,6 @@ const ActionHandlers = {
         }
         Store.exams = next;
         Store.activeTable = null;
-        if (adding && APP_SETTINGS.organPredefs) applyAllOrganPredefs(true, [dataset.payload]);
     },
     'select-tab': (target, dataset) => {
         Store.activeTab = dataset.payload;

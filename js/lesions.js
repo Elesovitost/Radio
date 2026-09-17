@@ -212,18 +212,31 @@ const LESIONS_DEFINITION = {
 
     /* Počet + druh + skloňovaný základ věty („Solitární ložisko“, „Dvě kolekce“).
        druhIds      – koncovky id tlačítek druhu (např. ['_k_les', '_k_cust'])
-       defaultDruh  – druh, když není nic vybráno
+       defaultDruh  – druh pro skloňování, když chybí výběr (fallback jen uvnitř)
+       emptyText    – základ věty, když není vybraný žádný druh
        rodFallback  – rod pro druh, který není ve slovníku */
-    parseBase: (ctx, examId, regionId, pfx, { druhIds, defaultDruh = 'ložisko', rodFallback = 'n' }) => {
+    parseBase: (ctx, examId, regionId, pfx, { druhIds, defaultDruh = 'ložisko', emptyText = 'Bez patologické léze', rodFallback = 'n' } = {}) => {
         const pocetIds = [`${pfx}_c_soli`, `${pfx}_c_dve`, `${pfx}_c_vice`, `${pfx}_c_mnoho`];
         const pocetRawId = pocetIds.find(id => ctx.isActive(id));
         const pocetText = (pocetRawId ? resolveButtonConfig(examId, regionId, pocetRawId)?.text : null) || 'solitární';
 
         const druhRawId = druhIds.map(s => `${pfx}${s}`).find(id => ctx.isActive(id));
+        if (!druhRawId) {
+            const druhObj = GRAMMAR_DICT.druh[defaultDruh] || { rod: rodFallback, plural: defaultDruh };
+            const isPlural = pocetText !== 'solitární';
+            return {
+                pocetRawId, druhRawId: null, pocetText, druhObj, isPlural,
+                pocetSlovo: GRAMMAR_DICT.pocet[pocetText]?.[druhObj.rod] || pocetText,
+                druhSlovo: defaultDruh,
+                baseText: emptyText,
+                hasDruh: false
+            };
+        }
+
         let druhRaw = defaultDruh;
         if (druhRawId === `${pfx}_k_cust`) {
             druhRaw = Store.customTexts[`${examId}_${regionId}_${pfx}_k_cust`] || defaultDruh;
-        } else if (druhRawId) {
+        } else {
             const btnCfg = resolveButtonConfig(examId, regionId, druhRawId);
             if (btnCfg?.type === 'standard') {
                 const stateVal = ctx.text(druhRawId);
@@ -239,16 +252,17 @@ const LESIONS_DEFINITION = {
         const pocetSlovo = GRAMMAR_DICT.pocet[pocetText]?.[druhObj.rod] || pocetText;
         const druhSlovo = isPlural ? druhObj.plural : druhRaw;
         const baseText = pocetText === 'solitární' ? capitalize(druhSlovo) : capitalize(`${pocetSlovo} ${druhSlovo}`.trim());
-        return { pocetRawId, druhRawId, pocetText, druhObj, isPlural, pocetSlovo, druhSlovo, baseText };
+        return { pocetRawId, druhRawId, pocetText, druhObj, isPlural, pocetSlovo, druhSlovo, baseText, hasDruh: true };
     },
 
     parseDetails: (ctx, examId, regionId, pfx, metPfx, etioPfx, isLN) => {
         const druhIds = isLN
             ? ['_k_uzl', '_k_pak', '_k_cust']
             : ['_k_les', '_k_cys', '_k_exp', '_k_inf', '_k_def', '_k_kol', '_k_cust'];
-        const { pocetRawId, druhRawId, pocetText, baseText } = LESIONS_DEFINITION.parseBase(ctx, examId, regionId, pfx, {
+        const { pocetRawId, druhRawId, pocetText, baseText, hasDruh } = LESIONS_DEFINITION.parseBase(ctx, examId, regionId, pfx, {
             druhIds,
             defaultDruh: isLN ? 'uzlina' : 'ložisko',
+            emptyText: isLN ? 'Bez patologické uzliny' : 'Bez patologické léze',
             rodFallback: isLN ? 'f' : 'n'
         });
 
@@ -356,7 +370,7 @@ const LESIONS_DEFINITION = {
 
         let hasAny = !!(pocetRawId || druhRawId || ctx.field(`${metPfx}_size`) || ctx.field(`${metPfx}_size_old`) || ctx.field(`${metPfx}_suv`) || ctx.isActive(`${metPfx}_cnt_old`) || vzhledy.length > 0 || etioStr !== "");
 
-        return { hasAny, baseText, vzhledText, metrikyStr, doplneniStr, etioStr, actStr, dynStr };
+        return { hasAny, hasDruh: !!hasDruh, baseText, vzhledText, metrikyStr, doplneniStr, etioStr, actStr, dynStr };
     },
 
     /* Jeden nález + jeden závěr pro instanci léze / uzliny / hematomu.

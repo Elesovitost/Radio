@@ -33,7 +33,14 @@ document.addEventListener('click', e => {
         if (organEl && organEl.id && ORGAN_MAP[organEl.id]) {
             const organDef = ORGAN_MAP[organEl.id];
             
-            if (organDef.table && (organDef.table.includes('_lesion_main') || organDef.table.includes('_lymphnode_main'))) {
+            if (organDef.table && (organDef.table.includes('_lesion_main') || organDef.table.includes('_lymphnode_main') || organDef.table.includes('_hemo_main'))) {
+                /* Klik na ikonu léze/uzlin: rovnou otevři (0 → nová, 1 → ta jediná; víc → nech popup). */
+                const insts = getExamInstances(organDef.table);
+                if (insts.length === 0) {
+                    Store.activeTable = createNewInstance(organDef.table);
+                } else if (insts.length === 1) {
+                    Store.activeTable = `${organDef.table}__${insts[0]}`;
+                }
                 return;
             }
 
@@ -299,7 +306,6 @@ document.addEventListener('input', e => {
         const setting = actionTarget.dataset.setting;
         APP_SETTINGS[setting] = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         saveSettings();
-        if (setting === 'organPredefs') applyAllOrganPredefs(e.target.checked);
         return;
     }
 
@@ -596,6 +602,12 @@ document.addEventListener('mousedown', e => {
 document.addEventListener('DOMContentLoaded', () => {
     HistoryManager.loadStateFromUrl();
     HistoryManager.renderDropdown();
+    /* Jednorázově vypni hromadné predefy ze zrušeného nastavení. */
+    if (savedConfig.organPredefs && typeof applyAllOrganPredefs === 'function') {
+        applyAllOrganPredefs(false);
+        delete savedConfig.organPredefs;
+        saveSettings();
+    }
 
     const grammarMergingCheckbox = document.getElementById('setting-grammar-merging');
     if (grammarMergingCheckbox) grammarMergingCheckbox.checked = APP_SETTINGS.grammarMerging;
@@ -606,11 +618,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const hidePredefinedCheckbox = document.getElementById('setting-hide-predefined');
     if (hidePredefinedCheckbox) hidePredefinedCheckbox.checked = APP_SETTINGS.hidePredefined;
 
-    const organPredefsCheckbox = document.getElementById('setting-organ-predefs');
-    if (organPredefsCheckbox) organPredefsCheckbox.checked = APP_SETTINGS.organPredefs;
-
-    const organsStackedCheckbox = document.getElementById('setting-organs-stacked');
-    if (organsStackedCheckbox) organsStackedCheckbox.checked = APP_SETTINGS.organsStacked;
+    const organsStackedSelect = document.getElementById('setting-organs-stacked');
+    if (organsStackedSelect) organsStackedSelect.value = APP_SETTINGS.organsStacked;
 
     const organExpandPet = document.getElementById('setting-organ-expand-pet');
     if (organExpandPet) organExpandPet.value = APP_SETTINGS.organExpandPet;

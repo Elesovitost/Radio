@@ -1200,7 +1200,7 @@ const RegionBrain = {
             concMain.push({ type: 'frame', text: 'Přiměřený nález bez patrné ložiskové patologie.' });
         }
 
-        if ((examId || '').toLowerCase().startsWith('ct')) {
+        if (!isMR) {
             reportOut.forEach(b => { if (b.text) b.text = b.text.replaceAll('T2W+ FLAIR+', 'hypodenzní'); });
         }
 
