@@ -26,10 +26,10 @@ const RegionBrAngiography = {
                     [ { btn: 'angio_var_vapica_r', states: ['0', '+'] }, 'VA končící jako PICA', { btn: 'angio_var_vapica_l', states: ['0', '+'] } ],
                     [ { btn: 'angio_var_pica_r', states: ['0', '+'] }, 'Gracilní PICA', { btn: 'angio_var_pica_l', states: ['0', '+'] } ]
                 ]),
-                helpers.Table1col('angio_ves_ost_add', [ 
-                    { field: 'text', id: 'angio_ves_custom_desc', placeholder: 'vlastní cévní popis...' }, 
-                    { field: 'text', id: 'angio_ves_custom_conc', placeholder: 'vlastní cévní závěr...' } 
-                ])
+                helpers.Table1col('angio_ves_ost_add', [
+                    { field: 'text', id: 'angio_ves_custom_desc', placeholder: 'vlastní cévní popis...' },
+                    { field: 'text', id: 'angio_ves_custom_conc', placeholder: 'vlastní cévní závěr...' }
+                ], { normal: true })
             ])
         );
 
@@ -42,7 +42,10 @@ const RegionBrAngiography = {
         let vesRep = [];
         let varRepList = [];
         let varConcList = [];
-        
+
+        const ANGIO_NORMAL =
+            'Přívodné mozkové tepny mají normální šířku i průběh, Willisův okruh se zobrazuje obvykle, cévy přiměřené šíře do periferie, bez patrných stenóz či aneurysmat.';
+
         let vesPat = ctx.text('angio_ves_pat');
         if (vesPat && vesPat !== '0') {
             let actVes = [];
@@ -55,7 +58,7 @@ const RegionBrAngiography = {
                 let isL = ctx.isActive(`angio_ves_${v}_l`);
                 let r = ctx.text(`angio_ves_${v}_r`);
                 let l = ctx.text(`angio_ves_${v}_l`);
-                
+
                 if (isR && isL) {
                     if (r === l) actVes.push(`${r} bilat.`);
                     else actVes.push(`${r} vpravo a ${l} vlevo`);
@@ -69,18 +72,15 @@ const RegionBrAngiography = {
             if (actVes.length > 0) {
                 let vStr = actVes.join(' a ');
                 if (actVes.length > 1) vStr = `na rozhraní ${vStr}`;
-                
+
                 let sizeVal = ctx.field('angio_ves_size');
                 let sizeStr = '';
                 if (sizeVal && vesPat === 'aneurysma') sizeStr = ` vel. ${sizeVal} mm`;
                 else if (sizeVal && vesPat === 'stenóza') sizeStr = ` šíře ${sizeVal} mm`;
 
                 let repText = `${vesPat} ${vStr}${sizeStr}`;
-                let vesCust = ctx.field('angio_ves_custom_desc');
-                let fullRep = vesCust ? `${repText}, ${vesCust}` : repText;
+                vesRep.push(repText);
 
-                vesRep.push(fullRep);
-                
                 if (['aneurysma', 'stenóza', 'uzávěr'].includes(vesPat)) {
                     concMain.push({ type: 'frame', text: `${capitalize(repText)}.`, tableId: 'angio_vessels_main' });
                 } else {
@@ -89,16 +89,18 @@ const RegionBrAngiography = {
             }
         }
 
-        let vesDescOnly = ctx.field('angio_ves_custom_desc');
-        if (vesDescOnly && (vesPat === '0' || !vesPat)) {
-            vesRep.push(vesDescOnly);
-        }
-
-        if (vesRep.length > 0) {
-            reportOut.push({ type: 'frame', text: capitalize(formatCzechList(vesRep)) + '. Jinak je konfigurace mozkových tepen obvyklá.', tableId: 'angio_vessels_main' });
-        } else {
-            reportOut.push({ type: 'frame', text: 'Přívodné mozkové tepny mají normální šířku i průběh, Willisův okruh se zobrazuje obvykle, cévy přiměřené šíře do periferie, bez patrných stenóz či aneurysmat.', tableId: 'angio_vessels_main', dimmed: true });
-        }
+        useSection(ctx.section({
+            tableId: 'angio_vessels_main',
+            normal: 'angio_ves_ost_add_normal',
+            normalText: ANGIO_NORMAL,
+            normalConc: 'Přiměřený nález na mozkových tepnách.',
+            predef: 'angio_ves_ost_add_predef',
+            predefText: ANGIO_NORMAL,
+            desc: 'angio_ves_custom_desc',
+            concField: 'angio_ves_custom_conc',
+            capitalize: true,
+            parts: vesRep
+        }), { report: reportOut, main: concMain, incidental: concInc });
 
         const stdVariations = [
             { id: 'a1', label: 'hypoplázie A1 ACA' },
@@ -160,9 +162,6 @@ const RegionBrAngiography = {
             let varTextConc = `Variační anatomie: ${varConcList.join(', ')}.`;
             concInc.push({ type: 'frame', text: varTextConc, tableId: 'angio_var_table' });
         }
-
-        let vesConc = ctx.field('angio_ves_custom_conc');
-        if (vesConc) concInc.push({ type: 'frame', text: vesConc, tableId: 'angio_vessels_main' });
 
         return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };
     }

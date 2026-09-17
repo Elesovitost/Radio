@@ -51,7 +51,7 @@
         </div>
     </div>
     <!-- Settings Modal -->
-    <div id="settings-modal" class="panel" style="display: none; position: absolute; top: 38px; right: 5px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.8); width: 280px; border: 1px solid var(--accent-hi);">
+    <div id="settings-modal" class="panel" style="display: none; position: absolute; top: 38px; right: 5px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.8); width: 320px; border: 1px solid var(--accent-hi);">
         <h2 style="margin-bottom: 8px;">Nastavení</h2>
         
         <div class="sub-table-title-settings" style="text-align: left; margin-top: 0;">Textové změny</div>
@@ -68,6 +68,50 @@
                 <input type="checkbox" id="setting-hide-predefined" data-action="update-setting" data-setting="hidePredefined">
                 <span class="slider"></span>
             </label>
+        </div>
+
+        <div class="sub-table-title-settings" style="text-align: left;">Zápis findings</div>
+        <div class="row" style="margin-bottom: 8px;">
+            <span class="label" title="Zapne/vypne všechna predef tlačítka orgánů u právě otevřených vyšetření.">Predef texty orgánů:</span>
+            <label class="switch">
+                <input type="checkbox" id="setting-organ-predefs" data-action="update-setting" data-setting="organPredefs">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="row" style="margin-bottom: 8px;">
+            <span class="label" title="Platí jen pro kopírovaný report: Ano = každý orgán na novém řádku. Ne = orgány za sebou, nový řádek jen u regionu těla. Ve findings panelu jsou orgány vždy pod sebou.">Orgány pod sebe:</span>
+            <label class="switch">
+                <input type="checkbox" id="setting-organs-stacked" data-action="update-setting" data-setting="organsStacked">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="row" style="margin-bottom: 12px; align-items: center;">
+            <span class="label" style="min-width: 52px;" title="Kam se ve findings řadí ložiska a uzliny: zvlášť nahoře regionu, nebo pod odpovídající orgán podle lokalizace.">Zápis ložisek:</span>
+            <select id="setting-lesion-placement" class="input" style="flex: 1; min-width: 0;" data-action="update-setting" data-setting="lesionPlacement">
+                <option value="separate">Všude zvlášť</option>
+                <option value="petSeparate">PET zvlášť, CT/MR k orgánům</option>
+                <option value="toOrgans">všude k orgánům</option>
+            </select>
+        </div>
+
+        <div class="sub-table-title-settings" style="text-align: left;">Rozepisování orgánů trupu v popisu</div>
+        <div class="row" style="margin-bottom: 8px; align-items: center;">
+            <span class="label" style="min-width: 52px;" title="Jak se ve findings skládají orgány trupu (krk, hrudník, břicho) u PET vyšetření. Mozek je vždy po orgánech.">PET:</span>
+            <select id="setting-organ-expand-pet" class="input" style="flex: 1; min-width: 0;" data-action="update-setting" data-setting="organExpandPet">
+                <option value="none">vůbec - píše se jen patologie</option>
+                <option value="groups">skupiny stručně</option>
+                <option value="groupsAndOrgans">skupiny podrobněji</option>
+                <option value="alwaysOrgans">každý orgán vždy</option>
+            </select>
+        </div>
+        <div class="row" style="margin-bottom: 12px; align-items: center;">
+            <span class="label" style="min-width: 52px;" title="Jak se ve findings skládají orgány trupu (krk, hrudník, břicho) u CT/MR vyšetření. Mozek je vždy po orgánech.">CT/MR:</span>
+            <select id="setting-organ-expand-ctmr" class="input" style="flex: 1; min-width: 0;" data-action="update-setting" data-setting="organExpandCtMr">
+                <option value="none">vůbec - píše se jen patologie</option>
+                <option value="groups">skupiny stručně</option>
+                <option value="groupsAndOrgans">skupiny podrobněji</option>
+                <option value="alwaysOrgans">každý orgán vždy</option>
+            </select>
         </div>
 
         <div class="sub-table-title-settings" style="text-align: left;">Zápis závěru</div>
@@ -188,6 +232,7 @@
 <script src="Region_wrist.js"></script>
 
 <script src="js/settings.js"></script>
+<script src="js/organ-expand.js"></script>
 <script src="js/organ-maps.js"></script>
 <script src="js/config-exams.js"></script>
 <script src="js/grammar.js"></script>

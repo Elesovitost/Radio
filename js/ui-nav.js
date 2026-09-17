@@ -133,7 +133,7 @@ Object.assign(UI, {
         const organName = cat.dataset.organ || '';
         const firstLabel = cat.dataset.label || (kind === 'lymph' ? 'Uzliny' : kind === 'hemo' ? 'Krvácení / ischemie' : 'Ložisko');
         const addLabel = cat.dataset.add || (kind === 'lymph' ? 'Další uzliny' : kind === 'hemo' ? 'Další krvácení / ischemie' : 'Další ložisko');
-        const insts = (Store.instances && Store.instances[table]) || [];
+        const insts = getExamInstances(table);
 
         const children = insts.map(instId => {
             const name = getLesionInstanceName(table, instId, defaultType, organName);

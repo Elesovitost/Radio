@@ -36,6 +36,17 @@ h2 { font-size: 0.75rem; color: var(--dim); letter-spacing: 1px; text-transform:
 .input:focus { border-color: var(--accent-hi); }
 .input-wide { width: 300px; }
 .input-date { width: 150px; color-scheme: dark; }
+/* Native <select> dropdown: světlé systémové pozadí + bílé písmo z .input = nečitelná nabídka */
+select.input {
+    background: #0d1117;
+    color: var(--text);
+    color-scheme: dark;
+    cursor: pointer;
+}
+select.input option {
+    background: #0d1117;
+    color: var(--text);
+}
 
 /* ─── TLAČÍTKA ───────────────────────────────────────── */
 .btn { background: var(--btn-bg); border: 1px solid var(--border); color: #c9d1d9; padding: 2px; font-size: 11px; font-weight: 400; border-radius: 3px; cursor: pointer; min-width: 170px; display: inline-flex; justify-content: center; align-items: center; text-align: center; user-select: none; outline: none !important; -webkit-tap-highlight-color: transparent; }
@@ -49,6 +60,7 @@ h2 { font-size: 0.75rem; color: var(--dim); letter-spacing: 1px; text-transform:
 .btn-state::after { content: attr(data-longest); visibility: hidden; grid-area: 1 / 1; pointer-events: none; white-space: nowrap; font-weight: 700; }
 .btn-state span { grid-area: 1 / 1; white-space: nowrap; }
 button[data-id*="spacer"] { visibility: hidden; }
+button[data-id*="_predef"] { display: none; }
 .btn-side-toggle { margin: 0 4px; padding: 0 4px; min-width: auto; height: 18px; font-weight: bold; }
 
 /* ─── DROPDOWNY ──────────────────────────────────────── */
@@ -83,7 +95,10 @@ h2[data-action="copy-text"]:hover, h2.highlight-force { color: #fff; text-shadow
 .text-dim { color: var(--dim) !important; font-style: italic; }
 .report-frame.frame-lesion { color: #e891af; }
 .report-frame.frame-lymphnode { color: #e0c068; }
+.report-frame .seg-lesion { color: #e891af; }
+.report-frame .seg-lymph { color: #e0c068; }
 .report-frame[data-label]::before { content: attr(data-label); color: var(--accent-hi); }
+.report-frame.is-group { display: block; width: 100%; box-sizing: border-box; }
 body.hide-predefined .report-frame.text-dim { display: none !important; }
 body:not(.has-past-date) .tbl > tbody > tr:has([data-id*="_old"]), body:not(.has-past-date) .row:has(> [data-id*="_minule"]) { display: none !important; }
 .report-exam-heading { color: #d4af37; font-weight: 700; font-size: 11px; margin-top: 6px; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 1px; border-bottom: 1px solid rgba(184, 134, 11, 0.3); }

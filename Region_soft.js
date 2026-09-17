@@ -4,7 +4,7 @@ const RegionSoft = {
     layout: (helpers) => {
         let layoutNodes = [];
 
-        const lesInsts = Store.instances?.['soft_lesion_main'] || [];
+        const lesInsts = getExamInstances('soft_lesion_main');
         lesInsts.forEach((instId, idx) => {
             const p = `l_${instId}`;
 
@@ -79,7 +79,7 @@ const RegionSoft = {
         const formatList = formatCzechList;
 
         // --- LÉZE MĚKKÝCH TKÁNÍ (jen zadané; bez automatického negativního textu) ---
-        const lesInsts = Store.instances?.['soft_lesion_main'] || [];
+        const lesInsts = getExamInstances('soft_lesion_main', examId);
         lesInsts.forEach(instId => {
             const p = `l_${instId}`;
             let lokace = [];

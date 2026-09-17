@@ -300,8 +300,56 @@ function buildIldTreeTable(helpers, examId) {
     return table;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   PŘEDDEFINOVANÉ TEXTY — skupiny + orgány (editovat zde)
+   findings = text ve Findings; conclusion = při normal!
+   ═══════════════════════════════════════════════════════════ */
+const RegionThorax_PREDEFS = {
+    groups: {
+        all: 'Adekvátní plicní objem a vzdušnost, orgány hrudníku bez patrné patologie.',
+        plice_pleura: 'Plíce přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn. Pleurálně bez výpotku a bez pneumotoraxu.'
+    },
+    organs: {
+        plice: { findings: 'přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn.', conclusion: 'Přiměřený nález na plicích, bez ložiskové léze.' },
+        pleura: { findings: 'bez výpotku a bez pneumotoraxu.', conclusion: 'Bez výpotku a bez pneumotoraxu.' },
+        mamma: { findings: 'obvyklého vzhledu, bez ložiskových změn.', conclusion: 'Přiměřený nález na mléčných žlázách, bez ložiskové léze.' },
+        jicen: { findings: 'přiměřené šíře, bez ložiskového ztluštění stěny.', conclusion: 'Přiměřený nález na jícnu.' },
+        thymus: {
+            findings: 'bez ložiskových změn .',
+            findingsPet: 'bez ložiskových změn a bez patologické akumulace RF.',
+            conclusion: 'Přiměřený nález v mediastinu.'
+        },
+        srdce: { findings: 'přiměřené velikosti, aorta přiměřené šíře, bez perikardiálního výpotku.', conclusion: 'Přiměřený nález na srdci a velkých cévách.' }
+    },
+    devices: { findings: 'Bez zavedených invazivních zařízení.', conclusion: 'Bez zavedených invazivních zařízení.' },
+    ostatni: { findings: 'Bez dalších významných nálezů.', conclusion: 'Bez dalších významných nálezů na hrudníku.' }
+};
+
 const RegionThorax = {
         title: 'Hrudník',
+    predefs: RegionThorax_PREDEFS,
+
+    /* Virtuální skupiny orgánů (režim z nastavení „Rozepisování orgánů“).
+       `all` = nadskupina pro režim „vůbec“; ostatní = podskupiny pro „jen skupiny“ / „skupiny i orgány“.
+       Devices a ostatní nejsou ve skupinách. */
+    virtualGroups: [
+        {
+            id: 'all',
+            name: 'Orgány hrudníku',
+            members: ['plice', 'pleura', 'mamma', 'jicen', 'thymus', 'srdce'],
+            tableId: 'group:thorax_plice_main,thorax_pleura_main,thorax_mamma_main,thorax_jicen_main,thorax_thymus_main,thorax_srdce_main',
+            text: RegionThorax_PREDEFS.groups.all
+        },
+        {
+            id: 'plice_pleura',
+            name: 'Plíce a pleura',
+            members: ['plice', 'pleura'],
+            tableId: 'group:thorax_plice_main,thorax_pleura_main',
+            text: RegionThorax_PREDEFS.groups.plice_pleura
+        }
+    ],
+
+    organOrder: ['plice', 'pleura', 'mamma', 'jicen', 'thymus', 'srdce'],
 
     /* Nabídky stavů na jednom místě - v layoutu se odkazuje jako { btn: 'plus', id: 'ma_mast_r' }. */
     buttons: {
@@ -355,7 +403,7 @@ const RegionThorax = {
             /* Rozměrové pole v mm (step 5, u aorty 1). */
             const mm = (id, step = 5) => ({ field: 'mm', id, placeholder: 'mm', step });
 
-            const lesInsts = Store.instances?.['thorax_lesion_main'] || [];
+            const lesInsts = getExamInstances('thorax_lesion_main');
             lesInsts.forEach((instId, idx) => {
                 const p = `tl_${instId}`;
                 layoutNodes.push(
@@ -372,7 +420,7 @@ const RegionThorax = {
                 );
             });
 
-            const lnInsts = Store.instances?.['thorax_lymphnode_main'] || [];
+            const lnInsts = getExamInstances('thorax_lymphnode_main');
             lnInsts.forEach((instId, idx) => {
                 const p = `tln_${instId}`;
                 layoutNodes.push(
@@ -515,21 +563,31 @@ const RegionThorax = {
             const examId = ctx.examId || 'default';
             const formatList = formatCzechList;
             const isPET = (examId || '').toLowerCase().includes('pet');
+            const toOrgans = shouldPlaceLesionsInOrgans(examId);
+            const expandMode = getOrganExpandMode(examId);
+            const { organBag, emitOrgan, flush } = createOrganExpandState(ctx, { reportOut, concMain, concInc });
+            const OP = RegionThorax_PREDEFS.organs;
 
-            const lesInsts = Store.instances?.['thorax_lesion_main'] || [];
+            const THORAX_SITE_ORGAN = {
+                pulm: 'plice', hl: 'plice', sl: 'plice', dl: 'plice',
+                pl: 'pleura', sw: 'mamma', ma: 'mamma', th: 'thymus', ji: 'jicen'
+            };
+
+            const lesInsts = getExamInstances('thorax_lesion_main', examId);
             let highAct = false, badEtio = false;
             lesInsts.forEach(id => {
                 if (['intermediární', 'zvýšená', 'vysoká'].includes(ctx.text(`tl_${id}_met_act`, true))) highAct = true;
                 if (!ctx.isActive(`tl_${id}_e_b`) && !ctx.isActive(`tl_${id}_e_inf`)) badEtio = true;
             });
 
-            if (lesInsts.length === 0 || (lesInsts.length > 0 && isPET && !highAct)) {
-                reportOut.push({ type: 'frame', text: isPET ? 'Bez patrných hyperakumulujících ložiskových změn.' : 'Bez patrných ložiskových změn.', tableId: 'thorax_lesion_main', dimmed: true });
-            }
-
+            const pendingLes = [];
             lesInsts.forEach(instId => {
                 const p = `tl_${instId}`;
-                    let lokace = [];
+                    const lokaceByOrg = {};
+                    const addLok = (key, text) => {
+                        if (!key || !text) return;
+                        (lokaceByOrg[key] ||= []).push(text);
+                    };
                     const lokItems = [
                         { id: 'hl', name: 'v horním laloku' }, 
                         { id: 'sl', name: 've středním laloku / lingule' }, 
@@ -544,100 +602,125 @@ const RegionThorax = {
                         if (r || left) {
                             let segR = r && ctx.text(`${p}_p_${l.id}_r`) !== '+' ? ` (${ctx.text(`${p}_p_${l.id}_r`)})` : '';
                             let segL = left && ctx.text(`${p}_p_${l.id}_l`) !== '+' ? ` (${ctx.text(`${p}_p_${l.id}_l`)})` : '';
+                            const orgKey = THORAX_SITE_ORGAN[l.id];
                             
                             if (['hl', 'sl', 'dl'].includes(l.id)) {
                                 if (r && left) {
                                     if (l.id === 'sl') {
-                                        lokace.push(`ve středním laloku pravé plíce${segR} a v lingule levé plíce${segL}`);
+                                        addLok(orgKey, `ve středním laloku pravé plíce${segR} a v lingule levé plíce${segL}`);
                                     } else {
-                                        if (segR === segL) lokace.push(`${l.name} obou plic${segR}`);
-                                        else lokace.push(`${l.name} pravé plíce${segR} a ${l.name} levé plíce${segL}`);
+                                        if (segR === segL) addLok(orgKey, `${l.name} obou plic${segR}`);
+                                        else addLok(orgKey, `${l.name} pravé plíce${segR} a ${l.name} levé plíce${segL}`);
                                     }
                                 } else if (r) {
                                     let nameR = l.id === 'sl' ? 've středním laloku' : l.name;
-                                    lokace.push(`${nameR} pravé plíce${segR}`);
+                                    addLok(orgKey, `${nameR} pravé plíce${segR}`);
                                 } else if (left) {
                                     let nameL = l.id === 'sl' ? 'v lingule' : l.name;
-                                    lokace.push(`${nameL} levé plíce${segL}`);
+                                    addLok(orgKey, `${nameL} levé plíce${segL}`);
                                 }
                             } else {
-                                if (r && left) lokace.push(`${l.name}${segR} bilat.`);
-                                else if (r) lokace.push(`${l.name}${segR} vpravo`);
-                                else if (left) lokace.push(`${l.name}${segL} vlevo`);
+                                if (r && left) addLok(orgKey, `${l.name}${segR} bilat.`);
+                                else if (r) addLok(orgKey, `${l.name}${segR} vpravo`);
+                                else if (left) addLok(orgKey, `${l.name}${segL} vlevo`);
                             }
                         }
                     });
                     
-                    if (ctx.isActive(`${p}_p_pulm_r`) && ctx.isActive(`${p}_p_pulm_l`)) lokace.push('v obou plicích');
-                    else if (ctx.isActive(`${p}_p_pulm_r`)) lokace.push('v pravé plíci');
-                    else if (ctx.isActive(`${p}_p_pulm_l`)) lokace.push('v levé plíci');
+                    if (ctx.isActive(`${p}_p_pulm_r`) && ctx.isActive(`${p}_p_pulm_l`)) {
+                        addLok('plice', 'v obou plicích');
+                    } else if (ctx.isActive(`${p}_p_pulm_r`)) {
+                        addLok('plice', 'v pravé plíci');
+                    } else if (ctx.isActive(`${p}_p_pulm_l`)) {
+                        addLok('plice', 'v levé plíci');
+                    }
                     
                     if (ctx.isActive(`${p}_p_ji`)) {
                         let jiVal = ctx.text(`${p}_p_ji`);
-                        if (jiVal === 'horní') lokace.push('v horním jícnu');
-                        else if (jiVal === 'střední') lokace.push('ve středním jícnu');
-                        else if (jiVal === 'dolní') lokace.push('v dolním jícnu');
+                        if (jiVal === 'horní') addLok('jicen', 'v horním jícnu');
+                        else if (jiVal === 'střední') addLok('jicen', 've středním jícnu');
+                        else if (jiVal === 'dolní') addLok('jicen', 'v dolním jícnu');
+                        else addLok('jicen', 'v jícnu');
                     }
 
-                    const f = LESIONS_DEFINITION.frames(ctx, { examId, regionId: 'thorax', p, tableId: `thorax_lesion_main__${instId}`, lokace });
-                    if (f) {
-                        reportOut.push(f.report);
-                        concMain.push(f.conc);
-                    }
+                    queueLesionForOrgans(pendingLes, concMain, ctx, {
+                        examId, regionId: 'thorax', p, tableId: `thorax_lesion_main__${instId}`
+                    }, lokaceByOrg, { toOrgans });
                 });
 
-            if (lesInsts.length > 0 && (!isPET || highAct) && !badEtio) {
-                reportOut.push({ type: 'frame', text: 'Jinak bez patrných ložiskových změn.', tableId: 'thorax_lesion_main', dimmed: true });
-            }
+            const pendingLn = [];
+            const lnInsts = getExamInstances('thorax_lymphnode_main', examId);
+            lnInsts.forEach(instId => {
+                const p = `tln_${instId}`;
+                const lokaceByOrg = {};
+                const addLok = (key, text) => {
+                    if (!key || !text) return;
+                    (lokaceByOrg[key] ||= []).push(text);
+                };
 
-            const lnInsts = Store.instances?.['thorax_lymphnode_main'] || [];
-            if (lnInsts.length === 0) {
-                reportOut.push({ type: 'frame', text: isPET ? 'Bez patrné hyperakumulující lymfadenopatie.' : 'Bez patrné lymfadenopatie.', tableId: 'thorax_lymphnode_main', dimmed: true });
-            } else {
-                lnInsts.forEach(instId => {
-                    const p = `tln_${instId}`;
-                    let lokaceLN = [];
-                    
-                    let med_p = ctx.isActive(`${p}_p_med_r`), med_c = ctx.isActive(`${p}_p_med_c`), med_l = ctx.isActive(`${p}_p_med_l`);
-                    if (med_p && med_l) lokaceLN.push('v mediastinu bilat.');
-                    else if (med_c) lokaceLN.push('v mediastinu');
-                    else if (med_p) lokaceLN.push('v mediastinu vpravo');
-                    else if (med_l) lokaceLN.push('v mediastinu vlevo');
+                let med_p = ctx.isActive(`${p}_p_med_r`), med_c = ctx.isActive(`${p}_p_med_c`), med_l = ctx.isActive(`${p}_p_med_l`);
+                if (med_p && med_l) addLok('thymus', 'v mediastinu bilat.');
+                else if (med_c) addLok('thymus', 'v mediastinu');
+                else if (med_p) addLok('thymus', 'v mediastinu vpravo');
+                else if (med_l) addLok('thymus', 'v mediastinu vlevo');
 
-                    let activeRegs = [];
-                    RegionThorax.lnTnm.forEach(([key, r, c, l]) => {
-                        if (RegionThorax.lnTnmMimoRegie.includes(key)) return;
-                        if (r && ctx.isActive(`${p}_p_${key}_r`)) activeRegs.push(r);
-                        if (c && ctx.isActive(`${p}_p_${key}_c`)) activeRegs.push(c);
-                        if (l && ctx.isActive(`${p}_p_${key}_l`)) activeRegs.push(l);
-                    });
-
-                    if (activeRegs.length > 0) {
-                        let prefix = activeRegs.length > 1 ? 'v regiích' : 'v regiu';
-                        lokaceLN.push(`${prefix} ${activeRegs.join(', ')}`);
-                    }
-
-                    let hil_r = ctx.isActive(`${p}_p_hil_r`), hil_l = ctx.isActive(`${p}_p_hil_l`);
-                    if (hil_r && hil_l) lokaceLN.push('v obou hilech');
-                    else if (hil_r) lokaceLN.push('v pravém hilu');
-                    else if (hil_l) lokaceLN.push('v levém hilu');
-
-                    let axi_r = ctx.isActive(`${p}_p_axi_r`), axi_l = ctx.isActive(`${p}_p_axi_l`);
-                    if (axi_r && axi_l) lokaceLN.push('v obou axilách');
-                    else if (axi_r) lokaceLN.push('v pravé axile');
-                    else if (axi_l) lokaceLN.push('v levé axile');
-
-                    let im_r = ctx.isActive(`${p}_p_im_r`), im_l = ctx.isActive(`${p}_p_im_l`);
-                    if (im_r && im_l) lokaceLN.push('interní mammární bilat.');
-                    else if (im_r) lokaceLN.push('interní mammární vpravo');
-                    else if (im_l) lokaceLN.push('interní mammární vlevo');
-
-                    const f = LESIONS_DEFINITION.frames(ctx, { examId, regionId: 'thorax', p, tableId: `thorax_lymphnode_main__${instId}`, isLN: true, lokace: lokaceLN });
-                    if (f) {
-                        reportOut.push(f.report);
-                        concMain.push(f.conc);
-                    }
+                let activeRegs = [];
+                RegionThorax.lnTnm.forEach(([key, r, c, l]) => {
+                    if (RegionThorax.lnTnmMimoRegie.includes(key)) return;
+                    if (r && ctx.isActive(`${p}_p_${key}_r`)) activeRegs.push(r);
+                    if (c && ctx.isActive(`${p}_p_${key}_c`)) activeRegs.push(c);
+                    if (l && ctx.isActive(`${p}_p_${key}_l`)) activeRegs.push(l);
                 });
+
+                if (activeRegs.length > 0) {
+                    let prefix = activeRegs.length > 1 ? 'v regiích' : 'v regiu';
+                    addLok('thymus', `${prefix} ${activeRegs.join(', ')}`);
+                }
+
+                let hil_r = ctx.isActive(`${p}_p_hil_r`), hil_l = ctx.isActive(`${p}_p_hil_l`);
+                if (hil_r && hil_l) addLok('thymus', 'v obou hilech');
+                else if (hil_r) addLok('thymus', 'v pravém hilu');
+                else if (hil_l) addLok('thymus', 'v levém hilu');
+
+                let axi_r = ctx.isActive(`${p}_p_axi_r`), axi_l = ctx.isActive(`${p}_p_axi_l`);
+                if (axi_r && axi_l) addLok('mamma', 'v obou axilách');
+                else if (axi_r) addLok('mamma', 'v pravé axile');
+                else if (axi_l) addLok('mamma', 'v levé axile');
+
+                let im_r = ctx.isActive(`${p}_p_im_r`), im_l = ctx.isActive(`${p}_p_im_l`);
+                if (im_r && im_l) addLok('mamma', 'interní mammární bilat.');
+                else if (im_r) addLok('mamma', 'interní mammární vpravo');
+                else if (im_l) addLok('mamma', 'interní mammární vlevo');
+
+                queueLesionForOrgans(pendingLn, concMain, ctx, {
+                    examId, regionId: 'thorax', p, tableId: `thorax_lymphnode_main__${instId}`, isLN: true
+                }, lokaceByOrg, { toOrgans });
+            });
+
+            let hasLesFindings = pendingLes.length > 0;
+            let hasLnFindings = pendingLn.length > 0;
+            let orphanLes = false;
+
+            if (!toOrgans) {
+                const lesStart = reportOut.length;
+                pendingLes.forEach(item => reportOut.push(item.report));
+                if (!hasLesFindings || (isPET && !highAct)) {
+                    reportOut.splice(lesStart, 0, LESIONS_DEFINITION.virtualPredef(
+                        'thorax_lesion_main', LESIONS_DEFINITION.predefText.lesion(isPET)));
+                }
+                if (hasLesFindings && (!isPET || highAct) && !badEtio) {
+                    reportOut.push(LESIONS_DEFINITION.virtualPredef(
+                        'thorax_lesion_main', LESIONS_DEFINITION.predefText.lesionJinak));
+                }
+                pendingLn.forEach(item => reportOut.push(item.report));
+                if (!hasLnFindings) {
+                    reportOut.push(LESIONS_DEFINITION.virtualPredef(
+                        'thorax_lymphnode_main', LESIONS_DEFINITION.predefText.lymph(isPET)));
+                }
+            } else if (!hasLesFindings || (isPET && !highAct)) {
+                /* U PET bez vysoké aktivity zůstává negativní text nahoře i při zápisu k orgánům. */
+                reportOut.push(LESIONS_DEFINITION.virtualPredef(
+                    'thorax_lesion_main', LESIONS_DEFINITION.predefText.lesion(isPET)));
             }
 
             let difuzniRep = [];
@@ -722,14 +805,16 @@ const RegionThorax = {
                 plicePhrases.push(descText);
             }
 
-            useSection(ctx.section({
+            emitOrgan('plice', {
                 label: 'Plíce', tableId: 'thorax_plice_main',
                 normal: 'plice_ost_add_normal',
-                normalText: 'přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn.',
-                normalConc: 'Přiměřený nález na plicích, bez ložiskové léze.',
+                normalText: OP.plice.findings,
+                normalConc: OP.plice.conclusion,
+                predef: 'plice_ost_add_predef',
+                predefText: OP.plice.findings,
                 concField: 'plice_custom_conc',
                 parts: [plicePhrases.join(', ')]
-            }), { report: reportOut, main: concMain, incidental: concInc });
+            });
             if (ildOutcome) {
                 let concTxt = ildOutcome.conc;
                 if (ildOutcome.recommend) concTxt += ' ' + ildOutcome.recommend;
@@ -791,62 +876,19 @@ const RegionThorax = {
                 }
             });
 
-            useSection(ctx.section({
+            emitOrgan('pleura', {
                 label: 'Pleurálně', tableId: 'thorax_pleura_main',
                 desc: 'pleura_custom_desc',
                 normal: 'pleura_ost_add_normal',
-                normalText: 'bez výpotku a bez pneumotoraxu.',
-                normalConc: 'Bez výpotku a bez pneumotoraxu.',
+                normalText: OP.pleura.findings,
+                normalConc: OP.pleura.conclusion,
+                predef: 'pleura_ost_add_predef',
+                predefText: OP.pleura.findings,
                 concField: 'pleura_custom_conc',
                 parts: [pleuraRep.length ? formatCzechList(pleuraRep) : ''],
                 main: pleuraMain,
                 incidental: pleuraInc
-            }), { report: reportOut, main: concMain, incidental: concInc });
-
-            /* --- AUTO-HODNOCENÍ VZDUŠNOSTI PLIC A PLEURY --- */
-            const pliceNormal = ctx.normalLevel('plice_ost_add_normal') > 0;
-            const pleuraNormal = ctx.normalLevel('pleura_ost_add_normal') > 0;
-            let noFE = (!fib || fib === '0') && (!emf || emf === '0') && !ildOutcome;
-            let noTek = !(tekR || tekL || minR || minL);
-            let noVzd = !(vzdR || vzdL || vzdMinR || vzdMinL);
-            let txt = "", top = false;
-
-            if (noFE) {
-                let s = (k) => ({ r: ctx.isActive(`${k}_r`), l: ctx.isActive(`${k}_l`) });
-                let fok = ['pl_mikro', 'pl_nodul', 'pl_opac', 'pl_hypo', 'pl_jizva', 'pl_rad'].reduce((a,k)=>{ let x=s(k); return {r:a.r||x.r, l:a.l||x.l}; }, {r:false,l:false});
-                let kon = s('pl_kons');
-                let op = ['pl_op_pulm', 'pl_op_lob', 'pl_op_res'].reduce((a,k)=>{ let x=s(k); return {r:a.r||x.r, l:a.l||x.l}; }, {r:false,l:false});
-                let pl = {
-                    r: tekR > 0 || minR > 0 || vzdR > 0 || vzdMinR > 0 || ctx.isActive('pl_akt_r') || ctx.isActive('pl_talk_r'),
-                    l: tekL > 0 || minL > 0 || vzdL > 0 || vzdMinL > 0 || ctx.isActive('pl_akt_l') || ctx.isActive('pl_talk_l')
-                };
-
-                let hFok = fok.r || fok.l, hKon = kon.r || kon.l, hOp = op.r || op.l, hPl = pl.r || pl.l;
-
-                if (!hFok && !hKon && !hOp && !hPl) { txt = "Adekvátní plicní objem a vzdušnost."; top = true; }
-                else if (!hKon && !hOp && !hPl && hFok) txt = "Jinak adekvátní plicní objem a vzdušnost.";
-                else if ((kon.r || op.r || pl.r) && !(kon.l || op.l || pl.l)) txt = "Vlevo adekvátní plicní objem a vzdušnost.";
-                else if ((kon.l || op.l || pl.l) && !(kon.r || op.r || pl.r)) txt = "Vpravo adekvátní plicní objem a vzdušnost.";
-            }
-
-            if (txt && !pliceNormal) {
-                const isNegative = (txt === "Adekvátní plicní objem a vzdušnost.");
-                let obj = { type: 'frame', text: txt, tableId: 'thorax_plice_main', dimmed: isNegative };
-                
-                if (top) {
-                    let i = reportOut.findIndex(x => x.tableId === 'thorax_plice_main');
-                    reportOut.splice(i > -1 ? i : reportOut.length, 0, obj);
-                } else reportOut.push(obj);
-            }
-
-            if (!pleuraNormal && !pleuraRep.length) {
-                if (noTek) {
-                    reportOut.push({ type: 'frame', text: "Bez výpotků.", tableId: 'thorax_pleura_main', dimmed: true });
-                }
-                if (noVzd) {
-                    reportOut.push({ type: 'frame', text: "Bez PNO.", tableId: 'thorax_pleura_main', dimmed: true });
-                }
-            }
+            });
 
             let pliceConc = ctx.field('plice_custom_conc');
             if (pliceConc) concInc.push({ type: 'frame', text: pliceConc, tableId: 'thorax_plice_main' });
@@ -860,14 +902,16 @@ const RegionThorax = {
                 allMamma.push(`${mammaMap[k]} ${side}`);
             }
             let mammaText = allMamma.length > 0 ? formatList(allMamma) : "";
-            useSection(ctx.section({
+            emitOrgan('mamma', {
                 label: 'Mamma', tableId: 'thorax_mamma_main', desc: 'mamma_custom_desc',
                 normal: 'mamma_ost_add_normal',
-                normalText: 'obvyklého vzhledu, bez ložiskových změn.',
-                normalConc: 'Přiměřený nález na mléčných žlázách, bez ložiskové léze.',
+                normalText: OP.mamma.findings,
+                normalConc: OP.mamma.conclusion,
+                predef: 'mamma_ost_add_predef',
+                predefText: OP.mamma.findings,
                 concField: 'mamma_custom_conc',
                 parts: [mammaText]
-            }), { report: reportOut, main: concMain, incidental: concInc });
+            });
 
             let jicenRep = [];
             let jicenConc = [];
@@ -886,15 +930,17 @@ const RegionThorax = {
                 else if (jRes === 'tračník') jicenRep.push("st.p. resekci dist. jícnu s náhradou tračníkem");
             }
             let jicenText = jicenRep.length > 0 ? formatCzechList(jicenRep) : "";
-            useSection(ctx.section({
+            emitOrgan('jicen', {
                 label: 'Jícen', tableId: 'thorax_jicen_main', desc: 'jicen_custom_desc',
                 normal: 'jicen_ost_add_normal',
-                normalText: 'přiměřené šíře, bez ložiskového ztluštění stěny.',
-                normalConc: 'Přiměřený nález na jícnu.',
+                normalText: OP.jicen.findings,
+                normalConc: OP.jicen.conclusion,
+                predef: 'jicen_ost_add_predef',
+                predefText: OP.jicen.findings,
                 concField: 'jicen_custom_conc',
                 incidental: jicenConc,
                 parts: [jicenText]
-            }), { report: reportOut, main: concMain, incidental: concInc });
+            });
 
             let thZvet = ctx.isActive('th_zvet'), thAkt = ctx.isActive('th_akt');
             let thymusText = "";
@@ -948,18 +994,21 @@ const RegionThorax = {
                            : `Solidní ložisko ${loc} - dif. dg.: ${dg[st]}.`;
                 thymusDgConc.push(conc);
             });
-            useSection(ctx.section({
+            emitOrgan('thymus', {
                 label: 'Mediastinum', tableId: 'thorax_thymus_main', desc: 'thymus_custom_desc',
                 normal: 'thymus_ost_add_normal',
-                normalText: isPET ? 'bez ložiskových změn a bez patologické akumulace RF.' : 'bez ložiskových změn .',
-                normalConc: 'Přiměřený nález v mediastinu.',
+                normalText: isPET ? OP.thymus.findingsPet : OP.thymus.findings,
+                normalConc: OP.thymus.conclusion,
+                predef: 'thymus_ost_add_predef',
+                predefText: isPET ? OP.thymus.findingsPet : OP.thymus.findings,
                 concField: 'thymus_custom_conc',
                 incidental: thymusDgConc,
                 parts: thParts
-            }), { report: reportOut, main: concMain, incidental: concInc });
+            });
 
             let srdceRep = [];
             let srdceConc = [];
+            let srdceInc = [];
             let srDil = ctx.text('sr_dil');
             if (srDil !== '0' && srDil !== '') srdceRep.push(srDil === 'celého' ? "dilatace všech srdečních oddílů" : "dilatace srdečních síní");
             
@@ -977,9 +1026,9 @@ const RegionThorax = {
                 
                 let aoConcText = `${capitalize(aoText)}.`;
                 if (srDilAoMm >= 50) {
-                    concMain.push({ type: 'frame', text: `Výrazná ${aoText} (aneurysma).`, tableId: 'thorax_srdce_main' });
+                    srdceConc.push(`Výrazná ${aoText} (aneurysma).`);
                 } else if (srDilAoMm >= 40 || srDilAo !== '0') {
-                    concInc.push({ type: 'frame', text: aoConcText, tableId: 'thorax_srdce_main' });
+                    srdceInc.push(aoConcText);
                 }
             }
 
@@ -1013,15 +1062,34 @@ const RegionThorax = {
             }
             
             let srdceText = srdceRep.length > 0 ? formatCzechList(srdceRep) : "";
-            useSection(ctx.section({
+            emitOrgan('srdce', {
                 label: 'Srdce', tableId: 'thorax_srdce_main', desc: 'srdce_custom_desc',
                 normal: 'srdce_ost_add_normal',
-                normalText: 'přiměřené velikosti, aorta přiměřené šíře, bez perikardiálního výpotku.',
-                normalConc: 'Přiměřený nález na srdci a velkých cévách.',
+                normalText: OP.srdce.findings,
+                normalConc: OP.srdce.conclusion,
+                predef: 'srdce_ost_add_predef',
+                predefText: OP.srdce.findings,
                 concField: 'srdce_custom_conc', concTarget: 'main',
                 main: srdceConc,
+                incidental: srdceInc,
                 parts: [srdceText]
-            }), { report: reportOut, main: concMain, incidental: concInc });
+            });
+
+            if (toOrgans) {
+                pendingLes.forEach(item => {
+                    if (!placeLesionReport(organBag, reportOut, item.report, item.organKeys)) orphanLes = true;
+                });
+                pendingLn.forEach(item => {
+                    if (!placeLesionReport(organBag, reportOut, item.report, item.organKeys)) orphanLes = true;
+                });
+            }
+
+            flush({
+                groups: RegionThorax.virtualGroups,
+                organOrder: RegionThorax.organOrder,
+                expandMode,
+                hasExtraPath: toOrgans ? orphanLes : (hasLesFindings || hasLnFindings)
+            });
 
             let devMap = { dev_port: 'portkatetr', dev_picc: 'PICC', dev_cvk: 'CVK', dev_ks: 'KS', dev_icd: 'ICD' };
             let allDev = [];
@@ -1034,8 +1102,10 @@ const RegionThorax = {
             useSection(ctx.section({
                 tableId: 'thorax_devices_main', desc: 'devices_custom_desc',
                 normal: 'devices_ost_add_normal',
-                normalText: 'Bez zavedených invazivních zařízení.',
-                normalConc: 'Bez zavedených invazivních zařízení.',
+                normalText: RegionThorax_PREDEFS.devices.findings,
+                normalConc: RegionThorax_PREDEFS.devices.conclusion,
+                predef: 'devices_ost_add_predef',
+                predefText: RegionThorax_PREDEFS.devices.findings,
                 concField: 'devices_custom_conc',
                 capitalize: true,
                 parts: [devText]
@@ -1044,8 +1114,10 @@ const RegionThorax = {
             useSection(ctx.section({
                 tableId: 'thorax_ostatni_main', desc: 'ostatni_custom_desc',
                 normal: 'ostatni_ost_add_normal',
-                normalText: 'Bez dalších významných nálezů.',
-                normalConc: 'Bez dalších významných nálezů na hrudníku.',
+                normalText: RegionThorax_PREDEFS.ostatni.findings,
+                normalConc: RegionThorax_PREDEFS.ostatni.conclusion,
+                predef: 'ostatni_ost_add_predef',
+                predefText: RegionThorax_PREDEFS.ostatni.findings,
                 concField: 'ostatni_custom_conc',
                 capitalize: true
             }), { report: reportOut, main: concMain, incidental: concInc });
@@ -1065,9 +1137,17 @@ const RegionThorax = {
                 'thorax_ostatni_main'
             ];
             const reportRank = (frame) => {
-                if (!frame.tableId) return -1; // heading a podobné zůstávají na začátku
-                const i = REPORT_ORDER.findIndex(prefix => frame.tableId.startsWith(prefix));
-                return i === -1 ? REPORT_ORDER.length : i;
+                if (!frame.tableId && !frame.sortAs) return -1; // heading a podobné zůstávají na začátku
+                const raw = frame.sortAs || frame.tableId;
+                const ids = raw.startsWith('group:')
+                    ? raw.slice(6).split(',')
+                    : [raw];
+                let best = REPORT_ORDER.length;
+                for (const id of ids) {
+                    const i = REPORT_ORDER.findIndex(prefix => id.startsWith(prefix));
+                    if (i !== -1 && i < best) best = i;
+                }
+                return best;
             };
             reportOut = reportOut
                 .map((frame, i) => ({ frame, i, rank: reportRank(frame) }))

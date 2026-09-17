@@ -385,5 +385,25 @@ const LESIONS_DEFINITION = {
             report: { type: 'frame', text: report, tableId },
             conc: { type: 'frame', text: conc, tableId }
         };
+    },
+
+    /* Virtuální predef u lézí / uzlin / krvácení: žádné UI tlačítko.
+       Aktivní, když v Findings není žádný nález dané kategorie; při přítomnosti
+       nálezu se vypne. Stejný vzhled jako organ predef (ne šedý/kurzíva). */
+    virtualPredef(tableId, text) {
+        return { type: 'frame', text, tableId, predef: true };
+    },
+
+    predefText: {
+        lesion: (isPET) => isPET
+            ? 'Bez patrných hyperakumulujících ložiskových změn.'
+            : 'Bez patrných ložiskových změn.',
+        lesionJinak: 'Jinak bez patrných ložiskových změn.',
+        lymph: (isPET) => isPET
+            ? 'Bez patrné hyperakumulující lymfadenopatie.'
+            : 'Bez patrné lymfadenopatie.',
+        brainLesion: (isMR) =>
+            `Normální ${isMR ? 'signálová intenzita' : 'denzita'} a morfologie parenchymu. Bez ložiskových změn.`,
+        brainHemo: 'Bez známek akutní ischemie či hemorhagie.'
     }
 };

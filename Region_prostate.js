@@ -5,7 +5,7 @@ const RegionProstate = {
         let layoutNodes = [];
 
         // --- 1. LÉZE PROSTATY ---
-        const lesInsts = Store.instances?.['prostate_lesion_main'] || [];
+        const lesInsts = getExamInstances('prostate_lesion_main');
         lesInsts.forEach((instId, idx) => {
             const p = `pl_${instId}`;
 
@@ -150,7 +150,7 @@ const RegionProstate = {
         );
 
         // --- 4. Lymfatické uzliny ---
-        const lnInsts = Store.instances?.['prostate_lymphnode_main'] || [];
+        const lnInsts = getExamInstances('prostate_lymphnode_main');
         lnInsts.forEach((instId, idx) => {
             const p = `prln_${instId}`;
             layoutNodes.push(
@@ -179,7 +179,7 @@ const RegionProstate = {
 
         const examId = ctx.examId || 'default';
 
-        const lesInsts = Store.instances?.['prostate_lesion_main'] || [];
+        const lesInsts = getExamInstances('prostate_lesion_main', examId);
         let parsedLesions = [];
         let maxTLevel = 0;
 
@@ -532,9 +532,11 @@ const RegionProstate = {
         }
 
         const isPETExam = examId.toLowerCase().includes('pet');
-        const lnInsts = Store.instances?.['prostate_lymphnode_main'] || [];
+        const lnInsts = getExamInstances('prostate_lymphnode_main', examId);
         let regionalPositive = false;
         let nonRegionalPositive = false;
+        /* PROMISE V2: N1 = 1 regionální regie, N2 = ≥2 (R/L téže regie = 1). */
+        const regionalRegions = new Set();
 
         if (lnInsts.length === 0) {
             reportOut.push({ type: 'frame', text: isPETExam ? 'Bez patrné hyperakumulující lymfadenopatie.' : 'Nejsou zřetelné patologické regionální či non-regionální lymfatické uzliny.', tableId: 'prostate_lymphnode_main', dimmed: true });
@@ -591,13 +593,29 @@ const RegionProstate = {
 
                 if (isThisNodePositive) {
                     const m1aIds = ['hil_c', 'por_c', 'cel_c', 'per_c', 'ret_c', 'mes_r', 'mes_l', 'par_r', 'par_l', 'cia_r', 'cia_l', 'ing_r', 'ing_l'];
-                    const n1Ids = ['eia_r', 'eia_l', 'iia_r', 'iia_l', 'obt_r', 'obt_l', 'pre_r', 'pre_l', 'mez_r', 'mez_l'];
-                    
+                    /* Regionální regie PROMISE V2: EI, II, OB, PS, OP (mez). */
+                    const regionalDefs = [
+                        { key: 'eia', locs: ['eia_r', 'eia_l'] },
+                        { key: 'iia', locs: ['iia_r', 'iia_l'] },
+                        { key: 'obt', locs: ['obt_r', 'obt_l'] },
+                        { key: 'pre', locs: ['pre_r', 'pre_l'] },
+                        { key: 'mez', locs: ['mez_r', 'mez_l'] }
+                    ];
+
                     let hasM1aLoc = m1aIds.some(loc => ctx.isActive(`${p}_p_${loc}`));
-                    let hasN1Loc = n1Ids.some(loc => ctx.isActive(`${p}_p_${loc}`));
-                    
+                    let hitRegional = false;
+                    regionalDefs.forEach(({ key, locs }) => {
+                        if (locs.some(loc => ctx.isActive(`${p}_p_${loc}`))) {
+                            regionalRegions.add(key);
+                            hitRegional = true;
+                        }
+                    });
+
                     if (hasM1aLoc) nonRegionalPositive = true;
-                    if (hasN1Loc || (!hasM1aLoc && !hasN1Loc)) regionalPositive = true;
+                    if (hitRegional || (!hasM1aLoc && !hitRegional)) {
+                        regionalPositive = true;
+                        if (!hitRegional && !hasM1aLoc) regionalRegions.add('_unspecified');
+                    }
                 }
 
                 let lokTextLN = lokaceLN.length > 0 ? formatCzechList(lokaceLN) : '';
@@ -617,7 +635,8 @@ const RegionProstate = {
             });
         }
 
-        if (prOp !== 'RAPE' && lesInsts.length > 0) {
+        /* TNM: i bez léze prostaty (jen meta uzliny) → N/M bez T. */
+        {
             let maxPirads = 0;
             lesInsts.forEach((instId) => {
                 const p = `pl_${instId}`;
@@ -626,17 +645,29 @@ const RegionProstate = {
                 maxPirads = Math.max(maxPirads, pi);
             });
 
-            if (maxPirads >= 3 || regionalPositive || nonRegionalPositive) {
-                let tStageStr = 'Tx';
-                if (maxTLevel === 5) tStageStr = 'T4';
-                else if (maxTLevel === 4) tStageStr = 'T3b';
-                else if (maxTLevel === 3) tStageStr = 'T3a';
-                else if (maxTLevel === 2) tStageStr = 'T2';
+            const includeT = lesInsts.length > 0;
+            const writeTnm = regionalPositive || nonRegionalPositive
+                || (includeT && maxPirads >= 3);
 
-                let nStageStr = regionalPositive ? 'N1' : 'N0';
-                let tnmPrefix = examId.toLowerCase().includes('psma') ? 'mi' : 'c';
+            if (writeTnm) {
+                const tnmPrefix = examId.toLowerCase().includes('psma') ? 'mi' : 'c';
+                const tnmParts = [];
 
-                let tnmParts = [`${tnmPrefix}${tStageStr}`, `${tnmPrefix}${nStageStr}`];
+                if (includeT) {
+                    let tStageStr = 'Tx';
+                    if (maxTLevel === 5) tStageStr = 'T4';
+                    else if (maxTLevel === 4) tStageStr = 'T3b';
+                    else if (maxTLevel === 3) tStageStr = 'T3a';
+                    else if (maxTLevel === 2) tStageStr = 'T2';
+                    tnmParts.push(`${tnmPrefix}${tStageStr}`);
+                }
+
+                let nStageStr = 'N0';
+                if (regionalPositive) {
+                    /* mi (PROMISE V2): ≥2 regie → N2; cTNM zůstává jen N0/N1. */
+                    nStageStr = (tnmPrefix === 'mi' && regionalRegions.size >= 2) ? 'N2' : 'N1';
+                }
+                tnmParts.push(`${tnmPrefix}${nStageStr}`);
                 if (nonRegionalPositive) tnmParts.push(`${tnmPrefix}M1a`);
 
                 concMain.push({ type: 'frame', text: `${tnmPrefix}TNM: ${tnmParts.join(', ')}.`, tableId: 'prostate_prostata_main' });

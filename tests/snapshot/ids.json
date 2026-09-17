@@ -158,6 +158,21 @@
       "states": null,
       "type": "basic"
     },
+    "br_angiography_angio_ves_ost_add_normal": {
+      "states": [
+        "normal",
+        "normal",
+        "normal!"
+      ],
+      "type": "standard"
+    },
+    "br_angiography_angio_ves_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "br_angiography_angio_ves_pat": {
       "states": [
         "0",
@@ -1032,6 +1047,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_aw_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_aw_sc_l": {
       "states": [
         "0",
@@ -1125,6 +1147,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_de_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -1222,6 +1251,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ja_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -1398,6 +1434,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_le_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_le_res_l": {
       "states": [
         "0",
@@ -1465,6 +1508,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_mm_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -1562,6 +1612,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_na_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -1571,6 +1628,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -1630,6 +1694,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_ov_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ov_pc_l": {
       "states": [
         "0",
@@ -1686,6 +1757,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pa_wir": {
       "states": [
         "0",
@@ -1733,6 +1811,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pe_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pr_fok": {
       "states": [
         "0",
@@ -1749,6 +1834,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_pr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -1816,6 +1908,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_sl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_sl_reg": {
       "states": [
         "0",
@@ -1874,6 +1973,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_te_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -1947,6 +2053,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_tr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_tr_res": {
       "states": [
         "0",
@@ -1999,6 +2112,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ts_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -2062,6 +2182,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_vc_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -2187,6 +2314,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_za_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_za_res": {
       "states": [
         "0",
@@ -2265,6 +2399,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_zl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     }
@@ -4050,6 +4191,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_aw_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_aw_sc_l": {
       "states": [
         "0",
@@ -4143,6 +4291,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_de_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -4240,6 +4395,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ja_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -4416,6 +4578,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_le_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_le_res_l": {
       "states": [
         "0",
@@ -4483,6 +4652,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_mm_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -4580,6 +4756,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_na_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -4589,6 +4772,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -4648,6 +4838,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_ov_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ov_pc_l": {
       "states": [
         "0",
@@ -4704,6 +4901,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pa_wir": {
       "states": [
         "0",
@@ -4751,6 +4955,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pe_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pr_fok": {
       "states": [
         "0",
@@ -4767,6 +4978,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_pr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -4834,6 +5052,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_sl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_sl_reg": {
       "states": [
         "0",
@@ -4892,6 +5117,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_te_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -4965,6 +5197,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_tr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_tr_res": {
       "states": [
         "0",
@@ -5017,6 +5256,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ts_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -5080,6 +5326,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_vc_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -5205,6 +5458,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_za_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_za_res": {
       "states": [
         "0",
@@ -5283,6 +5543,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_zl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -5368,6 +5635,13 @@
       ],
       "type": "standard"
     },
+    "thorax_devices_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ild_cpfe_ano": {
       "states": null,
       "type": "basic"
@@ -5441,6 +5715,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_jicen_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -5540,6 +5821,13 @@
       ],
       "type": "standard"
     },
+    "thorax_mamma_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -5549,6 +5837,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -5763,6 +6058,25 @@
       ],
       "type": "standard"
     },
+    "thorax_pleura_ost_add_custom": {
+      "states": null,
+      "type": "basic"
+    },
+    "thorax_pleura_ost_add_normal": {
+      "states": [
+        "normal",
+        "normal",
+        "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_pleura_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_plice_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -5772,6 +6086,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_plice_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -5818,6 +6139,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_srdce_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -5871,6 +6199,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_thymus_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -7211,6 +7546,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_ostatni_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_pharynx_add_custom": {
       "states": null,
       "type": "basic"
@@ -7220,6 +7562,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_pharynx_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -7235,6 +7584,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_salivary_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -7244,6 +7600,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -7259,6 +7622,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_soft_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_thyroid_add_custom": {
       "states": null,
       "type": "basic"
@@ -7268,6 +7638,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_thyroid_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -9358,6 +9735,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_atr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_cpa_exp_l": {
       "states": [
         "0",
@@ -9419,6 +9803,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_cpa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -9657,6 +10048,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_orb_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_orb_pht_l": {
       "states": [
         "0",
@@ -9758,6 +10156,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_sella_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -9927,6 +10332,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_ves_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_ves_pat": {
       "states": [
         "0",
@@ -9996,6 +10408,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_wml_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -10005,6 +10424,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -10216,6 +10642,13 @@
       ],
       "type": "standard"
     },
+    "thorax_devices_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ild_cpfe_ano": {
       "states": null,
       "type": "basic"
@@ -10289,6 +10722,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_jicen_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -10388,6 +10828,13 @@
       ],
       "type": "standard"
     },
+    "thorax_mamma_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -10397,6 +10844,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -10611,6 +11065,25 @@
       ],
       "type": "standard"
     },
+    "thorax_pleura_ost_add_custom": {
+      "states": null,
+      "type": "basic"
+    },
+    "thorax_pleura_ost_add_normal": {
+      "states": [
+        "normal",
+        "normal",
+        "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_pleura_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_plice_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -10620,6 +11093,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_plice_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -10666,6 +11146,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_srdce_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -10719,6 +11206,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_thymus_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -13957,6 +14451,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_aw_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_aw_sc_l": {
       "states": [
         "0",
@@ -14050,6 +14551,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_de_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -14147,6 +14655,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ja_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -14323,6 +14838,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_le_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_le_res_l": {
       "states": [
         "0",
@@ -14390,6 +14912,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_mm_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -14487,6 +15016,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_na_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -14496,6 +15032,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -14555,6 +15098,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_ov_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ov_pc_l": {
       "states": [
         "0",
@@ -14611,6 +15161,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pa_wir": {
       "states": [
         "0",
@@ -14658,6 +15215,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pe_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pr_fok": {
       "states": [
         "0",
@@ -14674,6 +15238,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_pr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -14741,6 +15312,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_sl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_sl_reg": {
       "states": [
         "0",
@@ -14799,6 +15377,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_te_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -14872,6 +15457,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_tr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_tr_res": {
       "states": [
         "0",
@@ -14924,6 +15516,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ts_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -14987,6 +15586,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_vc_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -15112,6 +15718,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_za_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_za_res": {
       "states": [
         "0",
@@ -15190,6 +15803,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_zl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -15874,6 +16494,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_ostatni_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_pharynx_add_custom": {
       "states": null,
       "type": "basic"
@@ -15883,6 +16510,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_pharynx_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -15898,6 +16532,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_salivary_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -15907,6 +16548,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -15922,6 +16570,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_soft_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_thyroid_add_custom": {
       "states": null,
       "type": "basic"
@@ -15931,6 +16586,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_thyroid_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -16286,6 +16948,13 @@
       ],
       "type": "standard"
     },
+    "thorax_devices_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ild_cpfe_ano": {
       "states": null,
       "type": "basic"
@@ -16359,6 +17028,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_jicen_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -16458,6 +17134,13 @@
       ],
       "type": "standard"
     },
+    "thorax_mamma_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -16467,6 +17150,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -16681,6 +17371,25 @@
       ],
       "type": "standard"
     },
+    "thorax_pleura_ost_add_custom": {
+      "states": null,
+      "type": "basic"
+    },
+    "thorax_pleura_ost_add_normal": {
+      "states": [
+        "normal",
+        "normal",
+        "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_pleura_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_plice_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -16690,6 +17399,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_plice_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -16736,6 +17452,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_srdce_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -16789,6 +17512,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_thymus_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -17605,6 +18335,21 @@
     "br_angiography_angio_ves_ost_add_custom": {
       "states": null,
       "type": "basic"
+    },
+    "br_angiography_angio_ves_ost_add_normal": {
+      "states": [
+        "normal",
+        "normal",
+        "normal!"
+      ],
+      "type": "standard"
+    },
+    "br_angiography_angio_ves_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
     },
     "br_angiography_angio_ves_pat": {
       "states": [
@@ -18480,6 +19225,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_aw_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_aw_sc_l": {
       "states": [
         "0",
@@ -18573,6 +19325,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_de_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -18670,6 +19429,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ja_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -18846,6 +19612,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_le_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_le_res_l": {
       "states": [
         "0",
@@ -18913,6 +19686,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_mm_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -19010,6 +19790,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_na_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -19019,6 +19806,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -19078,6 +19872,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_ov_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ov_pc_l": {
       "states": [
         "0",
@@ -19134,6 +19935,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pa_wir": {
       "states": [
         "0",
@@ -19181,6 +19989,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pe_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pr_fok": {
       "states": [
         "0",
@@ -19197,6 +20012,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_pr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -19264,6 +20086,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_sl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_sl_reg": {
       "states": [
         "0",
@@ -19322,6 +20151,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_te_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -19395,6 +20231,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_tr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_tr_res": {
       "states": [
         "0",
@@ -19447,6 +20290,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ts_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -19510,6 +20360,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_vc_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -19635,6 +20492,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_za_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_za_res": {
       "states": [
         "0",
@@ -19713,6 +20577,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_zl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     }
@@ -22617,6 +23488,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_ostatni_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_pharynx_add_custom": {
       "states": null,
       "type": "basic"
@@ -22626,6 +23504,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_pharynx_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -22641,6 +23526,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_salivary_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -22650,6 +23542,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -22665,6 +23564,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_soft_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_thyroid_add_custom": {
       "states": null,
       "type": "basic"
@@ -22674,6 +23580,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_thyroid_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -24764,6 +25677,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_atr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_cpa_exp_l": {
       "states": [
         "0",
@@ -24825,6 +25745,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_cpa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -25063,6 +25990,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_orb_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_orb_pht_l": {
       "states": [
         "0",
@@ -25164,6 +26098,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_sella_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -25333,6 +26274,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_ves_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_ves_pat": {
       "states": [
         "0",
@@ -25402,6 +26350,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_wml_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -25411,6 +26366,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -29104,6 +30066,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_atr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_cpa_exp_l": {
       "states": [
         "0",
@@ -29165,6 +30134,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_cpa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -29403,6 +30379,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_orb_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_orb_pht_l": {
       "states": [
         "0",
@@ -29504,6 +30487,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_sella_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -29673,6 +30663,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_ves_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_ves_pat": {
       "states": [
         "0",
@@ -29742,6 +30739,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_wml_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -29751,6 +30755,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -30695,6 +31706,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_aw_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_aw_sc_l": {
       "states": [
         "0",
@@ -30788,6 +31806,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_de_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -30885,6 +31910,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ja_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -31061,6 +32093,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_le_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_le_res_l": {
       "states": [
         "0",
@@ -31128,6 +32167,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_mm_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -31225,6 +32271,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_na_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -31234,6 +32287,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -31293,6 +32353,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_ov_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ov_pc_l": {
       "states": [
         "0",
@@ -31349,6 +32416,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pa_wir": {
       "states": [
         "0",
@@ -31396,6 +32470,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pe_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pr_fok": {
       "states": [
         "0",
@@ -31412,6 +32493,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_pr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -31479,6 +32567,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_sl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_sl_reg": {
       "states": [
         "0",
@@ -31537,6 +32632,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_te_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -31610,6 +32712,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_tr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_tr_res": {
       "states": [
         "0",
@@ -31662,6 +32771,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ts_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -31725,6 +32841,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_vc_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -31850,6 +32973,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_za_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_za_res": {
       "states": [
         "0",
@@ -31928,6 +33058,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_zl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -32612,6 +33749,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_ostatni_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_pharynx_add_custom": {
       "states": null,
       "type": "basic"
@@ -32621,6 +33765,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_pharynx_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -32636,6 +33787,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_salivary_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -32645,6 +33803,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -32660,6 +33825,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_soft_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_thyroid_add_custom": {
       "states": null,
       "type": "basic"
@@ -32669,6 +33841,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_thyroid_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -34321,6 +35500,13 @@
       ],
       "type": "standard"
     },
+    "thorax_devices_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ild_cpfe_ano": {
       "states": null,
       "type": "basic"
@@ -34394,6 +35580,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_jicen_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -34493,6 +35686,13 @@
       ],
       "type": "standard"
     },
+    "thorax_mamma_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -34502,6 +35702,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -34716,6 +35923,25 @@
       ],
       "type": "standard"
     },
+    "thorax_pleura_ost_add_custom": {
+      "states": null,
+      "type": "basic"
+    },
+    "thorax_pleura_ost_add_normal": {
+      "states": [
+        "normal",
+        "normal",
+        "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_pleura_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_plice_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -34725,6 +35951,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_plice_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -34771,6 +36004,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_srdce_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -34824,6 +36064,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_thymus_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -36298,6 +37545,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_aw_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_aw_sc_l": {
       "states": [
         "0",
@@ -36391,6 +37645,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_de_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -36488,6 +37749,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ja_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -36664,6 +37932,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_le_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_le_res_l": {
       "states": [
         "0",
@@ -36731,6 +38006,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_mm_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -36828,6 +38110,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_na_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -36837,6 +38126,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -36896,6 +38192,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_ov_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ov_pc_l": {
       "states": [
         "0",
@@ -36952,6 +38255,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pa_wir": {
       "states": [
         "0",
@@ -36999,6 +38309,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pe_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pr_fok": {
       "states": [
         "0",
@@ -37015,6 +38332,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_pr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -37082,6 +38406,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_sl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_sl_reg": {
       "states": [
         "0",
@@ -37140,6 +38471,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_te_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -37213,6 +38551,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_tr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_tr_res": {
       "states": [
         "0",
@@ -37265,6 +38610,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ts_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -37328,6 +38680,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_vc_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -37453,6 +38812,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_za_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_za_res": {
       "states": [
         "0",
@@ -37531,6 +38897,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_zl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -38215,6 +39588,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_ostatni_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_pharynx_add_custom": {
       "states": null,
       "type": "basic"
@@ -38224,6 +39604,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_pharynx_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -38239,6 +39626,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_salivary_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -38248,6 +39642,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -38263,6 +39664,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_soft_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_thyroid_add_custom": {
       "states": null,
       "type": "basic"
@@ -38272,6 +39680,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_thyroid_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -39924,6 +41339,13 @@
       ],
       "type": "standard"
     },
+    "thorax_devices_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ild_cpfe_ano": {
       "states": null,
       "type": "basic"
@@ -39997,6 +41419,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_jicen_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -40096,6 +41525,13 @@
       ],
       "type": "standard"
     },
+    "thorax_mamma_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -40105,6 +41541,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -40319,6 +41762,25 @@
       ],
       "type": "standard"
     },
+    "thorax_pleura_ost_add_custom": {
+      "states": null,
+      "type": "basic"
+    },
+    "thorax_pleura_ost_add_normal": {
+      "states": [
+        "normal",
+        "normal",
+        "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_pleura_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_plice_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -40328,6 +41790,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_plice_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -40374,6 +41843,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_srdce_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -40427,6 +41903,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_thymus_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -41901,6 +43384,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_aw_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_aw_sc_l": {
       "states": [
         "0",
@@ -41994,6 +43484,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_de_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -42091,6 +43588,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ja_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -42267,6 +43771,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_le_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_le_res_l": {
       "states": [
         "0",
@@ -42334,6 +43845,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_mm_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -42431,6 +43949,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_na_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -42440,6 +43965,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -42499,6 +44031,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_ov_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ov_pc_l": {
       "states": [
         "0",
@@ -42555,6 +44094,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pa_wir": {
       "states": [
         "0",
@@ -42602,6 +44148,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pe_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pr_fok": {
       "states": [
         "0",
@@ -42618,6 +44171,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_pr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -42685,6 +44245,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_sl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_sl_reg": {
       "states": [
         "0",
@@ -42743,6 +44310,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_te_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -42816,6 +44390,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_tr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_tr_res": {
       "states": [
         "0",
@@ -42868,6 +44449,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ts_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -42931,6 +44519,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_vc_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -43056,6 +44651,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_za_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_za_res": {
       "states": [
         "0",
@@ -43134,6 +44736,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_zl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -43818,6 +45427,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_ostatni_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_pharynx_add_custom": {
       "states": null,
       "type": "basic"
@@ -43827,6 +45443,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_pharynx_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -43842,6 +45465,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_salivary_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -43851,6 +45481,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -43866,6 +45503,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_soft_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_thyroid_add_custom": {
       "states": null,
       "type": "basic"
@@ -43875,6 +45519,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_thyroid_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -45527,6 +47178,13 @@
       ],
       "type": "standard"
     },
+    "thorax_devices_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ild_cpfe_ano": {
       "states": null,
       "type": "basic"
@@ -45600,6 +47258,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_jicen_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -45699,6 +47364,13 @@
       ],
       "type": "standard"
     },
+    "thorax_mamma_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -45708,6 +47380,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -45922,6 +47601,25 @@
       ],
       "type": "standard"
     },
+    "thorax_pleura_ost_add_custom": {
+      "states": null,
+      "type": "basic"
+    },
+    "thorax_pleura_ost_add_normal": {
+      "states": [
+        "normal",
+        "normal",
+        "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_pleura_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_plice_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -45931,6 +47629,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_plice_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -45977,6 +47682,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_srdce_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -46030,6 +47742,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_thymus_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -47505,6 +49224,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_atr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_cpa_exp_l": {
       "states": [
         "0",
@@ -47566,6 +49292,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_cpa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -47804,6 +49537,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_orb_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_orb_pht_l": {
       "states": [
         "0",
@@ -47905,6 +49645,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_sella_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -48074,6 +49821,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_ves_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_ves_pat": {
       "states": [
         "0",
@@ -48143,6 +49897,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_wml_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -48152,6 +49913,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -49127,6 +50895,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_aw_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_aw_sc_l": {
       "states": [
         "0",
@@ -49220,6 +50995,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_de_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -49317,6 +51099,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ja_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -49493,6 +51282,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_le_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_le_res_l": {
       "states": [
         "0",
@@ -49560,6 +51356,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_mm_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -49657,6 +51460,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_na_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -49666,6 +51476,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -49725,6 +51542,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_ov_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ov_pc_l": {
       "states": [
         "0",
@@ -49781,6 +51605,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pa_wir": {
       "states": [
         "0",
@@ -49828,6 +51659,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pe_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pr_fok": {
       "states": [
         "0",
@@ -49844,6 +51682,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_pr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -49911,6 +51756,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_sl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_sl_reg": {
       "states": [
         "0",
@@ -49969,6 +51821,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_te_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -50042,6 +51901,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_tr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_tr_res": {
       "states": [
         "0",
@@ -50094,6 +51960,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ts_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -50157,6 +52030,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_vc_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -50282,6 +52162,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_za_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_za_res": {
       "states": [
         "0",
@@ -50360,6 +52247,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_zl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -51044,6 +52938,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_ostatni_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_pharynx_add_custom": {
       "states": null,
       "type": "basic"
@@ -51053,6 +52954,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_pharynx_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -51068,6 +52976,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_salivary_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -51077,6 +52992,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -51092,6 +53014,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_soft_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_thyroid_add_custom": {
       "states": null,
       "type": "basic"
@@ -51101,6 +53030,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_thyroid_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -52753,6 +54689,13 @@
       ],
       "type": "standard"
     },
+    "thorax_devices_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ild_cpfe_ano": {
       "states": null,
       "type": "basic"
@@ -52826,6 +54769,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_jicen_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -52925,6 +54875,13 @@
       ],
       "type": "standard"
     },
+    "thorax_mamma_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -52934,6 +54891,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -53148,6 +55112,25 @@
       ],
       "type": "standard"
     },
+    "thorax_pleura_ost_add_custom": {
+      "states": null,
+      "type": "basic"
+    },
+    "thorax_pleura_ost_add_normal": {
+      "states": [
+        "normal",
+        "normal",
+        "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_pleura_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_plice_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -53157,6 +55140,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_plice_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -53203,6 +55193,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_srdce_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -53256,6 +55253,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_thymus_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -54731,6 +56735,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_atr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_cpa_exp_l": {
       "states": [
         "0",
@@ -54792,6 +56803,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_cpa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -55030,6 +57048,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_orb_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_orb_pht_l": {
       "states": [
         "0",
@@ -55131,6 +57156,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_sella_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -55300,6 +57332,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_ves_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_ves_pat": {
       "states": [
         "0",
@@ -55369,6 +57408,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_wml_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -55378,6 +57424,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -56323,6 +58376,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_atr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_cpa_exp_l": {
       "states": [
         "0",
@@ -56384,6 +58444,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_cpa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -56622,6 +58689,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_orb_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_orb_pht_l": {
       "states": [
         "0",
@@ -56723,6 +58797,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_sella_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -56892,6 +58973,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_ves_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_ves_pat": {
       "states": [
         "0",
@@ -56961,6 +59049,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_wml_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -56970,6 +59065,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -57780,6 +59882,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_ostatni_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_pharynx_add_custom": {
       "states": null,
       "type": "basic"
@@ -57789,6 +59898,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_pharynx_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -57804,6 +59920,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_salivary_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -57813,6 +59936,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -57828,6 +59958,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_soft_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_thyroid_add_custom": {
       "states": null,
       "type": "basic"
@@ -57837,6 +59974,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_thyroid_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -58979,6 +61123,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_aw_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_aw_sc_l": {
       "states": [
         "0",
@@ -59072,6 +61223,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_de_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -59169,6 +61327,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ja_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -59345,6 +61510,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_le_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_le_res_l": {
       "states": [
         "0",
@@ -59412,6 +61584,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_mm_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -59509,6 +61688,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_na_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -59518,6 +61704,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -59577,6 +61770,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_ov_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_ov_pc_l": {
       "states": [
         "0",
@@ -59633,6 +61833,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pa_wir": {
       "states": [
         "0",
@@ -59680,6 +61887,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_pe_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_pr_fok": {
       "states": [
         "0",
@@ -59696,6 +61910,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_pr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -59763,6 +61984,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_sl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_sl_reg": {
       "states": [
         "0",
@@ -59821,6 +62049,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_te_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -59894,6 +62129,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_tr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_tr_res": {
       "states": [
         "0",
@@ -59946,6 +62188,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_ts_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -60009,6 +62258,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_vc_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -60134,6 +62390,13 @@
       ],
       "type": "standard"
     },
+    "abdomen_za_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "abdomen_za_res": {
       "states": [
         "0",
@@ -60212,6 +62475,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "abdomen_zl_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -60896,6 +63166,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_ostatni_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_pharynx_add_custom": {
       "states": null,
       "type": "basic"
@@ -60905,6 +63182,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_pharynx_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -60920,6 +63204,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_salivary_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -60929,6 +63220,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -60944,6 +63242,13 @@
       ],
       "type": "standard"
     },
+    "neck_neck_soft_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "neck_neck_thyroid_add_custom": {
       "states": null,
       "type": "basic"
@@ -60953,6 +63258,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "neck_neck_thyroid_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -62605,6 +64917,13 @@
       ],
       "type": "standard"
     },
+    "thorax_devices_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ild_cpfe_ano": {
       "states": null,
       "type": "basic"
@@ -62678,6 +64997,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_jicen_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -62777,6 +65103,13 @@
       ],
       "type": "standard"
     },
+    "thorax_mamma_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_ostatni_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -62786,6 +65119,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_ostatni_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -63000,6 +65340,25 @@
       ],
       "type": "standard"
     },
+    "thorax_pleura_ost_add_custom": {
+      "states": null,
+      "type": "basic"
+    },
+    "thorax_pleura_ost_add_normal": {
+      "states": [
+        "normal",
+        "normal",
+        "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_pleura_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "thorax_plice_ost_add_custom": {
       "states": null,
       "type": "basic"
@@ -63009,6 +65368,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_plice_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -63055,6 +65421,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_srdce_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -63108,6 +65481,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "thorax_thymus_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -64583,6 +66963,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_atr_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_cpa_exp_l": {
       "states": [
         "0",
@@ -64644,6 +67031,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_cpa_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -64882,6 +67276,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_orb_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_orb_pht_l": {
       "states": [
         "0",
@@ -64983,6 +67384,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_br_sella_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },
@@ -65152,6 +67560,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_ves_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_br_ves_pat": {
       "states": [
         "0",
@@ -65221,6 +67636,13 @@
       ],
       "type": "standard"
     },
+    "brain_br_wml_ost_add_predef": {
+      "states": [
+        "predef",
+        "predef"
+      ],
+      "type": "standard"
+    },
     "brain_neck_sinus_add_custom": {
       "states": null,
       "type": "basic"
@@ -65230,6 +67652,13 @@
         "normal",
         "normal",
         "normal!"
+      ],
+      "type": "standard"
+    },
+    "brain_neck_sinus_add_predef": {
+      "states": [
+        "predef",
+        "predef"
       ],
       "type": "standard"
     },

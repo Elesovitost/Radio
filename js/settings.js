@@ -8,10 +8,26 @@
    STORE & GLOBALS
 ═══════════════════════════════════════════════ */
 const savedConfig = JSON.parse(localStorage.getItem('medAppConfig') || '{}');
+const ORGAN_EXPAND_MODES = ['none', 'groups', 'groupsAndOrgans', 'alwaysOrgans'];
+function normalizeOrganExpand(v) {
+    return ORGAN_EXPAND_MODES.includes(v) ? v : 'alwaysOrgans';
+}
+
+/* Zápis ložisek/uzlin ve findings: zvlášť nahoře regionu, nebo pod orgány. */
+const LESION_PLACEMENT_MODES = ['separate', 'petSeparate', 'toOrgans'];
+function normalizeLesionPlacement(v) {
+    return LESION_PLACEMENT_MODES.includes(v) ? v : 'separate';
+}
+
 const APP_SETTINGS = { 
     grammarMerging: savedConfig.grammarMerging !== undefined ? savedConfig.grammarMerging : true,
     suvWord: savedConfig.suvWord || false,
     hidePredefined: savedConfig.hidePredefined || false,
+    organPredefs: savedConfig.organPredefs || false,
+    organsStacked: savedConfig.organsStacked || false,
+    organExpandPet: normalizeOrganExpand(savedConfig.organExpandPet),
+    organExpandCtMr: normalizeOrganExpand(savedConfig.organExpandCtMr),
+    lesionPlacement: normalizeLesionPlacement(savedConfig.lesionPlacement),
     previewReport: savedConfig.previewReport || false,
     showTooltips: savedConfig.showTooltips !== undefined ? savedConfig.showTooltips : true,
     optText: savedConfig.optText !== undefined ? savedConfig.optText : true,
@@ -23,6 +39,11 @@ function saveSettings() {
         grammarMerging: APP_SETTINGS.grammarMerging,
         suvWord: APP_SETTINGS.suvWord, 
         hidePredefined: APP_SETTINGS.hidePredefined,
+        organPredefs: APP_SETTINGS.organPredefs,
+        organsStacked: APP_SETTINGS.organsStacked,
+        organExpandPet: APP_SETTINGS.organExpandPet,
+        organExpandCtMr: APP_SETTINGS.organExpandCtMr,
+        lesionPlacement: APP_SETTINGS.lesionPlacement,
         previewReport: APP_SETTINGS.previewReport,
         showTooltips: APP_SETTINGS.showTooltips,
         optText: APP_SETTINGS.optText,
@@ -31,6 +52,20 @@ function saveSettings() {
     document.body.classList.toggle('hide-predefined', APP_SETTINGS.hidePredefined);
     document.body.classList.toggle('has-preview', APP_SETTINGS.previewReport);
     UI.renderReport();
+}
+
+/* Režim rozepisování orgánů trupu podle modality (mozek má vždy alwaysOrgans). */
+function getOrganExpandMode(examId = Store.activeTab) {
+    const id = String(examId || '').toLowerCase();
+    return id.includes('pet') ? APP_SETTINGS.organExpandPet : APP_SETTINGS.organExpandCtMr;
+}
+
+/* True = ložiska/uzliny se ve findings řadí pod cílový orgán (ne zvlášť nahoře). */
+function shouldPlaceLesionsInOrgans(examId = Store.activeTab) {
+    const mode = APP_SETTINGS.lesionPlacement;
+    if (mode === 'toOrgans') return true;
+    if (mode === 'petSeparate') return !String(examId || '').toLowerCase().includes('pet');
+    return false;
 }
 
 /* První písmeno velké (null-safe). */
@@ -302,7 +337,7 @@ const HistoryManager = {
                 Store.indication = rec.indication || '';
                 Store.buttonStates = rec.buttonStates || {};
                 Store.customTexts = rec.customTexts || {};
-                Store.instances = rec.instances || {};
+                Store.instances = migrateInstancesToExamScope(rec.instances || {}, rec.exams || []);
                 Store.expandedNotes = rec.expandedNotes || {};
                 
                 // Aktualizace UI s datem
@@ -391,4 +426,36 @@ function getExamById(id) {
         if (found) return found;
     }
     return null;
+}
+
+/* Instance lézí/uzlin jsou vázané na konkrétní vyšetření (ne sdílené napříč taby). */
+function examInstanceKey(baseTableId, examId = Store.activeTab || 'default') {
+    return `${examId}__${baseTableId}`;
+}
+
+function getExamInstances(baseTableId, examId = Store.activeTab || 'default') {
+    const scoped = Store.instances?.[examInstanceKey(baseTableId, examId)];
+    if (scoped) return scoped;
+    // legacy: starší history / test fixtures bez exam prefixu
+    return Store.instances?.[baseTableId] || [];
+}
+
+function setExamInstances(baseTableId, insts, examId = Store.activeTab || 'default') {
+    const key = examInstanceKey(baseTableId, examId);
+    const next = { ...(Store.instances || {}) };
+    delete next[baseTableId];
+    if (!insts || !insts.length) delete next[key];
+    else next[key] = insts;
+    Store.instances = next;
+}
+
+function migrateInstancesToExamScope(raw, examIds = []) {
+    const out = {};
+    const fallbackExam = (examIds && examIds[0]) || Store.activeTab || 'default';
+    for (const [key, insts] of Object.entries(raw || {})) {
+        if (!insts) continue;
+        if (key.includes('__')) out[key] = insts;
+        else out[`${fallbackExam}__${key}`] = insts;
+    }
+    return out;
 }

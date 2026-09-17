@@ -1,5 +1,24 @@
+/* ═══════════════════════════════════════════════════════════
+   PŘEDDEFINOVANÉ TEXTY — skupiny + orgány (editovat zde)
+   findings = text ve Findings; conclusion = při normal!
+   ═══════════════════════════════════════════════════════════ */
+const RegionNeck_PREDEFS = {
+    groups: {
+        all: 'Krční orgány a struktury bez patrné patologie.'
+    },
+    organs: {
+        sinus: { findings: 'vzdušné, bez patologického obsahu.', conclusion: 'Přiměřený nález v oblasti sinů.' },
+        salivary: { findings: 'obvyklé velikosti a struktury, bez ložiskových změn.', conclusion: 'Přiměřený nález na slinných žlázách, bez ložiskové léze.' },
+        pharynx: { findings: 'symetrický, bez ložiskového ztluštění stěny.', conclusion: 'Přiměřený nález na faryngu, bez ložiskové léze.' },
+        thyroid: { findings: 'normální velikosti, parenchym bez zřetelných cyst či ložisek.', conclusion: 'Přiměřený nález na štítné žláze, bez ložiskové léze.' },
+        soft: { findings: 'bez ložiskových změn.', conclusion: 'Přiměřený nález v měkkých tkáních krku, bez ložiskové léze.' }
+    },
+    ostatni: { findings: 'Bez dalších významných nálezů.', conclusion: 'Bez dalších významných nálezů na krku.' }
+};
+
 const RegionNeck = {
     title: 'Krk',
+    predefs: RegionNeck_PREDEFS,
 
     /* Nabídky stavů na jednom místě - v layoutu se odkazuje jako
        { btn: 'plus', id: 'par_atr_r' } (id je potřeba jen když se liší od klíče). */
@@ -33,10 +52,22 @@ const RegionNeck = {
     /* Hladiny lymfatických uzlin krku (layout i compile). */
     lnLevels: ['IA', 'IB', 'IIA', 'IIB', 'III', 'IV', 'V', 'VI'],
 
+    /* Virtuální skupiny — struktura; texty v RegionNeck_PREDEFS.groups */
+    virtualGroups: [
+        {
+            id: 'all',
+            name: 'Orgány krku',
+            members: ['sinus', 'salivary', 'pharynx', 'thyroid', 'soft'],
+            tableId: 'group:neck_sinus_main,neck_salivary_main,neck_pharynx_main,neck_thyroid_main,neck_soft_main',
+            text: RegionNeck_PREDEFS.groups.all
+        }
+    ],
+    organOrder: ['sinus', 'salivary', 'pharynx', 'thyroid', 'soft'],
+
     layout: (helpers) => {
             let layoutNodes = [];
 
-            const lesInsts = Store.instances?.['neck_lesion_main'] || [];
+            const lesInsts = getExamInstances('neck_lesion_main');
             lesInsts.forEach((instId, idx) => {
                 const p = `l_${instId}`;
                 layoutNodes.push(
@@ -50,7 +81,7 @@ const RegionNeck = {
                 );
             });
 
-            const lnInsts = Store.instances?.['neck_lymphnode_main'] || [];
+            const lnInsts = getExamInstances('neck_lymphnode_main');
             lnInsts.forEach((instId, idx) => {
                 const p = `ln_${instId}`;
                 layoutNodes.push(
@@ -147,70 +178,98 @@ const RegionNeck = {
             let concInc = [];
             const examId = ctx.examId || 'default';
             const isPET = (examId || '').toLowerCase().includes('pet');
+            const toOrgans = shouldPlaceLesionsInOrgans(examId);
+            const expandMode = getOrganExpandMode(examId);
+            const { organBag, emitOrgan, flush } = createOrganExpandState(ctx, { reportOut, concMain, concInc });
+            const OP = RegionNeck_PREDEFS.organs;
 
-            const lesInsts = Store.instances?.['neck_lesion_main'] || [];
+            /* Lokalizace léze → klíč orgánu pro zápis „k orgánům“. */
+            const NECK_SITE_ORGAN = {
+                patro: 'pharynx', tons: 'pharynx', jaz: 'pharynx',
+                far: 'pharynx', hyp: 'pharynx', lar: 'pharynx',
+                par: 'salivary', sub: 'salivary', thyr: 'thyroid'
+            };
+
+            const pendingLes = [];
+            const lesInsts = getExamInstances('neck_lesion_main', examId);
             let highAct = false, badEtio = false;
             lesInsts.forEach(id => {
                 if (['intermediární', 'zvýšená', 'vysoká'].includes(ctx.text(`l_${id}_met_act`, true))) highAct = true;
                 if (!ctx.isActive(`l_${id}_e_b`) && !ctx.isActive(`l_${id}_e_inf`)) badEtio = true;
             });
 
-            if (lesInsts.length === 0 || (lesInsts.length > 0 && isPET && !highAct)) {
-                reportOut.push({ type: 'frame', text: isPET ? 'Bez patrných hyperakumulujících ložiskových změn.' : 'Bez patrných ložiskových změn.', tableId: 'neck_lesion_main', dimmed: true });
-            }
-
             lesInsts.forEach(instId => {
                 const p = `l_${instId}`;
-                    let lokace = [];
-                    RegionNeck.lokalizace.forEach(([site, name]) => {
-                        const r = ctx.isActive(`${p}_p_${site}_r`), l = ctx.isActive(`${p}_p_${site}_l`);
-                        if (!r && !l) return;
-                        const pad2 = GRAMMAR_DICT.lokalizace[name]?.pad2 || name;
-                        if (r && l) lokace.push(`${pad2} bilat.`);
-                        else lokace.push(`${pad2} ${r ? 'vpravo' : 'vlevo'}`);
-                    });
-                    const f = LESIONS_DEFINITION.frames(ctx, { examId, regionId: 'neck', p, tableId: `neck_lesion_main__${instId}`, lokace });
-                    if (f) {
-                        reportOut.push(f.report);
-                        concMain.push(f.conc);
-                    }
+                const lokaceByOrg = {};
+                RegionNeck.lokalizace.forEach(([site, name]) => {
+                    const r = ctx.isActive(`${p}_p_${site}_r`), l = ctx.isActive(`${p}_p_${site}_l`);
+                    if (!r && !l) return;
+                    const orgKey = NECK_SITE_ORGAN[site];
+                    if (!orgKey) return;
+                    const pad2 = GRAMMAR_DICT.lokalizace[name]?.pad2 || name;
+                    const lok = (r && l) ? `${pad2} bilat.` : `${pad2} ${r ? 'vpravo' : 'vlevo'}`;
+                    (lokaceByOrg[orgKey] ||= []).push(lok);
+                });
+                queueLesionForOrgans(pendingLes, concMain, ctx, {
+                    examId, regionId: 'neck', p, tableId: `neck_lesion_main__${instId}`
+                }, lokaceByOrg, { toOrgans });
+            });
+
+            const pendingLn = [];
+            const lnInsts = getExamInstances('neck_lymphnode_main', examId);
+            lnInsts.forEach(instId => {
+                const p = `ln_${instId}`;
+                let lokaceLN = [];
+                let krk_p = ctx.isActive(`${p}_p_krk_r`), krk_l = ctx.isActive(`${p}_p_krk_l`);
+                if (krk_p && krk_l) lokaceLN.push("na krku bilat.");
+                else if (krk_p) lokaceLN.push("na krku vpravo");
+                else if (krk_l) lokaceLN.push("na krku vlevo");
+
+                let levelsR = [], levelsL = [];
+                RegionNeck.lnLevels.forEach(lvl => {
+                    if (ctx.isActive(`${p}_p_${lvl}_r`)) levelsR.push(lvl);
+                    if (ctx.isActive(`${p}_p_${lvl}_l`)) levelsL.push(lvl);
                 });
 
-            if (lesInsts.length > 0 && (!isPET || highAct) && !badEtio) {
-                reportOut.push({ type: 'frame', text: 'Jinak bez patrných ložiskových změn.', tableId: 'neck_lesion_main', dimmed: true });
-            }
+                if (levelsR.length > 0 && levelsR.join(',') === levelsL.join(',')) {
+                    lokaceLN.push(`v levelu ${levelsR.join(', ')} bilat.`);
+                } else {
+                    if (levelsR.length > 0) lokaceLN.push(`v levelu ${levelsR.join(', ')} vpravo`);
+                    if (levelsL.length > 0) lokaceLN.push(`v levelu ${levelsL.join(', ')} vlevo`);
+                }
 
-            const lnInsts = Store.instances?.['neck_lymphnode_main'] || [];
-            if (lnInsts.length === 0) {
-                reportOut.push({ type: 'frame', text: isPET ? 'Bez patrné hyperakumulující lymfadenopatie.' : 'Bez patrné lymfadenopatie.', tableId: 'neck_lymphnode_main', dimmed: true });
-            } else {
-                lnInsts.forEach(instId => {
-                    const p = `ln_${instId}`;
-                    let lokaceLN = [];
-                    let krk_p = ctx.isActive(`${p}_p_krk_r`), krk_l = ctx.isActive(`${p}_p_krk_l`);
-                    if (krk_p && krk_l) lokaceLN.push("na krku bilat.");
-                    else if (krk_p) lokaceLN.push("na krku vpravo");
-                    else if (krk_l) lokaceLN.push("na krku vlevo");
+                const f = LESIONS_DEFINITION.frames(ctx, { examId, regionId: 'neck', p, tableId: `neck_lymphnode_main__${instId}`, isLN: true, lokace: lokaceLN });
+                if (f) {
+                    concMain.push(f.conc);
+                    /* Uzliny krku → Měkké tkáně */
+                    pendingLn.push({ report: f.report, organKeys: ['soft'] });
+                }
+            });
 
-                    let levelsR = [], levelsL = [];
-                    RegionNeck.lnLevels.forEach(lvl => {
-                        if (ctx.isActive(`${p}_p_${lvl}_r`)) levelsR.push(lvl);
-                        if (ctx.isActive(`${p}_p_${lvl}_l`)) levelsL.push(lvl);
-                    });
+            let hasLesFindings = pendingLes.length > 0;
+            let hasLnFindings = pendingLn.length > 0;
+            let orphanLes = false;
 
-                    if (levelsR.length > 0 && levelsR.join(',') === levelsL.join(',')) {
-                        lokaceLN.push(`v levelu ${levelsR.join(', ')} bilat.`);
-                    } else {
-                        if (levelsR.length > 0) lokaceLN.push(`v levelu ${levelsR.join(', ')} vpravo`);
-                        if (levelsL.length > 0) lokaceLN.push(`v levelu ${levelsL.join(', ')} vlevo`);
-                    }
-
-                    const f = LESIONS_DEFINITION.frames(ctx, { examId, regionId: 'neck', p, tableId: `neck_lymphnode_main__${instId}`, isLN: true, lokace: lokaceLN });
-                    if (f) {
-                        reportOut.push(f.report);
-                        concMain.push(f.conc);
-                    }
-                });
+            if (!toOrgans) {
+                const lesStart = reportOut.length;
+                pendingLes.forEach(item => reportOut.push(item.report));
+                if (!hasLesFindings || (isPET && !highAct)) {
+                    reportOut.splice(lesStart, 0, LESIONS_DEFINITION.virtualPredef(
+                        'neck_lesion_main', LESIONS_DEFINITION.predefText.lesion(isPET)));
+                }
+                if (hasLesFindings && (!isPET || highAct) && !badEtio) {
+                    reportOut.push(LESIONS_DEFINITION.virtualPredef(
+                        'neck_lesion_main', LESIONS_DEFINITION.predefText.lesionJinak));
+                }
+                pendingLn.forEach(item => reportOut.push(item.report));
+                if (!hasLnFindings) {
+                    reportOut.push(LESIONS_DEFINITION.virtualPredef(
+                        'neck_lymphnode_main', LESIONS_DEFINITION.predefText.lymph(isPET)));
+                }
+            } else if (!hasLesFindings || (isPET && !highAct)) {
+                /* U PET bez vysoké aktivity zůstává negativní text nahoře i při zápisu k orgánům. */
+                reportOut.push(LESIONS_DEFINITION.virtualPredef(
+                    'neck_lesion_main', LESIONS_DEFINITION.predefText.lesion(isPET)));
             }
 
             /* Siny: lokalita se píše jednou, varianty nálezu i text do závěru se z ní skládají. */
@@ -241,13 +300,14 @@ const RegionNeck = {
                 ctx.field('sinus_custom_conc')
             ].filter(Boolean);
 
-            useSection(ctx.section({
+            emitOrgan('sinus', {
                 label: 'Siny', tableId: 'neck_sinus_main', desc: 'sinus_custom_desc',
-                normal: 'neck_sinus_add_normal', normalText: 'vzdušné, bez patologického obsahu.',
-                normalConc: 'Přiměřený nález v oblasti sinů.',
+                normal: 'neck_sinus_add_normal', normalText: OP.sinus.findings,
+                normalConc: OP.sinus.conclusion,
+                predef: 'neck_sinus_add_predef', predefText: OP.sinus.findings,
                 incidental: [sinyConcParts.join('\n')],
                 parts: [ctx.mapStates({ items: sinyItems })]
-            }), { report: reportOut, main: concMain, incidental: concInc });
+            });
 
             const salConcParts = [
                 ctx.mapStates({
@@ -262,11 +322,13 @@ const RegionNeck = {
                 ctx.field('salivary_custom_conc')
             ].filter(Boolean);
 
-            useSection(ctx.section({
+            emitOrgan('salivary', {
                 label: 'Slinné žlázy', tableId: 'neck_salivary_main', desc: 'salivary_custom_desc',
                 normal: 'neck_salivary_add_normal',
-                normalText: 'obvyklé velikosti a struktury, bez ložiskových změn.',
-                normalConc: 'Přiměřený nález na slinných žlázách, bez ložiskové léze.',
+                normalText: OP.salivary.findings,
+                normalConc: OP.salivary.conclusion,
+                predef: 'neck_salivary_add_predef',
+                predefText: OP.salivary.findings,
                 incidental: [salConcParts.join('\n')],
                 parts: [ctx.mapStates({
                     items: [
@@ -288,7 +350,7 @@ const RegionNeck = {
                         { id: 'sub_nod_RF_l', 1: 'RF aktivní nodul v submandibulární žláze vlevo', 2: 'RF aktivní noduly v submandibulární žláze vlevo' }
                     ]
                 })]
-            }), { report: reportOut, main: concMain, incidental: concInc });
+            });
 
             let farRep = [];
             const stateMapFar = { 'poop': 'pooperační', 'porad': 'poradiační', 'oboje': 'pooperační a poradiační' };
@@ -327,13 +389,15 @@ const RegionNeck = {
             let farDesc = ctx.field('pharynx_custom_desc');
             if (farDesc) farRep.push(farDesc);
 
-            useSection(ctx.section({
+            emitOrgan('pharynx', {
                 label: 'Hltan/hrtan', tableId: 'neck_pharynx_main', parts: farRep,
                 normal: 'neck_pharynx_add_normal',
-                normalText: 'symetrický, bez ložiskového ztluštění stěny.',
-                normalConc: 'Přiměřený nález na faryngu, bez ložiskové léze.',
+                normalText: OP.pharynx.findings,
+                normalConc: OP.pharynx.conclusion,
+                predef: 'neck_pharynx_add_predef',
+                predefText: OP.pharynx.findings,
                 concField: 'pharynx_custom_conc'
-            }), { report: reportOut, main: concMain, incidental: concInc });
+            });
 
             let thyroidParts = [];
             if (ctx.isActive('thyr_enl')) thyroidParts.push('štítná žláza je difuzně zvětšená');
@@ -358,11 +422,13 @@ const RegionNeck = {
                 ctx.field('thyroid_custom_conc')
             ].filter(Boolean);
 
-            useSection(ctx.section({
+            emitOrgan('thyroid', {
                 label: 'Thyroidea', tableId: 'neck_thyroid_main', desc: 'thyroid_custom_desc',
                 normal: 'neck_thyroid_add_normal',
-                normalText: 'normální velikosti, parenchym bez zřetelných cyst či ložisek.',
-                normalConc: 'Přiměřený nález na štítné žláze, bez ložiskové léze.',
+                normalText: OP.thyroid.findings,
+                normalConc: OP.thyroid.conclusion,
+                predef: 'neck_thyroid_add_predef',
+                predefText: OP.thyroid.findings,
                 incidental: [thyrConcParts.join('\n')],
                 parts: [...thyroidParts, ctx.mapStates({
                     items: [
@@ -374,20 +440,38 @@ const RegionNeck = {
                         { id: 'thyr_cys_l', 1: 'cysta vlevo', 2: 'cysty vlevo' }
                     ]
                 })]
-            }), { report: reportOut, main: concMain, incidental: concInc });
+            });
 
             // --- Měkké tkáně krku (vlastní nálezy) ---
-            useSection(ctx.section({
+            emitOrgan('soft', {
                 label: 'Měkké tkáně', tableId: 'neck_soft_main', desc: 'neck_soft_custom_desc',
-                normal: 'neck_soft_add_normal', normalText: 'bez ložiskových změn.',
-                normalConc: 'Přiměřený nález v měkkých tkáních krku, bez ložiskové léze.',
+                normal: 'neck_soft_add_normal', normalText: OP.soft.findings,
+                normalConc: OP.soft.conclusion,
+                predef: 'neck_soft_add_predef', predefText: OP.soft.findings,
                 concField: 'neck_soft_custom_conc'
-            }), { report: reportOut, main: concMain, incidental: concInc });
+            });
+
+            if (toOrgans) {
+                pendingLes.forEach(item => {
+                    if (!placeLesionReport(organBag, reportOut, item.report, item.organKeys)) orphanLes = true;
+                });
+                pendingLn.forEach(item => {
+                    placeLesionReport(organBag, reportOut, item.report, item.organKeys);
+                });
+            }
+
+            flush({
+                groups: RegionNeck.virtualGroups,
+                organOrder: RegionNeck.organOrder,
+                expandMode,
+                hasExtraPath: toOrgans ? orphanLes : (hasLesFindings || hasLnFindings)
+            });
 
             useSection(ctx.section({
                 tableId: 'neck_ostatni_main', desc: 'neck_ostatni_custom_desc', capitalize: true,
-                normal: 'neck_ostatni_add_normal', normalText: 'Bez dalších významných nálezů.',
-                normalConc: 'Bez dalších významných nálezů na krku.',
+                normal: 'neck_ostatni_add_normal', normalText: RegionNeck_PREDEFS.ostatni.findings,
+                normalConc: RegionNeck_PREDEFS.ostatni.conclusion,
+                predef: 'neck_ostatni_add_predef', predefText: RegionNeck_PREDEFS.ostatni.findings,
                 concField: 'neck_ostatni_custom_conc'
             }), { report: reportOut, main: concMain, incidental: concInc });
 

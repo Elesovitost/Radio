@@ -285,11 +285,21 @@ document.addEventListener('wheel', e => {
     }
 }, { passive: false });
 
+document.addEventListener('change', e => {
+    const actionTarget = e.target.closest('[data-action="update-setting"]');
+    if (!actionTarget || actionTarget.type === 'checkbox') return;
+    const setting = actionTarget.dataset.setting;
+    APP_SETTINGS[setting] = actionTarget.value;
+    saveSettings();
+});
+
 document.addEventListener('input', e => {
     const actionTarget = e.target.closest('[data-action]');
     if (actionTarget && actionTarget.dataset.action === 'update-setting') {
-        APP_SETTINGS[actionTarget.dataset.setting] = e.target.checked;
+        const setting = actionTarget.dataset.setting;
+        APP_SETTINGS[setting] = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         saveSettings();
+        if (setting === 'organPredefs') applyAllOrganPredefs(e.target.checked);
         return;
     }
 
@@ -369,7 +379,9 @@ function getLesionInstanceName(tableId, instId, defaultType, organName) {
     let instPrefix = '';
 
     const allKeys = Object.keys(Store.buttonStates);
+    const examId = Store.activeTab || 'default';
     for (const key of allKeys) {
+        if (!key.startsWith(`${examId}_`)) continue;
         const match = key.match(new RegExp(`_([a-zA-Z]+_${instId})_`));
         if (match) {
             instPrefix = match[1];
@@ -378,7 +390,6 @@ function getLesionInstanceName(tableId, instId, defaultType, organName) {
     }
 
     if (instPrefix) {
-        const examId = Store.activeTab || 'default';
         const regionId = tableId.split('_')[0];
         const searchStr = `${examId}_${regionId}_${instPrefix}_`;
 
@@ -432,7 +443,7 @@ function renderOrganPopup(organDef, organId) {
     
     // Vykreslení tlačítek - Existující instance VŽDY před novými / dalšími
     if (lesionTable && lesionTable.includes('_lesion_main')) {
-        const lesionInsts = Store.instances?.[lesionTable] || [];
+        const lesionInsts = getExamInstances(lesionTable);
         lesionInsts.forEach((instId) => {
             const name = getLesionInstanceName(lesionTable, instId, 'Ložisko', organDef.name);
             html += `<button class="popup-btn btn-lesion" data-action="open-table" data-table="${lesionTable}__${instId}">🔴 ${name}</button>`;
@@ -442,7 +453,7 @@ function renderOrganPopup(organDef, organId) {
     }
 
     if (!isBrain && !isSkeleton && !isSoft && lymphTable) {
-        const lymphInsts = Store.instances?.[lymphTable] || [];
+        const lymphInsts = getExamInstances(lymphTable);
         lymphInsts.forEach((instId) => {
             const name = getLesionInstanceName(lymphTable, instId, 'Uzlina', organDef.name);
             html += `<button class="popup-btn btn-lymph" data-action="open-table" data-table="${lymphTable}__${instId}">🟡 ${name}</button>`;
@@ -452,7 +463,7 @@ function renderOrganPopup(organDef, organId) {
     }
     
     if (isBrain && hemoTable) {
-        const hemoInsts = Store.instances?.[hemoTable] || [];
+        const hemoInsts = getExamInstances(hemoTable);
         hemoInsts.forEach((instId) => {
             const name = getLesionInstanceName(hemoTable, instId, 'Krvácení / ischemie', organDef.name);
             html += `<button class="popup-btn btn-hemo" data-action="open-table" data-table="${hemoTable}__${instId}">🟣 ${name}</button>`;
@@ -594,6 +605,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const hidePredefinedCheckbox = document.getElementById('setting-hide-predefined');
     if (hidePredefinedCheckbox) hidePredefinedCheckbox.checked = APP_SETTINGS.hidePredefined;
+
+    const organPredefsCheckbox = document.getElementById('setting-organ-predefs');
+    if (organPredefsCheckbox) organPredefsCheckbox.checked = APP_SETTINGS.organPredefs;
+
+    const organsStackedCheckbox = document.getElementById('setting-organs-stacked');
+    if (organsStackedCheckbox) organsStackedCheckbox.checked = APP_SETTINGS.organsStacked;
+
+    const organExpandPet = document.getElementById('setting-organ-expand-pet');
+    if (organExpandPet) organExpandPet.value = APP_SETTINGS.organExpandPet;
+
+    const organExpandCtMr = document.getElementById('setting-organ-expand-ctmr');
+    if (organExpandCtMr) organExpandCtMr.value = APP_SETTINGS.organExpandCtMr;
+
+    const lesionPlacement = document.getElementById('setting-lesion-placement');
+    if (lesionPlacement) lesionPlacement.value = APP_SETTINGS.lesionPlacement;
 
     const previewCheckbox = document.getElementById('setting-preview');
     if (previewCheckbox) previewCheckbox.checked = APP_SETTINGS.previewReport;

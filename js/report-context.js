@@ -135,20 +135,23 @@ function createContext(regionId, examId) {
             return MetricsEngine.calculateDynamics(currSize, minSize, currSuv, minSuv, cLiv, mLiv, APP_SETTINGS.recist, cntOld);
         },
         /* Sekce nálezu i závěru na jednom místě:
-           [Popisek: ]nález(y) s volitelnou "normální" variantou.
+           [Popisek: ]nález(y) s volitelnou "normální" / "predef" variantou.
              parts      - hotové texty nálezu (např. z mapStates)
              desc       - id pole s vlastním popisem (připojí se bez koncové tečky)
              normal     - id tlačítka "normální": 1 = popsat normalText, 2 = i do závěru
-                          (s patologií se vzájemně vylučuje — viz applyOrganNormalMutex)
              normalConc - text přiměřeného nálezu do hlavního závěru
+             predef     - id tlačítka "predef" (výlučné vůči patologii/custom/normal; jen Findings)
+             predefText - samostatný text Findings (nyní stejný jako normalText)
              concField  - id pole s vlastním závěrem
              concTarget - kam vlastní závěr ('incidental' | 'main')
              main/incidental - hotové závěry navíc (vloží se před vlastní závěr)
              capitalize - nález začíná velkým písmenem
            Vrací { report, main, incidental } - co vložit do reportu a závěrů. */
         section({ label = '', tableId, parts = [], desc = null, normal = null,
-                  normalText = '', normalConc = '', concField = null,
+                  normalText = '', normalConc = '', predef = null, predefText = '',
+                  concField = null,
                   concTarget = 'incidental', main = [], incidental = [], capitalize = false }) {
+            const predefLvl = predef ? this.normalLevel(predef) : 0;
             const lvl = normal ? this.normalLevel(normal) : 0;
             const items = parts.filter(Boolean);
             const customDesc = desc ? bezTecky(this.field(desc)) : '';
@@ -156,7 +159,8 @@ function createContext(regionId, examId) {
 
             const list = formatCzechList(items) + '.';
             let text;
-            if (lvl > 0) text = normalText;
+            if (predefLvl > 0) text = predefText;
+            else if (lvl > 0) text = items.length > 0 ? `${normalText} Jinak pouze ${list}` : normalText;
             else if (items.length > 0) text = capitalize ? list[0].toUpperCase() + list.slice(1) : list;
 
             const frame = (t) => (typeof t === 'string' ? { type: 'frame', text: t, tableId } : t);

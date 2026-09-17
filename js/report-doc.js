@@ -21,11 +21,19 @@ const ReportText = {
     /* Text bloku tak, jak ho vidí uživatel (před rozdělením popisku orgánu). */
     frameText(block, { prefixNove = false } = {}) {
         let text = block.text || '';
+        if (block.segments && block.segments.length) {
+            text = block.segments.map(s => String(s.text || '').trim()).filter(Boolean).join(' ');
+        }
         if (prefixNove) text = ReportText.applyNove(text);
-        return Corrections.normalize(text);
+        text = Corrections.normalize(text);
+        if (block.label) {
+            const lab = String(block.label).replace(/:$/, '');
+            text = `${lab}: ${text}`.replace(/\s+/g, ' ').trim();
+        }
+        return text;
     },
 
-    /* Popisek orgánu na začátku věty ("Játra:") – kvůli stylování a odsazení. */
+    /* Popisek orgánu / skupiny na začátku věty ("Játra:") – kvůli stylování. */
     splitLabel(text) {
         return (text.match(/^([^:\n]+:)/) || [])[1] || null;
     }
@@ -198,10 +206,13 @@ const ReportDoc = {
             if (ReportDoc.isHeading(b)) {
                 if (currentLine) { lines.push(currentLine.trim()); currentLine = ''; }
                 const text = (b.text || '').trim();
-                if (text === 'OSTATNÍ:') { currentLayout = 'block'; continue; }
+                if (text === 'OSTATNÍ:') {
+                    currentLayout = APP_SETTINGS.organsStacked ? 'block' : 'inline';
+                    continue;
+                }
 
-                const region = b.regionId && REGIONS[b.regionId];
-                currentLayout = (region && region.reportLayout) || 'inline';
+                // Orgány pod sebe: vždy block. Jinak orgány inline, nový řádek jen u regionu.
+                currentLayout = APP_SETTINGS.organsStacked ? 'block' : 'inline';
                 currentLine = headingCount > 1 ? text.toUpperCase().replace(/:$/, '') + ':' : '';
                 continue;
             }
@@ -210,7 +221,8 @@ const ReportDoc = {
 
             const text = ReportText.frameText(b).trim();
             const cleanText = text.replace(/^- /, '');
-            if (currentLayout === 'block' || b.hidden || text.startsWith('Neložisková')) {
+            // Skupiny orgánů vždy na vlastním řádku (i když je „Orgány pod sebe“ vypnuté).
+            if (currentLayout === 'block' || b.isGroup || b.hidden || text.startsWith('Neložisková')) {
                 if (currentLine) { lines.push(currentLine.trim()); currentLine = ''; }
                 lines.push(cleanText);
             } else {

@@ -28,7 +28,7 @@ const RegionSkeleton = {
                 [ { btn: `${pfx}_kyc_r`, type: 'basic', text: 'Kyčel' }, '', { btn: `${pfx}_kyc_l`, type: 'basic', text: 'Kyčel' } ]
             ];
 
-            const lesInsts = Store.instances?.['skeleton_lesion_main'] || [];
+            const lesInsts = getExamInstances('skeleton_lesion_main');
             lesInsts.forEach((instId, idx) => {
                 const p = `l_${instId}`;
                 layoutNodes.push(
@@ -164,17 +164,15 @@ const RegionSkeleton = {
             // --- LÉZE ---
             const isPET = (examId || '').toLowerCase().includes('pet');
 
-            const lesInsts = Store.instances?.['skeleton_lesion_main'] || [];
+            const lesInsts = getExamInstances('skeleton_lesion_main', examId);
             let highAct = false, badEtio = false;
             lesInsts.forEach(id => {
                 if (['intermediární', 'zvýšená', 'vysoká'].includes(ctx.text(`l_${id}_met_act`, true))) highAct = true;
                 if (!ctx.isActive(`l_${id}_e_b`) && !ctx.isActive(`l_${id}_e_inf`)) badEtio = true;
             });
 
-            if (lesInsts.length === 0 || (lesInsts.length > 0 && isPET && !highAct)) {
-                reportOut.push({ type: 'frame', text: isPET ? 'Bez patrných hyperakumulujících ložiskových změn.' : 'Bez patrných ložiskových změn.', tableId: 'skeleton_lesion_main', dimmed: true });
-            }
-
+            const lesStart = reportOut.length;
+            let hasLesFindings = false;
             lesInsts.forEach(instId => {
                 const p = `l_${instId}`;
                     let lokace = [];
@@ -248,11 +246,17 @@ const RegionSkeleton = {
                     if (f) {
                         reportOut.push(f.report);
                         concMain.push(f.conc);
+                        hasLesFindings = true;
                     }
                 });
 
-            if (lesInsts.length > 0 && (!isPET || highAct) && !badEtio) {
-                reportOut.push({ type: 'frame', text: 'Jinak bez patrných ložiskových změn.', tableId: 'skeleton_lesion_main', dimmed: true });
+            if (!hasLesFindings || (isPET && !highAct)) {
+                reportOut.splice(lesStart, 0, LESIONS_DEFINITION.virtualPredef(
+                    'skeleton_lesion_main', LESIONS_DEFINITION.predefText.lesion(isPET)));
+            }
+            if (hasLesFindings && (!isPET || highAct) && !badEtio) {
+                reportOut.push(LESIONS_DEFINITION.virtualPredef(
+                    'skeleton_lesion_main', LESIONS_DEFINITION.predefText.lesionJinak));
             }
 
             // --- KOSTNÍ DŘEŇ ---

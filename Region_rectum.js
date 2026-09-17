@@ -22,7 +22,7 @@ const RegionRectum = {
             ])
         );
 
-        const lesInsts = Store.instances?.['rectum_lesion_main'] || [];
+        const lesInsts = getExamInstances('rectum_lesion_main');
         lesInsts.forEach((instId, idx) => {
             const p = `rt_${instId}`;
             
@@ -50,7 +50,7 @@ const RegionRectum = {
             );
         });
 
-        const lnInsts = Store.instances?.['rectum_lymphnode_main'] || [];
+        const lnInsts = getExamInstances('rectum_lymphnode_main');
         lnInsts.forEach((instId, idx) => {
             const p = `rtln_${instId}`;
             layoutNodes.push(
@@ -167,7 +167,7 @@ const RegionRectum = {
             }
         }
 
-        const lesInsts = Store.instances?.['rectum_lesion_main'] || [];
+        const lesInsts = getExamInstances('rectum_lesion_main', ctx.examId);
         
         if (lesInsts.length === 0) {
             if (!isOperated && !rtDesc) {
@@ -297,7 +297,7 @@ const RegionRectum = {
             });
         }
 
-        const lnInsts = Store.instances?.['rectum_lymphnode_main'] || [];
+        const lnInsts = getExamInstances('rectum_lymphnode_main', ctx.examId);
         if (lnInsts.length === 0) {
             reportOut.push({ type: 'frame', text: isPet ? 'Bez patrné hyperakumulující lymfadenopatie.' : 'Bez zjevné patologické regionální či non-regionální lymfadenopatie.', tableId: 'rectum_lymphnode_main', dimmed: true });
         } else {

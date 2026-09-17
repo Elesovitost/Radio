@@ -57,13 +57,20 @@
         APP_SETTINGS.recist = !!s.recist;
         APP_SETTINGS.suvWord = !!s.suvWord;
         APP_SETTINGS.hidePredefined = false;
+        APP_SETTINGS.organsStacked = false;
+        APP_SETTINGS.organExpandPet = 'alwaysOrgans';
+        APP_SETTINGS.organExpandCtMr = 'alwaysOrgans';
+        APP_SETTINGS.lesionPlacement = 'separate';
 
         Store._silent = true;
         Store.exams = new Set(fx.exams || [examId]);
         Store.activeTab = examId;
         Store.pastDate = fx.past || '';
         Store.indication = fx.indication || '';
-        Store.instances = JSON.parse(JSON.stringify(fx.instances || {}));
+        Store.instances = migrateInstancesToExamScope(
+            JSON.parse(JSON.stringify(fx.instances || {})),
+            [examId]
+        );
         Store.buttonStates = {};
         Store.customTexts = {};
         Store.fields = { suv_jater: '3.0', suv_jater_minule: '3.0' };
@@ -77,7 +84,10 @@
         //    Strom ILD se staví podle aktuálního stavu, proto registraci a aplikaci
         //    stavů opakujeme, dokud se neustálí (nové úrovně tlačítek se tím doregistrují).
         const regionIds = new Set(exam.regs);
-        Object.keys(Store.instances).forEach(t => regionIds.add(t.split('_')[0]));
+        Object.keys(Store.instances).forEach(t => {
+            const table = t.includes('__') ? t.slice(t.indexOf('__') + 2) : t;
+            regionIds.add(table.split('_')[0]);
+        });
         const unresolved = new Set();
 
         const applyButtons = () => {
@@ -227,7 +237,9 @@
             Store.expandedNotes = {};
             exam.regs.forEach(rId => {
                 const blocks = FALLBACK_LESION_BLOCKS[rId] || [];
-                blocks.forEach(table => Store.instances[table] = ['1']);
+                blocks.forEach(table => {
+                    Store.instances[examInstanceKey(table, exam.id)] = ['1'];
+                });
             });
 
             const register = table => {

@@ -20,9 +20,30 @@ function brainLokalizace(ctx, p, lokalizace) {
     return lok;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   PŘEDDEFINOVANÉ TEXTY — skupiny + orgány (editovat zde)
+   findings = text ve Findings; conclusion = při normal!
+   ═══════════════════════════════════════════════════════════ */
+const RegionBrain_PREDEFS = {
+    groups: {
+        all: 'Bílá hmota bez ložiskových změn. Přiměřená šíře komor a extra-axiálních prostorů odpovídající věku. Oblast MMK a vnitřních zvukovodů bez patrné patologie. Nezvětšená hypofýza uložena v nerozšířeném tureckém sedle. Epifýza nezvětšena. Konfigurace mozkových tepen obvyklá. Orbity bez patologie. Dutiny vzdušné, bez patologického obsahu.',
+        mozek: 'Bílá hmota bez ložiskových změn. Přiměřená šíře komor a extra-axiálních prostorů odpovídající věku. Oblast MMK a vnitřních zvukovodů bez patrné patologie. Nezvětšená hypofýza uložena v nerozšířeném tureckém sedle. Epifýza nezvětšena. Dutiny vzdušné, bez patologického obsahu.'
+    },
+    organs: {
+        wml: { findings: 'Bílá hmota bez ložiskových změn.', conclusion: 'Přiměřený nález v bílé hmotě, bez ložiskové léze.' },
+        atr: { findings: 'Přiměřená šíře komor a extra-axiálních prostorů odpovídající věku.', conclusion: 'Přiměřený nález na komorovém systému a extra-axiálních prostorech.' },
+        cpa: { findings: 'Oblast MMK a vnitřních zvukovodů bez patrné patologie.', conclusion: 'Přiměřený nález v oblasti MMK a vnitřních zvukovodů.' },
+        sella: { findings: 'Nezvětšená hypofýza uložena v nerozšířeném tureckém sedle. Epifýza nezvětšena.', conclusion: 'Přiměřený nález na hypofýze a epifýze.' },
+        vessels: { findings: 'Konfigurace mozkových tepen obvyklá.', conclusion: 'Přiměřený nález na mozkových tepnách.' },
+        orbits: { findings: 'Orbity bez patologie.', conclusion: 'Přiměřený nález na orbitách.' },
+        sinus: { findings: 'Dutiny vzdušné, bez patologického obsahu.', conclusion: 'Přiměřený nález v oblasti sinů.' }
+    }
+};
+
 const RegionBrain = {
     title: 'Hlava a CNS',
     reportLayout: 'block',
+    predefs: RegionBrain_PREDEFS,
 
     /* Sdílené sady stavů tlačítek - v layoutu se odkazuje jako ...B.plus. */
     buttons: {
@@ -65,6 +86,26 @@ const RegionBrain = {
         ['kal', 'kalva', 'v kalvě']
     ],
 
+    /* Virtuální skupiny — struktura; texty v RegionBrain_PREDEFS.groups
+       Podskupina „Mozek“ odpovídá ORGAN_MAP group: wml, atr, cpa, sella, sinus. */
+    virtualGroups: [
+        {
+            id: 'all',
+            name: 'Orgány hlavy a CNS',
+            members: ['wml', 'atr', 'cpa', 'sella', 'vessels', 'orbits', 'sinus'],
+            tableId: 'group:brain_wml_main,brain_atr_main,brain_cpa_main,brain_sella_main,brain_vessels_main,brain_orbits_main,brain_sinus_main',
+            text: RegionBrain_PREDEFS.groups.all
+        },
+        {
+            id: 'mozek',
+            name: 'Mozek',
+            members: ['wml', 'atr', 'cpa', 'sella', 'sinus'],
+            tableId: 'group:brain_wml_main,brain_atr_main,brain_cpa_main,brain_sella_main,brain_sinus_main',
+            text: RegionBrain_PREDEFS.groups.mozek
+        }
+    ],
+    organOrder: ['wml', 'atr', 'cpa', 'sella', 'vessels', 'orbits', 'sinus'],
+
     layout: (helpers) => {
         let layoutNodes = [];
         const B = RegionBrain.buttons;
@@ -77,7 +118,7 @@ const RegionBrain = {
         ], { normal: true });
         
         // --- 1. LÉZE (Standardní) ---
-        const lesInsts = Store.instances?.['brain_lesion_main'] || [];
+        const lesInsts = getExamInstances('brain_lesion_main');
         lesInsts.forEach((instId, idx) => {
             const p = `bl_${instId}`;
             
@@ -138,7 +179,7 @@ const RegionBrain = {
         });
 
         // --- 2. KRVÁCENÍ A ISCHEMIE ---
-        const hemoInsts = Store.instances?.['brain_hemo_main'] || [];
+        const hemoInsts = getExamInstances('brain_hemo_main');
         hemoInsts.forEach((instId, idx) => {
             const p = `bh_${instId}`;
             
@@ -324,12 +365,11 @@ const RegionBrain = {
         let vesRep = [];
 
         // --- PŘÍPRAVA LÉZÍ A JEJICH LOKALIZACÍ ---
-        const lesInsts = Store.instances?.['brain_lesion_main'] || [];
-        const hemoInsts = Store.instances?.['brain_hemo_main'] || [];
+        const lesInsts = getExamInstances('brain_lesion_main', examId);
+        const hemoInsts = getExamInstances('brain_hemo_main', examId);
         let parsedLesions = [];
+        let parsedHemo = [];
         let hasDwiPlus = false;
-        let hasMmkLesion = false;
-        let hasSellaLesion = false;
 
         // ZPRACOVÁNÍ BĚŽNÝCH LÉZÍ
         if (lesInsts.length > 0) {
@@ -364,8 +404,6 @@ const RegionBrain = {
                 if (ctx.isActive(`${p}_p_extra`)) axSuffix += " extraaxiálně";
                 if (ctx.isActive(`${p}_p_intra_ax`)) axSuffix += " intraaxiálně";
 
-                if (ctx.isActive(`${p}_p_mmk_r`) || ctx.isActive(`${p}_p_mmk_l`)) hasMmkLesion = true;
-                if (ctx.isActive(`${p}_p_supra`) || ctx.isActive(`${p}_p_para_r`) || ctx.isActive(`${p}_p_intra`) || ctx.isActive(`${p}_p_para_l`)) hasSellaLesion = true;
                 if (ctx.text(`${p}_mr_dwi`) === 'DWI +') hasDwiPlus = true;
 
                 let edem = ctx.text(`${p}_edem`);
@@ -523,23 +561,44 @@ const RegionBrain = {
                     }
                     if (concSentences.length > 0) c += ` ${concSentences.join(' ')}`;
 
-                    parsedLesions.push({ tableId: `brain_hemo_main__${instId}`, repText, concText: c.replace(/\s+/g, ' ') });
+                    parsedHemo.push({ tableId: `brain_hemo_main__${instId}`, repText, concText: c.replace(/\s+/g, ' ') });
                 }
             });
         }
 
-        // --- 1. LÉZE ---
+        // --- 1. LÉZE / KRVÁCENÍ (findings, jinak virtuální predef) ---
         if (parsedLesions.length > 0) {
             parsedLesions.forEach(les => {
                 reportOut.push({ type: 'frame', text: capitalize(les.repText), tableId: les.tableId });
                 concMain.push({ type: 'frame', text: capitalize(les.concText), tableId: les.tableId });
             });
+        } else {
+            reportOut.push(LESIONS_DEFINITION.virtualPredef(
+                'brain_lesion_main', LESIONS_DEFINITION.predefText.brainLesion(isMR)));
+        }
+
+        if (parsedHemo.length > 0) {
+            parsedHemo.forEach(les => {
+                reportOut.push({ type: 'frame', text: capitalize(les.repText), tableId: les.tableId });
+                concMain.push({ type: 'frame', text: capitalize(les.concText), tableId: les.tableId });
+            });
+        } else {
+            reportOut.push(LESIONS_DEFINITION.virtualPredef(
+                'brain_hemo_main', LESIONS_DEFINITION.predefText.brainHemo));
         }
 
         // --- 2. RESTRIKCE DIFUZE (Pouze MR, pokud už je ložisko / krvácení / ischemie) ---
-        if (parsedLesions.length > 0 && isMR && !hasDwiPlus) {
+        const allParsed = [...parsedLesions, ...parsedHemo];
+        if (allParsed.length > 0 && isMR && !hasDwiPlus) {
             reportOut.push({ type: 'frame', text: 'Bez zvýšené restrikce difuze.', tableId: 'brain_lesion_main', dimmed: true });
         }
+
+        const hasLesFindings = parsedLesions.length > 0;
+        const hasHemoFindings = parsedHemo.length > 0;
+        /* Mozek vždy „každý orgán“ — nastavení rozepisování platí jen pro trup. */
+        const expandMode = 'alwaysOrgans';
+        const { emitOrgan, flush } = createOrganExpandState(ctx, { reportOut, concMain, concInc });
+        const OP = RegionBrain_PREDEFS.organs;
 
         // --- 1. WML: SVD, PVS A DEMYELINIZACE ---
         let faz = ctx.text('br_faz');
@@ -628,24 +687,16 @@ const RegionBrain = {
             concMain.push({ type: 'frame', text: finalConc, tableId: 'brain_wml_main' });
         }
 
-        let wmlDesc = ctx.field('br_wml_custom_desc');
-        if (wmlDesc) bilaHmotaRep.push(wmlDesc);
-
-        const wmlNormalLvl = ctx.normalLevel('br_wml_ost_add_normal');
-        useSection(ctx.section({
+        emitOrgan('wml', {
             tableId: 'brain_wml_main', normal: 'br_wml_ost_add_normal',
-            normalText: 'Bílá hmota bez ložiskových změn.',
-            normalConc: 'Přiměřený nález v bílé hmotě, bez ložiskové léze.',
+            normalText: OP.wml.findings,
+            normalConc: OP.wml.conclusion,
+            predef: 'br_wml_ost_add_predef',
+            predefText: OP.wml.findings,
+            desc: 'br_wml_custom_desc',
             concField: 'br_wml_custom_conc', capitalize: true,
             parts: bilaHmotaRep
-        }), { report: reportOut, main: concMain, incidental: concInc });
-
-        if (parsedLesions.length === 0) {
-            const intensita = isMR ? 'signálová intenzita' : 'denzita';
-            let normalTxt = `Normální ${intensita} a morfologie parenchymu. Bez ložisek, akutní ischemie, hemorhagie, mass efektu.`;
-            if (bilaHmotaRep.length === 0 && wmlNormalLvl === 0) normalTxt += ' Bez lézí v bílé hmotě.';
-            reportOut.splice(1, 0, { type: 'frame', text: normalTxt, tableId: 'brain_lesion_main', dimmed: true });
-        }
+        });
 
         // --- 2. KORTEX, ATROFIE A KOMORY ---
         let gca = ctx.text('br_gca');
@@ -715,42 +766,18 @@ const RegionBrain = {
             }
         }
 
-        let atrDesc = ctx.field('br_atr_custom_desc');
-        const atrNormalLvl = ctx.normalLevel('br_atr_ost_add_normal');
-        const atrPathParts = [];
-        if (atrofieSaRep.length > 0) atrPathParts.push(formatCzechList(atrofieSaRep));
-        if (komoryRep.length > 0) atrPathParts.push(formatCzechList(komoryRep));
-        if (atrDesc) {
-            let t = atrDesc.trim();
-            if (t.endsWith('.')) t = t.slice(0, -1);
-            atrPathParts.push(t);
-        }
-
-        const atrNormRep = 'Přiměřená šíře komor a extra-axiálních prostorů odpovídající věku';
-        let atrText = '';
-        let isAtrDimmed = false;
-        if (atrNormalLvl > 0) {
-            atrText = `${atrNormRep}.`;
-        } else if (atrPathParts.length === 0) {
-            atrText = `${atrNormRep}.`;
-            isAtrDimmed = true;
-        } else {
-            let atrCombinedRep = [];
-            if (atrofieSaRep.length === 0) atrCombinedRep.push('Subarachnoidální prostory oboustranně šířkou přiměřené k věku.');
-            else atrCombinedRep.push(capitalize(formatCzechList(atrofieSaRep)) + '.');
-            if (komoryRep.length === 0) atrCombinedRep.push('Komorový systém obvyklé konfigurace, nedilatován.');
-            else atrCombinedRep.push(capitalize(formatCzechList(komoryRep)) + '.');
-            if (atrDesc) atrCombinedRep.push(capitalize(atrDesc) + (atrDesc.endsWith('.') ? '' : '.'));
-            atrText = atrCombinedRep.join(' ');
-        }
-
-        let atrConc = ctx.field('br_atr_custom_conc');
-        if (atrConc) concInc.push({ type: 'frame', text: atrConc, tableId: 'brain_atr_main' });
-        if (atrNormalLvl >= 2) {
-            concMain.push({ type: 'frame', text: 'Přiměřený nález na komorovém systému a extra-axiálních prostorech.', tableId: 'brain_atr_main' });
-        }
-
-        reportOut.push({ type: 'frame', text: atrText, tableId: 'brain_atr_main', dimmed: isAtrDimmed });
+        emitOrgan('atr', {
+            tableId: 'brain_atr_main',
+            normal: 'br_atr_ost_add_normal',
+            normalText: OP.atr.findings,
+            normalConc: OP.atr.conclusion,
+            predef: 'br_atr_ost_add_predef',
+            predefText: OP.atr.findings,
+            desc: 'br_atr_custom_desc',
+            concField: 'br_atr_custom_conc',
+            capitalize: true,
+            parts: [...atrofieSaRep, ...komoryRep]
+        });
 
         // --- 3. MOSTOMOZEČKOVÝ KOUT (CPA) ---
         const cpaSides = ['r', 'l'];
@@ -795,25 +822,18 @@ const RegionBrain = {
             }
         });
 
-        let cpaDesc = ctx.field('br_cpa_custom_desc');
-        if (cpaDesc) cpaRep.push(cpaDesc);
-        let cpaConc = ctx.field('br_cpa_custom_conc');
-        if (cpaConc) concInc.push({ type: 'frame', text: cpaConc, tableId: 'brain_cpa_main' });
-
-        const cpaNormalLvl = ctx.normalLevel('br_cpa_ost_add_normal');
-        const cpaNormRep = 'Oblast MMK a vnitřních zvukovodů bez patrné patologie';
-        if (cpaNormalLvl > 0 || cpaRep.length > 0 || !hasMmkLesion) {
-            if (cpaNormalLvl > 0) {
-                reportOut.push({ type: 'frame', text: `${cpaNormRep}.`, tableId: 'brain_cpa_main' });
-            } else if (cpaRep.length === 0 && !hasMmkLesion) {
-                reportOut.push({ type: 'frame', text: `${cpaNormRep}.`, tableId: 'brain_cpa_main', dimmed: true });
-            } else if (cpaRep.length > 0) {
-                reportOut.push({ type: 'frame', text: capitalize(formatCzechList(cpaRep)) + '.', tableId: 'brain_cpa_main' });
-            }
-        }
-        if (cpaNormalLvl >= 2) {
-            concMain.push({ type: 'frame', text: 'Přiměřený nález v oblasti MMK a vnitřních zvukovodů.', tableId: 'brain_cpa_main' });
-        }
+        emitOrgan('cpa', {
+            tableId: 'brain_cpa_main',
+            normal: 'br_cpa_ost_add_normal',
+            normalText: OP.cpa.findings,
+            normalConc: OP.cpa.conclusion,
+            predef: 'br_cpa_ost_add_predef',
+            predefText: OP.cpa.findings,
+            desc: 'br_cpa_custom_desc',
+            concField: 'br_cpa_custom_conc',
+            capitalize: true,
+            parts: cpaRep
+        });
 
         // --- 4. SELLA A HYPOFÝZA ---
         let sella = ctx.text('br_sella');
@@ -843,34 +863,18 @@ const RegionBrain = {
             }
         }
 
-        let sellaDesc = ctx.field('br_sella_custom_desc');
-        if (sellaDesc) sellaRep.push(sellaDesc);
-        let sellaConc = ctx.field('br_sella_custom_conc');
-        if (sellaConc) concInc.push({ type: 'frame', text: sellaConc, tableId: 'brain_sella_main' });
-
-        const sellaNormalLvl = ctx.normalLevel('br_sella_ost_add_normal');
-        const sellaNormRep = 'Nezvětšená hypofýza uložena v nerozšířeném tureckém sedle. Epifýza nezvětšena';
-        let sellaEpiCombined = [];
-        let isSellaDimmed = false;
-
-        if (sellaNormalLvl > 0) {
-            sellaEpiCombined.push(`${sellaNormRep}.`);
-        } else {
-            if (sellaRep.length === 0 && !hasSellaLesion && !sellaDesc) sellaEpiCombined.push('Nezvětšená hypofýza uložena v nerozšířeném tureckém sedle.');
-            else if (sellaRep.length > 0) sellaEpiCombined.push(capitalize(formatCzechList(sellaRep)) + '.');
-
-            if (epiRep.length === 0 && (!epiRaw || epiRaw === '0')) sellaEpiCombined.push('Epifýza nezvětšena.');
-            else if (epiRep.length > 0) sellaEpiCombined.push(capitalize(formatCzechList(epiRep)) + '.');
-
-            isSellaDimmed = (sellaRep.length === 0 && !hasSellaLesion && epiRep.length === 0 && !sellaDesc);
-        }
-
-        if (sellaEpiCombined.length > 0) {
-            reportOut.push({ type: 'frame', text: sellaEpiCombined.join(' '), tableId: 'brain_sella_main', dimmed: isSellaDimmed });
-        }
-        if (sellaNormalLvl >= 2) {
-            concMain.push({ type: 'frame', text: 'Přiměřený nález na hypofýze a epifýze.', tableId: 'brain_sella_main' });
-        }
+        emitOrgan('sella', {
+            tableId: 'brain_sella_main',
+            normal: 'br_sella_ost_add_normal',
+            normalText: OP.sella.findings,
+            normalConc: OP.sella.conclusion,
+            predef: 'br_sella_ost_add_predef',
+            predefText: OP.sella.findings,
+            desc: 'br_sella_custom_desc',
+            concField: 'br_sella_custom_conc',
+            capitalize: true,
+            parts: [...sellaRep, ...epiRep]
+        });
 
         
         // --- WILLISŮV OKRUH A ARTERIE ---
@@ -912,10 +916,7 @@ const RegionBrain = {
                 else if (sizeVal && vesPat === 'stenóza') sizeStr = ` šíře ${sizeVal} mm`;
 
                 let repText = `${vesPat} ${vStr}${sizeStr}`;
-                let vesCust = ctx.field('br_ves_custom_desc');
-                let fullRep = vesCust ? `${repText}, ${vesCust}` : repText;
-
-                vesRep.push(fullRep);
+                vesRep.push(repText);
                 
                 if (['aneurysma', 'stenóza', 'uzávěr'].includes(vesPat)) {
                     concMain.push({ type: 'frame', text: `${capitalize(repText)}.`, tableId: 'brain_vessels_main' });
@@ -925,18 +926,18 @@ const RegionBrain = {
             }
         }
 
-        let vesDescOnly = ctx.field('br_ves_custom_desc');
-        if (vesDescOnly && (vesPat === '0' || !vesPat)) {
-            vesRep.push(vesDescOnly);
-        }
-
-        const vesNormalLvl = ctx.normalLevel('br_ves_ost_add_normal');
-        const vesNormRep = 'Konfigurace mozkových tepen obvyklá';
-        if (vesNormalLvl > 0) {
-            reportOut.push({ type: 'frame', text: `${vesNormRep}.`, tableId: 'brain_vessels_main' });
-        } else if (vesRep.length > 0) {
-            reportOut.push({ type: 'frame', text: capitalize(formatCzechList(vesRep)) + '. Jinak je konfigurace mozkových tepen obvyklá.', tableId: 'brain_vessels_main' });
-        }
+        emitOrgan('vessels', {
+            tableId: 'brain_vessels_main',
+            normal: 'br_ves_ost_add_normal',
+            normalText: OP.vessels.findings,
+            normalConc: OP.vessels.conclusion,
+            predef: 'br_ves_ost_add_predef',
+            predefText: OP.vessels.findings,
+            desc: 'br_ves_custom_desc',
+            concField: 'br_ves_custom_conc',
+            capitalize: true,
+            parts: vesRep
+        });
 
         const stdVariations = [
             { id: 'a1', label: 'hypoplázie A1 ACA' },
@@ -989,21 +990,7 @@ const RegionBrain = {
         else if (fetalR === 'C') varConcList.push('kompletní fetální typ PCA vpravo');
         else if (fetalL === 'C') varConcList.push('kompletní fetální typ PCA vlevo');
 
-        if (varRepList.length > 0) {
-            let varTextRep = `Variační anatomie: ${varRepList.join(', ')}.`;
-            reportOut.push({ type: 'frame', text: varTextRep, tableId: 'br_var_table' });
-        }
-
-        if (varConcList.length > 0) {
-            let varTextConc = `Variační anatomie: ${varConcList.join(', ')}.`;
-            concInc.push({ type: 'frame', text: varTextConc, tableId: 'br_var_table' });
-        }
-
-        let vesConc = ctx.field('br_ves_custom_conc');
-        if (vesConc) concInc.push({ type: 'frame', text: vesConc, tableId: 'brain_vessels_main' });
-        if (vesNormalLvl >= 2) {
-            concMain.push({ type: 'frame', text: 'Přiměřený nález na mozkových tepnách.', tableId: 'brain_vessels_main' });
-        }
+        // Variace se vloží až po flush (za frame cév), aby zůstal pořadí findings.
 
         // --- ORBITY ---
         const checkOrbSide = (baseId) => {
@@ -1025,40 +1012,31 @@ const RegionBrain = {
         ];
 
         let orbRep = [];
+        let orbMain = [];
+        let orbInc = [];
         orbItems.forEach(item => {
             let s = checkOrbSide(item.id);
             if (s) {
                 orbRep.push(item.rep.replace('{s}', s));
-                if (item.type === 'main') concMain.push({ type: 'frame', text: item.conc.replace('{s}', s) + '.', tableId: 'brain_orbits_main' });
-                else if (item.type === 'inc') concInc.push({ type: 'frame', text: item.conc.replace('{s}', s) + '.', tableId: 'brain_orbits_main' });
+                if (item.type === 'main') orbMain.push(item.conc.replace('{s}', s) + '.');
+                else if (item.type === 'inc') orbInc.push(item.conc.replace('{s}', s) + '.');
             }
         });
 
-        let orbDesc = ctx.field('br_orb_custom_desc');
-        if (orbDesc) orbRep.push(orbDesc);
-        let orbConc = ctx.field('br_orb_custom_conc');
-        if (orbConc) concInc.push({ type: 'frame', text: orbConc, tableId: 'brain_orbits_main' });
-
-        const orbNormalLvl = ctx.normalLevel('br_orb_ost_add_normal');
-        if (orbNormalLvl >= 2) {
-            concMain.push({ type: 'frame', text: 'Přiměřený nález na orbitách.', tableId: 'brain_orbits_main' });
-        }
-
-        // --- 8. VÝSTUP: ORBITY ---
-        let extracranialText = [];
-        let isOrbDimmed = false;
-        let isSinusDimmed = false;
-        let isUchoDimmed = false;
-
-        // --- 8. VÝSTUP: ORBITY ---
-        if (orbNormalLvl > 0) {
-            extracranialText.push('Orbity bez patologie.');
-        } else if (orbRep.length === 0) {
-            extracranialText.push('Orbity bez patologie.');
-            isOrbDimmed = true;
-        } else {
-            extracranialText.push(capitalize(formatCzechList(orbRep)) + '.');
-        }
+        emitOrgan('orbits', {
+            tableId: 'brain_orbits_main',
+            normal: 'br_orb_ost_add_normal',
+            normalText: OP.orbits.findings,
+            normalConc: OP.orbits.conclusion,
+            predef: 'br_orb_ost_add_predef',
+            predefText: OP.orbits.findings,
+            desc: 'br_orb_custom_desc',
+            concField: 'br_orb_custom_conc',
+            capitalize: true,
+            parts: orbRep,
+            main: orbMain,
+            incidental: orbInc
+        });
 
         // --- SINY (Vedlejší nosní dutiny) ---
         const sinusTypes = [
@@ -1096,23 +1074,6 @@ const RegionBrain = {
             }
         });
 
-        let sinyCustomDesc = ctx.field('sinus_custom_desc');
-        if (sinyCustomDesc) {
-            sinyPartsArr.push(sinyCustomDesc);
-        }
-
-        const sinyNormalLvl = ctx.normalLevel('neck_sinus_add_normal');
-        
-        // --- 10. VÝSTUP: SINY ---
-        if (sinyNormalLvl > 0) {
-            extracranialText.push('Dutiny vzdušné, bez patologického obsahu.');
-        } else if (sinyPartsArr.length === 0) {
-            extracranialText.push('Dutiny vzdušné.');
-            isSinusDimmed = true;
-        } else {
-            extracranialText.push(capitalize(formatCzechList(sinyPartsArr)) + '.');
-        }
-
         let concChron = [];
         let concAkut = [];
         sinusTypes.forEach(st => {
@@ -1135,19 +1096,11 @@ const RegionBrain = {
         let sinyConcArr = [];
         if (concChron.length > 0) sinyConcArr.push(`Chronická sinusitis (${concChron.join(', ')}).`);
         if (concAkut.length > 0) sinyConcArr.push(`Akutní sinusitis (${concAkut.join(', ')}).`);
-        
-        let customSinusConc = ctx.field('sinus_custom_conc');
-        if (customSinusConc) sinyConcArr.push(customSinusConc);
 
-        if (sinyConcArr.length > 0) {
-            concInc.push({ type: 'frame', text: sinyConcArr.join('\n'), tableId: 'brain_sinus_main' });
-        }
-        if (sinyNormalLvl >= 2) {
-            concMain.push({ type: 'frame', text: 'Přiměřený nález v oblasti sinů.', tableId: 'brain_sinus_main' });
-        }
-
-        // --- UŠI A MASTOIDY ---
+        // --- UŠI A MASTOIDY (stejná tabulka / orgán jako siny) ---
         let uchoRep = [];
+        let uchoMain = [];
+        let uchoInc = [];
         const earItems = [
             { id: 'ucho_stred', loc: 'středouší' },
             { id: 'ucho_mast', loc: 'mastoidy' }
@@ -1178,39 +1131,70 @@ const RegionBrain = {
             if (r === l && r !== '0') {
                 const t = makeEarText(r, 'bilat.');
                 uchoRep.push(t.textR);
-                if (t.typeC === 'main') concMain.push({ type: 'frame', text: t.textC, tableId: 'brain_sinus_main' });
-                else if (t.typeC === 'incidental') concInc.push({ type: 'frame', text: t.textC, tableId: 'brain_sinus_main' });
+                if (t.typeC === 'main') uchoMain.push(t.textC);
+                else if (t.typeC === 'incidental') uchoInc.push(t.textC);
             } else {
                 if (r && r !== '0') {
                     const t = makeEarText(r, 'vpravo');
                     uchoRep.push(t.textR);
-                    if (t.typeC === 'main') concMain.push({ type: 'frame', text: t.textC, tableId: 'brain_sinus_main' });
-                    else if (t.typeC === 'incidental') concInc.push({ type: 'frame', text: t.textC, tableId: 'brain_sinus_main' });
+                    if (t.typeC === 'main') uchoMain.push(t.textC);
+                    else if (t.typeC === 'incidental') uchoInc.push(t.textC);
                 }
                 if (l && l !== '0') {
                     const t = makeEarText(l, 'vlevo');
                     uchoRep.push(t.textR);
-                    if (t.typeC === 'main') concMain.push({ type: 'frame', text: t.textC, tableId: 'brain_sinus_main' });
-                    else if (t.typeC === 'incidental') concInc.push({ type: 'frame', text: t.textC, tableId: 'brain_sinus_main' });
+                    if (t.typeC === 'main') uchoMain.push(t.textC);
+                    else if (t.typeC === 'incidental') uchoInc.push(t.textC);
                 }
             }
         });
 
-        // --- 9. VÝSTUP: UŠI A MASTOIDY ---
-        if (uchoRep.length === 0) {
-            extracranialText.push('Mastoideální sklípky vzdušné.');
-            isUchoDimmed = true;
-        } else {
-            extracranialText.push(capitalize(formatCzechList(uchoRep)) + '.');
-        }
-
-        // --- KOMBINOVANÝ VÝSTUP ---
-        reportOut.push({ 
-            type: 'frame', 
-            text: extracranialText.join(' '), 
-            tableId: 'brain_sinus_main', 
-            dimmed: (isOrbDimmed && isSinusDimmed && isUchoDimmed)
+        emitOrgan('sinus', {
+            tableId: 'brain_sinus_main',
+            normal: 'neck_sinus_add_normal',
+            normalText: OP.sinus.findings,
+            normalConc: OP.sinus.conclusion,
+            predef: 'neck_sinus_add_predef',
+            predefText: OP.sinus.findings,
+            desc: 'sinus_custom_desc',
+            concField: 'sinus_custom_conc',
+            capitalize: true,
+            parts: [...sinyPartsArr, ...uchoRep],
+            main: uchoMain,
+            incidental: [...sinyConcArr, ...uchoInc]
         });
+
+        flush({
+            groups: RegionBrain.virtualGroups,
+            organOrder: RegionBrain.organOrder,
+            expandMode,
+            hasExtraPath: hasLesFindings || hasHemoFindings
+        });
+
+        // Variační anatomie cév — hned za frame cév (stejné pořadí jako dříve).
+        if (varRepList.length > 0) {
+            const varFrame = { type: 'frame', text: `Variační anatomie: ${varRepList.join(', ')}.`, tableId: 'br_var_table' };
+            let insertAt = -1;
+            for (let i = 0; i < reportOut.length; i++) {
+                if (reportOut[i].tableId === 'brain_vessels_main') insertAt = i + 1;
+            }
+            if (insertAt >= 0) reportOut.splice(insertAt, 0, varFrame);
+            else reportOut.push(varFrame);
+        }
+        if (varConcList.length > 0) {
+            const varConcFrame = { type: 'frame', text: `Variační anatomie: ${varConcList.join(', ')}.`, tableId: 'br_var_table' };
+            const orbIncIdx = concInc.findIndex(c => c.tableId === 'brain_orbits_main');
+            if (orbIncIdx >= 0) {
+                concInc.splice(orbIncIdx, 0, varConcFrame);
+            } else {
+                let vesAt = -1;
+                for (let i = 0; i < concInc.length; i++) {
+                    if (concInc[i].tableId === 'brain_vessels_main') vesAt = i + 1;
+                }
+                if (vesAt >= 0) concInc.splice(vesAt, 0, varConcFrame);
+                else concInc.push(varConcFrame);
+            }
+        }
 
         if (concMain.length === 0 && concInc.length === 0) {
             concMain.push({ type: 'frame', text: 'Přiměřený nález bez patrné ložiskové patologie.' });
@@ -1223,7 +1207,6 @@ const RegionBrain = {
         return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };
     }
 }
-
 window.HOVER_IMAGES = window.HOVER_IMAGES || {};
 Object.assign(window.HOVER_IMAGES, {
     'br_mta': 'picothers/Brain_MTA.jpg',

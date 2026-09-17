@@ -59,12 +59,36 @@ Object.assign(UI, {
                     const autoDimText = cleanText.trim();
                     if (b.dimmed || autoDimText === "Osa přímá." || autoDimText === "Přiměřená bederní lordóza.") classes.push('text-dim');
                     if (b.hidden) classes.push('report-frame-hidden');
-                    if (b.tableId && (b.tableId.includes('lesion') || b.tableId.includes('hemo'))) classes.push('frame-lesion');
-                    if (b.tableId && b.tableId.includes('lymphnode')) classes.push('frame-lymphnode');
+                    const hasSegments = Array.isArray(b.segments) && b.segments.length > 0;
+                    if (!hasSegments && !b.predef && b.tableId && (b.tableId.includes('lesion') || b.tableId.includes('hemo'))) classes.push('frame-lesion');
+                    if (!hasSegments && !b.predef && b.tableId && b.tableId.includes('lymphnode')) classes.push('frame-lymphnode');
+                    if (b.isGroup) classes.push('is-group');
 
                     const organLabel = labels ? ReportText.splitLabel(cleanText) : null;
-                    const node = el('div', { className: classes.join(' '), textContent: organLabel ? cleanText.slice(organLabel.length) : cleanText });
-                    if (organLabel) node.dataset.label = organLabel;
+                    const node = el('div', { className: classes.join(' ') });
+                    if (hasSegments) {
+                        b.segments.forEach((seg, i) => {
+                            const raw = String(seg.text || '').trim();
+                            if (!raw) return;
+                            const toneClass = seg.tone === 'lesion' ? 'seg-lesion'
+                                : seg.tone === 'lymph' ? 'seg-lymph' : '';
+                            /* Po data-label („Plíce:“) musí být mezera jako u běžných framů. */
+                            const prefix = (i === 0 && organLabel) || i > 0 ? ' ' : '';
+                            const span = el('span', {
+                                className: toneClass,
+                                textContent: prefix + raw
+                            });
+                            if (seg.tableId) {
+                                span.dataset.action = 'open-table';
+                                span.dataset.table = seg.tableId;
+                                if (b.examId) span.dataset.exam = b.examId;
+                            }
+                            node.appendChild(span);
+                        });
+                    } else {
+                        node.textContent = organLabel ? cleanText.slice(organLabel.length) : cleanText;
+                    }
+                    if (organLabel) node.dataset.label = organLabel.endsWith(':') ? organLabel : `${organLabel}:`;
                     if (b.tableId) {
                         node.dataset.action = 'open-table';
                         node.dataset.table = b.tableId;

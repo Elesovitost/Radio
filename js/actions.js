@@ -15,6 +15,15 @@ function isNormalButton(globalId) {
     return !!(cfg && cfg.type === 'standard' && cfg.states && cfg.states.includes('normal!'));
 }
 
+function isPredefButton(globalId) {
+    const cfg = ButtonConfigs[globalId];
+    return !!(cfg && cfg.type === 'standard' && cfg.states && cfg.states.includes('predef'));
+}
+
+function isAddCustomButton(globalId) {
+    return /_add_custom$/.test(globalId);
+}
+
 function isButtonOn(val, cfg) {
     if (!cfg) return !!val;
     if (cfg.type === 'standard') {
@@ -28,8 +37,9 @@ function buttonOffValue(cfg) {
     return cfg?.type === 'standard' ? 0 : false;
 }
 
-/* Vzájemné vyloučení normal ↔ patologie uvnitř jednoho orgánu (.tbl-main). */
-function applyOrganNormalMutex(states, globalId, nextVal) {
+/* predef je výlučné: zapnutí smaže patologie + custom + normal;
+   patologie / custom / normal při aktivaci vypnou predef. */
+function applyPredefMutex(states, globalId, nextVal) {
     const cfg = ButtonConfigs[globalId];
     if (!cfg || !isButtonOn(nextVal, cfg)) return states;
 
@@ -38,18 +48,40 @@ function applyOrganNormalMutex(states, globalId, nextVal) {
     if (!organ) return states;
 
     const next = { ...states };
-    if (isNormalButton(globalId)) {
+    if (isPredefButton(globalId)) {
         organ.querySelectorAll('button[data-id]').forEach(b => {
             const sid = b.dataset.id;
-            if (!sid || sid === globalId || sid.endsWith('_add_custom')) return;
+            if (!sid || sid === globalId) return;
             const scfg = ButtonConfigs[sid];
             if (!scfg || !isButtonOn(next[sid], scfg)) return;
             next[sid] = buttonOffValue(scfg);
         });
+        // Vymazat vlastní texty orgánu (custom expander + jeho fieldy)
+        const fields = { ...Store.fields };
+        const customs = { ...Store.customTexts };
+        let fieldsChanged = false;
+        let customsChanged = false;
+        organ.querySelectorAll('table[id$="_add"][data-custom-field-ids]').forEach(addTbl => {
+            const examId = Store.activeTab || 'default';
+            const regionId = addTbl.dataset.regionId;
+            if (!regionId) return;
+            for (const localId of addTbl.dataset.customFieldIds.split(',')) {
+                if (!localId) continue;
+                const fid = `${examId}_${regionId}_${localId}`;
+                if (fields[fid]) { fields[fid] = ''; fieldsChanged = true; }
+            }
+        });
+        organ.querySelectorAll('input[data-action="update-custom-input"], input.input-btn-inner[data-id]').forEach(inp => {
+            const cid = inp.dataset.id;
+            if (!cid) return;
+            if (customs[cid]) { customs[cid] = ''; customsChanged = true; }
+        });
+        if (fieldsChanged) Store.fields = fields;
+        if (customsChanged) Store.customTexts = customs;
     } else {
         organ.querySelectorAll('button[data-id]').forEach(b => {
             const sid = b.dataset.id;
-            if (!sid || !isNormalButton(sid) || !isButtonOn(next[sid], ButtonConfigs[sid])) return;
+            if (!sid || !isPredefButton(sid) || !isButtonOn(next[sid], ButtonConfigs[sid])) return;
             next[sid] = 0;
         });
     }
@@ -81,9 +113,61 @@ function commitButtonState(globalId, next) {
     const excl = getExclusiveStates(globalId, next);
     if (excl.block) return false;
     let states = excl.states || Store.buttonStates;
-    states = applyOrganNormalMutex(states, globalId, next);
+    states = applyPredefMutex(states, globalId, next);
     Store.buttonStates = { ...states, [globalId]: next };
     return true;
+}
+
+/* Hromadně zapne/vypne organ predef tlačítka (všechna otevřená, nebo jen zadaná vyšetření). */
+function applyAllOrganPredefs(enabled, examIds = null) {
+    const openExams = examIds
+        ? examIds.filter(id => Store.exams.has(id))
+        : Array.from(Store.exams || []);
+    if (!openExams.length) return;
+
+    const prevTab = Store.activeTab;
+    Store._silent = true;
+
+    let states = { ...Store.buttonStates };
+
+    for (const examId of openExams) {
+        const exam = getExamById(examId);
+        if (!exam) continue;
+        Store.activeTab = examId;
+
+        const holder = document.createElement('div');
+        holder.hidden = true;
+        document.body.appendChild(holder);
+        exam.regs.forEach(regId => {
+            const region = REGIONS[regId];
+            if (region?.layout) {
+                UI.generateLayoutNodes(regId, region).forEach(n => holder.appendChild(n));
+            }
+        });
+
+        Store.buttonStates = states;
+
+        const predefIds = [...holder.querySelectorAll('button[data-id]')]
+            .map(b => b.dataset.id)
+            .filter(id => isPredefButton(id));
+
+        for (const gid of predefIds) {
+            if (enabled) {
+                states = applyPredefMutex(states, gid, 1);
+                states = { ...states, [gid]: 1 };
+            } else {
+                states[gid] = 0;
+            }
+        }
+        Store.buttonStates = states;
+        holder.remove();
+    }
+
+    Store.activeTab = prevTab;
+    Store.buttonStates = states;
+    Store._silent = false;
+    UI.renderDetails();
+    UI.renderReport();
 }
 
 function cycleState(globalId, dir = 1) {
@@ -150,10 +234,10 @@ function toggleBasicCustom(globalId, activate = null) {
 ═══════════════════════════════════════════════ */
 
 function createNewInstance(baseTableId) {
+    const examId = Store.activeTab || 'default';
     const instId = Date.now().toString();
-    const currentInstances = Store.instances || {};
-    const tableInstances = currentInstances[baseTableId] || [];
-    Store.instances = { ...currentInstances, [baseTableId]: [...tableInstances, instId] };
+    const tableInstances = getExamInstances(baseTableId, examId);
+    setExamInstances(baseTableId, [...tableInstances, instId], examId);
     
     const isLN = baseTableId.includes('lymphnode');
     const isHemo = baseTableId.includes('hemo');
@@ -175,8 +259,8 @@ function createNewInstance(baseTableId) {
     
     Store.buttonStates = { 
         ...Store.buttonStates, 
-        [`${Store.activeTab}_${regionId}_${p}_c_soli`]: true, 
-        [`${Store.activeTab}_${regionId}_${p}_k_${kindSuffix}`]: defaultLesState 
+        [`${examId}_${regionId}_${p}_c_soli`]: true, 
+        [`${examId}_${regionId}_${p}_k_${kindSuffix}`]: defaultLesState 
     };
     
     return `${baseTableId}__${instId}`;
@@ -472,6 +556,16 @@ const ActionHandlers = {
         newExams.add(newId);
         Store.exams = newExams;
 
+        const migratedInstances = {};
+        for (const [k, v] of Object.entries(Store.instances || {})) {
+            if (k.startsWith(oldId + '__')) {
+                migratedInstances[newId + k.substring(oldId.length)] = v;
+            } else {
+                migratedInstances[k] = v;
+            }
+        }
+        Store.instances = migratedInstances;
+
         const oldRadiofarm = Object.keys(RADIOFARM_CONFIG).find(key => oldId.toLowerCase().includes(key));
         const newRadiofarm = Object.keys(RADIOFARM_CONFIG).find(key => newId.toLowerCase().includes(key));
         if (oldRadiofarm !== newRadiofarm) window._currentRadiofarm = null;
@@ -479,14 +573,16 @@ const ActionHandlers = {
         Store._silent = false;
 
         UI.render('exams');
+        if (APP_SETTINGS.organPredefs) applyAllOrganPredefs(true, [newId]);
     },
     'remove-instance': (target, dataset) => {
         const [baseTableId, instId] = dataset.id.split('__');
-        if (Store.instances && Store.instances[baseTableId]) {
-            const newInstances = { ...Store.instances, [baseTableId]: Store.instances[baseTableId].filter(i => i !== instId) };
+        const examId = Store.activeTab || 'default';
+        const tableInstances = getExamInstances(baseTableId, examId);
+        if (tableInstances.length) {
+            setExamInstances(baseTableId, tableInstances.filter(i => i !== instId), examId);
             const filterObj = (obj) => Object.fromEntries(Object.entries(obj).filter(([k]) => !k.includes(`_${instId}`)));
             
-            Store.instances = newInstances;
             Store.buttonStates = filterObj(Store.buttonStates);
             Store.customTexts = filterObj(Store.customTexts);
             Store.fields = filterObj(Store.fields);
@@ -511,6 +607,7 @@ const ActionHandlers = {
     },
     'toggle-exam': (target, dataset) => {
         const next = new Set(Store.exams);
+        const adding = !next.has(dataset.payload);
         if (next.has(dataset.payload)) {
             next.delete(dataset.payload);
             if (Store.activeTab === dataset.payload) Store.activeTab = next.size > 0 ? Array.from(next).pop() : null;
@@ -519,7 +616,8 @@ const ActionHandlers = {
             Store.activeTab = dataset.payload;
         }
         Store.exams = next;
-        Store.activeTable = null; 
+        Store.activeTable = null;
+        if (adding && APP_SETTINGS.organPredefs) applyAllOrganPredefs(true, [dataset.payload]);
     },
     'select-tab': (target, dataset) => {
         Store.activeTab = dataset.payload;
@@ -566,18 +664,10 @@ const ActionHandlers = {
         if (next.size === 0) {
             Store.instances = {};
         } else {
-            const newInstances = {};
-            const hasData = (instId) => {
-                const check = (obj) => Object.keys(obj).some(k => k.includes(instId));
-                return check(Store.buttonStates) || check(Store.customTexts) || check(Store.fields);
-            };
-            for (const [tableId, insts] of Object.entries(Store.instances || {})) {
-                const validInsts = insts.filter(instId => hasData(instId));
-                if (validInsts.length > 0) {
-                    newInstances[tableId] = validInsts;
-                }
-            }
-            Store.instances = newInstances;
+            const instPrefix = `${examId}__`;
+            Store.instances = Object.fromEntries(
+                Object.entries(Store.instances || {}).filter(([k]) => !k.startsWith(instPrefix))
+            );
         }
         
         UI.renderReport(); 

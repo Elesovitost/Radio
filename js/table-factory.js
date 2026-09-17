@@ -179,6 +179,12 @@ function Table1col(id, cells, regionId, opts = {}) {
     const isAddTable = id.endsWith('_add');
 
     if (isAddTable) {
+        const customFieldIds = cells.filter(c => c?.field && c?.id).map(c => c.id);
+        if (customFieldIds.length) {
+            table.dataset.regionId = regionId;
+            table.dataset.customFieldIds = customFieldIds.join(',');
+        }
+
         const customConfig = getButtonBase(regionId, { btn: `${id}_custom`, id: `${id}_custom`, type: 'basic', text: 'custom' });
         const isExpanded = !!Store.buttonStates[customConfig.globalId];
 
@@ -190,6 +196,15 @@ function Table1col(id, cells, regionId, opts = {}) {
         if (opts.normal) {
             const btnRow = el('div', { className: 'row' });
             btnRow.appendChild(customBtn);
+            const predefConfig = getButtonBase(regionId, {
+                btn: `${id}_predef`,
+                id: `${id}_predef`,
+                type: 'standard',
+                states: ['predef', 'predef']
+            });
+            const predefBtn = makeStandardButton(predefConfig);
+            predefBtn.classList.add('btn-green');
+            btnRow.appendChild(predefBtn);
             const normalConfig = getButtonBase(regionId, {
                 btn: `${id}_normal`,
                 id: `${id}_normal`,
