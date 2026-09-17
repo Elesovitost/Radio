@@ -11,14 +11,16 @@ const NAF_KRY_STATES = ['Krycí plotny', 'osteofyty', 'osteochondróza', 'cement
 const NAF_FAC_STATES = ['facety', 'artróza I', 'artróza II', 'artróza III', 'istmy'];
 
 const NAF_RF_SPOTS = [
-    { id: 'ant',   group: 'endplate', side: '',       x: 50, y: 14, report: 'ventrálně' },
-    { id: 'lat_l', group: 'endplate', side: 'vlevo',  x: 29, y: 22, report: 'vlevo' },
-    { id: 'lat_r', group: 'endplate', side: 'vpravo', x: 71, y: 22, report: 'vpravo' },
-    { id: 'cen',   group: 'endplate', side: '',       x: 50, y: 34, report: 'dorzálně' },
-    { id: 'fac_l', group: 'facet',    side: 'vlevo',  x: 30, y: 64, report: 've facetovém skloubení vlevo' },
-    { id: 'fac_r', group: 'facet',    side: 'vpravo', x: 70, y: 64, report: 've facetovém skloubení vpravo' },
-    { id: 'sp',    group: 'spinous',  side: '',       x: 50, y: 80, report: 'interspinózně' }
+    { id: 'ant',   svg: 'BF', group: 'endplate', side: '',       report: 'ventrálně' },
+    { id: 'lat_l', svg: 'BL', group: 'endplate', side: 'vlevo',  report: 'vlevo' },
+    { id: 'lat_r', svg: 'BR', group: 'endplate', side: 'vpravo', report: 'vpravo' },
+    { id: 'cen',   svg: 'BB', group: 'endplate', side: '',       report: 'dorzálně' },
+    { id: 'fac_l', svg: 'FL', group: 'facet',    side: 'vlevo',  report: 've facetovém skloubení vlevo' },
+    { id: 'fac_r', svg: 'FR', group: 'facet',    side: 'vpravo', report: 've facetovém skloubení vpravo' },
+    { id: 'sp',    svg: 'SP', group: 'spinous',  side: '',       report: 'interspinózně' }
 ];
+
+window.NAF_SPINE_SVG_CACHE = window.NAF_SPINE_SVG_CACHE || fetch('Organs_spine_NaF.svg').then(r => r.text());
 
 const NAF_ENDPLATE_ORDER = ['ant', 'lat_l', 'lat_r', 'cen'];
 
@@ -41,10 +43,23 @@ function nafEnsureStyles() {
     style.id = 'naf-spine-styles';
     style.textContent = `
         .naf-vert-map { position: relative; width: min(308px, 70%); margin-top: 8px; }
-        .naf-vert-map .naf-vert-img { width: 100%; display: block; border-radius: 4px; pointer-events: none; }
+        .naf-vert-map .naf-vert-svg { width: 100%; display: block; border-radius: 4px; overflow: hidden; }
+        .naf-vert-map .naf-vert-svg svg { width: 100%; height: auto; display: block; }
+        .naf-vert-map .naf-vert-svg svg image,
+        .naf-vert-map .naf-vert-svg svg use { pointer-events: none; }
+        .naf-vert-map .naf-vert-svg svg path[id] {
+            cursor: pointer;
+            fill: transparent !important;
+            stroke: transparent;
+            stroke-width: 2.5px;
+            transition: fill 0.15s, stroke 0.15s;
+        }
+        .naf-vert-map .naf-vert-svg svg path[id]:hover { stroke: var(--accent-hi, #58a6ff); }
+        .naf-vert-map .naf-vert-svg svg path.naf-on-plus { fill: rgba(227, 121, 8, 0.53) !important; }
+        .naf-vert-map .naf-vert-svg svg path.naf-on-plusplus { fill: #e32708 !important; }
         .naf-vert-map .tbl { border: none; background: transparent; margin: 0; width: auto; }
         .naf-vert-map .tbl td { padding: 0; border: none; }
-        .naf-spot, .naf-menu { position: absolute; transform: translate(-50%, -50%); z-index: 2; }
+        .naf-menu { position: absolute; transform: translate(-50%, -50%); z-index: 2; }
         .naf-vert-map .btn { background: rgba(0, 0, 0, 0.8); }
         .naf-seg-hint {
             position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
@@ -52,6 +67,88 @@ function nafEnsureStyles() {
         }
     `;
     document.head.appendChild(style);
+}
+
+function nafApplyPathVisual(plusPath, plusPlusPath, stateIdx) {
+    plusPath.classList.toggle('naf-on-plus', stateIdx === 1);
+    plusPlusPath.classList.toggle('naf-on-plusplus', stateIdx === 2);
+    plusPath.style.pointerEvents = stateIdx === 2 ? 'none' : 'all';
+    plusPlusPath.style.pointerEvents = stateIdx === 1 ? 'none' : 'all';
+}
+
+function nafSetupSpineSvg(svgEl, pfx, examId) {
+    svgEl.querySelectorAll('style').forEach(s => s.remove());
+    svgEl.querySelectorAll('path[id]').forEach(path => {
+        path.removeAttribute('class');
+        path.style.fill = '';
+    });
+
+    if (!pfx) {
+        svgEl.querySelectorAll('path[id]').forEach(path => {
+            path.style.pointerEvents = 'none';
+            path.style.cursor = 'default';
+        });
+        return svgEl;
+    }
+
+    NAF_RF_SPOTS.forEach((spot) => {
+        const plusPath = svgEl.getElementById(`${spot.svg}+`);
+        const plusPlusPath = svgEl.getElementById(`${spot.svg}++`);
+        if (!plusPath || !plusPlusPath) return;
+
+        const globalId = `${examId}_spine_naf_${pfx}_rf_${spot.id}`;
+        ButtonConfigs[globalId] = { type: 'standard', states: NAF_RF_STATES };
+
+        const stateIdx = Store.buttonStates[globalId] || 0;
+        nafApplyPathVisual(plusPath, plusPlusPath, stateIdx);
+
+        const bind = (path) => {
+            path.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                cycleState(globalId, 1);
+            });
+            path.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                cycleState(globalId, -1);
+            });
+            path.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                cycleState(globalId, e.deltaY < 0 ? 1 : -1);
+            }, { passive: false });
+        };
+        bind(plusPath);
+        bind(plusPlusPath);
+    });
+    return svgEl;
+}
+
+function nafMountSpineSvg(host, pfx, examId) {
+    const attach = (svgEl) => {
+        host.replaceChildren(nafSetupSpineSvg(svgEl, pfx, examId));
+    };
+
+    if (window.NAF_SPINE_SVG_PARSED) {
+        attach(window.NAF_SPINE_SVG_PARSED.cloneNode(true));
+        return;
+    }
+
+    window.NAF_SPINE_SVG_CACHE.then((txt) => {
+        if (!host.isConnected) return;
+        const temp = document.createElement('div');
+        temp.innerHTML = txt;
+        const svgEl = temp.querySelector('svg');
+        if (!svgEl) {
+            host.textContent = 'SVG Organs_spine_NaF.svg nelze načíst.';
+            return;
+        }
+        window.NAF_SPINE_SVG_PARSED = svgEl.cloneNode(true);
+        attach(svgEl);
+    }).catch(() => {
+        if (host.isConnected) host.textContent = 'SVG Organs_spine_NaF.svg nelze načíst.';
+    });
 }
 
 function nafJoin(arr) {
@@ -121,22 +218,16 @@ const RegionSpineNaf = {
         ];
 
         const map = el('div', { className: 'naf-vert-map' });
-        map.appendChild(el('img', {
-            src: 'Organs_spine_NaF.png',
-            alt: 'Schéma obratle',
-            className: 'naf-vert-img'
-        }));
+        const svgHost = el('div', { className: 'naf-vert-svg' });
+        map.appendChild(svgHost);
+        nafMountSpineSvg(svgHost, pfx, examId);
 
         if (pfx) {
             NAF_RF_SPOTS.forEach((spot) => {
-                const wrap = el('div', {
-                    className: 'naf-spot',
-                    style: `left:${spot.x}%;top:${spot.y}%;`
-                });
-                wrap.appendChild(helpers.TableGrid(`naf_${pfx}_${spot.id}`, [[
-                    { btn: 'rf', id: `${pfx}_rf_${spot.id}` }
-                ]]));
-                map.appendChild(wrap);
+                ButtonConfigs[`${examId}_spine_naf_${pfx}_rf_${spot.id}`] = {
+                    type: 'standard',
+                    states: NAF_RF_STATES
+                };
             });
 
             NAF_MENUS.forEach((menu) => {
