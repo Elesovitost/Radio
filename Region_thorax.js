@@ -892,9 +892,6 @@ const RegionThorax = {
                 incidental: pleuraInc
             });
 
-            let pliceConc = ctx.field('plice_custom_conc');
-            if (pliceConc) concInc.push({ type: 'frame', text: pliceConc, tableId: 'thorax_plice_main' });
-
             let mammaMap = { ma_mast: 'stav po mastektomii', ma_kvad: 'stav po kvadrantektomii', ma_res: 'stav po parc. resekci', ma_nahr: 'stav po implantaci náhrady', ma_aug: 'stav po augmentaci', ma_koz: 'kožní zesílení' };
             let allMamma = [];
             for (let k in mammaMap) {
