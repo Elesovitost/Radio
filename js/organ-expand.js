@@ -2,6 +2,7 @@
    organ-expand.js
    Společná logika „Rozepisování orgánů“ (trup dle nastavení; mozek vždy alwaysOrgans).
    Režimy: none | groups | groupsAndOrgans | alwaysOrgans
+   Režim none: při patologii dirty orgány + volitelné superGroup.otherwiseText.
    + připojení ložisek/uzlin pod orgány (lesionFrames).
    ============================================================= */
 
@@ -325,7 +326,7 @@ function flushOrganExpand(opts) {
         });
     };
 
-    // ── vůbec: jedna nadskupina; při patologii jen špinavé orgány ──
+    // ── vůbec: jedna nadskupina; při patologii jen špinavé orgány + otherwiseText ──
     if (expandMode === 'none') {
         if (superGroup && allClean(superGroup) && !hasExtraPath) {
             emitGroupPredef(superGroup);
@@ -343,6 +344,15 @@ function flushOrganExpand(opts) {
                 if (o.dirty) writeOrganSection(o);
                 else writeOrganSection(o, { skipReport: true });
             });
+            if (superGroup?.otherwiseText) {
+                reportOut.push({
+                    type: 'frame',
+                    text: superGroup.otherwiseText,
+                    tableId: superGroup.tableId,
+                    predef: true,
+                    isGroup: true
+                });
+            }
         }
         return;
     }

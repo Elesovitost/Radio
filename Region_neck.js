@@ -4,7 +4,8 @@
    ═══════════════════════════════════════════════════════════ */
 const RegionNeck_PREDEFS = {
     groups: {
-        all: 'Krční orgány a struktury bez patrné patologie.'
+        all: 'bez ložiskové a strukturální patologie.',
+        allOtherwise: 'Jinak na krku bez ložiskové a strukturální patologie.'
     },
     organs: {
         sinus: { findings: 'vzdušné, bez patologického obsahu.', conclusion: 'Přiměřený nález v oblasti sinů.' },
@@ -59,7 +60,8 @@ const RegionNeck = {
             name: 'Orgány krku',
             members: ['sinus', 'salivary', 'pharynx', 'thyroid', 'soft'],
             tableId: 'group:neck_sinus_main,neck_salivary_main,neck_pharynx_main,neck_thyroid_main,neck_soft_main',
-            text: RegionNeck_PREDEFS.groups.all
+            text: RegionNeck_PREDEFS.groups.all,
+            otherwiseText: RegionNeck_PREDEFS.groups.allOtherwise
         }
     ],
     organOrder: ['sinus', 'salivary', 'pharynx', 'thyroid', 'soft'],

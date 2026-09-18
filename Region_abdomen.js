@@ -5,6 +5,7 @@
 const RegionAbdomen_PREDEFS = {
     groups: {
         all: 'Orgány a struktury břicha bez patrné patologie.',
+        allOtherwise: 'Jinak v břiše bez patrné ložiskové či strukturální patologie.',
         epigastrium: 'Játra a slezina přiměřené velikosti a vzhledu. Žlučové cesty nedilatovány. Žlučník jemné stěny bez konkrementů. Pankreas obvyklého vzhledu.',
         gi: 'Žaludek, tenké střevo, tračník bez ložiskového zesílení stěny či dilatace.',
         uro: 'Nadledviny bez expanze. Ledviny přiměřeného vzhledu, bez dilatace dutého systému a bez patrné litiázy. Močový měchýř bez ložiskového zesílení stěny.',
@@ -104,7 +105,8 @@ const RegionAbdomen = {
             name: 'Orgány dutiny břišní',
             members: ['ja', 'zl', 'sl', 'pa', 'za', 'ts', 'tr', 'pe', 'na', 'le', 'mm', 'ov', 'de', 'pr', 'vc', 'te', 'aw'],
             tableId: 'group:abdomen_jatra_main,abdomen_zlucnik_main,abdomen_slezina_main,abdomen_pankreas_main,abdomen_zaludek_main,abdomen_tenke_strevo_main,abdomen_tracnik_main,abdomen_peritoneum_main,abdomen_nadledviny_main,abdomen_ledviny_main,abdomen_moc_mechyr_main,abdomen_ovaria_main,abdomen_deloha_main,abdomen_prostata_main,abdomen_velke_cevy_main,abdomen_testes_main,abdomen_wall_main',
-            text: RegionAbdomen_PREDEFS.groups.all
+            text: RegionAbdomen_PREDEFS.groups.all,
+            otherwiseText: RegionAbdomen_PREDEFS.groups.allOtherwise
         },
         {
             id: 'epigastrium',

@@ -307,6 +307,7 @@ function buildIldTreeTable(helpers, examId) {
 const RegionThorax_PREDEFS = {
     groups: {
         all: 'Adekvátní plicní objem a vzdušnost, orgány hrudníku bez patrné patologie.',
+        allOtherwise: 'Jinak v hrudníku bez patrné ložiskové patologie.',
         plice_pleura: 'Plíce přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn. Pleurálně bez výpotku a bez pneumotoraxu.'
     },
     organs: {
@@ -338,7 +339,8 @@ const RegionThorax = {
             name: 'Orgány hrudníku',
             members: ['plice', 'pleura', 'mamma', 'jicen', 'thymus', 'srdce'],
             tableId: 'group:thorax_plice_main,thorax_pleura_main,thorax_mamma_main,thorax_jicen_main,thorax_thymus_main,thorax_srdce_main',
-            text: RegionThorax_PREDEFS.groups.all
+            text: RegionThorax_PREDEFS.groups.all,
+            otherwiseText: RegionThorax_PREDEFS.groups.allOtherwise
         },
         {
             id: 'plice_pleura',
