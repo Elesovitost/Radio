@@ -247,6 +247,7 @@ const Store = new Proxy(
         sliceViewerHidden: true,
         instances: {},
         expandedNotes: {},
+        collapsedTables: {},
         _silent: false
     },
     {
@@ -297,8 +298,8 @@ const Store = new Proxy(
                 UI.renderReport();
             } else if (prop === 'activeSlice' || prop === 'activeViewerKey') {
                 UI.updateSliceViewer(target.activeViewerKey, target.activeSlice);
-            } else if (prop === 'sliceViewerHidden') {
-                // přepíná se v ActionHandlers → UI.renderActiveTable()
+            } else if (prop === 'sliceViewerHidden' || prop === 'collapsedTables') {
+                // UI preference; render řídí ActionHandlers / TableMain
             } else {
                 UI.render(prop);
             }

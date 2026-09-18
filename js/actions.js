@@ -418,7 +418,13 @@ const ActionHandlers = {
     },
     'toggle-table-collapse': (target) => {
         const table = target.closest('.tbl-main');
-        if (table) table.classList.toggle('tbl-main-collapsed');
+        if (!table) return;
+        table.classList.toggle('tbl-main-collapsed');
+        if (!table.id) return;
+        Store.collapsedTables = {
+            ...Store.collapsedTables,
+            [table.id]: table.classList.contains('tbl-main-collapsed')
+        };
     },
     'toggle-llm': () => {
         const modal = document.getElementById('llm-modal');

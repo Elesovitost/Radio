@@ -430,6 +430,12 @@ Object.assign(UI, {
             overlay.appendChild(tableNode);
             if (tableNode.classList?.contains('tbl-main-collapsed')) {
                 tableNode.classList.remove('tbl-main-collapsed');
+                if (tableNode.id) {
+                    Store.collapsedTables = {
+                        ...Store.collapsedTables,
+                        [tableNode.id]: false
+                    };
+                }
             }
             const baseTableId = Store.activeTable ? Store.activeTable.split('__')[0] : null;
             

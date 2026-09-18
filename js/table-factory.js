@@ -142,7 +142,12 @@ function TableMain(id, title, contents, opts = {}) {
         if (item instanceof Node) container.appendChild(item);
     }
     tbody.appendChild(el('tr', {}, [el('td', { className: 'tbl-main-body' }, [container])]));
-    return el('table', { id, className: `tbl-main${collapsible ? ' tbl-main-collapsed' : ''}` }, [tbody]);
+    const isCollapsed = collapsible
+        ? (Object.prototype.hasOwnProperty.call(Store.collapsedTables || {}, id)
+            ? !!Store.collapsedTables[id]
+            : true)
+        : false;
+    return el('table', { id, className: `tbl-main${isCollapsed ? ' tbl-main-collapsed' : ''}` }, [tbody]);
 }
 
 function Table3colRL(id, rows, regionId) {
