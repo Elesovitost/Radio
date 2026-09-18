@@ -5,7 +5,7 @@
 const RegionAbdomen_PREDEFS = {
     groups: {
         all: 'Orgány a struktury břicha bez patrné patologie.',
-        allOtherwise: 'Jinak v břiše bez patrné ložiskové či strukturální patologie.',
+        allOtherwise: 'Jinak orgány v břiše bez patrné ložiskové či strukturální patologie.',
         epigastrium: 'Játra a slezina přiměřené velikosti a vzhledu. Žlučové cesty nedilatovány. Žlučník jemné stěny bez konkrementů. Pankreas obvyklého vzhledu.',
         gi: 'Žaludek, tenké střevo, tračník bez ložiskového zesílení stěny či dilatace.',
         uro: 'Nadledviny bez expanze. Ledviny přiměřeného vzhledu, bez dilatace dutého systému a bez patrné litiázy. Močový měchýř bez ložiskového zesílení stěny.',

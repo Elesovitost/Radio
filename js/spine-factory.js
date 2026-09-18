@@ -53,7 +53,6 @@ const SPINE_BUTTONS = {
    ============================================================= */
 function defineSpineRegion(cfg) {
     const R = cfg.regionId;
-    const E = cfg.examId;
     const P = cfg.btnPrefix;
     const ADJ = cfg.adjective;
     const CURV = cfg.curvature;
@@ -85,7 +84,9 @@ function defineSpineRegion(cfg) {
         buttons,
 
         layout: (helpers) => {
-            const isOpActive = Store.buttonStates[`${E}_${R}_${P}_op`] === 1;
+            /* Stejný klíč jako button-factory — cfg.examId není reálné exam id. */
+            const examId = Store.activeTab || 'default';
+            const isOpActive = Store.buttonStates[`${examId}_${R}_${P}_op`] === 1;
             const opV = (id) => isOpActive ? ['operace:', { btn: 'surgery', id }] : '';
             const opD = (idDisc, idLamin) => isOpActive
                 ? ['operace:', { btn: 'disc_surgery', id: idDisc }, { btn: 'lamin', id: idLamin }]
@@ -106,7 +107,7 @@ function defineSpineRegion(cfg) {
             ]);
 
             const pGroup = (id) => {
-                const val = Store.buttonStates[`${E}_${R}_${id}_protrusion`];
+                const val = Store.buttonStates[`${examId}_${R}_${id}_protrusion`];
                 const isActive = val !== undefined && val !== 0;
                 const group = [{ btn: 'protrusion', id: `${id}_protrusion` }];
                 if (isActive) {
@@ -124,7 +125,7 @@ function defineSpineRegion(cfg) {
             };
 
             const sGroup = (idPrefix) => {
-                const val = Store.buttonStates[`${E}_${R}_${idPrefix}_shift`];
+                const val = Store.buttonStates[`${examId}_${R}_${idPrefix}_shift`];
                 const isActive = val !== undefined && val !== 0;
                 const group = [{ btn: 'shift', id: `${idPrefix}_shift` }];
                 if (isActive) {
@@ -134,7 +135,7 @@ function defineSpineRegion(cfg) {
             };
 
             const aGroup = (id) => {
-                const val = Store.buttonStates[`${E}_${R}_${id}_arthro`];
+                const val = Store.buttonStates[`${examId}_${R}_${id}_arthro`];
                 const isActive = val !== undefined && val !== 0;
                 const group = [{ btn: 'arthrosis', id: `${id}_arthro` }];
                 if (isActive) {

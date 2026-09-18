@@ -8,7 +8,7 @@ const ILD_OUTCOMES = {
         recommend: ''
     },
     uip: {
-        report: 'subpleurální a bazální retikulace s pravým plástvovatěním (honeycombing) a trakčními bronchiektáziemi bez znaků inkonzistentních s UIP',
+        report: 'subpleurální a bazální retikulace s pravým honeycombingem a trakčními bronchiektáziemi bez znaků inkonzistentních s UIP',
         conc: 'Vzorec UIP. Dif. dg.: IPF (nejpravděpodobněji), CTD-ILD (např. RA), méně často fibrotizující HP imitující UIP. Nutná klinicko-laboratorní korelace.',
         recommend: 'Doporučena MDT korelace (revmatologický panel, expozice, léky, kouření).'
     },
@@ -306,8 +306,8 @@ function buildIldTreeTable(helpers, examId) {
    ═══════════════════════════════════════════════════════════ */
 const RegionThorax_PREDEFS = {
     groups: {
-        all: 'Adekvátní plicní objem a vzdušnost, orgány hrudníku bez patrné patologie.',
-        allOtherwise: 'Jinak v hrudníku bez patrné ložiskové patologie.',
+        all: 'Adekvátní plicní objem a vzdušnost, mediastinum bez patrné patologie.',
+        allOtherwise: 'Jinak v hrudníku bez signifikantní strukturální patologie.',
         plice_pleura: 'Plíce přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn. Pleurálně bez výpotku a bez pneumotoraxu.'
     },
     organs: {
