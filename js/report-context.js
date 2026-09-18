@@ -160,7 +160,7 @@ function createContext(regionId, examId) {
             const list = formatCzechList(items) + '.';
             let text;
             if (predefLvl > 0) text = predefText;
-            else if (lvl > 0) text = items.length > 0 ? `${normalText} Jinak pouze ${list}` : normalText;
+            else if (lvl > 0) text = items.length > 0 ? `${list} Jinak ${normalText}` : normalText;
             else if (items.length > 0) text = capitalize ? list[0].toUpperCase() + list.slice(1) : list;
 
             const frame = (t) => (typeof t === 'string' ? { type: 'frame', text: t, tableId } : t);
