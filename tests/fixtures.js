@@ -828,133 +828,175 @@ const FIXTURES = [
         id: 'spine-ls-normal',
         exam: 'mr_ls_patere',
         buttons: {
-            'ls_spine:lsp_lordosis': 'přiměřená',
-            'ls_spine:lsp_lstv': 'není',
-            'ls_spine:lsp_op': 'ne'
+            'ls_spine:lordosis': 'přiměřená',
+            'ls_spine:lstv': 'není',
+            'ls_spine:op': 'ne'
         }
     },
     {
         id: 'spine-ls-degen',
         exam: 'mr_ls_patere',
         buttons: {
-            'ls_spine:l4_5_degen': 'DDD II',
-            'ls_spine:l4_5_protrusion': 'protruze',
-            'ls_spine:l4_5_modic': 'Modic I',
-            'ls_spine:l4_5_p_r': '2',
-            'ls_spine:l4_5_f_r': '1',
-            'ls_spine:l4_5_arthro': 'II',
-            'ls_spine:l5_s1_degen': 'DDD III',
-            'ls_spine:l5_s1_protrusion': 'herniace',
-            'ls_spine:l5_s1_p_r': '3',
-            'ls_spine:l5_s1_c': '1',
-            'ls_spine:l5_shift': 'ventr',
-            'ls_spine:l5_shape': 'schmorl',
-            'ls_spine:lsp_lordosis': 'napřímená',
-            'ls_spine:lsp_lstv': 'L5',
-            'ls_spine:lsp_axis': '('
+            'ls_spine:l4_5_disc': 'II',
+            'ls_spine:l4_5_plate-Modic': 'Modic I',
+            'ls_spine:l4_5_hernia-P-R': 'on',
+            'ls_spine:l4_5_hernia_migr': 'kaudálně',
+            'ls_spine:l4_5_root-right': 'II',
+            'ls_spine:l4_5_foraminal-L': 'III',
+            'ls_spine:l4_5_facet-L': 'II',
+            'ls_spine:l4_5_facet-ost-R': 'on',
+            'ls_spine:l4_5_ventrolistesis': 'on',
+            'ls_spine:l5_s1_disc': 'III',
+            'ls_spine:l5_s1_hernia-F-L': 'on',
+            'ls_spine:l5_s1_canal': 'II',
+            'ls_spine:l5_s1_plate-Modic': 'destrukce',
+            'ls_spine:l5_s1_lesion': 'hemangiom',
+            'ls_spine:l5_s1_lesion_hem_type': 'agresivní',
+            'ls_spine:axis': '(',
+            'ls_spine:lordosis': 'napřímená',
+            'ls_spine:lstv': 'L5',
+            'ls_spine:op': 'ano',
+            'ls_spine:l4_5_stab': 'ano',
+            'ls_spine:l5_s1_stab': 'ano',
+            'ls_spine:l5_s1_disk': 'ano',
+            'ls_spine:l5_s1_lam': 'ano'
+        },
+        fields: { 'ls_spine:l4_5_listhesis_mm': '8' }
+    },
+    {
+        id: 'spine-ls-recess-root-strukt',
+        exam: 'mr_ls_patere',
+        buttons: {
+            'ls_spine:l4_5_disc': 'I',
+            'ls_spine:l4_5_hernia-P-L': 'on',
+            'ls_spine:l4_5_paracentral-L': 'stenóza',
+            'ls_spine:l4_5_root-left': 'I',
+            'ls_spine:lordosis': 'přiměřená',
+            'ls_spine:lstv': 'není',
+            'ls_spine:op': 'ne'
+        },
+        /* conc_mode je globální přepínač závěru, proto klíč bez prefixu regionu. */
+        fields: { ls_spine_conc_mode: 'pathology' }
+    },
+    {
+        id: 'spine-ls-recess-root-sten',
+        exam: 'mr_ls_patere',
+        buttons: {
+            'ls_spine:l4_5_disc': 'I',
+            'ls_spine:l4_5_hernia-P-L': 'on',
+            'ls_spine:l4_5_paracentral-L': 'stenóza',
+            'ls_spine:l4_5_root-left': 'I',
+            'ls_spine:lordosis': 'přiměřená',
+            'ls_spine:lstv': 'není',
+            'ls_spine:op': 'ne'
+        }
+    },
+    {
+        id: 'spine-ls-sten-foramen-root',
+        exam: 'mr_ls_patere',
+        buttons: {
+            'ls_spine:l2_3_root-left': 'I',
+            'ls_spine:l2_3_foraminal-L': 'III',
+            'ls_spine:l2_3_disc': 'II',
+            'ls_spine:lordosis': 'přiměřená',
+            'ls_spine:lstv': 'není',
+            'ls_spine:op': 'ne'
         }
     },
     {
         id: 'spine-ls-stenoza',
         exam: 'mr_ls_patere',
         buttons: {
-            'ls_spine:l4_5_degen': 'DDD III',
-            'ls_spine:l4_5_protrusion': 'kombinace',
-            'ls_spine:l4_5_c': '3',
-            'ls_spine:l4_5_f_l': '3',
-            'ls_spine:l4_5_f_r': '3',
-            'ls_spine:l4_5_p_l': '3',
-            'ls_spine:l4_5_p_r': '3',
-            'ls_spine:l4_5_arthro': 'III',
-            'ls_spine:lsp_lordosis': 'kyfotizace',
-            'ls_spine:lsp_op': 'ano',
-            'ls_spine:lsp_lstv': 'S1'
+            'ls_spine:l4_5_disc': 'III',
+            'ls_spine:l4_5_canal': 'III',
+            'ls_spine:l4_5_foraminal-L': 'II',
+            'ls_spine:l4_5_foraminal-R': 'II',
+            'ls_spine:l4_5_paracentral-L': 'stenóza',
+            'ls_spine:l4_5_paracentral-R': 'fibróza',
+            'ls_spine:l4_5_root-left': 'III',
+            'ls_spine:l4_5_facet-L': 'edém',
+            'ls_spine:l4_5_facet-R': 'III',
+            'ls_spine:l4_5_bulging': 'kombinace',
+            'ls_spine:l4_5_disk': 'ano',
+            'ls_spine:lsp_ost_add_custom': true,
+            'ls_spine:lordosis': 'kyfotizace',
+            'ls_spine:lstv': 'S1',
+            'ls_spine:op': 'ano'
         },
-        fields: { 'ls_spine:lsp_ost_custom_conc': 'Stenoza kanálu L4/5.' }
-    },
-    {
-        id: 'spine-ls-expanze',
-        exam: 'mr_ls_patere',
-        buttons: {
-            'ls_spine:exp_segment': 'L4/5',
-            'ls_spine:exp_side': 'R',
-            'ls_spine:exp_type': 'ID-meningeom'
+        fields: {
+            'ls_spine:l4_5_canal_mm': '8',
+            'ls_spine:l4_5_bulging_mm': '4',
+            'ls_spine:custom_conc': 'Stenoza kanálu L4/5.'
         }
     },
+    { id: 'spine-c-normal', exam: 'mr_c_patere' },
     {
         id: 'spine-c-degen',
         exam: 'mr_c_patere',
         buttons: {
-            'c_spine:c5_6_degen': 'DDD II',
-            'c_spine:c5_6_protrusion': 'protruze',
-            'c_spine:c5_6_p_r': '2',
-            'c_spine:c5_6_modic': 'Modic I',
-            'c_spine:c6_7_degen': 'DDD III',
-            'c_spine:c6_7_protrusion': 'herniace',
-            'c_spine:c6_7_p_r': '3',
-            'c_spine:c6_7_c': '2',
-            'c_spine:c3_shape': 'schmorl',
-            'c_spine:cp_axis': ')',
-            'c_spine:cp_lordosis': 'napřímená'
+            'c_spine:c4_5_disc': 'I',
+            'c_spine:c4_5_bulging': 'osteofyty',
+            'c_spine:c4_5_lesion': 'hemangiom',
+            'c_spine:c4_5_lesion_hem_type': 'atypický',
+            'c_spine:c5_6_disc': 'II',
+            'c_spine:c5_6_hernia-P-R': 'on',
+            'c_spine:c5_6_hernia_migr': 'kraniálně',
+            'c_spine:c5_6_root-right': 'II',
+            'c_spine:c6_7_canal': 'II',
+            'c_spine:c6_7_foraminal-L': 'III',
+            'c_spine:c6_7_facet-L': 'II',
+            'c_spine:c6_7_plate-Modic': 'Modic II',
+            'c_spine:axis': ')',
+            'c_spine:lordosis': 'napřímená',
+            'c_spine:op': 'ano',
+            'c_spine:c6_7_stab': 'ano',
+            'c_spine:c6_7_lam': 'ano'
+        },
+        fields: {
+            'c_spine:c5_6_hernia_mm': '5',
+            'c_spine:c6_7_canal_mm': '9'
         }
     },
-    {
-        id: 'spine-c-myelopatie',
-        exam: 'mr_c_patere',
-        buttons: {
-            'c_spine:c4_5_degen': 'DDD III',
-            'c_spine:c4_5_protrusion': 'herniace',
-            'c_spine:c4_5_c': '3',
-            'c_spine:c4_5_p_r': '3',
-            'c_spine:myelopatie': 'myelopatie',
-            'c_spine:myelo_level': 'C5',
-            'c_spine:cp_op': 'ano'
-        }
-    },
+    { id: 'spine-t-normal', exam: 'mr_t_patere' },
     {
         id: 'spine-t-degen',
         exam: 'mr_t_patere',
         buttons: {
-            't_spine:t8_9_degen': 'DDD II',
-            't_spine:t8_9_protrusion': 'protruze',
-            't_spine:t8_9_p_r': '2',
-            't_spine:t7_8_degen': 'DDD III',
-            't_spine:t7_8_protrusion': 'herniace',
-            't_spine:t7_8_c': '2',
-            't_spine:t9_shift': 'ventr',
-            't_spine:t9_shape': 'klínovitá',
-            't_spine:thp_kyphosis': 'zvýrazněná'
-        }
-    },
-    {
-        id: 'spine-c-shift',
-        exam: 'mr_c_patere',
-        buttons: {
-            'c_spine:c3_shift': 'ventr',
-            'c_spine:c5_6_degen': 'DDD II'
+            't_spine:t7_8_disc': 'III',
+            't_spine:t7_8_hernia-C': 'on',
+            't_spine:t7_8_canal': 'III',
+            't_spine:t8_9_disc': 'II',
+            't_spine:t8_9_ventrolistesis': 'on',
+            't_spine:t8_9_hernia-P-R': 'on',
+            't_spine:t8_9_foraminal-R': 'II',
+            't_spine:t8_9_root-right': 'II',
+            't_spine:t8_9_facet-L': 'II',
+            't_spine:t8_9_plate-Modic': 'Modic I',
+            't_spine:t10_11_lesion': 'schmorl',
+            't_spine:t10_11_lesion_sch_pos': 'horní',
+            't_spine:t10_11_lesion_sch_act': 'edém',
+            't_spine:axis': '(',
+            't_spine:kyphosis': 'zvýrazněná',
+            't_spine:op': 'ne'
         },
-        fields: { 'c_spine:c3_shift_mm': '3' }
-    },
-    {
-        id: 'spine-t-stenoza',
-        exam: 'mr_t_patere',
-        buttons: {
-            't_spine:t8_9_degen': 'DDD III',
-            't_spine:t8_9_c': '3',
-            't_spine:t7_8_c': '2'
+        fields: {
+            't_spine:t7_8_canal_mm': '7',
+            't_spine:t8_9_listhesis_mm': '5'
         }
     },
     {
         id: 'spine-ct-ls-degen',
         exam: 'ct_ls_patere',
         buttons: {
-            'ls_spine:l4_5_degen': 'DDD II',
-            'ls_spine:l4_5_protrusion': 'bulging',
-            'ls_spine:l4_5_arthro': 'II',
-            'ls_spine:l5_s1_degen': 'DDD III',
-            'ls_spine:lsp_lordosis': 'napřímená',
-            'ls_spine:lsp_lstv': 'L5'
-        }
+            'ls_spine:l4_5_disc': 'II',
+            'ls_spine:l4_5_bulging': 'bulging disku',
+            'ls_spine:l4_5_facet-L': 'II',
+            'ls_spine:l5_s1_disc': 'III',
+            'ls_spine:lordosis': 'napřímená',
+            'ls_spine:lstv': 'L5',
+            'ls_spine:op': 'ne'
+        },
+        fields: { 'ls_spine:l4_5_bulging_mm': '3' }
     },
     {
         id: 'spine-naf-normal',
@@ -1523,6 +1565,32 @@ const FIXTURES = [
         /* DOPA-PET/MR mozku: fyziologická distribuce ve striatu. */
         id: 'dopa-mozek-normalni',
         exam: 'petct_dopa_mozek'
+    },
+
+    /* ═════════════ prázdné vyšetření (nic nevyplněno) ═════════════ */
+    { id: 'prazdne-ct-bricho', exam: 'ct_bricho' },
+    { id: 'prazdne-ct-krk', exam: 'ct_krk' },
+    { id: 'prazdne-ct-plic', exam: 'ct_plic' },
+    { id: 'prazdne-mr-mozek', exam: 'mr_mozek' },
+    { id: 'prazdne-ct-angio', exam: 'ct_angio_mozku' },
+    { id: 'prazdne-mr-angio', exam: 'mr_angio_mozku' },
+    {
+        /* Tlačítko „normální“: nález = negativní text, nesmí se zdvojit. */
+        id: 'angio-ost-add-normal',
+        exam: 'ct_angio_mozku',
+        buttons: { 'br_angiography:angio_ves_ost_add_normal': 'normal' }
+    },
+    {
+        /* „normální!“: k negativnímu nálezu přidá i negativní závěr. */
+        id: 'angio-ost-add-normal-conc',
+        exam: 'ct_angio_mozku',
+        buttons: { 'br_angiography:angio_ves_ost_add_normal': 'normal!' }
+    },
+    {
+        /* WML jen ve vedlejších nálezech (Fazekas) – hlavní závěr zůstává prázdný. */
+        id: 'wml-jen-vedlejsi',
+        exam: 'mr_mozek',
+        buttons: { 'brain:br_faz': '3' }
     }
 ];
 

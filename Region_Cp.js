@@ -1,15 +1,13 @@
 /* =============================================================
-   Region_Cp.js - krční páteř.
-   Implementace je v js/spine-factory.js; zde je jen to odlišné.
+   Region_Cp.js - krční páteř (SVG).
+   Implementace je v js/spine-svg-factory.js; zde je jen to odlišné.
    ============================================================= */
 
-const RegionCp = defineSpineRegion({
+const RegionCp = defineSvgSpineRegion({
     regionId: 'c_spine',
-    examId: 'spine_cervical',
-    btnPrefix: 'cp',
-    tableBase: 'spine_cervical',
     title: 'Krční páteř',
     adjective: 'krční',
+    svgFile: 'Organ_spine_C.svg',
 
     curvature: {
         key: 'lordosis',
@@ -23,15 +21,19 @@ const RegionCp = defineSpineRegion({
         }
     },
 
-    lstv: false,
+    lstv: null,
+    /* V krční páteři je mícha (ne kauda) - útlak se popisuje jako útlak míchy. */
     cordCompression: 'útlakem míchy',
     stabilization: 'Přední',
     /* Ve foraminu se popisuje vystupující kořen (fRoot), ne obratel. */
     foramenRootFrom: 'fRoot',
 
-    /* C2 (dens) nemá vlastní obratlovou řádku. */
-    hideFirstVertebra: true,
+    /* Krční SVG nemá laterální recesy ani extraforaminální hernie. */
+    omitPaths: ['paracentral-L', 'paracentral-R', 'hernia-E-L', 'hernia-E-R'],
+    /* Popisek patologie sedí oproti LS o cca 15 px níž — posunout nahoru. */
+    infoOffsetY: -15,
 
+    /* Obratel + disk pod ním; poslední obratel stojí sám. */
     levels: [
         { v: 'C2', disc: 'C2/3', fRoot: 'C3', root: 'C4' },
         { v: 'C3', disc: 'C3/4', fRoot: 'C4', root: 'C5' },

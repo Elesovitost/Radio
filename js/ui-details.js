@@ -2,6 +2,17 @@
    ui-details.js
    Metody objektu UI přesunuté z js/ui.js (načítá se po něm).
    ============================================================= */
+
+/* Jeden prvek pro popisek SVG objektu (hover) — používá ho i js/events.js. */
+function ensureSvgTooltip() {
+    let tooltip = document.getElementById('organ-tooltip');
+    if (!tooltip) {
+        tooltip = el('div', { id: 'organ-tooltip' });
+        document.body.appendChild(tooltip);
+    }
+    return tooltip;
+}
+
 Object.assign(UI, {
 
     renderDetails() {
@@ -234,9 +245,7 @@ Object.assign(UI, {
             body.appendChild(overlay);
             wrapper.appendChild(body);
 
-            if (!document.getElementById('organ-tooltip')) {
-                document.body.appendChild(el('div', { id: 'organ-tooltip' }));
-            }
+            ensureSvgTooltip();
 
             content.appendChild(wrapper);
 

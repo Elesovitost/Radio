@@ -138,14 +138,7 @@
         const report = ClipboardService.formatAll();
 
         // 4) raw bloky z compile() (před sanitizací) – regresní síť pro refaktor regionů
-        const regionsToCompile = new Set(exam.regs);
-        Object.keys(REGIONS).forEach(rId => {
-            const prefix = `${examId}_${rId}_`;
-            const active = (obj) => Object.keys(obj).some(k => k.startsWith(prefix) && obj[k]);
-            if (active(Store.buttonStates) || active(Store.fields) || active(Store.customTexts)) {
-                regionsToCompile.add(rId);
-            }
-        });
+        const regionsToCompile = collectActiveRegions(examId, exam.regs);
 
         const blocks = {};
         regionsToCompile.forEach(rId => {
@@ -172,9 +165,31 @@
         return btoa(bin);
     }
 
+    /* Panel Impression nesmí zobrazovat nadpis „Závěr:“, když není co ukázat
+       (typicky žádné vybrané vyšetření). */
+    function checkEmptyImpressionPanel() {
+        const exams = Store.exams;
+        const activeTab = Store.activeTab;
+        try {
+            Store.exams = new Set();
+            Store.activeTab = null;
+            UI.renderReport();
+            const headings = document.querySelectorAll('#conclusion-container .report-heading');
+            const hasZaver = Array.from(headings)
+                .some(h => h.textContent.replace(/:$/, '').trim() === 'Závěr');
+            if (hasZaver) note('panel Impression zobrazuje „Závěr:“ bez vybraného vyšetření');
+        } finally {
+            Store.exams = exams;
+            Store.activeTab = activeTab;
+        }
+    }
+
     function run() {
         const fixtures = {};
         const errors = [];
+
+        checkEmptyImpressionPanel();
+
         FIXTURES.forEach(fx => {
             try {
                 fixtures[fx.id] = buildFixture(fx);

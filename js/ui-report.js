@@ -107,8 +107,14 @@ Object.assign(UI, {
         const concContainer = document.getElementById('conclusion-container');
         concContainer.className = 'content-area report-content';
         let concNodes = [];
-        if (mainConclusionBlocks.length > 0) {
+        /* Nadpis „Závěr:“ jen když má panel co ukázat. V prázdném stavu
+           (např. není vybrané vyšetření) zůstává sloupec Impression bez textu;
+           v kopírované zprávě nadpis řeší ReportDoc.compose(). */
+        const hasConclusion = mainConclusionBlocks.length > 0 || incidentalBlocks.length > 0;
+        if (hasConclusion) {
             concNodes.push(el('div', { className: 'report-heading', textContent: 'Závěr:' }));
+        }
+        if (mainConclusionBlocks.length > 0) {
             concNodes.push(...buildNodes(mainConclusionBlocks, { prefixNove: true, labels: false }));
         }
         if (incidentalBlocks.length > 0) {

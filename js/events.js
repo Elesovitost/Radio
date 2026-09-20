@@ -73,6 +73,24 @@ document.addEventListener('click', e => {
     }
 });
 
+/* Popisek objektu pod kurzorem: statický název z ORGAN_MAP, jinak se zeptá
+   aktivních regionů (region může definovat svgLabel(el) — viz Region_LSp). */
+function svgHoverLabel(organEl) {
+    const def = ORGAN_MAP[organEl.id];
+    if (def) {
+        /* Uzliny a léze mají vlastní popup — popisek by ho jen překrýval. */
+        if (def.table && (def.table.includes('lymphnode_main') || def.table.includes('_lesion_main'))) return null;
+        return { text: def.name, dimmed: organEl.classList.contains('organ-dimmed') };
+    }
+    const exam = getExamById(Store.activeTab);
+    for (const rId of (exam ? exam.regs : [])) {
+        const reg = REGIONS[rId];
+        const text = reg && typeof reg.svgLabel === 'function' ? reg.svgLabel(organEl) : null;
+        if (text) return { text };
+    }
+    return null;
+}
+
 document.addEventListener('mousemove', e => {
     if (isDraggingSlice) {
         const delta = e.clientY - dragSliceLastY;
@@ -86,9 +104,8 @@ document.addEventListener('mousemove', e => {
         return;
     }
 
-    const tooltip = document.getElementById('organ-tooltip');
+    const tooltip = ensureSvgTooltip();
     const popup = document.getElementById('organ-popup');
-    if (!tooltip) return;
 
     if (Store.activeTable) {
         tooltip.style.display = 'none';
@@ -103,31 +120,17 @@ document.addEventListener('mousemove', e => {
     }
 
     const organEl = e.target.closest('svg [id]');
-    if (organEl && organEl.id && ORGAN_MAP[organEl.id]) {
-        const organDef = ORGAN_MAP[organEl.id];
-        
-        if (organDef.table && organDef.table.includes('lymphnode_main')) {
-            tooltip.style.display = 'none';
-            return; 
-        }
-
-        if (organDef.table && organDef.table.includes('_lesion_main')) {
-            tooltip.style.display = 'none'; 
-        } else {
-            tooltip.textContent = organDef.name;
-            tooltip.style.display = 'block';
-            tooltip.style.left = `${e.clientX + 15}px`;
-            tooltip.style.top = `${e.clientY + 15}px`;
-            
-            if (organEl.classList.contains('organ-dimmed')) {
-                tooltip.classList.add('tooltip-dimmed');
-            } else {
-                tooltip.classList.remove('tooltip-dimmed');
-            }
-        }
-    } else {
+    const label = organEl ? svgHoverLabel(organEl) : null;
+    if (!label) {
         tooltip.style.display = 'none';
+        return;
     }
+
+    tooltip.textContent = label.text;
+    tooltip.style.display = 'block';
+    tooltip.style.left = `${e.clientX + 15}px`;
+    tooltip.style.top = `${e.clientY + 15}px`;
+    tooltip.classList.toggle('tooltip-dimmed', !!label.dimmed);
 });
 
 const DIRECTIONAL_ACTIONS = ['cycle-state', 'toggle-basic', 'toggle-basic-custom', 'cycle-side', 'cycle-exam-part', 'cycle-gender'];

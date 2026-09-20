@@ -1,15 +1,14 @@
 /* =============================================================
-   Region_Tp.js - hrudní páteř.
-   Implementace je v js/spine-factory.js; zde je jen to odlišné.
+   Region_Tp.js - hrudní páteř (SVG).
+   Implementace je v js/spine-svg-factory.js; zde je jen to odlišné.
+   Využívá stejný obrázek jako bederní páteř (Organs_spine.svg).
    ============================================================= */
 
-const RegionTp = defineSpineRegion({
+const RegionTp = defineSvgSpineRegion({
     regionId: 't_spine',
-    examId: 'spine_thoracic',
-    btnPrefix: 'thp',
-    tableBase: 'spine_thoracic',
     title: 'Hrudní páteř',
     adjective: 'hrudní',
+    svgFile: 'Organs_spine.svg',
 
     curvature: {
         key: 'kyphosis',
@@ -23,12 +22,13 @@ const RegionTp = defineSpineRegion({
         }
     },
 
-    lstv: false,
+    lstv: null,
     /* V hrudní páteři je mícha (ne kauda) - útlak se popisuje jako útlak míchy. */
     cordCompression: 'útlakem míchy',
     stabilization: 'Zadní',
     foramenRootFrom: 'fRoot',
 
+    /* Obratel + disk pod ním; poslední obratel stojí sám. */
     levels: [
         { v: 'C7', disc: 'C7/T1', fRoot: 'C8', root: 'T1' },
         { v: 'T1', disc: 'T1/2', fRoot: 'T1', root: 'T2' },

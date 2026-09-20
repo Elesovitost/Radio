@@ -1,15 +1,13 @@
 /* =============================================================
-   Region_LSp.js - bederní páteř.
-   Implementace je v js/spine-factory.js; zde je jen to odlišné.
+   Region_LSp.js - bederní páteř (SVG).
+   Implementace je v js/spine-svg-factory.js; zde je jen to odlišné.
    ============================================================= */
 
-const RegionLSp = defineSpineRegion({
+const RegionLSp = defineSvgSpineRegion({
     regionId: 'ls_spine',
-    examId: 'spine_lumbar',
-    btnPrefix: 'lsp',
-    tableBase: 'spine_lumbar',
     title: 'Bederní páteř',
     adjective: 'bederní',
+    svgFile: 'Organs_spine.svg',
 
     curvature: {
         key: 'lordosis',
@@ -26,6 +24,7 @@ const RegionLSp = defineSpineRegion({
     lstv: ['není', 'L5', 'S1'],
     cordCompression: 'agregací kaudy',
     stabilization: 'Zadní',
+    /* V bederní páteři se kořen ve foraminu popisuje obratlem etáže. */
     foramenRootFrom: 'vLabel',
 
     /* Myelopatie má v bederní páteři smysl jen do L1 (konus). */

@@ -1,3 +1,8 @@
+/* Negativní texty angiografie: nález (findings) a závěr (impression). */
+const ANGIO_NORMAL =
+    'Přívodné mozkové tepny mají normální šířku i průběh, Willisův okruh se zobrazuje obvykle, cévy přiměřené šíře do periferie, bez patrných stenóz či aneurysmat.';
+const ANGIO_NEGATIVE_CONC = 'Přiměřený nález na mozkových tepnách.';
+
 const RegionBrAngiography = {
     title: 'Angiografie',
     reportLayout: 'block',
@@ -43,9 +48,6 @@ const RegionBrAngiography = {
         let varRepList = [];
         let varConcList = [];
 
-        const ANGIO_NORMAL =
-            'Přívodné mozkové tepny mají normální šířku i průběh, Willisův okruh se zobrazuje obvykle, cévy přiměřené šíře do periferie, bez patrných stenóz či aneurysmat.';
-
         let vesPat = ctx.text('angio_ves_pat');
         if (vesPat && vesPat !== '0') {
             let actVes = [];
@@ -89,18 +91,24 @@ const RegionBrAngiography = {
             }
         }
 
-        useSection(ctx.section({
+        const angioSection = ctx.section({
             tableId: 'angio_vessels_main',
             normal: 'angio_ves_ost_add_normal',
             normalText: ANGIO_NORMAL,
-            normalConc: 'Přiměřený nález na mozkových tepnách.',
+            normalConc: ANGIO_NEGATIVE_CONC,
             predef: 'angio_ves_ost_add_predef',
             predefText: ANGIO_NORMAL,
             desc: 'angio_ves_custom_desc',
             concField: 'angio_ves_custom_conc',
             capitalize: true,
             parts: vesRep
-        }), { report: reportOut, main: concMain, incidental: concInc });
+        });
+        useSection(angioSection, { report: reportOut, main: concMain, incidental: concInc });
+
+        /* Nic nevyplněno → nález tiskne negativní text (jako orgány v trupu). */
+        if (angioSection.report.length === 0) {
+            reportOut.push({ type: 'frame', text: ANGIO_NORMAL, tableId: 'angio_vessels_main', predef: true });
+        }
 
         const stdVariations = [
             { id: 'a1', label: 'hypoplázie A1 ACA' },
@@ -161,6 +169,11 @@ const RegionBrAngiography = {
         if (varConcList.length > 0) {
             let varTextConc = `Variační anatomie: ${varConcList.join(', ')}.`;
             concInc.push({ type: 'frame', text: varTextConc, tableId: 'angio_var_table' });
+        }
+
+        /* Nic nevyplněno → i závěr tiskne negativní text. */
+        if (concMain.length === 0 && concInc.length === 0) {
+            concMain.push({ type: 'frame', text: ANGIO_NEGATIVE_CONC, tableId: 'angio_vessels_main' });
         }
 
         return { report: reportOut, conclusion: { main: concMain, incidental: concInc } };

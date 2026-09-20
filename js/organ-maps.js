@@ -82,9 +82,6 @@ const ORGAN_MAP = {
     "Glenoid_labrum": { name: "Labrum", table: "shoulder_labrum_main", regions: ['shoulder'] },
     "Biceps": { name: "Šlacha LHB", table: "shoulder_lhb_main", regions: ['shoulder'] },
 
-    "vL5": { name: "L5", table: "L5/S1_main", regions: ['ls_spine'] },
-    "dL5/S1": { name: "L5/S1", table: "L5/S1_main", regions: ['ls_spine'] },
-
     "Prostate_urinary": { name: "Močový měchýř", table: "prostate_urinary_main", regions: ['prostate'] },
     "Prostate_prostate": { name: "Prostata", table: "prostate_prostata_main", regions: ['prostate'] },
     "Prostate_seminal": { name: "Semenné váčky", table: "prostate_seminal_main", regions: ['prostate'] },

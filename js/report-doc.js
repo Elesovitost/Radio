@@ -43,6 +43,36 @@ const ReportText = {
 /* =============================================================
    Sestavení dokumentu z aktuálního stavu (bez DOM).
    ============================================================= */
+
+/* Region, kterému klíč ve Store patří. Hledá se NEJDELŠÍ shoda prefixu
+   `${examId}_${rId}_` — kdyby byl klíč jednoho regionu prodloužením klíče
+   jiného, kratší prefix by ho "ukradl". */
+function regionOfFocusKey(examId, key) {
+    let best = null;
+    for (const rId of Object.keys(REGIONS)) {
+        if (!key.startsWith(`${examId}_${rId}_`)) continue;
+        if (!best || rId.length > best.length) best = rId;
+    }
+    return best;
+}
+
+/* Regiony, které mají pro dané vyšetření co říct: oficiální regs + cokoli,
+   co má aktivní stav/pole/vlastní text (i skryté větve). */
+function collectActiveRegions(examId, baseRegs) {
+    const active = new Set(baseRegs);
+    const scan = (store, isEmpty) => {
+        Object.keys(store).forEach((key) => {
+            if (isEmpty(store[key])) return;
+            const rId = regionOfFocusKey(examId, key);
+            if (rId && REGIONS[rId]) active.add(rId);
+        });
+    };
+    scan(Store.buttonStates, (v) => !v);
+    scan(Store.fields, (v) => v === '');
+    scan(Store.customTexts, (v) => v === '');
+    return active;
+}
+
 function buildReportDoc() {
     const findings = [];
     const main = [];
@@ -62,14 +92,7 @@ function buildReportDoc() {
         let examConcMainBlocks = [];
         let examConcIncBlocks = [];
 
-        const regionsToCompile = new Set(exam.regs);
-        Object.keys(REGIONS).forEach(rId => {
-            const prefix = `${examId}_${rId}_`;
-            const hasActiveState = Object.keys(Store.buttonStates).some(k => k.startsWith(prefix) && Store.buttonStates[k]);
-            const hasActiveField = Object.keys(Store.fields).some(k => k.startsWith(prefix) && Store.fields[k] !== '');
-            const hasActiveCustom = Object.keys(Store.customTexts).some(k => k.startsWith(prefix) && Store.customTexts[k] !== '');
-            if (hasActiveState || hasActiveField || hasActiveCustom) regionsToCompile.add(rId);
-        });
+        const regionsToCompile = collectActiveRegions(examId, exam.regs);
 
         /* Pořadí regionů v nálezu = pořadí v REGIONS (ne pořadí klikání). */
         const regionOrder = Object.keys(REGIONS);
@@ -127,6 +150,17 @@ function buildReportDoc() {
                     tableId: null, examId
                 });
             }
+        }
+
+        /* --- Závěr nikdy nezůstává bez textu: když z regionů nevzejde ani
+           hlavní, ani vedlejší nález, doplní se obecný negativní závěr
+           vyšetření ("Přiměřený nález na CT břicha."). --- */
+        if (examConcMainBlocks.length === 0 && examConcIncBlocks.length === 0) {
+            examConcMainBlocks.push({
+                type: 'frame',
+                text: Corrections.sanitize(`Přiměřený nález na ${exam.title}.`, { examId, isConclusion: true }),
+                tableId: null, examId
+            });
         }
 
         /* --- PET: fyziologická distribuce radiofarmaka (blok "OSTATNÍ:" na konci nálezu) --- */
@@ -319,8 +353,10 @@ const ReportDoc = {
         if (findings) parts.push(findings);
 
         const { main, incidental } = ReportDoc.impressionParts(built);
-        if (main.length) {
-            parts.push((p.conclusionLabel ? p.conclusionLabel + '\n' : '') + main.join('\n'));
+        /* Nadpis „Závěr:“ zůstává i bez textu (jako dřív u copy-all). */
+        if (main.length || p.conclusionLabel) {
+            const body = main.join('\n');
+            parts.push((p.conclusionLabel ? p.conclusionLabel + (body ? '\n' : '') : '') + body);
         }
         if (incidental.length) {
             parts.push((p.incidentalLabel ? p.incidentalLabel + ' ' : '') + incidental.join(' '));

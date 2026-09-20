@@ -218,13 +218,6 @@ body.is-non-pet .tbl td:has(>[data-id*="_suv"]), body.is-non-pet .tbl td:has(+ t
 body.hide-ct .tbl > tbody > tr:has([data-id*="_ct_"]) { display: none !important; }
 body.hide-mr .tbl > tbody > tr:has([data-id*="_mr_"]) { display: none !important; }
 
-/* ─── PÁTEŘNÍ TABULKY (L/C/Th) ───────────────────────── */
-#spine_lumbar_main.tbl-center td, #spine_cervical_main.tbl-center td, #spine_thoracic_main.tbl-center td { text-align: left; }
-#spine_lumbar_main.tbl-center td .row, #spine_cervical_main.tbl-center td .row, #spine_thoracic_main.tbl-center td .row { justify-content: flex-start; }
-#spine_lumbar_main > tbody > tr:nth-child(even) > td:first-child span, #spine_cervical_main > tbody > tr:nth-child(even) > td:first-child span, #spine_thoracic_main > tbody > tr:nth-child(even) > td:first-child span { color: var(--accent-hi); }
-.tbl td .row:has(> button[data-id$="_d_c"]) { gap: 2px; }
-.tbl td .row:has([data-id$="_protrusion_mm"]), .tbl td .row:has([id$="_protrusion_mm"]), .tbl td .row:has([data-id$="_shift_mm"]), .tbl td .row:has([id$="_shift_mm"]), .tbl td .row:has([data-id$="_arthro_r"]), .tbl td .row:has([data-id$="_arthro_l"]) { background-color: var(--border); border: 0; border-radius: 1px !important; padding: 1px !important; width: fit-content; transition: all 0.3s ease; }
-
 /* ─── ORGAN POPUP ────────────────────────────────────── */
 #organ-popup { position: fixed; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.8); padding: 0; display: none; flex-direction: column; gap: 4px; z-index: 2000; }
 #organ-popup.active { display: flex; }

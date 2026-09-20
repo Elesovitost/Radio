@@ -1,0 +1,24 @@
+---
+description: Při předělávce nejdřív zkontroluj starý kód a přepiš ho, nestavěj další vrstvy pravidel navrch
+alwaysApply: true
+---
+
+# Přepisuj, nevrstvi
+
+Když se mění chování, texty, pravidla nebo logika:
+
+1. **Nejdřív přečti stávající kód** — co dělá, co je zastaralé, co je zbytečně složité.
+2. **Když je racionální přepsat** (nová pravidla neodpovídají starému modelu, narůstají větve/`if`, special-casey na special-casey) → **smaž starý přístup a napiš čistě znovu**.
+3. **Nestavěj další vrstvu** (nové flaty, aliasy, kompatibilní větve, „ještě jedno if navrch“) jen proto, aby starý kód „nějak“ seděl.
+
+## Špatně
+
+- Nechat 80 řádků staré kombinační logiky a přidat 3 nová pravidla na začátek.
+- Přejmenovat konstantu a nechat paralelní staré cesty.
+- „Opravit“ bug přidáním výjimky místo zjednodušení modelu.
+
+## Správně
+
+- Nová pravidla → nový malý rozhodovací strom / funkce, starý blok pryč.
+- Stejný záměr, lepší model → replace, ne patch.
+- Diff by měl ukazovat **odstranění** zbytečného kódu, ne jen přidané řádky.
