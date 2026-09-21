@@ -1141,12 +1141,12 @@ const RegionThorax = {
                 const ids = raw.startsWith('group:')
                     ? raw.slice(6).split(',')
                     : [raw];
-                let best = REPORT_ORDER.length;
-                for (const id of ids) {
-                    const i = REPORT_ORDER.findIndex(prefix => id.startsWith(prefix));
-                    if (i !== -1 && i < best) best = i;
-                }
-                return best;
+                const ranks = ids
+                    .map(id => REPORT_ORDER.findIndex(prefix => id.startsWith(prefix)))
+                    .filter(i => i !== -1);
+                if (!ranks.length) return REPORT_ORDER.length;
+                if (frame.isGroup && !frame.label) return Math.max(...ranks);
+                return Math.min(...ranks);
             };
             reportOut = reportOut
                 .map((frame, i) => ({ frame, i, rank: reportRank(frame) }))

@@ -9217,7 +9217,7 @@
             {
               "dimmed": false,
               "tableId": "prostate_prostata_main",
-              "text": "St.p. TURP. Prostata velikosti cca 45x35x40 mm, což je orientačně 32 ml. Pokročilé zbytnění nodulárně prostavěné přechodové zóny s útlakem periferní zóny. Obsahuje okrsky T1+ po zakrvácení (biopsii).",
+              "text": "St.p. TURP. Prostata objemu cca 30 ml. Pokročilé zbytnění nodulárně prostavěné přechodové zóny s útlakem periferní zóny. Obsahuje okrsky T1+ po zakrvácení (biopsii).",
               "type": "frame"
             },
             {
@@ -9235,9 +9235,9 @@
           ]
         }
       },
-      "findings": "Bez patrných ložisek abnormálního SI. St.p. TURP. Prostata velikosti cca 45x35x40 mm, což je orientačně 32 ml. Pokročilé zbytnění nodulárně prostavěné přechodové zóny s útlakem periferní zóny. Obsahuje okrsky T1+ po zakrvácení (biopsii). Normální náplň semenných váčků. Nejsou zřetelné patologické regionální či non-regionální lymfatické uzliny.",
+      "findings": "Bez patrných ložisek abnormálního SI. St.p. TURP. Prostata objemu cca 30 ml. Pokročilé zbytnění nodulárně prostavěné přechodové zóny s útlakem periferní zóny. Obsahuje okrsky T1+ po zakrvácení (biopsii). Normální náplň semenných váčků. Nejsou zřetelné patologické regionální či non-regionální lymfatické uzliny.",
       "impression": "Pokročilá nodulární hyperplazie.",
-      "report": "MR prostaty\n\nBez patrných ložisek abnormálního SI. St.p. TURP. Prostata velikosti cca 45x35x40 mm, což je orientačně 32 ml. Pokročilé zbytnění nodulárně prostavěné přechodové zóny s útlakem periferní zóny. Obsahuje okrsky T1+ po zakrvácení (biopsii). Normální náplň semenných váčků. Nejsou zřetelné patologické regionální či non-regionální lymfatické uzliny.\n\nZávěr:\nPokročilá nodulární hyperplazie."
+      "report": "MR prostaty\n\nBez patrných ložisek abnormálního SI. St.p. TURP. Prostata objemu cca 30 ml. Pokročilé zbytnění nodulárně prostavěné přechodové zóny s útlakem periferní zóny. Obsahuje okrsky T1+ po zakrvácení (biopsii). Normální náplň semenných váčků. Nejsou zřetelné patologické regionální či non-regionální lymfatické uzliny.\n\nZávěr:\nPokročilá nodulární hyperplazie."
     },
     "prostata-tz-pirads3": {
       "blocks": {

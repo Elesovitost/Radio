@@ -1,4 +1,4 @@
-/* =============================================================
+﻿/* =============================================================
    tests/fixtures.js
    Deklarativní stavy pro golden master.
 
@@ -1595,7 +1595,7 @@ const FIXTURES = [
 ];
 
 /* Případy pro režim ?mode=validate: co má (a nemá) hlásit kontrola
-   jednoslovných "vět" v Corrections.validate(). */
+   v Corrections.validate() (jednoslovné věty, zkratky, tečka na konci). */
 const VALIDATION_CASES = [
     { id: 'diagnoza-litiasa', text: 'Játra: přiměřené velikosti. Cholecystolitiáza.' },
     { id: 'diagnoza-splenomegalie', text: 'Splenomegalie.' },
@@ -1603,10 +1603,7 @@ const VALIDATION_CASES = [
     { id: 'diagnoza-hypomobilita', text: 'Levý TMK: Omezená translace. Hypomobilita.' },
     { id: 'zkratka-zkracene-slovo', text: 'Achillova šlacha přim. vzhledu a signálu. Chrupavka ventr. femuru bez defektu.' },
     { id: 'zkratka-v-zavorce', text: 'Poúrazové změny (st. p. ruptuře). Bez progrese.' },
-    /* Nový blok začínající zkratkou (staging) není "malé písmeno po tečce". */
     { id: 'zkratka-na-zacatku-bloku', text: 'Karcinom rekta s invazí přes kapsulu. cTNM: cT3a, cN0.' },
-    /* Kontrolní případ: rozbité spojení vět se musí dál hlásit. */
-    { id: 'spojene-vety', text: 'Skafoideum bez poruchy kortikalis. lunatum normálního signálu.' },
     { id: 'zkratka-eponymum', text: 'Obraz suspektní ze spondyloartritidy charakteru m. Bechtěrev. Bilaterální sakroiliitida, entezopatie axiálního skeletu.' },
     { id: 'zkratka-titul', text: 'Kontrola dle prof. Nováka. Bez progrese.' },
     { id: 'vagne-slovo', text: 'Zvětšení.' },

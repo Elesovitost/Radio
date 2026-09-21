@@ -491,13 +491,12 @@ const RegionProstate = {
             }
             
             if (prSize) {
-                let volStr = '';
                 let dims = prSize.split('x').map(d => parseInt(d, 10));
                 if (dims.length === 3 && !dims.some(isNaN)) {
                     let vol = Math.round((dims[0] * dims[1] * dims[2]) / 2000);
-                    volStr = `, což je orientačně ${vol} ml`;
+                    vol = Math.round(vol / 5) * 5;
+                    prostataText.push(`Prostata objemu cca ${vol} ml.`);
                 }
-                prostataText.push(`Prostata velikosti cca ${prSize} mm${volStr}.`);
             } else {
                 if (!prOp || prOp === '0') prostataText.push(`Prostata nezvětšena.`);
             }

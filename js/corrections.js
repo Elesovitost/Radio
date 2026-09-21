@@ -2,14 +2,14 @@
    corrections.js
    Jediné místo, kde se opravuje text zprávy.
 
-   sanitize()  = filtr modality → gramatika → zhutnění mezer
+   sanitize()  = filtr modality → gramatika → typografie (normalize)
                  (nad jedním blokem z region.compile())
-   normalize() = typografie rámečku, pouští se až při
-                 zobrazení / kopírování (ReportText.frameText)
-   validate()  = najde a pojmenuje chyby (slovník FIXES + pravidla)
+   normalize() = typografie (mezery, interpunkce, opakovaná slova);
+                 i při zobrazení / kopírování (ReportText.frameText)
+   validate()  = pojmenuje zbývající chyby (FIXES, krátké věty, …)
 
    Pořadí kroků je záměrné - gramatika dělí věty podle ". ",
-   proto se mezery zhutňují až po ní.
+   proto se typografie pouští až po ní.
    ============================================================= */
 
 /* -------------------------------------------------------------
@@ -123,21 +123,33 @@ function grammar(text) {
 }
 
 /* -------------------------------------------------------------
-   3) Typografie.
+   3) Typografie — opravuje se sama (zobrazení i sanitize).
    ------------------------------------------------------------- */
 
-/* Rámeček: opraví zdvojenou tečku a přebytečné mezery před interpunkcí. */
+/* Zdvojené mezery, mezera před interpunkcí, zdvojená interpunkce,
+   opakovaná krátká slova. Nové řádky zachová. */
 function normalize(text) {
-    return String(text == null ? '' : text)
+    let out = String(text == null ? '' : text)
         .replace(/bilat\.\./gi, 'bilat.')
-        .replace(/\s+\./g, '.')
+        .replace(/[ \t]+/g, ' ')
+        .replace(/[ \t]+([.,;])/g, '$1')
         .replace(/,\s*\./g, '.')
-        .replace(/\.{2,}/g, '.');
+        .replace(/\.{2,}/g, '.')
+        .replace(/,{2,}/g, ',');
+
+    const dupWord = /\b(a|i|v|ve|na|s|se|z|ze|k|ke|o|u|do|je|jsou)\s+\1\b/gi;
+    let prev;
+    do {
+        prev = out;
+        out = out.replace(dupWord, '$1');
+    } while (out !== prev);
+
+    return out;
 }
 
-/* Závěrečné zhutnění mezer nad hotovým textem. */
+/* Alias: dříve zhutnění mezer v bloku; teď stejné jako normalize. */
 function tighten(text) {
-    return text.replace(/\s+/g, ' ').replace(/\s\./g, '.');
+    return normalize(text);
 }
 
 /* Doplnění koncové tečky (závěr je souvislý text, findings se slepují mezerou). */
@@ -186,9 +198,9 @@ function applyFixes(text) {
     return out;
 }
 
-/* Zkratky, po kterých může následovat malé písmeno. Zkratky o 1-2 znacích
-   (v., a., d., n., m., č.) a římské číslice (VIII.) se berou automaticky. */
-/* Zkratky a zkrácená slova, po kterých tečka nekončí větu. */
+/* Zkratky a zkrácená slova, po kterých tečka nekončí větu
+   (dělení vět pro kontrolu jednoslovných „vět“). Zkratky o 1–2 znacích
+   a římské číslice se berou automaticky. */
 const ZKRATKY = ['bilat', 'event', 'tj', 'např', 'tzv', 'č', 'str', 'př', 'min', 'max',
                  'vs', 'atd', 'resp', 'popř', 'susp', 'parc', 'obv', 'vel', 'kol', 'kraj',
                  'pravděp', 'pravděpod', 'ref', 'lig', 'asc', 'dif', 'dg', 'char', 'art',
@@ -200,22 +212,11 @@ const ZKRATKY = ['bilat', 'event', 'tj', 'např', 'tzv', 'č', 'str', 'př', 'mi
                  'intratend', 'intraart', 'subt'];
 
 function jeZkratka(token) {
-    /* Token může mít před sebou interpunkci ("(st", "(susp").
-       Očistíme ji, ať se zkratka pozná i v závorce. */
+    /* Token může mít před sebou interpunkci ("(st", "(susp"). */
     const core = String(token).replace(/^[^0-9A-Za-zÁ-Žá-ž]+/, '');
     return core.length <= 2
         || /^[IVXLCDM]+$/i.test(core)
         || ZKRATKY.includes(core.toLowerCase());
-}
-
-/* Věta, která začíná zkratkou, není "malé písmeno po tečce":
-   "v.s. NV …", "cTNM: cT3a", "n. medianus", "T2/PD-FS". */
-function zacinaZkratkou(zbytek) {
-    const slovo = (zbytek.match(/^\s*(\S+)/) || ['', ''])[1];
-    return slovo.length > 0 && (
-        /^[a-záčďéěíňóřšťúůýž]{1,3}\.\S*$/.test(slovo)   // v.s. / tj. / n.
-        || /[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.test(slovo)           // cTNM: / MPFL / V4
-    );
 }
 
 function snippet(text, index, length) {
@@ -287,26 +288,14 @@ function validate(text) {
         }
     }
 
-    const push = (rule, re) => {
-        const hit = re.exec(text);
-        if (hit) found.push({ level: 'warn', message: `${rule}: "${snippet(text, hit.index, hit[0].length)}"` });
-    };
+    /* Typografie (mezery, interpunkce, opakovaná slova) se opravuje v normalize(). */
 
-    push('dvojitá mezera', /\S {2,}\S/);
-    push('mezera před interpunkcí', /\s+[.,;]/);
-    push('zdvojená interpunkce', /\.{2,}|,{2,}/);
-    push('chybí mezera po tečce', /[a-záčďéěíňóřšťúůýž]\.[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/);
-    push('opakované slovo', /\b(a|i|v|ve|na|s|se|z|ze|k|ke|o|u|do|je|jsou)\s+\1\b/i);
-
-    /* Malé písmeno po tečce - mimo známé zkratky. */
-    const vetaRe = /([^\s.]+)\.\s+([a-záčďéěíňóřšťúůýž])/g;
-    let m;
-    while ((m = vetaRe.exec(text)) !== null) {
-        if (jeZkratka(m[1])) continue;
-        /* Věta začíná zkratkou ("… schwanomu. v.s. NV …", "… kapsulu. cTNM: …"). */
-        if (zacinaZkratkou(text.slice(vetaRe.lastIndex - 1))) continue;
-        found.push({ level: 'warn', message: `malé písmeno po tečce: "${snippet(text, m.index, m[0].length)}"` });
-        break;
+    const missingSpace = /[a-záčďéěíňóřšťúůýž]\.[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.exec(text);
+    if (missingSpace) {
+        found.push({
+            level: 'warn',
+            message: `chybí mezera po tečce: "${snippet(text, missingSpace.index, missingSpace[0].length)}"`
+        });
     }
 
     /* Neuzavřená poslední věta. */
@@ -326,7 +315,7 @@ function sanitize(text, { examId = '', isConclusion = false } = {}) {
 
     let out = modalityFilter(text, examId, isConclusion);
     if (APP_SETTINGS.optText) out = grammar(out);
-    out = applyFixes(tighten(out));
+    out = applyFixes(normalize(out));
     return isConclusion ? finishSentence(out) : out;
 }
 

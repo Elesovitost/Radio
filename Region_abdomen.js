@@ -966,7 +966,7 @@ const RegionAbdomen = {
             // 16. Prostata
             let prRep = [];
             if (ctx.isActive('pr_zvet')) { let ml = ctx.field('pr_zvet_ml'); prRep.push(`zvětšená${ml ? ' (' + ml + ' ml)' : ''}`); concInc.push({ type: 'frame', text: "Hypertrofie prostaty.", tableId: 'abdomen_prostata_main' }); }
-            if (ctx.isActive('pr_fok')) { prRep.push("ložiskově zvýšená akumulace RF v prostatě"); concMain.push({ type: 'frame', text: "Fokus zvýšené aktivity v prostatě, dop. korelaci.", tableId: 'abdomen_prostata_main' }); }
+            if (ctx.isActive('pr_fok')) { prRep.push("ložiskově zvýšená akumulace RF v prostatě bez CT korelátu"); concMain.push({ type: 'frame', text: "Fokálně zvýšená aktivita v prostatě, dop. korelaci.", tableId: 'abdomen_prostata_main' }); }
             if (ctx.isActive('pr_tur')) prRep.push("stav po TURP");
             if (ctx.isActive('pr_rap')) prRep.push("stav po radikální prostatektomii");
             let prDesc = ctx.field('pr_custom_desc'); if (prDesc) prRep.push(prDesc);
