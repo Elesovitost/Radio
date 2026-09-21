@@ -80,9 +80,7 @@ const MetricsEngine = {
             if (r <= 1.5) return 4; 
             return 5; 
         }
-        if (exam.includes('dopa')) {
-            return 0;
-        }
+        /* DOPA trup i FDG: aktivita podle poměru k ref. játrům. */
         if (isNaN(refLiv) || refLiv <= 0) return 0;
         const r = suvVal / refLiv;
         if (r < 0.2) return 1; 

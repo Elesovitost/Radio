@@ -4,8 +4,8 @@
    ═══════════════════════════════════════════════════════════ */
 const RegionNeck_PREDEFS = {
     groups: {
-        all: 'bez ložiskové a strukturální patologie.',
-        allOtherwise: 'Jinak na krku bez ložiskové a strukturální patologie.'
+        all: 'bez signifikantní patologie.',
+        allOtherwise: 'Jinak bez signifikantní patologie.'
     },
     organs: {
         sinus: { findings: 'vzdušné, bez patologického obsahu.', conclusion: 'Přiměřený nález v oblasti sinů.' },

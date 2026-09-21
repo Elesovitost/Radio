@@ -306,8 +306,8 @@ function buildIldTreeTable(helpers, examId) {
    ═══════════════════════════════════════════════════════════ */
 const RegionThorax_PREDEFS = {
     groups: {
-        all: 'Adekvátní plicní objem a vzdušnost, mediastinum bez patrné patologie.',
-        allOtherwise: 'Jinak v hrudníku bez signifikantní strukturální patologie.',
+        all: 'Adekvátní plicní objem a vzdušnost, mediastinum bez signifikantní patologie.',
+        allOtherwise: 'Jinak bez signifikantní patologie.',
         plice_pleura: 'Plíce přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn. Pleurálně bez výpotku a bez pneumotoraxu.'
     },
     organs: {
