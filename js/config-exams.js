@@ -111,7 +111,7 @@ const PET_TEXTS = {
     },
     dopa: {
         negative: 'Bez známek přítomnosti ložisek se zvýšenou konzumpcí aminokyseliny.',
-        physio: 'Neložisková akumulace radiofarmaka v BG bilat., játrech a urotraktu je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález. k referenčnímu zdravému parenchymu jater.'
+        physio: 'Neložisková akumulace radiofarmaka v (BG bilat. v mozku), pankreatu, žlučových cestách a urotraktu (v břiše) je přítomna na podkladě fyziologických procesů či jako zcela nespecifický nález. k referenčnímu zdravému parenchymu jater.'
     },
     fmm: {}
 };
