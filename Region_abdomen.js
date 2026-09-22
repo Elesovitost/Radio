@@ -4,7 +4,7 @@
    ═══════════════════════════════════════════════════════════ */
 const RegionAbdomen_PREDEFS = {
     groups: {
-        all: 'Orgány a struktury břicha bez signifikantní patologie.',
+        all: 'bez signifikantní patologie.',
         allOtherwise: 'Jinak bez patrné signifikantní patologie.',
         epigastrium: 'Játra a slezina přiměřené velikosti a vzhledu. Žlučové cesty nedilatovány. Žlučník jemné stěny bez konkrementů. Pankreas obvyklého vzhledu.',
         gi: 'Žaludek, tenké střevo, tračník bez ložiskového zesílení stěny či dilatace.',
