@@ -1,10 +1,31 @@
+/* =============================================================
+   Region_spineNaf.js
+   NaF PET/CT páteře.
+
+   Vlevo přepínače skupin (C / T / L) a pod nimi sloupce etáží – podle
+   zapnutých skupin vedle sebe. Vpravo mapa segmentu ze SVG
+   (Organs_spine_NaF.svg); objekty jsou nativně viditelné (bílá / šedá),
+   stav RF se přepíná klikem / kolečkem / pravým tlačítkem.
+
+   Vizuál drží stejnou řeč jako js/spine-svg-factory.js: kompaktní
+   seznam etáží vlevo, mapa vpravo, popisky přes mapu černě a verzállkami.
+   ============================================================= */
+
 const NAF_SEGMENTS_CRANIAL = [
     'C2/3', 'C3/4', 'C4/5', 'C5/6', 'C6/7', 'C7/T1',
     'T1/2', 'T2/3', 'T3/4', 'T4/5', 'T5/6', 'T6/7', 'T7/8', 'T8/9', 'T9/10', 'T10/11', 'T11/12', 'T12/L1',
     'L1/2', 'L2/3', 'L3/4', 'L4/5', 'L5/S1'
 ];
 
-const NAF_SEGMENTS_CAUDAL = [...NAF_SEGMENTS_CRANIAL].reverse();
+/* Skupiny etáží – etáž patří skupině podle horního obratle
+   (C7/T1 → C, T12/L1 → T). Nativně je zapnutá jen bederní páteř. */
+const NAF_GROUPS = [
+    { key: 'C', label: 'C páteř' },
+    { key: 'T', label: 'T páteř' },
+    { key: 'L', label: 'L páteř' }
+];
+
+const NAF_DEFAULT_GROUP = 'L';
 
 const NAF_RF_STATES = ['0', '+', '++'];
 const NAF_KRY_STATES = ['Krycí plotny', 'osteofyty', 'osteochondróza', 'cement'];
@@ -20,14 +41,55 @@ const NAF_RF_SPOTS = [
     { id: 'sp',    svg: 'SP', group: 'spinous',  side: '',       report: 'interspinózně' }
 ];
 
-window.NAF_SPINE_SVG_CACHE = window.NAF_SPINE_SVG_CACHE || fetch('Organs_spine_NaF.svg').then(r => r.text());
-
 const NAF_ENDPLATE_ORDER = ['ant', 'lat_l', 'lat_r', 'cen'];
 
+/* Příčina patologie se v textu vkládá za „v terénu“ (genitiv). Facet se
+   skloňuje podle počtu skloubení, proto nese obě čísla; krycí plotny jsou
+   vždy dvě, takže mají jen množné číslo. */
+const NAF_CAUSES = {
+    'artróza I':      { one: 'mírné facetové artrózy',        many: 'mírných facetových artróz' },
+    'artróza II':     { one: 'střední facetové artrózy',      many: 'středních facetových artróz' },
+    'artróza III':    { one: 'pokročilé facetové artrózy',    many: 'pokročilých facetových artróz' },
+    'istmy':          { one: 'istmické lýzy při spondylolistéze', many: 'istmických lýz při spondylolistéze' },
+    'cement':         { many: 'cementoplastiky' },
+    'osteochondróza': { many: 'osteochondrózy' },
+    'osteofyty':      { many: 'spondylofytů' }
+};
+
+/* Klíč příčiny pro daný spot – sloupec (facet / krycí plotna), ze kterého se čte. */
+function nafCauseKey(group, kry, fac) {
+    if (group === 'facet') return NAF_CAUSES[fac] ? fac : '';
+    if (group === 'endplate' && NAF_CAUSES[kry]) return kry;
+    return '';
+}
+
+function nafCauseText(key, plural) {
+    const form = NAF_CAUSES[key];
+    if (!form) return '';
+    return (plural ? form.many : form.one) || form.many;
+}
+
+/* Menus nad mapou – jen pro zvolenou etáž. */
 const NAF_MENUS = [
-    { id: 'kry', btn: 'kry', x: 50, y: 24 },
-    { id: 'fac', btn: 'fac', x: 50, y: 56 }
+    { id: 'kry', btn: 'kry', x: 50, y: 26 },
+    { id: 'fac', btn: 'fac', x: 50, y: 60 }
 ];
+
+window.NAF_SPINE_SVG_CACHE = window.NAF_SPINE_SVG_CACHE || fetch('Organs_spine_NaF.svg').then(r => r.text());
+
+/* ── identifikátory stavů ─────────────────────────────────────── */
+
+function nafActiveId(examId) {
+    return `${examId}_spine_naf_naf_seg`;
+}
+
+function nafGroupId(examId, key) {
+    return `${examId}_spine_naf_g_${key}`;
+}
+
+function nafSpotId(examId, pfx, spotId) {
+    return `${examId}_spine_naf_${pfx}_rf_${spotId}`;
+}
 
 function nafSegKey(label) {
     return String(label || '').toLowerCase().replace(/\//g, '_');
@@ -37,57 +99,133 @@ function nafSegIdx(label) {
     return NAF_SEGMENTS_CRANIAL.indexOf(label);
 }
 
+function nafGroupOf(label) {
+    return String(label || '').charAt(0).toUpperCase();
+}
+
+function nafGroupOn(examId, key) {
+    const val = Store.buttonStates[nafGroupId(examId, key)];
+    if (val === undefined) return key === NAF_DEFAULT_GROUP;
+    return val === true;
+}
+
+function nafSetGroup(examId, key, on) {
+    const activeId = nafActiveId(examId);
+    const activeIdx = Store.buttonStates[activeId] || 0;
+    const next = { ...Store.buttonStates, [nafGroupId(examId, key)]: on };
+
+    /* Zrušená skupina nesmí nechat vybranou etáž, kterou už není vidět. */
+    if (!on && activeIdx > 0 && nafGroupOf(NAF_SEGMENTS_CRANIAL[activeIdx - 1]) === key) {
+        next[activeId] = 0;
+    }
+    Store.buttonStates = next;
+}
+
+/* ── styly ────────────────────────────────────────────────────── */
+
 function nafEnsureStyles() {
     if (document.getElementById('naf-spine-styles')) return;
     const style = document.createElement('style');
     style.id = 'naf-spine-styles';
     style.textContent = `
-        .naf-vert-map { position: relative; width: min(308px, 70%); margin-top: 8px; }
-        .naf-vert-map .naf-vert-svg { width: 100%; display: block; border-radius: 4px; overflow: hidden; }
-        .naf-vert-map .naf-vert-svg svg { width: 100%; height: auto; display: block; }
-        .naf-vert-map .naf-vert-svg svg image,
-        .naf-vert-map .naf-vert-svg svg use { pointer-events: none; }
-        .naf-vert-map .naf-vert-svg svg path[id] {
+        .naf-spine-layout {
+            display: flex; gap: 12px; align-items: flex-start;
+            width: 100%; min-height: 260px;
+        }
+        .naf-spine-left { flex: 0 0 auto; display: flex; flex-direction: column; gap: 6px; padding-top: 2px; }
+
+        .naf-spine-groups { display: flex; gap: 4px; }
+        .naf-spine-groups .btn {
+            min-width: 62px; width: auto; padding: 1px 5px;
+            font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+        }
+
+        .naf-spine-cols { display: flex; gap: 8px; align-items: flex-start; }
+        .naf-spine-col { display: flex; flex-direction: column; gap: 4px; }
+        .naf-spine-col .btn { min-width: 72px; width: 72px; padding: 1px 2px; font-size: 12px; }
+
+        .naf-spine-map { position: relative; flex: 1 1 auto; min-width: 0; max-width: min(480px, 100%); }
+        .naf-spine-host { width: 100%; display: block; }
+        .naf-spine-host svg { width: 100%; height: auto; display: block; border-radius: 4px; }
+        .naf-spine-host svg image,
+        .naf-spine-host svg use { pointer-events: none; }
+
+        /* Objekty jsou vidět i bez patologie – nativně bílé (krycí plotny)
+           a šedé (facety, trn). */
+        .naf-spine-host svg path[id] {
+            fill: rgba(255, 255, 255, 0.30);
+            stroke: rgba(255, 255, 255, 0.85);
+            stroke-width: 1px;
             cursor: pointer;
-            fill: transparent !important;
-            stroke: transparent;
-            stroke-width: 2.5px;
             transition: fill 0.15s, stroke 0.15s;
         }
-        .naf-vert-map .naf-vert-svg svg path[id]:hover { stroke: var(--accent-hi, #58a6ff); }
-        .naf-vert-map .naf-vert-svg svg path.naf-on-plus { fill: rgba(227, 121, 8, 0.53) !important; }
-        .naf-vert-map .naf-vert-svg svg path.naf-on-plusplus { fill: #e32708 !important; }
-        .naf-vert-map .tbl { border: none; background: transparent; margin: 0; width: auto; }
-        .naf-vert-map .tbl td { padding: 0; border: none; }
-        .naf-menu { position: absolute; transform: translate(-50%, -50%); z-index: 2; }
-        .naf-vert-map .btn { background: rgba(0, 0, 0, 0.8); }
-        .naf-seg-hint {
-            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-            color: #8b949e; font-size: 12px; z-index: 3; pointer-events: none; text-align: center;
+        .naf-spine-host svg path.naf-facet { fill: rgba(170, 170, 170, 0.30); }
+        .naf-spine-host svg path.naf-plus { fill: #e37908; }
+        .naf-spine-host svg path.naf-plusplus { fill: #e32708; }
+        .naf-spine-host svg path.naf-off,
+        .naf-spine-host svg path.naf-static {
+            fill: transparent; stroke: transparent; pointer-events: none; cursor: default;
         }
+        .naf-spine-host svg path[id]:hover {
+            stroke: var(--accent-hi, #58a6ff); stroke-width: 2px;
+        }
+
+        .naf-spine-hint {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+            color: #8b949e; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+            z-index: 3; pointer-events: none; text-align: center;
+        }
+
+        .naf-menu { position: absolute; transform: translate(-50%, -50%); z-index: 2; }
+        .naf-menu .tbl { border: none; background: transparent; margin: 0; width: auto; }
+        .naf-menu .tbl td { padding: 0; border: none; }
+        .naf-menu .btn {
+            min-width: 0; padding: 1px 5px;
+            font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px;
+            background: rgba(255, 255, 255, 0.85); border-color: rgba(0, 0, 0, 0.4); color: #000;
+        }
+        .naf-menu .btn:hover { background: #fff; border-color: var(--accent-hi, #58a6ff); color: #000; }
+        .naf-menu .btn.modified { background: var(--accent-hi, #58a6ff); border-color: #fff; color: #fff; }
     `;
     document.head.appendChild(style);
 }
 
-function nafApplyPathVisual(plusPath, plusPlusPath, stateIdx) {
-    plusPath.classList.toggle('naf-on-plus', stateIdx === 1);
-    plusPlusPath.classList.toggle('naf-on-plusplus', stateIdx === 2);
-    plusPath.style.pointerEvents = stateIdx === 2 ? 'none' : 'all';
-    plusPlusPath.style.pointerEvents = stateIdx === 1 ? 'none' : 'all';
+/* ── SVG mapa ─────────────────────────────────────────────────── */
+
+/* Stav 0 = nativní objekt (bílá / šedá), 1 = + (oranžová), 2 = ++ (červená).
+   Vždy je aktivní jen jedna z dvojice cest, aby hover seděl na to, co je vidět. */
+function nafApplySpotState(plusPath, plusPlusPath, stateIdx) {
+    plusPath.classList.toggle('naf-plus', stateIdx === 1);
+    plusPath.classList.toggle('naf-off', stateIdx === 2);
+    plusPlusPath.classList.toggle('naf-plusplus', stateIdx === 2);
+    plusPlusPath.classList.toggle('naf-off', stateIdx < 2);
+}
+
+function nafBindSpot(path, globalId) {
+    const cycle = (e, dir) => {
+        e.preventDefault();
+        e.stopPropagation();
+        cycleState(globalId, dir);
+    };
+    path.addEventListener('click', (e) => cycle(e, 1));
+    path.addEventListener('contextmenu', (e) => cycle(e, -1));
+    path.addEventListener('wheel', (e) => cycle(e, e.deltaY < 0 ? 1 : -1), { passive: false });
 }
 
 function nafSetupSpineSvg(svgEl, pfx, examId) {
+    /* Původní <style> (oranžová/červená výplň) zahodíme – barvy řídí stav. */
     svgEl.querySelectorAll('style').forEach(s => s.remove());
-    svgEl.querySelectorAll('path[id]').forEach(path => {
+
+    svgEl.querySelectorAll('path[id]').forEach((path) => {
         path.removeAttribute('class');
-        path.style.fill = '';
+        path.removeAttribute('style');
+        const name = path.id.replace(/\+\+?$/, '');
+        const spot = NAF_RF_SPOTS.find(s => s.svg === name);
+        if (spot && spot.group !== 'endplate') path.classList.add('naf-facet');
     });
 
     if (!pfx) {
-        svgEl.querySelectorAll('path[id]').forEach(path => {
-            path.style.pointerEvents = 'none';
-            path.style.cursor = 'default';
-        });
+        svgEl.querySelectorAll('path[id]').forEach(p => p.classList.add('naf-static'));
         return svgEl;
     }
 
@@ -96,31 +234,10 @@ function nafSetupSpineSvg(svgEl, pfx, examId) {
         const plusPlusPath = svgEl.getElementById(`${spot.svg}++`);
         if (!plusPath || !plusPlusPath) return;
 
-        const globalId = `${examId}_spine_naf_${pfx}_rf_${spot.id}`;
-        ButtonConfigs[globalId] = { type: 'standard', states: NAF_RF_STATES };
-
-        const stateIdx = Store.buttonStates[globalId] || 0;
-        nafApplyPathVisual(plusPath, plusPlusPath, stateIdx);
-
-        const bind = (path) => {
-            path.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                cycleState(globalId, 1);
-            });
-            path.addEventListener('contextmenu', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                cycleState(globalId, -1);
-            });
-            path.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                cycleState(globalId, e.deltaY < 0 ? 1 : -1);
-            }, { passive: false });
-        };
-        bind(plusPath);
-        bind(plusPlusPath);
+        const globalId = nafSpotId(examId, pfx, spot.id);
+        nafApplySpotState(plusPath, plusPlusPath, Store.buttonStates[globalId] || 0);
+        nafBindSpot(plusPath, globalId);
+        nafBindSpot(plusPlusPath, globalId);
     });
     return svgEl;
 }
@@ -150,6 +267,115 @@ function nafMountSpineSvg(host, pfx, examId) {
         if (host.isConnected) host.textContent = 'SVG Organs_spine_NaF.svg nelze načíst.';
     });
 }
+
+/* ── levá lišta: skupiny + sloupce etáží ──────────────────────── */
+
+/* Konfigurace pro všechny etáže – compile čte stavy celé páteře
+   bez ohledu na to, co je právě vybrané. */
+function nafRegisterButtons(examId) {
+    ButtonConfigs[nafActiveId(examId)] = {
+        type: 'standard',
+        states: ['segment', ...NAF_SEGMENTS_CRANIAL]
+    };
+    NAF_GROUPS.forEach((group) => {
+        ButtonConfigs[nafGroupId(examId, group.key)] = { type: 'basic', text: group.label };
+    });
+    NAF_SEGMENTS_CRANIAL.forEach((label) => {
+        const pfx = nafSegKey(label);
+        NAF_RF_SPOTS.forEach((spot) => {
+            ButtonConfigs[nafSpotId(examId, pfx, spot.id)] = { type: 'standard', states: NAF_RF_STATES };
+        });
+        ButtonConfigs[`${examId}_spine_naf_${pfx}_kry`] = { type: 'standard', states: NAF_KRY_STATES };
+        ButtonConfigs[`${examId}_spine_naf_${pfx}_fac`] = { type: 'standard', states: NAF_FAC_STATES };
+    });
+}
+
+function nafBuildGroupBar(examId) {
+    const bar = el('div', { className: 'naf-spine-groups' });
+    NAF_GROUPS.forEach((group) => {
+        const on = nafGroupOn(examId, group.key);
+        const btn = el('button', {
+            type: 'button',
+            className: 'btn' + (on ? ' selected' : ''),
+            textContent: group.label,
+            'aria-pressed': String(on)
+        });
+        const set = (e, nextOn) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (nextOn === on) return;
+            nafSetGroup(examId, group.key, nextOn);
+        };
+        btn.addEventListener('click', (e) => set(e, !on));
+        btn.addEventListener('contextmenu', (e) => set(e, false));
+        btn.addEventListener('wheel', (e) => set(e, e.deltaY < 0), { passive: false });
+        bar.appendChild(btn);
+    });
+    return bar;
+}
+
+function nafBuildSegButton(examId, label, idx, activeIdx) {
+    const btn = el('button', {
+        type: 'button',
+        className: 'btn' + (activeIdx === idx ? ' selected' : ''),
+        textContent: label
+    });
+    const set = (e, on) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const next = on ? idx : (activeIdx === idx ? 0 : activeIdx);
+        if (next === activeIdx) return;
+        commitButtonState(nafActiveId(examId), next);
+    };
+    btn.addEventListener('click', (e) => set(e, true));
+    btn.addEventListener('contextmenu', (e) => set(e, false));
+    btn.addEventListener('wheel', (e) => set(e, e.deltaY < 0), { passive: false });
+    return btn;
+}
+
+/* Jedna skupina = jeden sloupec; zapnuté skupiny stojí vedle sebe. */
+function nafBuildSegColumns(examId, activeIdx) {
+    const cols = el('div', { className: 'naf-spine-cols' });
+    NAF_GROUPS.forEach((group) => {
+        if (!nafGroupOn(examId, group.key)) return;
+        const col = el('div', { className: 'naf-spine-col' });
+        NAF_SEGMENTS_CRANIAL.forEach((label, i) => {
+            if (nafGroupOf(label) !== group.key) return;
+            col.appendChild(nafBuildSegButton(examId, label, i + 1, activeIdx));
+        });
+        cols.appendChild(col);
+    });
+    return cols;
+}
+
+function nafBuildMap(examId, seg, helpers) {
+    const map = el('div', { className: 'naf-spine-map' });
+    const host = el('div', { className: 'naf-spine-host' });
+    map.appendChild(host);
+    nafMountSpineSvg(host, seg ? nafSegKey(seg) : null, examId);
+
+    if (seg) {
+        const pfx = nafSegKey(seg);
+        NAF_MENUS.forEach((menu) => {
+            const wrap = el('div', {
+                className: 'naf-menu',
+                style: `left:${menu.x}%;top:${menu.y}%;`
+            });
+            wrap.appendChild(helpers.TableGrid(`naf_${pfx}_${menu.id}`, [[
+                { btn: menu.btn, id: `${pfx}_${menu.id}` }
+            ]]));
+            map.appendChild(wrap);
+        });
+    } else {
+        map.appendChild(el('div', {
+            className: 'naf-spine-hint',
+            textContent: 'Vyber segment vlevo'
+        }));
+    }
+    return map;
+}
+
+/* ── text nálezu ──────────────────────────────────────────────── */
 
 function nafJoin(arr) {
     const valid = (arr || []).filter(v => v && String(v).trim() !== '');
@@ -196,12 +422,12 @@ function nafCompactSegs(entries) {
     }).join(', ');
 }
 
+/* ── region ───────────────────────────────────────────────────── */
+
 const RegionSpineNaf = {
     title: 'NaF páteř',
     reportLayout: 'block',
     buttons: {
-        seg: { states: ['segment', ...NAF_SEGMENTS_CAUDAL] },
-        rf: { states: NAF_RF_STATES },
         kry: { states: NAF_KRY_STATES },
         fac: { states: NAF_FAC_STATES }
     },
@@ -209,64 +435,31 @@ const RegionSpineNaf = {
         nafEnsureStyles();
 
         const examId = Store.activeTab || 'default';
-        const segIdx = Store.buttonStates[`${examId}_spine_naf_naf_seg`] || 0;
-        const segLabel = RegionSpineNaf.buttons.seg.states[segIdx] || 'segment';
-        const pfx = segLabel === 'segment' ? null : nafSegKey(segLabel);
+        nafRegisterButtons(examId);
 
-        const nodes = [
-            helpers.TableGrid('spine_naf_seg', [[{ btn: 'seg', id: 'naf_seg' }]])
+        const activeIdx = Store.buttonStates[nafActiveId(examId)] || 0;
+        const seg = activeIdx > 0 ? NAF_SEGMENTS_CRANIAL[activeIdx - 1] : null;
+
+        const root = el('div', { id: 'spine_naf_seg', className: 'naf-spine-layout' });
+
+        const left = el('div', { className: 'naf-spine-left' });
+        left.appendChild(nafBuildGroupBar(examId));
+        left.appendChild(nafBuildSegColumns(examId, activeIdx));
+        root.appendChild(left);
+
+        root.appendChild(nafBuildMap(examId, seg, helpers));
+
+        return [
+            root,
+            el('div', { style: 'height: 14px;' }),
+            helpers.Table1col('spine_naf_add', [
+                { field: 'text', id: 'custom_desc', placeholder: 'vlastní popis...' },
+                { field: 'text', id: 'custom_conc', placeholder: 'vlastní závěr...' }
+            ])
         ];
-
-        const map = el('div', { className: 'naf-vert-map' });
-        const svgHost = el('div', { className: 'naf-vert-svg' });
-        map.appendChild(svgHost);
-        nafMountSpineSvg(svgHost, pfx, examId);
-
-        if (pfx) {
-            NAF_RF_SPOTS.forEach((spot) => {
-                ButtonConfigs[`${examId}_spine_naf_${pfx}_rf_${spot.id}`] = {
-                    type: 'standard',
-                    states: NAF_RF_STATES
-                };
-            });
-
-            NAF_MENUS.forEach((menu) => {
-                const wrap = el('div', {
-                    className: 'naf-menu',
-                    style: `left:${menu.x}%;top:${menu.y}%;`
-                });
-                wrap.appendChild(helpers.TableGrid(`naf_${pfx}_${menu.id}`, [[
-                    { btn: menu.btn, id: `${pfx}_${menu.id}` }
-                ]]));
-                map.appendChild(wrap);
-            });
-        } else {
-            map.appendChild(el('div', {
-                className: 'naf-seg-hint',
-                textContent: 'Vyber segment (kolečko myši)'
-            }));
-        }
-
-        nodes.push(map);
-        return nodes;
     },
     compile: (ctx) => {
         const examId = ctx.examId;
-
-        const causeOf = (group, kry, fac) => {
-            if (group === 'facet' && fac) {
-                if (fac === 'artróza III') return 'pokročilých facetových artróz';
-                if (fac === 'artróza II') return 'středních facetových artróz';
-                if (fac === 'artróza I') return 'mírných facetových artróz';
-                if (fac === 'istmy') return 'istmické lýzy při spondylolistéze';
-            }
-            if (group === 'endplate') {
-                if (kry === 'cement') return 'cementoplastiky';
-                if (kry === 'osteochondróza') return 'osteochondrózy';
-                if (kry === 'osteofyty') return 'spondylofytů';
-            }
-            return '';
-        };
 
         const pathologyReport = (seg) => {
             const parts = [];
@@ -309,10 +502,12 @@ const RegionSpineNaf = {
             return nafJoin(parts);
         };
 
-        const resolveGroupCause = (hits, group) => {
-            const causes = [...new Set(hits.map(h => h.cause).filter(Boolean))];
-            if (!causes.length) return '';
-            if (causes.length === 1) return causes[0];
+        /* Jedno facetové skloubení (jeden spot) = jednotné číslo; víc skloubení,
+           víc různých nálezů i krycí plotny (ty jsou vždy dvě) = množné. */
+        const resolveCause = (hits, group, plural) => {
+            const keys = [...new Set(hits.map(h => h.cause).filter(Boolean))];
+            if (!keys.length) return '';
+            if (keys.length === 1) return nafCauseText(keys[0], plural);
             if (group === 'facet') return 'variabilních facetových artróz';
             if (group === 'endplate') return 'variabilních degenerativních změn krycích ploten';
             return 'variabilních změn';
@@ -375,7 +570,8 @@ const RegionSpineNaf = {
 
             const parts = [];
             groups.forEach(([group, arr]) => {
-                const cause = resolveGroupCause(arr, group);
+                const plural = group !== 'facet' || arr.length > 1;
+                const cause = resolveCause(arr, group, plural);
 
                 const bySide = new Map();
                 arr.forEach((h) => {
@@ -391,8 +587,11 @@ const RegionSpineNaf = {
 
                 const segList = nafCompactSegs(entries);
                 let head = '';
-                if (group === 'facet') head = `ve facetových skloubeních ${segList}`;
-                else if (group === 'spinous') head = `interspinózně v ${segList}`;
+                if (group === 'facet') {
+                    head = plural
+                        ? `ve facetových skloubeních ${segList}`
+                        : `ve facetovém skloubení ${segList}`;
+                } else if (group === 'spinous') head = `interspinózně v ${segList}`;
                 else head = `v krycích plotnách ${segList}`;
                 if (cause) head += ` v terénu ${cause}`;
                 parts.push(head);
@@ -434,7 +633,7 @@ const RegionSpineNaf = {
                     group: s.group,
                     side: s.side,
                     id: s.id,
-                    cause: causeOf(s.group, seg.kry, seg.fac)
+                    cause: nafCauseKey(s.group, seg.kry, seg.fac)
                 });
             });
             plus.forEach((s) => {
@@ -443,7 +642,7 @@ const RegionSpineNaf = {
                     group: s.group,
                     side: s.side,
                     id: s.id,
-                    cause: causeOf(s.group, seg.kry, seg.fac)
+                    cause: nafCauseKey(s.group, seg.kry, seg.fac)
                 });
             });
         });
@@ -493,9 +692,26 @@ const RegionSpineNaf = {
             }
         }
 
+        /* Vlastní texty z pole „custom“ na konci regionu. */
+        const customText = (fieldId) => {
+            const raw = String(ctx.field(fieldId) || '').replace(/\u200B/g, '').trim();
+            if (!raw) return '';
+            const txt = nafCap(raw);
+            return /[.!?]$/.test(txt) ? txt : `${txt}.`;
+        };
+
+        const customDesc = customText('custom_desc');
+        if (customDesc) {
+            reportBlocks.push({ type: 'frame', text: customDesc, tableId: 'spine_naf_add' });
+        }
+        const customConc = customText('custom_conc');
+
         return {
             report: reportBlocks,
-            conclusion: { main: concMain, incidental: [] }
+            conclusion: {
+                main: concMain,
+                incidental: customConc ? [{ type: 'frame', text: customConc, tableId: 'spine_naf_add' }] : []
+            }
         };
     }
 };

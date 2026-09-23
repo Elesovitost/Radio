@@ -2436,6 +2436,39 @@
       ],
       "type": "standard"
     },
+    "c_spine_c2_3_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c2_3_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c2_3_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c2_3_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "c_spine_c2_3_bulging": {
       "states": [
         "0",
@@ -2569,42 +2602,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c2_3_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c2_3_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c2_3_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c2_3_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c2_3_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c2_3_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c2_3_lysis": {
       "states": [
@@ -2658,6 +2665,39 @@
       "states": [
         "0",
         "on"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c3_4_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c3_4_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c3_4_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c3_4_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -2794,42 +2834,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c3_4_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c3_4_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c3_4_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c3_4_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c3_4_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c3_4_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c3_4_lysis": {
       "states": [
@@ -2883,6 +2897,39 @@
       "states": [
         "0",
         "on"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c4_5_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c4_5_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c4_5_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c4_5_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -3019,42 +3066,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c4_5_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c4_5_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c4_5_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c4_5_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c4_5_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c4_5_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c4_5_lysis": {
       "states": [
@@ -3108,6 +3129,39 @@
       "states": [
         "0",
         "on"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c5_6_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c5_6_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c5_6_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c5_6_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -3244,42 +3298,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c5_6_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c5_6_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c5_6_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c5_6_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c5_6_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c5_6_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c5_6_lysis": {
       "states": [
@@ -3333,6 +3361,39 @@
       "states": [
         "0",
         "on"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c6_7_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c6_7_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c6_7_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c6_7_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -3469,42 +3530,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c6_7_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c6_7_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c6_7_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c6_7_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c6_7_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c6_7_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c6_7_lysis": {
       "states": [
@@ -3558,6 +3593,39 @@
       "states": [
         "0",
         "on"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c7_t1_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c7_t1_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c7_t1_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c7_t1_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -3694,42 +3762,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c7_t1_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c7_t1_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c7_t1_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c7_t1_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c7_t1_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c7_t1_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c7_t1_lysis": {
       "states": [
@@ -3862,6 +3904,39 @@
       "states": [
         "ne",
         "ano"
+      ],
+      "type": "standard"
+    },
+    "c_spine_t1_2_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_t1_2_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_t1_2_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_t1_2_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -3998,42 +4073,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_t1_2_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_t1_2_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_t1_2_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_t1_2_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_t1_2_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_t1_2_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_t1_2_lysis": {
       "states": [
@@ -8695,6 +8744,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l1_2_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l1_2_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l1_2_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l1_2_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l1_2_bulging": {
       "states": [
         "0",
@@ -8727,6 +8809,13 @@
       "type": "basic"
     },
     "ls_spine_l1_2_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l1_2_epifat": {
       "states": [
         "0",
         "on"
@@ -8842,42 +8931,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l1_2_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l1_2_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_l1_2_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l1_2_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l1_2_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l1_2_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_l1_2_lysis": {
       "states": [
@@ -8952,6 +9015,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l2_3_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l2_3_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l2_3_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l2_3_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l2_3_bulging": {
       "states": [
         "0",
@@ -8984,6 +9080,13 @@
       "type": "basic"
     },
     "ls_spine_l2_3_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l2_3_epifat": {
       "states": [
         "0",
         "on"
@@ -9099,42 +9202,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l2_3_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l2_3_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_l2_3_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l2_3_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l2_3_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l2_3_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_l2_3_lysis": {
       "states": [
@@ -9209,6 +9286,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l3_4_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l3_4_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l3_4_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l3_4_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l3_4_bulging": {
       "states": [
         "0",
@@ -9241,6 +9351,13 @@
       "type": "basic"
     },
     "ls_spine_l3_4_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l3_4_epifat": {
       "states": [
         "0",
         "on"
@@ -9356,42 +9473,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l3_4_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l3_4_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_l3_4_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l3_4_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l3_4_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l3_4_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_l3_4_lysis": {
       "states": [
@@ -9466,6 +9557,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l4_5_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l4_5_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l4_5_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l4_5_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l4_5_bulging": {
       "states": [
         "0",
@@ -9498,6 +9622,13 @@
       "type": "basic"
     },
     "ls_spine_l4_5_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l4_5_epifat": {
       "states": [
         "0",
         "on"
@@ -9613,42 +9744,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l4_5_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l4_5_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_l4_5_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l4_5_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l4_5_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l4_5_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_l4_5_lysis": {
       "states": [
@@ -9723,6 +9828,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l5_s1_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l5_s1_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l5_s1_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l5_s1_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l5_s1_bulging": {
       "states": [
         "0",
@@ -9755,6 +9893,13 @@
       "type": "basic"
     },
     "ls_spine_l5_s1_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l5_s1_epifat": {
       "states": [
         "0",
         "on"
@@ -9870,42 +10015,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l5_s1_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l5_s1_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_l5_s1_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l5_s1_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l5_s1_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l5_s1_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_l5_s1_lysis": {
       "states": [
@@ -10028,6 +10147,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_t11_12_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t11_12_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t11_12_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t11_12_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_t11_12_bulging": {
       "states": [
         "0",
@@ -10060,6 +10212,13 @@
       "type": "basic"
     },
     "ls_spine_t11_12_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t11_12_epifat": {
       "states": [
         "0",
         "on"
@@ -10175,42 +10334,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_t11_12_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_t11_12_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_t11_12_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t11_12_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t11_12_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t11_12_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_t11_12_lysis": {
       "states": [
@@ -10285,6 +10418,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_t12_l1_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t12_l1_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t12_l1_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t12_l1_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_t12_l1_bulging": {
       "states": [
         "0",
@@ -10317,6 +10483,13 @@
       "type": "basic"
     },
     "ls_spine_t12_l1_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t12_l1_epifat": {
       "states": [
         "0",
         "on"
@@ -10432,42 +10605,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_t12_l1_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_t12_l1_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_t12_l1_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t12_l1_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t12_l1_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t12_l1_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_t12_l1_lysis": {
       "states": [
@@ -13528,6 +13675,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_c7_t1_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_c7_t1_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_c7_t1_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_c7_t1_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_c7_t1_bulging": {
       "states": [
         "0",
@@ -13560,6 +13740,13 @@
       "type": "basic"
     },
     "t_spine_c7_t1_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_c7_t1_epifat": {
       "states": [
         "0",
         "on"
@@ -13675,42 +13862,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_c7_t1_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_c7_t1_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_c7_t1_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_c7_t1_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_c7_t1_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_c7_t1_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_c7_t1_lysis": {
       "states": [
@@ -13876,6 +14037,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t10_11_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t10_11_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t10_11_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t10_11_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t10_11_bulging": {
       "states": [
         "0",
@@ -13908,6 +14102,13 @@
       "type": "basic"
     },
     "t_spine_t10_11_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t10_11_epifat": {
       "states": [
         "0",
         "on"
@@ -14023,42 +14224,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t10_11_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t10_11_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t10_11_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t10_11_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t10_11_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t10_11_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t10_11_lysis": {
       "states": [
@@ -14133,6 +14308,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t11_12_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t11_12_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t11_12_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t11_12_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t11_12_bulging": {
       "states": [
         "0",
@@ -14165,6 +14373,13 @@
       "type": "basic"
     },
     "t_spine_t11_12_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t11_12_epifat": {
       "states": [
         "0",
         "on"
@@ -14280,42 +14495,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t11_12_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t11_12_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t11_12_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t11_12_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t11_12_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t11_12_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t11_12_lysis": {
       "states": [
@@ -14390,6 +14579,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t12_l1_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t12_l1_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t12_l1_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t12_l1_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t12_l1_bulging": {
       "states": [
         "0",
@@ -14422,6 +14644,13 @@
       "type": "basic"
     },
     "t_spine_t12_l1_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t12_l1_epifat": {
       "states": [
         "0",
         "on"
@@ -14537,42 +14766,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t12_l1_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t12_l1_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t12_l1_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t12_l1_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t12_l1_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t12_l1_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t12_l1_lysis": {
       "states": [
@@ -14647,6 +14850,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t1_2_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t1_2_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t1_2_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t1_2_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t1_2_bulging": {
       "states": [
         "0",
@@ -14679,6 +14915,13 @@
       "type": "basic"
     },
     "t_spine_t1_2_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t1_2_epifat": {
       "states": [
         "0",
         "on"
@@ -14794,42 +15037,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t1_2_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t1_2_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t1_2_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t1_2_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t1_2_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t1_2_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t1_2_lysis": {
       "states": [
@@ -14904,6 +15121,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t2_3_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t2_3_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t2_3_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t2_3_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t2_3_bulging": {
       "states": [
         "0",
@@ -14936,6 +15186,13 @@
       "type": "basic"
     },
     "t_spine_t2_3_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t2_3_epifat": {
       "states": [
         "0",
         "on"
@@ -15051,42 +15308,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t2_3_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t2_3_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t2_3_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t2_3_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t2_3_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t2_3_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t2_3_lysis": {
       "states": [
@@ -15161,6 +15392,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t3_4_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t3_4_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t3_4_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t3_4_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t3_4_bulging": {
       "states": [
         "0",
@@ -15193,6 +15457,13 @@
       "type": "basic"
     },
     "t_spine_t3_4_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t3_4_epifat": {
       "states": [
         "0",
         "on"
@@ -15308,42 +15579,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t3_4_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t3_4_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t3_4_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t3_4_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t3_4_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t3_4_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t3_4_lysis": {
       "states": [
@@ -15418,6 +15663,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t4_5_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t4_5_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t4_5_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t4_5_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t4_5_bulging": {
       "states": [
         "0",
@@ -15450,6 +15728,13 @@
       "type": "basic"
     },
     "t_spine_t4_5_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t4_5_epifat": {
       "states": [
         "0",
         "on"
@@ -15565,42 +15850,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t4_5_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t4_5_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t4_5_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t4_5_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t4_5_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t4_5_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t4_5_lysis": {
       "states": [
@@ -15675,6 +15934,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t5_6_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t5_6_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t5_6_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t5_6_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t5_6_bulging": {
       "states": [
         "0",
@@ -15707,6 +15999,13 @@
       "type": "basic"
     },
     "t_spine_t5_6_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t5_6_epifat": {
       "states": [
         "0",
         "on"
@@ -15822,42 +16121,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t5_6_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t5_6_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t5_6_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t5_6_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t5_6_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t5_6_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t5_6_lysis": {
       "states": [
@@ -15932,6 +16205,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t6_7_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t6_7_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t6_7_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t6_7_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t6_7_bulging": {
       "states": [
         "0",
@@ -15964,6 +16270,13 @@
       "type": "basic"
     },
     "t_spine_t6_7_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t6_7_epifat": {
       "states": [
         "0",
         "on"
@@ -16079,42 +16392,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t6_7_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t6_7_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t6_7_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t6_7_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t6_7_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t6_7_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t6_7_lysis": {
       "states": [
@@ -16189,6 +16476,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t7_8_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t7_8_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t7_8_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t7_8_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t7_8_bulging": {
       "states": [
         "0",
@@ -16221,6 +16541,13 @@
       "type": "basic"
     },
     "t_spine_t7_8_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t7_8_epifat": {
       "states": [
         "0",
         "on"
@@ -16336,42 +16663,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t7_8_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t7_8_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t7_8_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t7_8_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t7_8_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t7_8_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t7_8_lysis": {
       "states": [
@@ -16446,6 +16747,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t8_9_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t8_9_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t8_9_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t8_9_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t8_9_bulging": {
       "states": [
         "0",
@@ -16478,6 +16812,13 @@
       "type": "basic"
     },
     "t_spine_t8_9_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t8_9_epifat": {
       "states": [
         "0",
         "on"
@@ -16593,42 +16934,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t8_9_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t8_9_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t8_9_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t8_9_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t8_9_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t8_9_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t8_9_lysis": {
       "states": [
@@ -16703,6 +17018,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t9_10_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t9_10_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t9_10_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t9_10_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t9_10_bulging": {
       "states": [
         "0",
@@ -16735,6 +17083,13 @@
       "type": "basic"
     },
     "t_spine_t9_10_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t9_10_epifat": {
       "states": [
         "0",
         "on"
@@ -16850,42 +17205,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t9_10_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t9_10_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t9_10_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t9_10_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t9_10_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t9_10_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t9_10_lysis": {
       "states": [
@@ -23940,6 +24269,39 @@
       ],
       "type": "standard"
     },
+    "c_spine_c2_3_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c2_3_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c2_3_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c2_3_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "c_spine_c2_3_bulging": {
       "states": [
         "0",
@@ -24073,42 +24435,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c2_3_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c2_3_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c2_3_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c2_3_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c2_3_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c2_3_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c2_3_lysis": {
       "states": [
@@ -24162,6 +24498,39 @@
       "states": [
         "0",
         "on"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c3_4_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c3_4_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c3_4_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c3_4_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -24298,42 +24667,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c3_4_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c3_4_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c3_4_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c3_4_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c3_4_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c3_4_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c3_4_lysis": {
       "states": [
@@ -24387,6 +24730,39 @@
       "states": [
         "0",
         "on"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c4_5_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c4_5_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c4_5_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c4_5_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -24523,42 +24899,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c4_5_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c4_5_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c4_5_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c4_5_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c4_5_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c4_5_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c4_5_lysis": {
       "states": [
@@ -24612,6 +24962,39 @@
       "states": [
         "0",
         "on"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c5_6_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c5_6_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c5_6_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c5_6_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -24748,42 +25131,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c5_6_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c5_6_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c5_6_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c5_6_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c5_6_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c5_6_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c5_6_lysis": {
       "states": [
@@ -24837,6 +25194,39 @@
       "states": [
         "0",
         "on"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c6_7_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c6_7_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c6_7_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c6_7_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -24973,42 +25363,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c6_7_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c6_7_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c6_7_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c6_7_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c6_7_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c6_7_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c6_7_lysis": {
       "states": [
@@ -25062,6 +25426,39 @@
       "states": [
         "0",
         "on"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c7_t1_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c7_t1_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c7_t1_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_c7_t1_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -25198,42 +25595,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_c7_t1_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_c7_t1_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_c7_t1_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c7_t1_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c7_t1_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_c7_t1_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_c7_t1_lysis": {
       "states": [
@@ -25366,6 +25737,39 @@
       "states": [
         "ne",
         "ano"
+      ],
+      "type": "standard"
+    },
+    "c_spine_t1_2_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "c_spine_t1_2_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "c_spine_t1_2_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "c_spine_t1_2_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
       ],
       "type": "standard"
     },
@@ -25502,42 +25906,16 @@
       ],
       "type": "standard"
     },
+    "c_spine_t1_2_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "c_spine_t1_2_lam": {
       "states": null,
       "type": "basic"
-    },
-    "c_spine_t1_2_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "c_spine_t1_2_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "c_spine_t1_2_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "c_spine_t1_2_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "c_spine_t1_2_lysis": {
       "states": [
@@ -27963,6 +28341,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l1_2_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l1_2_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l1_2_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l1_2_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l1_2_bulging": {
       "states": [
         "0",
@@ -27995,6 +28406,13 @@
       "type": "basic"
     },
     "ls_spine_l1_2_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l1_2_epifat": {
       "states": [
         "0",
         "on"
@@ -28110,42 +28528,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l1_2_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l1_2_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_l1_2_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l1_2_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l1_2_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l1_2_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_l1_2_lysis": {
       "states": [
@@ -28220,6 +28612,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l2_3_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l2_3_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l2_3_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l2_3_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l2_3_bulging": {
       "states": [
         "0",
@@ -28252,6 +28677,13 @@
       "type": "basic"
     },
     "ls_spine_l2_3_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l2_3_epifat": {
       "states": [
         "0",
         "on"
@@ -28367,42 +28799,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l2_3_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l2_3_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_l2_3_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l2_3_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l2_3_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l2_3_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_l2_3_lysis": {
       "states": [
@@ -28477,6 +28883,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l3_4_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l3_4_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l3_4_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l3_4_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l3_4_bulging": {
       "states": [
         "0",
@@ -28509,6 +28948,13 @@
       "type": "basic"
     },
     "ls_spine_l3_4_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l3_4_epifat": {
       "states": [
         "0",
         "on"
@@ -28624,42 +29070,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l3_4_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l3_4_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_l3_4_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l3_4_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l3_4_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l3_4_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_l3_4_lysis": {
       "states": [
@@ -28734,6 +29154,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l4_5_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l4_5_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l4_5_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l4_5_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l4_5_bulging": {
       "states": [
         "0",
@@ -28766,6 +29219,13 @@
       "type": "basic"
     },
     "ls_spine_l4_5_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l4_5_epifat": {
       "states": [
         "0",
         "on"
@@ -28881,42 +29341,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l4_5_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l4_5_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_l4_5_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l4_5_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l4_5_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l4_5_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_l4_5_lysis": {
       "states": [
@@ -28991,6 +29425,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l5_s1_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l5_s1_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l5_s1_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l5_s1_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l5_s1_bulging": {
       "states": [
         "0",
@@ -29023,6 +29490,13 @@
       "type": "basic"
     },
     "ls_spine_l5_s1_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_l5_s1_epifat": {
       "states": [
         "0",
         "on"
@@ -29138,42 +29612,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_l5_s1_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_l5_s1_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_l5_s1_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l5_s1_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l5_s1_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_l5_s1_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_l5_s1_lysis": {
       "states": [
@@ -29296,6 +29744,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_t11_12_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t11_12_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t11_12_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t11_12_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_t11_12_bulging": {
       "states": [
         "0",
@@ -29328,6 +29809,13 @@
       "type": "basic"
     },
     "ls_spine_t11_12_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t11_12_epifat": {
       "states": [
         "0",
         "on"
@@ -29443,42 +29931,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_t11_12_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_t11_12_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_t11_12_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t11_12_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t11_12_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t11_12_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_t11_12_lysis": {
       "states": [
@@ -29553,6 +30015,39 @@
       ],
       "type": "standard"
     },
+    "ls_spine_t12_l1_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t12_l1_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t12_l1_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t12_l1_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "ls_spine_t12_l1_bulging": {
       "states": [
         "0",
@@ -29585,6 +30080,13 @@
       "type": "basic"
     },
     "ls_spine_t12_l1_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "ls_spine_t12_l1_epifat": {
       "states": [
         "0",
         "on"
@@ -29700,42 +30202,16 @@
       ],
       "type": "standard"
     },
+    "ls_spine_t12_l1_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "ls_spine_t12_l1_lam": {
       "states": null,
       "type": "basic"
-    },
-    "ls_spine_t12_l1_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t12_l1_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t12_l1_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "ls_spine_t12_l1_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "ls_spine_t12_l1_lysis": {
       "states": [
@@ -32106,6 +32582,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_c7_t1_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_c7_t1_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_c7_t1_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_c7_t1_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_c7_t1_bulging": {
       "states": [
         "0",
@@ -32138,6 +32647,13 @@
       "type": "basic"
     },
     "t_spine_c7_t1_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_c7_t1_epifat": {
       "states": [
         "0",
         "on"
@@ -32253,42 +32769,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_c7_t1_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_c7_t1_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_c7_t1_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_c7_t1_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_c7_t1_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_c7_t1_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_c7_t1_lysis": {
       "states": [
@@ -32454,6 +32944,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t10_11_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t10_11_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t10_11_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t10_11_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t10_11_bulging": {
       "states": [
         "0",
@@ -32486,6 +33009,13 @@
       "type": "basic"
     },
     "t_spine_t10_11_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t10_11_epifat": {
       "states": [
         "0",
         "on"
@@ -32601,42 +33131,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t10_11_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t10_11_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t10_11_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t10_11_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t10_11_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t10_11_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t10_11_lysis": {
       "states": [
@@ -32711,6 +33215,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t11_12_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t11_12_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t11_12_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t11_12_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t11_12_bulging": {
       "states": [
         "0",
@@ -32743,6 +33280,13 @@
       "type": "basic"
     },
     "t_spine_t11_12_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t11_12_epifat": {
       "states": [
         "0",
         "on"
@@ -32858,42 +33402,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t11_12_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t11_12_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t11_12_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t11_12_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t11_12_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t11_12_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t11_12_lysis": {
       "states": [
@@ -32968,6 +33486,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t12_l1_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t12_l1_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t12_l1_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t12_l1_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t12_l1_bulging": {
       "states": [
         "0",
@@ -33000,6 +33551,13 @@
       "type": "basic"
     },
     "t_spine_t12_l1_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t12_l1_epifat": {
       "states": [
         "0",
         "on"
@@ -33115,42 +33673,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t12_l1_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t12_l1_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t12_l1_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t12_l1_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t12_l1_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t12_l1_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t12_l1_lysis": {
       "states": [
@@ -33225,6 +33757,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t1_2_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t1_2_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t1_2_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t1_2_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t1_2_bulging": {
       "states": [
         "0",
@@ -33257,6 +33822,13 @@
       "type": "basic"
     },
     "t_spine_t1_2_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t1_2_epifat": {
       "states": [
         "0",
         "on"
@@ -33372,42 +33944,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t1_2_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t1_2_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t1_2_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t1_2_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t1_2_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t1_2_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t1_2_lysis": {
       "states": [
@@ -33482,6 +34028,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t2_3_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t2_3_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t2_3_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t2_3_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t2_3_bulging": {
       "states": [
         "0",
@@ -33514,6 +34093,13 @@
       "type": "basic"
     },
     "t_spine_t2_3_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t2_3_epifat": {
       "states": [
         "0",
         "on"
@@ -33629,42 +34215,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t2_3_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t2_3_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t2_3_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t2_3_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t2_3_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t2_3_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t2_3_lysis": {
       "states": [
@@ -33739,6 +34299,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t3_4_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t3_4_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t3_4_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t3_4_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t3_4_bulging": {
       "states": [
         "0",
@@ -33771,6 +34364,13 @@
       "type": "basic"
     },
     "t_spine_t3_4_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t3_4_epifat": {
       "states": [
         "0",
         "on"
@@ -33886,42 +34486,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t3_4_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t3_4_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t3_4_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t3_4_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t3_4_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t3_4_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t3_4_lysis": {
       "states": [
@@ -33996,6 +34570,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t4_5_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t4_5_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t4_5_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t4_5_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t4_5_bulging": {
       "states": [
         "0",
@@ -34028,6 +34635,13 @@
       "type": "basic"
     },
     "t_spine_t4_5_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t4_5_epifat": {
       "states": [
         "0",
         "on"
@@ -34143,42 +34757,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t4_5_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t4_5_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t4_5_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t4_5_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t4_5_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t4_5_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t4_5_lysis": {
       "states": [
@@ -34253,6 +34841,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t5_6_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t5_6_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t5_6_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t5_6_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t5_6_bulging": {
       "states": [
         "0",
@@ -34285,6 +34906,13 @@
       "type": "basic"
     },
     "t_spine_t5_6_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t5_6_epifat": {
       "states": [
         "0",
         "on"
@@ -34400,42 +35028,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t5_6_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t5_6_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t5_6_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t5_6_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t5_6_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t5_6_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t5_6_lysis": {
       "states": [
@@ -34510,6 +35112,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t6_7_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t6_7_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t6_7_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t6_7_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t6_7_bulging": {
       "states": [
         "0",
@@ -34542,6 +35177,13 @@
       "type": "basic"
     },
     "t_spine_t6_7_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t6_7_epifat": {
       "states": [
         "0",
         "on"
@@ -34657,42 +35299,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t6_7_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t6_7_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t6_7_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t6_7_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t6_7_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t6_7_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t6_7_lysis": {
       "states": [
@@ -34767,6 +35383,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t7_8_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t7_8_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t7_8_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t7_8_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t7_8_bulging": {
       "states": [
         "0",
@@ -34799,6 +35448,13 @@
       "type": "basic"
     },
     "t_spine_t7_8_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t7_8_epifat": {
       "states": [
         "0",
         "on"
@@ -34914,42 +35570,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t7_8_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t7_8_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t7_8_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t7_8_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t7_8_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t7_8_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t7_8_lysis": {
       "states": [
@@ -35024,6 +35654,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t8_9_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t8_9_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t8_9_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t8_9_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t8_9_bulging": {
       "states": [
         "0",
@@ -35056,6 +35719,13 @@
       "type": "basic"
     },
     "t_spine_t8_9_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t8_9_epifat": {
       "states": [
         "0",
         "on"
@@ -35171,42 +35841,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t8_9_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t8_9_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t8_9_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t8_9_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t8_9_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t8_9_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t8_9_lysis": {
       "states": [
@@ -35281,6 +35925,39 @@
       ],
       "type": "standard"
     },
+    "t_spine_t9_10_bone-lesion": {
+      "states": [
+        "0",
+        "hemangiom",
+        "schmorl",
+        "lytická",
+        "sklerotická"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t9_10_bone-lesion_hem_type": {
+      "states": [
+        "klasický",
+        "atypický",
+        "agresivní"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t9_10_bone-lesion_sch_act": {
+      "states": [
+        "klidný",
+        "edém"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t9_10_bone-lesion_sch_pos": {
+      "states": [
+        "kde...",
+        "horní",
+        "dolní"
+      ],
+      "type": "standard"
+    },
     "t_spine_t9_10_bulging": {
       "states": [
         "0",
@@ -35313,6 +35990,13 @@
       "type": "basic"
     },
     "t_spine_t9_10_dorsolistesis": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
+    "t_spine_t9_10_epifat": {
       "states": [
         "0",
         "on"
@@ -35428,42 +36112,16 @@
       ],
       "type": "standard"
     },
+    "t_spine_t9_10_hiz": {
+      "states": [
+        "0",
+        "on"
+      ],
+      "type": "standard"
+    },
     "t_spine_t9_10_lam": {
       "states": null,
       "type": "basic"
-    },
-    "t_spine_t9_10_lesion": {
-      "states": [
-        "0",
-        "hemangiom",
-        "schmorl",
-        "lytická",
-        "sklerotická"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t9_10_lesion_hem_type": {
-      "states": [
-        "klasický",
-        "atypický",
-        "agresivní"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t9_10_lesion_sch_act": {
-      "states": [
-        "klidný",
-        "edém"
-      ],
-      "type": "standard"
-    },
-    "t_spine_t9_10_lesion_sch_pos": {
-      "states": [
-        "kde...",
-        "horní",
-        "dolní"
-      ],
-      "type": "standard"
     },
     "t_spine_t9_10_lysis": {
       "states": [
@@ -56701,32 +57359,1773 @@
     }
   },
   "petct_naf_pater": {
+    "spine_naf_c2_3_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c2_3_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c2_3_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c2_3_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c2_3_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c2_3_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c2_3_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c2_3_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c2_3_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c3_4_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c3_4_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c3_4_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c3_4_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c3_4_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c3_4_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c3_4_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c3_4_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c3_4_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c4_5_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c4_5_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c4_5_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c4_5_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c4_5_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c4_5_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c4_5_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c4_5_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c4_5_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c5_6_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c5_6_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c5_6_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c5_6_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c5_6_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c5_6_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c5_6_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c5_6_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c5_6_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c6_7_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c6_7_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c6_7_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c6_7_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c6_7_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c6_7_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c6_7_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c6_7_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c6_7_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c7_t1_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c7_t1_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c7_t1_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c7_t1_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c7_t1_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c7_t1_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c7_t1_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c7_t1_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_c7_t1_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_g_C": {
+      "states": null,
+      "type": "basic"
+    },
+    "spine_naf_g_L": {
+      "states": null,
+      "type": "basic"
+    },
+    "spine_naf_g_T": {
+      "states": null,
+      "type": "basic"
+    },
+    "spine_naf_l1_2_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l1_2_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l1_2_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l1_2_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l1_2_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l1_2_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l1_2_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l1_2_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l1_2_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l2_3_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l2_3_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l2_3_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l2_3_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l2_3_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l2_3_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l2_3_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l2_3_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l2_3_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l3_4_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l3_4_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l3_4_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l3_4_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l3_4_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l3_4_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l3_4_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l3_4_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l3_4_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l4_5_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l4_5_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l4_5_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l4_5_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l4_5_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l4_5_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l4_5_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l4_5_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l4_5_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l5_s1_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l5_s1_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l5_s1_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l5_s1_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l5_s1_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l5_s1_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l5_s1_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l5_s1_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_l5_s1_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
     "spine_naf_naf_seg": {
       "states": [
         "segment",
-        "L5/S1",
-        "L4/5",
-        "L3/4",
-        "L2/3",
-        "L1/2",
-        "T12/L1",
-        "T11/12",
-        "T10/11",
-        "T9/10",
-        "T8/9",
-        "T7/8",
-        "T6/7",
-        "T5/6",
-        "T4/5",
-        "T3/4",
-        "T2/3",
-        "T1/2",
-        "C7/T1",
-        "C6/7",
-        "C5/6",
-        "C4/5",
+        "C2/3",
         "C3/4",
-        "C2/3"
+        "C4/5",
+        "C5/6",
+        "C6/7",
+        "C7/T1",
+        "T1/2",
+        "T2/3",
+        "T3/4",
+        "T4/5",
+        "T5/6",
+        "T6/7",
+        "T7/8",
+        "T8/9",
+        "T9/10",
+        "T10/11",
+        "T11/12",
+        "T12/L1",
+        "L1/2",
+        "L2/3",
+        "L3/4",
+        "L4/5",
+        "L5/S1"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_spine_naf_add_custom": {
+      "states": null,
+      "type": "basic"
+    },
+    "spine_naf_t10_11_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t10_11_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t10_11_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t10_11_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t10_11_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t10_11_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t10_11_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t10_11_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t10_11_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t11_12_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t11_12_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t11_12_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t11_12_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t11_12_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t11_12_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t11_12_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t11_12_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t11_12_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t12_l1_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t12_l1_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t12_l1_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t12_l1_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t12_l1_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t12_l1_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t12_l1_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t12_l1_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t12_l1_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t1_2_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t1_2_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t1_2_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t1_2_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t1_2_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t1_2_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t1_2_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t1_2_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t1_2_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t2_3_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t2_3_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t2_3_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t2_3_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t2_3_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t2_3_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t2_3_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t2_3_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t2_3_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t3_4_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t3_4_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t3_4_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t3_4_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t3_4_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t3_4_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t3_4_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t3_4_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t3_4_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t4_5_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t4_5_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t4_5_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t4_5_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t4_5_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t4_5_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t4_5_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t4_5_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t4_5_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t5_6_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t5_6_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t5_6_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t5_6_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t5_6_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t5_6_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t5_6_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t5_6_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t5_6_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t6_7_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t6_7_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t6_7_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t6_7_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t6_7_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t6_7_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t6_7_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t6_7_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t6_7_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t7_8_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t7_8_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t7_8_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t7_8_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t7_8_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t7_8_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t7_8_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t7_8_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t7_8_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t8_9_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t8_9_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t8_9_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t8_9_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t8_9_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t8_9_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t8_9_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t8_9_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t8_9_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t9_10_fac": {
+      "states": [
+        "facety",
+        "artróza I",
+        "artróza II",
+        "artróza III",
+        "istmy"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t9_10_kry": {
+      "states": [
+        "Krycí plotny",
+        "osteofyty",
+        "osteochondróza",
+        "cement"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t9_10_rf_ant": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t9_10_rf_cen": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t9_10_rf_fac_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t9_10_rf_fac_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t9_10_rf_lat_l": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t9_10_rf_lat_r": {
+      "states": [
+        "0",
+        "+",
+        "++"
+      ],
+      "type": "standard"
+    },
+    "spine_naf_t9_10_rf_sp": {
+      "states": [
+        "0",
+        "+",
+        "++"
       ],
       "type": "standard"
     }

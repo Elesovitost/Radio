@@ -28,8 +28,8 @@ const RegionCp = defineSvgSpineRegion({
     /* Ve foraminu se popisuje vystupující kořen (fRoot), ne obratel. */
     foramenRootFrom: 'fRoot',
 
-    /* Krční SVG nemá laterální recesy ani extraforaminální hernie. */
-    omitPaths: ['paracentral-L', 'paracentral-R', 'hernia-E-L', 'hernia-E-R'],
+    /* Krční SVG nemá laterální recesy, extraforaminální hernie ani epidurální tuk. */
+    omitPaths: ['paracentral-L', 'paracentral-R', 'hernia-E-L', 'hernia-E-R', 'epifat'],
     /* Popisek patologie sedí oproti LS o cca 15 px níž — posunout nahoru. */
     infoOffsetY: -15,
 

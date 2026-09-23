@@ -65,8 +65,12 @@ const SPINE_SVG_PATHS = {
     },
     'facet-ost-L': { mode: 'red', states: ['0', 'on'], defaultFill: 'white' },
     'facet-ost-R': { mode: 'red', states: ['0', 'on'], defaultFill: 'white' },
-    lesion: {
-        mode: 'lesion',
+    /* Okrsek vysoké intenzity v zadní části disku (obraz anulární fisury). */
+    hiz: { mode: 'red', states: ['0', 'on'] },
+    /* Zmnožený epidurální tuk – příčina zúžení páteřního kanálu. */
+    epifat: { mode: 'red', states: ['0', 'on'] },
+    'bone-lesion': {
+        mode: 'boneLesion',
         states: ['0', 'hemangiom', 'schmorl', 'lytická', 'sklerotická'],
         defaultFill: 'white'
     },
@@ -108,9 +112,9 @@ const SPINE_SVG_HERNIA_MIGR = {
    VŠECHNY segmenty, aby je compile našel i u neaktivní etáže. */
 const SPINE_SVG_SUB = {
     hernia_migr: Object.keys(SPINE_SVG_HERNIA_MIGR),
-    lesion_hem_type: ['klasický', 'atypický', 'agresivní'],
-    lesion_sch_pos: ['kde...', 'horní', 'dolní'],
-    lesion_sch_act: ['klidný', 'edém']
+    'bone-lesion_hem_type': ['klasický', 'atypický', 'agresivní'],
+    'bone-lesion_sch_pos': ['kde...', 'horní', 'dolní'],
+    'bone-lesion_sch_act': ['klidný', 'edém']
 };
 
 /* Popisky objektů pro hover (tooltip jako u trupu).
@@ -142,7 +146,9 @@ const SPINE_SVG_HOVER_LABELS = {
     'hernia-F-R': 'Herniace foraminálně vpravo',
     'hernia-E-L': 'Herniace extraforaminálně vlevo',
     'hernia-E-R': 'Herniace extraforaminálně vpravo',
-    lesion: 'Ložisko obratle {v}',
+    hiz: 'Okrsek vysoké intenzity {disc}',
+    epifat: 'Zmnožený epidurální tuk',
+    'bone-lesion': 'Ložisko obratle {v}',
     lysis: 'Lýza oblouku {v}',
     ventrolistesis: 'Ventrolistéza {v}',
     dorsolistesis: 'Retrolistéza {v}'
@@ -202,7 +208,7 @@ const SPINE_SVG_STATE_MAP = {
     disc: { '0': 0, 'I': 1, 'II': 2, 'III': 3 },
     facet: { '0': 0, 'I': 1, 'II': 2, 'III': 3, 'edém': 4 },
     paracentral: { '0': 0, 'stenóza': 1, 'fibróza': 2, 'adheze': 3 },
-    lesion: { '0': 0, 'hemangiom': 1, 'schmorl': 2, 'lytická': 3, 'sklerotická': 4 },
+    boneLesion: { '0': 0, 'hemangiom': 1, 'schmorl': 2, 'lytická': 3, 'sklerotická': 4 },
     plateUp: { '0': 0, 'prolomení krycí plotny': 1, 'fraktura klínovitá': 2, 'fraktura výrazná s propagací zadní hrany': 3 },
     modic: { '0': 0, 'Modic I': 1, 'Modic II': 2, 'Modic III': 3, 'destrukce': 4 }
 };
@@ -285,7 +291,7 @@ function spineSvgFillFor(spec, idx) {
     if (spec.mode === 'modic') {
         return [null, C.red, C.yellow, C.grey, C.black][idx] || null;
     }
-    if (spec.mode === 'lesion') {
+    if (spec.mode === 'boneLesion') {
         return [null, C.yellow, C.black, C.red, C.white][idx] || null;
     }
     if (spec.mode === 'bulge') {
@@ -672,7 +678,23 @@ function defineSvgSpineRegion(cfg) {
                 mmIds: [fieldId(examId, segKey, 'bulging', 'mm')]
             };
         }
-        if (pathKey === 'lesion') {
+        if (pathKey === 'hiz') {
+            return {
+                title: 'Anulární fisura',
+                where: 'zadní část disku',
+                detail: null,
+                mmIds: []
+            };
+        }
+        if (pathKey === 'epifat') {
+            return {
+                title: 'Epidurální lipomatóza',
+                where: 'páteřní kanál',
+                detail: null,
+                mmIds: []
+            };
+        }
+        if (pathKey === 'bone-lesion') {
             const titles = ['Léze', 'Hemangiom', 'Schmorl', 'Lytická', 'Sklerotická'];
             const row = {
                 title: titles[idx] || 'Léze',
@@ -683,17 +705,17 @@ function defineSvgSpineRegion(cfg) {
             };
             if (idx === 1) {
                 row.btns.push({
-                    id: fieldId(examId, segKey, 'lesion', 'hem_type'),
-                    states: SPINE_SVG_SUB.lesion_hem_type
+                    id: fieldId(examId, segKey, 'bone-lesion', 'hem_type'),
+                    states: SPINE_SVG_SUB['bone-lesion_hem_type']
                 });
             } else if (idx === 2) {
                 row.btns.push({
-                    id: fieldId(examId, segKey, 'lesion', 'sch_pos'),
-                    states: SPINE_SVG_SUB.lesion_sch_pos
+                    id: fieldId(examId, segKey, 'bone-lesion', 'sch_pos'),
+                    states: SPINE_SVG_SUB['bone-lesion_sch_pos']
                 });
                 row.btns.push({
-                    id: fieldId(examId, segKey, 'lesion', 'sch_act'),
-                    states: SPINE_SVG_SUB.lesion_sch_act
+                    id: fieldId(examId, segKey, 'bone-lesion', 'sch_act'),
+                    states: SPINE_SVG_SUB['bone-lesion_sch_act']
                 });
             }
             return row;
@@ -1087,6 +1109,7 @@ function defineSvgSpineRegion(cfg) {
         /* ---------- agregace přes segmenty ---------- */
         const collShapes = {};
         const collLesions = {};
+        const hizSegments = [];
         const collModic = {};
         /* Operace: stabilizace se vypisuje rozsahem obratlů celého segmentu,
            náhrada disku a laminektomie (horní obratel etáže) výčtem. */
@@ -1217,6 +1240,12 @@ function defineSvgSpineRegion(cfg) {
             }
             if (bulgeConc) causes.push(bulgeConc);
 
+            /* ---- okrsek vysoké intenzity v zadní části disku (anulární fisura) ---- */
+            if (on(seg, 'hiz')) {
+                sentences.push(spineSvgSentence('okrsek vysoké intenzity v zadní části disku'));
+                hizSegments.push(seg.disc);
+            }
+
             /* ---- degenerace facet (I/II/III/edém) per strana ---- */
             const facetBuild = (val, sideWord, sideAbbr) => {
                 let modRep = '', modConc = '', edemRep = '', edemConc = '';
@@ -1306,6 +1335,12 @@ function defineSvgSpineRegion(cfg) {
                 if (pR > 0) paraBuild(pR, 'l.dx.');
             }
 
+            /* ---- zmnožený epidurální tuk (lipomatóza) – uvádí stenózu kanálu ---- */
+            if (on(seg, 'epifat')) {
+                sentences.push(spineSvgSentence('zmnožený epidurální tuk v páteřním kanálu'));
+                causes.push({ nom: 'epidurální lipomatóza', gen: 'epidurální lipomatózy' });
+            }
+
             /* ---- stenóza páteřního kanálu ---- */
             const cIdx = g(seg, 'canal', 'canal');
             if (cIdx) {
@@ -1380,19 +1415,19 @@ function defineSvgSpineRegion(cfg) {
             rootSentences.forEach((s) => sentences.push(s));
 
             /* ---- ložiska (hemangiom/schmorl/lytická/sklerotická) ---- */
-            const lesIdx = g(seg, 'lesion', 'lesion');
+            const lesIdx = g(seg, 'bone-lesion', 'boneLesion');
             const addLes = (key, vertebr) => {
                 if (!collLesions[key]) collLesions[key] = [];
                 collLesions[key].push(vertebr);
             };
             if (lesIdx === 1) {
-                const hemType = S(seg, 'lesion_hem_type');
+                const hemType = S(seg, 'bone-lesion_hem_type');
                 const key = hemType === 'atypický' ? 'atypický hemangiom'
                     : (hemType === 'agresivní' ? 'agresivní hemangiom' : 'hemangiom');
                 addLes(key, seg.v);
             } else if (lesIdx === 2) {
-                const pos = S(seg, 'lesion_sch_pos');
-                const act = S(seg, 'lesion_sch_act');
+                const pos = S(seg, 'bone-lesion_sch_pos');
+                const act = S(seg, 'bone-lesion_sch_act');
                 let txt = 'Schmorlův uzel';
                 if (pos === 'horní') txt += ' horní krycí plotny';
                 else if (pos === 'dolní') txt += ' dolní krycí plotny';
@@ -1714,6 +1749,14 @@ function defineSvgSpineRegion(cfg) {
 
         if (main.length === 0) {
             main.push({ type: 'frame', text: `Přiměřený nález na ${ADJ} páteři.`, dimmed: true });
+        }
+
+        /* ---------- anulární fisura (vedlejší nález) ---------- */
+        if (hizSegments.length > 0) {
+            incidental.push({
+                type: 'frame',
+                text: `Anulární fisura (HIZ) v zadní části disku ${spineSvgJoinCzech(hizSegments)}.`
+            });
         }
 
         /* ---------- vlastní texty ---------- */
