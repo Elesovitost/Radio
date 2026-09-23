@@ -8,7 +8,18 @@
    METRICS HELPER
 ═══════════════════════════════════════════════ */
 const MetricsEngine = {
-       getSuvText: function(suvStr) {
+    /* FDG-styl: poměr k játrům (% / násobek). */
+    liverRelativeSuvText: function(suv, refLiv) {
+        if (isNaN(refLiv) || refLiv <= 0) return `se SUVmax = ${suv}`;
+        const pctLiv = suv / refLiv;
+        if (pctLiv <= 0.2) return "bez patrné akumulace RF";
+        if (pctLiv >= 0.8 && pctLiv <= 1.2) return "s akumulací RF obdobnou jako ref. játra";
+        if (pctLiv < 0.8) return `s akumulací RF ${Math.round(pctLiv * 10) * 10}% úrovně ref. jaterního parenchymu`;
+        if (pctLiv <= 3.0) return `s akumulací RF ${(Math.round(pctLiv * 10) / 10).toString().replace('.', ',')}násobku ref. jaterního parenchymu`;
+        return `s akumulací RF ${(Math.round(pctLiv * 2) / 2).toString().replace('.', ',')}násobku ref. jaterního parenchymu`;
+    },
+
+    getSuvText: function(suvStr) {
         if (!APP_SETTINGS.suvWord) return `se SUVmax = ${suvStr}`;
         const suv = extractNumber(suvStr);
         if (isNaN(suv)) return `se SUVmax = ${suvStr}`;
@@ -20,34 +31,28 @@ const MetricsEngine = {
         const exam = (Store.activeTab || '').toLowerCase();
         
         if (exam.includes('psma')) {
-            const pctLiv = suv / refLiv;
-            if (pctLiv <= 0.1) return "bez patrné akumulace RF";
-            if (pctLiv <= 0.3) return "s akumulací RF pod úrovní ref. poolu";
-            if (pctLiv <= 1.0) return "s akumulací RF pod úrovní ref. jater";
-            if (suv < refPar) return "s akumulací RF nad úrovní ref. jater";
-            return "s akumulací RF nad úrovní ref. parotid";
-        } else if (exam.includes('dotatoc')) {
-            const pctLiv = suv / refLiv;
-            if (pctLiv <= 0.1) return "bez patrné akumulace RF";
-            if (pctLiv < 0.9) return "s akumulací RF pod úrovní ref. jater";
-            if (pctLiv <= 1.1) return "s akumulací RF na úrovni ref. jater";
-            if (suv < refSle) return "s akumulací RF nad úrovní ref. jater";
-            return "s akumulací RF nad úrovní ref. sleziny";
-        } else if (exam.includes('dopa') && exam.includes('mozek')) {
+            /* Nad parotidami už nepoměřovat k játrům. */
+            if (!isNaN(refPar) && refPar > 0 && suv >= refPar) {
+                return "s akumulací RF nad úrovní ref. parotid";
+            }
+            return this.liverRelativeSuvText(suv, refLiv);
+        }
+        if (exam.includes('dotatoc')) {
+            /* Nad slezinou už nepoměřovat k játrům. */
+            if (!isNaN(refSle) && refSle > 0 && suv >= refSle) {
+                return "s akumulací RF nad úrovní ref. sleziny";
+            }
+            return this.liverRelativeSuvText(suv, refLiv);
+        }
+        if (exam.includes('dopa') && exam.includes('mozek')) {
             const pctStr = suv / refStr;
             if (pctStr <= 0.2) return "bez patrné akumulace RF";
             if (pctStr >= 0.8 && pctStr <= 1.2) return "s akumulací RF obdobnou jako ref. striatum";
             if (pctStr < 0.8) return `s akumulací RF ${Math.round(pctStr * 10) * 10}% úrovně ref. kontralaterálního striata`;
             if (pctStr <= 3.0) return `s akumulací RF ${(Math.round(pctStr * 10) / 10).toString().replace('.', ',')}násobku ref. kontralaterálního striata`;
             return `s akumulací RF ${(Math.round(pctStr * 2) / 2).toString().replace('.', ',')}násobku ref. kontralaterálního striata`;
-        } else {
-            const pctLiv = suv / refLiv;
-            if (pctLiv <= 0.2) return "bez patrné akumulace RF";
-            if (pctLiv >= 0.8 && pctLiv <= 1.2) return "s akumulací RF obdobnou jako ref. játra";
-            if (pctLiv < 0.8) return `s akumulací RF ${Math.round(pctLiv * 10) * 10}% úrovně ref. jaterního parenchymu`;
-            if (pctLiv <= 3.0) return `s akumulací RF ${(Math.round(pctLiv * 10) / 10).toString().replace('.', ',')}násobku ref. jaterního parenchymu`;
-            return `s akumulací RF ${(Math.round(pctLiv * 2) / 2).toString().replace('.', ',')}násobku ref. jaterního parenchymu`;
         }
+        return this.liverRelativeSuvText(suv, refLiv);
     },
 
     getAutoActivityLevel: function(suvVal, refLiv, refPar, refSle, refStr, examId) {
