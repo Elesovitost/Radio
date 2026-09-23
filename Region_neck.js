@@ -5,7 +5,7 @@
 const RegionNeck_PREDEFS = {
     groups: {
         all: 'bez signifikantní patologie.',
-        allOtherwise: 'Jinak bez signifikantní patologie.'
+        allOtherwise: 'Jinak bez patrné signifikantní patologie.'
     },
     organs: {
         sinus: { findings: 'vzdušné, bez patologického obsahu.', conclusion: 'Přiměřený nález v oblasti sinů.' },
@@ -248,31 +248,11 @@ const RegionNeck = {
                 }
             });
 
-            let hasLesFindings = pendingLes.length > 0;
-            let hasLnFindings = pendingLn.length > 0;
-            let orphanLes = false;
-
-            if (!toOrgans) {
-                const lesStart = reportOut.length;
-                pendingLes.forEach(item => reportOut.push(item.report));
-                if (!hasLesFindings || (isPET && !highAct)) {
-                    reportOut.splice(lesStart, 0, LESIONS_DEFINITION.virtualPredef(
-                        'neck_lesion_main', LESIONS_DEFINITION.predefText.lesion(isPET)));
-                }
-                if (hasLesFindings && (!isPET || highAct) && !badEtio) {
-                    reportOut.push(LESIONS_DEFINITION.virtualPredef(
-                        'neck_lesion_main', LESIONS_DEFINITION.predefText.lesionJinak));
-                }
-                pendingLn.forEach(item => reportOut.push(item.report));
-                if (!hasLnFindings) {
-                    reportOut.push(LESIONS_DEFINITION.virtualPredef(
-                        'neck_lymphnode_main', LESIONS_DEFINITION.predefText.lymph(isPET)));
-                }
-            } else if (!hasLesFindings || (isPET && !highAct)) {
-                /* U PET bez vysoké aktivity zůstává negativní text nahoře i při zápisu k orgánům. */
-                reportOut.push(LESIONS_DEFINITION.virtualPredef(
-                    'neck_lesion_main', LESIONS_DEFINITION.predefText.lesion(isPET)));
-            }
+            const { hasLesFindings, hasLnFindings } = emitLesionAndLymphSections({
+                reportOut, pendingLes, pendingLn, toOrgans, isPET,
+                lesionTable: 'neck_lesion_main', lymphTable: 'neck_lymphnode_main',
+                highAct, badEtio
+            });
 
             /* Siny: lokalita se píše jednou, varianty nálezu i text do závěru se z ní skládají. */
             const SINY_LOK = [
@@ -453,14 +433,9 @@ const RegionNeck = {
                 concField: 'neck_soft_custom_conc'
             });
 
-            if (toOrgans) {
-                pendingLes.forEach(item => {
-                    if (!placeLesionReport(organBag, reportOut, item.report, item.organKeys)) orphanLes = true;
-                });
-                pendingLn.forEach(item => {
-                    placeLesionReport(organBag, reportOut, item.report, item.organKeys);
-                });
-            }
+            const orphanLes = toOrgans
+                ? placeLesionsToOrgans(organBag, reportOut, pendingLes, pendingLn).lesionOrphan
+                : false;
 
             flush({
                 groups: RegionNeck.virtualGroups,

@@ -44,16 +44,27 @@ const ReportText = {
    Sestavení dokumentu z aktuálního stavu (bez DOM).
    ============================================================= */
 
-/* Region, kterému klíč ve Store patří. Hledá se NEJDELŠÍ shoda prefixu
-   `${examId}_${rId}_` — kdyby byl klíč jednoho regionu prodloužením klíče
-   jiného, kratší prefix by ho "ukradl". */
-function regionOfFocusKey(examId, key) {
-    let best = null;
-    for (const rId of Object.keys(REGIONS)) {
-        if (!key.startsWith(`${examId}_${rId}_`)) continue;
-        if (!best || rId.length > best.length) best = rId;
+/* Prefixy `${examId}_${rId}_` pro dané vyšetření, seřazené od nejdelšího rId.
+   První shoda je tak nejdelší prefix; kratší prefix by jinak "ukradl" klíč
+   delšího regionu. Cache drží hotové prefixy (REGIONS je statické). */
+const _regionPrefixes = new Map();
+function regionPrefixesFor(examId) {
+    let list = _regionPrefixes.get(examId);
+    if (!list) {
+        list = Object.keys(REGIONS)
+            .sort((a, b) => b.length - a.length)
+            .map(rId => [`${examId}_${rId}_`, rId]);
+        _regionPrefixes.set(examId, list);
     }
-    return best;
+    return list;
+}
+
+/* Region, kterému klíč ve Store patří (nejdelší shoda prefixu). */
+function regionOfFocusKey(examId, key) {
+    for (const [prefix, rId] of regionPrefixesFor(examId)) {
+        if (key.startsWith(prefix)) return rId;
+    }
+    return null;
 }
 
 /* Regiony, které mají pro dané vyšetření co říct: oficiální regs + cokoli,
@@ -258,7 +269,19 @@ const ReportDoc = {
 
             const text = ReportText.frameText(b).trim();
             const cleanText = text.replace(/^- /, '');
-            // Skupiny orgánů vždy na vlastním řádku (i když je „Orgány pod sebe“ vypnuté).
+            /* Skupinový negativ („Orgány hrudníku: …“ i „Jinak …“) navazuje na léze/uzliny
+               a jiný text, ne na vlastní řádek. Skupiny s patologií zůstávají samostatně. */
+            if (b.isGroup && b.predef) {
+                if (currentLine) {
+                    currentLine += ' ' + cleanText;
+                } else if (lines.length && lines[lines.length - 1] !== '') {
+                    lines[lines.length - 1] += ' ' + cleanText;
+                } else {
+                    currentLine = cleanText;
+                }
+                continue;
+            }
+            // Ostatní skupiny orgánů vždy na vlastním řádku (i když je „Orgány pod sebe“ vypnuté).
             if (currentLayout === 'block' || b.isGroup || b.hidden || text.startsWith('Neložisková')) {
                 if (currentLine) { lines.push(currentLine.trim()); currentLine = ''; }
                 lines.push(cleanText);

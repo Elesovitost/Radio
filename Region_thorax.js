@@ -307,7 +307,7 @@ function buildIldTreeTable(helpers, examId) {
 const RegionThorax_PREDEFS = {
     groups: {
         all: 'Adekvátní plicní objem a vzdušnost, mediastinum bez signifikantní patologie.',
-        allOtherwise: 'Jinak bez signifikantní patologie.',
+        allOtherwise: 'Jinak bez patrné signifikantní patologie.',
         plice_pleura: 'Plíce přiměřené vzdušnosti a kresby, bez ložiskových či difuzních změn. Pleurálně bez výpotku a bez pneumotoraxu.'
     },
     organs: {
@@ -699,31 +699,11 @@ const RegionThorax = {
                 }, lokaceByOrg, { toOrgans });
             });
 
-            let hasLesFindings = pendingLes.length > 0;
-            let hasLnFindings = pendingLn.length > 0;
-            let orphanLes = false;
-
-            if (!toOrgans) {
-                const lesStart = reportOut.length;
-                pendingLes.forEach(item => reportOut.push(item.report));
-                if (!hasLesFindings || (isPET && !highAct)) {
-                    reportOut.splice(lesStart, 0, LESIONS_DEFINITION.virtualPredef(
-                        'thorax_lesion_main', LESIONS_DEFINITION.predefText.lesion(isPET)));
-                }
-                if (hasLesFindings && (!isPET || highAct) && !badEtio) {
-                    reportOut.push(LESIONS_DEFINITION.virtualPredef(
-                        'thorax_lesion_main', LESIONS_DEFINITION.predefText.lesionJinak));
-                }
-                pendingLn.forEach(item => reportOut.push(item.report));
-                if (!hasLnFindings) {
-                    reportOut.push(LESIONS_DEFINITION.virtualPredef(
-                        'thorax_lymphnode_main', LESIONS_DEFINITION.predefText.lymph(isPET)));
-                }
-            } else if (!hasLesFindings || (isPET && !highAct)) {
-                /* U PET bez vysoké aktivity zůstává negativní text nahoře i při zápisu k orgánům. */
-                reportOut.push(LESIONS_DEFINITION.virtualPredef(
-                    'thorax_lesion_main', LESIONS_DEFINITION.predefText.lesion(isPET)));
-            }
+            const { hasLesFindings, hasLnFindings } = emitLesionAndLymphSections({
+                reportOut, pendingLes, pendingLn, toOrgans, isPET,
+                lesionTable: 'thorax_lesion_main', lymphTable: 'thorax_lymphnode_main',
+                highAct, badEtio
+            });
 
             let difuzniRep = [];
 
@@ -1074,13 +1054,10 @@ const RegionThorax = {
                 parts: [srdceText]
             });
 
+            let orphanLes = false;
             if (toOrgans) {
-                pendingLes.forEach(item => {
-                    if (!placeLesionReport(organBag, reportOut, item.report, item.organKeys)) orphanLes = true;
-                });
-                pendingLn.forEach(item => {
-                    if (!placeLesionReport(organBag, reportOut, item.report, item.organKeys)) orphanLes = true;
-                });
+                const placed = placeLesionsToOrgans(organBag, reportOut, pendingLes, pendingLn);
+                orphanLes = placed.lesionOrphan || placed.lymphOrphan;
             }
 
             flush({

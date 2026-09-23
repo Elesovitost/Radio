@@ -117,6 +117,63 @@ function placeLesionReport(organBag, reportOut, frame, organKeys) {
 }
 
 /**
+ * Společné vypsání odložených ložisek a uzlin pro trupové regiony (krk, hrudník, břicho).
+ *
+ * - toOrgans = false: nálezy i negativní texty (lesion / lymph) se řadí nahoru regionu.
+ * - toOrgans = true:  samotné nálezy se věší pod orgány (placeLesionsToOrgans); nahoře
+ *                     zůstává jen negativní text ložisek, když chybí / PET bez highAct.
+ *
+ * Vrací { hasLesFindings, hasLnFindings } pro flush(hasExtraPath).
+ */
+function emitLesionAndLymphSections({
+    reportOut, pendingLes, pendingLn, toOrgans, isPET,
+    lesionTable, lymphTable, highAct = false, badEtio = false
+}) {
+    const hasLesFindings = pendingLes.length > 0;
+    const hasLnFindings = pendingLn.length > 0;
+    const missingLesionPath = !hasLesFindings || (isPET && !highAct);
+
+    if (!toOrgans) {
+        const lesStart = reportOut.length;
+        pendingLes.forEach(item => reportOut.push(item.report));
+        if (missingLesionPath) {
+            reportOut.splice(lesStart, 0, LESIONS_DEFINITION.virtualPredef(
+                lesionTable, LESIONS_DEFINITION.predefText.lesion(isPET)));
+        }
+        if (hasLesFindings && (!isPET || highAct) && !badEtio) {
+            reportOut.push(LESIONS_DEFINITION.virtualPredef(
+                lesionTable, LESIONS_DEFINITION.predefText.lesionJinak));
+        }
+        pendingLn.forEach(item => reportOut.push(item.report));
+        if (!hasLnFindings) {
+            reportOut.push(LESIONS_DEFINITION.virtualPredef(
+                lymphTable, LESIONS_DEFINITION.predefText.lymph(isPET)));
+        }
+    } else if (missingLesionPath) {
+        /* U PET bez vysoké aktivity zůstává negativní text nahoře i při zápisu k orgánům. */
+        reportOut.push(LESIONS_DEFINITION.virtualPredef(
+            lesionTable, LESIONS_DEFINITION.predefText.lesion(isPET)));
+    }
+
+    return { hasLesFindings, hasLnFindings };
+}
+
+/**
+ * Při zápisu k orgánům zavěsí odložené nálezy pod cílové orgány.
+ * Vrací { lesionOrphan, lymphOrphan } – kategorie, které zůstaly bez cílového orgánu.
+ */
+function placeLesionsToOrgans(organBag, reportOut, pendingLes, pendingLn) {
+    let lesionOrphan = false, lymphOrphan = false;
+    pendingLes.forEach(item => {
+        if (!placeLesionReport(organBag, reportOut, item.report, item.organKeys)) lesionOrphan = true;
+    });
+    pendingLn.forEach(item => {
+        if (!placeLesionReport(organBag, reportOut, item.report, item.organKeys)) lymphOrphan = true;
+    });
+    return { lesionOrphan, lymphOrphan };
+}
+
+/**
  * Stav odloženého zápisu orgánů pro jeden region.
  * emitOrgan → flush (flushOrganExpand).
  */

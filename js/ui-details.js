@@ -59,80 +59,46 @@ Object.assign(UI, {
                 tabTitleWrapper.appendChild(btnSide);
                 tabTitleWrapper.appendChild(el('span', { textContent: sideConfig.label }));
             } else {
-                const petMatch = exam.title.match(/^([A-Z]+)(-PET \/ )([A-Z]+)(.*)$/);
-                const tomoMatch = exam.title.match(/^(CT|MR)( )(.*)$/);
-                
-                if (petMatch) {
-                    const currentPet = petMatch[1];
-                    const currentTomo = petMatch[3];
-                    const separator = petMatch[2].replace('-', '').trim();
-                    const rest = petMatch[4].trim();
-                    
-                    let petCandidates = 0;
-                    let tomoCandidates = 0;
-                    
-                    Object.values(EXAMS).flat().forEach(e => {
-                        const m = e.title.match(/^([A-Z]+)(-PET \/ )([A-Z]+)(.*)$/);
-                        if (m && m[4] === petMatch[4]) {
-                            if (m[3] === currentTomo) petCandidates++;
-                            if (m[1] === currentPet) tomoCandidates++;
-                        }
-                    });
-                    
-                    if (petCandidates > 1) {
-                        tabTitleWrapper.appendChild(el('button', {
-                            className: 'btn btn-side-toggle',
-                            textContent: currentPet,
-                            title: 'Změnit radiofarmakum',
-                            'data-action': 'cycle-exam-part',
-                            'data-part': 'pet',
-                            'data-payload': examId
-                        }));
-                    } else {
-                        tabTitleWrapper.appendChild(el('span', { textContent: currentPet }));
-                    }
-                    
-                    tabTitleWrapper.appendChild(el('span', { textContent: separator }));
-                    
-                    if (tomoCandidates > 1) {
-                        tabTitleWrapper.appendChild(el('button', {
-                            className: 'btn btn-side-toggle',
-                            textContent: currentTomo,
-                            title: 'Změnit modalitu (CT/MR)',
-                            'data-action': 'cycle-exam-part',
-                            'data-part': 'tomo',
-                            'data-payload': examId
-                        }));
-                    } else {
-                        tabTitleWrapper.appendChild(el('span', { textContent: currentTomo }));
-                    }
-                    
-                    tabTitleWrapper.appendChild(el('span', { textContent: rest }));
-                } else if (tomoMatch && !exam.title.includes('PET')) {
-                    const currentModality = tomoMatch[1];
-                    const rest = tomoMatch[3].trim();
-                    
-                    let candidates = 0;
-                    Object.values(EXAMS).flat().forEach(e => {
-                        const m = e.title.match(/^(CT|MR)( )(.*)$/);
-                        if (m && m[3] === tomoMatch[3] && !e.title.includes('PET')) {
-                            candidates++;
-                        }
-                    });
-                    
-                    if (candidates > 1) {
-                        tabTitleWrapper.appendChild(el('button', {
-                            className: 'btn btn-side-toggle',
-                            textContent: currentModality,
-                            title: 'Změnit modalitu (CT/MR)',
-                            'data-action': 'cycle-exam-part',
-                            'data-part': 'modality',
-                            'data-payload': examId
-                        }));
-                    } else {
-                        tabTitleWrapper.appendChild(el('span', { textContent: currentModality }));
-                    }
-                    tabTitleWrapper.appendChild(el('span', { textContent: rest }));
+                const title = ExamTitle.parse(exam.title);
+
+                if (title.kind === 'pet') {
+                    const switchPet = ExamTitle.variants(examId, 'pet').length > 1;
+                    const switchTomo = ExamTitle.variants(examId, 'tomo').length > 1;
+
+                    tabTitleWrapper.appendChild(switchPet ? el('button', {
+                        className: 'btn btn-side-toggle',
+                        textContent: title.pet,
+                        title: 'Změnit radiofarmakum',
+                        'data-action': 'cycle-exam-part',
+                        'data-part': 'pet',
+                        'data-payload': examId
+                    }) : el('span', { textContent: title.pet }));
+
+                    tabTitleWrapper.appendChild(el('span', { textContent: title.separator }));
+
+                    tabTitleWrapper.appendChild(switchTomo ? el('button', {
+                        className: 'btn btn-side-toggle',
+                        textContent: title.tomo,
+                        title: 'Změnit modalitu (CT/MR)',
+                        'data-action': 'cycle-exam-part',
+                        'data-part': 'tomo',
+                        'data-payload': examId
+                    }) : el('span', { textContent: title.tomo }));
+
+                    tabTitleWrapper.appendChild(el('span', { textContent: title.rest.trim() }));
+                } else if (title.kind === 'tomo') {
+                    const switchModality = ExamTitle.variants(examId, 'modality').length > 1;
+
+                    tabTitleWrapper.appendChild(switchModality ? el('button', {
+                        className: 'btn btn-side-toggle',
+                        textContent: title.modality,
+                        title: 'Změnit modalitu (CT/MR)',
+                        'data-action': 'cycle-exam-part',
+                        'data-part': 'modality',
+                        'data-payload': examId
+                    }) : el('span', { textContent: title.modality }));
+
+                    tabTitleWrapper.appendChild(el('span', { textContent: title.rest.trim() }));
                 } else {
                     tabTitleWrapper.appendChild(el('span', { textContent: exam.title }));
                 }

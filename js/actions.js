@@ -514,35 +514,9 @@ const ActionHandlers = {
         const oldExam = getExamById(oldId);
         if (!oldExam) return;
         
-        const petMatch = oldExam.title.match(/^([A-Z]+)(-PET \/ )([A-Z]+)(.*)$/);
-        const tomoMatch = oldExam.title.match(/^(CT|MR)( )(.*)$/);
-        
-        let candidates = [];
-        
-        if (petMatch) {
-            const currentPet = petMatch[1];
-            const currentTomo = petMatch[3];
-            const rest = petMatch[4];
-            
-            Object.values(EXAMS).flat().forEach(e => {
-                const m = e.title.match(/^([A-Z]+)(-PET \/ )([A-Z]+)(.*)$/);
-                if (m && m[4] === rest) {
-                    if (part === 'pet' && m[3] === currentTomo) candidates.push(e.id);
-                    if (part === 'tomo' && m[1] === currentPet) candidates.push(e.id);
-                }
-            });
-        } else if (tomoMatch && !oldExam.title.includes('PET')) {
-            const rest = tomoMatch[3];
-            Object.values(EXAMS).flat().forEach(e => {
-                const m = e.title.match(/^(CT|MR)( )(.*)$/);
-                if (m && m[3] === rest && !e.title.includes('PET')) {
-                    candidates.push(e.id);
-                }
-            });
-        }
-        
+        const candidates = ExamTitle.variants(oldId, part);
         if (candidates.length <= 1) return;
-        
+
         let idx = candidates.indexOf(oldId);
         idx = (idx + dir + candidates.length) % candidates.length;
         const newId = candidates[idx];

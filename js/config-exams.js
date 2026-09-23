@@ -148,6 +148,47 @@ const REPORT_PROFILES = {
     petmr_fdg_rekta: { tracer: 'fdg' }
 };
 
+/* =============================================================
+   Titulky vyšetření – rozklad na přepínatelné části (radiofarmakum / modalita)
+   a hledání variant pro cyklus. Sdíleno mezi lištou vyšetření (ui-details)
+   a handlerem 'cycle-exam-part' (actions).
+   ============================================================= */
+const ExamTitle = {
+    PET_RE: /^([A-Z]+)(-PET \/ )([A-Z]+)(.*)$/,
+    TOMO_RE: /^(CT|MR)( )(.*)$/,
+
+    /* { kind:'pet', pet, tomo, separator, rest } | { kind:'tomo', modality, rest } | { kind:'plain' } */
+    parse(title) {
+        const pet = title.match(this.PET_RE);
+        if (pet) {
+            return {
+                kind: 'pet', pet: pet[1], tomo: pet[3],
+                separator: pet[2].replace('-', '').trim(), rest: pet[4]
+            };
+        }
+        const tomo = title.includes('PET') ? null : title.match(this.TOMO_RE);
+        if (tomo) return { kind: 'tomo', modality: tomo[1], rest: tomo[3] };
+        return { kind: 'plain' };
+    },
+
+    /* ID vyšetření, mezi kterými lze cyklovat danou část ('pet' | 'tomo' | 'modality'). */
+    variants(examId, part) {
+        const exam = getExamById(examId);
+        const parsed = exam ? this.parse(exam.title) : null;
+        if (!parsed || parsed.kind === 'plain') return [];
+        if (parsed.kind === 'pet' && part !== 'pet' && part !== 'tomo') return [];
+
+        return Object.values(EXAMS).flat()
+            .filter(e => {
+                const m = this.parse(e.title);
+                if (parsed.kind === 'tomo') return m.kind === 'tomo' && m.rest === parsed.rest;
+                if (m.kind !== 'pet' || m.rest !== parsed.rest) return false;
+                return part === 'pet' ? m.tomo === parsed.tomo : m.pet === parsed.pet;
+            })
+            .map(e => e.id);
+    }
+};
+
 const FMM_AKUM_STATES = ['-', '+', '++'];
 const FMM_AKUM_TEXTS = [
     {

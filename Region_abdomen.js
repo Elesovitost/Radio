@@ -667,8 +667,6 @@ const RegionAbdomen = {
                     }, lokaceByOrg, { toOrgans });
                 });
 
-            hasLesFindings = pendingLes.length > 0;
-
             const pendingLn = [];
             const lnInsts = getExamInstances('abdomen_lymphnode_main', examId);
             lnInsts.forEach(instId => {
@@ -720,29 +718,13 @@ const RegionAbdomen = {
                         pendingLn.push({ report: f.report, organKeys: ['vc'] });
                     }
                 });
-            hasLnFindings = pendingLn.length > 0;
-
-            if (!toOrgans) {
-                const lesStart = reportOut.length;
-                pendingLes.forEach(item => reportOut.push(item.report));
-                if (!hasLesFindings || (isPET && !highAct)) {
-                    reportOut.splice(lesStart, 0, LESIONS_DEFINITION.virtualPredef(
-                        'abdomen_lesion_main', LESIONS_DEFINITION.predefText.lesion(isPET)));
-                }
-                if (hasLesFindings && (!isPET || highAct) && !badEtio) {
-                    reportOut.push(LESIONS_DEFINITION.virtualPredef(
-                        'abdomen_lesion_main', LESIONS_DEFINITION.predefText.lesionJinak));
-                }
-                pendingLn.forEach(item => reportOut.push(item.report));
-                if (!hasLnFindings) {
-                    reportOut.push(LESIONS_DEFINITION.virtualPredef(
-                        'abdomen_lymphnode_main', LESIONS_DEFINITION.predefText.lymph(isPET)));
-                }
-            } else if (!hasLesFindings || (isPET && !highAct)) {
-                /* U PET bez vysoké aktivity zůstává negativní text nahoře i při zápisu k orgánům. */
-                reportOut.push(LESIONS_DEFINITION.virtualPredef(
-                    'abdomen_lesion_main', LESIONS_DEFINITION.predefText.lesion(isPET)));
-            }
+            const lesions = emitLesionAndLymphSections({
+                reportOut, pendingLes, pendingLn, toOrgans, isPET,
+                lesionTable: 'abdomen_lesion_main', lymphTable: 'abdomen_lymphnode_main',
+                highAct, badEtio
+            });
+            hasLesFindings = lesions.hasLesFindings;
+            hasLnFindings = lesions.hasLnFindings;
 
             // 3. Játra
             let jaRep = [];
@@ -1096,12 +1078,7 @@ const RegionAbdomen = {
             emitOrgan('aw', 'aw_ost_add', awRep, 'Břišní stěna', 'abdomen_wall_main', OP.aw.findings, OP.aw.conclusion);
 
             if (toOrgans) {
-                pendingLes.forEach(item => {
-                    if (!placeLesionReport(organBag, reportOut, item.report, item.organKeys)) orphanLes = true;
-                });
-                pendingLn.forEach(item => {
-                    placeLesionReport(organBag, reportOut, item.report, item.organKeys);
-                });
+                orphanLes = placeLesionsToOrgans(organBag, reportOut, pendingLes, pendingLn).lesionOrphan;
             }
 
             flushOrgans();
