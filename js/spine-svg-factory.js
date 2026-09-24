@@ -1,35 +1,17 @@
-/* =============================================================
-   spine-svg-factory.js
-   Jedna implementace páteře řízené SVG mapou (LS / C / T).
-
-   Vlevo seznam etáží, vpravo SVG obratle/segmentu. Stavy se mění
-   klikem / kolečko / pravé tlačítko na cesty SVG. Compile generuje
-   findings + impression.
-
-   Region soubory (Region_LSp.js, Region_Cp.js, Region_Tp.js) jsou jen
-   konfigurace – co je anatomicky a textově odlišné. Logika je zde, na
-   jednom místě.
-
-   Načítá se PŘED region soubory (viz index.html / tests/golden.html).
-   ============================================================= */
-
-/* Barvy výplní ve SVG. Bledé odstíny = defaultní stav (kanál / foramina /
-   kořeny), syté = patologie podle tíže. */
 const SPINE_SVG_COLORS = {
     yellow: '#f0d000',
     orange: '#e37908',
     red: '#e32708',
     green: '#c5e8cb',
     lightBlue: '#d4eef6',
-    /* Herniace jsou nativně o stupeň tmavší modrá než bulging v SVG. */
+
+    /* Hernie tmavší než bulging. */
     herniaBlue: '#364cd7',
     grey: '#787878',
     black: '#1a1a1a',
     white: '#ffffff'
 };
 
-/* Režimy interakce podle id cesty ve SVG. Klíče, které v daném SVG
-   nejsou, se prostě nebindují; cfg.omitPaths umí sadu zúžit. */
 const SPINE_SVG_PATHS = {
     canal: { mode: 'grade123', states: ['0', 'I', 'II', 'III'], defaultFill: 'green' },
     'paracentral-L': {
@@ -50,7 +32,6 @@ const SPINE_SVG_PATHS = {
     'facet-R': { mode: 'facet', states: ['0', 'I', 'II', 'III', 'edém'], defaultFill: 'white' },
     disc: { mode: 'grade123', states: ['0', 'I', 'II', 'III'] },
 
-    /* Herniace: nativně tmavší modrá než bulging (viz SPINE_SVG_COLORS). */
     'hernia-C': { mode: 'red', states: ['0', 'on'], defaultFill: 'herniaBlue' },
     'hernia-P-L': { mode: 'red', states: ['0', 'on'], defaultFill: 'herniaBlue' },
     'hernia-P-R': { mode: 'red', states: ['0', 'on'], defaultFill: 'herniaBlue' },
@@ -58,16 +39,17 @@ const SPINE_SVG_PATHS = {
     'hernia-F-R': { mode: 'red', states: ['0', 'on'], defaultFill: 'herniaBlue' },
     'hernia-E-L': { mode: 'red', states: ['0', 'on'], defaultFill: 'herniaBlue' },
     'hernia-E-R': { mode: 'red', states: ['0', 'on'], defaultFill: 'herniaBlue' },
-    /* Jedna cesta pro okraj disku: bulging / osteofyty / obojí. */
+
+    /* Jedna cesta: bulging / osteofyty / kombinace. */
     bulging: {
         mode: 'bulge',
         states: ['0', 'bulging disku', 'osteofyty', 'kombinace']
     },
     'facet-ost-L': { mode: 'red', states: ['0', 'on'], defaultFill: 'white' },
     'facet-ost-R': { mode: 'red', states: ['0', 'on'], defaultFill: 'white' },
-    /* Okrsek vysoké intenzity v zadní části disku (obraz anulární fisury). */
+
     hiz: { mode: 'red', states: ['0', 'on'] },
-    /* Zmnožený epidurální tuk – příčina zúžení páteřního kanálu. */
+
     epifat: { mode: 'red', states: ['0', 'on'] },
     'bone-lesion': {
         mode: 'boneLesion',
@@ -94,22 +76,19 @@ const SPINE_SVG_PATHS = {
         defaultFill: 'white'
     },
 
-    /* Jen anatomický podklad — viditelné v SVG, neklikací. */
+    /* Anatomický podklad — neklikací. */
     body: { mode: 'display' },
     'body-upper': { mode: 'display' },
     'body-lower': { mode: 'display' }
 };
 
-/* Migrace hernie: stav tlačítka → přídavné jméno do textu zprávy.
-   Bez migrace se do textu nepíše nic, proto null. */
 const SPINE_SVG_HERNIA_MIGR = {
     'bez migrace': null,
     'kraniálně': 'kraniální',
     'kaudálně': 'kaudální'
 };
 
-/* Podtlačítka v info panelu (migrace, upřesnění léze). Registrují se pro
-   VŠECHNY segmenty, aby je compile našel i u neaktivní etáže. */
+/* Podtlačítka: registrují se pro všechny segmenty (compile). */
 const SPINE_SVG_SUB = {
     hernia_migr: Object.keys(SPINE_SVG_HERNIA_MIGR),
     'bone-lesion_hem_type': ['klasický', 'atypický', 'agresivní'],
@@ -117,9 +96,6 @@ const SPINE_SVG_SUB = {
     'bone-lesion_sch_act': ['klidný', 'edém']
 };
 
-/* Popisky objektů pro hover (tooltip jako u trupu).
-   {disc} = etáž (L4/5), {v} = obratel etáže (L4), {next} = obratel pod etáží,
-   {froot} = kořen, který v etáži vystupuje (u LS stejný jako {v}). */
 const SPINE_SVG_HOVER_LABELS = {
     body: 'Obratel {v}',
     'body-upper': 'Obratel {v}',
@@ -164,10 +140,7 @@ const SPINE_SVG_GRADE_LABEL = ['', 'mírná', 'střední', 'výrazná'];
 const SPINE_SVG_GRADE_NEUTER = ['', 'mírné', 'střední', 'výrazné'];
 const SPINE_SVG_ROOT_LABEL = ['', 'mírný tlak', 'útlak', 'komprese'];
 
-/* Hernie — zóna 0→3 (centrum→periferie). Popis:
-   - jedna strana: „centrálně - foraminálně vlevo“ (od–do k nejzazší)
-   - obě strany: „široká centrální“
-   - ≥4 lokality: „o široké bazi“ */
+/* Hernie: zóna 0→3; ≥4 lokality = o široké bazi. */
 const SPINE_SVG_HERNIA = {
     'hernia-C':   { z: 0, side: null },
     'hernia-P-L': { z: 1, side: 'L' },
@@ -179,13 +152,8 @@ const SPINE_SVG_HERNIA = {
 };
 const SPINE_SVG_HERNIA_Z = ['centrálně', 'paracentrálně', 'foraminálně', 'extraforaminálně'];
 
-/* Operační přepínače etáže (objeví se vedle etáží, jen když je operace
-   zapnutá): stabilizace segmentu, náhrada disku, laminektomie horního obratle.
-   Jsou to obyčejné "basic" přepínače — rozsvícení nese hodnota true. */
 const SPINE_SVG_OPS = ['stab', 'disk', 'lam'];
 
-/* Stabilizace se vypisuje rozsahem obratlů segmentu: sousední etáže splynou
-   ("L1-L4"), nesousedící zůstanou oddělené čárkou ("L1-L2, L4-L5"). */
 function spineSvgVertebraRange(segs) {
     if (!segs.length) return '';
     const parts = [];
@@ -213,33 +181,25 @@ const SPINE_SVG_STATE_MAP = {
     modic: { '0': 0, 'Modic I': 1, 'Modic II': 2, 'Modic III': 3, 'destrukce': 4 }
 };
 
-/* Pořadí jevů v textu etáže: nejdřív tíže stenózy (kanál → laterální recesus →
-   foramen), teprve pak útlak kořene. Ten se tak nikdy nejmenuje dvakrát —
-   stenóza sama o sobě útlak kořene netvrdí, ten se zapisuje zvlášť. */
+/* Pořadí v textu etáže: stenózy, pak útlak kořene. */
 const SPINE_SVG_EFFECT_ORDER = { canal: 1, recess: 2, foramen: 3, root: 4 };
 
-/* Skloňování slova „kořen“ pro útlak. Akuzativ (na kořen) a instrumentál
-   plurálu (s kořeny) mají stejný tvar jako 1. pád, proto stačí tři tvary. */
 const SPINE_SVG_ROOT_WORD = {
     uni: { nom: 'kořen', gen: 'kořene', ins: 'kořenem' },
     bil: { nom: 'kořeny', gen: 'kořenů', ins: 'kořeny' }
 };
 
-/* Tíže útlaku kořene ve dvou tvarech:
-   nom = nález a závěr „první stenózy“ (stenóza … a útlak …),
-   dat = závěr „první strukturální změny“ po „vedoucí k/ke“ (… vedoucí ke kontaktu …). */
 const SPINE_SVG_ROOT_TEXT = {
     1: { nom: 'mírný tlak na {acc}', dat: 'kontaktu s {ins}' },
     2: { nom: 'útlak {gen}', dat: 'útlaku {gen}' },
     3: { nom: 'komprese {gen}', dat: 'kompresi {gen}' }
 };
 
-/* Priorita etáže v závěru (čím výš, tím dřív se etáž vypíše). Není to pořadí
-   v textu — to řeší SPINE_SVG_EFFECT_ORDER. */
+/* Priorita etáže v závěru (ne pořadí v textu). */
 const SPINE_SVG_EFFECT_RANK = (e) => {
     if (e.kind === 'canal') return e.sev === 3 ? 100 : (e.sev === 2 ? 70 : 50);
     if (e.kind === 'recess' || e.kind === 'root') return e.sev === 3 ? 95 : (e.sev === 2 ? 80 : 30);
-    return e.sev === 3 ? 90 : (e.sev === 2 ? 60 : 40); /* foramen */
+    return e.sev === 3 ? 90 : (e.sev === 2 ? 60 : 40);
 };
 
 const SPINE_SVG_IS_INSIGNIFICANT = (c) => {
@@ -248,7 +208,7 @@ const SPINE_SVG_IS_INSIGNIFICANT = (c) => {
     return /bulging|artróza|spondylofyty|diskopatie|hypertrofie/i.test(nom);
 };
 
-/* SVG se cachuje podle souboru — LS a T sdílí Organs_spine.svg. */
+/* LS a T sdílí Organs_spine.svg. */
 const SPINE_SVG_CACHE = {};
 const SPINE_SVG_PARSED = {};
 
@@ -269,7 +229,6 @@ function spineSvgSentence(str) {
     return s;
 }
 
-/* Index stavu z přečteného textu (states[idx]); 0 = default. */
 function spineSvgGrade(state, map) {
     return map[state] || 0;
 }
@@ -301,31 +260,15 @@ function spineSvgFillFor(spec, idx) {
     return null;
 }
 
-/* =============================================================
-   cfg:
-     regionId, title, adjective                    - identifikátory a text
-     svgFile                                       - který obrázek mountovat
-     levels: [{ v, disc?, root?, fRoot? }, ...]     - poslední jen { v }
-     curvature: { key, label, states, map }         - lordóza / kyfóza
-     lstv: null | [stavy]                           - přechodný obratel
-     cordCompression                                - "agregací kaudy" / "útlakem míchy"
-     stabilization                                  - "Zadní" / "Přední"
-     foramenRootFrom: 'vLabel' | 'fRoot'            - čím se popisuje kořen ve foraminu
-     myeloLevels (nepovinné)                        - výčet etáží myelopatie
-     omitPaths (nepovinné)                          - klíče SVG, které region nepoužívá
-     infoOffsetY (nepovinné, px)                    - posun popisku nad SVG (záporné = výš)
-   ============================================================= */
 function defineSvgSpineRegion(cfg) {
     const R = cfg.regionId;
     const ADJ = cfg.adjective;
     const CURV = cfg.curvature;
 
-    /* Prefixy se odvodí z labelů - nikdy se neopisují ručně. */
     const levels = cfg.levels.map((l, i) => Object.assign({}, l, {
         sPfx: l.disc ? l.disc.toLowerCase().replace(/\//g, '_') : null,
         fRoot: l.fRoot || l.v,
-        /* Dolní obratel etáže = obratel dalšího levelu. `root` sem nepatří -
-           nese kořen vystupujícího nervu (v krční páteři klidně C8). */
+        /* vNext = dolní obratel; root = vystupující kořen (C8). */
         vNext: cfg.levels[i + 1] ? cfg.levels[i + 1].v : l.v
     }));
     const segmentLevels = levels.filter((l) => l.disc);
@@ -337,14 +280,6 @@ function defineSvgSpineRegion(cfg) {
     if (cfg.omitPaths) allowedPaths = allowedPaths.filter((k) => cfg.omitPaths.indexOf(k) === -1);
     const pathSpec = (key) => (allowedPaths.indexOf(key) !== -1 ? SPINE_SVG_PATHS[key] : null);
 
-    /* ── stav popisku ──────────────────────────────────────────────
-       focusPath    objekt, který panel ukazuje (drží se i po skrytí, aby se
-                    dalo vrátit, když kurzor dojede na ovládání panelu)
-       pendingPath  objekt, u kterého běží SPINE_SVG_INFO_DELAY
-
-       Přepnutí textu je zpožděné: panel se přepne, až když kurzor na objektu
-       chvíli zůstane (SPINE_SVG_INFO_DELAY). Při rychlém přejetí tak zůstane
-       text předchozího objektu, místo aby text blikal. */
     let focusPath = null;
     let pendingPath = null;
     let showInfoTimer = null;
@@ -358,7 +293,6 @@ function defineSvgSpineRegion(cfg) {
         return idx > 0 ? segmentLevels[idx - 1] : null;
     }
 
-    /* Popisek objektu ve SVG, nebo null (pro jiné regiony / neklikací cesty). */
     function svgLabel(pathEl) {
         const pattern = SPINE_SVG_HOVER_LABELS[pathEl.id];
         if (!pattern) return null;
@@ -383,8 +317,6 @@ function defineSvgSpineRegion(cfg) {
             display: flex; gap: 12px; align-items: flex-start;
             width: 100%; min-height: 280px;
         }
-        /* Etáže tvoří mřížku: první sloupec obratle, za ním (jen když je
-           zapnutá operace) přepínače stab / disk / lam na každém řádku. */
         .spine-svg-segs {
             display: grid; grid-template-columns: 72px; gap: 4px;
             flex: 0 0 auto; align-content: start; padding-top: 4px;
@@ -422,9 +354,7 @@ function defineSvgSpineRegion(cfg) {
             width: 34%;
             max-width: 170px;
             z-index: 5;
-            /* Popisek patologie leží nad SVG — nesmí ale blokovat hover ani klik
-               na cesty pod ním, proto pointer-events jen na vlastní ovládání. */
-            pointer-events: none;
+            pointer-events: none; /* text neblokuje cesty; ovládání má auto */
             font-size: 12px;
             line-height: 1.35;
             font-weight: 700;
@@ -480,9 +410,7 @@ function defineSvgSpineRegion(cfg) {
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            /* Nad světlým SVG musí být text černý i ve stavu .modified
-               (styles.css pro něj nastavuje bílé písmo). */
-            color: #000;
+            color: #000; /* .modified nesmí být bílé nad SVG */
             -webkit-text-stroke: 0;
             text-shadow: none;
         }
@@ -585,8 +513,6 @@ function defineSvgSpineRegion(cfg) {
         }, [el('span', { textContent: states[idx] })]);
     }
 
-    /* Popisek objektu pro info panel. Vrací řádek i pro stav 0 (hover má
-       ukázat, co je to za objekt, i když je zatím bez patologie). */
     function infoRowFor(examId, segKey, pathKey) {
         if (!pathKey) return null;
         const idx = readIdx(examId, segKey, pathKey);
@@ -668,8 +594,7 @@ function defineSvgSpineRegion(cfg) {
             };
         }
         if (pathKey === 'bulging') {
-            /* Bulging, osteofyty i kombinace sdílí jediné mm pole — přepnutí
-               stavu tak hodnotu nezkazí. */
+            /* Bulging/osteofyty/kombinace sdílí jedno mm. */
             const titles = ['Bulging disku', 'Bulging disku', 'Osteofyty', 'Kombinace'];
             return {
                 title: titles[idx] || 'Bulging disku',
@@ -806,13 +731,6 @@ function defineSvgSpineRegion(cfg) {
         return panel;
     }
 
-    /* ── viditelnost popisku řídí pozice kurzoru ───────────────────
-       Rozhodnutí se dělá při každém pointermove nad mapou, ne z jednoho
-       vzorku při mouseleave. V hustém SVG (sousedící cesty, výplňové cesty,
-       prázdná místa v panelu) je jediný vzorek nespolehlivý: stačilo minout
-       klikatelnou cestu i box panelu a naplánované skrytí už nemělo kdo
-       zrušit, takže text zmizel i při cestě na jeho vlastní mm pole. */
-
     function cancelHide() {
         if (hideInfoTimer) clearTimeout(hideInfoTimer);
         hideInfoTimer = null;
@@ -824,13 +742,6 @@ function defineSvgSpineRegion(cfg) {
         pendingPath = null;
     }
 
-    /* Pruh ovládání v panelu (mm, migrace) — kurzor mezi nimi nesmí skončit
-       jako „mimo“ a shodit text. Panel sám je pro myš průhledný
-       (pointer-events: none na containeru), aby nekradl kliky cestám pod sebou,
-       takže hit-test sedí jen na ovládání; mezery mezi inputem a tlačítkem
-       se hlídají okolím jejich boxu. Zbytek panelu (text) držení neblokuje —
-       cesty pod ním zůstávají najížděcí, což je vidět hlavně u bulge/hernie,
-       nad kterými popisek leží. */
     function overPanelControls(panel, target, x, y) {
         if (target && panel.contains(target)) return true;
         const ctrl = panel.querySelector('.spine-svg-info-detail');
@@ -870,11 +781,6 @@ function defineSvgSpineRegion(cfg) {
         }, SPINE_SVG_INFO_HIDE_DELAY);
     }
 
-    /* Jediné místo, které rozhoduje, co panel ukazuje:
-         1. kurzor nad ovládáním panelu → drž (a když panel mezitím zmizel,
-            dokresli ho z focusPath — odtud se vrací text po kliknutí)
-         2. kurzor nad klikatelnou cestou → po prodlevě přepni na její objekt
-         3. kdekoli jinde → skryj (timer se při dalším pohybu zruší) */
     function trackPointer(map, panel, examId, segKey) {
         map.addEventListener('pointermove', (e) => {
             const x = e.clientX;
@@ -899,8 +805,6 @@ function defineSvgSpineRegion(cfg) {
             if (panel.style.display !== 'none') scheduleHide(panel);
         });
 
-        /* Odjezd z mapy: poslední pointermove mohl zůstat na cestě (stav 2),
-           po kterém už žádný event nepřijde. */
         map.addEventListener('pointerleave', () => {
             cancelPendingShow();
             if (panel.style.display !== 'none') scheduleHide(panel);
@@ -908,8 +812,7 @@ function defineSvgSpineRegion(cfg) {
     }
 
     function setupSvg(svgEl, segKey, examId) {
-        /* Původní <style> a class u path necháme — objekty vypadají jako ve SVG,
-           pořadí ve file určuje, co co překrývá. */
+
         svgEl.querySelectorAll('path[id]').forEach((path) => {
             path.style.fill = '';
             path.style.stroke = '';
@@ -955,8 +858,7 @@ function defineSvgSpineRegion(cfg) {
         const file = cfg.svgFile;
         const attach = (svgEl) => {
             host.replaceChildren(setupSvg(svgEl, segKey, examId));
-            /* Po re-renderu (klik / kolečko) kurzor na cestě zůstává a žádný
-               pointermove nepřijde — panel proto obnov z focusPath. */
+
             if (focusPath) fillInfoPanel(panel, examId, segKey);
         };
 
@@ -984,8 +886,6 @@ function defineSvgSpineRegion(cfg) {
             if (host.isConnected) host.textContent = `SVG ${file} nelze načíst.`;
         });
     }
-
-    /* ═══════════════ GLOBÁLNÍ TABULKY (osa/operace/expanze/vlastní) ═══════════════ */
 
     function globalTable(helpers) {
         const cells = [
@@ -1041,8 +941,6 @@ function defineSvgSpineRegion(cfg) {
         ]);
     }
 
-    /* ═══════════════ COMPILE ═══════════════ */
-
     function compile(ctx) {
         const examId = ctx.examId;
 
@@ -1055,15 +953,14 @@ function defineSvgSpineRegion(cfg) {
         const T = (localId) => ctx.text(localId);
         const S = (seg, key) => ctx.text(`${seg.sPfx}_${key}`);
         const Fd = (seg, key) => ctx.field(`${seg.sPfx}_${key}`);
-        /* Cesty, které region v SVG nemá (cfg.omitPaths), se vůbec nedotazují -
-           ctx.text by na neznámé id hlásilo MISS. */
+
+        /* omitPaths: nevolat ctx.text (jinak MISS). */
         const has = (key) => !!pathSpec(key);
         const on = (seg, key) => has(key) && S(seg, key) === 'on';
         const g = (seg, key, mapName) => (has(key) ? spineSvgGrade(S(seg, key), SPINE_SVG_STATE_MAP[mapName]) : 0);
 
         const isStenosisFirst = Store.fields[`${R}_conc_mode`] !== 'pathology';
 
-        /* ---------- globální: osa, křivka, LSTV, operace ---------- */
         const staticPhysio = [];
         const staticPatho = [];
         const concStaticSentences = [];
@@ -1106,13 +1003,11 @@ function defineSvgSpineRegion(cfg) {
 
         const opActive = ctx.isActive('op');
 
-        /* ---------- agregace přes segmenty ---------- */
         const collShapes = {};
         const collLesions = {};
         const hizSegments = [];
         const collModic = {};
-        /* Operace: stabilizace se vypisuje rozsahem obratlů celého segmentu,
-           náhrada disku a laminektomie (horní obratel etáže) výčtem. */
+
         const stabSegments = [];
         const discReplacements = [];
         const laminVertebrae = [];
@@ -1131,14 +1026,11 @@ function defineSvgSpineRegion(cfg) {
             const effects = [];
             const fibrosisArr = [];
             const adhesionArr = [];
-            /* Útlak kořene patří v nálezu až za stenózy (tíže stenózy → útlak kořene),
-               proto se sbírá zvlášť a vkládá se po foraminální stenóze. */
+
             const rootSentences = [];
 
-            /* Kořen ve foraminu se v některých regionech popisuje jinou etáží. */
             const fRoot = cfg.foramenRootFrom === 'fRoot' ? seg.fRoot : seg.v;
 
-            /* ---- snížení disku (DDD) ---- */
             const discIdx = g(seg, 'disc', 'disc');
             let degenModifier = '';
             let degenDesc = '';
@@ -1146,7 +1038,6 @@ function defineSvgSpineRegion(cfg) {
             else if (discIdx === 2) { degenModifier = 'sníženého '; degenDesc = 'snížený disk'; }
             else if (discIdx === 3) { degenModifier = 'výrazně sníženého '; degenDesc = 'výrazně snížený disk'; }
 
-            /* ---- Modic / destrukce krycích ploten ---- */
             const modicIdx = g(seg, 'plate-Modic', 'modic');
             if (modicIdx) {
                 const modicMap = {
@@ -1157,7 +1048,7 @@ function defineSvgSpineRegion(cfg) {
                 };
                 sentences.push(spineSvgSentence(modicMap[modicIdx]));
                 if (modicIdx === 1) {
-                    /* Řeší se v concLines níže (edém Modic I). */
+                    /* Modic I → concLines níže. */
                 } else {
                     const key = { 2: 'Modic II', 3: 'Modic III', 4: 'destrukce' }[modicIdx];
                     if (!collModic[key]) collModic[key] = [];
@@ -1165,7 +1056,6 @@ function defineSvgSpineRegion(cfg) {
                 }
             }
 
-            /* ---- ventro/retrolistéza + lýza ---- */
             const ventro = on(seg, 'ventrolistesis');
             const dorso = on(seg, 'dorsolistesis');
             const lysis = on(seg, 'lysis');
@@ -1194,7 +1084,6 @@ function defineSvgSpineRegion(cfg) {
                 });
             }
 
-            /* ---- herniace (zóny) + mm + migrace ---- */
             const herniaLoc = herniaWhere(examId, seg.sPfx);
             const herniaMm = Fd(seg, 'hernia_mm');
             const herniaMigr = T(`${seg.sPfx}_hernia_migr`);
@@ -1212,14 +1101,12 @@ function defineSvgSpineRegion(cfg) {
                 causes.push({ nom: conc, gen: conc });
             }
 
-            /* ---- okraj disku: bulging / osteofyty / kombinace (jedna cesta ve SVG,
-               jedno sdílené mm pole) ---- */
             const bulgeState = S(seg, 'bulging');
             const bulgeMm = Fd(seg, 'bulging_mm');
             const mmText = bulgeMm ? ` o ${bulgeMm} mm` : '';
             let bulgeConc = null;
             if (bulgeState === 'kombinace') {
-                /* Kombinace má vlastní větu — degen modifier by ji jen tříštil. */
+
                 if (degenDesc) sentences.push(spineSvgSentence(degenDesc));
                 if (discIdx === 3) causes.push({ nom: 'pokročilá diskopatie', gen: 'pokročilé diskopatie' });
                 sentences.push(spineSvgSentence(`kombinace spondylofytů a bulgingu disku${mmText}`));
@@ -1233,20 +1120,17 @@ function defineSvgSpineRegion(cfg) {
                 sentences.push(spineSvgSentence(`spondylofyty okrajů krycích ploch${mmText}`));
                 bulgeConc = { nom: 'spondylofyty', gen: 'spondylofytů' };
             } else if (!herniaLoc && degenDesc) {
-                /* Snížení disku se vypíše samostatně, jen když není protruze
-                   (jinak je součástí jejího popisu). */
+                /* Snížení disku samostatně jen bez protruzí. */
                 sentences.push(spineSvgSentence(degenDesc));
                 if (discIdx === 3) causes.push({ nom: 'pokročilá diskopatie', gen: 'pokročilé diskopatie' });
             }
             if (bulgeConc) causes.push(bulgeConc);
 
-            /* ---- okrsek vysoké intenzity v zadní části disku (anulární fisura) ---- */
             if (on(seg, 'hiz')) {
                 sentences.push(spineSvgSentence('okrsek vysoké intenzity v zadní části disku'));
                 hizSegments.push(seg.disc);
             }
 
-            /* ---- degenerace facet (I/II/III/edém) per strana ---- */
             const facetBuild = (val, sideWord, sideAbbr) => {
                 let modRep = '', modConc = '', edemRep = '', edemConc = '';
                 if (val === 1) { modRep = 'mírná '; modConc = 'mírná '; }
@@ -1276,7 +1160,6 @@ function defineSvgSpineRegion(cfg) {
                 if (fR > 0) facetBuild(fR, ' vpravo', ' vpravo');
             }
 
-            /* ---- hypertrofie facet ---- */
             const hoL = on(seg, 'facet-ost-L');
             const hoR = on(seg, 'facet-ost-R');
             if (hoL || hoR) {
@@ -1286,7 +1169,6 @@ function defineSvgSpineRegion(cfg) {
                 causes.push({ nom: txt, gen: txt });
             }
 
-            /* ---- útlak kořene (oddělený od stenózy) ---- */
             const rootBuild = (val, sideAbbr, bilateral) => {
                 const tpl = SPINE_SVG_ROOT_TEXT[val];
                 if (!tpl) return null;
@@ -1310,14 +1192,12 @@ function defineSvgSpineRegion(cfg) {
                 if (rR > 0) { const e = rootBuild(rR, 'l.dx.', false); if (e) effects.push(e); }
             }
 
-            /* ---- stenóza laterálního recesu / fibróza / adheze ---- */
             const paraBuild = (val, sideAbbr) => {
                 if (val === 1) {
                     const nom = `stenóza laterálního recesu ${sideAbbr}`;
                     sentences.push(spineSvgSentence(nom));
                     effects.push({ kind: 'recess', nom, dat: `stenóze laterálního recesu ${sideAbbr}`, sev: 2 });
-                    /* Laterální recesus je součástí páteřního kanálu — bez tohoto
-                       příznaku by v souhrnu tvrdil, že je kanál volný. */
+                    /* Laterální recesus = součást stenózy kanálu. */
                     hasSpinalStenosis = true;
                 } else if (val === 2) {
                     fibrosisArr.push(`epidurální fibróza ${sideAbbr}`);
@@ -1335,13 +1215,11 @@ function defineSvgSpineRegion(cfg) {
                 if (pR > 0) paraBuild(pR, 'l.dx.');
             }
 
-            /* ---- zmnožený epidurální tuk (lipomatóza) – uvádí stenózu kanálu ---- */
             if (on(seg, 'epifat')) {
                 sentences.push(spineSvgSentence('zmnožený epidurální tuk v páteřním kanálu'));
                 causes.push({ nom: 'epidurální lipomatóza', gen: 'epidurální lipomatózy' });
             }
 
-            /* ---- stenóza páteřního kanálu ---- */
             const cIdx = g(seg, 'canal', 'canal');
             if (cIdx) {
                 const size = Fd(seg, 'canal_mm');
@@ -1363,8 +1241,6 @@ function defineSvgSpineRegion(cfg) {
                 hasSpinalStenosis = true;
             }
 
-            /* ---- foraminální stenóza (útlak kořene se zapisuje zvlášť tlačítky
-               root-left/root-right, stenóza sama ho netvrdí) ---- */
             const foramBuild = (val, sideWord, sideAbbr) => {
                 let nom = '', dat = '', rep = '';
                 if (val === 1) {
@@ -1411,10 +1287,9 @@ function defineSvgSpineRegion(cfg) {
             }
             if (wL > 0 || wR > 0) hasForaminalStenosis = true;
 
-            /* Útlak kořene až za stenózami — ať text nejmenuje kořen dvakrát po sobě. */
+            /* Útlak kořene až za stenózami. */
             rootSentences.forEach((s) => sentences.push(s));
 
-            /* ---- ložiska (hemangiom/schmorl/lytická/sklerotická) ---- */
             const lesIdx = g(seg, 'bone-lesion', 'boneLesion');
             const addLes = (key, vertebr) => {
                 if (!collLesions[key]) collLesions[key] = [];
@@ -1441,7 +1316,6 @@ function defineSvgSpineRegion(cfg) {
                 addLes('sklerotická', seg.v);
             }
 
-            /* ---- fraktura / prolomení krycí plotny ---- */
             const plateIdx = g(seg, 'plate-up', 'plateUp');
             if (plateIdx === 1) {
                 if (!collShapes.prolomení) collShapes.prolomení = [];
@@ -1458,14 +1332,12 @@ function defineSvgSpineRegion(cfg) {
                 });
             }
 
-            /* ---- operace (jen když je zapnutá) - tři přepínače etáže ---- */
             if (opActive) {
                 if (ctx.isActive(`${seg.sPfx}_stab`)) stabSegments.push(seg);
                 if (ctx.isActive(`${seg.sPfx}_disk`)) discReplacements.push(seg.disc);
                 if (ctx.isActive(`${seg.sPfx}_lam`)) laminVertebrae.push(seg.v);
             }
 
-            /* ---- expanze (globální, přiřazená etáži) ---- */
             if (T('exp_segment') === seg.disc) {
                 const expansion = T('exp_type');
                 const expSide = T('exp_side');
@@ -1506,13 +1378,11 @@ function defineSvgSpineRegion(cfg) {
                 }
             }
 
-            /* ---- zápis nálezu etáže ---- */
             if (sentences.length > 0) {
                 hasSegmentPathology = true;
                 segmentBlocks.push({ type: 'frame', text: `${seg.disc}: ${sentences.join(' ')}` });
             }
 
-            /* ---- závěr etáže ---- */
             const concLines = [];
             const fibrosisGenArr = fibrosisArr.map((s) => String(s).replace('fibróza', 'fibrózy'));
             const structuralNomParts = [...causes.map((c) => c.nom), ...fibrosisArr, ...adhesionArr].filter(Boolean);
@@ -1563,7 +1433,6 @@ function defineSvgSpineRegion(cfg) {
             }
         });
 
-        /* ---------- závěry: sloučení segmentů ---------- */
         segmentConcItems.sort((a, b) => b.rank - a.rank || a.segIndex - b.segIndex);
         const mergedSegConc = [];
         segmentConcItems.forEach((item) => {
@@ -1584,7 +1453,6 @@ function defineSvgSpineRegion(cfg) {
             main.push({ type: 'frame', text: `${group.labels.join(', ')}: ${body}` });
         });
 
-        /* ---------- Modic II/III/destrukce ---------- */
         const modicConcSentences = [];
         if (collModic['Modic II']) modicConcSentences.push(`Tuková degenerace krycích ploten ${spineSvgJoinCzech(collModic['Modic II'])} Modic II.`);
         if (collModic['Modic III']) modicConcSentences.push(`Skleróza krycích ploten ${spineSvgJoinCzech(collModic['Modic III'])} Modic III.`);
@@ -1593,7 +1461,6 @@ function defineSvgSpineRegion(cfg) {
             main.push({ type: 'frame', text: modicConcSentences.join(' ') });
         }
 
-        /* ---------- změny tvaru / krycích ploten ---------- */
         const shapeSentences = [];
         const concShapeSentences = [];
         if (collShapes.schmorl) {
@@ -1618,14 +1485,12 @@ function defineSvgSpineRegion(cfg) {
             shapeSentences.push(`Výrazná komprese těla ${collShapes.propagace.join(', ')} s propagací dorzálně.`);
         }
 
-        /* ---------- operace (findings + závěr) ---------- */
         const surgSentences = [];
         const stabRange = spineSvgVertebraRange(stabSegments);
         if (stabRange) surgSentences.push(`${cfg.stabilization} stabilizace ${stabRange}.`);
         if (discReplacements.length > 0) surgSentences.push(`Náhrada disku ${discReplacements.join(', ')}.`);
         if (laminVertebrae.length > 0) surgSentences.push(`Laminektomie ${laminVertebrae.join(', ')}.`);
 
-        /* ---------- ložiska ---------- */
         const lesionSentences = [];
         const lesionList = (key) => collLesions[key] || [];
         const plural = (arr) => arr.length > 1;
@@ -1663,7 +1528,6 @@ function defineSvgSpineRegion(cfg) {
             main.push({ type: 'frame', text: `Sklerotické ložisko ${lesionList('sklerotická').join(', ')}.` });
         }
 
-        /* ---------- skládání nálezu ---------- */
         if (staticPhysio.length > 0) {
             report.push({ type: 'frame', text: staticPhysio.join(' '), dimmed: true });
         }
@@ -1711,7 +1575,6 @@ function defineSvgSpineRegion(cfg) {
             }
         }
 
-        /* ---------- myelopatie ---------- */
         const myeloLevel = T('myelo_level');
         const myeloLoc = T('myelopatie');
         const myeloSize = ctx.field('myelo_size');
@@ -1728,7 +1591,6 @@ function defineSvgSpineRegion(cfg) {
             report.push({ type: 'frame', text: 'Přehledný úsek míchy bez signálových změn.', dimmed: true });
         }
 
-        /* ---------- závěr: osa/křivka, multietážové změny ---------- */
         if (concAxisLordosis.length > 0) {
             main.push({ type: 'frame', text: concAxisLordosis.join(' ') });
         }
@@ -1751,7 +1613,6 @@ function defineSvgSpineRegion(cfg) {
             main.push({ type: 'frame', text: `Přiměřený nález na ${ADJ} páteři.`, dimmed: true });
         }
 
-        /* ---------- anulární fisura (vedlejší nález) ---------- */
         if (hizSegments.length > 0) {
             incidental.push({
                 type: 'frame',
@@ -1759,7 +1620,6 @@ function defineSvgSpineRegion(cfg) {
             });
         }
 
-        /* ---------- vlastní texty ---------- */
         const customDesc = ctx.field('custom_desc');
         if (customDesc) {
             let txt = customDesc.trim();
@@ -1784,7 +1644,6 @@ function defineSvgSpineRegion(cfg) {
         reportLayout: 'block',
         buttons: {},
 
-        /* Popisek objektu ve SVG při hoveru (stejný tooltip jako u trupu). */
         svgLabel: (pathEl) => svgLabel(pathEl),
 
         layout: (helpers) => {
@@ -1800,7 +1659,7 @@ function defineSvgSpineRegion(cfg) {
             const seg = activeSeg();
             const segKey = seg ? seg.sPfx : null;
 
-            /* Všechny segmenty (ne jen aktivní) — compile potřebuje stavy celé páteře. */
+            /* Všechny segmenty — compile čte celou páteř. */
             segmentLevels.forEach((l) => {
                 allowedPaths.forEach((pathKey) => {
                     const spec = SPINE_SVG_PATHS[pathKey];
@@ -1810,14 +1669,12 @@ function defineSvgSpineRegion(cfg) {
                 Object.keys(SPINE_SVG_SUB).forEach((subKey) => {
                     ButtonConfigs[pathId(examId, l.sPfx, subKey)] = { type: 'standard', states: SPINE_SVG_SUB[subKey] };
                 });
-                /* Operační přepínače se registrují i mimo zobrazení — compile
-                   čte jejich stav bez ohledu na to, co je právě na obrazovce. */
+
                 SPINE_SVG_OPS.forEach((key) => {
                     ButtonConfigs[pathId(examId, l.sPfx, key)] = { type: 'basic', text: key };
                 });
             });
 
-            /* Globální tlačítka (osa/křivka/LSTV/operace). */
             const nodes = [];
             nodes.push(globalTable(helpers));
 
@@ -1826,10 +1683,6 @@ function defineSvgSpineRegion(cfg) {
                 className: 'spine-svg-layout'
             });
 
-            /* Etáže vlevo: každé tlačítko otevírá svůj segment. Aktivní je vždy
-               nejvýš jedna — levé / kolečko nahoru = zapnout, pravé / kolečko dolů = vypnout.
-               Když je zapnutá operace, vejdou se do řádku každé etáže i přepínače
-               stab / disk / lam. */
             const isOpActive = Store.buttonStates[`${examId}_${R}_op`] === 1;
             const segs = el('div', { className: 'spine-svg-segs' });
             segments.forEach((label, i) => {
@@ -1873,8 +1726,7 @@ function defineSvgSpineRegion(cfg) {
                 map.appendChild(svgHost);
                 map.appendChild(infoPanel);
                 mountSvg(svgHost, segKey, examId, infoPanel);
-                /* Viditelnost popisku řídí pohyb kurzoru nad celou mapou
-                   (cesty + panel), ne přechody mezi jednotlivými cestami. */
+
                 trackPointer(map, infoPanel, examId, segKey);
             } else {
                 focusPath = null;
