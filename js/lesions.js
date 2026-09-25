@@ -353,11 +353,11 @@ const LESIONS_DEFINITION = {
                     let refLiv = extractNumber(Store.fields['suv_jater'] || '3.0');
                     let refPar = extractNumber(Store.fields['suv_parotid'] || '20.0');
                     if (!isNaN(suvVal) && !isNaN(refLiv) && !isNaN(refPar)) {
-                        let grade = '';
-                        if (suvVal < refLiv) grade = 'grade 1';
-                        else if (suvVal < refPar) grade = 'grade 2';
-                        else grade = 'grade 3';
-                        actStr += ` (${grade})`;
+                        let level = '';
+                        if (suvVal < refLiv) level = 'score 1';
+                        else if (suvVal < refPar) level = 'score 2';
+                        else level = 'score 3';
+                        actStr += ` (${level})`;
                     }
                 }
             }
