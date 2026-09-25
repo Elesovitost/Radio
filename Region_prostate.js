@@ -534,7 +534,8 @@ const RegionProstate = {
             reportOut.push({ type: 'frame', text: 'Chabá náplň semenných váčků, jejich hodnotitelnost je limitována.', tableId: 'abdomen_seminal_main' });
         } else if (semFill === 'není') {
             reportOut.push({ type: 'frame', text: 'Není náplň semenných váčků, nejsou hodnotitelné.', tableId: 'abdomen_seminal_main' });
-        } else {
+        } else if (prOp !== 'RAPE') {
+            /* Po RAPE váčky nejsou – nepsat „normální náplň“. */
             reportOut.push({ type: 'frame', text: 'Normální náplň semenných váčků.', tableId: 'abdomen_seminal_main', dimmed: true });
         }
 

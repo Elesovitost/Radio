@@ -7,7 +7,7 @@
    (Organs_spine_NaF.svg); objekty jsou nativně viditelné (bílá / šedá),
    stav RF se přepíná klikem / kolečkem / pravým tlačítkem.
 
-   Vizuál drží stejnou řeč jako js/spine-svg-factory.js: kompaktní
+   Vizuál drží stejnou řeč jako Region_spine_factory.js: kompaktní
    seznam etáží vlevo, mapa vpravo, popisky přes mapu černě a verzállkami.
    ============================================================= */
 
@@ -48,7 +48,7 @@ const NAF_ENDPLATE_ORDER = ['ant', 'lat_l', 'lat_r', 'cen'];
    vždy dvě, takže mají jen množné číslo. */
 const NAF_CAUSES = {
     'artróza I':      { one: 'mírné facetové artrózy',        many: 'mírných facetových artróz' },
-    'artróza II':     { one: 'střední facetové artrózy',      many: 'středních facetových artróz' },
+    'artróza II':     { one: 'facetové artrózy',              many: 'facetových artróz' },
     'artróza III':    { one: 'pokročilé facetové artrózy',    many: 'pokročilých facetových artróz' },
     'istmy':          { one: 'istmické lýzy při spondylolistéze', many: 'istmických lýz při spondylolistéze' },
     'cement':         { many: 'cementoplastiky' },
@@ -467,7 +467,7 @@ const RegionSpineNaf = {
             if (seg.kry === 'osteochondróza') parts.push('osteochondrotická degenerace krycích ploten');
             if (seg.kry === 'cement') parts.push('materiál vysoké denzity v MO prostoru');
             if (seg.fac === 'artróza I') parts.push('mírná facetová degenerace');
-            if (seg.fac === 'artróza II') parts.push('střední facetová degenerace');
+            if (seg.fac === 'artróza II') parts.push('facetová degenerace');
             if (seg.fac === 'artróza III') parts.push('pokročilá facetová degenerace');
             if (seg.fac === 'istmy') parts.push('istmická lýza');
             return parts;

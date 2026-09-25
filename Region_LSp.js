@@ -1,6 +1,6 @@
-/* =============================================================
+﻿/* =============================================================
    Region_LSp.js - bederní páteř (SVG).
-   Implementace je v js/spine-svg-factory.js; zde je jen to odlišné.
+   Implementace je v Region_spine_factory.js; zde je jen to odlišné.
    ============================================================= */
 
 const RegionLSp = defineSvgSpineRegion({

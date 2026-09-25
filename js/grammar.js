@@ -83,21 +83,17 @@ const GRAMMAR_DICT = {
             pad1: 'herniace disku', pad1pl: 'herniace disků',
             pad2: 'herniace disku', pad2pl: 'herniace disků'
         },
+        'facetová artróza': {
+            pad1: 'facetová artróza', pad1pl: 'facetové artrózy',
+            pad2: 'facetové artrózy', pad2pl: 'facetových artróz'
+        },
         'mírná facetová artróza': {
             pad1: 'mírná facetová artróza', pad1pl: 'mírné facetové artrózy',
             pad2: 'mírné facetové artrózy', pad2pl: 'mírných facetových artróz'
         },
-        'střední facetová artróza': {
-            pad1: 'střední facetová artróza', pad1pl: 'střední facetové artrózy',
-            pad2: 'střední facetové artrózy', pad2pl: 'středních facetových artróz'
-        },
         'pokročilá facetová artróza': {
             pad1: 'pokročilá facetová artróza', pad1pl: 'pokročilé facetové artrózy',
             pad2: 'pokročilé facetové artrózy', pad2pl: 'pokročilých facetových artróz'
-        },
-        'facetová artróza': {
-            pad1: 'facetová artróza', pad1pl: 'facetové artrózy',
-            pad2: 'facetové artrózy', pad2pl: 'facetových artróz'
         },
         'bulging': {
             pad1: 'bulging', pad1pl: 'bulgingy',

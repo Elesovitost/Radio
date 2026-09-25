@@ -1,3 +1,8 @@
+/* =============================================================
+   Region_spine_factory.js - společná SVG továrna pro C/T/LS páteř.
+   Region_Cp / Region_Tp / Region_LSp jen dodají cfg; logika je tady.
+   ============================================================= */
+
 const SPINE_SVG_COLORS = {
     yellow: '#f0d000',
     orange: '#e37908',
@@ -136,8 +141,8 @@ const SPINE_SVG_MUTEX = {
     dorsolistesis: 'ventrolistesis'
 };
 
-const SPINE_SVG_GRADE_LABEL = ['', 'mírná', 'střední', 'výrazná'];
-const SPINE_SVG_GRADE_NEUTER = ['', 'mírné', 'střední', 'výrazné'];
+const SPINE_SVG_GRADE_LABEL = ['', 'mírná', '', 'výrazná'];
+const SPINE_SVG_GRADE_NEUTER = ['', 'mírné', '', 'výrazné'];
 const SPINE_SVG_ROOT_LABEL = ['', 'mírný tlak', 'útlak', 'komprese'];
 
 /* Hernie: zóna 0→3; ≥4 lokality = o široké bazi. */
@@ -254,7 +259,7 @@ function spineSvgFillFor(spec, idx) {
         return [null, C.yellow, C.black, C.red, C.white][idx] || null;
     }
     if (spec.mode === 'bulge') {
-        return [null, C.yellow, C.black, C.orange][idx] || null;
+        return [null, C.yellow, C.white, C.orange][idx] || null;
     }
     if (spec.mode === 'red') return SPINE_SVG_COLORS.red;
     return null;
@@ -418,6 +423,9 @@ function defineSvgSpineRegion(cfg) {
             color: #8b949e; font-size: 12px; padding: 24px 8px;
             text-align: center;
         }
+        .spine-conc-row .label { color: var(--dim); }
+        .spine-conc-row:has(input:checked) .on,
+        .spine-conc-row:has(input:not(:checked)) .off { color: #fff; }
     `;
     }
 
@@ -724,9 +732,9 @@ function defineSvgSpineRegion(cfg) {
 
     function buildInfoPanel() {
         const panel = el('div', { className: 'spine-svg-info' });
-        if (cfg.infoOffsetY) {
-            panel.style.transform = `translateY(${cfg.infoOffsetY}px)`;
-        }
+        /* Základ −15 px; Region_Cp přidává další offset přes infoOffsetY. */
+        const dy = -15 + (Number(cfg.infoOffsetY) || 0);
+        panel.style.transform = `translateY(${dy}px)`;
         panel.style.display = 'none';
         return panel;
     }
@@ -744,15 +752,17 @@ function defineSvgSpineRegion(cfg) {
 
     function overPanelControls(panel, target, x, y) {
         if (target && panel.contains(target)) return true;
-        const ctrl = panel.querySelector('.spine-svg-info-detail');
-        if (!ctrl) return false;
-        const r = ctrl.getBoundingClientRect();
+        if (panel.style.display === 'none') return false;
+        /* Celá karta (nadpis + lokalizace + ovládání) — ne jen detail. */
+        const card = panel.querySelector('.spine-svg-info-card') || panel;
+        const r = card.getBoundingClientRect();
         return x >= r.left - 6 && x <= r.right + 6 && y >= r.top - 6 && y <= r.bottom + 6;
     }
 
     function hideInfo(panel) {
         cancelPendingShow();
         cancelHide();
+        focusPath = null;
         panel.style.display = 'none';
     }
 
@@ -796,8 +806,11 @@ function defineSvgSpineRegion(cfg) {
             const path = e.target.closest && e.target.closest('path.spine-svg-hit');
             if (path) {
                 cancelHide();
-                if (focusPath === path.id) cancelPendingShow();
-                else scheduleShow(panel, examId, segKey, path.id);
+                if (focusPath === path.id && panel.style.display !== 'none') {
+                    cancelPendingShow();
+                } else {
+                    scheduleShow(panel, examId, segKey, path.id);
+                }
                 return;
             }
 
@@ -923,21 +936,35 @@ function defineSvgSpineRegion(cfg) {
     }
 
     function concSlider() {
-        return el('div', { className: 'row', style: 'margin: 10px 0 15px 0; justify-content: flex-start; width: 100%; padding-left: 5px;' }, [
-            el('span', { className: 'label', style: 'font-size: 10px;', textContent: 'text závěru:  První strukturální změny' }),
-            el('label', { className: 'switch', style: 'margin: 0 0px;' }, [
-                el('input', {
-                    type: 'checkbox',
-                    id: `${R}_conc_mode_toggle`,
-                    checked: Store.fields[`${R}_conc_mode`] !== 'pathology',
-                    onchange: (e) => {
-                        Store.fields[`${R}_conc_mode`] = e.target.checked ? 'stenosis' : 'pathology';
-                        UI.renderReport();
-                    }
-                }),
-                el('span', { className: 'slider' })
-            ]),
-            el('span', { className: 'label', style: 'font-size: 10px;', textContent: 'První stenózy' })
+        const sw = (id, checked, set) => el('label', { className: 'switch', style: 'margin: 0;' }, [
+            el('input', {
+                type: 'checkbox', id, checked,
+                onchange: (e) => { set(e.target.checked); UI.renderReport(); }
+            }),
+            el('span', { className: 'slider' })
+        ]);
+        const row = (...kids) => el('div', {
+            className: 'row spine-conc-row',
+            style: 'margin: 6px 0; justify-content: flex-start; width: 100%; padding-left: 5px;'
+        }, kids);
+        const lbl = (text, side) => el('span', {
+            className: `label${side ? ` ${side}` : ''}`,
+            style: 'font-size: 10px;',
+            textContent: text
+        });
+
+        return el('div', {}, [
+            row(
+                lbl('První strukturální změny', 'off'),
+                sw(`${R}_conc_mode_toggle`, Store.fields[`${R}_conc_mode`] !== 'pathology',
+                    (on) => { Store.fields[`${R}_conc_mode`] = on ? 'stenosis' : 'pathology'; }),
+                lbl('První stenózy', 'on')
+            ),
+            row(
+                lbl('Slučování degenerací', 'on'),
+                sw(`${R}_degen_merge_toggle`, Store.fields[`${R}_degen_merge`] === 'ano',
+                    (on) => { Store.fields[`${R}_degen_merge`] = on ? 'ano' : 'ne'; })
+            )
         ]);
     }
 
@@ -1134,7 +1161,7 @@ function defineSvgSpineRegion(cfg) {
             const facetBuild = (val, sideWord, sideAbbr) => {
                 let modRep = '', modConc = '', edemRep = '', edemConc = '';
                 if (val === 1) { modRep = 'mírná '; modConc = 'mírná '; }
-                else if (val === 2) { modRep = 'střední '; modConc = 'střední '; }
+                else if (val === 2) { modRep = ''; modConc = ''; }
                 else if (val === 3) { modRep = 'výrazná '; modConc = 'pokročilá '; }
                 else if (val === 4) { modRep = 'pokročilá '; modConc = 'pokročilá '; edemRep = ' s edémem'; edemConc = ' s edémem při dekompenzaci'; }
 

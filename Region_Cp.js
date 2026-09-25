@@ -1,6 +1,6 @@
 /* =============================================================
    Region_Cp.js - krční páteř (SVG).
-   Implementace je v js/spine-svg-factory.js; zde je jen to odlišné.
+   Implementace je v Region_spine_factory.js; zde je jen to odlišné.
    ============================================================= */
 
 const RegionCp = defineSvgSpineRegion({
