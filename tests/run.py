@@ -13,7 +13,7 @@ Použití (z kořene repozitáře):
     python tests/run.py --show ID [ID...]   vypíše findings + impression
     python tests/run.py --raw ID            vypíše raw bloky z compile()
     python tests/run.py --mode ids --out F  inventura všech ID tlačítek do F
-    python tests/run.py --mode validate      kontrola jednoslovných vět (Corrections.validate)
+    python tests/run.py --mode validate      kontrola před kopírováním (Corrections.validate)
     python tests/run.py --keep              uloží vygenerovaný DOM do tests/.last-dom.html
 
 Návratový kód je 1 při regresi (diff) nebo chybě ve fixture.

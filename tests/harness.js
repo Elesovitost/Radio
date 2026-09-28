@@ -309,12 +309,10 @@
         window.__GOLDEN_READY__ = true;
     }
 
-    /* ---------- režim ?mode=validate: kontrola jednoslovných vět ---------- */
+    /* ---------- režim ?mode=validate: kontrola před kopírováním ---------- */
     function runValidateMode() {
         const dump = {};
         VALIDATION_CASES.forEach(c => {
-            /* Bereme všechny nálezy, ne jen krátké věty - snapshot tak hlídá
-               i zkratkovou logiku (aby se opravdová chyba nepřehlédla). */
             const hit = Corrections.validate(c.text).map(i => `${i.level}: ${i.message}`);
             dump[c.id] = { text: c.text, hlasi: hit };
         });

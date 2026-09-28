@@ -3,52 +3,16 @@
     "hlasi": [],
     "text": "Játra: přiměřené velikosti, parenchym homogenní."
   },
-  "diagnoza-hypomobilita": {
-    "hlasi": [],
-    "text": "Levý TMK: Omezená translace. Hypomobilita."
-  },
-  "diagnoza-litiasa": {
-    "hlasi": [],
-    "text": "Játra: přiměřené velikosti. Cholecystolitiáza."
-  },
-  "diagnoza-nefrolitiaza": {
-    "hlasi": [],
-    "text": "Nefrolitiáza."
-  },
-  "diagnoza-splenomegalie": {
-    "hlasi": [],
-    "text": "Splenomegalie."
-  },
-  "vagne-slovo": {
+  "chybi-mezera": {
     "hlasi": [
-      "error: Pozor, překontroluj Zvětšení., pravděpodobně nedostatečně určeno."
+      "warn: chybí mezera po tečce: \"Játra: přiměřené velikosti.Parenchym homogenní.\""
     ],
-    "text": "Zvětšení."
+    "text": "Játra: přiměřené velikosti.Parenchym homogenní."
   },
-  "vagne-slovo-2": {
+  "chybi-tecky": {
     "hlasi": [
-      "error: Pozor, překontroluj Změny. v sekci HRUDNÍK, pravděpodobně nedostatečně určeno."
+      "warn: chybí tečka na konci: \"…Játra: přiměřené velikosti\""
     ],
-    "text": "HRUDNÍK: Změny."
-  },
-  "zkratka-eponymum": {
-    "hlasi": [],
-    "text": "Obraz suspektní ze spondyloartritidy charakteru m. Bechtěrev. Bilaterální sakroiliitida, entezopatie axiálního skeletu."
-  },
-  "zkratka-na-zacatku-bloku": {
-    "hlasi": [],
-    "text": "Karcinom rekta s invazí přes kapsulu. cTNM: cT3a, cN0."
-  },
-  "zkratka-titul": {
-    "hlasi": [],
-    "text": "Kontrola dle prof. Nováka. Bez progrese."
-  },
-  "zkratka-v-zavorce": {
-    "hlasi": [],
-    "text": "Poúrazové změny (st. p. ruptuře). Bez progrese."
-  },
-  "zkratka-zkracene-slovo": {
-    "hlasi": [],
-    "text": "Achillova šlacha přim. vzhledu a signálu. Chrupavka ventr. femuru bez defektu."
+    "text": "Játra: přiměřené velikosti"
   }
 }

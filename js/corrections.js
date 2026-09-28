@@ -6,7 +6,7 @@
                  (nad jedním blokem z region.compile())
    normalize() = typografie (mezery, interpunkce, opakovaná slova);
                  i při zobrazení / kopírování (ReportText.frameText)
-   validate()  = pojmenuje zbývající chyby (FIXES, krátké věty, …)
+   validate()  = pojmenuje zbývající chyby (FIXES, mezery, tečka na konci)
 
    Pořadí kroků je záměrné - gramatika dělí věty podle ". ",
    proto se typografie pouští až po ní.
@@ -198,78 +198,10 @@ function applyFixes(text) {
     return out;
 }
 
-/* Zkratky a zkrácená slova, po kterých tečka nekončí větu
-   (dělení vět pro kontrolu jednoslovných „vět“). Zkratky o 1–2 znacích
-   a římské číslice se berou automaticky. */
-const ZKRATKY = ['bilat', 'event', 'tj', 'např', 'tzv', 'č', 'str', 'př', 'min', 'max',
-                 'vs', 'atd', 'resp', 'popř', 'susp', 'parc', 'obv', 'vel', 'kol', 'kraj',
-                 'pravděp', 'pravděpod', 'ref', 'lig', 'asc', 'dif', 'dg', 'char', 'art',
-                 'sin', 'dist', 'tubul', 'st', 'prof', 'mudr', 'mgr', 'ing', 'doc',
-                 'judr', 'rndr', 'phdr', 'pharmdr', 'bca', 'diS', 'thlic', 'mvdr',
-                 /* anatomické / popisné zkratky užívané v šablonách */
-                 'přim', 'prox', 'dist', 'sup', 'inf', 'med', 'later', 'ventr', 'dorz',
-                 'tib', 'fem', 'thor', 'lumb', 'cerv', 'potenc', 'vč', 'kompl', 'subtot',
-                 'intratend', 'intraart', 'subt'];
-
-function jeZkratka(token) {
-    /* Token může mít před sebou interpunkci ("(st", "(susp"). */
-    const core = String(token).replace(/^[^0-9A-Za-zÁ-Žá-ž]+/, '');
-    return core.length <= 2
-        || /^[IVXLCDM]+$/i.test(core)
-        || ZKRATKY.includes(core.toLowerCase());
-}
-
 function snippet(text, index, length) {
     const from = Math.max(0, index - 25);
     const to = Math.min(text.length, index + length + 25);
     return (from > 0 ? '…' : '') + text.slice(from, to).replace(/\n/g, '\\n') + (to < text.length ? '…' : '');
-}
-
-/* Jednoslovná "věta" = pravděpodobně nedostatečně určený nález. */
-const KRATKA_VETA = /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽa-záčďéěíňóřšťúůýž]{3,}$/;
-
-/* Samostatně stojící diagnóza (Cholecystolitiáza., Splenomegalie., Nefrolitiáza.)
-   je platný závěr, ne nedostatečně určený nález - pozná se podle koncovky. */
-const DIAGNOZA_KONCOVKA = /(óza|oza|áza|aza|ita|itida|itída|émie|emie|patie|megalia|plazie|skleróza|fibróza|ektázie|stenóza|infarkt|absces|hematom|lymfom|karcinom|metastáza|fraktura|cysta|hernie|aneurysma|trombóza|embolie|ie)$/i;
-
-/* Rozdělí text na věty; tečka po zkratce (m., v.s., dif. dg.) větu nekončí. */
-function splitSentences(text) {
-    const parts = [];
-    let start = 0;
-    for (const m of text.matchAll(/[.!?]+/g)) {
-        const slovo = (text.slice(0, m.index).match(/[^\s.]+$/) || [''])[0];
-        if (m[0] === '.' && jeZkratka(slovo)) continue;
-        parts.push(text.slice(start, m.index));
-        start = m.index + m[0].length;
-    }
-    parts.push(text.slice(start));
-    return parts.map(s => s.trim()).filter(Boolean);
-}
-
-function checkShortSentences(text, found) {
-    let section = '';
-
-    for (let line of text.split('\n')) {
-        line = line.trim();
-        if (!line) continue;
-
-        /* Hlavička sekce: "HRUDNÍK:" nebo celý řádek velkými písmeny. */
-        const header = line.match(/^([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]+):/);
-        if (header) section = header[1].trim();
-        else if (line === line.toUpperCase() && line.length > 2) section = line;
-
-        for (const sentence of splitSentences(line)) {
-            const clean = sentence.replace(/^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]+:\s*/, '').trim();
-            /* Samotná římská číslice ani název diagnózy není nedostatečně určený nález. */
-            if (KRATKA_VETA.test(clean) && !/^[IVXLCDM]+$/.test(clean) && !DIAGNOZA_KONCOVKA.test(clean)) {
-                const kde = section ? ` v sekci ${section}` : '';
-                found.push({
-                    level: 'error',
-                    message: `Pozor, překontroluj ${clean}.${kde}, pravděpodobně nedostatečně určeno.`
-                });
-            }
-        }
-    }
 }
 
 function validate(text) {
@@ -303,7 +235,6 @@ function validate(text) {
         found.push({ level: 'warn', message: `chybí tečka na konci: "…${text.trim().slice(-40)}"` });
     }
 
-    checkShortSentences(text, found);
     return found;
 }
 
