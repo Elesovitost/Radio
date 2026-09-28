@@ -603,8 +603,8 @@ const RegionBrain = {
         // --- 1. WML: SVD, PVS A DEMYELINIZACE ---
         let faz = ctx.text('br_faz');
         if (faz && faz !== '0') {
-            if (faz === '1') { bilaHmotaRep.push('ojedinělá tečkovitá T2W+ FLAIR+ ložiska'); concInc.push({ type: 'frame', text: 'Mírná chronická ischemizace bílé hmoty (Fazekas 1).', tableId: 'brain_wml_main' }); }
-            if (faz === '2') { bilaHmotaRep.push('mnohočetná T2W+ FLAIR+ ložiska s tendencí ke splývání'); concInc.push({ type: 'frame', text: 'Střední chronická ischemizace bílé hmoty (Fazekas 2).', tableId: 'brain_wml_main' }); }
+            if (faz === '1') { bilaHmotaRep.push('ojedinělá tečkovitá T2W+ FLAIR+ ložiska v hlubší bílé hmotě'); concInc.push({ type: 'frame', text: 'Mírná chronická ischemizace bílé hmoty (Fazekas 1).', tableId: 'brain_wml_main' }); }
+            if (faz === '2') { bilaHmotaRep.push('mnohočetná T2W+ FLAIR+ ložiska v hlubší bílé hmotě s tendencí ke splývání'); concInc.push({ type: 'frame', text: 'Střední chronická ischemizace bílé hmoty (Fazekas 2).', tableId: 'brain_wml_main' }); }
             if (faz === '3') { bilaHmotaRep.push('rozsáhlé konfluující T2W+ FLAIR+ změny'); concInc.push({ type: 'frame', text: 'Pokročilá chronická ischemizace bílé hmoty (Fazekas 3).', tableId: 'brain_wml_main' }); }
         }
 
