@@ -112,7 +112,7 @@ const RegionKnee = {
 
             helpers.TableMain('knee_acl_main', 'Přední zkřížený vaz (ACL)', [
                 helpers.Table2colNormal('kn_acl_table', '', [
-                    [ 'Ruptura:', [ { btn: 'kn_acl_rupt', states: ['0', 'low-grade', 'parciální', 'high-grade', 'kompletní'] }, { btn: 'kn_acl_bml', states: ['skelet 0', 'kont. edém', '+ fr. F', '+ fr. T', '+ fr. F+T'] } ] ],
+                    [ 'Ruptura:', [ { btn: 'kn_acl_rupt', states: ['0', 'low-grade', 'parciální', 'high-grade', 'kompletní', 'starší'] }, { btn: 'kn_acl_bml', states: ['skelet 0', 'kont. edém', '+ fr. F', '+ fr. T', '+ fr. F+T'] } ] ],
                     [ 'Morfologie:', { btn: 'kn_acl_morf', states: ['0', 'zvlnění', 'elongace', 'mukoid. deg.', 'ganglion'] } ],
                     [ 'Náhrada (štěp):', [ { btn: 'kn_acl_plast', states: ['0', 'intaktní', 'parc. léze', 'kompl. rupt.'] }, { btn: 'kn_acl_vzhled', states: ['orientace OK', 'laxita', 'vertikální', 'horizontální', 'impingement'] } ] ],
                     [ '', { btn: 'kn_acl_tunel', states: ['tunely', 'širší F', 'širší T', 'ventrální T'] } ],
@@ -758,6 +758,9 @@ const RegionKnee = {
                     } else if (aclRupt === 'kompletní') {
                         nRep.push('zřetelná diskontinuita všech vláken s retrakcí a horizontalizací pahýlu, defekt je vyplněn edémem a tekutinou');
                         concParts.push('s kompletní rupturou');
+                    } else if (aclRupt === 'starší') {
+                        nRep.push('vaz je ztenčený, s nízkým signálem a výrazným defektem kontinuity vláken');
+                        concParts.push('po high-grade ruptuře staršího data');
                     }
                 }
 
